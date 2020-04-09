@@ -1,0 +1,7 @@
+version: '3.5'
+services:
+    swift-compiler:
+        build:
+            context: /
+            dockerfile: dev.dockerfile
+
