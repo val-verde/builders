@@ -13,7 +13,7 @@ RUN if [ -d sources ]; then rm -rf sources; fi && \
 
 WORKDIR /sources
 
-RUN git clone https://github.com/apple/swift.git && \
+RUN git clone https://github.com/val-verde/swift.git && \
     python3 ./swift/utils/update-checkout --clone
 
 FROM BASE AS BUILDER
@@ -30,11 +30,13 @@ RUN apt update && \
         expat \
         git \
         g++ \
+        icu-devtools \
         libicu-dev \
         libcurl4-openssl-dev \
         libedit-dev \
         libncurses-dev \
-        libpython2-dev \
+        libpython2.7 \
+        libpython2.7-dev \
         libssl-dev \
         libsqlite3-dev \
         libxml2-dev \
@@ -46,6 +48,7 @@ RUN apt update && \
         python3-distutils \
         python3-six \
         rsync \
+        swig \
         ssh \
         uuid-dev && \
     apt autoremove && \
@@ -56,6 +59,7 @@ RUN update-alternatives --install "/usr/bin/ld" "ld" "/usr/bin/ld.lld" 20
 COPY --from=BASE /sources /sources
 
 RUN python3 ./swift/utils/build-script \
+    -j11 \
     -l \
     -A \
     -R \
