@@ -96,7 +96,14 @@ FROM ubuntu:20.04 AS PACKAGER
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt update
+RUN apt update \
+    && apt install -y \
+           libedit-dev \
+           libpython2.7 \
+           libpython2.7-dev \
+           libxml2-dev \
+           libz3-4
+# libxml2-dev, python2.7 and 2.7-dev are needed here to enable REPL/virtual env for swift
 
 COPY --from=BUILDER /sources/build/Ninja-Release/toolchain-linux-x86_64/usr /usr/local
 
