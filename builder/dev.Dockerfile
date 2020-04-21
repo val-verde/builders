@@ -92,7 +92,15 @@ RUN python3 ./swift/utils/build-script \
     --install-swiftsyntax \
     --install-xctest
 
+FROM ubuntu:20.04 AS PACKAGER
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt update
+
+COPY --from=BUILDER /sources/build/Ninja-Release/toolchain-linux-x86_64/usr /usr/local
 
 CMD []
 
 ENTRYPOINT ["tail", "-f", "/dev/null"]
+
