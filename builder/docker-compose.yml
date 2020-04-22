@@ -5,6 +5,6 @@ services:
         container_name: builder
         build: 
             context: ./
-            dockerfile: dev.Dockerfile
+            dockerfile: ubuntu20.04.Dockerfile
         privileged: true
 #Note: privileged flag here is needed to enable REPL mode.

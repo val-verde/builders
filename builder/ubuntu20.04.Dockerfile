@@ -19,7 +19,7 @@ RUN git clone https://github.com/val-verde/swift.git && \
 FROM BASE AS BUILDER
 
 ENV DEBIAN_FRONTEND=noninteractive
-
+#Make below into a script (swift-compiler-apt-deps.sh)
 RUN apt update && \
     apt upgrade -y && \
     apt install -y \
@@ -58,8 +58,9 @@ RUN update-alternatives --install "/usr/bin/ld" "ld" "/usr/bin/ld.lld" 20
 
 COPY --from=BASE /sources /sources
 
+#j11: number of logical cores + 1 (swift-compiler-build-script.sh)
 RUN python3 ./swift/utils/build-script \
-    -j11 \
+    -j11 \ 
     -l \
     -A \
     -R \
@@ -92,25 +93,36 @@ RUN python3 ./swift/utils/build-script \
     --install-swiftsyntax \
     --install-xctest
 
+RUN cd /sources/build/Ninja-Release/toolchain-linux-x86_64 \
+   && mkdir -p local \
+   && mv usr/* local \
+   && mv local usr \
+   && rm -rf usr/local/local
+
 FROM ubuntu:20.04 AS PACKAGER
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update \
-    && apt install -y \
-           alien \
-           libedit-dev \
-           liblldb-6.0 \
-           libpython2.7 \
-           libpython2.7-dev \
-           libxml2-dev \
-           libz3-4
+   && apt install -y alien
 
-COPY --from=BUILDER /sources/build/Ninja-Release/toolchain-linux-x86_64/usr /usr/local
+COPY --from=BUILDER /sources/build/Ninja-Release/toolchain-linux-x86_64/usr/local /usr/local
 
-RUN tar -zvcf swift_build.tar.gz /usr/local/bin/ \
+RUN tar -zvcf swift_build.tar.gz /usr/local \
     && alien swift_build.tar.gz 
-
+# Move below code to use COPY of the control file
+RUN mkdir -p /tmp/swift-compiler-package \
+    && dpkg-deb -R swift-build_1-2_all.deb /tmp/swift-compiler-package \
+    && printf 'Package: val-verde-swift-compiler\n\
+Version: 1.0\n\
+Architecture: amd64\n\
+Maintainer: Val Verde Inc. <openvalverde@gmail.com>\n\
+Section: contrib/devel\n\
+Priority: optional\n\
+Depends: libcurl4, libedit2, libpython2.7, libxml2\n\
+Description: Swift compiler for Ubuntu 20.04 LTS\n\
+' > /tmp/swift-compiler-package/DEBIAN/control \
+    && dpkg -b /tmp/swift-compiler-package /swift-compiler.deb
 
 FROM ubuntu:20.04
 
@@ -118,18 +130,16 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update \
     && apt install -y \
-           libedit-dev \
-           liblldb-6.0 \
+           libcurl4 \
+           libedit2 \
            libpython2.7 \
-           libpython2.7-dev \
-           libxml2-dev \
+           libxml2 \
            libz3-4
 # libxml2-dev, python2.7 and 2.7-dev are needed here to enable REPL/virtual env for swift
 
-COPY --from=PACKAGER /swift-build_1-2_all.deb /
+COPY --from=PACKAGER /swift-compiler.deb /
 
-RUN dpkg -i swift-build_1-2_all.deb
-
+RUN dpkg -i swift-compiler.deb
 CMD []
 
 ENTRYPOINT ["tail", "-f", "/dev/null"]
