@@ -108,20 +108,13 @@ RUN apt update \
 
 COPY --from=BUILDER /sources/build/Ninja-Release/toolchain-linux-x86_64/usr/local /usr/local
 
+COPY ./swift-compiler-DEBIAN-control .
+
 RUN tar -zvcf swift_build.tar.gz /usr/local \
     && alien swift_build.tar.gz 
-# Move below code to use COPY of the control file
 RUN mkdir -p /tmp/swift-compiler-package \
     && dpkg-deb -R swift-build_1-2_all.deb /tmp/swift-compiler-package \
-    && printf 'Package: val-verde-swift-compiler\n\
-Version: 1.0\n\
-Architecture: amd64\n\
-Maintainer: Val Verde Inc. <openvalverde@gmail.com>\n\
-Section: contrib/devel\n\
-Priority: optional\n\
-Depends: libcurl4, libedit2, libpython2.7, libxml2\n\
-Description: Swift compiler for Ubuntu 20.04 LTS\n\
-' > /tmp/swift-compiler-package/DEBIAN/control \
+    && mv swift-compiler-DEBIAN-control /tmp/swift-compiler-package/DEBIAN/control \
     && dpkg -b /tmp/swift-compiler-package /swift-compiler.deb
 
 FROM ubuntu:20.04
@@ -135,11 +128,15 @@ RUN apt update \
            libpython2.7 \
            libxml2 \
            libz3-4
-# libxml2-dev, python2.7 and 2.7-dev are needed here to enable REPL/virtual env for swift
+
+WORKDIR /artifacts
 
 COPY --from=PACKAGER /swift-compiler.deb /
+
+RUN mv ../swift-compiler.deb /artifacts
 
 RUN dpkg -i swift-compiler.deb
 CMD []
 
 ENTRYPOINT ["tail", "-f", "/dev/null"]
+#Use docker cp container_id:/artifacts/swift-compiler.deb /path/to/host/dir
