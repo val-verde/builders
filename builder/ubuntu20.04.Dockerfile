@@ -101,13 +101,10 @@ RUN cd /sources/build/Ninja-Release/toolchain-linux-x86_64 \
    && rm -rf usr/local/local \
    && cd usr/local/bin \
    && rm *test \
-   && find . -type f -size +1M -print0 | xargs llvm-strip \
-   #&& find . -type f -print0 | xargs -0 file | grep -vE "text|data|repl_swift" \
-    #    | cut -d: -f1 | xargs llvm-strip \
+   && find . -type f -print0 | xargs -0 file | grep -vE "text|data|repl_swift" \
+        | cut -d: -f1 | xargs llvm-strip \
    && cd ../lib \
-   && find . -type f -size +1M -print0 | xargs llvm-strip
-   #&& find . -type f -print0 | xargs -0 file | grep -vE "text|data" \
-    #    | cut -d: -f1 | xargs llvm-strip
+   && find . -type f -name "*.so" -o -name "*.a" -print0 | xargs llvm-strip
 
 FROM ubuntu:20.04 AS PACKAGER
 
@@ -125,7 +122,7 @@ RUN tar -zvcf swift_build.tar.gz /usr/local \
 RUN mkdir -p /tmp/swift-compiler-package \
     && dpkg-deb -R swift-build_1-2_all.deb /tmp/swift-compiler-package \
     && mv swift-compiler-DEBIAN-control /tmp/swift-compiler-package/DEBIAN/control \
-    && dpkg -b /tmp/swift-compiler-package /swift-compiler.deb
+    && dpkg -b /tmp/swift-compiler-package /val-verde-swift-compiler.deb
 
 FROM ubuntu:20.04
 
@@ -141,11 +138,11 @@ RUN apt update \
 
 WORKDIR /artifacts
 
-COPY --from=PACKAGER /swift-compiler.deb /
+COPY --from=PACKAGER /val-verde-swift-compiler.deb /
 
-RUN mv ../swift-compiler.deb /artifacts
+RUN mv ../val-verde-swift-compiler.deb /artifacts
 
-RUN dpkg -i swift-compiler.deb
+RUN dpkg -i val-verde-swift-compiler.deb
 CMD []
 
 ENTRYPOINT ["tail", "-f", "/dev/null"]
