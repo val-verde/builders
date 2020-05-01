@@ -70,7 +70,6 @@ RUN python3 ./swift/utils/build-script \
     --libdispatch \
     --foundation \
     --libicu \
-    --libcxx \
     --llbuild \
     --lldb \
     --llvm-install-components="all" \
@@ -80,7 +79,6 @@ RUN python3 ./swift/utils/build-script \
     --swiftsyntax \
     --xctest \
     --install-llbuild \
-    --install-libcxx \
     --install-lldb \
     --install-libdispatch \
     --install-foundation \
