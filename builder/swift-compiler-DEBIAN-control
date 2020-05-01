@@ -1,7 +1,7 @@
 Package: val-verde-swift-compiler
 Version: 1.0
 Architecture: amd64
-Maintainer: Val Verde Inc. <nobody@localhost>
+Maintainer: Val Verde Inc. <openvalverde@gmail.com>
 Section: contrib/devel
 Priority: optional
 Depends: libcurl4, libedit2, libpython2.7, libxml2

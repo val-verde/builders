@@ -41,6 +41,7 @@ RUN apt update && \
         libsqlite3-dev \
         libxml2-dev \
         lld \
+        llvm \
         make \
         ninja-build \
         pkg-config \
@@ -97,7 +98,16 @@ RUN cd /sources/build/Ninja-Release/toolchain-linux-x86_64 \
    && mkdir -p local \
    && mv usr/* local \
    && mv local usr \
-   && rm -rf usr/local/local
+   && rm -rf usr/local/local \
+   && cd usr/local/bin \
+   && rm *test \
+   && find . -type f -size +1M -print0 | xargs llvm-strip \
+   #&& find . -type f -print0 | xargs -0 file | grep -vE "text|data|repl_swift" \
+    #    | cut -d: -f1 | xargs llvm-strip \
+   && cd ../lib \
+   && find . -type f -size +1M -print0 | xargs llvm-strip
+   #&& find . -type f -print0 | xargs -0 file | grep -vE "text|data" \
+    #    | cut -d: -f1 | xargs llvm-strip
 
 FROM ubuntu:20.04 AS PACKAGER
 
