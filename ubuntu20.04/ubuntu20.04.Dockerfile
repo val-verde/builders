@@ -13,8 +13,9 @@ RUN if [ -d sources ]; then rm -rf sources; fi && \
 
 WORKDIR /sources
 
-RUN git clone https://github.com/val-verde/swift.git && \
-    python3 ./swift/utils/update-checkout --clone
+RUN git clone https://github.com/val-verde/swift.git \
+    && python3 ./swift/utils/update-checkout --clone \
+    && find . -type d -mindepth 1 -name ".*" | xargs rm -rf
 
 FROM BASE AS BUILDER
 
