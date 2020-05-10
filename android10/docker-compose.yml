@@ -1,0 +1,24 @@
+version: '3.5'
+
+services: 
+    builder:
+        container_name: android-builder
+        build: 
+            context: ./
+            dockerfile: android10-r21.Dockerfile
+            args:
+                - ANDROID_NDK_PACKAGE_NAME=android-ndk-r21
+                - ANDROID_NDK_URL=https://dl.google.com/android/repository
+                - BUILD_KERNEL=linux
+                - BUILD_OS=gnu
+                - BUILD_PROCESSOR=x86_64
+                - DEB_PATH=/sources
+                - HOST_KERNEL=linux
+                - HOST_OS=android
+                - HOST_OS_API_LEVEL=28
+                - HOST_PROCESSOR=aarch64
+                - PACKAGE_BASE_NAME=val-verde
+                - PACKAGE_ROOT=/usr/local
+                
+                
+        
