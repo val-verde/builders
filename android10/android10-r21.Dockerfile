@@ -42,18 +42,18 @@ ARG HOST_PROCESSOR
 ARG PACKAGE_BASE_NAME
 ARG PACKAGE_ROOT
 
-ENV ANDROID_NDK_PACKAGE_NAME = ${ANDROID_NDK_PACKAGE_NAME}
-ENV ANDROID_NDK_URL = ${ANDROID_NDK_URL}
-ENV BUILD_KERNEL = ${BUILD_KERNEL}
-ENV BUILD_OS = ${BUILD_OS}
-ENV BUILD_PROCESSOR = ${BUILD_PROCESSOR}
-ENV DEB_PATH = ${DEB_PATH}
-ENV HOST_KERNEL = ${HOST_KERNEL}
-ENV HOST_OS = ${HOST_OS}
-ENV HOST_OS_API_LEVEL = ${HOST_OS_API_LEVEL}
-ENV HOST_PROCESSOR = ${HOST_PROCESSOR}
-ENV PACKAGE_BASE_NAME = ${PACKAGE_BASE_NAME}
-ENV PACKAGE_ROOT = ${PACKAGE_ROOT}
+ENV ANDROID_NDK_PACKAGE_NAME=${ANDROID_NDK_PACKAGE_NAME}
+ENV ANDROID_NDK_URL=${ANDROID_NDK_URL}
+ENV BUILD_KERNEL=${BUILD_KERNEL}
+ENV BUILD_OS=${BUILD_OS}
+ENV BUILD_PROCESSOR=${BUILD_PROCESSOR}
+ENV DEB_PATH=${DEB_PATH}
+ENV HOST_KERNEL=${HOST_KERNEL}
+ENV HOST_OS=${HOST_OS}
+ENV HOST_OS_API_LEVEL=${HOST_OS_API_LEVEL}
+ENV HOST_PROCESSOR=${HOST_PROCESSOR}
+ENV PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME}
+ENV PACKAGE_ROOT=${PACKAGE_ROOT}
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV ANDROID_NDK_HOME=${PACKAGE_ROOT}/${ANDROID_NDK_PACKAGE_NAME}
@@ -186,7 +186,7 @@ ENV SOURCE_PACKAGE_VERSION=1.0.3
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
-RUN wget -c https://sourceforge.net/projects/libuuid/files/libuuid-1.0.3.tar.gz/download \
+RUN wget -c https://sourceforge.net/projects/libuuid/files/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz/download \
     && mv download ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && mkdir -p ${STAGE_ROOT} \
@@ -220,7 +220,7 @@ ENV SOURCE_PACKAGE_VERSION=autoconf-3310100
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
-RUN wget -c https://sqlite.org/2020/sqlite-autoconf-3310100.tar.gz \
+RUN wget -c https://sqlite.org/2020/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && mkdir -p ${STAGE_ROOT} \
                 ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
@@ -232,6 +232,74 @@ RUN cd ${STAGE_ROOT} \
         --enable-shared \
         --host=${HOST_TRIPLE_SHORTENED} \
         --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+    && make -j${NUM_PROCESSORS} \
+    && make -j${NUM_PROCESSORS} install
+
+RUN cd ${STAGE_ROOT}/install \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+# openssl build
+
+FROM SQLITE3_BUILDER AS OPENSSL_BUILDER
+
+ENV SOURCE_PACKAGE_NAME=openssl
+ENV SOURCE_PACKAGE_VERSION=1.1.1g
+ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+
+RUN wget -c https://www.openssl.org/source/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
+    && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
+    && mkdir -p ${STAGE_ROOT} \
+                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+
+RUN cd ${STAGE_ROOT} \
+    && ${SOURCE_ROOT}/Configure \
+        ${HOST_OS}-arm64 \
+        -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
+        --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+        --openssldir=etc/ssl \
+    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+    && make -j${NUM_PROCESSORS} \
+    && make -j${NUM_PROCESSORS} install
+
+RUN cd ${STAGE_ROOT}/install \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+# curl build
+
+FROM OPENSSL_BUILDER AS CURL_BUILDER
+
+ENV SOURCE_PACKAGE_NAME=curl
+ENV SOURCE_PACKAGE_VERSION=7.70.0
+ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+
+RUN wget -c https://curl.haxx.se/download/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
+    && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
+    && mkdir -p ${STAGE_ROOT} \
+                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+
+ENV LIBS="-lcrypto -lssl -L${PACKAGE_PREFIX}/lib"
+RUN cd ${STAGE_ROOT} \
+    && /sources/wrap-configure ${SOURCE_ROOT}/configure \
+        --build=${BUILD_TRIPLE} \
+        --disable-doc \
+        --disable-static \
+        --enable-shared \
+        --host=${HOST_TRIPLE_SHORTENED} \
+        --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+        --with-ssl=${PACKAGE_PREFIX} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && make -j${NUM_PROCESSORS} \
     && make -j${NUM_PROCESSORS} install
