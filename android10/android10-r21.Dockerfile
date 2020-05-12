@@ -76,6 +76,7 @@ RUN apt update \
         gawk \
         m4 \
         make \
+        ncurses-bin \
         wget \
     && dpkg -i ${ANDROID_NDK_PACKAGE_NAME}_1-2_all.deb
 
@@ -301,6 +302,124 @@ RUN cd ${STAGE_ROOT} \
         --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
         --with-ssl=${PACKAGE_PREFIX} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+    && make -j${NUM_PROCESSORS} \
+    && make -j${NUM_PROCESSORS} install
+
+RUN cd ${STAGE_ROOT}/install \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+
+# ncurses build
+
+FROM CURL_BUILDER AS NCURSES_BUILDER 
+
+ENV SOURCE_PACKAGE_NAME=ncurses
+ENV SOURCE_PACKAGE_VERSION=6.2
+ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+
+RUN wget -c https://ftp.gnu.org/gnu/ncurses/ncurses-6.2.tar.gz \
+    && rm -rf ${STAGE_ROOT}/* \
+    && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
+    && mkdir -p ${STAGE_ROOT} \
+                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+
+RUN cd ${STAGE_ROOT} \
+    && /sources/wrap-configure ${SOURCE_ROOT}/configure \
+        --build=${BUILD_TRIPLE} \
+        --enable-ext-colors \
+        --enable-mixed-case \
+        --enable-rpath \
+        --host=${HOST_TRIPLE_SHORTENED} \
+        --prefix=${PACKAGE_PREFIX} \
+        --with-curses-h \
+        --with-cxx \
+        --with-cxx-shared \
+        --with-install-prefix=${STAGE_ROOT}/install \
+        --with-shared \
+        --with-termlib \
+        --with-ticlib \
+        --with-tic-path=/usr/bin/tic \
+        --without-debug \
+        --without-manpages \
+        --without-progs \
+        --without-tack \
+        --without-tests \
+    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+    && make -j${NUM_PROCESSORS} \
+    && make -j${NUM_PROCESSORS} install
+
+RUN cd ${STAGE_ROOT}/install \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+
+# libedit build
+
+FROM NCURSES_BUILDER AS EDIT_BUILDER 
+
+ENV SOURCE_PACKAGE_NAME=libedit
+ENV SOURCE_PACKAGE_VERSION=20191231-3.1
+ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+
+RUN wget -c https://www.thrysoee.dk/editline/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
+    && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
+    && mkdir -p ${STAGE_ROOT} \
+                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+
+RUN cd ${STAGE_ROOT} \
+    && /sources/wrap-configure ${SOURCE_ROOT}/configure \
+        --build=${BUILD_TRIPLE} \
+        --disable-static \
+        --enable-shared \
+        --host=${HOST_TRIPLE_SHORTENED} \
+        --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+         CFLAGS="-I/usr/local/val-verde-platform-sdk-android28-aarch64/include -I/usr/local/val-verde-platform-sdk-android28-aarch64/include/ncurses -D__STDC_ISO_10646__=201103L -DNBBY=CHAR_BIT" \
+         CXXFLAGS="-I/usr/local/val-verde-platform-sdk-android28-aarch64/include -I/usr/local/val-verde-platform-sdk-android28-aarch64/include/ncurses -D__STDC_ISO_10646__=201103L -DNBBY=CHAR_BIT" \
+         LDFLAGS="-L/usr/local/val-verde-platform-sdk-android28-aarch64/lib" \
+    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+    && make -j${NUM_PROCESSORS} \
+    && make -j${NUM_PROCESSORS} install
+
+RUN cd ${STAGE_ROOT}/install \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+# libexpat build
+
+FROM NCURSES_BUILDER AS EXPAT_BUILDER 
+
+ENV SOURCE_PACKAGE_NAME=expat
+ENV SOURCE_PACKAGE_VERSION=2.2.9
+ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+
+RUN wget -c https://github.com/libexpat/libexpat/releases/download/R_2_2_9/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
+    && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
+    && mkdir -p ${STAGE_ROOT} \
+                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+
+RUN cd ${STAGE_ROOT} \
+    && /sources/wrap-configure ${SOURCE_ROOT}/configure \
+        --build=${BUILD_TRIPLE} \
+        --disable-static \
+        --enable-shared \
+        --host=${HOST_TRIPLE_SHORTENED} \
+        --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
     && make -j${NUM_PROCESSORS} \
     && make -j${NUM_PROCESSORS} install
 
