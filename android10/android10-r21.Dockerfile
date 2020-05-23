@@ -431,5 +431,53 @@ RUN cd ${STAGE_ROOT}/install \
           ${DEB_PATH}/${PACKAGE_NAME}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
 
+# llvm build
+
+FROM EXPAT_BUILDER AS LLVM_BUILDER 
+
+ENV SOURCE_PACKAGE_NAME=llvm-project
+ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+
+COPY wrap-cmake .
+
+RUN chmod +x wrap-cmake
+
+RUN apt install -y cmake \
+                    git \
+                    ninja-build \
+                    python \
+    && rm -rf ${SOURCE_ROOT}/*
+
+RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git  --single-branch --branch dutch-android-master ${SOURCE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+
+RUN apt install -y python
+
+RUN cd ${STAGE_ROOT} \
+    && /sources/wrap-cmake cmake \
+     -DLLVM_ENABLE_LIBCXX=1 \
+     -DLLVM_ENABLE_PROJECTS="clang;compiler-rt;lld;openmp;parallel-libs;polly;pstl;clang-tools-extra;libclc" \
+     -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL} \
+     -DLLVM_TARGETS_TO_BUILD=all \
+     -DLLVM_BUILD_LLVM_DYLIB=ON \
+     -DLLVM_LINK_LLVM_DYLIB=ON \
+     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}}/install \
+     -DLIBXML2_INCLUDE_DIR=${PACKAGE_PREFIX}/include/libxml2 \
+     -DLIBXML2_LIBRARY=${PACKAGE_PREFIX}/lib/libxml2.so \
+     ${SOURCE_ROOT}/llvm \
+    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+    && ninja -j${NUM_PROCESSORS} \
+    && ninja -j${NUM_PROCESSORS} install
+
+RUN cd ${STAGE_ROOT}/install \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
 CMD []
 ENTRYPOINT ["tail", "-f", "/dev/null"]
