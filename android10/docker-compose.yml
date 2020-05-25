@@ -5,9 +5,9 @@ services:
         container_name: android-builder
         build: 
             context: ./
-            dockerfile: android10-r21.Dockerfile
+            dockerfile: android.Dockerfile
             args:
-                - ANDROID_NDK_PACKAGE_NAME=android-ndk-r21
+                - ANDROID_NDK_PACKAGE_NAME=android-ndk-r21b
                 - ANDROID_NDK_URL=https://dl.google.com/android/repository
                 - BUILD_KERNEL=linux
                 - BUILD_OS=gnu

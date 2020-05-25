@@ -362,10 +362,205 @@ RUN cd ${STAGE_ROOT}/install \
           ${DEB_PATH}/${PACKAGE_NAME}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
 
+# libexpat build
+
+FROM NCURSES_BUILDER AS EXPAT_BUILDER 
+
+ENV SOURCE_PACKAGE_NAME=expat
+ENV SOURCE_PACKAGE_VERSION=2.2.9
+ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+
+RUN wget -c https://github.com/libexpat/libexpat/releases/download/R_2_2_9/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
+    && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
+    && mkdir -p ${STAGE_ROOT} \
+                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+
+RUN cd ${STAGE_ROOT} \
+    && /sources/wrap-configure ${SOURCE_ROOT}/configure \
+        --build=${BUILD_TRIPLE} \
+        --disable-static \
+        --enable-shared \
+        --host=${HOST_TRIPLE_SHORTENED} \
+        --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+    && make -j${NUM_PROCESSORS} \
+    && make -j${NUM_PROCESSORS} install
+
+RUN cd ${STAGE_ROOT}/install \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+# cmark build
+
+FROM EXPAT_BUILDER AS CMARK_BUILDER
+
+ENV SOURCE_PACKAGE_NAME=swift-cmark
+ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+
+COPY wrap-cmake .
+
+RUN chmod +x wrap-cmake
+
+RUN apt install -y cmake \
+                    git \
+                    ninja-build \
+                    python \
+    && rm -rf ${SOURCE_ROOT}/*
+
+RUN git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git  --single-branch --branch master ${SOURCE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+
+RUN cd ${STAGE_ROOT} \
+    && /sources/wrap-cmake cmake \
+     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+     ${SOURCE_ROOT} \
+    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+    && ninja -j${NUM_PROCESSORS} \
+    && ninja -j${NUM_PROCESSORS} install
+
+RUN cd ${STAGE_ROOT}/install \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+
+# llvm build
+
+FROM CMARK_BUILDER AS LLVM_BUILDER 
+
+ENV SOURCE_PACKAGE_NAME=llvm-project
+ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+
+COPY wrap-cmake .
+
+RUN chmod +x wrap-cmake
+
+RUN apt install -y cmake \
+                    git \
+                    ninja-build \
+                    python \
+    && rm -rf ${SOURCE_ROOT}/*
+
+RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-android-master ${SOURCE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+
+RUN cd ${STAGE_ROOT} \
+    && /sources/wrap-cmake cmake \
+     -DBUILD_SHARED_LIBS=ON \
+     -DLLVM_ENABLE_LIBCXX=1 \
+     -DLLVM_ENABLE_PROJECTS="clang;compiler-rt;lld;openmp;parallel-libs;polly;pstl;libclc" \
+     -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL} \
+     -DLLVM_TARGETS_TO_BUILD=all \
+     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+     -DLIBXML2_INCLUDE_DIR=${PACKAGE_PREFIX}/include/libxml2 \
+     -DLIBXML2_LIBRARY=${PACKAGE_PREFIX}/lib/libxml2.so \
+     ${SOURCE_ROOT}/llvm \
+    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+    && ninja -j${NUM_PROCESSORS} \
+    && ninja -j${NUM_PROCESSORS} install
+
+
+RUN cd ${STAGE_ROOT}/install \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+
+# swift build
+FROM LLVM_BUILDER AS SWIFT_BUILDER
+
+ENV SOURCE_PACKAGE_NAME=swift
+ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+
+COPY wrap-cmake .
+
+RUN chmod +x wrap-cmake
+
+COPY val-verde-swift-compiler.deb .
+
+RUN apt install -y cmake \
+                    git \
+                    ninja-build \
+                    pkg-config \
+                    python3 \
+                    libpython2.7 \
+                    libz3-dev \
+    && dpkg -i val-verde-swift-compiler.deb \
+    && rm -rf ${SOURCE_ROOT}/*
+
+RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git  --single-branch --branch dutch-master ${SOURCE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+
+RUN cd ${STAGE_ROOT} \
+    && touch /usr/local/bin/llvm-c-test \
+    && touch /usr/local/bin/clang-import-test \
+    && /sources/wrap-cmake cmake \
+     -DCMAKE_C_FLAGS="-I/sources/build-staging/llvm-project/include -Wno-unused-command-line-argument -isystem ${ANDROID_NDK_HOME}/sources/android/support/include -isystem ${ANDROID_NDK_HOME}/sysroot/usr/include -isystem ${ANDROID_NDK_HOME}/sysroot/usr/include/aarch64-linux-android -L${ANDROID_NDK_HOME}/sources/cxx-stl/llvm-libc++/libs/arm64-v8a" \
+     -DCMAKE_CXX_FLAGS="-I/sources/build-staging/llvm-project/include -Wno-unused-command-line-argument -isystem ${ANDROID_NDK_HOME}/sources/cxx-stl/llvm-libc++/include -isystem ${ANDROID_NDK_HOME}/sources/cxx-stl/llvm-libc++abi/include -isystem ${ANDROID_NDK_HOME}/sources/android/support/include -isystem ${ANDROID_NDK_HOME}/sysroot/usr/include -isystem ${ANDROID_NDK_HOME}/sysroot/usr/include/aarch64-linux-android -L${ANDROID_NDK_HOME}/sources/cxx-stl/llvm-libc++/libs/arm64-v8a" \
+     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+     -DClang_DIR=${PACKAGE_PREFIX}/lib/cmake/clang \
+     -DLLVM_BUILD_LIBRARY_DIR=/sources/build-staging/llvm-project/lib \
+     -DLLVM_BUILD_MAIN_SRC_DIR=/sources/llvm-project/llvm \
+     -DLLVM_ENABLE_LIBCXX=1 \
+     -DLLVM_MAIN_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+     -DLLVM_DIR=${PACKAGE_PREFIX}/lib/cmake/llvm \
+     -DLLVM_TABLEGEN=${PACKAGE_ROOT}/bin/llvm-tblgen \
+     -DICU_I18N_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
+     -DICU_I18N_LIBRARIES=${PACKAGE_PREFIX}/lib/libicui18nswift.so \
+     -DICU_UC_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
+     -DICU_UC_LIBRARIES=${PACKAGE_PREFIX}/lib/libicuucswift.so \
+     -DLibEdit_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
+     -DLibEdit_LIBRARIES=${PACKAGE_PREFIX}/lib/libedit.so \
+     -DLIBXML2_INCLUDE_DIR=${PACKAGE_PREFIX}/include/libxml2 \
+     -DLIBXML2_LIBRARY=${PACKAGE_PREFIX}/lib/libxml2.so \
+     -DSWIFT_ANDROID_NATIVE_SYSROOT=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/sysroot \
+     -DSWIFT_ANDROID_API_LEVEL=${HOST_OS_API_LEVEL} \
+     -DSWIFT_ANDROID_DEPLOY_DEVICE_PATH=/data/local/tmp/swift-tests \
+     -DSWIFT_ANDROID_NDK_GCC_VERSION=4.9 \
+     -DSWIFT_ANDROID_NDK_PATH=${ANDROID_NDK_HOME} \
+     -DSWIFT_BUILD_RUNTIME_WITH_HOST_COMPILER=1 \
+     -DSWIFT_BUILD_SOURCEKIT=0\
+     -DSWIFT_BUILD_SYNTAXPARSERLIB=0 \
+     -DSWIFT_PATH_TO_CMARK_SOURCE=/sources/swift-cmark \
+     -DSWIFT_PATH_TO_CMARK_BUILD=/sources/build-staging/swift-cmark \
+     -DSWIFT_NATIVE_CLANG_TOOLS_PATH=${PACKAGE_ROOT}/bin \
+     -DSWIFT_NATIVE_LLVM_TOOLS_PATH=${PACKAGE_ROOT}/bin \
+     -DSWIFT_NATIVE_SWIFT_TOOLS_PATH=${PACKAGE_ROOT}/bin \
+     -DUUID_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+     -DUUID_LIBRARY=${PACKAGE_PREFIX}/lib/libuuid.so \
+     ${SOURCE_ROOT} \
+    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+    && ninja -j${NUM_PROCESSORS} \
+    && ninja -j${NUM_PROCESSORS} install
+
+RUN cd ${STAGE_ROOT}/install \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
 
 # libedit build
 
-FROM NCURSES_BUILDER AS EDIT_BUILDER 
+FROM SWIFT_BUILDER AS EDIT_BUILDER 
 
 ENV SOURCE_PACKAGE_NAME=libedit
 ENV SOURCE_PACKAGE_VERSION=20191231-3.1
@@ -399,16 +594,15 @@ RUN cd ${STAGE_ROOT}/install \
           ${DEB_PATH}/${PACKAGE_NAME}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
 
-# libexpat build
+# xz build
+FROM EDIT_BUILDER AS XZ_BUILDER 
 
-FROM NCURSES_BUILDER AS EXPAT_BUILDER 
-
-ENV SOURCE_PACKAGE_NAME=expat
-ENV SOURCE_PACKAGE_VERSION=2.2.9
+ENV SOURCE_PACKAGE_NAME=xz
+ENV SOURCE_PACKAGE_VERSION=5.2.5
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
-RUN wget -c https://github.com/libexpat/libexpat/releases/download/R_2_2_9/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
+RUN wget -c https://tukaani.org/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && mkdir -p ${STAGE_ROOT} \
                 ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
@@ -431,11 +625,10 @@ RUN cd ${STAGE_ROOT}/install \
           ${DEB_PATH}/${PACKAGE_NAME}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
 
-# llvm build
+# lldb build
+FROM XZ_BUILDER AS LLDB_BUILDER
 
-FROM EXPAT_BUILDER AS LLVM_BUILDER 
-
-ENV SOURCE_PACKAGE_NAME=llvm-project
+ENV SOURCE_PACKAGE_NAME=swift-lldb
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
@@ -446,30 +639,53 @@ RUN chmod +x wrap-cmake
 RUN apt install -y cmake \
                     git \
                     ninja-build \
-                    python \
+                    pkg-config \
+                    python3 \
+                    libncurses-dev \
+                    libpython2.7 \
+                    libz3-dev \
+                    swig \
     && rm -rf ${SOURCE_ROOT}/*
 
-RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git  --single-branch --branch dutch-android-master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+RUN cd /sources/llvm-project \
+    && git config --global user.email "<email>" \
+    && git config --global user.name "V" \
+    && git pull --rebase \
+    && git status \
+    && git log -10 --oneline
 
-RUN apt install -y python
+RUN mkdir -p ${STAGE_ROOT} \
+             ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
 
 RUN cd ${STAGE_ROOT} \
+    && touch /usr/local/bin/llvm-c-test \
+    && touch /usr/local/bin/clang-import-test \
     && /sources/wrap-cmake cmake \
+     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+     -DClang_DIR=${PACKAGE_PREFIX}/lib/cmake/clang \
+     -DCURSES_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/ncurses \
+     -DCURSES_LIBRARIES="${PACKAGE_PREFIX}/lib/libncurses.so;${PACKAGE_PREFIX}/lib/libtinfo.so;-lz" \
+     -DPANEL_LIBRARIES=${PACKAGE_PREFIX}/lib/libpanel.so \
+     -DLLVM_BUILD_MAIN_SRC_DIR=/sources/llvm-project/llvm \
      -DLLVM_ENABLE_LIBCXX=1 \
-     -DLLVM_ENABLE_PROJECTS="clang;compiler-rt;lld;openmp;parallel-libs;polly;pstl;clang-tools-extra;libclc" \
-     -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL} \
-     -DLLVM_TARGETS_TO_BUILD=all \
-     -DLLVM_BUILD_LLVM_DYLIB=ON \
-     -DLLVM_LINK_LLVM_DYLIB=ON \
-     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}}/install \
+     -DLLVM_MAIN_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+     -DLLVM_DIR=${PACKAGE_PREFIX}/lib/cmake/llvm \
+     -DLLVM_TABLEGEN=${PACKAGE_ROOT}/bin/llvm-tblgen \
+     -DLibEdit_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
+     -DLibEdit_LIBRARIES=${PACKAGE_PREFIX}/lib/libedit.so \
+     -DLIBLZMA_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+     -DLIBLZMA_LIBRARY=${PACKAGE_PREFIX}/lib/liblzma.so \
      -DLIBXML2_INCLUDE_DIR=${PACKAGE_PREFIX}/include/libxml2 \
      -DLIBXML2_LIBRARY=${PACKAGE_PREFIX}/lib/libxml2.so \
-     ${SOURCE_ROOT}/llvm \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install
+     -DLLDB_INCLUDE_TESTS=OFF \
+     -DLLDB_PATH_TO_NATIVE_SWIFT_BUILD=/sources/build-staging/swift/lib/cmake/swift \
+     -DNATIVE_Clang_DIR=${PACKAGE_ROOT}/lib/cmake/clang \
+     -DNATIVE_LLVM_DIR=${PACKAGE_ROOT}/lib/cmake/lib \
+     -DSwift_DIR=/sources/build-staging/swift/lib/cmake/swift \
+     /sources/llvm-project/lldb \
+     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+     && ninja -j${NUM_PROCESSORS} \
+     && ninja -j${NUM_PROCESSORS} install
 
 RUN cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \

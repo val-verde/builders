@@ -40,7 +40,6 @@ cd /sources/build/Ninja-Release/toolchain-linux-x86_64 \
    && mv local usr \
    && rm -rf usr/local/local \
    && cd usr/local/bin \
-   && rm *test \
    && find . -type f -print0 | xargs -0 file | grep -vE "text|data|repl_swift" \
         | cut -d: -f1 | xargs llvm-strip \
    && cd ../lib \
