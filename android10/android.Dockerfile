@@ -695,5 +695,51 @@ RUN cd ${STAGE_ROOT}/install \
           ${DEB_PATH}/${PACKAGE_NAME}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
 
+# val-verdr-swift-compiler rebuild
+# libedit after ncurses and before sqllite
+# touch llvm ...lines to be deleted
+# liblzma should be before curl
+# line 63 add "/usr" to PACKAGE_PREFIX (must read ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/usr)
+# Need a package before libdispatch called bionic-crt (cp ${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/28/crt*.o ${PACKAGE_PREFIX})
+# libdispatch build
+FROM LLDB_BUILDER AS DISPATCH_BUILDER
+
+ENV SOURCE_PACKAGE_NAME=swift-corelibs-libdispatch
+ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+
+COPY wrap-cmake .
+
+RUN chmod +x wrap-cmake
+
+RUN apt install -y cmake \
+                    git \
+                    ninja-build \
+                    python \
+    && rm -rf ${SOURCE_ROOT}/*
+
+RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+
+RUN cd ${STAGE_ROOT} \
+    && /sources/wrap-cmake cmake \
+     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+     -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
+     -DCMAKE_Swift_FLAGS="-sdk ${PACKAGE_PREFIX} -target aarch64-unknown-linux-android28 -tools-directory ${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin -I${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/aarch64-linux-android -L${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/28" \
+     -DENABLE_SWIFT=ON \
+     ${SOURCE_ROOT} \
+     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+     && ninja -j${NUM_PROCESSORS} \
+     && ninja -j${NUM_PROCESSORS} install
+
+RUN cd ${STAGE_ROOT}/install \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
 CMD []
 ENTRYPOINT ["tail", "-f", "/dev/null"]
