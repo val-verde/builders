@@ -2,7 +2,7 @@ version: '3.5'
 
 services: 
     builder:
-        container_name: builder
+        container_name: ubuntu-builder
         build: 
             context: ./
             dockerfile: ubuntu20.04.Dockerfile
