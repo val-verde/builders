@@ -1,10 +1,10 @@
 version: '3.5'
 
 services: 
-    builder:
+    android-builder:
         container_name: android-builder
         build: 
-            context: ./
+            context: ./android10
             dockerfile: android.Dockerfile
             args:
                 - ANDROID_NDK_PACKAGE_NAME=android-ndk-r21b
@@ -19,6 +19,19 @@ services:
                 - HOST_PROCESSOR=aarch64
                 - PACKAGE_BASE_NAME=val-verde
                 - PACKAGE_ROOT=/usr/local
-                
-                
-        
+
+    ubuntu-builder:
+        container_name: ubuntu-builder
+        build: 
+            context: ./ubuntu20.04
+            dockerfile: ubuntu.Dockerfile
+            args:
+                - BUILD_KERNEL=linux
+                - BUILD_OS=gnu
+                - BUILD_PROCESSOR=x86_64
+                - DEB_PATH=/sources
+                - HOST_KERNEL=linux
+                - HOST_OS=gnu
+                - HOST_PROCESSOR=x86_64
+                - PACKAGE_BASE_NAME=val-verde
+                - PACKAGE_ROOT=/usr/local

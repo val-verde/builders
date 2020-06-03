@@ -648,13 +648,7 @@ RUN apt install -y cmake \
     && rm -rf ${SOURCE_ROOT}/*
 
 RUN cd /sources/llvm-project \
-    && git config --global user.email "<email>" \
-    && git config --global user.name "V" \
-    && git pull --rebase \
-    && git status \
-    && git log -10 --oneline
-
-RUN mkdir -p ${STAGE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
              ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
 
 RUN cd ${STAGE_ROOT} \

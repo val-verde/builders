@@ -9,6 +9,7 @@ python3 ./swift/utils/build-script \
     -R \
     --build-swift-static-sdk-overlay=true \
     --build-swift-static-stdlib=true \
+    --use-gold-linker=false \
     --libdispatch \
     --foundation \
     --libicu \
@@ -34,13 +35,13 @@ python3 ./swift/utils/build-script \
     --install-swiftsyntax \
     --install-xctest
 
-cd /sources/build/Ninja-Release/toolchain-linux-x86_64 \
-   && mkdir -p local \
-   && mv usr/* local \
-   && mv local usr \
-   && rm -rf usr/local/local \
-   && cd usr/local/bin \
-   && find . -type f -print0 | xargs -0 file | grep -vE "text|data|repl_swift" \
+cd /sources/build/Ninja-Release/swift-linux-x86_64 \ 
+    && mkdir -p local \
+    && mv usr/* local \
+    && mv local usr \
+    && rm -rf usr/local/local \
+    && cd usr/local/bin \
+    && find . -type f -print0 | xargs -0 file | grep -vE "text|data|repl_swift" \
         | cut -d: -f1 | xargs llvm-strip \
-   && cd ../lib \
-   && find . -type f -name "*.so" -o -name "*.a" -print0 | xargs llvm-strip
+    && cd ../lib \
+    && find . -type f -name "*.so" -o -name "*.a" -print0 | xargs llvm-strip
