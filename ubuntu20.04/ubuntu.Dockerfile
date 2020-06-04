@@ -92,7 +92,7 @@ RUN cd ${STAGE_ROOT} \
      -DBUILD_SHARED_LIBS=FALSE \
      -DCLANG_INCLUDE_DOCS=FALSE \
      -DCLANG_INCLUDE_TESTS=FALSE \
-     -DCLANG_LINK_CLANG_DYLIB=TRUE \
+     -DCLANG_LINK_CLANG_DYLIB=FALSE \
      -DCLANG_TOOL_ARCMT_TEST_BUILD=FALSE \
      -DCLANG_TOOL_CLANG_IMPORT_TEST_BUILD=FALSE \
      -DCLANG_TOOL_CLANG_REFACTOR_TEST_BUILD=FALSE \
@@ -101,7 +101,9 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_AR=/usr/bin/llvm-ar \
      -DCMAKE_BUILD_TYPE=MinSizeRel \
      -DCMAKE_C_COMPILER=clang \
+     -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_CXX_COMPILER=clang++ \
+     -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCMAKE_LINKER=/usr/bin/lld \
@@ -115,7 +117,10 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_STRIP=/usr/bin/llvm-strip \
      -DCOMPILER_RT_CAN_EXECUTE_TESTS=FALSE \
      -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
-     -DLLVM_BUILD_LLVM_DYLIB=TRUE \
+     -DHAVE_GNU_POSIX_REGEX=TRUE \
+     -DHAVE_INOTIFY=TRUE \
+     -DHAVE_THREAD_SAFETY_ATTRIBUTES=TRUE \
+     -DLLVM_BUILD_LLVM_DYLIB=FALSE \
      -DLLVM_BUILD_DOCS=FALSE \
      -DLLVM_BUILD_TESTS=FALSE \
      -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_PROCESSOR}-pc-${HOST_KERNEL}-${HOST_OS} \
@@ -127,7 +132,8 @@ RUN cd ${STAGE_ROOT} \
      -DLLVM_HOST_TRIPLE=${HOST_PROCESSOR}-pc-${HOST_KERNEL}-${HOST_OS} \
      -DLLVM_INCLUDE_DOCS=FALSE \
      -DLLVM_INCLUDE_TESTS=FALSE \
-     -DLLVM_LINK_LLVM_DYLIB=TRUE \
+     -DLLVM_LINK_LLVM_DYLIB=FALSE \
+     -DLLVM_POLLY_LINK_INTO_TOOLS=TRUE \
      -DLLVM_TARGETS_TO_BUILD=all \
      -DLLVM_TOOL_LLVM_C_TEST_BUILD=FALSE \
      ${SOURCE_ROOT}/llvm \
@@ -165,8 +171,10 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_BUILD_TYPE=MinSizeRel \
      -DCMAKE_C_COMPILER=/usr/local/bin/clang \
      -DCMAKE_C_FLAGS="-I/sources/build-staging/llvm-project/include" \
+     -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
      -DCMAKE_CXX_FLAGS="-I/sources/build-staging/llvm-project/include" \
+     -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCMAKE_LINKER=/usr/bin/lld \
@@ -224,7 +232,9 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_AR=/usr/bin/llvm-ar \
      -DCMAKE_BUILD_TYPE=MinSizeRel \
      -DCMAKE_C_COMPILER=/usr/local/bin/clang \
+     -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
+     -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCMAKE_LINKER=/usr/bin/lld \
@@ -276,7 +286,9 @@ RUN cd ${STAGE_ROOT} \
      -G Ninja \
      -DCMAKE_BUILD_TYPE=MinSizeRel \
      -DCMAKE_C_COMPILER=/usr/local/bin/clang \
+     -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
+     -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
      -DENABLE_SWIFT=ON \
@@ -308,7 +320,9 @@ RUN cd ${STAGE_ROOT} \
      -G Ninja \
      -DCMAKE_BUILD_TYPE=MinSizeRel \
      -DCMAKE_C_COMPILER=/usr/local/bin/clang \
+     -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
+     -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
      -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch/cmake/modules \
