@@ -1,0 +1,39 @@
+#!/bin/bash
+
+set -e
+
+############# REPO_TO_UPDATE ###################################### BRANCH_TO_UPDATE ## BUILDER_BRANCH ######### UPSTREAM_URL #########################################
+repoArray=( 'https://github.com/val-verde/swift'                        'master'        'dutch-master'          'https://github.com/apple/swift' \
+            'https://github.com/val-verde/llvm-project'                 'swift/master'  'dutch-master'          'https://github.com/apple/llvm-project'\
+            'https://github.com/val-verde/sourcekit-lsp'                'master'        'dutch-master'          'https://github.com/apple/sourcekit-lsp'\
+            'https://github.com/val-verde/swift-corelibs-foundation'    'master'        'dutch-master'          'https://github.com/apple/swift-corelibs-foundation' \
+            'https://github.com/val-verde/swift-corelibs-xctest'        'master'        'dutch-master'          'https://github.com/apple/swift-corelibs-xctest' \
+            'https://github.com/val-verde/swift-package-manager'        'master'        'dutch-master'          'https://github.com/apple/swift-package-manager' \
+            'https://github.com/val-verde/swift-syntax'                 'master'        'dutch-master'          'https://github.com/apple/swift-syntax' \
+            'https://github.com/val-verde/swift-corelibs-libdispatch'   'master'        'dutch-master'          'https://github.com/apple/swift-corelibs-libdispatch' \
+            'https://github.com/val-verde/indexstore-db'                'master'        'dutch-master'          'https://github.com/apple/indexstore-db' \
+            'https://github.com/val-verde/llvm-project'                 'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/llvm-project' )
+
+repoArrayCount=$((${#repoArray[@]} / 4))
+
+for i in `seq 0 $(($repoArrayCount - 1))`; do
+    repoIndex=$((i * 4))
+    branchIndex=$((i * 4 + 1))
+    builderBranchIndex=$((i * 4 + 2))
+    upstreamIndex=$((i * 4 + 3))
+    repo=${repoArray[$repoIndex]}
+    branch=${repoArray[$branchIndex]}
+    builderBranch=${repoArray[$builderBranchIndex]}
+    upstream=${repoArray[$upstreamIndex]}
+    git clone $repo -b $branch repo
+    pushd repo
+    git remote add upstream $upstream
+    git fetch upstream $branch
+    git rebase upstream/$branch
+    git push -f
+    git checkout $builderBranch
+    git rebase origin/$branch
+    git push -f
+    popd
+    rm -rf repo
+done

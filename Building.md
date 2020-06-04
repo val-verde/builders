@@ -23,3 +23,7 @@ This document provides instructions to run the builders to generate swift-compil
 
 1. Similarly for the android build:
 `cd builders/ && docker-compose build android-builder && docker-compose up -d android-builder && docker exec -it android-builder bash`
+
+### Syncing repos (Testing)
+
+1. Run `docker-compose -f docker-compose.ci.yml build`, `up -d`, and `docker exec -it ci bash` to execute the `updateRepo` bash script in the container
