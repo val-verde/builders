@@ -90,8 +90,14 @@ RUN cd ${STAGE_ROOT} \
     && cmake \
      -G Ninja \
      -DBUILD_SHARED_LIBS=FALSE \
+     -DCLANG_INCLUDE_DOCS=FALSE \
      -DCLANG_INCLUDE_TESTS=FALSE \
      -DCLANG_LINK_CLANG_DYLIB=TRUE \
+     -DCLANG_TOOL_ARCMT_TEST_BUILD=FALSE \
+     -DCLANG_TOOL_CLANG_IMPORT_TEST_BUILD=FALSE \
+     -DCLANG_TOOL_CLANG_REFACTOR_TEST_BUILD=FALSE \
+     -DCLANG_TOOL_C_ARCMT_TEST_BUILD=FALSE \
+     -DCLANG_TOOL_C_INDEX_TEST_BUILD=FALSE \
      -DCMAKE_AR=/usr/bin/llvm-ar \
      -DCMAKE_BUILD_TYPE=MinSizeRel \
      -DCMAKE_C_COMPILER=clang \
@@ -107,21 +113,25 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_READELF=/usr/bin/llvm-readelf \
      -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
      -DCMAKE_STRIP=/usr/bin/llvm-strip \
+     -DCOMPILER_RT_CAN_EXECUTE_TESTS=FALSE \
      -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
      -DLLVM_BUILD_LLVM_DYLIB=TRUE \
+     -DLLVM_BUILD_DOCS=FALSE \
      -DLLVM_BUILD_TESTS=FALSE \
      -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_PROCESSOR}-pc-${HOST_KERNEL}-${HOST_OS} \
+     -DLLVM_INCLUDE_GO_TESTS=FALSE \
      -DLLVM_ENABLE_LIBCXX=TRUE \
      -DLLVM_ENABLE_LLD=TRUE \
      -DLLVM_ENABLE_LTO=Full \
-     -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;compiler-rt;libclc;lld;mlir-openmp;parallel-libs;polly;pstl" \
+     -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;compiler-rt;libclc;lld;mlir;openmp;parallel-libs;polly;pstl" \
      -DLLVM_HOST_TRIPLE=${HOST_PROCESSOR}-pc-${HOST_KERNEL}-${HOST_OS} \
+     -DLLVM_INCLUDE_DOCS=FALSE \
      -DLLVM_INCLUDE_TESTS=FALSE \
      -DLLVM_LINK_LLVM_DYLIB=TRUE \
      -DLLVM_TARGETS_TO_BUILD=all \
+     -DLLVM_TOOL_LLVM_C_TEST_BUILD=FALSE \
      ${SOURCE_ROOT}/llvm \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && ninja -j${NUM_PROCESSORS} check-mlir \
     && ninja -j${NUM_PROCESSORS} \
     && ninja -j${NUM_PROCESSORS} install
 
@@ -177,6 +187,7 @@ RUN cd ${STAGE_ROOT} \
      -DLLVM_TABLEGEN=${PACKAGE_ROOT}/bin/llvm-tblgen \
      -DSWIFT_BUILD_SOURCEKIT=FALSE \
      -DSWIFT_BUILD_SYNTAXPARSERLIB=FALSE \
+     -DSWIFT_INCLUDE_DOCS=FALSE \
      -DSWIFT_INCLUDE_TESTS=FALSE \
      -DSWIFT_USE_LINKER=lld \
      -DSWIFT_PATH_TO_CMARK_SOURCE=/sources/swift-cmark \
