@@ -114,13 +114,14 @@ RUN cd ${STAGE_ROOT} \
      -DLLVM_ENABLE_LIBCXX=TRUE \
      -DLLVM_ENABLE_LLD=TRUE \
      -DLLVM_ENABLE_LTO=Full \
-     -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;compiler-rt;libclc;lld;openmp;parallel-libs;polly;pstl" \
+     -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;compiler-rt;libclc;lld;mlir-openmp;parallel-libs;polly;pstl" \
      -DLLVM_HOST_TRIPLE=${HOST_PROCESSOR}-pc-${HOST_KERNEL}-${HOST_OS} \
      -DLLVM_INCLUDE_TESTS=FALSE \
      -DLLVM_LINK_LLVM_DYLIB=TRUE \
      -DLLVM_TARGETS_TO_BUILD=all \
      ${SOURCE_ROOT}/llvm \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+    && ninja -j${NUM_PROCESSORS} check-mlir \
     && ninja -j${NUM_PROCESSORS} \
     && ninja -j${NUM_PROCESSORS} install
 
