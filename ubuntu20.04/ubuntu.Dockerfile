@@ -90,6 +90,7 @@ RUN cd ${STAGE_ROOT} \
     && cmake \
      -G Ninja \
      -DBUILD_SHARED_LIBS=FALSE \
+     -DCLANG_INCLUDE_TESTS=FALSE \
      -DCLANG_LINK_CLANG_DYLIB=TRUE \
      -DCMAKE_AR=/usr/bin/llvm-ar \
      -DCMAKE_BUILD_TYPE=MinSizeRel \
@@ -106,11 +107,16 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_READELF=/usr/bin/llvm-readelf \
      -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
      -DCMAKE_STRIP=/usr/bin/llvm-strip \
+     -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
+     -DLLVM_BUILD_LLVM_DYLIB=TRUE \
+     -DLLVM_BUILD_TESTS=FALSE \
+     -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_PROCESSOR}-pc-${HOST_KERNEL}-${HOST_OS} \
      -DLLVM_ENABLE_LIBCXX=TRUE \
      -DLLVM_ENABLE_LLD=TRUE \
      -DLLVM_ENABLE_LTO=Full \
      -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;compiler-rt;libclc;lld;openmp;parallel-libs;polly;pstl" \
-     -DLLVM_BUILD_LLVM_DYLIB=TRUE \
+     -DLLVM_HOST_TRIPLE=${HOST_PROCESSOR}-pc-${HOST_KERNEL}-${HOST_OS} \
+     -DLLVM_INCLUDE_TESTS=FALSE \
      -DLLVM_LINK_LLVM_DYLIB=TRUE \
      -DLLVM_TARGETS_TO_BUILD=all \
      ${SOURCE_ROOT}/llvm \
@@ -170,6 +176,7 @@ RUN cd ${STAGE_ROOT} \
      -DLLVM_TABLEGEN=${PACKAGE_ROOT}/bin/llvm-tblgen \
      -DSWIFT_BUILD_SOURCEKIT=FALSE \
      -DSWIFT_BUILD_SYNTAXPARSERLIB=FALSE \
+     -DSWIFT_INCLUDE_TESTS=FALSE \
      -DSWIFT_USE_LINKER=lld \
      -DSWIFT_PATH_TO_CMARK_SOURCE=/sources/swift-cmark \
      -DSWIFT_PATH_TO_CMARK_BUILD=/sources/build-staging/swift-cmark \
@@ -218,9 +225,11 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
      -DClang_DIR=${PACKAGE_PREFIX}/lib/cmake/clang \
      -DLLDB_ENABLE_SWIFT_SUPPORT=TRUE \
+     -DLLDB_INCLUDE_TESTS=FALSE \
      -DLLVM_BUILD_MAIN_SRC_DIR=/sources/llvm-project/llvm \
      -DLLVM_ENABLE_LIBCXX=TRUE \
      -DLLVM_ENABLE_LTO=Full \
+     -DLLVM_INCLUDE_TESTS=FALSE \
      -DLLVM_MAIN_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
      -DLLVM_DIR=${PACKAGE_PREFIX}/lib/cmake/llvm \
      -DLLVM_TABLEGEN=${PACKAGE_ROOT}/bin/llvm-tblgen \
