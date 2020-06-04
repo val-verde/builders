@@ -89,12 +89,30 @@ RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-b
 RUN cd ${STAGE_ROOT} \
     && cmake \
      -G Ninja \
+     -DBUILD_SHARED_LIBS=FALSE \
+     -DCLANG_LINK_CLANG_DYLIB=TRUE \
+     -DCMAKE_AR=/usr/bin/llvm-ar \
      -DCMAKE_BUILD_TYPE=MinSizeRel \
-     -DBUILD_SHARED_LIBS=TRUE \
-     -DLLVM_ENABLE_LIBCXX=TRUE \
-     -DLLVM_ENABLE_PROJECTS="clang;compiler-rt;lld;openmp;parallel-libs;polly;pstl;libclc" \
-     -DLLVM_TARGETS_TO_BUILD=all \
+     -DCMAKE_C_COMPILER=clang \
+     -DCMAKE_CXX_COMPILER=clang++ \
+     -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+     -DCMAKE_LINKER=/usr/bin/lld \
+     -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
+     -DCMAKE_NM=/usr/bin/llvm-nm \
+     -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
+     -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
+     -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
+     -DCMAKE_READELF=/usr/bin/llvm-readelf \
+     -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
+     -DCMAKE_STRIP=/usr/bin/llvm-strip \
+     -DLLVM_ENABLE_LIBCXX=TRUE \
+     -DLLVM_ENABLE_LLD=TRUE \
+     -DLLVM_ENABLE_LTO=Full \
+     -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;compiler-rt;libclc;lld;openmp;parallel-libs;polly;pstl" \
+     -DLLVM_BUILD_LLVM_DYLIB=TRUE \
+     -DLLVM_LINK_LLVM_DYLIB=TRUE \
+     -DLLVM_TARGETS_TO_BUILD=all \
      ${SOURCE_ROOT}/llvm \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS} \
@@ -126,16 +144,27 @@ RUN cd ${STAGE_ROOT} \
     && touch /usr/local/bin/clang-import-test \
     && cmake  \
      -G Ninja \
+     -DCMAKE_AR=/usr/bin/llvm-ar \
      -DCMAKE_BUILD_TYPE=MinSizeRel \
      -DCMAKE_C_COMPILER=/usr/local/bin/clang \
      -DCMAKE_C_FLAGS="-I/sources/build-staging/llvm-project/include" \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
      -DCMAKE_CXX_FLAGS="-I/sources/build-staging/llvm-project/include" \
+     -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+     -DCMAKE_LINKER=/usr/bin/lld \
+     -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
+     -DCMAKE_NM=/usr/bin/llvm-nm \
+     -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
+     -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
+     -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
+     -DCMAKE_READELF=/usr/bin/llvm-readelf \
+     -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
      -DClang_DIR=${PACKAGE_PREFIX}/lib/cmake/clang \
      -DLLVM_BUILD_LIBRARY_DIR=/sources/build-staging/llvm-project/lib \
      -DLLVM_BUILD_MAIN_SRC_DIR=/sources/llvm-project/llvm \
      -DLLVM_ENABLE_LIBCXX=TRUE \
+     -DLLVM_ENABLE_LTO=Full \
      -DLLVM_MAIN_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
      -DLLVM_DIR=${PACKAGE_PREFIX}/lib/cmake/llvm \
      -DLLVM_TABLEGEN=${PACKAGE_ROOT}/bin/llvm-tblgen \
@@ -146,6 +175,7 @@ RUN cd ${STAGE_ROOT} \
      -DSWIFT_PATH_TO_CMARK_BUILD=/sources/build-staging/swift-cmark \
      -DSWIFT_NATIVE_CLANG_TOOLS_PATH=${PACKAGE_ROOT}/bin \
      -DSWIFT_NATIVE_LLVM_TOOLS_PATH=${PACKAGE_ROOT}/bin \
+     -DSWIFT_TOOLS_ENABLE_LTO=Full \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS} \
@@ -172,13 +202,25 @@ RUN mkdir -p ${STAGE_ROOT} \
 RUN cd ${STAGE_ROOT} \
     && cmake  \
      -G Ninja \
+     -DCMAKE_AR=/usr/bin/llvm-ar \
      -DCMAKE_BUILD_TYPE=MinSizeRel \
      -DCMAKE_C_COMPILER=/usr/local/bin/clang \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
+     -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+     -DCMAKE_LINKER=/usr/bin/lld \
+     -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
+     -DCMAKE_NM=/usr/bin/llvm-nm \
+     -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
+     -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
+     -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
+     -DCMAKE_READELF=/usr/bin/llvm-readelf \
+     -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
      -DClang_DIR=${PACKAGE_PREFIX}/lib/cmake/clang \
+     -DLLDB_ENABLE_SWIFT_SUPPORT=TRUE \
      -DLLVM_BUILD_MAIN_SRC_DIR=/sources/llvm-project/llvm \
      -DLLVM_ENABLE_LIBCXX=TRUE \
+     -DLLVM_ENABLE_LTO=Full \
      -DLLVM_MAIN_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
      -DLLVM_DIR=${PACKAGE_PREFIX}/lib/cmake/llvm \
      -DLLVM_TABLEGEN=${PACKAGE_ROOT}/bin/llvm-tblgen \
