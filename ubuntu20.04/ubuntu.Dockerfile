@@ -89,11 +89,10 @@ RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-b
 RUN cd ${STAGE_ROOT} \
     && cmake \
      -G Ninja \
-     -DCMAKE_BUILD_TYPE=MinSizeRel \
-     -DBUILD_SHARED_LIBS=OFF \
+     -DCMAKE_BUILD_TYPE=Debug \
+     -DBUILD_SHARED_LIBS=ON \
      -DLLVM_ENABLE_LIBCXX=1 \
      -DLLVM_ENABLE_PROJECTS="clang;compiler-rt;lld;openmp;parallel-libs;polly;pstl;libclc" \
-     -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
      -DLLVM_TARGETS_TO_BUILD=all \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      ${SOURCE_ROOT}/llvm \
@@ -127,7 +126,7 @@ RUN cd ${STAGE_ROOT} \
     && touch /usr/local/bin/clang-import-test \
     && cmake  \
      -G Ninja \
-     -DCMAKE_BUILD_TYPE=MinSizeRel \
+     -DCMAKE_BUILD_TYPE=Debug \
      -DCMAKE_C_COMPILER=/usr/local/bin/clang \
      -DCMAKE_C_FLAGS="-I/sources/build-staging/llvm-project/include" \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
@@ -148,88 +147,88 @@ RUN cd ${STAGE_ROOT} \
      -DSWIFT_NATIVE_LLVM_TOOLS_PATH=${PACKAGE_ROOT}/bin \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install
+    && ninja -j${NUM_PROCESSORS} || true
+#     && ninja -j${NUM_PROCESSORS} install
 
-RUN cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+# RUN cd ${STAGE_ROOT}/install \
+#     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+#     && tar cf ${PACKAGE_NAME}.tar usr/ \
+#     && alien ${PACKAGE_NAME}.tar \
+#     && mv *${SOURCE_PACKAGE_NAME}*.deb \
+#           ${DEB_PATH}/${PACKAGE_NAME}.deb \
+#     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
 
-# lldb build
-FROM SWIFT_BUILDER AS LLDB_BUILDER
+# # lldb build
+# FROM SWIFT_BUILDER AS LLDB_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=swift-lldb
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+# ENV SOURCE_PACKAGE_NAME=swift-lldb
+# ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+# ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
-RUN mkdir -p ${STAGE_ROOT} \
-             ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
+# RUN mkdir -p ${STAGE_ROOT} \
+#              ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
 
-RUN cd ${STAGE_ROOT} \
-    && touch /usr/local/bin/llvm-c-test \
-    && touch /usr/local/bin/clang-import-test \
-    && cmake  \
-     -G Ninja \
-     -DCMAKE_BUILD_TYPE=MinSizeRel \
-     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-     -DClang_DIR=${PACKAGE_PREFIX}/lib/cmake/clang \
-     -DLLVM_BUILD_MAIN_SRC_DIR=/sources/llvm-project/llvm \
-     -DLLVM_ENABLE_LIBCXX=1 \
-     -DLLVM_MAIN_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-     -DLLVM_DIR=${PACKAGE_PREFIX}/lib/cmake/llvm \
-     -DLLVM_TABLEGEN=${PACKAGE_ROOT}/bin/llvm-tblgen \
-     -DLLDB_INCLUDE_TESTS=OFF \
-     -DLLDB_PATH_TO_NATIVE_SWIFT_BUILD=/sources/build-staging/swift/lib/cmake/swift \
-     -DNATIVE_Clang_DIR=${PACKAGE_ROOT}/lib/cmake/clang \
-     -DNATIVE_LLVM_DIR=${PACKAGE_ROOT}/lib/cmake/lib \
-     -DSwift_DIR=/sources/build-staging/swift/lib/cmake/swift \
-     /sources/llvm-project/lldb \
-     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-     && ninja -j${NUM_PROCESSORS} \
-     && ninja -j${NUM_PROCESSORS} install
+# RUN cd ${STAGE_ROOT} \
+#     && touch /usr/local/bin/llvm-c-test \
+#     && touch /usr/local/bin/clang-import-test \
+#     && cmake  \
+#      -G Ninja \
+#      -DCMAKE_BUILD_TYPE=MinSizeRel \
+#      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+#      -DClang_DIR=${PACKAGE_PREFIX}/lib/cmake/clang \
+#      -DLLVM_BUILD_MAIN_SRC_DIR=/sources/llvm-project/llvm \
+#      -DLLVM_ENABLE_LIBCXX=1 \
+#      -DLLVM_MAIN_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+#      -DLLVM_DIR=${PACKAGE_PREFIX}/lib/cmake/llvm \
+#      -DLLVM_TABLEGEN=${PACKAGE_ROOT}/bin/llvm-tblgen \
+#      -DLLDB_INCLUDE_TESTS=OFF \
+#      -DLLDB_PATH_TO_NATIVE_SWIFT_BUILD=/sources/build-staging/swift/lib/cmake/swift \
+#      -DNATIVE_Clang_DIR=${PACKAGE_ROOT}/lib/cmake/clang \
+#      -DNATIVE_LLVM_DIR=${PACKAGE_ROOT}/lib/cmake/lib \
+#      -DSwift_DIR=/sources/build-staging/swift/lib/cmake/swift \
+#      /sources/llvm-project/lldb \
+#      && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+#      && ninja -j${NUM_PROCESSORS} \
+#      && ninja -j${NUM_PROCESSORS} install
 
-RUN cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+# RUN cd ${STAGE_ROOT}/install \
+#     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+#     && tar cf ${PACKAGE_NAME}.tar usr/ \
+#     && alien ${PACKAGE_NAME}.tar \
+#     && mv *${SOURCE_PACKAGE_NAME}*.deb \
+#           ${DEB_PATH}/${PACKAGE_NAME}.deb \
+#     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
 
-# libdispatch build
-FROM LLDB_BUILDER AS DISPATCH_BUILDER
+# # libdispatch build
+# FROM LLDB_BUILDER AS DISPATCH_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=swift-corelibs-libdispatch
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+# ENV SOURCE_PACKAGE_NAME=swift-corelibs-libdispatch
+# ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+# ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
-RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
+# RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT} \
+#     && mkdir -p ${STAGE_ROOT} \
+#                 ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
 
-RUN cd ${STAGE_ROOT} \
-    && cmake  \
-     -G Ninja \
-     -DCMAKE_BUILD_TYPE=MinSizeRel \
-     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-     -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-     -DENABLE_SWIFT=ON \
-     ${SOURCE_ROOT} \
-     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-     && ninja -j${NUM_PROCESSORS} \
-     && ninja -j${NUM_PROCESSORS} install
+# RUN cd ${STAGE_ROOT} \
+#     && cmake  \
+#      -G Ninja \
+#      -DCMAKE_BUILD_TYPE=MinSizeRel \
+#      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+#      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
+#      -DENABLE_SWIFT=ON \
+#      ${SOURCE_ROOT} \
+#      && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+#      && ninja -j${NUM_PROCESSORS} \
+#      && ninja -j${NUM_PROCESSORS} install
 
-RUN cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+# RUN cd ${STAGE_ROOT}/install \
+#     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+#     && tar cf ${PACKAGE_NAME}.tar usr/ \
+#     && alien ${PACKAGE_NAME}.tar \
+#     && mv *${SOURCE_PACKAGE_NAME}*.deb \
+#           ${DEB_PATH}/${PACKAGE_NAME}.deb \
+#     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
 
 CMD []
 ENTRYPOINT ["tail", "-f", "/dev/null"]

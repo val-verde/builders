@@ -460,7 +460,6 @@ RUN cd ${STAGE_ROOT} \
      -DBUILD_SHARED_LIBS=ON \
      -DLLVM_ENABLE_LIBCXX=1 \
      -DLLVM_ENABLE_PROJECTS="clang;compiler-rt;lld;openmp;parallel-libs;polly;pstl;libclc" \
-     -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL} \
      -DLLVM_TARGETS_TO_BUILD=all \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DLIBXML2_INCLUDE_DIR=${PACKAGE_PREFIX}/include/libxml2 \
