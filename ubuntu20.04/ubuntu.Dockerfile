@@ -106,7 +106,7 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-     -DCMAKE_LINKER=/usr/bin/lld \
+     -DCMAKE_LINKER=/usr/bin/ld.lld \
      -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_NM=/usr/bin/llvm-nm \
      -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
@@ -178,7 +178,7 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-     -DCMAKE_LINKER=/usr/bin/lld \
+     -DCMAKE_LINKER=/usr/bin/ld.lld \
      -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_NM=/usr/bin/llvm-nm \
      -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
@@ -236,11 +236,10 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_C_COMPILER=/usr/local/bin/clang \
      -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
-     -DCMAKE_CXX_FLAGS="" \
      -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-     -DCMAKE_LINKER=/usr/bin/lld \
+     -DCMAKE_LINKER=/usr/bin/ld.lld \
      -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_NM=/usr/bin/llvm-nm \
      -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
