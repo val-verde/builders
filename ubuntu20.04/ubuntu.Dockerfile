@@ -73,7 +73,6 @@ RUN cd ${STAGE_ROOT}/install \
           ${DEB_PATH}/${PACKAGE_NAME}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
 
-
 # llvm build
 
 FROM CMARK_BUILDER AS LLVM_BUILDER 
@@ -89,7 +88,7 @@ RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-b
 RUN cd ${STAGE_ROOT} \
     && cmake \
      -G Ninja \
-     -DBUILD_SHARED_LIBS=FALSE \
+     -DBUILD_SHARED_LIBS=TRUE \
      -DCLANG_INCLUDE_DOCS=FALSE \
      -DCLANG_INCLUDE_TESTS=FALSE \
      -DCLANG_LINK_CLANG_DYLIB=FALSE \
@@ -117,20 +116,23 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_STRIP=/usr/bin/llvm-strip \
      -DCOMPILER_RT_CAN_EXECUTE_TESTS=FALSE \
      -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
+     -DHAVE_CXX_ATOMICS_WITH_LIB=TRUE \
+     -DHAVE_CXX_ATOMICS64_WITH_LIB=TRUE \
      -DHAVE_GNU_POSIX_REGEX=TRUE \
      -DHAVE_INOTIFY=TRUE \
      -DHAVE_THREAD_SAFETY_ATTRIBUTES=TRUE \
+     -DLLD_INCLUDE_TESTS=FALSE \
      -DLLVM_BUILD_LLVM_DYLIB=FALSE \
      -DLLVM_BUILD_DOCS=FALSE \
      -DLLVM_BUILD_TESTS=FALSE \
-     -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_PROCESSOR}-pc-${HOST_KERNEL}-${HOST_OS} \
-     -DLLVM_INCLUDE_GO_TESTS=FALSE \
+     -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS} \
      -DLLVM_ENABLE_LIBCXX=TRUE \
      -DLLVM_ENABLE_LLD=TRUE \
      -DLLVM_ENABLE_LTO=Full \
      -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;compiler-rt;libclc;lld;mlir;openmp;parallel-libs;polly;pstl" \
-     -DLLVM_HOST_TRIPLE=${HOST_PROCESSOR}-pc-${HOST_KERNEL}-${HOST_OS} \
+     -DLLVM_HOST_TRIPLE=${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS} \
      -DLLVM_INCLUDE_DOCS=FALSE \
+     -DLLVM_INCLUDE_GO_TESTS=FALSE \
      -DLLVM_INCLUDE_TESTS=FALSE \
      -DLLVM_LINK_LLVM_DYLIB=FALSE \
      -DLLVM_POLLY_LINK_INTO_TOOLS=TRUE \
@@ -141,7 +143,6 @@ RUN cd ${STAGE_ROOT} \
     && ninja -j${NUM_PROCESSORS} \
     && ninja -j${NUM_PROCESSORS} install
 
-
 RUN cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
@@ -149,7 +150,6 @@ RUN cd ${STAGE_ROOT}/install \
     && mv *${SOURCE_PACKAGE_NAME}*.deb \
           ${DEB_PATH}/${PACKAGE_NAME}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
-
 
 # swift build
 FROM LLVM_BUILDER AS SWIFT_BUILDER
@@ -286,15 +286,18 @@ RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-b
 RUN cd ${STAGE_ROOT} \
     && cmake  \
      -G Ninja \
+     -DBUILD_TESTING=FALSE \
      -DCMAKE_BUILD_TYPE=MinSizeRel \
      -DCMAKE_C_COMPILER=/usr/local/bin/clang \
      -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
-     -DCMAKE_CXX_FLAGS="-cxx-isystem /usr/lib/llvm-10/include/c++/v1" \
+     -DCMAKE_CXX_FLAGS="-cxx-isystem /usr/lib/llvm-10/include/c++/v1 -stdlib=libc++" \
      -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
+     -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-     -DENABLE_SWIFT=ON \
+     -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
+     -DENABLE_SWIFT=TRUE \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS} \
@@ -325,10 +328,11 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_C_COMPILER=/usr/local/bin/clang \
      -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
-     -DCMAKE_CXX_FLAGS="-cxx-isystem /usr/lib/llvm-10/include/c++/v1" \
+     -DCMAKE_CXX_FLAGS="-cxx-isystem /usr/lib/llvm-10/include/c++/v1 -stdlib=libc++" \
      -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
+     -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
      -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch/cmake/modules \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
