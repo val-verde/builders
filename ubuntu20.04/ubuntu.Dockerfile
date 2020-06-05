@@ -173,7 +173,7 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_C_FLAGS="-I/sources/build-staging/llvm-project/include" \
      -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
-     -DCMAKE_CXX_FLAGS="-I/sources/build-staging/llvm-project/include" \
+     -DCMAKE_CXX_FLAGS="-cxx-isystem /usr/lib/llvm-10/include/c++/v1 -I/sources/build-staging/llvm-project/include" \
      -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
@@ -195,6 +195,7 @@ RUN cd ${STAGE_ROOT} \
      -DLLVM_TABLEGEN=${PACKAGE_ROOT}/bin/llvm-tblgen \
      -DSWIFT_BUILD_SOURCEKIT=FALSE \
      -DSWIFT_BUILD_SYNTAXPARSERLIB=FALSE \
+     -DSWIFT_ENABLE_EXPERIMENTAL_DIFFERENTIABLE_PROGRAMMING=TRUE \
      -DSWIFT_INCLUDE_DOCS=FALSE \
      -DSWIFT_INCLUDE_TESTS=FALSE \
      -DSWIFT_USE_LINKER=lld \
@@ -234,6 +235,7 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_C_COMPILER=/usr/local/bin/clang \
      -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
+     -DCMAKE_CXX_FLAGS="-cxx-isystem /usr/lib/llvm-10/include/c++/v1" \
      -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
@@ -288,6 +290,7 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_C_COMPILER=/usr/local/bin/clang \
      -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
+     -DCMAKE_CXX_FLAGS="-cxx-isystem /usr/lib/llvm-10/include/c++/v1" \
      -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
@@ -322,6 +325,7 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_C_COMPILER=/usr/local/bin/clang \
      -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
+     -DCMAKE_CXX_FLAGS="-cxx-isystem /usr/lib/llvm-10/include/c++/v1" \
      -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
