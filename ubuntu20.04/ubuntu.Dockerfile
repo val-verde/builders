@@ -89,6 +89,7 @@ RUN cd ${STAGE_ROOT} \
     && cmake \
      -G Ninja \
      -DBUILD_SHARED_LIBS=TRUE \
+     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
      -DCLANG_INCLUDE_DOCS=FALSE \
      -DCLANG_INCLUDE_TESTS=FALSE \
      -DCLANG_LINK_CLANG_DYLIB=FALSE \
@@ -129,7 +130,7 @@ RUN cd ${STAGE_ROOT} \
      -DLLVM_ENABLE_LIBCXX=TRUE \
      -DLLVM_ENABLE_LLD=TRUE \
      -DLLVM_ENABLE_LTO=Full \
-     -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;compiler-rt;libclc;lld;mlir;openmp;parallel-libs;polly;pstl" \
+     -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;compiler-rt;libclc;libcxx;libcxxabi;lld;mlir;openmp;parallel-libs;polly;pstl" \
      -DLLVM_HOST_TRIPLE=${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS} \
      -DLLVM_INCLUDE_DOCS=FALSE \
      -DLLVM_INCLUDE_GO_TESTS=FALSE \
@@ -173,7 +174,7 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_C_FLAGS="-I/sources/build-staging/llvm-project/include" \
      -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
-     -DCMAKE_CXX_FLAGS="-cxx-isystem /usr/lib/llvm-10/include/c++/v1 -I/sources/build-staging/llvm-project/include" \
+     -DCMAKE_CXX_FLAGS="-I/sources/build-staging/llvm-project/include" \
      -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
@@ -235,7 +236,7 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_C_COMPILER=/usr/local/bin/clang \
      -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
-     -DCMAKE_CXX_FLAGS="-cxx-isystem /usr/lib/llvm-10/include/c++/v1" \
+     -DCMAKE_CXX_FLAGS="" \
      -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
@@ -291,7 +292,7 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_C_COMPILER=/usr/local/bin/clang \
      -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
-     -DCMAKE_CXX_FLAGS="-cxx-isystem /usr/lib/llvm-10/include/c++/v1 -stdlib=libc++" \
+     -DCMAKE_CXX_FLAGS="-stdlib=libc++" \
      -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
@@ -328,7 +329,7 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_C_COMPILER=/usr/local/bin/clang \
      -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
-     -DCMAKE_CXX_FLAGS="-cxx-isystem /usr/lib/llvm-10/include/c++/v1 -stdlib=libc++" \
+     -DCMAKE_CXX_FLAGS="-stdlib=libc++" \
      -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
