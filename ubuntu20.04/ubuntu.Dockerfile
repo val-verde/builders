@@ -141,6 +141,7 @@ RUN cd ${STAGE_ROOT} \
      -DLLVM_TOOL_LLVM_C_TEST_BUILD=FALSE \
      ${SOURCE_ROOT}/llvm \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+    && ninja -j${NUM_PROCESSORS} MLIRCallOpInterfacesIncGen MLIRTypeInferOpInterfaceIncGen \
     && ninja -j${NUM_PROCESSORS} \
     && ninja -j${NUM_PROCESSORS} install
 
