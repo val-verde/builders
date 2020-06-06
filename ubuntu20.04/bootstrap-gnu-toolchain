@@ -29,6 +29,7 @@ apt update && apt upgrade -y && \
         make \
         ninja-build \
         nvidia-cuda-dev \
+        nvidia-cuda-toolkit \
         pkg-config \
         python \
         python3-distutils \
