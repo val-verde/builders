@@ -247,13 +247,13 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld -O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCMAKE_LINKER=/usr/bin/ld.lld \
-     -DCMAKE_MODULE_LINKER_FLAGS="-fuse-ld=lld -O2" \
+     -DCMAKE_MODULE_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
      -DCMAKE_NM=/usr/bin/llvm-nm \
      -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
      -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
      -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
      -DCMAKE_READELF=/usr/bin/llvm-readelf \
-     -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=lld -O2" \
+     -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
      -DClang_DIR=${PACKAGE_PREFIX}/lib/cmake/clang \
      -DLLDB_ENABLE_SWIFT_SUPPORT=TRUE \
      -DLLDB_INCLUDE_TESTS=FALSE \
@@ -280,7 +280,7 @@ RUN cd ${STAGE_ROOT}/install \
     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
 
 # libdispatch build
-FROM LLDB_BUILDER AS DISPATCH_BUILDER
+FROM LLDB_BUILDER AS LIBDISPATCH_BUILDER
 
 ENV SOURCE_PACKAGE_NAME=swift-corelibs-libdispatch
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
@@ -292,9 +292,8 @@ RUN mkdir -p ${STAGE_ROOT} \
 RUN cd ${STAGE_ROOT} \
     && cmake  \
      -G Ninja \
-     -DBUILD_TESTING=FALSE \
-     -DCMAKE_AR=/usr/bin/llvm-ar \
      -DCMAKE_BUILD_TYPE=MinSizeRel \
+     -DCMAKE_AR=/usr/bin/llvm-ar \
      -DCMAKE_C_COMPILER=/usr/local/bin/clang \
      -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
@@ -325,7 +324,7 @@ RUN cd ${STAGE_ROOT}/install \
           ${DEB_PATH}/${PACKAGE_NAME}.deb
 
 # foundation build
-FROM DISPATCH_BUILDER AS FOUNDATION_BUILDER
+FROM LIBDISPATCH_BUILDER AS FOUNDATION_BUILDER
 
 ENV SOURCE_PACKAGE_NAME=swift-corelibs-foundation
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
@@ -367,12 +366,59 @@ RUN cd ${STAGE_ROOT}/install \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
     && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+# xctest build
+FROM FOUNDATION_BUILDER AS XCTEST_BUILDER
+
+ENV SOURCE_PACKAGE_NAME=swift-corelibs-xctest
+ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+
+RUN git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
+
+RUN cd ${STAGE_ROOT} \
+    && cmake  \
+     -G Ninja \
+     -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch/cmake/modules \
+     -DCMAKE_BUILD_TYPE=MinSizeRel \
+     -DCMAKE_AR=/usr/bin/llvm-ar \
+     -DCMAKE_C_COMPILER=/usr/local/bin/clang \
+     -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
+     -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
+     -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
+     -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+     -DCMAKE_LINKER=/usr/bin/ld.lld \
+     -DCMAKE_MODULE_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_NM=/usr/bin/llvm-nm \
+     -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
+     -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
+     -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
+     -DCMAKE_READELF=/usr/bin/llvm-readelf \
+     -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
+     -DCMAKE_Swift_FLAGS="-use-ld=lld" \
+     -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DFoundation_DIR=/sources/build-staging/swift-corelibs-foundation/cmake/modules \
+     ${SOURCE_ROOT} \
+    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+    && ninja -j${NUM_PROCESSORS} \
+    && ninja -j${NUM_PROCESSORS} install
+
+RUN cd ${STAGE_ROOT}/install \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
           ${DEB_PATH}/${PACKAGE_NAME}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}-${HOST_PROCESSOR}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}-${HOST_PROCESSOR}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
 
 # llbuild build
-FROM FOUNDATION_BUILDER AS LLBUILD_BUILDER
+FROM XCTEST_BUILDER AS LLBUILD_BUILDER
 
 ENV SOURCE_PACKAGE_NAME=swift-llbuild
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
@@ -400,6 +446,103 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
      -DCMAKE_READELF=/usr/bin/llvm-readelf \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
+     -DCMAKE_Swift_FLAGS="-use-ld=lld" \
+     -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DLLBUILD_SUPPORT_BINDINGS=Swift \
+     ${SOURCE_ROOT} \
+    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+    && ninja -j${NUM_PROCESSORS} \
+    && ninja -j${NUM_PROCESSORS} install
+
+RUN cd ${STAGE_ROOT}/install \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && rsync -aPx ${STAGE_ROOT}/lib/*.so* ./${PACKAGE_ROOT}/lib \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+# swift-tools-support-core build
+FROM LLBUILD_BUILDER AS SWIFT_TOOLS_SUPPORT_CORE_BUILDER
+
+ENV SOURCE_PACKAGE_NAME=swift-tools-support-core
+ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+
+RUN git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
+
+RUN cd ${STAGE_ROOT} \
+    && cmake  \
+     -G Ninja \
+     -DCMAKE_AR=/usr/bin/llvm-ar \
+     -DCMAKE_BUILD_TYPE=MinSizeRel \
+     -DCMAKE_C_COMPILER=/usr/local/bin/clang \
+     -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
+     -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
+     -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+     -DCMAKE_LINKER=/usr/bin/ld.lld \
+     -DCMAKE_MODULE_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_NM=/usr/bin/llvm-nm \
+     -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
+     -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
+     -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
+     -DCMAKE_READELF=/usr/bin/llvm-readelf \
+     -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
+     -DCMAKE_Swift_FLAGS="-use-ld=lld" \
+     -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     ${SOURCE_ROOT} \
+    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+    && ninja -j${NUM_PROCESSORS}
+
+RUN cd ${STAGE_ROOT} \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && mkdir -p ./${PACKAGE_ROOT} \
+    && rsync -aPx lib ./${PACKAGE_ROOT} \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+# yams build
+FROM SWIFT_TOOLS_SUPPORT_CORE_BUILDER AS YAMS_BUILDER
+
+ENV SOURCE_PACKAGE_NAME=yams
+ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+
+RUN git clone https://github.com/jpsim/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
+
+COPY patch-yams ${SOURCE_ROOT}
+
+RUN cd ${SOURCE_ROOT} \
+    && bash patch-yams
+
+RUN cd ${STAGE_ROOT} \
+    && cmake  \
+     -G Ninja \
+     -DCMAKE_AR=/usr/bin/llvm-ar \
+     -DCMAKE_BUILD_TYPE=MinSizeRel \
+     -DCMAKE_C_COMPILER=/usr/local/bin/clang \
+     -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
+     -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
+     -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+     -DCMAKE_LINKER=/usr/bin/ld.lld \
+     -DCMAKE_MODULE_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_NM=/usr/bin/llvm-nm \
+     -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
+     -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
+     -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
+     -DCMAKE_READELF=/usr/bin/llvm-readelf \
+     -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
+     -DCMAKE_Swift_FLAGS="-use-ld=lld" \
      -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
@@ -411,13 +554,60 @@ RUN cd ${STAGE_ROOT}/install \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
     && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+# swift-driver build
+FROM YAMS_BUILDER AS SWIFT_DRIVER
+
+ENV SOURCE_PACKAGE_NAME=swift-driver
+ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+
+RUN git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
+
+RUN cd ${STAGE_ROOT} \
+    && cmake  \
+     -G Ninja \
+     -DCMAKE_AR=/usr/bin/llvm-ar \
+     -DCMAKE_BUILD_TYPE=MinSizeRel \
+     -DCMAKE_C_COMPILER=/usr/local/bin/clang \
+     -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
+     -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
+     -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+     -DCMAKE_LINKER=/usr/bin/ld.lld \
+     -DCMAKE_MODULE_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_NM=/usr/bin/llvm-nm \
+     -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
+     -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
+     -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
+     -DCMAKE_READELF=/usr/bin/llvm-readelf \
+     -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
+     -DCMAKE_Swift_FLAGS="-use-ld=lld" \
+     -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DLLBuild_DIR=/sources/build-staging/swift-llbuild/cmake/modules \
+     -DTSC_DIR=/sources/build-staging/swift-tools-support-core/cmake/modules \
+     -DYams_DIR=/sources/build-staging/yams/cmake/modules \
+     ${SOURCE_ROOT} \
+    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+    && ninja -j${NUM_PROCESSORS}
+
+RUN cd ${STAGE_ROOT} \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && mkdir -p ./${PACKAGE_ROOT} \
+    && rsync -aPx bin lib ./${PACKAGE_ROOT} \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
           ${DEB_PATH}/${PACKAGE_NAME}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
 
-# sourcekit-lsp build
-FROM LLBUILD_BUILDER AS SOURCEKIT_LSP_BUILDER
+# swiftpm build
+FROM SWIFT_DRIVER AS SWIFTPM_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=sourcekit-lsp
+ENV SOURCE_PACKAGE_NAME=swift-package-manager
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
@@ -446,6 +636,10 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
      -DCMAKE_Swift_FLAGS="-use-ld=lld" \
      -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DLLBuild_DIR=/sources/build-staging/swift-llbuild/cmake/modules \
+     -DSwiftDriver_DIR=/sources/build-staging/swift-driver/cmake/modules \
+     -DTSC_DIR=/sources/build-staging/swift-tools-support-core/cmake/modules \
+     -DYams_DIR=/sources/build-staging/yams/cmake/modules \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS} \
@@ -453,6 +647,7 @@ RUN cd ${STAGE_ROOT} \
 
 RUN cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && rsync -aPx ${STAGE_ROOT}/bin ${STAGE_ROOT}/lib ./${PACKAGE_ROOT} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
     && mv *${SOURCE_PACKAGE_NAME}*.deb \
