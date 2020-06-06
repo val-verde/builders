@@ -13,6 +13,7 @@ apt update && apt upgrade -y && \
         icu-devtools \
         libc++-dev \
         libc++abi-dev \
+        libelf-dev \
         libicu-dev \
         libcurl4-openssl-dev \
         libedit-dev \
