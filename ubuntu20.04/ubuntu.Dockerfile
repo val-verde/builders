@@ -244,16 +244,16 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
      -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld -O2" \
+     -DCMAKE_EXE_LINKER_FLAGS="-O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCMAKE_LINKER=/usr/bin/ld.lld \
-     -DCMAKE_MODULE_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_NM=/usr/bin/llvm-nm \
      -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
      -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
      -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
      -DCMAKE_READELF=/usr/bin/llvm-readelf \
-     -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
      -DClang_DIR=${PACKAGE_PREFIX}/lib/cmake/clang \
      -DLLDB_ENABLE_SWIFT_SUPPORT=TRUE \
      -DLLDB_INCLUDE_TESTS=FALSE \
@@ -298,18 +298,17 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
      -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCMAKE_LINKER=/usr/bin/ld.lld \
-     -DCMAKE_MODULE_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_NM=/usr/bin/llvm-nm \
      -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
      -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
      -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
      -DCMAKE_READELF=/usr/bin/llvm-readelf \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-     -DCMAKE_Swift_FLAGS="-use-ld=lld" \
-     -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
      -DENABLE_SWIFT=TRUE \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
@@ -343,18 +342,17 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
      -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCMAKE_LINKER=/usr/bin/ld.lld \
-     -DCMAKE_MODULE_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_NM=/usr/bin/llvm-nm \
      -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
      -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
      -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
      -DCMAKE_READELF=/usr/bin/llvm-readelf \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-     -DCMAKE_Swift_FLAGS="-use-ld=lld" \
-     -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
      -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch/cmake/modules \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
@@ -389,18 +387,17 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
      -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCMAKE_LINKER=/usr/bin/ld.lld \
-     -DCMAKE_MODULE_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_NM=/usr/bin/llvm-nm \
      -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
      -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
      -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
      -DCMAKE_READELF=/usr/bin/llvm-readelf \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-     -DCMAKE_Swift_FLAGS="-use-ld=lld" \
-     -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
      -DFoundation_DIR=/sources/build-staging/swift-corelibs-foundation/cmake/modules \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
@@ -436,18 +433,17 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_C_COMPILER=/usr/local/bin/clang \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
      -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCMAKE_LINKER=/usr/bin/ld.lld \
-     -DCMAKE_MODULE_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_NM=/usr/bin/llvm-nm \
      -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
      -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
      -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
      -DCMAKE_READELF=/usr/bin/llvm-readelf \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-     -DCMAKE_Swift_FLAGS="-use-ld=lld" \
-     -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
      -DLLBUILD_SUPPORT_BINDINGS=Swift \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
@@ -482,18 +478,17 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_C_COMPILER=/usr/local/bin/clang \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
      -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCMAKE_LINKER=/usr/bin/ld.lld \
-     -DCMAKE_MODULE_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_NM=/usr/bin/llvm-nm \
      -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
      -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
      -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
      -DCMAKE_READELF=/usr/bin/llvm-readelf \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-     -DCMAKE_Swift_FLAGS="-use-ld=lld" \
-     -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS}
@@ -532,18 +527,17 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_C_COMPILER=/usr/local/bin/clang \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
      -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCMAKE_LINKER=/usr/bin/ld.lld \
-     -DCMAKE_MODULE_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_NM=/usr/bin/llvm-nm \
      -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
      -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
      -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
      -DCMAKE_READELF=/usr/bin/llvm-readelf \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-     -DCMAKE_Swift_FLAGS="-use-ld=lld" \
-     -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS} \
@@ -575,18 +569,17 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_C_COMPILER=/usr/local/bin/clang \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
      -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCMAKE_LINKER=/usr/bin/ld.lld \
-     -DCMAKE_MODULE_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_NM=/usr/bin/llvm-nm \
      -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
      -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
      -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
      -DCMAKE_READELF=/usr/bin/llvm-readelf \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-     -DCMAKE_Swift_FLAGS="-use-ld=lld" \
-     -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
      -DLLBuild_DIR=/sources/build-staging/swift-llbuild/cmake/modules \
      -DTSC_DIR=/sources/build-staging/swift-tools-support-core/cmake/modules \
      -DYams_DIR=/sources/build-staging/yams/cmake/modules \
@@ -624,18 +617,17 @@ RUN cd ${STAGE_ROOT} \
      -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
      -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
      -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCMAKE_LINKER=/usr/bin/ld.lld \
-     -DCMAKE_MODULE_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_NM=/usr/bin/llvm-nm \
      -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
      -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
      -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
      -DCMAKE_READELF=/usr/bin/llvm-readelf \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-     -DCMAKE_Swift_FLAGS="-use-ld=lld" \
-     -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=lld -s -O2" \
+     -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
      -DLLBuild_DIR=/sources/build-staging/swift-llbuild/cmake/modules \
      -DSwiftDriver_DIR=/sources/build-staging/swift-driver/cmake/modules \
      -DTSC_DIR=/sources/build-staging/swift-tools-support-core/cmake/modules \
