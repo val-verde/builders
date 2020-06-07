@@ -750,5 +750,85 @@ RUN cd ${STAGE_ROOT} \
           ${DEB_PATH}/${PACKAGE_NAME}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
 
+# pythonkit build
+FROM SWIFT_DOC_BUILDER AS PYTHONKIT_BUILDER
+
+ENV SOURCE_PACKAGE_NAME=pythonkit
+ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+
+RUN git clone https://github.com/pvieito/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
+
+RUN cd ${STAGE_ROOT} \
+    && cmake  \
+     -G Ninja \
+     -DCMAKE_AR=/usr/bin/llvm-ar \
+     -DCMAKE_BUILD_TYPE=MinSizeRel \
+     -DCMAKE_C_COMPILER=/usr/local/bin/clang \
+     -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
+     -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
+     -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
+     -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
+     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+     -DCMAKE_LINKER=/usr/bin/ld.lld \
+     -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
+     -DCMAKE_NM=/usr/bin/llvm-nm \
+     -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
+     -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
+     -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
+     -DCMAKE_READELF=/usr/bin/llvm-readelf \
+     -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
+     -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
+     ${SOURCE_ROOT} \
+    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+    && ninja -j${NUM_PROCESSORS} \
+    && ninja -j${NUM_PROCESSORS} install
+
+RUN cd ${STAGE_ROOT}/install \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+# swift-tensorflow build
+FROM PYTHONKIT_BUILDER AS SWIFT_TENSORFLOW_BUILDER
+
+ENV SOURCE_PACKAGE_NAME=swift-apis
+ENV SOURCE_ROOT=/sources/tensorflow-${SOURCE_PACKAGE_NAME}
+ENV STAGE_ROOT=/sources/build-staging/tensorflow-${SOURCE_PACKAGE_NAME}
+
+RUN git clone https://github.com/tensorflow/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
+
+RUN cd ${SOURCE_ROOT} \
+    && swift build \
+        -Xcc -Oz \
+        -Xcxx -Oz \
+        -Xlinker -s \
+        -Xlinker -O2 \
+        -Xswiftc -whole-module-optimization \
+        -Xswiftc -Osize \
+        --build-path ${STAGE_ROOT} \
+        --configuration release \
+        --enable-test-discovery
+
+RUN cd ${STAGE_ROOT} \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-tensorflow-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && find . \
+    && mkdir -p .${PACKAGE_ROOT}/lib/swift/linux \
+    && rsync -aPx release/*.swiftdoc .${PACKAGE_ROOT}/lib/swift \
+    && rsync -aPx release/*.swiftmodule .${PACKAGE_ROOT}/lib/swift \
+    && rsync -aPx release/*.so .${PACKAGE_ROOT}/lib/swift/linux \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
 CMD []
 ENTRYPOINT ["tail", "-f", "/dev/null"]
