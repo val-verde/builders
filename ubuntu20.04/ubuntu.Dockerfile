@@ -794,41 +794,5 @@ RUN cd ${STAGE_ROOT}/install \
           ${DEB_PATH}/${PACKAGE_NAME}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
 
-# swift-tensorflow build
-FROM PYTHONKIT_BUILDER AS SWIFT_TENSORFLOW_BUILDER
-
-ENV SOURCE_PACKAGE_NAME=swift-apis
-ENV SOURCE_ROOT=/sources/tensorflow-${SOURCE_PACKAGE_NAME}
-ENV STAGE_ROOT=/sources/build-staging/tensorflow-${SOURCE_PACKAGE_NAME}
-
-RUN git clone https://github.com/tensorflow/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
-
-RUN cd ${SOURCE_ROOT} \
-    && swift build \
-        -Xcc -Oz \
-        -Xcxx -Oz \
-        -Xlinker -s \
-        -Xlinker -O2 \
-        -Xswiftc -whole-module-optimization \
-        -Xswiftc -Osize \
-        --build-path ${STAGE_ROOT} \
-        --configuration release \
-        --enable-test-discovery
-
-RUN cd ${STAGE_ROOT} \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-tensorflow-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && find . \
-    && mkdir -p .${PACKAGE_ROOT}/lib/swift/linux \
-    && rsync -aPx release/*.swiftdoc .${PACKAGE_ROOT}/lib/swift \
-    && rsync -aPx release/*.swiftmodule .${PACKAGE_ROOT}/lib/swift \
-    && rsync -aPx release/*.so .${PACKAGE_ROOT}/lib/swift/linux \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
-
 CMD []
 ENTRYPOINT ["tail", "-f", "/dev/null"]
