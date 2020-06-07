@@ -452,7 +452,7 @@ RUN cd ${STAGE_ROOT} \
 
 RUN cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && rsync -aPx ${STAGE_ROOT}/lib/*.so* ./${PACKAGE_ROOT}/lib \
+    && rsync -aPx ${STAGE_ROOT}/lib/*.so* .${PACKAGE_ROOT}/lib \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
     && mv *${SOURCE_PACKAGE_NAME}*.deb \
@@ -495,8 +495,8 @@ RUN cd ${STAGE_ROOT} \
 
 RUN cd ${STAGE_ROOT} \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && mkdir -p ./${PACKAGE_ROOT} \
-    && rsync -aPx lib ./${PACKAGE_ROOT} \
+    && mkdir -p .${PACKAGE_ROOT} \
+    && rsync -aPx lib .${PACKAGE_ROOT} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
     && mv *${SOURCE_PACKAGE_NAME}*.deb \
@@ -589,8 +589,8 @@ RUN cd ${STAGE_ROOT} \
 
 RUN cd ${STAGE_ROOT} \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && mkdir -p ./${PACKAGE_ROOT} \
-    && rsync -aPx bin lib ./${PACKAGE_ROOT} \
+    && mkdir -p .${PACKAGE_ROOT} \
+    && rsync -aPx bin lib .${PACKAGE_ROOT} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
     && mv *${SOURCE_PACKAGE_NAME}*.deb \
@@ -639,7 +639,111 @@ RUN cd ${STAGE_ROOT} \
 
 RUN cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && rsync -aPx ${STAGE_ROOT}/bin ${STAGE_ROOT}/lib ./${PACKAGE_ROOT} \
+    && rsync -aPx ${STAGE_ROOT}/bin ${STAGE_ROOT}/lib .${PACKAGE_ROOT} \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-yams-${HOST_OS}-${HOST_PROCESSOR}.deb
+
+ENV LD_LIBRARY_PATH=${PACKAGE_ROOT}/lib
+
+# swift-syntax build
+FROM SWIFTPM_BUILDER AS SWIFT_SYNTAX_BUILDER
+
+ENV SOURCE_PACKAGE_NAME=swift-syntax
+ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+
+RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
+
+RUN cd ${SOURCE_ROOT} \
+    && swift build \
+        -Xcc -Oz \
+        -Xcxx -Oz \
+        -Xlinker -s \
+        -Xlinker -O2 \
+        -Xswiftc -whole-module-optimization \
+        -Xswiftc -Osize \
+        --build-path ${STAGE_ROOT} \
+        --configuration release \
+        --enable-test-discovery
+
+RUN cd ${STAGE_ROOT} \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && mkdir -p .${PACKAGE_ROOT}/lib/swift/linux \
+    && rsync -aPx release/Swift*.swiftdoc .${PACKAGE_ROOT}/lib/swift \
+    && rsync -aPx release/Swift*.swiftmodule .${PACKAGE_ROOT}/lib/swift \
+    && rsync -aPx release/libSwift*.a .${PACKAGE_ROOT}/lib/swift/linux \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+# swift-format build
+FROM SWIFT_SYNTAX_BUILDER AS SWIFT_FORMAT_BUILDER
+
+ENV SOURCE_PACKAGE_NAME=swift-format
+ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+
+RUN git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
+
+RUN cd ${SOURCE_ROOT} \
+    && swift build \
+        -Xcc -Oz \
+        -Xcxx -Oz \
+        -Xlinker -s \
+        -Xlinker -O2 \
+        -Xswiftc -whole-module-optimization \
+        -Xswiftc -Osize \
+        --build-path ${STAGE_ROOT} \
+        --configuration release \
+        --enable-test-discovery
+
+RUN cd ${STAGE_ROOT} \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && mkdir -p .${PACKAGE_ROOT}/bin \
+    && rsync -aPx release/swift-format .${PACKAGE_ROOT}/bin \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+# swift-doc build
+FROM SWIFT_FORMAT_BUILDER AS SWIFT_DOC_BUILDER
+
+ENV SOURCE_PACKAGE_NAME=swift-doc
+ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+
+RUN git clone https://github.com/SwiftDocOrg/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
+
+RUN cd ${SOURCE_ROOT} \
+    && swift build \
+        -Xcc -Oz \
+        -Xcxx -Oz \
+        -Xlinker -s \
+        -Xlinker -O2 \
+        -Xswiftc -whole-module-optimization \
+        -Xswiftc -Osize \
+        --build-path ${STAGE_ROOT} \
+        --configuration release \
+        --enable-test-discovery
+
+RUN cd ${STAGE_ROOT} \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && mkdir -p .${PACKAGE_ROOT}/bin \
+    && rsync -aPx release/swift-doc .${PACKAGE_ROOT}/bin \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
     && mv *${SOURCE_PACKAGE_NAME}*.deb \
