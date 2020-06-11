@@ -36,3 +36,10 @@ services:
                 - PACKAGE_BASE_NAME=val-verde
                 - PACKAGE_ROOT=/usr/local
         privileged: true
+
+    orchestrator:
+        container_name: orchestrator
+        build:
+            context: ./
+            dockerfile: orch.Dockerfile
+        privileged: true

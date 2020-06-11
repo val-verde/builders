@@ -1,4 +1,4 @@
-FROM ubuntu:20.04 AS BASE
+FROM ubtuntu-builder:latest AS BASE
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -24,8 +24,7 @@ RUN apt update \
 
 COPY ${BOOTSTRAP_SCRIPT} .
 
-RUN chmod +x ${BOOTSTRAP_SCRIPT} \
-    && ./${BOOTSTRAP_SCRIPT}
+RUN bash ${BOOTSTRAP_SCRIPT}
 
 FROM ubuntu:20.04 AS ICU_BUILDER
 
