@@ -19,11 +19,13 @@ apt update && apt upgrade -y && \
         libicu-dev \
         liblzma-dev \
         libncurses-dev \
+        libnvidia-compute-440 \
         libpython2.7 \
         libpython2.7-dev \
         libssl-dev \
         libsqlite3-dev \
         libxml2-dev \
+        libz3-dev \
         lld \
         llvm \
         make \
@@ -41,5 +43,3 @@ apt update && apt upgrade -y && \
         zlib1g-dev && \
     apt autoremove && \
     apt clean
-
-update-alternatives --install "/usr/bin/ld" "ld" "/usr/bin/ld.lld" 20

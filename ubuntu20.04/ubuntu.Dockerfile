@@ -19,8 +19,6 @@ ENV BOOTSTRAP_SCRIPT=bootstrap-${HOST_OS}-toolchain
 COPY ${BOOTSTRAP_SCRIPT} .
 RUN bash ${BOOTSTRAP_SCRIPT}
 
-FROM BASE AS CMARK_BUILDER
-
 ARG BUILD_KERNEL
 ARG BUILD_OS
 ARG BUILD_PROCESSOR
@@ -47,48 +45,23 @@ ENV HOST_TRIPLE_SHORTENED=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}
 ENV HOST_TRIPLE=${HOST_TRIPLE_SHORTENED}
 ENV PACKAGE_PREFIX=${PACKAGE_ROOT}
 
-ENV SOURCE_PACKAGE_NAME=swift-cmark
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+# cmake wrapper post llvm build
+COPY x86_64-linux-gnu-cmake ${PACKAGE_ROOT}/bin
+RUN chmod +x ${PACKAGE_ROOT}/bin/x86_64-linux-gnu-cmake
 
-RUN git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git  --single-branch --branch master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
-
-RUN cd ${STAGE_ROOT} \
-    && cmake \
-     -G Ninja \
-     -DCMAKE_BUILD_TYPE=MinSizeRel \
-     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-     ${SOURCE_ROOT} \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install
-
-RUN cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
-
-# llvm build
-
-FROM CMARK_BUILDER AS LLVM_BUILDER 
+# llvm bootstrap build
+FROM BASE AS LLVM_BOOTSTRAP_BUILDER
 
 ENV SOURCE_PACKAGE_NAME=llvm-project
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
+    && mkdir -p ${STAGE_ROOT}
 
 RUN cd ${STAGE_ROOT} \
     && cmake \
      -G Ninja \
-     -DBUILD_SHARED_LIBS=TRUE \
      -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
      -DCLANG_INCLUDE_DOCS=FALSE \
      -DCLANG_INCLUDE_TESTS=FALSE \
@@ -100,21 +73,72 @@ RUN cd ${STAGE_ROOT} \
      -DCLANG_TOOL_C_INDEX_TEST_BUILD=FALSE \
      -DCMAKE_AR=/usr/bin/llvm-ar \
      -DCMAKE_BUILD_TYPE=MinSizeRel \
-     -DCMAKE_C_COMPILER=clang \
-     -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_CXX_COMPILER=clang++ \
-     -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
+     -DCMAKE_C_COMPILER=/usr/bin/clang \
+     -DCMAKE_CXX_COMPILER=/usr/bin/clang++ \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCMAKE_LINKER=/usr/bin/ld.lld \
-     -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_NM=/usr/bin/llvm-nm \
      -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
      -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
      -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
      -DCMAKE_READELF=/usr/bin/llvm-readelf \
-     -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
-     -DCMAKE_STRIP=/usr/bin/llvm-strip \
+     -DCOMPILER_RT_CAN_EXECUTE_TESTS=FALSE \
+     -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
+     -DHAVE_GNU_POSIX_REGEX=TRUE \
+     -DHAVE_INOTIFY=TRUE \
+     -DHAVE_THREAD_SAFETY_ATTRIBUTES=TRUE \
+     -DLLVM_BUILD_EXAMPLES=FALSE \
+     -DLLVM_BUILD_DOCS=FALSE \
+     -DLLVM_BUILD_LLVM_DYLIB=FALSE \
+     -DLLVM_BUILD_TESTS=FALSE \
+     -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS} \
+     -DLLVM_ENABLE_LIBCXX=TRUE \
+     -DLLVM_ENABLE_LLD=TRUE \
+     -DLLVM_ENABLE_PROJECTS="clang;compiler-rt;libcxx;libcxxabi;lld" \
+     -DLLVM_HOST_TRIPLE=${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS} \
+     -DLLVM_INCLUDE_DOCS=FALSE \
+     -DLLVM_INCLUDE_GO_TESTS=FALSE \
+     -DLLVM_INCLUDE_TESTS=FALSE \
+     -DLLVM_LINK_LLVM_DYLIB=FALSE \
+     -DLLVM_TARGETS_TO_BUILD="X86" \
+     -DLLVM_TOOL_LLVM_C_TEST_BUILD=FALSE \
+     ${SOURCE_ROOT}/llvm \
+    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+    && ninja -j${NUM_PROCESSORS} \
+    && ninja -j${NUM_PROCESSORS} install
+
+RUN apt remove -y clang libllvm10 lld \
+    && apt autoremove -y \
+    && cd ${STAGE_ROOT}/install \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+# llvm build
+FROM LLVM_BOOTSTRAP_BUILDER AS LLVM_BUILDER
+
+ENV SOURCE_PACKAGE_NAME=llvm-project
+ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+
+RUN rm -rf ${STAGE_ROOT}/*
+
+RUN cd ${STAGE_ROOT} \
+    && x86_64-linux-gnu-cmake \
+     -DBUILD_SHARED_LIBS=TRUE \
+     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
+     -DCLANG_INCLUDE_DOCS=FALSE \
+     -DCLANG_INCLUDE_TESTS=FALSE \
+     -DCLANG_LINK_CLANG_DYLIB=FALSE \
+     -DCLANG_TOOL_ARCMT_TEST_BUILD=FALSE \
+     -DCLANG_TOOL_CLANG_IMPORT_TEST_BUILD=FALSE \
+     -DCLANG_TOOL_CLANG_REFACTOR_TEST_BUILD=FALSE \
+     -DCLANG_TOOL_C_ARCMT_TEST_BUILD=FALSE \
+     -DCLANG_TOOL_C_INDEX_TEST_BUILD=FALSE \
+     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCOMPILER_RT_CAN_EXECUTE_TESTS=FALSE \
      -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
      -DHAVE_CXX_ATOMICS_WITH_LIB=TRUE \
@@ -145,6 +169,7 @@ RUN cd ${STAGE_ROOT} \
      -DLLVM_TOOL_LLVM_C_TEST_BUILD=FALSE \
      ${SOURCE_ROOT}/llvm \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+    && touch /sources/llvm-project/lldb/source/API/symlink_clang_headers \
     && ninja -j${NUM_PROCESSORS} MLIRCallOpInterfacesIncGen MLIRTypeInferOpInterfaceIncGen \
     && ninja -j${NUM_PROCESSORS} \
     && ninja -j${NUM_PROCESSORS} install
@@ -157,8 +182,33 @@ RUN cd ${STAGE_ROOT}/install \
           ${DEB_PATH}/${PACKAGE_NAME}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
 
+# cmark build
+FROM LLVM_BUILDER AS CMARK_BUILDER
+
+ENV SOURCE_PACKAGE_NAME=swift-cmark
+ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+
+RUN git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git  --single-branch --branch master ${SOURCE_ROOT} \
+    && mkdir -p ${STAGE_ROOT}
+
+RUN cd ${STAGE_ROOT} \
+    && x86_64-linux-gnu-cmake \
+     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+     ${SOURCE_ROOT} \
+    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+    && ninja -j${NUM_PROCESSORS} \
+    && ninja -j${NUM_PROCESSORS} install
+
+RUN cd ${STAGE_ROOT}/install \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb
+
 # swift build
-FROM LLVM_BUILDER AS SWIFT_BUILDER
+FROM CMARK_BUILDER AS SWIFT_BUILDER
 
 ENV SOURCE_PACKAGE_NAME=swift
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
@@ -166,32 +216,13 @@ ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 RUN git clone https://github.com/val-verde/swift-corelibs-libdispatch.git --single-branch --branch dutch-master /sources/swift-corelibs-libdispatch \
     && git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git  --single-branch --branch dutch-master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
+    && mkdir -p ${STAGE_ROOT}
 
 RUN cd ${STAGE_ROOT} \
-    && touch /usr/local/bin/llvm-c-test \
-    && touch /usr/local/bin/clang-import-test \
-    && cmake  \
-     -G Ninja \
-     -DCMAKE_AR=/usr/bin/llvm-ar \
-     -DCMAKE_BUILD_TYPE=MinSizeRel \
-     -DCMAKE_C_COMPILER=/usr/local/bin/clang \
+    && x86_64-linux-gnu-cmake \
      -DCMAKE_C_FLAGS="-I/sources/build-staging/llvm-project/include" \
-     -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
      -DCMAKE_CXX_FLAGS="-I/sources/build-staging/llvm-project/include" \
-     -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-     -DCMAKE_LINKER=/usr/bin/ld.lld \
-     -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
-     -DCMAKE_NM=/usr/bin/llvm-nm \
-     -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
-     -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
-     -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
-     -DCMAKE_READELF=/usr/bin/llvm-readelf \
-     -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
      -DClang_DIR=${PACKAGE_PREFIX}/lib/cmake/clang \
      -DLLVM_BUILD_LIBRARY_DIR=/sources/build-staging/llvm-project/lib \
      -DLLVM_BUILD_MAIN_SRC_DIR=/sources/llvm-project/llvm \
@@ -229,48 +260,33 @@ RUN cd ${STAGE_ROOT}/install \
 FROM SWIFT_BUILDER AS LLDB_BUILDER
 
 ENV SOURCE_PACKAGE_NAME=swift-lldb
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+ENV SOURCE_ROOT=/sources/llvm-project/lldb
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
-RUN mkdir -p ${STAGE_ROOT} \
-             ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
+RUN mkdir -p ${STAGE_ROOT}
 
 RUN cd ${STAGE_ROOT} \
-    && cmake  \
-     -G Ninja \
-     -DCMAKE_AR=/usr/bin/llvm-ar \
-     -DCMAKE_BUILD_TYPE=MinSizeRel \
-     -DCMAKE_C_COMPILER=/usr/local/bin/clang \
-     -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
-     -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
+    && x86_64-linux-gnu-cmake \
+     -DBUILD_SHARED_LIBS=TRUE \
+     -DClang_DIR=${PACKAGE_PREFIX}/lib/cmake/clang \
      -DCMAKE_EXE_LINKER_FLAGS="-O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-     -DCMAKE_LINKER=/usr/bin/ld.lld \
-     -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
-     -DCMAKE_NM=/usr/bin/llvm-nm \
-     -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
-     -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
-     -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
-     -DCMAKE_READELF=/usr/bin/llvm-readelf \
-     -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
-     -DClang_DIR=${PACKAGE_PREFIX}/lib/cmake/clang \
+     -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
      -DLLDB_ENABLE_SWIFT_SUPPORT=TRUE \
      -DLLDB_INCLUDE_TESTS=FALSE \
-     -DLLVM_INSTALL_TOOLCHAIN_ONLY=TRUE \
      -DLLVM_BUILD_MAIN_SRC_DIR=/sources/llvm-project/llvm \
      -DLLVM_ENABLE_LIBCXX=TRUE \
+     -DLLVM_ENABLE_LLD=TRUE \
      -DLLVM_ENABLE_LTO=Full \
-     -DLLVM_INCLUDE_TESTS=FALSE \
+     -DLLVM_LINK_LLVM_DYLIB=FALSE \
      -DLLVM_MAIN_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
      -DLLVM_DIR=${PACKAGE_PREFIX}/lib/cmake/llvm \
      -DLLVM_TABLEGEN=${PACKAGE_ROOT}/bin/llvm-tblgen \
-     -DLLDB_INCLUDE_TESTS=OFF \
      -DSwift_DIR=/sources/build-staging/swift/lib/cmake/swift \
-     /sources/llvm-project/lldb \
-     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-     && ninja -j${NUM_PROCESSORS} \
-     && ninja -j${NUM_PROCESSORS} install
+     ${SOURCE_ROOT} \
+    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+    && ninja -j${NUM_PROCESSORS} \
+    && ninja -j${NUM_PROCESSORS} install
 
 RUN cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
@@ -287,29 +303,13 @@ ENV SOURCE_PACKAGE_NAME=swift-corelibs-libdispatch
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
-RUN mkdir -p ${STAGE_ROOT} \
-             ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
+RUN mkdir -p ${STAGE_ROOT}
 
 RUN cd ${STAGE_ROOT} \
-    && cmake  \
-     -G Ninja \
+    && x86_64-linux-gnu-cmake \
      -DCMAKE_BUILD_TYPE=MinSizeRel \
-     -DCMAKE_AR=/usr/bin/llvm-ar \
-     -DCMAKE_C_COMPILER=/usr/local/bin/clang \
-     -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
-     -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-     -DCMAKE_LINKER=/usr/bin/ld.lld \
-     -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
-     -DCMAKE_NM=/usr/bin/llvm-nm \
-     -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
-     -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
-     -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
-     -DCMAKE_READELF=/usr/bin/llvm-readelf \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-     -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
      -DENABLE_SWIFT=TRUE \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
@@ -331,29 +331,12 @@ ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
+    && mkdir -p ${STAGE_ROOT}
 
 RUN cd ${STAGE_ROOT} \
-    && cmake  \
-     -G Ninja \
-     -DCMAKE_BUILD_TYPE=MinSizeRel \
-     -DCMAKE_AR=/usr/bin/llvm-ar \
-     -DCMAKE_C_COMPILER=/usr/local/bin/clang \
-     -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
-     -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
+    && x86_64-linux-gnu-cmake \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-     -DCMAKE_LINKER=/usr/bin/ld.lld \
-     -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
-     -DCMAKE_NM=/usr/bin/llvm-nm \
-     -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
-     -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
-     -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
-     -DCMAKE_READELF=/usr/bin/llvm-readelf \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-     -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
      -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch/cmake/modules \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
@@ -375,30 +358,13 @@ ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 RUN git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
+    && mkdir -p ${STAGE_ROOT}
 
 RUN cd ${STAGE_ROOT} \
-    && cmake  \
-     -G Ninja \
+    && x86_64-linux-gnu-cmake \
      -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch/cmake/modules \
-     -DCMAKE_BUILD_TYPE=MinSizeRel \
-     -DCMAKE_AR=/usr/bin/llvm-ar \
-     -DCMAKE_C_COMPILER=/usr/local/bin/clang \
-     -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
-     -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-     -DCMAKE_LINKER=/usr/bin/ld.lld \
-     -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
-     -DCMAKE_NM=/usr/bin/llvm-nm \
-     -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
-     -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
-     -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
-     -DCMAKE_READELF=/usr/bin/llvm-readelf \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-     -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
      -DFoundation_DIR=/sources/build-staging/swift-corelibs-foundation/cmake/modules \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
@@ -423,28 +389,12 @@ ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 RUN git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
+    && mkdir -p ${STAGE_ROOT}
 
 RUN cd ${STAGE_ROOT} \
-    && cmake  \
-     -G Ninja \
-     -DCMAKE_AR=/usr/bin/llvm-ar \
-     -DCMAKE_BUILD_TYPE=MinSizeRel \
-     -DCMAKE_C_COMPILER=/usr/local/bin/clang \
-     -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
-     -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
+    && x86_64-linux-gnu-cmake \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-     -DCMAKE_LINKER=/usr/bin/ld.lld \
-     -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
-     -DCMAKE_NM=/usr/bin/llvm-nm \
-     -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
-     -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
-     -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
-     -DCMAKE_READELF=/usr/bin/llvm-readelf \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-     -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
      -DLLBUILD_SUPPORT_BINDINGS=Swift \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
@@ -468,28 +418,12 @@ ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 RUN git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
+    && mkdir -p ${STAGE_ROOT}
 
 RUN cd ${STAGE_ROOT} \
-    && cmake  \
-     -G Ninja \
-     -DCMAKE_AR=/usr/bin/llvm-ar \
-     -DCMAKE_BUILD_TYPE=MinSizeRel \
-     -DCMAKE_C_COMPILER=/usr/local/bin/clang \
-     -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
-     -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
+    && x86_64-linux-gnu-cmake \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-     -DCMAKE_LINKER=/usr/bin/ld.lld \
-     -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
-     -DCMAKE_NM=/usr/bin/llvm-nm \
-     -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
-     -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
-     -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
-     -DCMAKE_READELF=/usr/bin/llvm-readelf \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-     -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS}
@@ -512,8 +446,7 @@ ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 RUN git clone https://github.com/jpsim/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
+    && mkdir -p ${STAGE_ROOT}
 
 COPY patch-yams ${SOURCE_ROOT}
 
@@ -521,24 +454,9 @@ RUN cd ${SOURCE_ROOT} \
     && bash patch-yams
 
 RUN cd ${STAGE_ROOT} \
-    && cmake  \
-     -G Ninja \
-     -DCMAKE_AR=/usr/bin/llvm-ar \
-     -DCMAKE_BUILD_TYPE=MinSizeRel \
-     -DCMAKE_C_COMPILER=/usr/local/bin/clang \
-     -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
-     -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
+    && x86_64-linux-gnu-cmake \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-     -DCMAKE_LINKER=/usr/bin/ld.lld \
-     -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
-     -DCMAKE_NM=/usr/bin/llvm-nm \
-     -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
-     -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
-     -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
-     -DCMAKE_READELF=/usr/bin/llvm-readelf \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-     -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS} \
@@ -559,28 +477,12 @@ ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 RUN git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
+    && mkdir -p ${STAGE_ROOT}
 
 RUN cd ${STAGE_ROOT} \
-    && cmake  \
-     -G Ninja \
-     -DCMAKE_AR=/usr/bin/llvm-ar \
-     -DCMAKE_BUILD_TYPE=MinSizeRel \
-     -DCMAKE_C_COMPILER=/usr/local/bin/clang \
-     -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
-     -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
+    && x86_64-linux-gnu-cmake \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-     -DCMAKE_LINKER=/usr/bin/ld.lld \
-     -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
-     -DCMAKE_NM=/usr/bin/llvm-nm \
-     -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
-     -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
-     -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
-     -DCMAKE_READELF=/usr/bin/llvm-readelf \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-     -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
      -DLLBuild_DIR=/sources/build-staging/swift-llbuild/cmake/modules \
      -DTSC_DIR=/sources/build-staging/swift-tools-support-core/cmake/modules \
      -DYams_DIR=/sources/build-staging/yams/cmake/modules \
@@ -606,29 +508,12 @@ ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
+    && mkdir -p ${STAGE_ROOT}
 
 RUN cd ${STAGE_ROOT} \
-    && cmake  \
-     -G Ninja \
-     -DCMAKE_AR=/usr/bin/llvm-ar \
-     -DCMAKE_BUILD_TYPE=MinSizeRel \
-     -DCMAKE_C_COMPILER=/usr/local/bin/clang \
-     -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
-     -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
+    && x86_64-linux-gnu-cmake \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-     -DCMAKE_LINKER=/usr/bin/ld.lld \
-     -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
-     -DCMAKE_NM=/usr/bin/llvm-nm \
-     -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
-     -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
-     -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
-     -DCMAKE_READELF=/usr/bin/llvm-readelf \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-     -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
      -DLLBuild_DIR=/sources/build-staging/swift-llbuild/cmake/modules \
      -DSwiftDriver_DIR=/sources/build-staging/swift-driver/cmake/modules \
      -DTSC_DIR=/sources/build-staging/swift-tools-support-core/cmake/modules \
@@ -650,6 +535,17 @@ RUN cd ${STAGE_ROOT}/install \
 
 ENV LD_LIBRARY_PATH=${PACKAGE_ROOT}/lib
 
+# swift build config
+ENV SWIFTPM_BUILD_ARGS="\
+    -Xcc -Oz \
+    -Xcxx -Oz \
+    -Xlinker -s \
+    -Xlinker -O2 \
+    -Xswiftc -whole-module-optimization \
+    -Xswiftc -Osize \
+    --configuration release \
+    --enable-test-discovery"
+
 # swift-syntax build
 FROM SWIFTPM_BUILDER AS SWIFT_SYNTAX_BUILDER
 
@@ -658,22 +554,14 @@ ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
+    && mkdir -p ${STAGE_ROOT}
 
 RUN cd ${SOURCE_ROOT} \
-    && swift build \
-        -Xcc -Oz \
-        -Xcxx -Oz \
-        -Xlinker -s \
-        -Xlinker -O2 \
-        -Xswiftc -whole-module-optimization \
-        -Xswiftc -Osize \
-        --build-path ${STAGE_ROOT} \
-        --configuration release \
-        --enable-test-discovery
+    && swift build ${SWIFTPM_BUILD_ARGS} \
+                   --build-path ${STAGE_ROOT}
 
 RUN cd ${STAGE_ROOT} \
+    && find . \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
     && mkdir -p .${PACKAGE_ROOT}/lib/swift/linux \
     && rsync -aPx release/Swift*.swiftdoc .${PACKAGE_ROOT}/lib/swift \
@@ -693,20 +581,12 @@ ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 RUN git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
+    && mkdir -p ${STAGE_ROOT}
 
 RUN cd ${SOURCE_ROOT} \
-    && swift build \
-        -Xcc -Oz \
-        -Xcxx -Oz \
-        -Xlinker -s \
-        -Xlinker -O2 \
-        -Xswiftc -whole-module-optimization \
-        -Xswiftc -Osize \
-        --build-path ${STAGE_ROOT} \
-        --configuration release \
-        --enable-test-discovery
+    && swift build ${SWIFTPM_BUILD_ARGS} \
+                   --build-path ${STAGE_ROOT}
+
 
 RUN cd ${STAGE_ROOT} \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
@@ -726,20 +606,11 @@ ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 RUN git clone https://github.com/SwiftDocOrg/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
+    && mkdir -p ${STAGE_ROOT}
 
 RUN cd ${SOURCE_ROOT} \
-    && swift build \
-        -Xcc -Oz \
-        -Xcxx -Oz \
-        -Xlinker -s \
-        -Xlinker -O2 \
-        -Xswiftc -whole-module-optimization \
-        -Xswiftc -Osize \
-        --build-path ${STAGE_ROOT} \
-        --configuration release \
-        --enable-test-discovery
+    && swift build ${SWIFTPM_BUILD_ARGS} \
+                   --build-path ${STAGE_ROOT}
 
 RUN cd ${STAGE_ROOT} \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
@@ -759,29 +630,12 @@ ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 RUN git clone https://github.com/pvieito/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}-${HOST_PROCESSOR}
+    && mkdir -p ${STAGE_ROOT}
 
 RUN cd ${STAGE_ROOT} \
-    && cmake  \
-     -G Ninja \
-     -DCMAKE_AR=/usr/bin/llvm-ar \
-     -DCMAKE_BUILD_TYPE=MinSizeRel \
-     -DCMAKE_C_COMPILER=/usr/local/bin/clang \
-     -DCMAKE_C_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++ \
-     -DCMAKE_CXX_FLAGS_MINSIZEREL="-Oz" \
-     -DCMAKE_EXE_LINKER_FLAGS="-s -O2" \
+    && x86_64-linux-gnu-cmake \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-     -DCMAKE_LINKER=/usr/bin/ld.lld \
-     -DCMAKE_MODULE_LINKER_FLAGS="-s -O2" \
-     -DCMAKE_NM=/usr/bin/llvm-nm \
-     -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
-     -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
-     -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
-     -DCMAKE_READELF=/usr/bin/llvm-readelf \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-     -DCMAKE_SHARED_LINKER_FLAGS="-s -O2" \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS} \
