@@ -1,0 +1,6 @@
+language: generic
+deploy:
+    provider: script
+    script: bash scripts/updateRepo
+    on:
+        branch: enhancements/travis-integration

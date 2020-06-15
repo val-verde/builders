@@ -1,0 +1,119 @@
+#!/bin/bash
+
+set -e
+
+GIT_INDEX_OVERRIDE=${GIT_INDEX_OVERRIDE:-0}
+
+ABS_PATH=$(realpath $0)
+PARENT_DIR_PATH=$(dirname $ABS_PATH)
+PWD_PATH=$(dirname $PARENT_DIR_PATH)
+TOOL_DIR_PATH=$PWD_PATH/backends/bash/compiler-tools
+
+SOURCE_FILE=${SOURCE_FILE:-$TOOL_DIR_PATH/share/val-verde-sources.json}
+UPSTREAM_BRANCH=${UPSTREAM_BRANCH:-master}
+UPSTREAM_TAG=${UPSTREAM_TAG:-''}
+
+sourceCount=$(jq -r length ${SOURCE_FILE})
+
+function expand-urls() {
+    if [[ ${URL_TO_EXPAND} == *'${SOURCE_PACKAGE_NAME}'* ]]; then
+        echo ${URL_TO_EXPAND//'${SOURCE_PACKAGE_NAME}'/${SOURCE_PACKAGE_NAME}}
+    else
+        echo ${URL_TO_EXPAND}
+    fi
+}
+
+function determine-git-source-package() {
+    if [[ ${SOURCE_BRANCH_IND} == "default" ]]; then
+        SOURCE_BRANCH=val-verde-mainline
+    elif [[ ${SOURCE_BRANCH_IND} == "default-next" ]]; then
+        SOURCE_BRANCH=val-verde-mainline-next
+    elif [[ ${SOURCE_BRANCH_IND} == "default-next-testing" ]]; then
+        SOURCE_BRANCH=val-verde-mainline-next-testing
+    elif [[ ${SOURCE_BRANCH_IND} == "android" ]]; then
+        SOURCE_BRANCH=val-verde-android-mainline
+        PACKAGE_NAME=${PACKAGE_NAME}-android
+    elif [[ ${SOURCE_BRANCH_IND} == "android-next" ]]; then
+        SOURCE_BRANCH=val-verde-android-mainline-next
+        PACKAGE_NAME=${PACKAGE_NAME}-android
+    elif [[ ${SOURCE_BRANCH_IND} == "android-next-testing" ]]; then
+        SOURCE_BRANCH=val-verde-android-mainline-next
+        PACKAGE_NAME=${PACKAGE_NAME}-android
+    elif [[ ${SOURCE_BRANCH_IND} == "windows" ]]; then
+        SOURCE_BRANCH=val-verde-windows-mainline
+        PACKAGE_NAME=${PACKAGE_NAME}-windows
+    else
+        SOURCE_BRANCH=${SOURCE_BRANCH_IND}
+    fi
+}
+
+for index in `seq "${GIT_INDEX_OVERRIDE}" $(($sourceCount - 1))`; do    repoIndex=$((i * 4))
+    SOURCE_PACKAGE_NAME=$(jq -r --argjson id $index \
+                                '.[$id].sourcePackageName' \
+                                ${SOURCE_FILE})
+    SOURCE_BRANCH_IND=$(jq -r --argjson id $index \
+                              '.[$id].sourceBranchIndicator' \
+                              ${SOURCE_FILE})
+    SOURCE_PACKAGE_VERSION=$(jq -r --argjson id $index \
+                                '.[$id].sourcePackageVersion' \
+                                ${SOURCE_FILE})
+    SOURCE_TYPE=$(jq -r --argjson id $index \
+                        '.[$id].sourceType' \
+                        ${SOURCE_FILE})
+    SOURCE_URL=$(jq -r --argjson id $index \
+                        '.[$id].sourcePackageUrl' \
+                        ${SOURCE_FILE})
+    UPSTREAM_URL=$(jq -r --argjson id $index \
+                        '.[$id].upstreamUrl' \
+                        ${SOURCE_FILE})
+
+    PACKAGE_BASE_URL=${SOURCE_URL/'${VAL_VERDE_GH_TEAM}'/${VAL_VERDE_GH_TEAM}}
+
+    PACKAGE_URL=$(URL_TO_EXPAND=${PACKAGE_BASE_URL} \
+    SOURCE_PACKAGE_NAME=${SOURCE_PACKAGE_NAME} \
+    expand-urls)
+
+    UPSTREAM_PACKAGE_URL=$(URL_TO_EXPAND=${UPSTREAM_URL} \
+    expand-urls)
+
+    git config --global user.email "openvalverde@gmail.com"
+
+    if [[  ${SOURCE_TYPE} = 'git' ]]; then
+        determine-git-source-package
+    fi
+
+    if [[ ${SOURCE_BRANCH_IND} = 'default' ]]; then
+        git clone ${PACKAGE_URL}
+
+        pushd ${SOURCE_PACKAGE_NAME}
+        git checkout ${VAL_VERDE_GH_TEAM}-mainline
+        git remote add upstream ${UPSTREAM_PACKAGE_URL}
+        git remote -v
+        git fetch upstream ${SOURCE_BRANCH}
+        git rebase upstream/${SOURCE_BRANCH}
+        git push -f
+        popd
+
+        rm -rf ${SOURCE_PACKAGE_NAME}
+    fi
+
+    # branchIndex=$((i * 4 + 1))
+    # builderBranchIndex=$((i * 4 + 2))
+    # upstreamIndex=$((i * 4 + 3))
+    # repo=${repoArray[$repoIndex]}
+    # branch=${repoArray[$branchIndex]}
+    # builderBranch=${repoArray[$builderBranchIndex]}
+    # upstream=${repoArray[$upstreamIndex]}
+    # echo $upstream
+    # git clone $repo -b $branch repo
+    # pushd repo
+    # git remote add upstream $upstream
+    # git fetch upstream $branch
+    # git rebase upstream/$branch
+    # git push -f
+    # git checkout $builderBranch
+    # git rebase origin/$branch
+    # git push -f
+    # popd
+    # rm -rf repo
+done
