@@ -1160,10 +1160,18 @@ ENV SOURCE_PACKAGE_NAME=swift
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
 
+RUN cd /sources/llvm-project \
+    && git checkout dutch-master \
+    && cd ${SOURCE_ROOT} \
+    && git fetch origin dutch-master \
+    && git checkout origin/dutch-master \
+    && git log --oneline -10
+
 RUN mkdir -p ${STAGE_ROOT} \
     && cd ${STAGE_ROOT} \
     && export ANDROID_NDK_HOME=${PACKAGE_ROOT}/android-ndk-r21c \
     && ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-cmake \
+           -DCMAKE_CXX_FLAGS="-I${PACKAGE_PREFIX}/include -Wno-unused-command-line-argument" \
            -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
            -DClang_DIR=/sources/build-staging/llvm-project-${HOST_OS}-${HOST_PROCESSOR}/lib/cmake/clang \
            -DICU_I18N_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
@@ -1181,7 +1189,7 @@ RUN mkdir -p ${STAGE_ROOT} \
            -DLLVM_MAIN_INCLUDE_DIR=/sources/llvm-project/llvm/include \
            -DLLVM_DIR=/sources/build-staging/llvm-project-${HOST_OS}-${HOST_PROCESSOR}/lib/cmake/llvm \
            -DLLVM_TABLEGEN=${PACKAGE_ROOT}/bin/llvm-tblgen \
-           -DSWIFT_ANDROID_NATIVE_SYSROOT=${ANDROID_NDK_HOME}/sysroot \
+           -DSWIFT_ANDROID_NATIVE_SYSROOT=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/${HOST_KERNEL}-${HOST_PROCESSOR}/sysroot \
            -DSWIFT_ANDROID_API_LEVEL=${HOST_OS_API_LEVEL} \
            -DSWIFT_ANDROID_DEPLOY_DEVICE_PATH=/data/local/tmp/swift-tests \
            -DSWIFT_ANDROID_NDK_GCC_VERSION=4.9 \
@@ -1199,7 +1207,7 @@ RUN mkdir -p ${STAGE_ROOT} \
            -DSWIFT_NATIVE_CLANG_TOOLS_PATH=${PACKAGE_ROOT}/bin \
            -DSWIFT_NATIVE_LLVM_TOOLS_PATH=${PACKAGE_ROOT}/bin \
            -DSWIFT_NATIVE_SWIFT_TOOLS_PATH=${PACKAGE_ROOT}/bin \
-           -DSWIFT_TOOLS_ENABLE_LTO=Full \
+           -DSWIFT_TOOLS_ENABLE_LTO=OFF \
            -DUUID_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
            -DUUID_LIBRARY=${PACKAGE_PREFIX}/lib/libuuid.so \
            ${SOURCE_ROOT} \
@@ -1214,6 +1222,140 @@ RUN cd ${STAGE_ROOT}/install \
     && mv *${SOURCE_PACKAGE_NAME}*.deb \
           ${DEB_PATH}/${PACKAGE_NAME}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+# android lldb build
+FROM ANDROID_SWIFT_BUILDER AS ANDROID_LLDB_BUILDER
+
+ENV SOURCE_PACKAGE_NAME=swift-lldb
+ENV SOURCE_ROOT=/sources/llvm-project/lldb
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
+
+RUN mkdir -p ${STAGE_ROOT}
+
+RUN cd ${STAGE_ROOT} \
+    && ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-cmake \
+           -DBUILD_SHARED_LIBS=TRUE \
+           -DClang_DIR=/sources/build-staging/llvm-project-${HOST_OS}-${HOST_PROCESSOR}/lib/cmake/clang \
+           -DCMAKE_EXE_LINKER_FLAGS="-O2" \
+           -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+           -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
+           -DLibEdit_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
+           -DLibEdit_LIBRARIES=${PACKAGE_PREFIX}/lib/libedit.so \
+           -DLIBLZMA_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+           -DLIBLZMA_LIBRARY=${PACKAGE_PREFIX}/lib/liblzma.so \
+           -DLIBXML2_INCLUDE_DIR=${PACKAGE_PREFIX}/include/libxml2 \
+           -DLIBXML2_LIBRARY=${PACKAGE_PREFIX}/lib/libxml2.so \
+           -DLLDB_ENABLE_SWIFT_SUPPORT=TRUE \
+           -DLLDB_INCLUDE_TESTS=FALSE \
+           -DLLDB_PATH_TO_NATIVE_SWIFT_BUILD=/sources/build-staging/swift-${HOST_OS}-${HOST_PROCESSOR}/lib/cmake/swift \
+           -DLLDB_TABLEGEN=/sources/build-staging/swift-lldb/bin/lldb-tblgen \
+           -DLLVM_BUILD_MAIN_SRC_DIR=/sources/llvm-project/llvm \
+           -DLLVM_ENABLE_LIBCXX=TRUE \
+           -DLLVM_ENABLE_LLD=TRUE \
+           -DLLVM_ENABLE_LTO=Full \
+           -DLLVM_LINK_LLVM_DYLIB=FALSE \
+           -DLLVM_MAIN_INCLUDE_DIR=/sources/llvm-project/llvm/include \
+           -DLLVM_DIR=/sources/build-staging/llvm-project-${HOST_OS}-${HOST_PROCESSOR}/lib/cmake/llvm \
+           -DLLVM_TABLEGEN=${PACKAGE_ROOT}/bin/llvm-tblgen \
+           -DNATIVE_Clang_DIR=${PACKAGE_ROOT}/lib/cmake/clang \
+           -DNATIVE_LLVM_DIR=${PACKAGE_ROOT}/lib/cmake/lib \
+           -DSwift_DIR=/sources/build-staging/swift-${HOST_OS}-${HOST_PROCESSOR}/lib/cmake/swift \
+           ${SOURCE_ROOT} \
+    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+    && ninja -j${NUM_PROCESSORS} \
+    && ninja -j${NUM_PROCESSORS} install
+
+RUN cd ${STAGE_ROOT}/install \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+# # android libdispatch build
+# FROM ANDROID_LLDB_BUILDER AS ANDROID_LIBDISPATCH_BUILDER
+
+# ENV SOURCE_PACKAGE_NAME=swift-corelibs-libdispatch
+# ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+# ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
+
+# RUN mkdir -p ${STAGE_ROOT}
+
+# RUN cd ${STAGE_ROOT} \
+#     && ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-cmake \
+#            -DCMAKE_BUILD_TYPE=MinSizeRel \
+#            -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+#            -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
+#            -DCMAKE_Swift_FLAGS="-target ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}" \
+#            -DENABLE_SWIFT=TRUE \
+#            ${SOURCE_ROOT} \
+#     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+#     && ninja -j${NUM_PROCESSORS} \
+#     && ninja -j${NUM_PROCESSORS} install
+
+# RUN cd ${STAGE_ROOT}/install \
+#     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+#     && tar cf ${PACKAGE_NAME}.tar usr/ \
+#     && alien ${PACKAGE_NAME}.tar \
+#     && mv *${SOURCE_PACKAGE_NAME}*.deb \
+#           ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+# # foundation build
+# FROM ANDROID_LIBDISPATCH_BUILDER AS ANDROID_FOUNDATION_BUILDER
+
+# ENV SOURCE_PACKAGE_NAME=swift-corelibs-foundation
+# ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+# ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
+
+# RUN mkdir -p ${STAGE_ROOT}
+
+# RUN cd ${STAGE_ROOT} \
+#     && ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-cmake \
+#            -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+#            -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
+#            -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch/cmake/modules \
+#            ${SOURCE_ROOT} \
+#     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+#     && ninja -j${NUM_PROCESSORS} \
+#     && ninja -j${NUM_PROCESSORS} install
+
+# RUN cd ${STAGE_ROOT}/install \
+#     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+#     && tar cf ${PACKAGE_NAME}.tar usr/ \
+#     && alien ${PACKAGE_NAME}.tar \
+#     && mv *${SOURCE_PACKAGE_NAME}*.deb \
+#           ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+# # xctest build
+# FROM ANDROID_FOUNDATION_BUILDER AS ANDROID_XCTEST_BUILDER
+
+# ENV SOURCE_PACKAGE_NAME=swift-corelibs-xctest
+# ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+# ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
+
+# RUN mkdir -p ${STAGE_ROOT}
+
+# RUN cd ${STAGE_ROOT} \
+#     && ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-cmake \
+#            -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch/cmake/modules \
+#            -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+#            -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
+#            -DFoundation_DIR=/sources/build-staging/swift-corelibs-foundation/cmake/modules \
+#            ${SOURCE_ROOT} \
+#     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+#     && ninja -j${NUM_PROCESSORS} \
+#     && ninja -j${NUM_PROCESSORS} install
+
+# RUN cd ${STAGE_ROOT}/install \
+#     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+#     && tar cf ${PACKAGE_NAME}.tar usr/ \
+#     && alien ${PACKAGE_NAME}.tar \
+#     && mv *${SOURCE_PACKAGE_NAME}*.deb \
+#           ${DEB_PATH}/${PACKAGE_NAME}.deb \
+#     && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}-${HOST_PROCESSOR}.deb \
+#     && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}-${HOST_PROCESSOR}.deb \
+#     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
 
 CMD []
 ENTRYPOINT ["tail", "-f", "/dev/null"]
