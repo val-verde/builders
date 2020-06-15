@@ -649,9 +649,6 @@ RUN cd ${STAGE_ROOT}/install \
           ${DEB_PATH}/${PACKAGE_NAME}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
 
-### android build ###
-RUN apt install -y unzip
-
 # android-ndk package
 FROM PYTHONKIT_BUILDER AS ANDROID_NDK_BUILDER
 
