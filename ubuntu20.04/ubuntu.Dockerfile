@@ -680,6 +680,7 @@ ENV HOST_KERNEL=linux
 ENV HOST_OS=android
 ENV HOST_OS_API_LEVEL=29
 ENV HOST_PROCESSOR=aarch64
+ENV PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/usr
 
 # android build helpers
 COPY ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-configure ${PACKAGE_ROOT}/bin
@@ -697,7 +698,6 @@ ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT_PHASE_1=/sources/build-staging/${SOURCE_PACKAGE_NAME}-phase-1
 ENV STAGE_ROOT_PHASE_2=/sources/build-staging/${SOURCE_PACKAGE_NAME}-phase-2
 ENV UCONFIG_PATH=/sources/${SOURCE_PACKAGE_NAME}/source/common/unicode
-ENV PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
 
 COPY icu-uconfig-prepend.h .
 
@@ -1161,8 +1161,7 @@ RUN cd /sources/llvm-project \
     && git checkout dutch-master \
     && cd ${SOURCE_ROOT} \
     && git fetch origin dutch-master \
-    && git checkout origin/dutch-master \
-    && git log --oneline -10
+    && git checkout origin/dutch-master
 
 RUN mkdir -p ${STAGE_ROOT} \
     && cd ${STAGE_ROOT} \
