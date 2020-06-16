@@ -45,6 +45,19 @@ ENV HOST_TRIPLE_SHORTENED=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}
 ENV HOST_TRIPLE=${HOST_TRIPLE_SHORTENED}
 ENV PACKAGE_PREFIX=${PACKAGE_ROOT}
 
+ENV LD_LIBRARY_PATH=${PACKAGE_ROOT}/lib
+
+# swift build config
+ENV SWIFTPM_BUILD_ARGS="\
+    -Xcc -Oz \
+    -Xcxx -Oz \
+    -Xlinker -s \
+    -Xlinker -O2 \
+    -Xswiftc -whole-module-optimization \
+    -Xswiftc -Osize \
+    --configuration release \
+    --enable-test-discovery"
+
 # cmake wrapper post llvm build
 COPY x86_64-linux-gnu-cmake ${PACKAGE_ROOT}/bin
 RUN chmod +x ${PACKAGE_ROOT}/bin/x86_64-linux-gnu-cmake
@@ -57,9 +70,8 @@ ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT}
-
-RUN cd ${STAGE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
     && cmake \
      -G Ninja \
      -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
@@ -105,9 +117,8 @@ RUN cd ${STAGE_ROOT} \
      ${SOURCE_ROOT}/llvm \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install
-
-RUN apt remove -y clang libllvm10 lld \
+    && ninja -j${NUM_PROCESSORS} install \
+    && apt remove -y clang libllvm10 lld \
     && apt autoremove -y \
     && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
@@ -124,9 +135,8 @@ ENV SOURCE_PACKAGE_NAME=llvm-project
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
-RUN rm -rf ${STAGE_ROOT}/*
-
-RUN cd ${STAGE_ROOT} \
+RUN rm -rf ${STAGE_ROOT}/* \
+    && cd ${STAGE_ROOT} \
     && x86_64-linux-gnu-cmake \
      -DBUILD_SHARED_LIBS=TRUE \
      -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
@@ -172,9 +182,8 @@ RUN cd ${STAGE_ROOT} \
     && touch /sources/llvm-project/lldb/source/API/symlink_clang_headers \
     && ninja -j${NUM_PROCESSORS} MLIRCallOpInterfacesIncGen MLIRTypeInferOpInterfaceIncGen \
     && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install
-
-RUN cd ${STAGE_ROOT}/install \
+    && ninja -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
@@ -182,25 +191,79 @@ RUN cd ${STAGE_ROOT}/install \
           ${DEB_PATH}/${PACKAGE_NAME}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
 
+# icu build
+FROM LLVM_BUILDER AS ICU_BUILDER
+
+ENV SOURCE_PACKAGE_NAME=icu4c-67_1
+ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+ENV UCONFIG_PATH=/sources/${SOURCE_PACKAGE_NAME}/source/common/unicode
+
+COPY icu-uconfig-prepend.h .
+
+RUN cd /sources \
+    && wget -c https://github.com/unicode-org/icu/releases/download/release-67-1/${SOURCE_PACKAGE_NAME}-src.tgz \
+    && tar -zxf ${SOURCE_PACKAGE_NAME}-src.tgz \
+    && mv icu ${SOURCE_PACKAGE_NAME} \
+    && mkdir -p ${STAGE_ROOT} \
+    && echo "$(cat icu-uconfig-prepend.h) $(cat $UCONFIG_PATH/uconfig.h)" \
+             > ${UCONFIG_PATH}/uconfig.h \
+    && cd ${STAGE_ROOT} \
+    && ${SOURCE_ROOT}/source/configure \AR=${PACKAGE_ROOT}/bin/llvm-ar \
+           AS=${PACKAGE_ROOT}/bin/llvm-as \
+           CC=${PACKAGE_ROOT}/bin/clang \
+           CFLAGS="-flto -Oz" \
+           CXX=${PACKAGE_ROOT}/bin/clang++ \
+           CXXFLAGS="-flto -Oz" \
+           LD=${PACKAGE_ROOT}/bin/ld.lld \
+           LDFLAGS="-flto -s -O2" \
+           LIBTOOLFLAGS="-avoid-version" \
+           NM=${PACKAGE_ROOT}/bin/llvm-nm \
+           OBJCOPY=${PACKAGE_ROOT}/bin/llvm-objcopy \
+           OBJDUMP=${PACKAGE_ROOT}/bin/llvm-objdump \
+           RANLIB=${PACKAGE_ROOT}/bin/llvm-ranlib \
+           READELF=${PACKAGE_ROOT}/bin/llvm-readelf \
+           SIZE=${PACKAGE_ROOT}/bin/llvm-size \
+           STRIP=${PACKAGE_ROOT}/bin/llvm-strip \
+           STRINGS=${PACKAGE_ROOT}/bin/llvm-strings \
+           --build=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS} \
+           --host=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS} \
+           --disable-extras \
+           --disable-samples \
+           --disable-static \
+           --disable-tests \
+           --enable-shared \
+           --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+           --with-library-suffix=swift \
+    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+    && make -j${NUM_PROCESSORS} \
+    && make -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *.deb ${SOURCE_PACKAGE_NAME}.deb \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
 # cmark build
-FROM LLVM_BUILDER AS CMARK_BUILDER
+FROM ICU_BUILDER AS CMARK_BUILDER
 
 ENV SOURCE_PACKAGE_NAME=swift-cmark
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 RUN git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git  --single-branch --branch master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT}
-
-RUN cd ${STAGE_ROOT} \
+    && mkdir -p ${STAGE_ROOT}\
+    && cd ${STAGE_ROOT} \
     && x86_64-linux-gnu-cmake \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install
-
-RUN cd ${STAGE_ROOT}/install \
+    && ninja -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
@@ -216,14 +279,17 @@ ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 RUN git clone https://github.com/val-verde/swift-corelibs-libdispatch.git --single-branch --branch dutch-master /sources/swift-corelibs-libdispatch \
     && git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git  --single-branch --branch dutch-master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT}
-
-RUN cd ${STAGE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
     && x86_64-linux-gnu-cmake \
      -DCMAKE_C_FLAGS="-I/sources/build-staging/llvm-project/include" \
      -DCMAKE_CXX_FLAGS="-I/sources/build-staging/llvm-project/include" \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DClang_DIR=${PACKAGE_PREFIX}/lib/cmake/clang \
+     -DICU_I18N_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
+     -DICU_I18N_LIBRARIES=${PACKAGE_PREFIX}/lib/libicui18nswift.so \
+     -DICU_UC_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
+     -DICU_UC_LIBRARIES=${PACKAGE_PREFIX}/lib/libicuucswift.so \
      -DLLVM_BUILD_LIBRARY_DIR=/sources/build-staging/llvm-project/lib \
      -DLLVM_BUILD_MAIN_SRC_DIR=/sources/llvm-project/llvm \
      -DLLVM_ENABLE_LIBCXX=TRUE \
@@ -246,9 +312,8 @@ RUN cd ${STAGE_ROOT} \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install
-
-RUN cd ${STAGE_ROOT}/install \
+    && ninja -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
@@ -263,9 +328,8 @@ ENV SOURCE_PACKAGE_NAME=swift-lldb
 ENV SOURCE_ROOT=/sources/llvm-project/lldb
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
-RUN mkdir -p ${STAGE_ROOT}
-
-RUN cd ${STAGE_ROOT} \
+RUN mkdir -p ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
     && x86_64-linux-gnu-cmake \
      -DBUILD_SHARED_LIBS=TRUE \
      -DClang_DIR=${PACKAGE_PREFIX}/lib/cmake/clang \
@@ -286,9 +350,8 @@ RUN cd ${STAGE_ROOT} \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install
-
-RUN cd ${STAGE_ROOT}/install \
+    && ninja -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
@@ -314,9 +377,8 @@ RUN cd ${STAGE_ROOT} \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install
-
-RUN cd ${STAGE_ROOT}/install \
+    && ninja -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
@@ -331,9 +393,8 @@ ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT}
-
-RUN cd ${STAGE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
     && x86_64-linux-gnu-cmake \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
@@ -341,9 +402,8 @@ RUN cd ${STAGE_ROOT} \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install
-
-RUN cd ${STAGE_ROOT}/install \
+    && ninja -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
@@ -358,9 +418,8 @@ ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 RUN git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT}
-
-RUN cd ${STAGE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
     && x86_64-linux-gnu-cmake \
      -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch/cmake/modules \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
@@ -369,9 +428,8 @@ RUN cd ${STAGE_ROOT} \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install
-
-RUN cd ${STAGE_ROOT}/install \
+    && ninja -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
@@ -389,9 +447,8 @@ ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 RUN git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT}
-
-RUN cd ${STAGE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
     && x86_64-linux-gnu-cmake \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
@@ -399,9 +456,8 @@ RUN cd ${STAGE_ROOT} \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install
-
-RUN cd ${STAGE_ROOT}/install \
+    && ninja -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
     && rsync -aPx ${STAGE_ROOT}/lib/*.so* .${PACKAGE_ROOT}/lib \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
@@ -418,17 +474,15 @@ ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 RUN git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT}
-
-RUN cd ${STAGE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
     && x86_64-linux-gnu-cmake \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && ninja -j${NUM_PROCESSORS}
-
-RUN cd ${STAGE_ROOT} \
+    && ninja -j${NUM_PROCESSORS} \
+    && cd ${STAGE_ROOT} \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
     && mkdir -p .${PACKAGE_ROOT} \
     && rsync -aPx lib .${PACKAGE_ROOT} \
@@ -451,18 +505,16 @@ RUN git clone https://github.com/jpsim/${SOURCE_PACKAGE_NAME}.git --single-branc
 COPY patch-yams ${SOURCE_ROOT}
 
 RUN cd ${SOURCE_ROOT} \
-    && bash patch-yams
-
-RUN cd ${STAGE_ROOT} \
+    && bash patch-yams \
+    && cd ${STAGE_ROOT} \
     && x86_64-linux-gnu-cmake \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install
-
-RUN cd ${STAGE_ROOT}/install \
+    && ninja -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
@@ -477,9 +529,8 @@ ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 RUN git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT}
-
-RUN cd ${STAGE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
     && x86_64-linux-gnu-cmake \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
@@ -488,9 +539,8 @@ RUN cd ${STAGE_ROOT} \
      -DYams_DIR=/sources/build-staging/yams/cmake/modules \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && ninja -j${NUM_PROCESSORS}
-
-RUN cd ${STAGE_ROOT} \
+    && ninja -j${NUM_PROCESSORS} \
+    && cd ${STAGE_ROOT} \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
     && mkdir -p .${PACKAGE_ROOT} \
     && rsync -aPx bin lib .${PACKAGE_ROOT} \
@@ -508,9 +558,8 @@ ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT}
-
-RUN cd ${STAGE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
     && x86_64-linux-gnu-cmake \
      -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
      -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
@@ -521,9 +570,8 @@ RUN cd ${STAGE_ROOT} \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install
-
-RUN cd ${STAGE_ROOT}/install \
+    && ninja -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
     && rsync -aPx ${STAGE_ROOT}/bin ${STAGE_ROOT}/lib .${PACKAGE_ROOT} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
@@ -533,19 +581,6 @@ RUN cd ${STAGE_ROOT}/install \
     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-yams-${HOST_OS}-${HOST_PROCESSOR}.deb
 
-ENV LD_LIBRARY_PATH=${PACKAGE_ROOT}/lib
-
-# swift build config
-ENV SWIFTPM_BUILD_ARGS="\
-    -Xcc -Oz \
-    -Xcxx -Oz \
-    -Xlinker -s \
-    -Xlinker -O2 \
-    -Xswiftc -whole-module-optimization \
-    -Xswiftc -Osize \
-    --configuration release \
-    --enable-test-discovery"
-
 # swift-syntax build
 FROM SWIFTPM_BUILDER AS SWIFT_SYNTAX_BUILDER
 
@@ -554,14 +589,11 @@ ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT}
-
-RUN cd ${SOURCE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+    && cd ${SOURCE_ROOT} \
     && swift build ${SWIFTPM_BUILD_ARGS} \
-                   --build-path ${STAGE_ROOT}
-
-RUN cd ${STAGE_ROOT} \
-    && find . \
+                   --build-path ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
     && mkdir -p .${PACKAGE_ROOT}/lib/swift/linux \
     && rsync -aPx release/Swift*.swiftdoc .${PACKAGE_ROOT}/lib/swift \
@@ -581,14 +613,11 @@ ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 RUN git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT}
-
-RUN cd ${SOURCE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+    && cd ${SOURCE_ROOT} \
     && swift build ${SWIFTPM_BUILD_ARGS} \
-                   --build-path ${STAGE_ROOT}
-
-
-RUN cd ${STAGE_ROOT} \
+                   --build-path ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
     && mkdir -p .${PACKAGE_ROOT}/bin \
     && rsync -aPx release/swift-format .${PACKAGE_ROOT}/bin \
@@ -606,13 +635,11 @@ ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 RUN git clone https://github.com/SwiftDocOrg/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT}
-
-RUN cd ${SOURCE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+    && cd ${SOURCE_ROOT} \
     && swift build ${SWIFTPM_BUILD_ARGS} \
-                   --build-path ${STAGE_ROOT}
-
-RUN cd ${STAGE_ROOT} \
+                   --build-path ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
     && mkdir -p .${PACKAGE_ROOT}/bin \
     && rsync -aPx release/swift-doc .${PACKAGE_ROOT}/bin \
@@ -630,18 +657,16 @@ ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 RUN git clone https://github.com/pvieito/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT}
-
-RUN cd ${STAGE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
     && x86_64-linux-gnu-cmake \
-     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-     -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
+           -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+           -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
      ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install
-
-RUN cd ${STAGE_ROOT}/install \
+    && ninja -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
@@ -653,21 +678,20 @@ RUN cd ${STAGE_ROOT}/install \
 FROM PYTHONKIT_BUILDER AS ANDROID_NDK_BUILDER
 
 ENV ANDROID_NDK_URL=https://dl.google.com/android/repository
-ENV SOURCE_PACKAGE_NAME=android-ndk-r21c
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+ENV SOURCE_PACKAGE_NAME=android-ndk
+ENV SOURCE_PACKAGE_VERSION=r21c
+ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 RUN mkdir ${SOURCE_ROOT} \
     && cd ${SOURCE_ROOT} \
-    && wget -c ${ANDROID_NDK_URL}/${SOURCE_PACKAGE_NAME}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.zip \
-    && unzip ${SOURCE_PACKAGE_NAME}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.zip \
-    && mkdir -p ${STAGE_ROOT}
-
-RUN cd ${STAGE_ROOT} \
+    && wget -c ${ANDROID_NDK_URL}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.zip \
+    && unzip ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.zip \
+    && mkdir -p ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
     && mkdir -p install/${PACKAGE_ROOT} \
-    && mv ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME} install/${PACKAGE_ROOT}
-
-RUN cd ${STAGE_ROOT}/install \
+    && mv ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} install/${PACKAGE_ROOT} \
+    && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
@@ -686,6 +710,7 @@ ENV PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}$
 COPY ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-configure ${PACKAGE_ROOT}/bin
 COPY ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-configure ${PACKAGE_ROOT}/bin
 COPY ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-cmake ${PACKAGE_ROOT}/bin
+
 RUN chmod +x ${PACKAGE_ROOT}/bin/${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-configure \
     && chmod +x ${PACKAGE_ROOT}/bin/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-configure \
     && chmod +x ${PACKAGE_ROOT}/bin/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-cmake
@@ -693,39 +718,12 @@ RUN chmod +x ${PACKAGE_ROOT}/bin/${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-
 # android icu build
 FROM ANDROID_NDK_BUILDER AS ANDROID_ICU_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=icu4c-67_1
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-ENV STAGE_ROOT_PHASE_1=/sources/build-staging/${SOURCE_PACKAGE_NAME}-phase-1
-ENV STAGE_ROOT_PHASE_2=/sources/build-staging/${SOURCE_PACKAGE_NAME}-phase-2
-ENV UCONFIG_PATH=/sources/${SOURCE_PACKAGE_NAME}/source/common/unicode
+ENV SOURCE_PACKAGE_NAME=icu4c
+ENV SOURCE_PACKAGE_VERSION=67_1
+ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
 
-COPY icu-uconfig-prepend.h .
-
-RUN cd /sources \
-    && wget -c https://github.com/unicode-org/icu/releases/download/release-67-1/${SOURCE_PACKAGE_NAME}-src.tgz \
-    && tar -zxf ${SOURCE_PACKAGE_NAME}-src.tgz \
-    && mv icu ${SOURCE_PACKAGE_NAME} \
-    && mkdir -p ${STAGE_ROOT_PHASE_1} \
-                ${STAGE_ROOT_PHASE_2} \
-    && echo "$(cat icu-uconfig-prepend.h) $(cat $UCONFIG_PATH/uconfig.h)" \
-        > ${UCONFIG_PATH}/uconfig.h
-
-#Phase 1 build
-RUN cd ${STAGE_ROOT_PHASE_1} \
-    && ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-configure \
-           ${SOURCE_ROOT}/source/configure \
-           --disable-extras \
-           --disable-samples \
-           --disable-static \
-           --disable-tests \
-           --enable-shared \
-           --prefix=${STAGE_ROOT_PHASE_1}/install/usr \
-           --with-library-suffix=swift \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && make -j${NUM_PROCESSORS}
-
-#Phase 2 build
-RUN cd ${STAGE_ROOT_PHASE_2} \
+RUN cd ${SOURCE_ROOT} \
     && ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-configure \
            ${SOURCE_ROOT}/source/configure \
            --disable-extras \
@@ -734,14 +732,13 @@ RUN cd ${STAGE_ROOT_PHASE_2} \
            --disable-tests \
            --disable-tools \
            --enable-shared \
-           --prefix=${STAGE_ROOT_PHASE_2}/install${PACKAGE_PREFIX} \
-           --with-cross-build=${STAGE_ROOT_PHASE_1} \
+           --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+           --with-cross-build=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
            --with-library-suffix=swift \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && make -j${NUM_PROCESSORS} \
-    && make -j${NUM_PROCESSORS} install
-
-RUN cd ${STAGE_ROOT_PHASE_2}/install \
+    && make -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
@@ -756,23 +753,21 @@ FROM ANDROID_ICU_BUILDER AS ANDROID_XZ_BUILDER
 ENV SOURCE_PACKAGE_NAME=xz
 ENV SOURCE_PACKAGE_VERSION=5.2.5
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
 
 RUN cd /sources \
     && wget -c https://tukaani.org/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
-    && mkdir -p ${STAGE_ROOT}
-
-RUN cd ${STAGE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
     && ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-configure \
            ${SOURCE_ROOT}/configure \
            --disable-static \
            --enable-shared \
            --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
     && make -j${NUM_PROCESSORS} \
-    && make -j${NUM_PROCESSORS} install
-
-RUN cd ${STAGE_ROOT}/install \
+    && make -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
@@ -786,14 +781,13 @@ FROM ANDROID_XZ_BUILDER AS ANDROID_XML_BUILDER
 ENV SOURCE_PACKAGE_NAME=libxml2
 ENV SOURCE_PACKAGE_VERSION=2.9.10
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
 
 RUN cd /sources \
     && wget -c http://xmlsoft.org/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
-    && mkdir -p ${STAGE_ROOT}
-
-RUN cd ${STAGE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
     && CFLAGS="-I${PACKAGE_PREFIX}/include" \
        ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-configure \
            ${SOURCE_ROOT}/configure \
@@ -804,9 +798,8 @@ RUN cd ${STAGE_ROOT} \
            --without-python \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && make -j${NUM_PROCESSORS} \
-    && make -j${NUM_PROCESSORS} install
-
-RUN cd ${STAGE_ROOT}/install \
+    && make -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
@@ -820,16 +813,15 @@ FROM ANDROID_XML_BUILDER AS ANDROID_UUID_BUILDER
 ENV SOURCE_PACKAGE_NAME=libuuid
 ENV SOURCE_PACKAGE_VERSION=1.0.3
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
 
 RUN cd /sources \
     && wget -c https://sourceforge.net/projects/libuuid/files/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz/download \
     && mv download ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && mkdir -p ${STAGE_ROOT} \
-                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
-
-RUN cd ${STAGE_ROOT} \
+                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
+    && cd ${STAGE_ROOT} \
     && ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-configure \
            ${SOURCE_ROOT}/configure \
            --disable-static \
@@ -837,9 +829,8 @@ RUN cd ${STAGE_ROOT} \
            --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && make -j${NUM_PROCESSORS} \
-    && make -j${NUM_PROCESSORS} install
-
-RUN cd ${STAGE_ROOT}/install \
+    && make -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
@@ -853,16 +844,15 @@ FROM ANDROID_UUID_BUILDER AS ANDROID_NCURSES_BUILDER
 ENV SOURCE_PACKAGE_NAME=ncurses
 ENV SOURCE_PACKAGE_VERSION=6.2
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
 
 RUN cd /sources \
     && wget -c https://ftp.gnu.org/gnu/ncurses/ncurses-6.2.tar.gz \
     && rm -rf ${STAGE_ROOT}/* \
     && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && mkdir -p ${STAGE_ROOT} \
-                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
-
-RUN cd ${STAGE_ROOT} \
+                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
+    && cd ${STAGE_ROOT} \
     && OPTIMIZATION_LEVEL=3 \
        ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-configure \
            ${SOURCE_ROOT}/configure \
@@ -888,9 +878,8 @@ RUN cd ${STAGE_ROOT} \
            --without-tests \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && make -j${NUM_PROCESSORS} \
-    && make -j${NUM_PROCESSORS} install
-
-RUN cd ${STAGE_ROOT}/install \
+    && make -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
@@ -904,15 +893,14 @@ FROM ANDROID_NCURSES_BUILDER AS ANDROID_LIBEDIT_BUILDER
 ENV SOURCE_PACKAGE_NAME=libedit
 ENV SOURCE_PACKAGE_VERSION=20191231-3.1
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
 
 RUN cd /sources \
     && wget -c https://www.thrysoee.dk/editline/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && mkdir -p ${STAGE_ROOT} \
-                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
-
-RUN cd ${STAGE_ROOT} \
+                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
+    && cd ${STAGE_ROOT} \
     && CFLAGS="-I${PACKAGE_PREFIX}/include -I${PACKAGE_PREFIX}/include/ncurses -D__STDC_ISO_10646__=201103L -DNBBY=CHAR_BIT" \
        LDFLAGS="-L${PACKAGE_PREFIX}/lib" \
        ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-configure \
@@ -922,9 +910,8 @@ RUN cd ${STAGE_ROOT} \
            --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && make -j${NUM_PROCESSORS} \
-    && make -j${NUM_PROCESSORS} install
-
-RUN cd ${STAGE_ROOT}/install \
+    && make -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
@@ -938,14 +925,13 @@ FROM ANDROID_LIBEDIT_BUILDER AS ANDROID_SQLITE3_BUILDER
 ENV SOURCE_PACKAGE_NAME=sqlite
 ENV SOURCE_PACKAGE_VERSION=autoconf-3310100
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
 
 RUN cd /sources \
     && wget -c https://sqlite.org/2020/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
-    && mkdir -p ${STAGE_ROOT}
-
-RUN cd ${STAGE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
     && ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-configure \
            ${SOURCE_ROOT}/configure \
            --disable-static \
@@ -953,9 +939,8 @@ RUN cd ${STAGE_ROOT} \
            --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && make -j${NUM_PROCESSORS} \
-    && make -j${NUM_PROCESSORS} install
-
-RUN cd ${STAGE_ROOT}/install \
+    && make -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
@@ -969,14 +954,13 @@ FROM ANDROID_SQLITE3_BUILDER AS ANDROID_OPENSSL_BUILDER
 ENV SOURCE_PACKAGE_NAME=openssl
 ENV SOURCE_PACKAGE_VERSION=1.1.1g
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
 
 RUN cd /sources \
     && wget -c https://www.openssl.org/source/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
-    && mkdir -p ${STAGE_ROOT}
-
-RUN cd ${STAGE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
     && export ANDROID_NDK_HOME=${PACKAGE_ROOT}/android-ndk-r21c \
     && export PATH=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}/bin:${PATH} \
     && ${SOURCE_ROOT}/Configure \
@@ -986,9 +970,8 @@ RUN cd ${STAGE_ROOT} \
            --openssldir=etc/ssl \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && make -j${NUM_PROCESSORS} \
-    && make -j${NUM_PROCESSORS} install
-
-RUN cd ${STAGE_ROOT}/install \
+    && make -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
@@ -1002,14 +985,13 @@ FROM ANDROID_OPENSSL_BUILDER AS ANDROID_CURL_BUILDER
 ENV SOURCE_PACKAGE_NAME=curl
 ENV SOURCE_PACKAGE_VERSION=7.70.0
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
 
 RUN cd /sources \
     && wget -c https://curl.haxx.se/download/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
-    && mkdir -p ${STAGE_ROOT}
-
-RUN cd ${STAGE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
     && ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-configure \
            ${SOURCE_ROOT}/configure \
            --disable-doc \
@@ -1019,9 +1001,8 @@ RUN cd ${STAGE_ROOT} \
            --with-ssl=${PACKAGE_PREFIX} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && make -j${NUM_PROCESSORS} \
-    && make -j${NUM_PROCESSORS} install
-
-RUN cd ${STAGE_ROOT}/install \
+    && make -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
@@ -1035,23 +1016,21 @@ FROM ANDROID_CURL_BUILDER AS ANDROID_LIBEXPAT_BUILDER
 ENV SOURCE_PACKAGE_NAME=expat
 ENV SOURCE_PACKAGE_VERSION=2.2.9
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
 
 RUN cd /sources \
     && wget -c https://github.com/libexpat/libexpat/releases/download/R_2_2_9/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
-    && mkdir -p ${STAGE_ROOT}
-
-RUN cd ${STAGE_ROOT} \
+    && mkdir -p ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
     && ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-configure \
            ${SOURCE_ROOT}/configure \
            --disable-static \
            --enable-shared \
            --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
     && make -j${NUM_PROCESSORS} \
-    && make -j${NUM_PROCESSORS} install
-
-RUN cd ${STAGE_ROOT}/install \
+    && make -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
@@ -1065,12 +1044,12 @@ FROM ANDROID_LIBEXPAT_BUILDER AS ANDROID_LLVM_BUILDER
 ENV SOURCE_PACKAGE_NAME=llvm-project
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
+
 RUN cd ${SOURCE_ROOT} \
     && git remote set-branches --add origin dutch-android-master \
     && git fetch origin dutch-android-master \
-    && git checkout dutch-android-master
-
-RUN mkdir -p ${STAGE_ROOT} \
+    && git checkout dutch-android-master \
+    && mkdir -p ${STAGE_ROOT} \
     && cd ${STAGE_ROOT} \
     && ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-cmake \
            -DBUILD_SHARED_LIBS=TRUE \
@@ -1118,9 +1097,8 @@ RUN mkdir -p ${STAGE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS} MLIRCallOpInterfacesIncGen MLIRTypeInferOpInterfaceIncGen \
     && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install
-
-RUN cd ${STAGE_ROOT}/install \
+    && ninja -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
@@ -1141,9 +1119,8 @@ RUN mkdir -p ${STAGE_ROOT} \
            ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install
-
-RUN cd ${STAGE_ROOT}/install \
+    && ninja -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
@@ -1161,9 +1138,8 @@ RUN cd /sources/llvm-project \
     && git checkout dutch-master \
     && cd ${SOURCE_ROOT} \
     && git fetch origin dutch-master \
-    && git checkout origin/dutch-master
-
-RUN mkdir -p ${STAGE_ROOT} \
+    && git checkout origin/dutch-master \
+    && mkdir -p ${STAGE_ROOT} \
     && cd ${STAGE_ROOT} \
     && export ANDROID_NDK_HOME=${PACKAGE_ROOT}/android-ndk-r21c \
     && ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-cmake \
@@ -1209,9 +1185,8 @@ RUN mkdir -p ${STAGE_ROOT} \
            ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install
-
-RUN cd ${STAGE_ROOT}/install \
+    && ninja -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
@@ -1226,9 +1201,8 @@ ENV SOURCE_PACKAGE_NAME=swift-lldb
 ENV SOURCE_ROOT=/sources/llvm-project/lldb
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
 
-RUN mkdir -p ${STAGE_ROOT}
-
-RUN cd ${STAGE_ROOT} \
+RUN mkdir -p ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
     && ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-cmake \
            -DBUILD_SHARED_LIBS=TRUE \
            -DClang_DIR=/sources/build-staging/llvm-project-${HOST_OS}-${HOST_PROCESSOR}/lib/cmake/clang \
@@ -1259,9 +1233,8 @@ RUN cd ${STAGE_ROOT} \
            ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install
-
-RUN cd ${STAGE_ROOT}/install \
+    && ninja -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
     && alien ${PACKAGE_NAME}.tar \
@@ -1269,15 +1242,14 @@ RUN cd ${STAGE_ROOT}/install \
           ${DEB_PATH}/${PACKAGE_NAME}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
 
-# android ndk runtime build
+# android ndk headers build
 FROM ANDROID_LLDB_BUILDER AS ANDROID_NDK_HEADERS_BUILDER
 
 ENV SOURCE_PACKAGE_NAME=ndk-headers
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
 
-RUN mkdir -p ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT}
+RUN mkdir -p ${SOURCE_ROOT}
 
 COPY android-ndk-linux-time-h.diff ${SOURCE_ROOT}
 
@@ -1311,8 +1283,7 @@ ENV SOURCE_PACKAGE_NAME=ndk-runtime
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
 
-RUN mkdir -p ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/include \
+RUN mkdir -p ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/include \
     && export TOOLCHAIN_ROOT=${PACKAGE_ROOT}/android-ndk-r21c/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR} \
     && export SYSROOT=${TOOLCHAIN_ROOT}/sysroot \
     && rsync -aPx ${TOOLCHAIN_ROOT}/lib/gcc/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/4.9.x/*.a \
@@ -1401,9 +1372,8 @@ ENV SOURCE_PACKAGE_NAME=swift-corelibs-xctest
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
 
-RUN mkdir -p ${STAGE_ROOT}
-
-RUN cd ${STAGE_ROOT} \
+RUN mkdir -p ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
     && ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-cmake \
            -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}-${HOST_PROCESSOR}/cmake/modules \
            -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
