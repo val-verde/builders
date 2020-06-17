@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PACKAGE_BINROOT=${PACKAGE_ROOT}/bin
-CLANG_COMMON_ARGS=-Oz
+CLANG_COMMON_ARGS="-march=haswell -mtune=haswell -Oz"
 LLD_COMMON_ARGS="-s -O2"
 
 cmake \

@@ -4,9 +4,9 @@
     AR=${PACKAGE_ROOT}/bin/llvm-ar \
     AS=${PACKAGE_ROOT}/bin/llvm-as \
     CC=${PACKAGE_ROOT}/bin/clang \
-    CFLAGS="-flto -Oz" \
+    CFLAGS="-flto -march=haswell -mtune=haswell -Oz" \
     CXX=${PACKAGE_ROOT}/bin/clang++ \
-    CXXFLAGS="-flto -Oz" \
+    CXXFLAGS="-flto -march=haswell -mtune=haswell -Oz" \
     LD=${PACKAGE_ROOT}/bin/ld.lld \
     LDFLAGS="-flto -s -O2" \
     LIBTOOLFLAGS="-avoid-version" \
