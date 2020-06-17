@@ -65,11 +65,10 @@ RUN chmod +x ${PACKAGE_ROOT}/bin/x86_64-linux-gnu-cmake
 # llvm bootstrap build
 FROM BASE AS LLVM_BOOTSTRAP_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=llvm-project
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
-
-RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT} \
+RUN export SOURCE_PACKAGE_NAME=llvm-project \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
+    && git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT} \
     && mkdir -p ${STAGE_ROOT} \
     && cd ${STAGE_ROOT} \
     && cmake \
@@ -131,11 +130,10 @@ RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-b
 # llvm build
 FROM LLVM_BOOTSTRAP_BUILDER AS LLVM_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=llvm-project
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
-
-RUN rm -rf ${STAGE_ROOT}/* \
+RUN export SOURCE_PACKAGE_NAME=llvm-project \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
+    && rm -rf ${STAGE_ROOT}/* \
     && cd ${STAGE_ROOT} \
     && x86_64-linux-gnu-cmake \
      -DBUILD_SHARED_LIBS=TRUE \
@@ -194,14 +192,13 @@ RUN rm -rf ${STAGE_ROOT}/* \
 # icu build
 FROM LLVM_BUILDER AS ICU_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=icu4c-67_1
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
-ENV UCONFIG_PATH=/sources/${SOURCE_PACKAGE_NAME}/source/common/unicode
-
 COPY icu-uconfig-prepend.h .
 
-RUN cd /sources \
+RUN export SOURCE_PACKAGE_NAME=icu4c-67_1 \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
+    && export UCONFIG_PATH=/sources/${SOURCE_PACKAGE_NAME}/source/common/unicode \
+    && cd /sources \
     && wget -c https://github.com/unicode-org/icu/releases/download/release-67-1/${SOURCE_PACKAGE_NAME}-src.tgz \
     && tar -zxf ${SOURCE_PACKAGE_NAME}-src.tgz \
     && mv icu ${SOURCE_PACKAGE_NAME} \
