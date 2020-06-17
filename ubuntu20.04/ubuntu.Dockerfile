@@ -299,11 +299,10 @@ RUN export SOURCE_PACKAGE_NAME=swift \
 # lldb build
 FROM SWIFT_BUILDER AS LLDB_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=swift-lldb
-ENV SOURCE_ROOT=/sources/llvm-project/lldb
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
-
-RUN mkdir -p ${STAGE_ROOT} \
+RUN export SOURCE_PACKAGE_NAME=swift-lldb \
+    && export SOURCE_ROOT=/sources/llvm-project/lldb \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
+    && mkdir -p ${STAGE_ROOT} \
     && cd ${STAGE_ROOT} \
     && ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
            -DBUILD_SHARED_LIBS=TRUE \
@@ -337,13 +336,11 @@ RUN mkdir -p ${STAGE_ROOT} \
 # libdispatch build
 FROM LLDB_BUILDER AS LIBDISPATCH_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=swift-corelibs-libdispatch
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
-
-RUN mkdir -p ${STAGE_ROOT}
-
-RUN cd ${STAGE_ROOT} \
+RUN export SOURCE_PACKAGE_NAME=swift-corelibs-libdispatch \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
+    && mkdir -p ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
     && ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
            -DCMAKE_BUILD_TYPE=MinSizeRel \
            -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
@@ -363,11 +360,10 @@ RUN cd ${STAGE_ROOT} \
 # foundation build
 FROM LIBDISPATCH_BUILDER AS FOUNDATION_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=swift-corelibs-foundation
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
-
-RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT} \
+RUN export SOURCE_PACKAGE_NAME=swift-corelibs-foundation \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
+    && git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT} \
     && mkdir -p ${STAGE_ROOT} \
     && cd ${STAGE_ROOT} \
     && ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
@@ -388,11 +384,10 @@ RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-b
 # xctest build
 FROM FOUNDATION_BUILDER AS XCTEST_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=swift-corelibs-xctest
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
-
-RUN git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
+RUN export SOURCE_PACKAGE_NAME=swift-corelibs-xctest \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
+    && git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
     && mkdir -p ${STAGE_ROOT} \
     && cd ${STAGE_ROOT} \
     && ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
