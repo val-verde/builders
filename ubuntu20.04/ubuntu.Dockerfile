@@ -1245,15 +1245,14 @@ RUN mkdir -p ${STAGE_ROOT} \
 # android ndk headers build
 FROM ANDROID_LLDB_BUILDER AS ANDROID_NDK_HEADERS_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=ndk-headers
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
+RUN mkdir -p /sources/ndk-headers
 
-RUN mkdir -p ${SOURCE_ROOT}
+COPY android-ndk-linux-time-h.diff /sources/ndk-headers
 
-COPY android-ndk-linux-time-h.diff ${SOURCE_ROOT}
-
-RUN mkdir -p ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/include \
+RUN export SOURCE_PACKAGE_NAME=ndk-headers \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && mkdir -p ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/include \
     && export TOOLCHAIN_ROOT=${PACKAGE_ROOT}/android-ndk-r21c/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR} \
     && export SYSROOT=${TOOLCHAIN_ROOT}/sysroot \
     && cp -p ${SYSROOT}/usr/include/*.h ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/include \
@@ -1279,11 +1278,10 @@ RUN mkdir -p ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/include \
 # android ndk runtime build
 FROM ANDROID_NDK_HEADERS_BUILDER AS ANDROID_NDK_RUNTIME_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=ndk-runtime
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
-
-RUN mkdir -p ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/include \
+RUN export SOURCE_PACKAGE_NAME=ndk-runtime \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && mkdir -p ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/include \
     && export TOOLCHAIN_ROOT=${PACKAGE_ROOT}/android-ndk-r21c/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR} \
     && export SYSROOT=${TOOLCHAIN_ROOT}/sysroot \
     && rsync -aPx ${TOOLCHAIN_ROOT}/lib/gcc/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/4.9.x/*.a \
@@ -1301,11 +1299,10 @@ RUN mkdir -p ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/include \
 # android libdispatch build
 FROM ANDROID_NDK_RUNTIME_BUILDER AS ANDROID_LIBDISPATCH_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=swift-corelibs-libdispatch
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
-
-RUN mkdir -p ${STAGE_ROOT} \
+RUN export SOURCE_PACKAGE_NAME=swift-corelibs-libdispatch \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && mkdir -p ${STAGE_ROOT} \
     && cd ${STAGE_ROOT} \
     && ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-cmake \
            -DCMAKE_BUILD_TYPE=MinSizeRel \
@@ -1332,11 +1329,10 @@ RUN apt remove -y ${PACKAGE_BASE_NAME}-ndk-headers-${HOST_OS}${HOST_OS_API_LEVEL
 # foundation build
 FROM ANDROID_LIBDISPATCH_BUILDER AS ANDROID_FOUNDATION_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=swift-corelibs-foundation
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
-
-RUN mkdir -p ${STAGE_ROOT} \
+RUN export SOURCE_PACKAGE_NAME=swift-corelibs-foundation \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && mkdir -p ${STAGE_ROOT} \
     && cd ${STAGE_ROOT} \
     && patch -i /sources/ndk-headers/android-ndk-linux-time-h.diff \
                 ${PACKAGE_ROOT}/android-ndk-r21c/sysroot/usr/include/linux/time.h \
@@ -1368,11 +1364,10 @@ RUN mkdir -p ${STAGE_ROOT} \
 # xctest build
 FROM ANDROID_FOUNDATION_BUILDER AS ANDROID_XCTEST_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=swift-corelibs-xctest
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
-
-RUN mkdir -p ${STAGE_ROOT} \
+RUN export SOURCE_PACKAGE_NAME=swift-corelibs-xctest \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && mkdir -p ${STAGE_ROOT} \
     && cd ${STAGE_ROOT} \
     && ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-cmake \
            -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}-${HOST_PROCESSOR}/cmake/modules \
