@@ -649,7 +649,7 @@ FROM PYTHONKIT_BUILDER AS ANDROID_NDK_BUILDER
 
 ENV ANDROID_NDK_URL=https://dl.google.com/android/repository
 ENV SOURCE_PACKAGE_NAME=android-ndk
-ENV SOURCE_PACKAGE_VERSION=r21c
+ENV SOURCE_PACKAGE_VERSION=r21d
 ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
@@ -674,7 +674,7 @@ ENV HOST_KERNEL=linux
 ENV HOST_OS=android
 ENV HOST_OS_API_LEVEL=29
 ENV HOST_PROCESSOR=aarch64
-ENV PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/usr
+ENV PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot/usr
 
 # android build helpers
 COPY ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-configure ${PACKAGE_ROOT}/bin
@@ -929,7 +929,7 @@ RUN cd /sources \
     && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && mkdir -p ${STAGE_ROOT} \
     && cd ${STAGE_ROOT} \
-    && export ANDROID_NDK_HOME=${PACKAGE_ROOT}/android-ndk-r21c \
+    && export ANDROID_NDK_HOME=${PACKAGE_ROOT}/android-ndk-r21d \
     && export PATH=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}/bin:${PATH} \
     && ${SOURCE_ROOT}/Configure \
            ${HOST_OS}-arm64 \
@@ -1102,7 +1102,7 @@ RUN cd /sources/llvm-project \
     && git checkout origin/dutch-master \
     && mkdir -p ${STAGE_ROOT} \
     && cd ${STAGE_ROOT} \
-    && export ANDROID_NDK_HOME=${PACKAGE_ROOT}/android-ndk-r21c \
+    && export ANDROID_NDK_HOME=${PACKAGE_ROOT}/android-ndk-r21d \
     && ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-cmake \
            -DCMAKE_CXX_FLAGS="-I${PACKAGE_PREFIX}/include -Wno-unused-command-line-argument" \
            -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
@@ -1214,7 +1214,7 @@ RUN export SOURCE_PACKAGE_NAME=ndk-headers \
     && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
     && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
     && mkdir -p ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/include \
-    && export TOOLCHAIN_ROOT=${PACKAGE_ROOT}/android-ndk-r21c/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR} \
+    && export TOOLCHAIN_ROOT=${PACKAGE_ROOT}/android-ndk-r21d/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR} \
     && export SYSROOT=${TOOLCHAIN_ROOT}/sysroot \
     && cp -p ${SYSROOT}/usr/include/*.h ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/include \
     && rsync -aPx ${SYSROOT}/usr/include/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
@@ -1243,7 +1243,7 @@ RUN export SOURCE_PACKAGE_NAME=ndk-runtime \
     && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
     && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
     && mkdir -p ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/include \
-    && export TOOLCHAIN_ROOT=${PACKAGE_ROOT}/android-ndk-r21c/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR} \
+    && export TOOLCHAIN_ROOT=${PACKAGE_ROOT}/android-ndk-r21d/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR} \
     && export SYSROOT=${TOOLCHAIN_ROOT}/sysroot \
     && rsync -aPx ${TOOLCHAIN_ROOT}/lib/gcc/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/4.9.x/*.a \
                   ${SYSROOT}/usr/lib/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/*.so \
@@ -1269,7 +1269,7 @@ RUN export SOURCE_PACKAGE_NAME=swift-corelibs-libdispatch \
            -DCMAKE_BUILD_TYPE=MinSizeRel \
            -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
            -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-           -DCMAKE_Swift_FLAGS="-sdk ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} -target ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}" \
+           -DCMAKE_Swift_FLAGS="-sdk ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot -target ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}" \
            -DENABLE_SWIFT=TRUE \
            ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
@@ -1296,12 +1296,12 @@ RUN export SOURCE_PACKAGE_NAME=swift-corelibs-foundation \
     && mkdir -p ${STAGE_ROOT} \
     && cd ${STAGE_ROOT} \
     && patch -i /sources/ndk-headers/android-ndk-linux-time-h.diff \
-                ${PACKAGE_ROOT}/android-ndk-r21c/sysroot/usr/include/linux/time.h \
+                ${PACKAGE_ROOT}/android-ndk-r21d/sysroot/usr/include/linux/time.h \
     && ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-cmake \
            -DCMAKE_C_FLAGS="-I${PACKAGE_PREFIX}/include" \
            -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
            -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-           -DCMAKE_Swift_FLAGS="-I${PACKAGE_ROOT}/android-ndk-r21c/sysroot/usr/include -I${PACKAGE_ROOT}/android-ndk-r21c/sysroot/usr/include/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} -sdk ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} -target ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}" \
+           -DCMAKE_Swift_FLAGS="-I${PACKAGE_ROOT}/android-ndk-r21d/sysroot/usr/include -I${PACKAGE_ROOT}/android-ndk-r21d/sysroot/usr/include/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} -sdk ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot -target ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}" \
            -DICU_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
            -DICU_LIBRARY=${PACKAGE_PREFIX}/lib/libicudataswift.so \
            -DICU_I18N_LIBRARY_RELEASE=${PACKAGE_PREFIX}/lib/libicui18nswift.so \
@@ -1334,7 +1334,7 @@ RUN export SOURCE_PACKAGE_NAME=swift-corelibs-xctest \
            -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}-${HOST_PROCESSOR}/cmake/modules \
            -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
            -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-           -DCMAKE_Swift_FLAGS="-sdk ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} -target ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}" \
+           -DCMAKE_Swift_FLAGS="-sdk ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot -target ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}" \
            -DFoundation_DIR=/sources/build-staging/swift-corelibs-foundation-${HOST_OS}-${HOST_PROCESSOR}/cmake/modules \
            ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
