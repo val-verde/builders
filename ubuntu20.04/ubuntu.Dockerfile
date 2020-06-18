@@ -683,8 +683,62 @@ COPY ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-cmake ${PACKAGE_ROOT}/bin
 RUN chmod +x ${PACKAGE_ROOT}/bin/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-configure \
     && chmod +x ${PACKAGE_ROOT}/bin/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-cmake
 
+# android ndk headers build
+FROM ANDROID_NDK_BUILDER AS ANDROID_NDK_HEADERS_BUILDER
+
+RUN mkdir -p /sources/ndk-headers
+
+COPY android-ndk-linux-time-h.diff /sources/ndk-headers
+
+RUN export SOURCE_PACKAGE_NAME=ndk-headers \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && mkdir -p ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/include \
+    && export TOOLCHAIN_ROOT=${PACKAGE_ROOT}/android-ndk-r21d/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR} \
+    && export SYSROOT=${TOOLCHAIN_ROOT}/sysroot \
+    && cp -p ${SYSROOT}/usr/include/*.h ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/include \
+    && rsync -aPx ${SYSROOT}/usr/include/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
+                  ${SYSROOT}/usr/include/android \
+                  ${SYSROOT}/usr/include/asm-generic \
+                  ${SYSROOT}/usr/include/bits \
+                  ${SYSROOT}/usr/include/c++ \
+                  ${SYSROOT}/usr/include/linux \
+                  ${SYSROOT}/usr/include/netinet \
+                  ${SYSROOT}/usr/include/sys \
+                  ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/include\
+    && patch -i ${SOURCE_ROOT}/android-ndk-linux-time-h.diff \
+                ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/include/linux/time.h\
+    && cd ${STAGE_ROOT}/install \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+# android ndk runtime build
+FROM ANDROID_NDK_HEADERS_BUILDER AS ANDROID_NDK_RUNTIME_BUILDER
+
+RUN export SOURCE_PACKAGE_NAME=ndk-runtime \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && mkdir -p ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/include \
+    && export TOOLCHAIN_ROOT=${PACKAGE_ROOT}/android-ndk-r21d/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR} \
+    && export SYSROOT=${TOOLCHAIN_ROOT}/sysroot \
+    && rsync -aPx ${TOOLCHAIN_ROOT}/lib/gcc/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/4.9.x/*.a \
+                  ${SYSROOT}/usr/lib/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/*.so \
+                  ${SYSROOT}/usr/lib/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/${HOST_OS_API_LEVEL}/* \
+                  ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/lib \
+    && cd ${STAGE_ROOT}/install \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
 # android icu build
-FROM ANDROID_NDK_BUILDER AS ANDROID_ICU_BUILDER
+FROM ANDROID_NDK_RUNTIME_BUILDER AS ANDROID_ICU_BUILDER
 
 ENV SOURCE_PACKAGE_NAME=icu4c
 ENV SOURCE_PACKAGE_VERSION=67_1
@@ -1203,62 +1257,8 @@ RUN mkdir -p ${STAGE_ROOT} \
           ${DEB_PATH}/${PACKAGE_NAME}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
 
-# android ndk headers build
-FROM ANDROID_LLDB_BUILDER AS ANDROID_NDK_HEADERS_BUILDER
-
-RUN mkdir -p /sources/ndk-headers
-
-COPY android-ndk-linux-time-h.diff /sources/ndk-headers
-
-RUN export SOURCE_PACKAGE_NAME=ndk-headers \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && mkdir -p ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/include \
-    && export TOOLCHAIN_ROOT=${PACKAGE_ROOT}/android-ndk-r21d/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR} \
-    && export SYSROOT=${TOOLCHAIN_ROOT}/sysroot \
-    && cp -p ${SYSROOT}/usr/include/*.h ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/include \
-    && rsync -aPx ${SYSROOT}/usr/include/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-                  ${SYSROOT}/usr/include/android \
-                  ${SYSROOT}/usr/include/asm-generic \
-                  ${SYSROOT}/usr/include/bits \
-                  ${SYSROOT}/usr/include/c++ \
-                  ${SYSROOT}/usr/include/linux \
-                  ${SYSROOT}/usr/include/netinet \
-                  ${SYSROOT}/usr/include/sys \
-                  ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/include\
-    && patch -i ${SOURCE_ROOT}/android-ndk-linux-time-h.diff \
-                ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/include/linux/time.h\
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
-
-# android ndk runtime build
-FROM ANDROID_NDK_HEADERS_BUILDER AS ANDROID_NDK_RUNTIME_BUILDER
-
-RUN export SOURCE_PACKAGE_NAME=ndk-runtime \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && mkdir -p ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/include \
-    && export TOOLCHAIN_ROOT=${PACKAGE_ROOT}/android-ndk-r21d/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR} \
-    && export SYSROOT=${TOOLCHAIN_ROOT}/sysroot \
-    && rsync -aPx ${TOOLCHAIN_ROOT}/lib/gcc/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/4.9.x/*.a \
-                  ${SYSROOT}/usr/lib/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/*.so \
-                  ${SYSROOT}/usr/lib/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/${HOST_OS_API_LEVEL}/* \
-                  ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/lib \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
-
 # android libdispatch build
-FROM ANDROID_NDK_RUNTIME_BUILDER AS ANDROID_LIBDISPATCH_BUILDER
+FROM ANDROID_LLDB_BUILDER AS ANDROID_LIBDISPATCH_BUILDER
 
 RUN export SOURCE_PACKAGE_NAME=swift-corelibs-libdispatch \
     && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
