@@ -1,0 +1,8 @@
+#!/bin/bash
+
+SYSROOT=${PACKAGE_ROOT}/val-verde-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot
+
+${PACKAGE_ROOT}/bin/clang \
+    -target ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL} \
+    --sysroot=${SYSROOT} \
+    "$@"

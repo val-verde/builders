@@ -679,9 +679,13 @@ ENV PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}$
 # android build helpers
 COPY ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-configure ${PACKAGE_ROOT}/bin
 COPY ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-cmake ${PACKAGE_ROOT}/bin
+COPY val-verde-platform-sdk-clang ${PACKAGE_ROOT}/bin
+COPY val-verde-platform-sdk-clang++ ${PACKAGE_ROOT}/bin
 
 RUN chmod +x ${PACKAGE_ROOT}/bin/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-configure \
-    && chmod +x ${PACKAGE_ROOT}/bin/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-cmake
+    && chmod +x ${PACKAGE_ROOT}/bin/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-cmake \
+    && chmod +x ${PACKAGE_ROOT}/bin/val-verde-platform-sdk-clang \
+    && chmod +x ${PACKAGE_ROOT}/bin/val-verde-platform-sdk-clang++
 
 # android ndk headers build
 FROM ANDROID_NDK_BUILDER AS ANDROID_NDK_HEADERS_BUILDER
@@ -1060,14 +1064,13 @@ RUN cd /sources \
           ${DEB_PATH}/${PACKAGE_NAME}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
 
-# llvm build
+# android llvm build
 FROM ANDROID_LIBEXPAT_BUILDER AS ANDROID_LLVM_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=llvm-project
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
-
-RUN cd ${SOURCE_ROOT} \
+RUN export SOURCE_PACKAGE_NAME=llvm-project \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && cd ${SOURCE_ROOT} \
     && git remote set-branches --add origin dutch-android-master \
     && git fetch origin dutch-android-master \
     && git checkout dutch-android-master \
@@ -1142,6 +1145,9 @@ RUN mkdir -p ${STAGE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS}
 
+# android swift build doesn't work with ndk-headers
+RUN apt remove -y val-verde-ndk-headers-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+
 # android swift build
 FROM ANDROID_CMARK_BUILDER AS ANDROID_SWIFT_BUILDER
 
@@ -1208,6 +1214,9 @@ RUN cd /sources/llvm-project \
     && mv *${SOURCE_PACKAGE_NAME}*.deb \
           ${DEB_PATH}/${PACKAGE_NAME}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+# restore android ndk-headers
+RUN dpkg -i /sources/val-verde-ndk-headers-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb
 
 # android lldb build
 FROM ANDROID_SWIFT_BUILDER AS ANDROID_LLDB_BUILDER

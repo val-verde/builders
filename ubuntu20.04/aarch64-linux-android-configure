@@ -5,9 +5,9 @@ SYSROOT=${PACKAGE_ROOT}/val-verde-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${
 
 AS=${BINDIR}/llvm-as
 AR=${BINDIR}/llvm-ar
-CC=${BINDIR}/clang
+CC=${BINDIR}/val-verde-platform-sdk-clang
 CPP="${CC} -E"
-CXX=${CC}++
+CXX=${BINDIR}/val-verde-platform-sdk-clang++
 LD=${BINDIR}/ld.lld
 NM=${BINDIR}/llvm-nm
 OBJCOPY=${BINDIR}/llvm-objcopy
@@ -23,12 +23,12 @@ OPTIMIZATION_LEVEL=${OPTIMIZATION_LEVEL:-z}
 "$@" AR=${AR} \
      AS=${AS} \
      CC=${CC} \
-     CFLAGS="-target aarch64-linux-android -flto -O${OPTIMIZATION_LEVEL} --sysroot=${SYSROOT} ${CFLAGS}" \
+     CFLAGS="-flto -O${OPTIMIZATION_LEVEL} ${CFLAGS}" \
      CPP="${CPP}" \
      CXX=${CXX} \
-     CXXFLAGS="-target aarch64-linux-android-flto -O${OPTIMIZATION_LEVEL} --sysroot=${SYSROOT} ${CXXFLAGS}" \
+     CXXFLAGS="-flto -O${OPTIMIZATION_LEVEL} ${CXXFLAGS}" \
      LD=${LD} \
-     LDFLAGS="-target aarch64-linux-android-flto -flto -lc++_shared -s -O2 --sysroot=${SYSROOT} ${LDFLAGS}" \
+     LDFLAGS="-flto -lc++_shared -s -O2 --sysroot=${SYSROOT} ${LDFLAGS}" \
      LIBTOOLFLAGS="-avoid-version" \
      NM=${NM} \
      OBJDUMP=${OBJDUMP} \
