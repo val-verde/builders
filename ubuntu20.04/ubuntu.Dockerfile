@@ -412,11 +412,10 @@ RUN export SOURCE_PACKAGE_NAME=swift-corelibs-xctest \
 # llbuild build
 FROM XCTEST_BUILDER AS LLBUILD_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=swift-llbuild
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
-
-RUN git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
+RUN export SOURCE_PACKAGE_NAME=swift-llbuild \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
+    && git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
     && mkdir -p ${STAGE_ROOT} \
     && cd ${STAGE_ROOT} \
     && ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
@@ -439,11 +438,10 @@ RUN git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branc
 # swift-tools-support-core build
 FROM LLBUILD_BUILDER AS SWIFT_TOOLS_SUPPORT_CORE_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=swift-tools-support-core
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
-
-RUN git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
+RUN export SOURCE_PACKAGE_NAME=swift-tools-support-core \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
+    && git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
     && mkdir -p ${STAGE_ROOT} \
     && cd ${STAGE_ROOT} \
     && ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
