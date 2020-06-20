@@ -16,6 +16,7 @@ apt update && apt upgrade -y && \
         libcurl4-openssl-dev \
         libedit-dev \
         libelf-dev \
+        libffi-dev \
         libicu-dev \
         liblzma-dev \
         libncurses-dev \

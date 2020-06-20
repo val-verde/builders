@@ -1,13 +1,19 @@
 #!/bin/bash
 
-BINDIR=${PACKAGE_ROOT}/bin
-SYSROOT=${PACKAGE_ROOT}/val-verde-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot
+if [ "${ENABLE_FLTO}" = "Full" ]; then
+    FLTO_CFLAG=-flto
+    FLTO_LDFLAG="-s -O2"
+fi
 
-AS=${BINDIR}/llvm-as
+BINDIR=${PACKAGE_ROOT}/bin
+OPTIMIZATION_LEVEL=${OPTIMIZATION_LEVEL:-z}
+SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot
+
 AR=${BINDIR}/llvm-ar
-CC=${BINDIR}/val-verde-platform-sdk-clang
+AS=${BINDIR}/llvm-as
+CC=${BINDIR}/${PACKAGE_BASE_NAME}-platform-sdk-clang
 CPP="${CC} -E"
-CXX=${BINDIR}/val-verde-platform-sdk-clang++
+CXX=${BINDIR}/${PACKAGE_BASE_NAME}-platform-sdk-clang++
 LD=${BINDIR}/ld.lld
 NM=${BINDIR}/llvm-nm
 OBJCOPY=${BINDIR}/llvm-objcopy
@@ -18,17 +24,15 @@ SIZE=${BINDIR}/llvm-size
 STRIP=${BINDIR}/llvm-strip
 STRINGS=${BINDIR}/llvm-strings
 
-OPTIMIZATION_LEVEL=${OPTIMIZATION_LEVEL:-z}
-
 "$@" AR=${AR} \
      AS=${AS} \
      CC=${CC} \
-     CFLAGS="-flto -O${OPTIMIZATION_LEVEL} ${CFLAGS}" \
+     CFLAGS="${ARCH_FLAGS} ${FLTO_CFLAG} -O${OPTIMIZATION_LEVEL} ${CFLAGS}" \
      CPP="${CPP}" \
      CXX=${CXX} \
-     CXXFLAGS="-flto -O${OPTIMIZATION_LEVEL} ${CXXFLAGS}" \
+     CXXFLAGS="${ARCH_FLAGS} ${FLTO_CFLAG} -O${OPTIMIZATION_LEVEL} ${CXXFLAGS}" \
      LD=${LD} \
-     LDFLAGS="-flto -lc++_shared -s -O2 --sysroot=${SYSROOT} ${LDFLAGS}" \
+     LDFLAGS="${ARCH_FLAGS} ${FLTO_LDFLAG} -lc++_shared --sysroot=${SYSROOT} ${LDFLAGS}" \
      LIBTOOLFLAGS="-avoid-version" \
      NM=${NM} \
      OBJDUMP=${OBJDUMP} \

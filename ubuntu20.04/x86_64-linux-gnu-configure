@@ -1,14 +1,22 @@
 #!/bin/bash
 
+if [ "${ENABLE_FLTO}" = "TRUE" ]; then
+    FLTO_CFLAG=-flto
+    FLTO_LDFLAG="-s -O2"
+fi
+
+ARCH_FLAGS=${ARCH_FLAGS:"-march=haswell -mtune=haswell"}
+OPTIMIZATION_LEVEL=${OPTIMIZATION_LEVEL:-z}
+
 "$@" \
     AR=${PACKAGE_ROOT}/bin/llvm-ar \
     AS=${PACKAGE_ROOT}/bin/llvm-as \
     CC=${PACKAGE_ROOT}/bin/clang \
-    CFLAGS="-flto -march=haswell -mtune=haswell -Oz" \
+    CFLAGS="${ARCH_FLAGS} ${FLTO_CFLAG} -O${OPTIMIZATION_LEVEL}" \
     CXX=${PACKAGE_ROOT}/bin/clang++ \
-    CXXFLAGS="-flto -march=haswell -mtune=haswell -Oz" \
+    CXXFLAGS="${ARCH_FLAGS} ${FLTO_CFLAG} -O${OPTIMIZATION_LEVEL}" \
     LD=${PACKAGE_ROOT}/bin/ld.lld \
-    LDFLAGS="-flto -s -O2" \
+    LDFLAGS="${FLTO_LDFLAG}" \
     LIBTOOLFLAGS="-avoid-version" \
     NM=${PACKAGE_ROOT}/bin/llvm-nm \
     OBJCOPY=${PACKAGE_ROOT}/bin/llvm-objcopy \
