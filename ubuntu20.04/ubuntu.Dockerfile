@@ -1213,9 +1213,6 @@ RUN cd /sources/llvm-project \
           ${DEB_PATH}/${PACKAGE_NAME}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
 
-# restore android ndk-headers
-RUN dpkg -i /sources/val-verde-ndk-headers-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb
-
 # android lldb build
 FROM ANDROID_SWIFT_BUILDER AS ANDROID_LLDB_BUILDER
 
@@ -1263,6 +1260,9 @@ RUN mkdir -p ${STAGE_ROOT} \
     && mv *${SOURCE_PACKAGE_NAME}*.deb \
           ${DEB_PATH}/${PACKAGE_NAME}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+# restore android ndk-headers
+RUN dpkg -i /sources/val-verde-ndk-headers-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb
 
 # android libdispatch build
 FROM ANDROID_LLDB_BUILDER AS ANDROID_LIBDISPATCH_BUILDER
