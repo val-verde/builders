@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd ${SOURCE_ROOT}
+
 echo "diff --git a/Sources/Yams/CMakeLists.txt b/Sources/Yams/CMakeLists.txt
 index 3e84614..1235fd0 100644
 --- a/Sources/Yams/CMakeLists.txt

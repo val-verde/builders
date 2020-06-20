@@ -463,17 +463,19 @@ RUN export SOURCE_PACKAGE_NAME=swift-tools-support-core \
 # yams build
 FROM SWIFT_TOOLS_SUPPORT_CORE_BUILDER AS YAMS_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=yams
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+COPY patch-yams .
 
-RUN git clone https://github.com/jpsim/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
+RUN export SOURCE_PACKAGE_NAME=yams \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
+    && git clone https://github.com/jpsim/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
     && mkdir -p ${STAGE_ROOT}
 
-COPY patch-yams ${SOURCE_ROOT}
-
-RUN cd ${SOURCE_ROOT} \
-    && bash patch-yams \
+RUN export SOURCE_PACKAGE_NAME=yams \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
+    && cd ${SOURCE_ROOT} \
+    && bash /sources/patch-yams \
     && cd ${STAGE_ROOT} \
     && ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
            -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
@@ -492,11 +494,10 @@ RUN cd ${SOURCE_ROOT} \
 # swift-driver build
 FROM YAMS_BUILDER AS SWIFT_DRIVER
 
-ENV SOURCE_PACKAGE_NAME=swift-driver
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
-
-RUN git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
+RUN export SOURCE_PACKAGE_NAME=swift-driver \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
+    && git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
     && mkdir -p ${STAGE_ROOT} \
     && cd ${STAGE_ROOT} \
     && ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
@@ -521,11 +522,10 @@ RUN git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branc
 # swiftpm build
 FROM SWIFT_DRIVER AS SWIFTPM_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=swift-package-manager
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
-
-RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT} \
+RUN export SOURCE_PACKAGE_NAME=swift-package-manager \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
+    && git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT} \
     && mkdir -p ${STAGE_ROOT} \
     && cd ${STAGE_ROOT} \
     && ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
@@ -552,11 +552,10 @@ RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-b
 # swift-syntax build
 FROM SWIFTPM_BUILDER AS SWIFT_SYNTAX_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=swift-syntax
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
-
-RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT} \
+RUN export SOURCE_PACKAGE_NAME=swift-syntax \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
+    && git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT} \
     && mkdir -p ${STAGE_ROOT} \
     && cd ${SOURCE_ROOT} \
     && swift build ${SWIFTPM_BUILD_ARGS} \
@@ -576,11 +575,10 @@ RUN git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-b
 # swift-format build
 FROM SWIFT_SYNTAX_BUILDER AS SWIFT_FORMAT_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=swift-format
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
-
-RUN git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
+RUN export SOURCE_PACKAGE_NAME=swift-format \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
+    && git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
     && mkdir -p ${STAGE_ROOT} \
     && cd ${SOURCE_ROOT} \
     && swift build ${SWIFTPM_BUILD_ARGS} \
@@ -598,11 +596,10 @@ RUN git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branc
 # swift-doc build
 FROM SWIFT_FORMAT_BUILDER AS SWIFT_DOC_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=swift-doc
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
-
-RUN git clone https://github.com/SwiftDocOrg/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
+RUN export SOURCE_PACKAGE_NAME=swift-doc \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
+    && git clone https://github.com/SwiftDocOrg/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
     && mkdir -p ${STAGE_ROOT} \
     && cd ${SOURCE_ROOT} \
     && swift build ${SWIFTPM_BUILD_ARGS} \
@@ -620,11 +617,10 @@ RUN git clone https://github.com/SwiftDocOrg/${SOURCE_PACKAGE_NAME}.git --single
 # pythonkit build
 FROM SWIFT_DOC_BUILDER AS PYTHONKIT_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=pythonkit
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
-
-RUN git clone https://github.com/pvieito/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
+RUN export SOURCE_PACKAGE_NAME=pythonkit \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
+    && git clone https://github.com/pvieito/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
     && mkdir -p ${STAGE_ROOT} \
     && cd ${STAGE_ROOT} \
     && ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
@@ -645,13 +641,12 @@ RUN git clone https://github.com/pvieito/${SOURCE_PACKAGE_NAME}.git --single-bra
 # android-ndk package
 FROM PYTHONKIT_BUILDER AS ANDROID_NDK_BUILDER
 
-ENV ANDROID_NDK_URL=https://dl.google.com/android/repository
-ENV SOURCE_PACKAGE_NAME=android-ndk
-ENV SOURCE_PACKAGE_VERSION=r21d
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
-
-RUN mkdir ${SOURCE_ROOT} \
+RUN export ANDROID_NDK_URL=https://dl.google.com/android/repository \
+    && export SOURCE_PACKAGE_NAME=android-ndk \
+    && export SOURCE_PACKAGE_VERSION=r21d \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \   
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
+    && mkdir ${SOURCE_ROOT} \
     && cd ${SOURCE_ROOT} \
     && wget -c ${ANDROID_NDK_URL}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.zip \
     && unzip ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.zip \
@@ -742,12 +737,11 @@ RUN export SOURCE_PACKAGE_NAME=ndk-runtime \
 # android icu build
 FROM ANDROID_NDK_RUNTIME_BUILDER AS ANDROID_ICU_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=icu4c
-ENV SOURCE_PACKAGE_VERSION=67_1
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
-
-RUN cd ${SOURCE_ROOT} \
+RUN export SOURCE_PACKAGE_NAME=icu4c \
+    && export SOURCE_PACKAGE_VERSION=67_1 \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && cd ${SOURCE_ROOT} \
     && ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-configure \
            ${SOURCE_ROOT}/source/configure \
            --disable-extras \
@@ -774,12 +768,11 @@ RUN cd ${SOURCE_ROOT} \
 # xz build
 FROM ANDROID_ICU_BUILDER AS ANDROID_XZ_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=xz
-ENV SOURCE_PACKAGE_VERSION=5.2.5
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
-
-RUN cd /sources \
+RUN export SOURCE_PACKAGE_NAME=xz \
+    && export SOURCE_PACKAGE_VERSION=5.2.5 \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && cd /sources \
     && wget -c https://tukaani.org/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && mkdir -p ${STAGE_ROOT} \
@@ -802,12 +795,11 @@ RUN cd /sources \
 # android libxml2 build
 FROM ANDROID_XZ_BUILDER AS ANDROID_XML_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=libxml2
-ENV SOURCE_PACKAGE_VERSION=2.9.10
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
-
-RUN cd /sources \
+RUN export SOURCE_PACKAGE_NAME=libxml2 \
+    && export SOURCE_PACKAGE_VERSION=2.9.10 \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && cd /sources \
     && wget -c http://xmlsoft.org/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && mkdir -p ${STAGE_ROOT} \
@@ -834,12 +826,11 @@ RUN cd /sources \
 # android libuuid build
 FROM ANDROID_XML_BUILDER AS ANDROID_UUID_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=libuuid
-ENV SOURCE_PACKAGE_VERSION=1.0.3
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
-
-RUN cd /sources \
+RUN export SOURCE_PACKAGE_NAME=libuuid \
+    && export SOURCE_PACKAGE_VERSION=1.0.3 \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && cd /sources \
     && wget -c https://sourceforge.net/projects/libuuid/files/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz/download \
     && mv download ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
@@ -865,12 +856,11 @@ RUN cd /sources \
 # android ncurses build
 FROM ANDROID_UUID_BUILDER AS ANDROID_NCURSES_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=ncurses
-ENV SOURCE_PACKAGE_VERSION=6.2
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
-
-RUN cd /sources \
+RUN export SOURCE_PACKAGE_NAME=ncurses \
+    && export SOURCE_PACKAGE_VERSION=6.2 \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && cd /sources \
     && wget -c https://ftp.gnu.org/gnu/ncurses/ncurses-6.2.tar.gz \
     && rm -rf ${STAGE_ROOT}/* \
     && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
@@ -914,12 +904,11 @@ RUN cd /sources \
 # android libedit build
 FROM ANDROID_NCURSES_BUILDER AS ANDROID_LIBEDIT_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=libedit
-ENV SOURCE_PACKAGE_VERSION=20191231-3.1
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
-
-RUN cd /sources \
+RUN export SOURCE_PACKAGE_NAME=libedit \
+    && export SOURCE_PACKAGE_VERSION=20191231-3.1 \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && cd /sources \
     && wget -c https://www.thrysoee.dk/editline/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && mkdir -p ${STAGE_ROOT} \
@@ -946,12 +935,11 @@ RUN cd /sources \
 # android sqlite3 build
 FROM ANDROID_LIBEDIT_BUILDER AS ANDROID_SQLITE3_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=sqlite
-ENV SOURCE_PACKAGE_VERSION=autoconf-3310100
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
-
-RUN cd /sources \
+RUN export SOURCE_PACKAGE_NAME=sqlite \
+    && export SOURCE_PACKAGE_VERSION=autoconf-3310100 \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && cd /sources \
     && wget -c https://sqlite.org/2020/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && mkdir -p ${STAGE_ROOT} \
@@ -975,12 +963,11 @@ RUN cd /sources \
 # android openssl build
 FROM ANDROID_SQLITE3_BUILDER AS ANDROID_OPENSSL_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=openssl
-ENV SOURCE_PACKAGE_VERSION=1.1.1g
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
-
-RUN cd /sources \
+RUN export SOURCE_PACKAGE_NAME=openssl \
+    && export SOURCE_PACKAGE_VERSION=1.1.1g \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && cd /sources \
     && wget -c https://www.openssl.org/source/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && mkdir -p ${STAGE_ROOT} \
@@ -1006,12 +993,11 @@ RUN cd /sources \
 # android curl build
 FROM ANDROID_OPENSSL_BUILDER AS ANDROID_CURL_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=curl
-ENV SOURCE_PACKAGE_VERSION=7.70.0
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
-
-RUN cd /sources \
+RUN export SOURCE_PACKAGE_NAME=curl \
+    && export SOURCE_PACKAGE_VERSION=7.70.0 \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && cd /sources \
     && wget -c https://curl.haxx.se/download/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && mkdir -p ${STAGE_ROOT} \
@@ -1037,12 +1023,11 @@ RUN cd /sources \
 # android libexpat build
 FROM ANDROID_CURL_BUILDER AS ANDROID_LIBEXPAT_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=expat
-ENV SOURCE_PACKAGE_VERSION=2.2.9
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
-
-RUN cd /sources \
+RUN export SOURCE_PACKAGE_NAME=expat \
+    && export SOURCE_PACKAGE_VERSION=2.2.9 \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && cd /sources \
     && wget -c https://github.com/libexpat/libexpat/releases/download/R_2_2_9/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
     && mkdir -p ${STAGE_ROOT} \
@@ -1131,11 +1116,10 @@ RUN export SOURCE_PACKAGE_NAME=llvm-project \
 # android cmark build
 FROM ANDROID_LLVM_BUILDER AS ANDROID_CMARK_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=swift-cmark
-ENV SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
-
-RUN mkdir -p ${STAGE_ROOT} \
+RUN export SOURCE_PACKAGE_NAME=swift-cmark \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && mkdir -p ${STAGE_ROOT} \
     && cd ${STAGE_ROOT} \
     && ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-cmake \
            -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
@@ -1216,11 +1200,10 @@ RUN cd /sources/llvm-project \
 # android lldb build
 FROM ANDROID_SWIFT_BUILDER AS ANDROID_LLDB_BUILDER
 
-ENV SOURCE_PACKAGE_NAME=swift-lldb
-ENV SOURCE_ROOT=/sources/llvm-project/lldb
-ENV STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
-
-RUN mkdir -p ${STAGE_ROOT} \
+RUN export SOURCE_PACKAGE_NAME=swift-lldb \
+    && export SOURCE_ROOT=/sources/llvm-project/lldb \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && mkdir -p ${STAGE_ROOT} \
     && cd ${STAGE_ROOT} \
     && ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}-cmake \
            -DBUILD_SHARED_LIBS=TRUE \
