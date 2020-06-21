@@ -1,0 +1,4 @@
+#!/bin/bash
+
+ninja -j${NUM_PROCESSORS}
+ninja -j${NUM_PROCESSORS} install

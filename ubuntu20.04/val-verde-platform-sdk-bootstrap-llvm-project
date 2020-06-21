@@ -1,0 +1,78 @@
+#!/bin/bash
+
+# Set all environment vars
+export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
+export SOURCE_PACKAGE_NAME=llvm-project
+export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
+
+# Configure the build
+git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT}
+mkdir -p ${STAGE_ROOT}
+cd ${STAGE_ROOT}
+cmake -G Ninja \
+        -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
+        -DCLANG_INCLUDE_DOCS=FALSE \
+        -DCLANG_INCLUDE_TESTS=FALSE \
+        -DCLANG_LINK_CLANG_DYLIB=FALSE \
+        -DCLANG_TOOL_ARCMT_TEST_BUILD=FALSE \
+        -DCLANG_TOOL_CLANG_IMPORT_TEST_BUILD=FALSE \
+        -DCLANG_TOOL_CLANG_REFACTOR_TEST_BUILD=FALSE \
+        -DCLANG_TOOL_C_ARCMT_TEST_BUILD=FALSE \
+        -DCLANG_TOOL_C_INDEX_TEST_BUILD=FALSE \
+        -DCMAKE_AR=/usr/bin/llvm-ar \
+        -DCMAKE_BUILD_TYPE=MinSizeRel \
+        -DCMAKE_C_FLAGS="-march=haswell -mtune=haswell" \
+        -DCMAKE_CXX_FLAGS="-march=haswell -mtune=haswell" \
+        -DCMAKE_C_COMPILER=/usr/bin/clang \
+        -DCMAKE_CXX_COMPILER=/usr/bin/clang++ \
+        -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+        -DCMAKE_LINKER=/usr/bin/ld.lld \
+        -DCMAKE_NM=/usr/bin/llvm-nm \
+        -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
+        -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
+        -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
+        -DCMAKE_READELF=/usr/bin/llvm-readelf \
+        -DCOMPILER_RT_CAN_EXECUTE_TESTS=FALSE \
+        -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
+        -DHAVE_GNU_POSIX_REGEX=TRUE \
+        -DHAVE_INOTIFY=TRUE \
+        -DHAVE_THREAD_SAFETY_ATTRIBUTES=TRUE \
+        -DLIBCXX_ENABLE_EXPERIMENTAL_LIBRARY=FALSE \
+        -DLIBCXX_ENABLE_SHARED=TRUE \
+        -DLIBCXX_ENABLE_STATIC=FALSE \
+        -DLLVM_BUILD_EXAMPLES=FALSE \
+        -DLLVM_BUILD_DOCS=FALSE \
+        -DLLVM_BUILD_LLVM_DYLIB=FALSE \
+        -DLLVM_BUILD_TESTS=FALSE \
+        -DLLVM_BUILD_UTILS=FALSE \
+        -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS} \
+        -DLLVM_ENABLE_LIBCXX=TRUE \
+        -DLLVM_ENABLE_LLD=TRUE \
+        -DLLVM_ENABLE_PROJECTS="clang;compiler-rt;libcxx;libcxxabi;lld" \
+        -DLLVM_ENABLE_UNWIND_TABLES=FALSE \
+        -DLLVM_ENABLE_Z3_SOLVER=TRUE \
+        -DLLVM_HOST_TRIPLE=${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS} \
+        -DLLVM_INCLUDE_DOCS=FALSE \
+        -DLLVM_INCLUDE_EXAMPLES=FALSE \
+        -DLLVM_INCLUDE_GO_TESTS=FALSE \
+        -DLLVM_INCLUDE_TESTS=FALSE \
+        -DLLVM_INCLUDE_UTILS=FALSE \
+        -DLLVM_LINK_LLVM_DYLIB=FALSE \
+        -DLLVM_TARGETS_TO_BUILD="X86" \
+        -DLLVM_TOOL_LLVM_C_TEST_BUILD=FALSE \
+        -DLLVM_USE_NEWPM=TRUE \
+        ${SOURCE_ROOT}/llvm
+
+# Build the components
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+
+# Build the package
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+
+# Clean up packages
+apt remove -y clang libllvm10 lld
+apt autoremove -y

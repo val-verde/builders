@@ -75,79 +75,16 @@ RUN chmod +x ${PACKAGE_ROOT}/bin/${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang++
 
+COPY ${PACKAGE_BASE_NAME}-platform-sdk-bootstrap-llvm-project \
+     ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
+     ${PACKAGE_BASE_NAME}-platform-sdk-ninja-build \
+     ${PACKAGE_BASE_NAME}-platform-sdk-package-build \
+     ${PACKAGE_BASE_NAME}-platform-sdk-package-install /sources/
+
 # llvm bootstrap build
 FROM BASE AS LLVM_BOOTSTRAP_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=llvm-project \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
-    && git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && cmake \
-     -G Ninja \
-           -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
-           -DCLANG_INCLUDE_DOCS=FALSE \
-           -DCLANG_INCLUDE_TESTS=FALSE \
-           -DCLANG_LINK_CLANG_DYLIB=FALSE \
-           -DCLANG_TOOL_ARCMT_TEST_BUILD=FALSE \
-           -DCLANG_TOOL_CLANG_IMPORT_TEST_BUILD=FALSE \
-           -DCLANG_TOOL_CLANG_REFACTOR_TEST_BUILD=FALSE \
-           -DCLANG_TOOL_C_ARCMT_TEST_BUILD=FALSE \
-           -DCLANG_TOOL_C_INDEX_TEST_BUILD=FALSE \
-           -DCMAKE_AR=/usr/bin/llvm-ar \
-           -DCMAKE_BUILD_TYPE=MinSizeRel \
-           -DCMAKE_C_FLAGS="-march=haswell -mtune=haswell" \
-           -DCMAKE_CXX_FLAGS="-march=haswell -mtune=haswell" \
-           -DCMAKE_C_COMPILER=/usr/bin/clang \
-           -DCMAKE_CXX_COMPILER=/usr/bin/clang++ \
-           -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-           -DCMAKE_LINKER=/usr/bin/ld.lld \
-           -DCMAKE_NM=/usr/bin/llvm-nm \
-           -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
-           -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
-           -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
-           -DCMAKE_READELF=/usr/bin/llvm-readelf \
-           -DCOMPILER_RT_CAN_EXECUTE_TESTS=FALSE \
-           -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
-           -DHAVE_GNU_POSIX_REGEX=TRUE \
-           -DHAVE_INOTIFY=TRUE \
-           -DHAVE_THREAD_SAFETY_ATTRIBUTES=TRUE \
-           -DLIBCXX_ENABLE_SHARED=TRUE \
-           -DLLVM_BUILD_EXAMPLES=FALSE \
-           -DLLVM_BUILD_DOCS=FALSE \
-           -DLLVM_BUILD_LLVM_DYLIB=FALSE \
-           -DLLVM_BUILD_TESTS=FALSE \
-           -DLLVM_BUILD_UTILS=FALSE \
-           -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS} \
-           -DLLVM_ENABLE_LIBCXX=TRUE \
-           -DLLVM_ENABLE_LLD=TRUE \
-           -DLLVM_ENABLE_PROJECTS="clang;compiler-rt;libcxx;libcxxabi;lld" \
-           -DLLVM_ENABLE_UNWIND_TABLES=FALSE \
-           -DLLVM_ENABLE_Z3_SOLVER=TRUE \
-           -DLLVM_HOST_TRIPLE=${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS} \
-           -DLLVM_INCLUDE_DOCS=FALSE \
-           -DLLVM_INCLUDE_EXAMPLES=FALSE \
-           -DLLVM_INCLUDE_GO_TESTS=FALSE \
-           -DLLVM_INCLUDE_TESTS=FALSE \
-           -DLLVM_INCLUDE_UTILS=FALSE \
-           -DLLVM_LINK_LLVM_DYLIB=FALSE \
-           -DLLVM_TARGETS_TO_BUILD="X86" \
-           -DLLVM_TOOL_LLVM_C_TEST_BUILD=FALSE \
-           -DLLVM_USE_NEWPM=TRUE \
-           ${SOURCE_ROOT}/llvm \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install \
-    && apt remove -y clang libllvm10 lld \
-    && apt autoremove -y \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-bootstrap-llvm-project
 
 # LTO configuration: OFF or Full
 ENV ENABLE_FLTO=OFF
@@ -155,69 +92,7 @@ ENV ENABLE_FLTO=OFF
 # llvm build
 FROM LLVM_BOOTSTRAP_BUILDER AS LLVM_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=llvm-project \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
-    && rm -rf ${STAGE_ROOT}/* \
-    && cd ${STAGE_ROOT} \
-    && ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
-           -DBUILD_SHARED_LIBS=TRUE \
-           -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
-           -DCLANG_INCLUDE_DOCS=FALSE \
-           -DCLANG_INCLUDE_TESTS=FALSE \
-           -DCLANG_LINK_CLANG_DYLIB=FALSE \
-           -DCLANG_TOOL_ARCMT_TEST_BUILD=FALSE \
-           -DCLANG_TOOL_CLANG_IMPORT_TEST_BUILD=FALSE \
-           -DCLANG_TOOL_CLANG_REFACTOR_TEST_BUILD=FALSE \
-           -DCLANG_TOOL_C_ARCMT_TEST_BUILD=FALSE \
-           -DCLANG_TOOL_C_INDEX_TEST_BUILD=FALSE \
-           -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-           -DCOMPILER_RT_CAN_EXECUTE_TESTS=FALSE \
-           -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
-           -DHAVE_CXX_ATOMICS_WITH_LIB=TRUE \
-           -DHAVE_CXX_ATOMICS64_WITH_LIB=TRUE \
-           -DHAVE_GNU_POSIX_REGEX=TRUE \
-           -DHAVE_INOTIFY=TRUE \
-           -DHAVE_THREAD_SAFETY_ATTRIBUTES=TRUE \
-           -DLIBCXX_ENABLE_SHARED=TRUE \
-           -DLIBOMPTARGET_DEP_LIBFFI_INCLUDE_DIR:PATH=/usr/include/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-           -DLIBOMPTARGET_DEP_LIBELF_LIBRARIES:FILEPATH=/usr/lib/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/libelf.so \
-           -DLIBOMPTARGET_NVPTX_ALTERNATE_HOST_COMPILER=gcc-8 \
-           -DLLD_INCLUDE_TESTS=FALSE \
-           -DLLVM_BUILD_EXAMPLES=FALSE \
-           -DLLVM_BUILD_DOCS=FALSE \
-           -DLLVM_BUILD_LLVM_DYLIB=FALSE \
-           -DLLVM_BUILD_TESTS=FALSE \
-           -DLLVM_BUILD_UTILS=FALSE \
-           -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS} \
-           -DLLVM_ENABLE_LIBCXX=TRUE \
-           -DLLVM_ENABLE_LLD=TRUE \
-           -DLLVM_ENABLE_LTO=${ENABLE_FLTO} \
-           -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;compiler-rt;libclc;libcxx;libcxxabi;lld;mlir;openmp;parallel-libs;polly;pstl" \
-           -DLLVM_ENABLE_UNWIND_TABLES=FALSE \
-           -DLLVM_ENABLE_Z3_SOLVER=TRUE \
-           -DLLVM_HOST_TRIPLE=${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS} \
-           -DLLVM_INCLUDE_DOCS=FALSE \
-           -DLLVM_INCLUDE_GO_TESTS=FALSE \
-           -DLLVM_INCLUDE_EXAMPLES=FALSE \
-           -DLLVM_INCLUDE_TESTS=FALSE \
-           -DLLVM_LINK_LLVM_DYLIB=FALSE \
-           -DLLVM_POLLY_LINK_INTO_TOOLS=TRUE \
-           -DLLVM_TARGETS_TO_BUILD=all \
-           -DLLVM_TOOL_LLVM_C_TEST_BUILD=FALSE \
-           -DLLVM_USE_NEWPM=TRUE \
-           ${SOURCE_ROOT}/llvm \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && ninja -j${NUM_PROCESSORS} MLIRCallOpInterfacesIncGen MLIRTypeInferOpInterfaceIncGen \
-    && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project
 
 # icu build
 FROM LLVM_BUILDER AS ICU_BUILDER

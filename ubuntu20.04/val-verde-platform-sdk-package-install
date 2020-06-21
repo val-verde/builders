@@ -1,0 +1,3 @@
+#!/bin/bash
+
+dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
