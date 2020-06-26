@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 declare -i procNum="$(($(getconf _NPROCESSORS_ONLN) + 1))"
 

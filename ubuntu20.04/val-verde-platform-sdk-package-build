@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 cd ${STAGE_ROOT}/install
 tar cf ${PACKAGE_NAME}.tar usr/

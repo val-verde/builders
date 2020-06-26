@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # Set all environment vars
 export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
 export SOURCE_PACKAGE_NAME=llvm-project

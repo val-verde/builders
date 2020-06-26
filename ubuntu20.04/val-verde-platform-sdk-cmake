@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 if [ "${ENABLE_FLTO}" = "Full" ]; then
     FLTO_CFLAG=-flto
     FLTO_LDFLAG="-s -O2"

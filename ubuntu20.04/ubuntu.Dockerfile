@@ -79,7 +79,23 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-bootstrap-llvm-project \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
      ${PACKAGE_BASE_NAME}-platform-sdk-ninja-build \
      ${PACKAGE_BASE_NAME}-platform-sdk-package-build \
-     ${PACKAGE_BASE_NAME}-platform-sdk-package-install /sources/
+     ${PACKAGE_BASE_NAME}-platform-sdk-package-install \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb \ 
+     ${PACKAGE_BASE_NAME}-platform-sdk-icu4c \ 
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core \
+     ${PACKAGE_BASE_NAME}-platform-sdk-yams \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-format \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc \
+     ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit /sources/
 
 # llvm bootstrap build
 FROM BASE AS LLVM_BOOTSTRAP_BUILDER
@@ -99,445 +115,84 @@ FROM LLVM_BUILDER AS ICU_BUILDER
 
 COPY icu-uconfig-prepend.h .
 
-RUN export SOURCE_PACKAGE_NAME=icu4c-67_1 \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
-    && export UCONFIG_PATH=/sources/${SOURCE_PACKAGE_NAME}/source/common/unicode \
-    && cd /sources \
-    && wget -c https://github.com/unicode-org/icu/releases/download/release-67-1/${SOURCE_PACKAGE_NAME}-src.tgz \
-    && tar -zxf ${SOURCE_PACKAGE_NAME}-src.tgz \
-    && mv icu ${SOURCE_PACKAGE_NAME} \
-    && mkdir -p ${STAGE_ROOT} \
-    && echo "$(cat icu-uconfig-prepend.h) $(cat $UCONFIG_PATH/uconfig.h)" \
-             > ${UCONFIG_PATH}/uconfig.h \
-    && cd ${STAGE_ROOT} \
-    && ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-configure \
-          ${SOURCE_ROOT}/source/configure \
-           --disable-extras \
-           --disable-samples \
-           --disable-static \
-           --disable-tests \
-           --enable-shared \
-           --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-           --with-library-suffix=swift \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && make -j${NUM_PROCESSORS} \
-    && make -j${NUM_PROCESSORS} install \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *.deb ${SOURCE_PACKAGE_NAME}.deb \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c
 
 # cmark build
 FROM ICU_BUILDER AS CMARK_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=swift-cmark \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
-    && git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git  --single-branch --branch master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT}\
-    && cd ${STAGE_ROOT} \
-    && ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
-           -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-           ${SOURCE_ROOT} \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && ninja -j${NUM_PROCESSORS}
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark
 
 # swift build
 FROM CMARK_BUILDER AS SWIFT_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=swift \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
-    && git clone https://github.com/val-verde/swift-corelibs-libdispatch.git --single-branch --branch dutch-master /sources/swift-corelibs-libdispatch \
-    && git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git  --single-branch --branch dutch-master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
-           -DCMAKE_C_FLAGS="-I/sources/build-staging/llvm-project/include" \
-           -DCMAKE_CXX_FLAGS="-I/sources/build-staging/llvm-project/include" \
-           -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-           -DClang_DIR=${PACKAGE_PREFIX}/lib/cmake/clang \
-           -DICU_I18N_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
-           -DICU_I18N_LIBRARIES=${PACKAGE_PREFIX}/lib/libicui18nswift.so \
-           -DICU_UC_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
-           -DICU_UC_LIBRARIES=${PACKAGE_PREFIX}/lib/libicuucswift.so \
-           -DLLVM_BUILD_LIBRARY_DIR=/sources/build-staging/llvm-project/lib \
-           -DLLVM_BUILD_MAIN_SRC_DIR=/sources/llvm-project/llvm \
-           -DLLVM_ENABLE_LIBCXX=TRUE \
-           -DLLVM_ENABLE_LTO=${ENABLE_FLTO} \
-           -DLLVM_MAIN_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-           -DLLVM_DIR=${PACKAGE_PREFIX}/lib/cmake/llvm \
-           -DLLVM_TABLEGEN=/sources/build-staging/llvm-project/bin/llvm-tblgen \
-           -DSWIFT_BUILD_SOURCEKIT=TRUE \
-           -DSWIFT_BUILD_SYNTAXPARSERLIB=TRUE \
-           -DSWIFT_PATH_TO_LIBDISPATCH_SOURCE=/sources/swift-corelibs-libdispatch \
-           -DSWIFT_ENABLE_EXPERIMENTAL_DIFFERENTIABLE_PROGRAMMING=TRUE \
-           -DSWIFT_INCLUDE_DOCS=FALSE \
-           -DSWIFT_INCLUDE_TESTS=FALSE \
-           -DSWIFT_USE_LINKER=lld \
-           -DSWIFT_PATH_TO_CMARK_SOURCE=/sources/swift-cmark \
-           -DSWIFT_PATH_TO_CMARK_BUILD=/sources/build-staging/swift-cmark \
-           -DSWIFT_NATIVE_CLANG_TOOLS_PATH=${PACKAGE_ROOT}/bin \
-           -DSWIFT_NATIVE_LLVM_TOOLS_PATH=${PACKAGE_ROOT}/bin \
-           -DSWIFT_TOOLS_ENABLE_LTO=${ENABLE_FLTO} \
-           ${SOURCE_ROOT} \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift
 
 # lldb build
 FROM SWIFT_BUILDER AS LLDB_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=swift-lldb \
-    && export SOURCE_ROOT=/sources/llvm-project/lldb \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
-           -DBUILD_SHARED_LIBS=TRUE \
-           -DClang_DIR=${PACKAGE_PREFIX}/lib/cmake/clang \
-           -DCMAKE_EXE_LINKER_FLAGS="-O2" \
-           -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-           -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-           -DLLDB_ENABLE_SWIFT_SUPPORT=TRUE \
-           -DLLDB_INCLUDE_TESTS=FALSE \
-           -DLLVM_BUILD_MAIN_SRC_DIR=/sources/llvm-project/llvm \
-           -DLLVM_ENABLE_LIBCXX=TRUE \
-           -DLLVM_ENABLE_LLD=TRUE \
-           -DLLVM_ENABLE_LTO=${ENABLE_FLTO} \
-           -DLLVM_LINK_LLVM_DYLIB=FALSE \
-           -DLLVM_MAIN_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-           -DLLVM_DIR=${PACKAGE_PREFIX}/lib/cmake/llvm \
-           -DLLVM_TABLEGEN=/sources/build-staging/llvm-project/bin/llvm-tblgen \
-           -DSwift_DIR=/sources/build-staging/swift/lib/cmake/swift \
-           ${SOURCE_ROOT} \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb
 
 # libdispatch build
 FROM LLDB_BUILDER AS LIBDISPATCH_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=swift-corelibs-libdispatch \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
-           -DCMAKE_BUILD_TYPE=MinSizeRel \
-           -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-           -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-           -DENABLE_SWIFT=TRUE \
-           ${SOURCE_ROOT} \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch
 
 # foundation build
 FROM LIBDISPATCH_BUILDER AS FOUNDATION_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=swift-corelibs-foundation \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
-    && git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
-           -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-           -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-           -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch/cmake/modules \
-           ${SOURCE_ROOT} \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation
 
 # xctest build
 FROM FOUNDATION_BUILDER AS XCTEST_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=swift-corelibs-xctest \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
-    && git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
-           -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch/cmake/modules \
-           -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-           -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-           -DFoundation_DIR=/sources/build-staging/swift-corelibs-foundation/cmake/modules \
-           ${SOURCE_ROOT} \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest \
     && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}-${HOST_PROCESSOR}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}-${HOST_PROCESSOR}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+    && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}-${HOST_PROCESSOR}.deb
 
 # llbuild build
 FROM XCTEST_BUILDER AS LLBUILD_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=swift-llbuild \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
-    && git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
-           -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-           -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-           -DLLBUILD_SUPPORT_BINDINGS=Swift \
-           ${SOURCE_ROOT} \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && rsync -aPx ${STAGE_ROOT}/lib/*.so* .${PACKAGE_ROOT}/lib \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild
 
 # swift-tools-support-core build
 FROM LLBUILD_BUILDER AS SWIFT_TOOLS_SUPPORT_CORE_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=swift-tools-support-core \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
-    && git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
-           -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-           -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-           ${SOURCE_ROOT} \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && ninja -j${NUM_PROCESSORS} \
-    && cd ${STAGE_ROOT} \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && mkdir -p .${PACKAGE_ROOT} \
-    && rsync -aPx lib .${PACKAGE_ROOT} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core
 
 # yams build
 FROM SWIFT_TOOLS_SUPPORT_CORE_BUILDER AS YAMS_BUILDER
 
-COPY patch-yams .
-
-RUN export SOURCE_PACKAGE_NAME=yams \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
-    && git clone https://github.com/jpsim/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT}
-
-RUN export SOURCE_PACKAGE_NAME=yams \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
-    && cd ${SOURCE_ROOT} \
-    && bash /sources/patch-yams \
-    && cd ${STAGE_ROOT} \
-    && ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
-           -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-           -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-           ${SOURCE_ROOT} \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-yams
 
 # swift-driver build
 FROM YAMS_BUILDER AS SWIFT_DRIVER
 
-RUN export SOURCE_PACKAGE_NAME=swift-driver \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
-    && git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
-           -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-           -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-           -DLLBuild_DIR=/sources/build-staging/swift-llbuild/cmake/modules \
-           -DTSC_DIR=/sources/build-staging/swift-tools-support-core/cmake/modules \
-           -DYams_DIR=/sources/build-staging/yams/cmake/modules \
-           ${SOURCE_ROOT} \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && ninja -j${NUM_PROCESSORS} \
-    && cd ${STAGE_ROOT} \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && mkdir -p .${PACKAGE_ROOT} \
-    && rsync -aPx bin lib .${PACKAGE_ROOT} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver
 
 # swiftpm build
 FROM SWIFT_DRIVER AS SWIFTPM_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=swift-package-manager \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
-    && git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
-           -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-           -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-           -DLLBuild_DIR=/sources/build-staging/swift-llbuild/cmake/modules \
-           -DSwiftDriver_DIR=/sources/build-staging/swift-driver/cmake/modules \
-           -DTSC_DIR=/sources/build-staging/swift-tools-support-core/cmake/modules \
-           -DYams_DIR=/sources/build-staging/yams/cmake/modules \
-           ${SOURCE_ROOT} \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && rsync -aPx ${STAGE_ROOT}/bin ${STAGE_ROOT}/lib .${PACKAGE_ROOT} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-yams-${HOST_OS}-${HOST_PROCESSOR}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager
 
 # swift-syntax build
 FROM SWIFTPM_BUILDER AS SWIFT_SYNTAX_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=swift-syntax \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
-    && git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${SOURCE_ROOT} \
-    && swift build ${SWIFTPM_BUILD_ARGS} \
-                   --build-path ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && mkdir -p .${PACKAGE_ROOT}/lib/swift/linux \
-    && rsync -aPx release/Swift*.swiftdoc .${PACKAGE_ROOT}/lib/swift \
-    && rsync -aPx release/Swift*.swiftmodule .${PACKAGE_ROOT}/lib/swift \
-    && rsync -aPx release/libSwift*.a .${PACKAGE_ROOT}/lib/swift/linux \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax
 
 # swift-format build
 FROM SWIFT_SYNTAX_BUILDER AS SWIFT_FORMAT_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=swift-format \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
-    && git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${SOURCE_ROOT} \
-    && swift build ${SWIFTPM_BUILD_ARGS} \
-                   --build-path ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && mkdir -p .${PACKAGE_ROOT}/bin \
-    && rsync -aPx release/swift-format .${PACKAGE_ROOT}/bin \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-format
 
 # swift-doc build
 FROM SWIFT_FORMAT_BUILDER AS SWIFT_DOC_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=swift-doc \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
-    && git clone https://github.com/SwiftDocOrg/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${SOURCE_ROOT} \
-    && swift build ${SWIFTPM_BUILD_ARGS} \
-                   --build-path ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && mkdir -p .${PACKAGE_ROOT}/bin \
-    && rsync -aPx release/swift-doc .${PACKAGE_ROOT}/bin \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc
 
 # pythonkit build
 FROM SWIFT_DOC_BUILDER AS PYTHONKIT_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=pythonkit \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
-    && git clone https://github.com/pvieito/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
-           -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-           -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-     ${SOURCE_ROOT} \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit
 
 # android-ndk package
 FROM PYTHONKIT_BUILDER AS ANDROID_NDK_BUILDER
@@ -637,7 +292,7 @@ FROM ANDROID_NDK_RUNTIME_BUILDER AS ANDROID_ICU_BUILDER
 
 RUN export SOURCE_PACKAGE_NAME=icu4c \
     && export SOURCE_PACKAGE_VERSION=67_1 \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
     && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
     && cd ${SOURCE_ROOT} \
     && ${PACKAGE_BASE_NAME}-platform-sdk-configure \
@@ -649,7 +304,7 @@ RUN export SOURCE_PACKAGE_NAME=icu4c \
            --disable-tools \
            --enable-shared \
            --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-           --with-cross-build=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
+           --with-cross-build=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
            --with-library-suffix=swift \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && make -j${NUM_PROCESSORS} \
@@ -1092,6 +747,10 @@ FROM ANDROID_CMARK_BUILDER AS ANDROID_SWIFT_BUILDER
 RUN export SOURCE_PACKAGE_NAME=swift \
     && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
     && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && cd ${SOURCE_ROOT} \
+    && git remote set-branches --add origin dutch-android-master \
+    && git fetch origin dutch-android-master \
+    && git checkout dutch-android-master \
     && mkdir -p ${STAGE_ROOT} \
     && cd ${STAGE_ROOT} \
     && ${PACKAGE_BASE_NAME}-platform-sdk-cmake \

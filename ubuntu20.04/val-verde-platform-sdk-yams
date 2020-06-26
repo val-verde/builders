@@ -1,0 +1,26 @@
+#!/bin/bash
+set -e
+
+# Set all environment vars
+export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
+export SOURCE_PACKAGE_NAME=yams
+export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
+
+# Configure the package
+git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT}
+mkdir -p ${STAGE_ROOT}
+
+cd ${STAGE_ROOT}
+${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
+        -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+        -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
+        ${SOURCE_ROOT}
+
+# Build the components
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+
+# Build the package
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build

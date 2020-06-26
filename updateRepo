@@ -12,7 +12,12 @@ repoArray=( 'https://github.com/val-verde/swift'                        'master'
             'https://github.com/val-verde/swift-syntax'                 'master'        'dutch-master'          'https://github.com/apple/swift-syntax' \
             'https://github.com/val-verde/swift-corelibs-libdispatch'   'master'        'dutch-master'          'https://github.com/apple/swift-corelibs-libdispatch' \
             'https://github.com/val-verde/indexstore-db'                'master'        'dutch-master'          'https://github.com/apple/indexstore-db' \
-            'https://github.com/val-verde/llvm-project'                 'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/llvm-project' )
+            'https://github.com/val-verde/swift-llbuild'                'master'        'dutch-master'          'https://github.com/apple/swift-llbuild' \
+            'https://github.com/val-verde/swift-tools-support-core'     'master'        'dutch-master'          'https://github.com/apple/swift-tools-support-core' \
+            'https://github.com/val-verde/Yams'                         'master'        'dutch-master'          'https://github.com/jpsim/Yams' \
+            'https://github.com/val-verde/llvm-project'                 'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/llvm-project' \
+            'https://github.com/val-verde/swift-llbuild'                'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/swift-llbuild' \
+            'https://github.com/val-verde/swift-tools-support-core'     'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/swift-tools-support-core')            
 
 repoArrayCount=$((${#repoArray[@]} / 4))
 

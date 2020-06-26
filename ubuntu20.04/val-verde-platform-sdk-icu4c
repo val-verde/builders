@@ -1,0 +1,40 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
+export SOURCE_PACKAGE_NAME=icu4c
+export SOURCE_PACKAGE_VERSION=67_1
+export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+export UCONFIG_PATH=/sources/${SOURCE_PACKAGE_NAME}/source/common/unicode
+
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
+
+# Configure the package
+cd /sources
+wget -c https://github.com/unicode-org/icu/releases/download/release-67-1/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-src.tgz
+tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-src.tgz
+mv icu ${SOURCE_PACKAGE_NAME}
+mkdir -p ${STAGE_ROOT}
+echo "$(cat icu-uconfig-prepend.h) $(cat $UCONFIG_PATH/uconfig.h)" \
+      > ${UCONFIG_PATH}/uconfig.h
+cd ${STAGE_ROOT}
+${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-configure \
+          ${SOURCE_ROOT}/source/configure \
+           --disable-extras \
+           --disable-samples \
+           --disable-static \
+           --disable-tests \
+           --enable-shared \
+           --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+           --with-library-suffix=swift
+
+# Build the components
+make -j${NUM_PROCESSORS}
+make -j${NUM_PROCESSORS} install
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+
+# Build the package
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install

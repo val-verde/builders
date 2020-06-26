@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 SYSROOT=${PACKAGE_ROOT}/val-verde-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot
 

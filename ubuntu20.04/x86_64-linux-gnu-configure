@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 if [ "${ENABLE_FLTO}" = "TRUE" ]; then
     FLTO_CFLAG=-flto

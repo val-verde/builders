@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 tar -zvcf swift_build.tar.gz /usr/local \
     && alien swift_build.tar.gz 

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 PACKAGE_BINROOT=${PACKAGE_ROOT}/bin
 CLANG_COMMON_ARGS="-march=haswell -mtune=haswell -Oz"
