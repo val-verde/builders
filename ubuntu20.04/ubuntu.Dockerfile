@@ -1070,8 +1070,35 @@ RUN export SOURCE_PACKAGE_NAME=expat \
           ${DEB_PATH}/${PACKAGE_NAME}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
 
+# android libffi build
+FROM ANDROID_LIBEXPAT_BUILDER AS ANDROID_LIBFFI_BUILDER
+
+RUN export SOURCE_PACKAGE_NAME=libffi \
+    && export SOURCE_PACKAGE_VERSION=3.3 \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && cd /sources \
+    && wget -c https://gcc.gnu.org/pub/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
+    && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
+    && mkdir -p ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
+    && ${PACKAGE_BASE_NAME}-platform-sdk-configure \
+           ${SOURCE_ROOT}/configure \
+           --disable-static \
+           --enable-shared \
+           --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+    && make -j${NUM_PROCESSORS} \
+    && make -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
 # android z3 build
-FROM ANDROID_LIBEXPAT_BUILDER AS ANDROID_Z3_BUILDER
+FROM ANDROID_LIBFFI_BUILDER AS ANDROID_Z3_BUILDER
 
 RUN export SOURCE_PACKAGE_NAME=z3 \
     && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
