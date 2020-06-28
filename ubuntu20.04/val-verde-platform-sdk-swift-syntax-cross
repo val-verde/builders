@@ -1,0 +1,28 @@
+#!/bin/bash
+set -e
+
+# Set all environment vars
+export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
+export SOURCE_PACKAGE_NAME=swift-syntax
+export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
+
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+
+# Configure & build the package
+mkdir -p ${STAGE_ROOT}
+cd ${SOURCE_ROOT}
+
+${PACKAGE_BASE_NAME}-platform-sdk-swift-build
+
+cd ${STAGE_ROOT}
+mkdir -p install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}
+rsync -aPx release/Swift*.swiftdoc install${PACKAGE_PREFIX}/lib/${HOST_OS}
+rsync -aPx release/Swift*.swiftmodule install${PACKAGE_PREFIX}/lib/swift
+rsync -aPx release/libSwift*.a install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}
+
+# Build the package
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+
+# Install the package
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install

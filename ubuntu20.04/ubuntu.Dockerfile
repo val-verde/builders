@@ -59,43 +59,57 @@ ENV SWIFTPM_BUILD_ARGS="\
     --enable-test-discovery"
 
 # platform sdk tool wrapper scripts
-
 COPY ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
      ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-configure \
      ${PACKAGE_BASE_NAME}-platform-sdk-configure \
      ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
      ${PACKAGE_BASE_NAME}-platform-sdk-clang \
      ${PACKAGE_BASE_NAME}-platform-sdk-clang++ \
-    ${PACKAGE_ROOT}/bin/
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-build \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-tool \
+     ${PACKAGE_ROOT}/bin/
 
 RUN chmod +x ${PACKAGE_ROOT}/bin/${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
              ${PACKAGE_ROOT}/bin/${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-configure \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang \
-             ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang++
+             ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang++ \
+             ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swift-build \
+             ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swift-tool
 
-COPY ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap \
-     ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
-     ${PACKAGE_BASE_NAME}-platform-sdk-ninja-build \
+COPY ${PACKAGE_BASE_NAME}-platform-sdk-ninja-build \
      ${PACKAGE_BASE_NAME}-platform-sdk-package-build \
      ${PACKAGE_BASE_NAME}-platform-sdk-package-install \
+     /sources/
+
+# platform sdk package build scripts
+COPY ${PACKAGE_BASE_NAME}-platform-sdk-icu4c \
+     ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
+     ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap \
+     ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit \
+     ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb \ 
-     ${PACKAGE_BASE_NAME}-platform-sdk-icu4c \ 
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-format \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core \
      ${PACKAGE_BASE_NAME}-platform-sdk-yams \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-format \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc \
-     ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit /sources/
+     ${PACKAGE_BASE_NAME}-platform-sdk-yams-cross \
+     /sources/
 
 # llvm bootstrap build
 FROM BASE AS LLVM_BOOTSTRAP_BUILDER
@@ -627,8 +641,39 @@ RUN export SOURCE_PACKAGE_NAME=libffi \
           ${DEB_PATH}/${PACKAGE_NAME}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
 
+# android libpython build
+FROM ANDROID_LIBFFI_BUILDER AS ANDROID_LIBPYTHON_BUILDER
+
+RUN export SOURCE_PACKAGE_NAME=python \
+    && export SOURCE_PACKAGE_VERSION=2.7.18 \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && cd /sources \
+    && wget -c https://www.python.org/ftp/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_VERSION}/Python-${SOURCE_PACKAGE_VERSION}.tgz \
+    && tar -zxf Python-${SOURCE_PACKAGE_VERSION}.tgz \
+    && mv Python-${SOURCE_PACKAGE_VERSION} ${SOURCE_PACKAGE_NAME} \
+    && mkdir -p ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
+    && ${PACKAGE_BASE_NAME}-platform-sdk-configure \
+           ${SOURCE_ROOT}/configure \
+           ac_cv_buggy_getaddrinfo=no \
+           ac_cv_file__dev_ptc=no \
+           ac_cv_file__dev_ptmx=no \
+           --disable-static \
+           --enable-shared \
+           --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+    && make -j${NUM_PROCESSORS} \
+    && make -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
 # android z3 build
-FROM ANDROID_LIBFFI_BUILDER AS ANDROID_Z3_BUILDER
+FROM ANDROID_LIBPYTHON_BUILDER AS ANDROID_Z3_BUILDER
 
 RUN export SOURCE_PACKAGE_NAME=z3 \
     && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
@@ -638,6 +683,7 @@ RUN export SOURCE_PACKAGE_NAME=z3 \
     && cd ${STAGE_ROOT} \
     && ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
            -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+           -DPYTHON_EXECUTABLE=/usr/bin/python2 \
            ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS} \
@@ -716,6 +762,7 @@ RUN export SOURCE_PACKAGE_NAME=llvm-project \
            -DLLVM_USE_NEWPM=TRUE \
            -DLLVM_Z3_INSTALL_DIR=${PACKAGE_PREFIX} \
            -DMLIR_TABLEGEN=/sources/build-staging/llvm-project/bin/mlir-tblgen \
+           -DPYTHON_EXECUTABLE=/usr/bin/python2 \
            ${SOURCE_ROOT}/llvm \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS} \
@@ -779,7 +826,6 @@ RUN export SOURCE_PACKAGE_NAME=swift \
            -DSWIFT_BUILD_RUNTIME_WITH_HOST_COMPILER=TRUE \
            -DSWIFT_BUILD_SOURCEKIT=TRUE \
            -DSWIFT_BUILD_SYNTAXPARSERLIB=TRUE \
-           -DSWIFT_CMARK_LIBRARY_DIR=/sources/build-staging/swift-cmark-${HOST_OS}-${HOST_PROCESSOR} \
            -DSWIFT_PATH_TO_LIBDISPATCH_SOURCE=/sources/swift-corelibs-libdispatch \
            -DSWIFT_ENABLE_EXPERIMENTAL_DIFFERENTIABLE_PROGRAMMING=TRUE \
            -DSWIFT_HOST_VARIANT_ARCH=${HOST_PROCESSOR} \
@@ -788,7 +834,7 @@ RUN export SOURCE_PACKAGE_NAME=swift \
            -DSWIFT_INCLUDE_TESTS=FALSE \
            -DSWIFT_USE_LINKER=lld \
            -DSWIFT_PATH_TO_CMARK_SOURCE=/sources/swift-cmark \
-           -DSWIFT_PATH_TO_CMARK_BUILD=/sources/build-staging/swift-cmark \
+           -DSWIFT_PATH_TO_CMARK_BUILD=/sources/build-staging/swift-cmark-${HOST_OS}-${HOST_PROCESSOR} \
            -DSWIFT_NATIVE_CLANG_TOOLS_PATH=${PACKAGE_ROOT}/bin \
            -DSWIFT_NATIVE_LLVM_TOOLS_PATH=${PACKAGE_ROOT}/bin \
            -DSWIFT_NATIVE_SWIFT_TOOLS_PATH=${PACKAGE_ROOT}/bin \
@@ -833,6 +879,7 @@ RUN export SOURCE_PACKAGE_NAME=swift-lldb \
            -DLLDB_ENABLE_SWIFT_SUPPORT=TRUE \
            -DLLDB_INCLUDE_TESTS=FALSE \
            -DLLDB_PATH_TO_NATIVE_SWIFT_BUILD=/sources/build-staging/swift-${HOST_OS}-${HOST_PROCESSOR}/lib/cmake/swift \
+           -DLLDB_PYTHON_DEFAULT_RELATIVE_PATH=lib/python2.7 \
            -DLLDB_TABLEGEN=/sources/build-staging/swift-lldb/bin/lldb-tblgen \
            -DLLVM_BUILD_MAIN_SRC_DIR=/sources/llvm-project/llvm \
            -DLLVM_ENABLE_LIBCXX=TRUE \
@@ -845,7 +892,11 @@ RUN export SOURCE_PACKAGE_NAME=swift-lldb \
            -DNATIVE_Clang_DIR=${PACKAGE_ROOT}/lib/cmake/clang \
            -DNATIVE_LLVM_DIR=${PACKAGE_ROOT}/lib/cmake/lib \
            -DPANEL_LIBRARIES=${PACKAGE_PREFIX}/lib/libpanel.so \
+           -DPYTHON_EXECUTABLE=/usr/bin/python2 \
+           -DPYTHON_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/python2.7 \
+           -DPYTHON_LIBRARIES=${PACKAGE_PREFIX}/lib/libpython2.7.so \
            -DSwift_DIR=/sources/build-staging/swift-${HOST_OS}-${HOST_PROCESSOR}/lib/cmake/swift \
+           -DSWIG_EXECUTABLE=/usr/bin/swig \
            ${SOURCE_ROOT} \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS} \
@@ -948,6 +999,10 @@ RUN export SOURCE_PACKAGE_NAME=swift-corelibs-xctest \
     && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
     && ninja -j${NUM_PROCESSORS} \
     && ninja -j${NUM_PROCESSORS} install \
+    && mv install${PACKAGE_PREFIX}/lib/swift/linux \
+          install${PACKAGE_PREFIX}/lib/swift/${HOST_OS} \
+    && mv install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}/${BUILD_PROCESSOR} \
+          install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}/${HOST_PROCESSOR} \
     && cd ${STAGE_ROOT}/install \
     && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
     && tar cf ${PACKAGE_NAME}.tar usr/ \
@@ -963,7 +1018,6 @@ RUN dpkg -i /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}-
             /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}-${BUILD_PROCESSOR}.deb \
             /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb \
             /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb
-
 
 # llbuild build
 FROM ANDROID_XCTEST_BUILDER AS ANDROID_LLBUILD_BUILDER
@@ -1027,6 +1081,43 @@ RUN export SOURCE_PACKAGE_NAME=swift-tools-support-core \
     && mv *${SOURCE_PACKAGE_NAME}*.deb \
           ${DEB_PATH}/${PACKAGE_NAME}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+# android yams build
+FROM ANDROID_SWIFT_TOOLS_SUPPORT_CORE_BUILDER AS ANDROID_YAMS_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-yams-cross
+
+# android swift-driver build
+FROM ANDROID_YAMS_BUILDER AS ANDROID_SWIFT_DRIVER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross
+
+# android swiftpm build
+FROM ANDROID_SWIFT_DRIVER AS ANDROID_SWIFTPM_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross
+
+# android swift-syntax build
+FROM ANDROID_SWIFTPM_BUILDER AS ANDROID_SWIFT_SYNTAX_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross
+
+# android swift-format build
+FROM ANDROID_SWIFT_SYNTAX_BUILDER AS ANDROID_SWIFT_FORMAT_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross
+
+# android swift-doc build
+FROM ANDROID_SWIFT_FORMAT_BUILDER AS ANDROID_SWIFT_DOC_BUILDER
+
+# TODO: Need dutch-android-master for swift-doc and swift-log
+# RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross
+
+# android pythonkit build
+FROM ANDROID_SWIFT_DOC_BUILDER AS ANDROID_PYTHONKIT_BUILDER
+
+# TODO: Need dutch-android-master for pythonkit
+# RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit-cross
 
 CMD []
 ENTRYPOINT ["tail", "-f", "/dev/null"]
