@@ -75,7 +75,7 @@ RUN chmod +x ${PACKAGE_ROOT}/bin/${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang++
 
-COPY ${PACKAGE_BASE_NAME}-platform-sdk-bootstrap-llvm-project \
+COPY ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
      ${PACKAGE_BASE_NAME}-platform-sdk-ninja-build \
      ${PACKAGE_BASE_NAME}-platform-sdk-package-build \
@@ -100,7 +100,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-bootstrap-llvm-project \
 # llvm bootstrap build
 FROM BASE AS LLVM_BOOTSTRAP_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-bootstrap-llvm-project
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap
 
 # LTO configuration: OFF or Full
 ENV ENABLE_FLTO=OFF
