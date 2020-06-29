@@ -46,6 +46,7 @@ ENV HOST_TRIPLE=${HOST_TRIPLE_SHORTENED}
 ENV PACKAGE_PREFIX=${PACKAGE_ROOT}
 
 ENV LD_LIBRARY_PATH=${PACKAGE_ROOT}/lib
+ENV ENABLE_FLTO=OFF
 
 # swift build config
 ENV SWIFTPM_BUILD_ARGS="\
@@ -78,24 +79,41 @@ RUN chmod +x ${PACKAGE_ROOT}/bin/${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swift-build \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swift-tool
 
-COPY ${PACKAGE_BASE_NAME}-platform-sdk-ninja-build \
+COPY ${PACKAGE_BASE_NAME}-platform-sdk-make-build \
+     ${PACKAGE_BASE_NAME}-platform-sdk-ninja-build \
      ${PACKAGE_BASE_NAME}-platform-sdk-package-build \
      ${PACKAGE_BASE_NAME}-platform-sdk-package-install \
      /sources/
 
 # platform sdk package build scripts
-COPY ${PACKAGE_BASE_NAME}-platform-sdk-icu4c \
+COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
+     ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-headers \
+     ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-runtime \
+     ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-icu4c \
+     ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libuuid-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
+     ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap \
+     ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-python-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit \
      ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-format \
@@ -107,8 +125,10 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-icu4c \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core \
+     ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-yams \
      ${PACKAGE_BASE_NAME}-platform-sdk-yams-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross \
      /sources/
 
 # llvm bootstrap build
@@ -220,27 +240,7 @@ RUN export SOURCE_PACKAGE_NAME=android-ndk \
 
 COPY android-ndk-linux-time-h.diff /sources/android-ndk-${ANDROID_NDK_VERSION}
 
-RUN export ANDROID_NDK_URL=https://dl.google.com/android/repository \
-    && export SOURCE_PACKAGE_NAME=android-ndk \
-    && export SOURCE_PACKAGE_VERSION=${ANDROID_NDK_VERSION} \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
-    && cd ${SOURCE_ROOT} \
-    && wget -c ${ANDROID_NDK_URL}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.zip \
-    && unzip ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.zip \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && mkdir -p install/${PACKAGE_ROOT} \
-    && mv ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} install/${PACKAGE_ROOT} \
-    && patch -i ${SOURCE_ROOT}/android-ndk-linux-time-h.diff \
-                ${STAGE_ROOT}/install/${PACKAGE_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/sysroot/usr/include/linux/time.h \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${BUILD_OS}-${BUILD_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk
 
 # android environment
 ENV HOST_KERNEL=linux \
@@ -248,545 +248,91 @@ ENV HOST_KERNEL=linux \
     HOST_OS_API_LEVEL=29 \
     HOST_PROCESSOR=aarch64
 ENV PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot/usr
-
+ENV ENABLE_FLTO=
 # android ndk headers build
 FROM ANDROID_NDK_BUILDER AS ANDROID_NDK_HEADERS_BUILDER
 
-RUN mkdir -p /sources/ndk-headers \
-    && export SOURCE_PACKAGE_NAME=ndk-headers \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && mkdir -p ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/include \
-    && export TOOLCHAIN_ROOT=${PACKAGE_ROOT}/android-ndk-${ANDROID_NDK_VERSION}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR} \
-    && export SYSROOT=${TOOLCHAIN_ROOT}/sysroot \
-    && rsync -aPx ${SYSROOT}/usr/include/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-                  ${SYSROOT}/usr/include/*.h \
-                  ${SYSROOT}/usr/include/android \
-                  ${SYSROOT}/usr/include/arpa \
-                  ${SYSROOT}/usr/include/asm-generic \
-                  ${SYSROOT}/usr/include/bits \
-                  ${SYSROOT}/usr/include/c++ \
-                  ${SYSROOT}/usr/include/linux \
-                  ${SYSROOT}/usr/include/net \
-                  ${SYSROOT}/usr/include/netinet \
-                  ${SYSROOT}/usr/include/sys \
-                  ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/include \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-headers
 
 # android ndk runtime build
 FROM ANDROID_NDK_HEADERS_BUILDER AS ANDROID_NDK_RUNTIME_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=ndk-runtime \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && mkdir -p ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/include \
-    && export TOOLCHAIN_ROOT=${PACKAGE_ROOT}/android-ndk-${ANDROID_NDK_VERSION}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR} \
-    && export SYSROOT=${TOOLCHAIN_ROOT}/sysroot \
-    && rsync -aPx ${SYSROOT}/usr/lib/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/*.so \
-                  ${SYSROOT}/usr/lib/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/${HOST_OS_API_LEVEL}/* \
-                  ${TOOLCHAIN_ROOT}/lib/gcc/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/4.9.x/*.a \
-                  ${TOOLCHAIN_ROOT}/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/lib64/*.a \
-                  ${STAGE_ROOT}/install/${PACKAGE_PREFIX}/lib \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-runtime
 
 # android icu build
 FROM ANDROID_NDK_RUNTIME_BUILDER AS ANDROID_ICU_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=icu4c \
-    && export SOURCE_PACKAGE_VERSION=67_1 \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && cd ${SOURCE_ROOT} \
-    && ${PACKAGE_BASE_NAME}-platform-sdk-configure \
-           ${SOURCE_ROOT}/source/configure \
-           --disable-extras \
-           --disable-samples \
-           --disable-static \
-           --disable-tests \
-           --disable-tools \
-           --enable-shared \
-           --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-           --with-cross-build=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
-           --with-library-suffix=swift \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && make -j${NUM_PROCESSORS} \
-    && make -j${NUM_PROCESSORS} install \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *.deb ${SOURCE_PACKAGE_NAME}.deb \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross
 
 # xz build
 FROM ANDROID_ICU_BUILDER AS ANDROID_XZ_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=xz \
-    && export SOURCE_PACKAGE_VERSION=5.2.5 \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && cd /sources \
-    && wget -c https://tukaani.org/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
-    && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && ${PACKAGE_BASE_NAME}-platform-sdk-configure \
-           ${SOURCE_ROOT}/configure \
-           --disable-static \
-           --enable-shared \
-           --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-    && make -j${NUM_PROCESSORS} \
-    && make -j${NUM_PROCESSORS} install \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
 
 # android libxml2 build
 FROM ANDROID_XZ_BUILDER AS ANDROID_XML_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=libxml2 \
-    && export SOURCE_PACKAGE_VERSION=2.9.10 \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && cd /sources \
-    && wget -c http://xmlsoft.org/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
-    && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && CFLAGS="-I${PACKAGE_PREFIX}/include" \
-       ${PACKAGE_BASE_NAME}-platform-sdk-configure \
-           ${SOURCE_ROOT}/configure \
-           --disable-static \
-           --enable-shared \
-           --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-           --with-icu \
-           --without-python \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && make -j${NUM_PROCESSORS} \
-    && make -j${NUM_PROCESSORS} install \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
 
 # android libuuid build
 FROM ANDROID_XML_BUILDER AS ANDROID_UUID_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=libuuid \
-    && export SOURCE_PACKAGE_VERSION=1.0.3 \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && cd /sources \
-    && wget -c https://sourceforge.net/projects/libuuid/files/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz/download \
-    && mv download ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
-    && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
-    && mkdir -p ${STAGE_ROOT} \
-                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
-    && cd ${STAGE_ROOT} \
-    && ${PACKAGE_BASE_NAME}-platform-sdk-configure \
-           ${SOURCE_ROOT}/configure \
-           --disable-static \
-           --enable-shared \
-           --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && make -j${NUM_PROCESSORS} \
-    && make -j${NUM_PROCESSORS} install \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libuuid-cross
 
 # android ncurses build
 FROM ANDROID_UUID_BUILDER AS ANDROID_NCURSES_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=ncurses \
-    && export SOURCE_PACKAGE_VERSION=6.2 \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && cd /sources \
-    && wget -c https://ftp.gnu.org/gnu/ncurses/ncurses-6.2.tar.gz \
-    && rm -rf ${STAGE_ROOT}/* \
-    && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
-    && mkdir -p ${STAGE_ROOT} \
-                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
-    && cd ${STAGE_ROOT} \
-    && OPTIMIZATION_LEVEL=3 \
-       ${PACKAGE_BASE_NAME}-platform-sdk-configure \
-           ${SOURCE_ROOT}/configure \
-           --enable-ext-colors \
-           --enable-mixed-case \
-           --enable-pc-files \
-           --enable-rpath \
-           --prefix=${PACKAGE_PREFIX} \
-           --with-curses-h \
-           --with-cxx \
-           --with-cxx-shared \
-           --with-install-prefix=${STAGE_ROOT}/install \
-           --with-pkg-config=/usr/bin/pkg-config \
-           --with-pkg-config-libdir=${PACKAGE_PREFIX}/lib/pkgconfig \
-           --with-shared \
-           --with-termlib \
-           --with-ticlib \
-           --with-tic-path=/usr/bin/tic \
-           --without-debug \
-           --without-manpages \
-           --without-progs \
-           --without-tack \
-           --without-tests \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && make -j${NUM_PROCESSORS} \
-    && make -j${NUM_PROCESSORS} install \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross
 
 # android libedit build
 FROM ANDROID_NCURSES_BUILDER AS ANDROID_LIBEDIT_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=libedit \
-    && export SOURCE_PACKAGE_VERSION=20191231-3.1 \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && cd /sources \
-    && wget -c https://www.thrysoee.dk/editline/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
-    && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
-    && mkdir -p ${STAGE_ROOT} \
-                ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
-    && cd ${STAGE_ROOT} \
-    && CFLAGS="-I${PACKAGE_PREFIX}/include -I${PACKAGE_PREFIX}/include/ncurses -D__STDC_ISO_10646__=201103L -DNBBY=CHAR_BIT" \
-       LDFLAGS="-L${PACKAGE_PREFIX}/lib" \
-       ${PACKAGE_BASE_NAME}-platform-sdk-configure \
-           ${SOURCE_ROOT}/configure \
-           --disable-static \
-           --enable-shared \
-           --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && make -j${NUM_PROCESSORS} \
-    && make -j${NUM_PROCESSORS} install \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross
 
 # android sqlite3 build
 FROM ANDROID_LIBEDIT_BUILDER AS ANDROID_SQLITE3_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=sqlite \
-    && export SOURCE_PACKAGE_VERSION=autoconf-3310100 \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && cd /sources \
-    && wget -c https://sqlite.org/2020/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
-    && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && ${PACKAGE_BASE_NAME}-platform-sdk-configure \
-           ${SOURCE_ROOT}/configure \
-           --disable-static \
-           --enable-shared \
-           --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && make -j${NUM_PROCESSORS} \
-    && make -j${NUM_PROCESSORS} install \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross
 
 # android openssl build
 FROM ANDROID_SQLITE3_BUILDER AS ANDROID_OPENSSL_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=openssl \
-    && export SOURCE_PACKAGE_VERSION=1.1.1g \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && cd /sources \
-    && wget -c https://www.openssl.org/source/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
-    && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && export ANDROID_NDK_HOME=${PACKAGE_ROOT}/android-ndk-${ANDROID_NDK_VERSION} \
-    && export PATH=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}/bin:${PATH} \
-    && ${SOURCE_ROOT}/Configure \
-           ${HOST_OS}-arm64 \
-           -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
-           --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-           --openssldir=etc/ssl \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && make -j${NUM_PROCESSORS} \
-    && make -j${NUM_PROCESSORS} install_sw \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross
 
 # android curl build
 FROM ANDROID_OPENSSL_BUILDER AS ANDROID_CURL_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=curl \
-    && export SOURCE_PACKAGE_VERSION=7.70.0 \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && cd /sources \
-    && wget -c https://curl.haxx.se/download/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
-    && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && ${PACKAGE_BASE_NAME}-platform-sdk-configure \
-           ${SOURCE_ROOT}/configure \
-           --disable-doc \
-           --disable-static \
-           --enable-shared \
-           --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-           --with-ssl=${PACKAGE_PREFIX} \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && make -j${NUM_PROCESSORS} \
-    && make -j${NUM_PROCESSORS} install \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
 
 # android libexpat build
 FROM ANDROID_CURL_BUILDER AS ANDROID_LIBEXPAT_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=expat \
-    && export SOURCE_PACKAGE_VERSION=2.2.9 \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && cd /sources \
-    && wget -c https://github.com/libexpat/libexpat/releases/download/R_2_2_9/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
-    && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && ${PACKAGE_BASE_NAME}-platform-sdk-configure \
-           ${SOURCE_ROOT}/configure \
-           --disable-static \
-           --enable-shared \
-           --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-    && make -j${NUM_PROCESSORS} \
-    && make -j${NUM_PROCESSORS} install \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross
 
 # android libffi build
 FROM ANDROID_LIBEXPAT_BUILDER AS ANDROID_LIBFFI_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=libffi \
-    && export SOURCE_PACKAGE_VERSION=3.3 \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && cd /sources \
-    && wget -c https://gcc.gnu.org/pub/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
-    && tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && ${PACKAGE_BASE_NAME}-platform-sdk-configure \
-           ${SOURCE_ROOT}/configure \
-           --disable-static \
-           --enable-shared \
-           --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-    && make -j${NUM_PROCESSORS} \
-    && make -j${NUM_PROCESSORS} install \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
 
 # android libpython build
 FROM ANDROID_LIBFFI_BUILDER AS ANDROID_LIBPYTHON_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=python \
-    && export SOURCE_PACKAGE_VERSION=2.7.18 \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && cd /sources \
-    && wget -c https://www.python.org/ftp/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_VERSION}/Python-${SOURCE_PACKAGE_VERSION}.tgz \
-    && tar -zxf Python-${SOURCE_PACKAGE_VERSION}.tgz \
-    && mv Python-${SOURCE_PACKAGE_VERSION} ${SOURCE_PACKAGE_NAME} \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && ${PACKAGE_BASE_NAME}-platform-sdk-configure \
-           ${SOURCE_ROOT}/configure \
-           ac_cv_buggy_getaddrinfo=no \
-           ac_cv_file__dev_ptc=no \
-           ac_cv_file__dev_ptmx=no \
-           --disable-static \
-           --enable-shared \
-           --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-    && make -j${NUM_PROCESSORS} \
-    && make -j${NUM_PROCESSORS} install \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-python-cross
 
 # android z3 build
 FROM ANDROID_LIBPYTHON_BUILDER AS ANDROID_Z3_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=z3 \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && git clone https://github.com/Z3Prover/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT} \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
-           -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-           -DPYTHON_EXECUTABLE=/usr/bin/python2 \
-           ${SOURCE_ROOT} \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
 
 # android llvm build
 FROM ANDROID_Z3_BUILDER AS ANDROID_LLVM_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=llvm-project \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && cd ${SOURCE_ROOT} \
-    && git remote set-branches --add origin dutch-android-master \
-    && git fetch origin dutch-android-master \
-    && git checkout dutch-android-master \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
-           -DBUILD_SHARED_LIBS=TRUE \
-           -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
-           -DCLANG_INCLUDE_DOCS=FALSE \
-           -DCLANG_INCLUDE_TESTS=FALSE \
-           -DCLANG_LINK_CLANG_DYLIB=FALSE \
-           -DCLANG_TABLEGEN=/sources/build-staging/llvm-project/bin/clang-tblgen \
-           -DCLANG_TOOL_ARCMT_TEST_BUILD=FALSE \
-           -DCLANG_TOOL_CLANG_IMPORT_TEST_BUILD=FALSE \
-           -DCLANG_TOOL_CLANG_REFACTOR_TEST_BUILD=FALSE \
-           -DCLANG_TOOL_C_ARCMT_TEST_BUILD=FALSE \
-           -DCLANG_TOOL_C_INDEX_TEST_BUILD=FALSE \
-           -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-           -DCOMPILER_RT_CAN_EXECUTE_TESTS=FALSE \
-           -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
-           -DHAVE_CXX_ATOMICS_WITH_LIB=TRUE \
-           -DHAVE_CXX_ATOMICS64_WITH_LIB=TRUE \
-           -DHAVE_GNU_POSIX_REGEX=TRUE \
-           -DHAVE_INOTIFY=TRUE \
-           -DHAVE_THREAD_SAFETY_ATTRIBUTES=TRUE \
-           -DLIBCXX_ENABLE_EXPERIMENTAL_LIBRARY=FALSE \
-           -DLIBCXX_ENABLE_SHARED=TRUE \
-           -DLIBCXX_ENABLE_STATIC=FALSE \
-           -DLIBOMPTARGET_DEP_LIBFFI_INCLUDE_DIR:PATH=/usr/include/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-           -DLIBOMPTARGET_NVPTX_ALTERNATE_HOST_COMPILER=gcc-8 \
-           -DLLD_INCLUDE_TESTS=FALSE \
-           -DLLVM_BUILD_EXAMPLES=FALSE \
-           -DLLVM_BUILD_DOCS=FALSE \
-           -DLLVM_BUILD_LLVM_DYLIB=FALSE \
-           -DLLVM_BUILD_TESTS=FALSE \
-           -DLLVM_BUILD_UTILS=TRUE \
-           -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS} \
-           -DLLVM_ENABLE_LIBCXX=TRUE \
-           -DLLVM_ENABLE_LLD=TRUE \
-           -DLLVM_ENABLE_LTO=${ENABLE_FLTO} \
-           -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;compiler-rt;libclc;lld;openmp;parallel-libs;polly;pstl" \
-           -DLLVM_ENABLE_UNWIND_TABLES=FALSE \
-           -DLLVM_ENABLE_Z3_SOLVER=TRUE \
-           -DLLVM_HOST_TRIPLE=${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS} \
-           -DLLVM_INCLUDE_DOCS=FALSE \
-           -DLLVM_INCLUDE_EXAMPLES=FALSE \
-           -DLLVM_INCLUDE_GO_TESTS=FALSE \
-           -DLLVM_INCLUDE_TESTS=FALSE \
-           -DLLVM_INCLUDE_UTILS=TRUE \
-           -DLLVM_LINK_LLVM_DYLIB=FALSE \
-           -DLLVM_OPTIMIZED_TABLEGEN=TRUE \
-           -DLLVM_POLLY_LINK_INTO_TOOLS=TRUE \
-           -DLLVM_TABLEGEN=/sources/build-staging/llvm-project/bin/llvm-tblgen \
-           -DLLVM_TARGETS_TO_BUILD=all \
-           -DLLVM_TOOL_LLVM_C_TEST_BUILD=FALSE \
-           -DLLVM_USE_HOST_TOOLS=TRUE \
-           -DLLVM_USE_NEWPM=TRUE \
-           -DLLVM_Z3_INSTALL_DIR=${PACKAGE_PREFIX} \
-           -DMLIR_TABLEGEN=/sources/build-staging/llvm-project/bin/mlir-tblgen \
-           -DPYTHON_EXECUTABLE=/usr/bin/python2 \
-           ${SOURCE_ROOT}/llvm \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && ninja -j${NUM_PROCESSORS} \
-    && ninja -j${NUM_PROCESSORS} install \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-android
 
 # android cmark build
 FROM ANDROID_LLVM_BUILDER AS ANDROID_CMARK_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=swift-cmark \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
-           -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-           ${SOURCE_ROOT} \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && ninja -j${NUM_PROCESSORS}
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark-cross
 
 # android swift build
 FROM ANDROID_CMARK_BUILDER AS ANDROID_SWIFT_BUILDER
@@ -1110,14 +656,12 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross
 # android swift-doc build
 FROM ANDROID_SWIFT_FORMAT_BUILDER AS ANDROID_SWIFT_DOC_BUILDER
 
-# TODO: Need dutch-android-master for swift-doc and swift-log
-# RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross
+#RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-android
 
 # android pythonkit build
 FROM ANDROID_SWIFT_DOC_BUILDER AS ANDROID_PYTHONKIT_BUILDER
 
-# TODO: Need dutch-android-master for pythonkit
-# RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit-cross
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit-android
 
 CMD []
 ENTRYPOINT ["tail", "-f", "/dev/null"]

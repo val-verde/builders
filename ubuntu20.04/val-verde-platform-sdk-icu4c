@@ -32,8 +32,7 @@ ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-configure \
            --with-library-suffix=swift
 
 # Build the components
-make -j${NUM_PROCESSORS}
-make -j${NUM_PROCESSORS} install
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Build the package

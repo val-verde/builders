@@ -1,0 +1,49 @@
+#!/bin/bash
+set -e
+
+# Set all environment vars
+export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
+export SOURCE_PACKAGE_NAME=ncurses
+export SOURCE_PACKAGE_VERSION=6.2
+export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
+export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
+
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+
+cd /sources
+wget -c https://ftp.gnu.org/gnu/ncurses/ncurses-6.2.tar.gz
+rm -rf ${STAGE_ROOT}/*
+tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
+mkdir -p ${STAGE_ROOT} \
+         ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+cd ${STAGE_ROOT}
+OPTIMIZATION_LEVEL=3 \
+${PACKAGE_BASE_NAME}-platform-sdk-configure \
+    ${SOURCE_ROOT}/configure \
+    --enable-ext-colors \
+    --enable-mixed-case \
+    --enable-pc-files \
+    --enable-rpath \
+    --prefix=${PACKAGE_PREFIX} \
+    --with-curses-h \
+    --with-cxx \
+    --with-cxx-shared \
+    --with-install-prefix=${STAGE_ROOT}/install \
+    --with-pkg-config=/usr/bin/pkg-config \
+    --with-pkg-config-libdir=${PACKAGE_PREFIX}/lib/pkgconfig \
+    --with-shared \
+    --with-termlib \
+    --with-ticlib \
+    --with-tic-path=/usr/bin/tic \
+    --without-debug \
+    --without-manpages \
+    --without-progs \
+    --without-tack \
+    --without-tests
+
+# Build the package
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-make-build
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+
+# Install the package
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install

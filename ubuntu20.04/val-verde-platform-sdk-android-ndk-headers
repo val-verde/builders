@@ -1,0 +1,35 @@
+#!/bin/bash
+set -e
+
+# Set all environment vars
+export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
+export SOURCE_PACKAGE_BASE_NAME=android-ndk
+export SOURCE_PACKAGE_NAME=${SOURCE_PACKAGE_BASE_NAME}-headers
+export SOURCE_PACKAGE_VERSION=${ANDROID_NDK_VERSION}
+export ANDROID_NDK_STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_BASE_NAME}
+export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
+export TOOLCHAIN_ROOT=${ANDROID_NDK_STAGE_ROOT}/install${PACKAGE_ROOT}/android-ndk-${ANDROID_NDK_VERSION}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}
+export SYSROOT=${TOOLCHAIN_ROOT}/sysroot
+
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+
+mkdir -p /sources/ndk-headers
+mkdir -p ${STAGE_ROOT}/install${PACKAGE_PREFIX}/include
+rsync -aPx ${SYSROOT}/usr/include/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
+                ${SYSROOT}/usr/include/*.h \
+                ${SYSROOT}/usr/include/android \
+                ${SYSROOT}/usr/include/arpa \
+                ${SYSROOT}/usr/include/asm-generic \
+                ${SYSROOT}/usr/include/bits \
+                ${SYSROOT}/usr/include/c++ \
+                ${SYSROOT}/usr/include/linux \
+                ${SYSROOT}/usr/include/net \
+                ${SYSROOT}/usr/include/netinet \
+                ${SYSROOT}/usr/include/sys \
+                ${STAGE_ROOT}/install${PACKAGE_PREFIX}/include
+
+# Build the package
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+
+# Install the package
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install

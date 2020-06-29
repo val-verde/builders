@@ -15,9 +15,16 @@ repoArray=( 'https://github.com/val-verde/swift'                        'master'
             'https://github.com/val-verde/swift-llbuild'                'master'        'dutch-master'          'https://github.com/apple/swift-llbuild' \
             'https://github.com/val-verde/swift-tools-support-core'     'master'        'dutch-master'          'https://github.com/apple/swift-tools-support-core' \
             'https://github.com/val-verde/Yams'                         'master'        'dutch-master'          'https://github.com/jpsim/Yams' \
+            'https://github.com/val-verde/swift-doc'                    'master'        'dutch-master'          'https://github.com/SwiftDocArg/swift-doc' \
+            'https://github.com/val-verde/swift-log'                    'master'        'dutch-master'          'https://github.com/apple/swift-log' \
+            'https://github.com/val-verde/PythonKit'                    'master'        'dutch-master'          'https://github.com/pvieito/PythonKit' \
+            'https://github.com/val-verde/swift'                        'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/swift' \
             'https://github.com/val-verde/llvm-project'                 'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/llvm-project' \
             'https://github.com/val-verde/swift-llbuild'                'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/swift-llbuild' \
-            'https://github.com/val-verde/swift-tools-support-core'     'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/swift-tools-support-core')            
+            'https://github.com/val-verde/swift-tools-support-core'     'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/swift-tools-support-core' \
+            'https://github.com/val-verde/swift-doc'                    'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/swift-doc' \
+            'https://github.com/val-verde/swift-log'                    'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/swift-log' \
+            'https://github.com/val-verde/PythonKit'                    'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/PythonKit')
 
 repoArrayCount=$((${#repoArray[@]} / 4))
 

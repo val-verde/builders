@@ -1,0 +1,23 @@
+#!/bin/bash
+set -e
+
+# Set all environment vars
+export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
+export ANDROID_NDK_URL=https://dl.google.com/android/repository
+export SOURCE_PACKAGE_NAME=android-ndk
+export SOURCE_PACKAGE_VERSION=${ANDROID_NDK_VERSION}
+export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
+export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${BUILD_OS}-${BUILD_PROCESSOR}
+
+cd ${SOURCE_ROOT}
+wget -c ${ANDROID_NDK_URL}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.zip
+unzip ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.zip
+mkdir -p ${STAGE_ROOT}
+cd ${STAGE_ROOT}
+mkdir -p install${PACKAGE_ROOT}
+mv ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} install${PACKAGE_ROOT}
+
+patch -i ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-linux-time-h.diff \
+${STAGE_ROOT}/install${PACKAGE_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/sysroot/usr/include/linux/time.h
