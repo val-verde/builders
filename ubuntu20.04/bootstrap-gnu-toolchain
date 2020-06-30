@@ -4,6 +4,8 @@ set -e
 apt update && apt upgrade -y && \
     apt install -y \
         alien \
+        binutils-mingw-w64-x86-64 \
+        bison \
         build-essential \
         ca-certificates \
         clang \
@@ -11,6 +13,7 @@ apt update && apt upgrade -y && \
         expat \
         git \
         g++ \
+        flex \
         icu-devtools \
         libc++-dev \
         libc++abi-dev \
@@ -20,6 +23,8 @@ apt update && apt upgrade -y && \
         libffi-dev \
         libicu-dev \
         liblzma-dev \
+        libmpc-dev \
+        libmpfr-dev \
         libncurses-dev \
         libnvidia-compute-440 \
         libpython2.7 \

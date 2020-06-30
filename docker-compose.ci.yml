@@ -1,8 +1,0 @@
-version: '3.5'
-
-services: 
-    ci:
-        build: 
-            container_name: ci
-            context: .
-            dockerfile: ci.Dockerfile

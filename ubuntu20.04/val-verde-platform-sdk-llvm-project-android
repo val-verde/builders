@@ -74,7 +74,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DPYTHON_EXECUTABLE=/usr/bin/python2 \
     ${SOURCE_ROOT}/llvm
 
-Package the components
+#Package the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
