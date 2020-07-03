@@ -17,6 +17,8 @@ git fetch origin dutch-android-master
 git checkout dutch-android-master
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
+
+export LDFLAGS="-lunwind"
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
     -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \

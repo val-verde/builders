@@ -88,12 +88,14 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-make-build \
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-headers \
      ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-runtime \
+     ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt \
      ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-icu4c \
      ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libuuid-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
@@ -266,8 +268,18 @@ FROM ANDROID_NDK_HEADERS_BUILDER AS ANDROID_NDK_RUNTIME_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-runtime
 
+# android compiler-rt build (for host)
+FROM ANDROID_NDK_RUNTIME_BUILDER AS ANDROID_COMPILER_RT_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt
+
+# android libunwind build
+FROM ANDROID_COMPILER_RT_BUILDER AS ANDROID_LIBUNWIND_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
+
 # android icu build
-FROM ANDROID_NDK_RUNTIME_BUILDER AS ANDROID_ICU_BUILDER
+FROM ANDROID_LIBUNWIND_BUILDER AS ANDROID_ICU_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross
 

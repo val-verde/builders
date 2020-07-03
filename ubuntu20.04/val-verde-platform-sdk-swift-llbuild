@@ -13,6 +13,8 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOS
 git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT}
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
+
+export LDFLAGS="-lunwind"
 ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
         -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
         -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \

@@ -21,6 +21,8 @@ mkdir -p ${STAGE_ROOT}
 echo "$(cat icu-uconfig-prepend.h) $(cat $UCONFIG_PATH/uconfig.h)" \
       > ${UCONFIG_PATH}/uconfig.h
 cd ${STAGE_ROOT}
+
+export LDFLAGS="-lunwind"
 ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-configure \
           ${SOURCE_ROOT}/source/configure \
            --disable-extras \
