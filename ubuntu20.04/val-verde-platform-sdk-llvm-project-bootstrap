@@ -16,6 +16,7 @@ mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 cmake -G Ninja \
         -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
+        -DCLANG_DEFAULT_RTLIB=compiler-rt \
         -DCLANG_INCLUDE_DOCS=FALSE \
         -DCLANG_INCLUDE_TESTS=FALSE \
         -DCLANG_LINK_CLANG_DYLIB=FALSE \
