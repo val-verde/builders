@@ -29,7 +29,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}-${HOST_PROCESSOR}/cmake/modules \
     ${SOURCE_ROOT}
 
-#Package the components
+# Package the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 mv install${PACKAGE_PREFIX}/lib/swift/linux \

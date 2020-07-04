@@ -1,6 +1,8 @@
 #!/bin/bash
 
 set -e
+
+# TODO:
 # Replace all sources to ${PACKAGE_ROOT}/src/${PACKAGE_NAME}
 # Replace all build-staging to ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/build
 # SOURCE_ROOT to ${PACKAGE_ROOT}/src (global variable)
@@ -10,6 +12,7 @@ set -e
 # ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/build/${SOURCE_PACKAGE_NAME}
 # Copy , chmod +x, stage into install and make deb files for each (cmake/clang++/swift build)
 # Set all environment vars
+
 export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
 export SOURCE_PACKAGE_NAME=llvm-project
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
@@ -84,12 +87,9 @@ ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
 
 ninja -j${NUM_PROCESSORS} MLIRCallOpInterfacesIncGen MLIRTypeInferOpInterfaceIncGen
 
-
 # Build the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Build the package
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
-
-

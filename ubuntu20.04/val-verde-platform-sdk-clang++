@@ -2,7 +2,7 @@
 
 set -e
 
-SYSROOT=${PACKAGE_ROOT}/val-verde-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot
+SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot}
 
 ${PACKAGE_ROOT}/bin/clang++ \
     -stdlib=libc++ \

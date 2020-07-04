@@ -32,6 +32,10 @@ mv install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}/${BUILD_PROCESSOR} \
 
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
+if [ "${BUILD_PROCESSOR}" = "x86_64" ]; then
+    BUILD_PROCESSOR=x86-64
+fi
+
 # remove host foundation and libdispatch to avoid module collisions
-apt remove -y ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}-x86-64 \
-              ${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}-x86-64
+apt remove -y ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}-${BUILD_PROCESSOR} \
+              ${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}-${BUILD_PROCESSOR}

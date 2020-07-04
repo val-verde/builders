@@ -27,7 +27,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLLBUILD_SUPPORT_BINDINGS=Swift \
     ${SOURCE_ROOT}
 
-#Package the components
+# Package the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 rsync -aPx ${STAGE_ROOT}/lib/*.so* install${PACKAGE_PREFIX}/lib
