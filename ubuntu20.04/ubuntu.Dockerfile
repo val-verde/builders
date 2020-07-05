@@ -86,57 +86,25 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-make-build \
 
 # platform sdk package build scripts
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
-     ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-headers \
-     ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-runtime \
      ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt \
-     ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-icu4c \
-     ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libuuid-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
-     ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap \
-     ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-python-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit \
-     ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-format \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-builder-android \
-     ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-yams \
-     ${PACKAGE_BASE_NAME}-platform-sdk-yams-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross \
      /sources/
 
 # llvm bootstrap build
@@ -248,6 +216,40 @@ RUN export SOURCE_PACKAGE_NAME=android-ndk \
     && mkdir ${SOURCE_ROOT}
 
 COPY android-ndk-linux-time-h.diff /sources/android-ndk-${ANDROID_NDK_VERSION}
+
+COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-headers \
+     ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-runtime \
+     ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libuuid-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-android \
+     ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-python-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-android \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-android \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-android \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-builder-android \
+     ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-yams-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross \
+     /sources/
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk
 
