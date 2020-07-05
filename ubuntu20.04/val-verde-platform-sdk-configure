@@ -9,7 +9,7 @@ fi
 
 BINDIR=${PACKAGE_ROOT}/bin
 OPTIMIZATION_LEVEL=${OPTIMIZATION_LEVEL:-z}
-SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot
+SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot}
 
 AR=${AR:-${BINDIR}/llvm-ar}
 CC=${CC:-${BINDIR}/${PACKAGE_BASE_NAME}-platform-sdk-clang}
@@ -25,8 +25,8 @@ RANLIB=${RANLIB:-${BINDIR}/llvm-ranlib}
 RC=${RC:-${BINDIR}/llvm-rc}
 READELF=${READELF:-${BINDIR}/llvm-readelf}
 SIZE=${SIZE:-${BINDIR}/llvm-size}
-STRIP=${STRIP:-${BINDIR}/llvm-strip}
 STRINGS=${STRINGS:-${BINDIR}/llvm-strings}
+STRIP=${STRIP:-${BINDIR}/llvm-strip}
 
 "$@" AR=${AR} \
      AS=${CC} \
@@ -51,4 +51,5 @@ STRINGS=${STRINGS:-${BINDIR}/llvm-strings}
      STRIP=${STRIP} \
      STRINGS=${STRINGS} \
     --build=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS} \
-    --host=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}
+    --host=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
+    ${CONFIGURE_FLAGS}

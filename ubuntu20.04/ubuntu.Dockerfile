@@ -430,5 +430,155 @@ FROM ANDROID_SWIFT_DOC_BUILDER AS ANDROID_PYTHONKIT_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit-cross
 
+# sources step
+FROM ANDROID_PYTHONKIT_BUILDER AS WINDOWS_SOURCES_BUILDER
+
+# mingw-w64 source
+RUN export SOURCE_PACKAGE_NAME=mingw-w64 \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && git clone https://github.com/mirror/mingw-w64.git --single-branch --branch master ${SOURCE_ROOT}
+
+# gcc source
+RUN export SOURCE_PACKAGE_NAME=gcc \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && git clone https://github.com/gcc-mirror/gcc.git --single-branch --branch master ${SOURCE_ROOT}
+
+# windows environment
+ENV HOST_KERNEL=w64 \
+    HOST_OS=mingw32 \
+    HOST_OS_API_LEVEL= \
+    HOST_PROCESSOR=x86_64
+
+ENV TARGET_PROCESSOR=${HOST_PROCESSOR} \
+    TARGET_KERNEL=w64 \
+    TARGET_OS=mingw32
+
+ENV PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot \
+    SYSTEM_NAME=Windows
+
+# windows mingw-headers build
+FROM WINDOWS_SOURCES_BUILDER AS WINDOWS_MINGW_HEADERS_BUILDER
+
+RUN export SOURCE_PACKAGE_NAME=mingw-w64-headers \
+    && export SOURCE_ROOT=/sources/mingw-w64/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && mkdir -p ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
+    && ${PACKAGE_BASE_NAME}-platform-sdk-configure \
+           ${SOURCE_ROOT}/configure \
+           --enable-crt \
+           --enable-sdk=all \
+           --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+           --with-default-win32-winnt=0x0A00 \
+    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+    && make -j${NUM_PROCESSORS} \
+    && make -j${NUM_PROCESSORS} install \
+    && ln -sf . \
+              install${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot/mingw \
+    && cd ${STAGE_ROOT}/install \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *.deb ${SOURCE_PACKAGE_NAME}.deb \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+# windows mingw-crt build
+FROM WINDOWS_MINGW_HEADERS_BUILDER AS WINDOWS_MINGW_CRT_BUILDER
+
+RUN export SOURCE_PACKAGE_NAME=mingw-w64-crt \
+    && export SOURCE_ROOT=/sources/mingw-w64/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && mkdir -p ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
+    && ${PACKAGE_BASE_NAME}-platform-sdk-configure \
+           ${SOURCE_ROOT}/configure \
+           --disable-lib32 \
+           --enable-experimental=registeredprintf,softmath \
+           --enable-warnings=0 \
+           --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+    && make -j${NUM_PROCESSORS} \
+    && make -j${NUM_PROCESSORS} install \
+    && cd ${STAGE_ROOT}/install \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *.deb ${SOURCE_PACKAGE_NAME}.deb \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+# windows gcc build
+FROM WINDOWS_MINGW_CRT_BUILDER AS WINDOWS_LIBGCC_BUILDER
+
+RUN export SOURCE_PACKAGE_NAME=libgcc \
+    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+    && mkdir -p ${STAGE_ROOT} \
+    && cd ${STAGE_ROOT} \
+    && ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-configure \
+           /sources/gcc/configure \
+           --disable-bootstrap \
+           --disable-gomp \
+           --disable-libssp \
+           --disable-multilib \
+           --disable-werror \
+           --enable-languages=c \
+           --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+           --target=${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS} \
+           --with-build-sysroot=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot \
+           --with-native-system-header-dir=/include \
+           --with-sysroot=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot \
+           AR_FOR_TARGET=${PACKAGE_ROOT}/bin/llvm-ar \
+           AS_FOR_TARGET=/usr/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-as \
+           CC_FOR_TARGET=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang \
+           CPP_FOR_TARGET="${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang -E" \
+           CXX_FOR_TARGET=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang++ \
+           DLLTOOL_FOR_TARGET=${PACKAGE_ROOT}/bin/llvm-dlltool \
+           GCC_FOR_TARGET=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang \
+           LIPO_FOR_TARGET=${PACKAGE_ROOT}/bin/llvm-lipo \
+           LD_FOR_TARGET="/${PACKAGE_ROOT}/bin/ld.lld /force:multiple" \
+           NM_FOR_TARGET=${PACKAGE_ROOT}/bin/llvm-nm \
+           OBJCOPY_FOR_TARGET=${PACKAGE_ROOT}/bin/llvm-objcopy \
+           OBJDUMP_FOR_TARGET=${PACKAGE_ROOT}/bin/llvm-objdump \
+           RANLIB_FOR_TARGET=${PACKAGE_ROOT}/bin/llvm-ranlib \
+           READELF_FOR_TARGET=${PACKAGE_ROOT}/bin/llvm-readelf \
+           RC_FOR_TARGET=/usr/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-windres \
+           SIZE_FOR_TARGET=${PACKAGE_ROOT}/bin/llvm-size \
+           STRIP_FOR_TARGET=${PACKAGE_ROOT}/bin/llvm-strip \
+           STRINGS_FOR_TARGET=${PACKAGE_ROOT}/bin/llvm-strings \
+    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
+    && make -j${NUM_PROCESSORS} all-target-libatomic all-target-libgcc \
+    && make -j${NUM_PROCESSORS} install-target-libatomic install-target-libgcc \
+    && mv install${PACKAGE_PREFIX}/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}/lib/lib* \
+          install${PACKAGE_PREFIX}/lib \
+    && mv install${PACKAGE_PREFIX}/lib/gcc/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}/11.0.0/include \
+          install${PACKAGE_PREFIX}/include \
+    && mv install${PACKAGE_PREFIX}/lib/gcc/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}/11.0.0/lib* \
+          install${PACKAGE_PREFIX}/lib \
+    && rm -rf install${PACKAGE_PREFIX}/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS} \
+              install${PACKAGE_PREFIX}/lib/gcc \
+    && cd ${STAGE_ROOT}/install \
+    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
+    && tar cf ${PACKAGE_NAME}.tar usr/ \
+    && alien ${PACKAGE_NAME}.tar \
+    && mv *.deb ${SOURCE_PACKAGE_NAME}.deb \
+    && mv *${SOURCE_PACKAGE_NAME}*.deb \
+          ${DEB_PATH}/${PACKAGE_NAME}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+# android compiler-rt build (for host)
+FROM WINDOWS_LIBGCC_BUILDER AS WINDOWS_COMPILER_RT_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt
+
+# android libunwind build
+FROM WINDOWS_COMPILER_RT_BUILDER AS WINDOWS_LIBUNWIND_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
+
 CMD []
 ENTRYPOINT ["tail", "-f", "/dev/null"]
