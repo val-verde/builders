@@ -1,0 +1,20 @@
+version: '3.5'
+
+services: 
+    ubuntu-builder:
+        container_name: ubuntu-builder
+        image: openvalverde/ubuntu20.04-deb-images:val-verde-compilers-1.0.0
+        build: 
+            context: ./ubuntu20.04
+            dockerfile: ubuntu.Dockerfile
+            args:
+                - BUILD_KERNEL=linux
+                - BUILD_OS=gnu
+                - BUILD_PROCESSOR=x86_64
+                - DEB_PATH=/sources
+                - HOST_KERNEL=linux
+                - HOST_OS=gnu
+                - HOST_PROCESSOR=x86_64
+                - PACKAGE_BASE_NAME=val-verde
+                - PACKAGE_ROOT=/usr/local
+        privileged: true

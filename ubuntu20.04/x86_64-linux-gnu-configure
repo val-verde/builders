@@ -1,0 +1,31 @@
+#!/bin/bash
+set -e
+
+if [ "${ENABLE_FLTO}" = "TRUE" ]; then
+    FLTO_CFLAG=-flto
+    FLTO_LDFLAG="-s -O2"
+fi
+
+ARCH_FLAGS=${ARCH_FLAGS:"-march=haswell -mtune=haswell"}
+OPTIMIZATION_LEVEL=${OPTIMIZATION_LEVEL:-z}
+
+"$@" \
+    AR=${PACKAGE_ROOT}/bin/llvm-ar \
+    AS=${PACKAGE_ROOT}/bin/llvm-as \
+    CC=${PACKAGE_ROOT}/bin/clang \
+    CFLAGS="${ARCH_FLAGS} ${FLTO_CFLAG} -O${OPTIMIZATION_LEVEL} ${CFLAGS}" \
+    CXX=${PACKAGE_ROOT}/bin/clang++ \
+    CXXFLAGS="${ARCH_FLAGS} ${FLTO_CFLAG} -O${OPTIMIZATION_LEVEL} ${CXXFLAGS}" \
+    LD=${PACKAGE_ROOT}/bin/ld.lld \
+    LDFLAGS="${ARCH_FLAGS} ${FLTO_LDFLAG} ${LDFLAGS}" \
+    LIBTOOLFLAGS="-avoid-version" \
+    NM=${PACKAGE_ROOT}/bin/llvm-nm \
+    OBJCOPY=${PACKAGE_ROOT}/bin/llvm-objcopy \
+    OBJDUMP=${PACKAGE_ROOT}/bin/llvm-objdump \
+    RANLIB=${PACKAGE_ROOT}/bin/llvm-ranlib \
+    READELF=${PACKAGE_ROOT}/bin/llvm-readelf \
+    SIZE=${PACKAGE_ROOT}/bin/llvm-size \
+    STRIP=${PACKAGE_ROOT}/bin/llvm-strip \
+    STRINGS=${PACKAGE_ROOT}/bin/llvm-strings \
+    --build=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS} \
+    --host=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}

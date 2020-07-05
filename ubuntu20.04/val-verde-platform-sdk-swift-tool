@@ -1,0 +1,12 @@
+#!/bin/bash
+
+SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/val-verde-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot}
+
+${PACKAGE_ROOT}/bin/swift \
+    "$@" \
+    -Xcc --sysroot=${SYSROOT} \
+    -Xcc -target -Xcc ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL} \
+    -Xcxx --sysroot=${SYSROOT} \
+    -Xcxx -target -Xcxx ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL} \
+    -Xswiftc -sdk -Xswiftc ${SYSROOT} \
+    -Xswiftc -target -Xswiftc ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}

@@ -1,0 +1,54 @@
+#!/bin/bash
+
+set -e
+
+if [ "${ENABLE_FLTO}" = "Full" ]; then
+    FLTO_CFLAG=-flto
+    FLTO_LDFLAG="-s -O2"
+fi
+
+BINDIR=${PACKAGE_ROOT}/bin
+OPTIMIZATION_LEVEL=${OPTIMIZATION_LEVEL:-z}
+SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot
+
+AR=${AR:-${BINDIR}/llvm-ar}
+CC=${CC:-${BINDIR}/${PACKAGE_BASE_NAME}-platform-sdk-clang}
+CPP=${CPP:-"${CC} -E"}
+CXX=${CXX:-${BINDIR}/${PACKAGE_BASE_NAME}-platform-sdk-clang++}
+DLLTOOL=${DLLTOOL:-${PACKAGE_ROOT}/bin/llvm-dlltool}
+LD=${LD:-${BINDIR}/ld.lld}
+MANIFEST_TOOL=${MANIFEST_TOOL:-${PACKAGE_ROOT}/bin/llvm-mt}
+NM=${NM:-${BINDIR}/llvm-nm}
+OBJCOPY=${OBJCOPY:-${BINDIR}/llvm-objcopy}
+OBJDUMP=${OBJDUMP:-${BINDIR}/llvm-objdump}
+RANLIB=${RANLIB:-${BINDIR}/llvm-ranlib}
+RC=${RC:-${BINDIR}/llvm-rc}
+READELF=${READELF:-${BINDIR}/llvm-readelf}
+SIZE=${SIZE:-${BINDIR}/llvm-size}
+STRIP=${STRIP:-${BINDIR}/llvm-strip}
+STRINGS=${STRINGS:-${BINDIR}/llvm-strings}
+
+"$@" AR=${AR} \
+     AS=${CC} \
+     CC=${CC} \
+     CFLAGS="${ARCH_FLAGS} ${FLTO_CFLAG} -O${OPTIMIZATION_LEVEL} ${CFLAGS}" \
+     CPP="${CPP}" \
+     CXX=${CXX} \
+     CXXFLAGS="${ARCH_FLAGS} ${FLTO_CFLAG} -O${OPTIMIZATION_LEVEL} ${CXXFLAGS}" \
+     DLLTOOL=${DLLTOOL} \
+     LD=${LD} \
+     LDFLAGS="${ARCH_FLAGS} ${FLTO_LDFLAG} ${LDFLAGS}" \
+     LIBTOOLFLAGS="-avoid-version" \
+     MANIFEST_TOOL=${MANIFEST_TOOL} \
+     NM=${NM} \
+     OBJCOPY=${OBJCOPY} \
+     OBJDUMP=${OBJDUMP} \
+     PKG_CONFIG_PATH=${PACKAGE_PREFIX}/lib/pkgconfig \
+     RANLIB=${RANLIB} \
+     RC=${RC} \
+     READELF=${READELF} \
+     SIZE=${SIZE} \
+     STRIP=${STRIP} \
+     STRINGS=${STRINGS} \
+    --build=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS} \
+    --host=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}

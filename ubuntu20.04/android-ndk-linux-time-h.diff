@@ -1,0 +1,4 @@
+26c26
+<   __kernel_time_t tv_sec;
+---
+>   time_t tv_sec;

@@ -1,0 +1,29 @@
+#!/bin/bash
+set -e
+
+export SOURCE_PACKAGE_NAME=swift-doc
+export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
+
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+
+cd ${SOURCE_ROOT}
+git remote set-branches --add origin dutch-android-master
+git fetch origin dutch-android-master
+git checkout dutch-android-master
+
+# Configure & build the package
+mkdir -p ${STAGE_ROOT}
+cd ${SOURCE_ROOT}
+
+${PACKAGE_BASE_NAME}-platform-sdk-swift-build
+
+cd ${STAGE_ROOT}
+mkdir -p install${PACKAGE_PREFIX}/bin
+rsync -aPx release/swift-doc install${PACKAGE_PREFIX}/bin
+
+# Build the package
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+
+# Install the package
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install

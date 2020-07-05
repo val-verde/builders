@@ -1,0 +1,55 @@
+#!/bin/bash
+set -e
+
+apt update
+apt dist-upgrade -y
+apt install -y \
+    alien \
+    binutils-mingw-w64-x86-64 \
+    bison \
+    build-essential \
+    ca-certificates \
+    clang \
+    cmake \
+    expat \
+    git \
+    g++ \
+    g++-mingw-w64-x86-64 \
+    flex \
+    icu-devtools \
+    libc++-dev \
+    libc++abi-dev \
+    libcurl4-openssl-dev \
+    libedit-dev \
+    libelf-dev \
+    libffi-dev \
+    libicu-dev \
+    liblzma-dev \
+    libmpc-dev \
+    libmpfr-dev \
+    libncurses-dev \
+    libnvidia-compute-440 \
+    libpython2.7 \
+    libpython2.7-dev \
+    libssl-dev \
+    libsqlite3-dev \
+    libxml2-dev \
+    libz3-dev \
+    lld \
+    llvm \
+    make \
+    ninja-build \
+    nvidia-cuda-dev \
+    nvidia-cuda-toolkit \
+    pkg-config \
+    python \
+    python3-distutils \
+    python3-six \
+    rsync \
+    ssh \
+    swig \
+    uuid-dev \
+    unzip \
+    zlib1g-dev
+apt autoremove
+apt clean

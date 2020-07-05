@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e
+
+variantArrayCount=$((${#variantArray[@]} / 3))
+prefix='openvalverde'
+packageType='deb-images'
+tag='val-verde-compilers'
+version='1.0.0'
+target=ubuntu
+buildArgs='--build-arg BUILD_KERNEL=linux
+           --build-arg BUILD_OS=gnu
+           --build-arg BUILD_PROCESSOR=x86_64
+           --build-arg DEB_PATH=/sources
+           --build-arg HOST_KERNEL=linux
+           --build-arg HOST_OS=gnu
+           --build-arg HOST_PROCESSOR=x86_64
+           --build-arg PACKAGE_BASE_NAME=val-verde
+           --build-arg PACKAGE_ROOT=/usr/local'
+
+docker build -f ubuntu.Dockerfile -t $prefix/$target-$packageType:$tag-$version $buildArgs .
