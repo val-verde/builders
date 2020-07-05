@@ -20,4 +20,7 @@ mkdir -p install${PACKAGE_ROOT}
 mv ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} install${PACKAGE_ROOT}
 
 patch -i ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-linux-time-h.diff \
-${STAGE_ROOT}/install${PACKAGE_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/sysroot/usr/include/linux/time.h
+        ${STAGE_ROOT}/install${PACKAGE_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/sysroot/usr/include/linux/time.h
+
+patch -i ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-linux-time-h.diff \
+        ${STAGE_ROOT}/install${PACKAGE_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}/sysroot/usr/include/linux/time.h
