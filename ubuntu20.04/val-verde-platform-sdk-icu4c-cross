@@ -1,4 +1,5 @@
 #!/bin/bash
+
 set -e
 
 # Set all environment vars
@@ -13,19 +14,17 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-export LDFLAGS="${LDFLAGS} -lunwind"
 ${PACKAGE_BASE_NAME}-platform-sdk-configure \
-        ${SOURCE_ROOT}/source/configure \
-        --disable-extras \
-        --disable-samples \
-        --disable-static \
-        --disable-tests \
-        --disable-tools \
-        --enable-shared \
-        --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-        --with-cross-build=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
-        --with-library-suffix=swift \
-        LIBS="${LIBS}"
+    ${SOURCE_ROOT}/source/configure \
+    --disable-extras \
+    --disable-samples \
+    --disable-static \
+    --disable-tests \
+    --disable-tools \
+    --enable-shared \
+    --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+    --with-cross-build=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
+    --with-library-suffix=swift
 
 # Build the package
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-make-build

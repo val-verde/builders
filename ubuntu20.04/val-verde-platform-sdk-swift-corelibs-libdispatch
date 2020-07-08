@@ -13,12 +13,13 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOS
 # Configure the package
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
-${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
-        -DCMAKE_BUILD_TYPE=MinSizeRel \
-        -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-        -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-        -DENABLE_SWIFT=TRUE \
-        ${SOURCE_ROOT}
+
+export SYSROOT=/
+${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+    -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
+    -DENABLE_SWIFT=TRUE \
+    ${SOURCE_ROOT}
 
 # Build the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build

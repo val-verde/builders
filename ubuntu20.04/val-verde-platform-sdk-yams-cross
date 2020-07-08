@@ -15,11 +15,11 @@ mkdir -p ${STAGE_ROOT}
 
 cd ${STAGE_ROOT}
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
-        -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-        -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-        -DCMAKE_Swift_COMPILER_TARGET=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-        -DCMAKE_Swift_FLAGS="-sdk ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot" \
-        ${SOURCE_ROOT}
+    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+    -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
+    -DCMAKE_Swift_COMPILER_TARGET=${HOST_TRIPLE} \
+    -DCMAKE_Swift_FLAGS="-sdk ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot" \
+    ${SOURCE_ROOT}
 
 # Build the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build

@@ -1,6 +1,8 @@
 #!/bin/bash
+
 set -e
 
+# Set all environment vars
 export SOURCE_PACKAGE_NAME=swift-doc
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}

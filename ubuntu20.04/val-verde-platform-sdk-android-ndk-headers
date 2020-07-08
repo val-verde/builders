@@ -1,4 +1,5 @@
 #!/bin/bash
+
 set -e
 
 # Set all environment vars
@@ -15,7 +16,7 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 
 mkdir -p /sources/ndk-headers
 mkdir -p ${STAGE_ROOT}/install${PACKAGE_PREFIX}/include
-rsync -aPx ${SYSROOT}/usr/include/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
+rsync -aPx ${SYSROOT}/usr/include/${HOST_TRIPLE} \
                 ${SYSROOT}/usr/include/*.h \
                 ${SYSROOT}/usr/include/android \
                 ${SYSROOT}/usr/include/arpa \

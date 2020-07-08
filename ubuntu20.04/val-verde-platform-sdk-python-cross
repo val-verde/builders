@@ -1,4 +1,5 @@
 #!/bin/bash
+
 set -e
 
 # Set all environment vars
@@ -9,6 +10,8 @@ export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
+
+rm -rf ${SOURCE_ROOT}
 cd /sources
 wget -c https://www.python.org/ftp/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_VERSION}/Python-${SOURCE_PACKAGE_VERSION}.tgz
 tar -zxf Python-${SOURCE_PACKAGE_VERSION}.tgz

@@ -14,7 +14,12 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOS
 git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT}
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
-cmake -G Ninja \
+
+export BINDIR=/usr/bin \
+       CC=clang \
+       CXX=clang++ \
+       SYSROOT=/
+${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
     -DCLANG_DEFAULT_RTLIB=compiler-rt \
     -DCLANG_INCLUDE_DOCS=FALSE \
@@ -25,19 +30,7 @@ cmake -G Ninja \
     -DCLANG_TOOL_CLANG_REFACTOR_TEST_BUILD=FALSE \
     -DCLANG_TOOL_C_ARCMT_TEST_BUILD=FALSE \
     -DCLANG_TOOL_C_INDEX_TEST_BUILD=FALSE \
-    -DCMAKE_AR=/usr/bin/llvm-ar \
-    -DCMAKE_BUILD_TYPE=MinSizeRel \
-    -DCMAKE_C_FLAGS="-march=haswell -mtune=haswell" \
-    -DCMAKE_CXX_FLAGS="-march=haswell -mtune=haswell" \
-    -DCMAKE_C_COMPILER=/usr/bin/clang \
-    -DCMAKE_CXX_COMPILER=/usr/bin/clang++ \
     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-    -DCMAKE_LINKER=/usr/bin/ld.lld \
-    -DCMAKE_NM=/usr/bin/llvm-nm \
-    -DCMAKE_OBJCOPY=/usr/bin/llvm-objcopy \
-    -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump \
-    -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
-    -DCMAKE_READELF=/usr/bin/llvm-readelf \
     -DCOMPILER_RT_CAN_EXECUTE_TESTS=FALSE \
     -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
     -DHAVE_CXX_ATOMICS_WITH_LIB=TRUE \

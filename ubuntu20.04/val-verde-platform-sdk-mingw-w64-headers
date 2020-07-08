@@ -11,11 +11,11 @@ export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOS
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 ${PACKAGE_BASE_NAME}-platform-sdk-configure \
-     ${SOURCE_ROOT}/configure \
-     --enable-crt \
-     --enable-sdk=all \
-     --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
-     --with-default-win32-winnt=0x0A00
+    ${SOURCE_ROOT}/configure \
+    --enable-crt \
+    --enable-sdk=all \
+    --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+    --with-default-win32-winnt=0x0A00
 
 # Build the package
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-make-build

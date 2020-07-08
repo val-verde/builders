@@ -17,6 +17,10 @@ git fetch origin dutch-android-master
 git checkout dutch-android-master
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
+
+export CFLAGS="-I/sources/build-staging/llvm-project/include" \
+       CXXFLAGS="-I/sources/build-staging/llvm-project/include" \
+       SYSROOT=/
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
     -DClang_DIR=/sources/build-staging/llvm-project-${HOST_OS}-${HOST_PROCESSOR}/lib/cmake/clang \

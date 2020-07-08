@@ -15,18 +15,18 @@ export CLANG_RT_LIB=${CLANG_RT_LIB:-clang_rt.builtins-${HOST_PROCESSOR}-${HOST_O
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
-   -DCMAKE_C_FLAGS="-rtlib=libgcc" \
-   -DCMAKE_CXX_FLAGS="-rtlib=libgcc -nostdlib++" \
-   -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install-staging${PACKAGE_ROOT} \
-   -DCOMPILER_RT_BUILD_LIBFUZZER=FALSE \
-   -DCOMPILER_RT_BUILD_PROFILE=FALSE \
-   -DCOMPILER_RT_BUILD_SANITIZERS=FALSE \
-   -DCOMPILER_RT_BUILD_XRAY=FALSE \
-   -DCOMPILER_RT_CAN_EXECUTE_TESTS=FALSE \
-   -DCOMPILER_RT_DEFAULT_TARGET_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-   -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
-   -DLLVM_TABLEGEN=/sources/build-staging/llvm-project/bin/llvm-tblgen \
-   ${SOURCE_ROOT}
+    -DCMAKE_C_FLAGS="-rtlib=libgcc" \
+    -DCMAKE_CXX_FLAGS="-nostdlib++ -rtlib=libgcc" \
+    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install-staging${PACKAGE_ROOT} \
+    -DCOMPILER_RT_BUILD_LIBFUZZER=FALSE \
+    -DCOMPILER_RT_BUILD_PROFILE=FALSE \
+    -DCOMPILER_RT_BUILD_SANITIZERS=FALSE \
+    -DCOMPILER_RT_BUILD_XRAY=FALSE \
+    -DCOMPILER_RT_CAN_EXECUTE_TESTS=FALSE \
+    -DCOMPILER_RT_DEFAULT_TARGET_TRIPLE=${HOST_TRIPLE} \
+    -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
+    -DLLVM_TABLEGEN=/sources/build-staging/llvm-project/bin/llvm-tblgen \
+    ${SOURCE_ROOT}
 
 # Build the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build

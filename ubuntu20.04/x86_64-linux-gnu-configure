@@ -1,31 +1,65 @@
 #!/bin/bash
+
 set -e
 
-if [ "${ENABLE_FLTO}" = "TRUE" ]; then
+if [ "${ENABLE_FLTO}" = "Full" ]; then
     FLTO_CFLAG=-flto
-    FLTO_LDFLAG="-s -O2"
+    FLTO_LDFLAG="-O2"
 fi
 
-ARCH_FLAGS=${ARCH_FLAGS:"-march=haswell -mtune=haswell"}
+BINDIR=${PACKAGE_ROOT}/bin
+OPTIMIZATION_LEVEL=${OPTIMIZATION_LEVEL:-z}
+FLTO_LDFLAG="${FLTO_LDFLAG} -s"
 OPTIMIZATION_LEVEL=${OPTIMIZATION_LEVEL:-z}
 
-"$@" \
-    AR=${PACKAGE_ROOT}/bin/llvm-ar \
-    AS=${PACKAGE_ROOT}/bin/llvm-as \
-    CC=${PACKAGE_ROOT}/bin/clang \
-    CFLAGS="${ARCH_FLAGS} ${FLTO_CFLAG} -O${OPTIMIZATION_LEVEL} ${CFLAGS}" \
-    CXX=${PACKAGE_ROOT}/bin/clang++ \
-    CXXFLAGS="${ARCH_FLAGS} ${FLTO_CFLAG} -O${OPTIMIZATION_LEVEL} ${CXXFLAGS}" \
-    LD=${PACKAGE_ROOT}/bin/ld.lld \
-    LDFLAGS="${ARCH_FLAGS} ${FLTO_LDFLAG} ${LDFLAGS}" \
-    LIBTOOLFLAGS="-avoid-version" \
-    NM=${PACKAGE_ROOT}/bin/llvm-nm \
-    OBJCOPY=${PACKAGE_ROOT}/bin/llvm-objcopy \
-    OBJDUMP=${PACKAGE_ROOT}/bin/llvm-objdump \
-    RANLIB=${PACKAGE_ROOT}/bin/llvm-ranlib \
-    READELF=${PACKAGE_ROOT}/bin/llvm-readelf \
-    SIZE=${PACKAGE_ROOT}/bin/llvm-size \
-    STRIP=${PACKAGE_ROOT}/bin/llvm-strip \
-    STRINGS=${PACKAGE_ROOT}/bin/llvm-strings \
-    --build=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS} \
-    --host=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}
+AR=${AR:-${BINDIR}/llvm-ar}
+CC=${CC:-${BINDIR}/clang}
+CPP=${CPP:-"${CC} -E"}
+CXX=${CXX:-${BINDIR}/clang++}
+DLLTOOL=${DLLTOOL:-${BINDIR}/llvm-dlltool}
+LD=${LD:-${BINDIR}/ld.lld}
+MANIFEST_TOOL=${MANIFEST_TOOL:-${BINDIR}/llvm-mt}
+NM=${NM:-${BINDIR}/llvm-nm}
+OBJCOPY=${OBJCOPY:-${BINDIR}/llvm-objcopy}
+OBJDUMP=${OBJDUMP:-${BINDIR}/llvm-objdump}
+RANLIB=${RANLIB:-${BINDIR}/llvm-ranlib}
+RC=${RC:-${BINDIR}/llvm-rc}
+READELF=${READELF:-${BINDIR}/llvm-readelf}
+SIZE=${SIZE:-${BINDIR}/llvm-size}
+STRINGS=${STRINGS:-${BINDIR}/llvm-strings}
+STRIP=${STRIP:-${BINDIR}/llvm-strip}
+
+if [ -n "${LDFLAGS}" ]; then
+    LDFLAGS_CMD="LDFLAGS=${LDFLAGS}"
+fi
+
+if [ -n "${LIBS}" ]; then
+    LIBS_CMD="LIBS=${LIBS}"
+fi
+
+"$@" AR=${AR} \
+     AS=${CC} \
+     CC=${CC} \
+     CFLAGS="${ARCH_FLAGS} ${FLTO_CFLAG} -O${OPTIMIZATION_LEVEL} ${CFLAGS}" \
+     CPP="${CPP}" \
+     CXX=${CXX} \
+     CXXFLAGS="${ARCH_FLAGS} ${FLTO_CFLAG} -O${OPTIMIZATION_LEVEL} ${CXXFLAGS}" \
+     DLLTOOL=${DLLTOOL} \
+     LD=${LD} \
+     LIBTOOLFLAGS="-avoid-version" \
+     MANIFEST_TOOL=${MANIFEST_TOOL} \
+     NM=${NM} \
+     OBJCOPY=${OBJCOPY} \
+     OBJDUMP=${OBJDUMP} \
+     PKG_CONFIG_PATH=${PACKAGE_PREFIX}/lib/pkgconfig \
+     RANLIB=${RANLIB} \
+     RC=${RC} \
+     READELF=${READELF} \
+     SIZE=${SIZE} \
+     STRIP=${STRIP} \
+     STRINGS=${STRINGS} \
+    --build=${BUILD_TRIPLE} \
+    --host=${BUILD_TRIPLE} \
+    ${CONFIGURE_FLAGS} \
+    ${LDFLAGS_CMD} \
+    ${LIBS_CMD}

@@ -11,11 +11,11 @@ export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOS
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 ${PACKAGE_BASE_NAME}-platform-sdk-configure \
-     ${SOURCE_ROOT}/configure \
-     --disable-lib32 \
-     --enable-experimental=registeredprintf,softmath \
-     --enable-warnings=0 \
-     --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX}
+    ${SOURCE_ROOT}/configure \
+    --disable-lib32 \
+    --enable-experimental=registeredprintf,softmath \
+    --enable-warnings=0 \
+    --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX}
 
 # Build the package
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-make-build
