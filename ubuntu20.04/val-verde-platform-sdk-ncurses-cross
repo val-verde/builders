@@ -24,6 +24,8 @@ ${PACKAGE_BASE_NAME}-platform-sdk-configure \
     --enable-mixed-case \
     --enable-pc-files \
     --enable-rpath \
+    --enable-sp-funcs \
+    --enable-term-driver \
     --prefix=${PACKAGE_PREFIX} \
     --with-curses-h \
     --with-cxx \
@@ -32,7 +34,6 @@ ${PACKAGE_BASE_NAME}-platform-sdk-configure \
     --with-pkg-config=/usr/bin/pkg-config \
     --with-pkg-config-libdir=${PACKAGE_PREFIX}/lib/pkgconfig \
     --with-shared \
-    --with-termlib \
     --with-ticlib \
     --with-tic-path=/usr/bin/tic \
     --without-debug \

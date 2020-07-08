@@ -14,7 +14,7 @@ git clone https://github.com/Z3Prover/${SOURCE_PACKAGE_NAME}.git --single-branch
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-export LDFLAGS="-lunwind"
+export LDFLAGS="${LDFLAGS} -lunwind"
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
     -DPYTHON_EXECUTABLE=/usr/bin/python2 \
