@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
+export SOURCE_PACKAGE_NAME=mingw-w64-crt
+export SOURCE_ROOT=/sources/mingw-w64/${SOURCE_PACKAGE_NAME}
+export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
+
+mkdir -p ${STAGE_ROOT}
+cd ${STAGE_ROOT}
+${PACKAGE_BASE_NAME}-platform-sdk-configure \
+     ${SOURCE_ROOT}/configure \
+     --disable-lib32 \
+     --enable-experimental=registeredprintf,softmath \
+     --enable-warnings=0 \
+     --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX}
+
+# Build the package
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-make-build
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+
+# Install the package
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install

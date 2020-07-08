@@ -12,9 +12,7 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 
 # Configure the package
 cd ${SOURCE_ROOT}
-git remote set-branches --add origin dutch-android-master
-git fetch origin dutch-android-master
-git checkout dutch-android-master
+git checkout dutch-master
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 

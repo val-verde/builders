@@ -1,0 +1,80 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
+export SOURCE_PACKAGE_NAME=swift
+export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
+
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+
+# Configure the package
+cd /sources/swift-corelibs-libdispatch
+git checkout dutch-master
+git pull
+cd ${SOURCE_ROOT}
+git checkout dutch-master
+git pull
+
+mkdir -p ${STAGE_ROOT}
+cd ${STAGE_ROOT}
+
+export UniversalCRTSdkDir=${PACKAGE_PREFIX} \
+       UCRTVersion=git \
+       VCToolsInstallDir=${PACKAGE_PREFIX}
+${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+    -DCMAKE_C_FLAGS="-fms-extensions -fms-compatibility-version=19.2 -Xclang -x -Xclang c" \
+    -DCMAKE_CXX_FLAGS="-fms-extensions -fms-compatibility-version=19.2 -Xclang -x -Xclang c++" \
+    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+    -DClang_DIR=/sources/build-staging/llvm-project-${HOST_OS}-${HOST_PROCESSOR}/lib/cmake/clang \
+    -DICU_I18N_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
+    -DICU_I18N_LIBRARIES=${PACKAGE_PREFIX}/lib/libicuinswift.dll.a \
+    -DICU_UC_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
+    -DICU_UC_LIBRARIES=${PACKAGE_PREFIX}/lib/libicuucswift.dll.a \
+    -DLibEdit_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
+    -DLibEdit_LIBRARIES=${PACKAGE_PREFIX}/lib/edit.dll \
+    -DLIBXML2_INCLUDE_DIR=${PACKAGE_PREFIX}/include/libxml2 \
+    -DLIBXML2_LIBRARY=${PACKAGE_PREFIX}/lib/libxml2.a \
+    -DLLVM_BUILD_LIBRARY_DIR=/sources/build-staging/llvm-project-${HOST_OS}-${HOST_PROCESSOR}/lib \
+    -DLLVM_BUILD_MAIN_SRC_DIR=/sources/llvm-project/llvm \
+    -DLLVM_ENABLE_LIBCXX=TRUE \
+    -DLLVM_ENABLE_LTO=${ENABLE_FLTO} \
+    -DLLVM_MAIN_INCLUDE_DIR=/sources/llvm-project/llvm/include \
+    -DLLVM_DIR=/sources/build-staging/llvm-project-${HOST_OS}-${HOST_PROCESSOR}/lib/cmake/llvm \
+    -DLLVM_TABLEGEN=/sources/build-staging/llvm-project/bin/llvm-tblgen \
+    -DPython2_EXECUTABLE=/usr/bin/python2 \
+    -DPYTHON_EXECUTABLE=/usr/bin/python2 \
+    -DSWIFT_WINDOWS_NATIVE_SYSROOT=${PACKAGE_ROOT}/val-verde-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot \
+    -DSWIFT_BUILD_RUNTIME_WITH_HOST_COMPILER=TRUE \
+    -DSWIFT_BUILD_SOURCEKIT=TRUE \
+    -DSWIFT_BUILD_SYNTAXPARSERLIB=TRUE \
+    -DSWIFT_PATH_TO_LIBDISPATCH_SOURCE=/sources/swift-corelibs-libdispatch \
+    -DSWIFT_ENABLE_EXPERIMENTAL_DIFFERENTIABLE_PROGRAMMING=TRUE \
+    -DSWIFT_HOST_VARIANT_ARCH=${HOST_PROCESSOR} \
+    -DSWIFT_HOST_VARIANT_SDK=WINDOWS \
+    -DSWIFT_INCLUDE_DOCS=FALSE \
+    -DSWIFT_INCLUDE_TESTS=FALSE \
+    -DSWIFT_USE_LINKER=lld \
+    -DSWIFT_PATH_TO_CMARK_SOURCE=/sources/swift-cmark \
+    -DSWIFT_PATH_TO_CMARK_BUILD=/sources/build-staging/swift-cmark-${HOST_OS}-${HOST_PROCESSOR} \
+    -DSWIFT_NATIVE_CLANG_TOOLS_PATH=${PACKAGE_ROOT}/bin \
+    -DSWIFT_NATIVE_LLVM_TOOLS_PATH=${PACKAGE_ROOT}/bin \
+    -DSWIFT_NATIVE_SWIFT_TOOLS_PATH=${PACKAGE_ROOT}/bin \
+    -DSWIFT_TOOLS_ENABLE_LTO=${ENABLE_FLTO} \
+    -DUSE_POSIX_SEM=1 \
+    -DUUID_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DUUID_LIBRARY=${PACKAGE_PREFIX}/lib/libuuid.a \
+    ${SOURCE_ROOT}
+
+#Package the components
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+
+sed -i 's/\/usr/\.\.\/\.\.\/\.\.\/\.\./g' \
+       install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}/${HOST_PROCESSOR}/glibc.modulemap
+
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+
+# Build the package
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install

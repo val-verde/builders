@@ -38,6 +38,7 @@ STRIP=${STRIP:-${BINDIR}/llvm-strip}
      DLLTOOL=${DLLTOOL} \
      LD=${LD} \
      LDFLAGS="${ARCH_FLAGS} ${FLTO_LDFLAG} ${LDFLAGS}" \
+     LIBS="${LIBS}"
      LIBTOOLFLAGS="-avoid-version" \
      MANIFEST_TOOL=${MANIFEST_TOOL} \
      NM=${NM} \

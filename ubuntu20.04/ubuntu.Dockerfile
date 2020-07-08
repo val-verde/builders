@@ -107,19 +107,20 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-yams \
      /sources/
 
+# LTO configuration: OFF or Full
+# Set to full for prod
+ENV ENABLE_FLTO=OFF
+
 # llvm bootstrap build
 FROM BASE AS LLVM_BOOTSTRAP_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap
 
-# LTO configuration: OFF or Full
-# Set to full for prod
-ENV ENABLE_FLTO=OFF
-
 # llvm build
 FROM LLVM_BOOTSTRAP_BUILDER AS LLVM_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project
+RUN export LIBS="-lc++abi -lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project
 
 # icu build
 FROM LLVM_BUILDER AS ICU_BUILDER
@@ -136,54 +137,64 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark
 # swift build
 FROM CMARK_BUILDER AS SWIFT_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift
+RUN export LIBS="-lc++abi -lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift
 
 # lldb build
 FROM SWIFT_BUILDER AS LLDB_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb
+RUN export LIBS="-lc++abi -lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb
 
 # libdispatch build
 FROM LLDB_BUILDER AS LIBDISPATCH_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch
+RUN export LIBS="-lc++abi -lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch
 
 # foundation build
 FROM LIBDISPATCH_BUILDER AS FOUNDATION_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation
+RUN export LIBS="-lc++abi -lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation
 
 # xctest build
 FROM FOUNDATION_BUILDER AS XCTEST_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest \
+RUN export LIBS="-lc++abi -lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest \
     && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}-${HOST_PROCESSOR}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}-${HOST_PROCESSOR}.deb
 
 # llbuild build
 FROM XCTEST_BUILDER AS LLBUILD_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild
+RUN export LIBS="-lc++abi -lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild
 
 # swift-tools-support-core build
 FROM LLBUILD_BUILDER AS SWIFT_TOOLS_SUPPORT_CORE_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core
+RUN export LIBS="-lc++abi -lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core
 
 # yams build
 FROM SWIFT_TOOLS_SUPPORT_CORE_BUILDER AS YAMS_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-yams
+RUN export LIBS="-lc++abi -lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-yams
 
 # swift-driver build
 FROM YAMS_BUILDER AS SWIFT_DRIVER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver
+RUN export LIBS="-lc++abi -lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver
 
 # swiftpm build
 FROM SWIFT_DRIVER AS SWIFTPM_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager
+RUN export LIBS="-lc++abi -lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager
 
 # swift-syntax build
 FROM SWIFTPM_BUILDER AS SWIFT_SYNTAX_BUILDER
@@ -285,7 +296,7 @@ FROM ANDROID_LIBUNWIND_BUILDER AS ANDROID_ICU_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross
 
-# xz build
+# android xz build
 FROM ANDROID_ICU_BUILDER AS ANDROID_XZ_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
@@ -370,12 +381,12 @@ FROM ANDROID_LLDB_BUILDER AS ANDROID_LIBDISPATCH_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-cross
 
-# foundation build
+# android foundation build
 FROM ANDROID_LIBDISPATCH_BUILDER AS ANDROID_FOUNDATION_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-cross
 
-# xctest build
+# android xctest build
 FROM ANDROID_FOUNDATION_BUILDER AS ANDROID_XCTEST_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-cross \
@@ -384,13 +395,13 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-cross \
                /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb \
                /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb
 
-
-# llbuild build
+# android llbuild build
 FROM ANDROID_XCTEST_BUILDER AS ANDROID_LLBUILD_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-android
+RUN export LIBS="-lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-android
 
-# swift-tools-support-core build
+# android swift-tools-support-core build
 FROM ANDROID_LLBUILD_BUILDER AS ANDROID_SWIFT_TOOLS_SUPPORT_CORE_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-builder-android
@@ -435,13 +446,13 @@ FROM ANDROID_PYTHONKIT_BUILDER AS WINDOWS_SOURCES_BUILDER
 
 # mingw-w64 source
 RUN export SOURCE_PACKAGE_NAME=mingw-w64 \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+           SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
     && git clone https://github.com/mirror/mingw-w64.git --single-branch --branch master ${SOURCE_ROOT}
 
 # gcc source
 RUN export SOURCE_PACKAGE_NAME=gcc \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
+           SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
+           STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
     && git clone https://github.com/gcc-mirror/gcc.git --single-branch --branch master ${SOURCE_ROOT}
 
 # windows environment
@@ -457,128 +468,220 @@ ENV TARGET_PROCESSOR=${HOST_PROCESSOR} \
 ENV PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot \
     SYSTEM_NAME=Windows
 
+COPY ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libgcc-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-windows \
+     ${PACKAGE_BASE_NAME}-platform-sdk-mingw-w64-headers-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-mingw-w64-crt-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-openssl-windows \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-windows \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-wineditline-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-winpthreads-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross \
+     /sources/
+
+COPY mingw-sdk.modulemap \
+     /sources/
+
 # windows mingw-headers build
 FROM WINDOWS_SOURCES_BUILDER AS WINDOWS_MINGW_HEADERS_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=mingw-w64-headers \
-    && export SOURCE_ROOT=/sources/mingw-w64/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && ${PACKAGE_BASE_NAME}-platform-sdk-configure \
-           ${SOURCE_ROOT}/configure \
-           --enable-crt \
-           --enable-sdk=all \
-           --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
-           --with-default-win32-winnt=0x0A00 \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && make -j${NUM_PROCESSORS} \
-    && make -j${NUM_PROCESSORS} install \
-    && ln -sf . \
-              install${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot/mingw \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *.deb ${SOURCE_PACKAGE_NAME}.deb \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-mingw-w64-headers-cross
 
 # windows mingw-crt build
 FROM WINDOWS_MINGW_HEADERS_BUILDER AS WINDOWS_MINGW_CRT_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=mingw-w64-crt \
-    && export SOURCE_ROOT=/sources/mingw-w64/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && ${PACKAGE_BASE_NAME}-platform-sdk-configure \
-           ${SOURCE_ROOT}/configure \
-           --disable-lib32 \
-           --enable-experimental=registeredprintf,softmath \
-           --enable-warnings=0 \
-           --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && make -j${NUM_PROCESSORS} \
-    && make -j${NUM_PROCESSORS} install \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *.deb ${SOURCE_PACKAGE_NAME}.deb \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-mingw-w64-crt-cross
 
-# windows gcc build
+# windows libgcc build
 FROM WINDOWS_MINGW_CRT_BUILDER AS WINDOWS_LIBGCC_BUILDER
 
-RUN export SOURCE_PACKAGE_NAME=libgcc \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR} \
-    && mkdir -p ${STAGE_ROOT} \
-    && cd ${STAGE_ROOT} \
-    && ${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-configure \
-           /sources/gcc/configure \
-           --disable-bootstrap \
-           --disable-gomp \
-           --disable-libssp \
-           --disable-multilib \
-           --disable-werror \
-           --enable-languages=c \
-           --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
-           --target=${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS} \
-           --with-build-sysroot=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot \
-           --with-native-system-header-dir=/include \
-           --with-sysroot=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot \
-           AR_FOR_TARGET=${PACKAGE_ROOT}/bin/llvm-ar \
-           AS_FOR_TARGET=/usr/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-as \
-           CC_FOR_TARGET=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang \
-           CPP_FOR_TARGET="${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang -E" \
-           CXX_FOR_TARGET=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang++ \
-           DLLTOOL_FOR_TARGET=${PACKAGE_ROOT}/bin/llvm-dlltool \
-           GCC_FOR_TARGET=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang \
-           LIPO_FOR_TARGET=${PACKAGE_ROOT}/bin/llvm-lipo \
-           LD_FOR_TARGET="/${PACKAGE_ROOT}/bin/ld.lld /force:multiple" \
-           NM_FOR_TARGET=${PACKAGE_ROOT}/bin/llvm-nm \
-           OBJCOPY_FOR_TARGET=${PACKAGE_ROOT}/bin/llvm-objcopy \
-           OBJDUMP_FOR_TARGET=${PACKAGE_ROOT}/bin/llvm-objdump \
-           RANLIB_FOR_TARGET=${PACKAGE_ROOT}/bin/llvm-ranlib \
-           READELF_FOR_TARGET=${PACKAGE_ROOT}/bin/llvm-readelf \
-           RC_FOR_TARGET=/usr/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-windres \
-           SIZE_FOR_TARGET=${PACKAGE_ROOT}/bin/llvm-size \
-           STRIP_FOR_TARGET=${PACKAGE_ROOT}/bin/llvm-strip \
-           STRINGS_FOR_TARGET=${PACKAGE_ROOT}/bin/llvm-strings \
-    && export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))" \
-    && make -j${NUM_PROCESSORS} all-target-libatomic all-target-libgcc \
-    && make -j${NUM_PROCESSORS} install-target-libatomic install-target-libgcc \
-    && mv install${PACKAGE_PREFIX}/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}/lib/lib* \
-          install${PACKAGE_PREFIX}/lib \
-    && mv install${PACKAGE_PREFIX}/lib/gcc/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}/11.0.0/include \
-          install${PACKAGE_PREFIX}/include \
-    && mv install${PACKAGE_PREFIX}/lib/gcc/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}/11.0.0/lib* \
-          install${PACKAGE_PREFIX}/lib \
-    && rm -rf install${PACKAGE_PREFIX}/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS} \
-              install${PACKAGE_PREFIX}/lib/gcc \
-    && cd ${STAGE_ROOT}/install \
-    && export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
-    && tar cf ${PACKAGE_NAME}.tar usr/ \
-    && alien ${PACKAGE_NAME}.tar \
-    && mv *.deb ${SOURCE_PACKAGE_NAME}.deb \
-    && mv *${SOURCE_PACKAGE_NAME}*.deb \
-          ${DEB_PATH}/${PACKAGE_NAME}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libgcc-cross
 
-# android compiler-rt build (for host)
+# windows compiler-rt build (for host)
 FROM WINDOWS_LIBGCC_BUILDER AS WINDOWS_COMPILER_RT_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt
+RUN export CLANG_RT_LIB=clang_rt.builtins-${HOST_PROCESSOR} \
+           SDK=windows \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt
 
-# android libunwind build
-FROM WINDOWS_COMPILER_RT_BUILDER AS WINDOWS_LIBUNWIND_BUILDER
+# windows mingw-winpthreads build
+FROM WINDOWS_COMPILER_RT_BUILDER AS WINDOWS_MINGW_WINPTHREADS_BUILDER
+
+RUN export RC=/usr/bin/x86_64-w64-mingw32-windres \
+           RCFLAGS="--preprocessor-arg=--sysroot=${PACKAGE_PREFIX}" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-winpthreads-cross
+
+# windows libunwind build
+FROM WINDOWS_MINGW_WINPTHREADS_BUILDER AS WINDOWS_LIBUNWIND_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
+
+# windows libcxxabi build
+FROM WINDOWS_LIBUNWIND_BUILDER AS WINDOWS_LIBCXXABI_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-cross
+
+# windows libcxx build
+FROM WINDOWS_LIBCXXABI_BUILDER AS WINDOWS_LIBCXX_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-cross
+
+# windows icu build
+FROM WINDOWS_LIBCXX_BUILDER AS WINDOWS_ICU_BUILDER
+
+RUN export LDFLAGS="-fuse-ld=/usr/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-ld" \
+           LIBS="-lc++abi -lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross
+
+# windows xz build
+FROM WINDOWS_ICU_BUILDER AS WINDOWS_XZ_BUILDER
+
+RUN export RC=/usr/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-windres \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
+
+# windows zlib build
+FROM WINDOWS_XZ_BUILDER AS WINDOWS_ZLIB_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
+
+# windows libxml2 build
+FROM WINDOWS_ZLIB_BUILDER AS WINDOWS_XML_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
+
+# android ncurses build
+FROM WINDOWS_XML_BUILDER AS WINDOWS_NCURSES_BUILDER
+
+RUN export LIBS="-lc++abi -lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross
+
+# windows editline build
+FROM WINDOWS_NCURSES_BUILDER AS WINDOWS_WINEDITLINE_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-wineditline-cross
+
+# windows sqlite3 build
+FROM WINDOWS_WINEDITLINE_BUILDER AS WINDOWS_SQLITE3_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross
+
+# windows openssl build
+FROM WINDOWS_SQLITE3_BUILDER AS WINDOWS_OPENSSL_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-openssl-windows
+
+# windows curl build
+FROM WINDOWS_OPENSSL_BUILDER AS WINDOWS_CURL_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
+
+# windows libexpat build
+FROM WINDOWS_CURL_BUILDER AS WINDOWS_LIBEXPAT_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross
+
+# windows libffi build
+FROM WINDOWS_LIBEXPAT_BUILDER AS WINDOWS_LIBFFI_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
+
+# windows libpython build
+FROM WINDOWS_LIBFFI_BUILDER AS WINDOWS_LIBPYTHON_BUILDER
+
+# COPY ${PACKAGE_BASE_NAME}-platform-sdk-python-cross-new \
+#      /sources/${PACKAGE_BASE_NAME}-platform-sdk-python-cross
+# COPY patch-python /sources
+
+# RUN export CONFIGURE_FLAGS="--host=${TARGET_PROCESSOR}-${TARGET_KERNEL}-cygwin" \
+#            CFLAGS="-fms-extensions -fms-compatibility-version=19 -DMS_NO_COREDLL=1 -DMS_WINDOWS=1 -v -D_UWIN=1" \
+#            LDFLAGS="-Wl,/force:multiple" \
+#            DYNLOADFILE=dynload_win.o \
+#     && bash ${PACKAGE_BASE_NAME}-platform-sdk-python-cross || true
+
+# windows z3 build
+FROM WINDOWS_LIBPYTHON_BUILDER AS WINDOWS_Z3_BUILDER
+
+RUN export LIBS="-lc++abi -lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
+
+# windows llvm build
+FROM WINDOWS_Z3_BUILDER AS WINDOWS_LLVM_BUILDER
+
+RUN export LIBS="-lc++abi -lunwind" \
+           RC=/usr/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-windres \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-windows
+
+# windows cmark build
+FROM WINDOWS_LLVM_BUILDER AS WINDOWS_CMARK_BUILDER
+
+RUN export LIBS="-lc++abi -lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark-cross
+
+# windows swift build
+FROM WINDOWS_CMARK_BUILDER AS WINDOWS_SWIFT_BUILDER
+
+RUN export LIBS="-latomic -lc++abi -lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-windows
+
+# windows lldb build
+FROM WINDOWS_SWIFT_BUILDER AS WINDOWS_LLDB_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb-cross
+
+# windows libdispatch build
+FROM WINDOWS_LLDB_BUILDER AS WINDOWS_LIBDISPATCH_BUILDER
+
+RUN export LIBS="-lc++abi -lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-cross
+
+# windows foundation build
+FROM WINDOWS_LIBDISPATCH_BUILDER AS WINDOWS_FOUNDATION_BUILDER
+
+RUN export LIBS="-lc++abi -lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-cross
+
+# windows xctest build
+FROM WINDOWS_FOUNDATION_BUILDER AS WINDOWS_XCTEST_BUILDER
+
+RUN export LIBS="-lc++abi -lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-cross \
+    && dpkg -i /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}-${BUILD_PROCESSOR}.deb \
+               /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}-${BUILD_PROCESSOR}.deb \
+               /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb \
+               /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb
+
+# windows llbuild build
+FROM WINDOWS_XCTEST_BUILDER AS WINDOWS_LLBUILD_BUILDER
+
+RUN export LIBS="-lc++abi -lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-cross
+
+# windows swift-tools-support-core build
+FROM WINDOWS_LLBUILD_BUILDER AS WINDOWS_SWIFT_TOOLS_SUPPORT_CORE_BUILDER
+
+RUN export LIBS="-lc++abi -lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-builder-cross
+
+# windows yams build
+FROM WINDOWS_SWIFT_TOOLS_SUPPORT_CORE_BUILDER AS WINDOWS_YAMS_BUILDER
+
+RUN export LIBS="-lc++abi -lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-yams-cross
+
+# windows swift-driver build
+FROM WINDOWS_YAMS_BUILDER AS WINDOWS_SWIFT_DRIVER
+
+RUN export LIBS="-lc++abi -lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross
+
+# windows swiftpm build
+FROM WINDOWS_SWIFT_DRIVER AS WINDOWS_SWIFTPM_BUILDER
+
+RUN export LIBS="-lc++abi -lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross
 
 CMD []
 ENTRYPOINT ["tail", "-f", "/dev/null"]

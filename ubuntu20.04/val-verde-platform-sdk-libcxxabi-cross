@@ -1,0 +1,39 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
+export SOURCE_PACKAGE_NAME=libcxxabi
+export SOURCE_ROOT=/sources/llvm-project/${SOURCE_PACKAGE_NAME}
+export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
+
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+
+# Configure the package
+mkdir -p ${STAGE_ROOT}
+cd ${STAGE_ROOT}
+
+export LDFLAGS="${LDFLAGS} -lunwind"
+${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+   -DCMAKE_CXX_FLAGS="-nostdlib++ -D_LIBCPP_BUILDING_LIBRARY=1 -D_Unwind_Personality_Fn=__personality_routine -D_LIBCPP_HAS_THREAD_API_WIN32=1 -Wno-macro-redefined -Wno-unused-command-line-argument" \
+   -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+   -DLIBCXXABI_ENABLE_EXCEPTIONS=TRUE \
+   -DLIBCXXABI_ENABLE_STATIC=FALSE \
+   -DLIBCXXABI_ENABLE_SHARED=TRUE \
+   -DLIBCXXABI_ENABLE_THREADS=FALSE \
+   -DLIBCXXABI_USE_LLVM_UNWINDER=TRUE \
+   -DLIBCXXABI_USE_SJLJ_EXCEPTIONS=FALSE \
+   ${SOURCE_ROOT}
+
+# Build the components
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+
+mkdir -p ${STAGE_ROOT}/install${PACKAGE_PREFIX}/include
+cp ${SOURCE_ROOT}/include/* \
+   ${STAGE_ROOT}/install${PACKAGE_PREFIX}/include
+
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+
+# Build the package
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
