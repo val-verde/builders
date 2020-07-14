@@ -16,10 +16,9 @@ git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git --single-branch --
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-export SYSROOT=/
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch/cmake/modules \
-    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
     -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
     -DFoundation_DIR=/sources/build-staging/swift-corelibs-foundation/cmake/modules \
     ${SOURCE_ROOT}

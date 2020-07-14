@@ -16,9 +16,8 @@ git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git  --single-branch -
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-export SYSROOT=/
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
-    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
     ${SOURCE_ROOT}
 
 # Build the components

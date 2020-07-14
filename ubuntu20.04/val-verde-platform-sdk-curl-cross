@@ -22,7 +22,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-configure \
     --disable-doc \
     --disable-static \
     --enable-shared \
-    --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+    --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
     --with-ssl=${PACKAGE_PREFIX}
 
 # Build the package

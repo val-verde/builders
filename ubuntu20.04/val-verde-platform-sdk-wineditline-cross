@@ -18,7 +18,7 @@ tar -xf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.bz2
 wget -c https://raw.githubusercontent.com/nuigroup/ccv-multicam/master/branches/test/videoInput_GUID/videoInputSrcAndDemos/libs/DShow/Include/strsafe.h \
      -O ${SOURCE_ROOT}/Strsafe.h
 
-mkdir -p ${STAGE_ROOT}/install/${PACKAGE_PREFIX}
+mkdir -p ${STAGE_ROOT}/install${PACKAGE_PREFIX}
 cd ${STAGE_ROOT}
 
 export CFLAGS="${CFLAGS} -I${SOURCE_ROOT}"
@@ -31,7 +31,7 @@ source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 mv ${SOURCE_ROOT}/bin \
    ${SOURCE_ROOT}/include \
    ${SOURCE_ROOT}/lib \
-   ${STAGE_ROOT}/install/${PACKAGE_PREFIX}
+   ${STAGE_ROOT}/install${PACKAGE_PREFIX}
 
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 

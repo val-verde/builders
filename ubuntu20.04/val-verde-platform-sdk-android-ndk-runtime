@@ -17,8 +17,8 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 mkdir -p ${STAGE_ROOT}/install${PACKAGE_PREFIX}/include
 
 rsync -aPx ${SYSROOT}/usr/lib/${HOST_TRIPLE}/*.so \
-           ${SYSROOT}/usr/lib/${HOST_TRIPLE}}/${HOST_OS_API_LEVEL}/* \
-           ${TOOLCHAIN_ROOT}/lib/gcc/${HOST_TRIPLE}}/4.9.x/*.a \
+           ${SYSROOT}/usr/lib/${HOST_TRIPLE}/${HOST_OS_API_LEVEL}/* \
+           ${TOOLCHAIN_ROOT}/lib/gcc/${HOST_TRIPLE}/4.9.x/*.a \
            ${TOOLCHAIN_ROOT}/${HOST_TRIPLE}/lib64/*.a \
            ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib
 

@@ -22,7 +22,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-configure \
     --disable-tests \
     --disable-tools \
     --enable-shared \
-    --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+    --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
     --with-cross-build=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
     --with-library-suffix=swift
 

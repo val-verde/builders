@@ -1,0 +1,6 @@
+#!/bin/bash
+
+args=$@
+args=`echo ${args}|sed -r 's/-implib/\/implib/g'`
+
+${PACKAGE_ROOT}/bin/ld.lld ${args}

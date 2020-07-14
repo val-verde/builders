@@ -15,14 +15,15 @@ mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}-${HOST_PROCESSOR}/cmake/modules \
-    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
     -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
     -DCMAKE_Swift_COMPILER_TARGET=${HOST_TRIPLE} \
-    -DCMAKE_Swift_FLAGS="-sdk ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot" \
+    -DCMAKE_Swift_FLAGS="${SWIFTCFLAGS} \
+                         -sdk ${SYSROOT}" \
     -DFoundation_DIR=/sources/build-staging/swift-corelibs-foundation-${HOST_OS}-${HOST_PROCESSOR}/cmake/modules \
     ${SOURCE_ROOT}
 
-#Package the components
+# Package the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 mv install${PACKAGE_PREFIX}/lib/swift/linux \

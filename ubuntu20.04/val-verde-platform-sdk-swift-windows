@@ -32,41 +32,40 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLIBXML2_LIBRARY=${PACKAGE_PREFIX}/lib/libxml2.a \
     -DLLVM_BUILD_LIBRARY_DIR=/sources/build-staging/llvm-project-${HOST_OS}-${HOST_PROCESSOR}/lib \
     -DLLVM_BUILD_MAIN_SRC_DIR=/sources/llvm-project/llvm \
+    -DLLVM_ENABLE_EH=TRUE \
     -DLLVM_ENABLE_LIBCXX=TRUE \
     -DLLVM_ENABLE_LTO=${ENABLE_FLTO} \
+    -DLLVM_ENABLE_RTTI=TRUE \
     -DLLVM_MAIN_INCLUDE_DIR=/sources/llvm-project/llvm/include \
     -DLLVM_DIR=/sources/build-staging/llvm-project-${HOST_OS}-${HOST_PROCESSOR}/lib/cmake/llvm \
     -DLLVM_TABLEGEN=/sources/build-staging/llvm-project/bin/llvm-tblgen \
     -DPython2_EXECUTABLE=/usr/bin/python2 \
     -DPYTHON_EXECUTABLE=/usr/bin/python2 \
-    -DSWIFT_WINDOWS_NATIVE_SYSROOT=${PACKAGE_ROOT}/val-verde-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot \
     -DSWIFT_BUILD_RUNTIME_WITH_HOST_COMPILER=TRUE \
     -DSWIFT_BUILD_SOURCEKIT=TRUE \
     -DSWIFT_BUILD_SYNTAXPARSERLIB=TRUE \
-    -DSWIFT_PATH_TO_LIBDISPATCH_SOURCE=/sources/swift-corelibs-libdispatch \
+    -DSWIFT_CMARK_LIBRARY_DIR=/sources/build-staging/swift-cmark-${HOST_OS}-${HOST_PROCESSOR}/src \
     -DSWIFT_ENABLE_EXPERIMENTAL_DIFFERENTIABLE_PROGRAMMING=TRUE \
     -DSWIFT_HOST_VARIANT_ARCH=${HOST_PROCESSOR} \
     -DSWIFT_HOST_VARIANT_SDK=WINDOWS \
     -DSWIFT_INCLUDE_DOCS=FALSE \
     -DSWIFT_INCLUDE_TESTS=FALSE \
-    -DSWIFT_USE_LINKER=lld \
-    -DSWIFT_PATH_TO_CMARK_SOURCE=/sources/swift-cmark \
-    -DSWIFT_PATH_TO_CMARK_BUILD=/sources/build-staging/swift-cmark-${HOST_OS}-${HOST_PROCESSOR} \
     -DSWIFT_NATIVE_CLANG_TOOLS_PATH=${PACKAGE_ROOT}/bin \
     -DSWIFT_NATIVE_LLVM_TOOLS_PATH=${PACKAGE_ROOT}/bin \
     -DSWIFT_NATIVE_SWIFT_TOOLS_PATH=${PACKAGE_ROOT}/bin \
+    -DSWIFT_PATH_TO_CMARK_SOURCE=/sources/swift-cmark \
+    -DSWIFT_PATH_TO_CMARK_BUILD=/sources/build-staging/swift-cmark-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR} \
+    -DSWIFT_PATH_TO_LIBDISPATCH_SOURCE=/sources/swift-corelibs-libdispatch \
     -DSWIFT_TOOLS_ENABLE_LTO=${ENABLE_FLTO} \
+    -DSWIFT_USE_LINKER=lld \
+    -DSWIFT_WINDOWS_NATIVE_SYSROOT=${PACKAGE_ROOT}/val-verde-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot \
     -DUSE_POSIX_SEM=1 \
     -DUUID_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DUUID_LIBRARY=${PACKAGE_PREFIX}/lib/libuuid.a \
     ${SOURCE_ROOT}
 
-#Package the components
+# Package the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
-
-sed -i 's/\/usr/\.\.\/\.\.\/\.\.\/\.\./g' \
-       install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}/${HOST_PROCESSOR}/glibc.modulemap
-
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Build the package

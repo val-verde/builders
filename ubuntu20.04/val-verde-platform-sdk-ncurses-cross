@@ -19,7 +19,9 @@ tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
 mkdir -p ${STAGE_ROOT} \
          ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
 cd ${STAGE_ROOT}
-OPTIMIZATION_LEVEL=3 \
+
+export LDFLAGS="${LDFLAGS} ${LIBS}" \
+       OPTIMIZATION_LEVEL=3
 ${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
     --enable-ext-colors \

@@ -10,6 +10,9 @@ export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOS
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
 
+cd ${SOURCE_ROOT}
+git pull
+
 # Configure the package
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
@@ -20,22 +23,16 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCMAKE_Swift_FLAGS="${SWIFTCFLAGS} \
                          -sdk ${SYSROOT}" \
     -DICU_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DICU_LIBRARY=${PACKAGE_PREFIX}/lib/libicudataswift.so \
-    -DICU_I18N_LIBRARY_RELEASE=${PACKAGE_PREFIX}/lib/libicui18nswift.so \
-    -DICU_UC_LIBRARY_RELEASE=${PACKAGE_PREFIX}/lib/libicuucswift.so \
+    -DICU_LIBRARY=${PACKAGE_PREFIX}/lib/libicudataswift.dll.a \
+    -DICU_I18N_LIBRARY_RELEASE=${PACKAGE_PREFIX}/lib/libicuinswift.dll.a \
+    -DICU_UC_LIBRARY_RELEASE=${PACKAGE_PREFIX}/lib/libicuucswift.dll.a \
     -DCURL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DCURL_LIBRARY=${PACKAGE_PREFIX}/lib/libcurl.so \
+    -DCURL_LIBRARY=${PACKAGE_PREFIX}/lib/libcurl.a \
     -DLIBXML2_INCLUDE_DIR=${PACKAGE_PREFIX}/include/libxml2 \
-    -DLIBXML2_LIBRARY=${PACKAGE_PREFIX}/lib/libxml2.so \
+    -DLIBXML2_LIBRARY=${PACKAGE_PREFIX}/lib/libxml2.a \
     -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}-${HOST_PROCESSOR}/cmake/modules \
     ${SOURCE_ROOT}
 
 # Package the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
-
-mv install${PACKAGE_PREFIX}/lib/swift/linux \
-    install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}
-mv install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}/${BUILD_PROCESSOR} \
-    install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}/${HOST_PROCESSOR}
-
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build

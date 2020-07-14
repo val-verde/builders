@@ -22,7 +22,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
     --disable-static \
     --enable-shared \
-    --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+    --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
     --with-icu \
     --without-python
 

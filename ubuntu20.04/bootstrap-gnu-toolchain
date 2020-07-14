@@ -5,7 +5,6 @@ apt update
 apt dist-upgrade -y
 apt install -y \
     alien \
-    binutils-mingw-w64-x86-64 \
     bison \
     build-essential \
     ca-certificates \
@@ -14,7 +13,6 @@ apt install -y \
     expat \
     git \
     g++ \
-    g++-mingw-w64-x86-64 \
     flex \
     icu-devtools \
     libc++-dev \

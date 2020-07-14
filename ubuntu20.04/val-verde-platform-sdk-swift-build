@@ -3,7 +3,7 @@
 if [ "${ENABLE_FLTO}" = "Full" ]; then
     FLTO_CFLAG="-Xcc -flto"
     FLTO_CXXFLAG="-Xcxx -flto"
-    FLTO_LDFLAG="Xlinker -s -Xlinker -O2"
+    FLTO_LDFLAG="-Xlinker -s -Xlinker -O2"
 fi
 
 BINDIR=${PACKAGE_ROOT}/bin

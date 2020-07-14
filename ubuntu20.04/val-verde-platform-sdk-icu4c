@@ -23,17 +23,18 @@ echo "$(cat icu-uconfig-prepend.h) $(cat $UCONFIG_PATH/uconfig.h)" \
       > ${UCONFIG_PATH}/uconfig.h
 cd ${STAGE_ROOT}
 
-${BUILD_TRIPLE}-configure \
+${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${SOURCE_ROOT}/source/configure \
     --disable-extras \
     --disable-samples \
     --disable-static \
     --disable-tests \
     --enable-shared \
-    --prefix=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+    --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
     --with-library-suffix=swift
 
 # Build the components
+make -j${NUM_PROCESSORS}
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 

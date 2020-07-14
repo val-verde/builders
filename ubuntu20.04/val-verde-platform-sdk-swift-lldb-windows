@@ -20,13 +20,15 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
     -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
     -DCURSES_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/ncurses \
-    -DCURSES_LIBRARIES="${PACKAGE_PREFIX}/lib/libncurses.so" \
+    -DCURSES_LIBRARIES="${PACKAGE_PREFIX}/lib/libncurses.dll.a" \
+    -DHAVE_SYS_TYPES_H=TRUE \
     -DLibEdit_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
-    -DLibEdit_LIBRARIES=${PACKAGE_PREFIX}/lib/libedit.so \
+    -DLibEdit_LIBRARIES=${PACKAGE_PREFIX}/bin/libedit.dll.a \
     -DLIBLZMA_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DLIBLZMA_LIBRARY=${PACKAGE_PREFIX}/lib/liblzma.so \
+    -DLIBLZMA_LIBRARY=${PACKAGE_PREFIX}/lib/liblzma.a \
     -DLIBXML2_INCLUDE_DIR=${PACKAGE_PREFIX}/include/libxml2 \
-    -DLIBXML2_LIBRARY=${PACKAGE_PREFIX}/lib/libxml2.so \
+    -DLIBXML2_LIBRARY="${PACKAGE_PREFIX}/lib/libxml2.a;${PACKAGE_PREFIX}/lib/liblzma.a;${PACKAGE_PREFIX}/lib/libicuucswift.dll.a;${PACKAGE_PREFIX}/lib/libz.a" \
+    -DLLDB_ENABLE_PYTHON=FALSE \
     -DLLDB_ENABLE_SWIFT_SUPPORT=TRUE \
     -DLLDB_INCLUDE_TESTS=FALSE \
     -DLLDB_PATH_TO_NATIVE_SWIFT_BUILD=/sources/build-staging/swift-${HOST_OS}-${HOST_PROCESSOR}/lib/cmake/swift \
@@ -42,13 +44,12 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLLVM_TABLEGEN=/sources/build-staging/llvm-project/bin/llvm-tblgen \
     -DNATIVE_Clang_DIR=${PACKAGE_ROOT}/lib/cmake/clang \
     -DNATIVE_LLVM_DIR=${PACKAGE_ROOT}/lib/cmake/lib \
-    -DPANEL_LIBRARIES=${PACKAGE_PREFIX}/lib/libpanel.so \
+    -DPANEL_LIBRARIES=${PACKAGE_PREFIX}/lib/libpanel.dll.a \
     -DPYTHON_EXECUTABLE=/usr/bin/python2 \
-    -DPYTHON_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/python2.7 \
-    -DPYTHON_LIBRARIES=${PACKAGE_PREFIX}/lib/libpython2.7.so \
     -DSwift_DIR=/sources/build-staging/swift-${HOST_OS}-${HOST_PROCESSOR}/lib/cmake/swift \
     -DSWIG_EXECUTABLE=/usr/bin/swig \
     ${SOURCE_ROOT}
+
 
 # Package the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build

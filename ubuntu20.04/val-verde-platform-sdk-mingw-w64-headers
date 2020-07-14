@@ -8,6 +8,8 @@ export SOURCE_PACKAGE_NAME=mingw-w64-headers
 export SOURCE_ROOT=/sources/mingw-w64/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
 
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 ${PACKAGE_BASE_NAME}-platform-sdk-configure \
@@ -15,6 +17,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-configure \
     --enable-crt \
     --enable-sdk=all \
     --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+    --with-default-msvcrt=ucrt \
     --with-default-win32-winnt=0x0A00
 
 # Build the package
@@ -24,6 +27,8 @@ cp /sources/mingw-sdk.modulemap \
    install${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot/include/module.modulemap
 ln -sf . \
        install${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot/mingw
+ln -sf . \
+       install${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot/usr
 
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 

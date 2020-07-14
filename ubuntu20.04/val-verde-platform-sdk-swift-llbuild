@@ -16,9 +16,8 @@ git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branc
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-export SYSROOT=/
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
-    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
+    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
     -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
     -DLLBUILD_SUPPORT_BINDINGS=Swift \
     ${SOURCE_ROOT}
