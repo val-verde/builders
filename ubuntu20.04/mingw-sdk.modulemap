@@ -60,13 +60,6 @@ module mingw [system] {
     module stdio {
       header "stdio.h"
       export *
-
-      // NOTE(compnerd) this is a horrible workaround for the fact that
-      // Microsoft has fully inlined nearly all of the printf family of
-      // functions in the headers which results in the definitions being elided
-      // resulting in undefined symbols.  The legacy_stdio_definitions provides
-      // out-of-line definitions for these functions.
-      link "legacy_stdio_definitions"
     }
 
     module stdlib {
@@ -110,17 +103,23 @@ module mingw [system] {
       }
     }
   }
-
-  module process {
-    header "process.h"
-    export *
-  }
 }
 
 module win32 {
   header "windef.h"
+  header "winsock2.h"
   header "windows.h"
   header "winuser.h"
+  header "winnt.h"
+  header "imagehlp.h"
+  header "iptypes.h"
+  header "iphlpapi.h"
+  header "knownfolders.h"
+  header "pathcch.h"
+  header "process.h"
+  header "processenv.h"
+  header "shlwapi.h"
+  header "shlobj.h"
+  header "ws2tcpip.h"
   export *
 }
-
