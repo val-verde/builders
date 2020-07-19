@@ -1,4 +1,5 @@
 #!/bin/bash
+
 set -e
 
 # Set all environment vars
@@ -10,39 +11,44 @@ export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
 
 # Configure the package
+rm -rf /sources/swift-corelibs-libdispatch \
+       ${SOURCE_ROOT}
 git clone https://github.com/val-verde/swift-corelibs-libdispatch.git --single-branch --branch dutch-master /sources/swift-corelibs-libdispatch
 git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git  --single-branch --branch dutch-master ${SOURCE_ROOT}
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
-${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
-        -DCMAKE_C_FLAGS="-I/sources/build-staging/llvm-project/include" \
-        -DCMAKE_CXX_FLAGS="-I/sources/build-staging/llvm-project/include" \
-        -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-        -DClang_DIR=${PACKAGE_PREFIX}/lib/cmake/clang \
-        -DICU_I18N_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
-        -DICU_I18N_LIBRARIES=${PACKAGE_PREFIX}/lib/libicui18nswift.so \
-        -DICU_UC_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
-        -DICU_UC_LIBRARIES=${PACKAGE_PREFIX}/lib/libicuucswift.so \
-        -DLLVM_BUILD_LIBRARY_DIR=/sources/build-staging/llvm-project/lib \
-        -DLLVM_BUILD_MAIN_SRC_DIR=/sources/llvm-project/llvm \
-        -DLLVM_ENABLE_LIBCXX=TRUE \
-        -DLLVM_ENABLE_LTO=${ENABLE_FLTO} \
-        -DLLVM_MAIN_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-        -DLLVM_DIR=${PACKAGE_PREFIX}/lib/cmake/llvm \
-        -DLLVM_TABLEGEN=/sources/build-staging/llvm-project/bin/llvm-tblgen \
-        -DSWIFT_BUILD_SOURCEKIT=TRUE \
-        -DSWIFT_BUILD_SYNTAXPARSERLIB=TRUE \
-        -DSWIFT_PATH_TO_LIBDISPATCH_SOURCE=/sources/swift-corelibs-libdispatch \
-        -DSWIFT_ENABLE_EXPERIMENTAL_DIFFERENTIABLE_PROGRAMMING=TRUE \
-        -DSWIFT_INCLUDE_DOCS=FALSE \
-        -DSWIFT_INCLUDE_TESTS=FALSE \
-        -DSWIFT_USE_LINKER=lld \
-        -DSWIFT_PATH_TO_CMARK_SOURCE=/sources/swift-cmark \
-        -DSWIFT_PATH_TO_CMARK_BUILD=/sources/build-staging/swift-cmark \
-        -DSWIFT_NATIVE_CLANG_TOOLS_PATH=${PACKAGE_ROOT}/bin \
-        -DSWIFT_NATIVE_LLVM_TOOLS_PATH=${PACKAGE_ROOT}/bin \
-        -DSWIFT_TOOLS_ENABLE_LTO=${ENABLE_FLTO} \
-        ${SOURCE_ROOT}
+
+export CFLAGS="-I/sources/build-staging/llvm-project/include" \
+       CXXFLAGS="-I/sources/build-staging/llvm-project/include"
+${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+    -DClang_DIR=${PACKAGE_PREFIX}/lib/cmake/clang \
+    -DICU_I18N_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
+    -DICU_I18N_LIBRARIES=${PACKAGE_PREFIX}/lib/libicui18nswift.so \
+    -DICU_UC_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
+    -DICU_UC_LIBRARIES=${PACKAGE_PREFIX}/lib/libicuucswift.so \
+    -DLLVM_BUILD_LIBRARY_DIR=/sources/build-staging/llvm-project/lib \
+    -DLLVM_BUILD_MAIN_SRC_DIR=/sources/llvm-project/llvm \
+    -DLLVM_ENABLE_EH=TRUE \
+    -DLLVM_ENABLE_LIBCXX=TRUE \
+    -DLLVM_ENABLE_LTO=${ENABLE_FLTO} \
+    -DLLVM_ENABLE_RTTI=TRUE \
+    -DLLVM_MAIN_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DLLVM_DIR=${PACKAGE_PREFIX}/lib/cmake/llvm \
+    -DLLVM_TABLEGEN=/sources/build-staging/llvm-project/bin/llvm-tblgen \
+    -DSWIFT_BUILD_SOURCEKIT=TRUE \
+    -DSWIFT_BUILD_SYNTAXPARSERLIB=TRUE \
+    -DSWIFT_ENABLE_EXPERIMENTAL_DIFFERENTIABLE_PROGRAMMING=TRUE \
+    -DSWIFT_INCLUDE_DOCS=FALSE \
+    -DSWIFT_INCLUDE_TESTS=FALSE \
+    -DSWIFT_NATIVE_CLANG_TOOLS_PATH=${PACKAGE_ROOT}/bin \
+    -DSWIFT_NATIVE_LLVM_TOOLS_PATH=${PACKAGE_ROOT}/bin \
+    -DSWIFT_PATH_TO_CMARK_SOURCE=/sources/swift-cmark \
+    -DSWIFT_PATH_TO_CMARK_BUILD=/sources/build-staging/swift-cmark \
+    -DSWIFT_PATH_TO_LIBDISPATCH_SOURCE=/sources/swift-corelibs-libdispatch \
+    -DSWIFT_TOOLS_ENABLE_LTO=${ENABLE_FLTO} \
+    -DSWIFT_USE_LINKER=lld \
+    ${SOURCE_ROOT}
 
 # Build the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build

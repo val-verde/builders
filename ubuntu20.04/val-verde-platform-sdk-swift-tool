@@ -5,8 +5,8 @@ SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/val-verde-platform-sdk-${HOST_OS}${HOST_OS_AP
 ${PACKAGE_ROOT}/bin/swift \
     "$@" \
     -Xcc --sysroot=${SYSROOT} \
-    -Xcc -target -Xcc ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL} \
+    -Xcc --target=${HOST_TRIPLE} \
     -Xcxx --sysroot=${SYSROOT} \
-    -Xcxx -target -Xcxx ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL} \
+    -Xcxx --target=${HOST_TRIPLE} \
     -Xswiftc -sdk -Xswiftc ${SYSROOT} \
-    -Xswiftc -target -Xswiftc ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}
+    -Xswiftc -target -Xswiftc ${HOST_TRIPLE}

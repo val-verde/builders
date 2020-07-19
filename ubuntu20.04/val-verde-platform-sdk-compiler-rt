@@ -9,30 +9,32 @@ export SOURCE_ROOT=/sources/llvm-project/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_PROCESSOR}
+export CLANG_RT_LIB=${CLANG_RT_LIB:-clang_rt.builtins-${HOST_PROCESSOR}-${HOST_OS}}
 
 # Configure the package
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
-   -DCMAKE_C_FLAGS="-rtlib=libgcc" \
-   -DCMAKE_CXX_FLAGS="-rtlib=libgcc -nostdlib++" \
-   -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install-staging${PACKAGE_ROOT} \
-   -DCOMPILER_RT_BUILD_LIBFUZZER=FALSE \
-   -DCOMPILER_RT_BUILD_PROFILE=FALSE \
-   -DCOMPILER_RT_BUILD_SANITIZERS=FALSE \
-   -DCOMPILER_RT_BUILD_XRAY=FALSE \
-   -DCOMPILER_RT_CAN_EXECUTE_TESTS=FALSE \
-   -DCOMPILER_RT_DEFAULT_TARGET_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-   -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
-   -DLLVM_TABLEGEN=/sources/build-staging/llvm-project/bin/llvm-tblgen \
-   ${SOURCE_ROOT}
+    -DCMAKE_C_FLAGS="-rtlib=libgcc" \
+    -DCMAKE_CXX_FLAGS="-nostdlib++ -rtlib=libgcc" \
+    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install-staging${PACKAGE_ROOT} \
+    -DCOMPILER_RT_BUILD_LIBFUZZER=FALSE \
+    -DCOMPILER_RT_BUILD_PROFILE=FALSE \
+    -DCOMPILER_RT_BUILD_SANITIZERS=FALSE \
+    -DCOMPILER_RT_BUILD_XRAY=FALSE \
+    -DCOMPILER_RT_CAN_EXECUTE_TESTS=FALSE \
+    -DCOMPILER_RT_DEFAULT_TARGET_TRIPLE=${HOST_TRIPLE} \
+    -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
+    -DLLVM_TABLEGEN=/sources/build-staging/llvm-project/bin/llvm-tblgen \
+    ${SOURCE_ROOT}
 
 # Build the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
-mkdir -p install${PACKAGE_ROOT}/lib/clang/10.0.0/lib/${HOST_KERNEL}
-mv install-staging${PACKAGE_ROOT}/lib/${HOST_KERNEL}/libclang_rt.builtins-${HOST_PROCESSOR}-${HOST_OS}.a \
-   install${PACKAGE_ROOT}/lib/clang/10.0.0/lib/${HOST_KERNEL}
+SDK=${SDK:-${HOST_KERNEL}}
+mkdir -p install${PACKAGE_ROOT}/lib/clang/10.0.0/lib/${SDK}
+mv install-staging${PACKAGE_ROOT}/lib/${SDK}/lib${CLANG_RT_LIB}.a \
+   install${PACKAGE_ROOT}/lib/clang/10.0.0/lib/${SDK}
 
 # Build the package
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build

@@ -17,6 +17,9 @@ git fetch origin dutch-android-master
 git checkout dutch-android-master
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
+
+export CFLAGS="-I/sources/build-staging/llvm-project/include" \
+       CXXFLAGS="-I/sources/build-staging/llvm-project/include"
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
     -DClang_DIR=/sources/build-staging/llvm-project-${HOST_OS}-${HOST_PROCESSOR}/lib/cmake/clang \
@@ -30,8 +33,10 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLIBXML2_LIBRARY=${PACKAGE_PREFIX}/lib/libxml2.so \
     -DLLVM_BUILD_LIBRARY_DIR=/sources/build-staging/llvm-project-${HOST_OS}-${HOST_PROCESSOR}/lib \
     -DLLVM_BUILD_MAIN_SRC_DIR=/sources/llvm-project/llvm \
+    -DLLVM_ENABLE_EH=TRUE \
     -DLLVM_ENABLE_LIBCXX=TRUE \
     -DLLVM_ENABLE_LTO=${ENABLE_FLTO} \
+    -DLLVM_ENABLE_RTTI=TRUE \
     -DLLVM_MAIN_INCLUDE_DIR=/sources/llvm-project/llvm/include \
     -DLLVM_DIR=/sources/build-staging/llvm-project-${HOST_OS}-${HOST_PROCESSOR}/lib/cmake/llvm \
     -DLLVM_TABLEGEN=/sources/build-staging/llvm-project/bin/llvm-tblgen \
@@ -44,25 +49,25 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DSWIFT_BUILD_RUNTIME_WITH_HOST_COMPILER=TRUE \
     -DSWIFT_BUILD_SOURCEKIT=TRUE \
     -DSWIFT_BUILD_SYNTAXPARSERLIB=TRUE \
-    -DSWIFT_PATH_TO_LIBDISPATCH_SOURCE=/sources/swift-corelibs-libdispatch \
     -DSWIFT_ENABLE_EXPERIMENTAL_DIFFERENTIABLE_PROGRAMMING=TRUE \
     -DSWIFT_HOST_VARIANT_ARCH=${HOST_PROCESSOR} \
     -DSWIFT_HOST_VARIANT_SDK=ANDROID \
     -DSWIFT_INCLUDE_DOCS=FALSE \
     -DSWIFT_INCLUDE_TESTS=FALSE \
-    -DSWIFT_USE_LINKER=lld \
-    -DSWIFT_PATH_TO_CMARK_SOURCE=/sources/swift-cmark \
-    -DSWIFT_PATH_TO_CMARK_BUILD=/sources/build-staging/swift-cmark-${HOST_OS}-${HOST_PROCESSOR} \
     -DSWIFT_NATIVE_CLANG_TOOLS_PATH=${PACKAGE_ROOT}/bin \
     -DSWIFT_NATIVE_LLVM_TOOLS_PATH=${PACKAGE_ROOT}/bin \
     -DSWIFT_NATIVE_SWIFT_TOOLS_PATH=${PACKAGE_ROOT}/bin \
+    -DSWIFT_PATH_TO_CMARK_SOURCE=/sources/swift-cmark \
+    -DSWIFT_PATH_TO_CMARK_BUILD=/sources/build-staging/swift-cmark-${HOST_OS}-${HOST_PROCESSOR} \
+    -DSWIFT_PATH_TO_LIBDISPATCH_SOURCE=/sources/swift-corelibs-libdispatch \
     -DSWIFT_TOOLS_ENABLE_LTO=${ENABLE_FLTO} \
+    -DSWIFT_USE_LINKER=lld \
     -DUSE_POSIX_SEM=1 \
     -DUUID_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DUUID_LIBRARY=${PACKAGE_PREFIX}/lib/libuuid.so \
     ${SOURCE_ROOT}
 
-#Package the components
+# Package the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 sed -i 's/\/usr/\.\.\/\.\.\/\.\.\/\.\./g' \
@@ -72,5 +77,3 @@ source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Build the package
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
-
-

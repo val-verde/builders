@@ -1,4 +1,5 @@
 #!/bin/bash
+
 set -e
 
 # Set all environment vars
@@ -10,12 +11,14 @@ export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
 
 # Configure the package
+rm -rf ${SOURCE_ROOT}
 git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git  --single-branch --branch master ${SOURCE_ROOT}
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
-${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
-        -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-        ${SOURCE_ROOT}
+
+${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+    ${SOURCE_ROOT}
 
 # Build the components
 ninja -j${NUM_PROCESSORS}

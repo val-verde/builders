@@ -13,24 +13,25 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOS
 # Configure the package
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
-${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}-cmake \
-        -DBUILD_SHARED_LIBS=TRUE \
-        -DClang_DIR=${PACKAGE_PREFIX}/lib/cmake/clang \
-        -DCMAKE_EXE_LINKER_FLAGS="-O2" \
-        -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install/${PACKAGE_PREFIX} \
-        -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
-        -DLLDB_ENABLE_SWIFT_SUPPORT=TRUE \
-        -DLLDB_INCLUDE_TESTS=FALSE \
-        -DLLVM_BUILD_MAIN_SRC_DIR=/sources/llvm-project/llvm \
-        -DLLVM_ENABLE_LIBCXX=TRUE \
-        -DLLVM_ENABLE_LLD=TRUE \
-        -DLLVM_ENABLE_LTO=${ENABLE_FLTO} \
-        -DLLVM_LINK_LLVM_DYLIB=FALSE \
-        -DLLVM_MAIN_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-        -DLLVM_DIR=${PACKAGE_PREFIX}/lib/cmake/llvm \
-        -DLLVM_TABLEGEN=/sources/build-staging/llvm-project/bin/llvm-tblgen \
-        -DSwift_DIR=/sources/build-staging/swift/lib/cmake/swift \
-        ${SOURCE_ROOT}
+
+${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+    -DBUILD_SHARED_LIBS=TRUE \
+    -DClang_DIR=${PACKAGE_PREFIX}/lib/cmake/clang \
+    -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS} ${LIBS} -O2" \
+    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+    -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
+    -DLLDB_ENABLE_SWIFT_SUPPORT=TRUE \
+    -DLLDB_INCLUDE_TESTS=FALSE \
+    -DLLVM_BUILD_MAIN_SRC_DIR=/sources/llvm-project/llvm \
+    -DLLVM_ENABLE_LIBCXX=TRUE \
+    -DLLVM_ENABLE_LLD=TRUE \
+    -DLLVM_ENABLE_LTO=${ENABLE_FLTO} \
+    -DLLVM_LINK_LLVM_DYLIB=FALSE \
+    -DLLVM_MAIN_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DLLVM_DIR=${PACKAGE_PREFIX}/lib/cmake/llvm \
+    -DLLVM_TABLEGEN=/sources/build-staging/llvm-project/bin/llvm-tblgen \
+    -DSwift_DIR=/sources/build-staging/swift/lib/cmake/swift \
+    ${SOURCE_ROOT}
 
 # Build the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build

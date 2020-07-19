@@ -1,4 +1,5 @@
 #!/bin/bash
+
 set -e
 
 dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb

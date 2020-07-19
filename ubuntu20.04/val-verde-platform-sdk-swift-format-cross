@@ -1,4 +1,5 @@
 #!/bin/bash
+
 set -e
 
 export SOURCE_PACKAGE_NAME=swift-format

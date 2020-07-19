@@ -1,16 +1,16 @@
 #!/bin/bash
+
 set -e
 
+# Set all environment vars
 export SOURCE_PACKAGE_NAME=swift-doc
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
 
-cd ${SOURCE_ROOT}
-git remote set-branches --add origin dutch-android-master
-git fetch origin dutch-android-master
-git checkout dutch-android-master
+rm -rf ${SOURCE_ROOT}
+git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-android-master ${SOURCE_ROOT}
 
 # Configure & build the package
 mkdir -p ${STAGE_ROOT}

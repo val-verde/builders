@@ -6,6 +6,6 @@ SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}$
 
 ${PACKAGE_ROOT}/bin/clang++ \
     -stdlib=libc++ \
-    -target ${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL} \
     --sysroot=${SYSROOT} \
+    --target=${HOST_TRIPLE} \
     "$@"
