@@ -1,0 +1,47 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
+export SOURCE_PACKAGE_NAME=libcxx
+export SOURCE_ROOT=/sources/llvm-project/${SOURCE_PACKAGE_NAME}
+export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}${HOST_OS_API_LEVEL}-${HOST_OS}-${HOST_PROCESSOR}
+
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+
+# Configure the package
+mkdir -p ${STAGE_ROOT}
+cd ${STAGE_ROOT}
+
+export CXXFLAGS="-nostdlib++ \
+                 -D_LIBCXXABI_BUILDING_LIBRARY=1 \
+                 -Wno-macro-redefined \
+                 -Wno-unused-command-line-argument"
+${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+   -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+   -DHAVE_LIBUNWIND=TRUE \
+   -DLIBCXX_CXX_ABI=libcxxabi \
+   -DLIBCXX_ENABLE_ABI_LINKER_SCRIPT=TRUE \
+   -DLIBCXX_ENABLE_EXPERIMENTAL_LIBRARY=TRUE \
+   -DLIBCXX_ENABLE_EXCEPTIONS=TRUE \
+   -DLIBCXX_ENABLE_FILESYSTEM=FALSE \
+   -DLIBCXX_ENABLE_NEW_DELETE_DEFINITIONS=FALSE \
+   -DLIBCXX_ENABLE_RTTI=TRUE \
+   -DLIBCXX_ENABLE_STATIC=FALSE \
+   -DLIBCXX_ENABLE_SHARED=TRUE \
+   -DLIBCXX_ENABLE_STATIC=FALSE \
+   -DLIBCXX_ENABLE_THREADS=TRUE \
+   -DLIBCXX_HAS_PTHREAD_API=TRUE \
+   -DLIBCXX_HAS_WIN32_THREAD_API=FALSE \
+   -DLIBCXX_INCLUDE_BENCHMARKS=FALSE \
+   -DLIBCXX_INCLUDE_DOCS=FALSE \
+   -DLIBCXX_USE_COMPILER_RT=TRUE \
+   ${SOURCE_ROOT}
+
+# Build the components
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+
+# Build the package
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install

@@ -259,6 +259,8 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross \
 # android package builders
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-headers \
      ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-runtime \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-android \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-android \
@@ -320,8 +322,18 @@ FROM ANDROID_COMPILER_RT_BUILDER AS ANDROID_LIBUNWIND_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
 
+# android libcxxabi build
+FROM ANDROID_LIBUNWIND_BUILDER AS ANDROID_LIBCXXABI_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-android
+
+# android libcxx build
+FROM ANDROID_LIBCXXABI_BUILDER AS ANDROID_LIBCXX_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-android
+
 # android icu build
-FROM ANDROID_LIBUNWIND_BUILDER AS ANDROID_ICU_BUILDER
+FROM ANDROID_LIBCXX_BUILDER AS ANDROID_ICU_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross
 
