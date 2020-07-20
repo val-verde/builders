@@ -107,8 +107,8 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DMLIR_TABLEGEN=/sources/build-staging/llvm-project/bin/mlir-tblgen \
     -DPYTHON_EXECUTABLE=/usr/bin/python2 \
     -DSANITIZER_CXX_ABI=libc++ \
-    -DZ3_RETURNCODE=1 \
-    -DZ3_RETURNCODE__TRYRUN_OUTPUT=4.8.0 \
+    -DZ3_INCLUDE_DIR=${SYSROOT}/include \
+    -DZ3_LIBRARIES=${SYSROOT}/lib/libz3.dll.a \
     ${SOURCE_ROOT}/llvm
 
 # Package the components

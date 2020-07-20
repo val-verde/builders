@@ -109,8 +109,6 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLLVM_Z3_INSTALL_DIR=${PACKAGE_PREFIX} \
     -DPYTHON_EXECUTABLE=/usr/bin/python2 \
     -DSANITIZER_CXX_ABI=libc++ \
-    -DZ3_RETURNCODE=1 \
-    -DZ3_RETURNCODE__TRYRUN_OUTPUT=4.8.0 \
     ${SOURCE_ROOT}/llvm
 
 # Build the components
