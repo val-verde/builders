@@ -15,8 +15,7 @@ rm -rf ${SOURCE_ROOT}
 cd /sources
 wget -c https://www.thrysoee.dk/editline/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
 tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
-mkdir -p ${STAGE_ROOT} \
-         ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 CFLAGS="-I${PACKAGE_PREFIX}/include -I${PACKAGE_PREFIX}/include/ncurses -D__STDC_ISO_10646__=201103L -DNBBY=CHAR_BIT" \
 LDFLAGS="-L${PACKAGE_PREFIX}/lib" \

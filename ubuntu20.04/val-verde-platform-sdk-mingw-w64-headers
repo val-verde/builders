@@ -24,11 +24,11 @@ ${PACKAGE_BASE_NAME}-platform-sdk-configure \
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 
 cp /sources/mingw-sdk.modulemap \
-   install${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot/include/module.modulemap
+   ${STAGE_ROOT}/install${PACKAGE_PREFIX}/include/module.modulemap
 ln -sf . \
-       install${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot/mingw
+       ${STAGE_ROOT}/install${PACKAGE_PREFIX}/mingw
 ln -sf . \
-       install${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot/usr
+       ${STAGE_ROOT}/install${PACKAGE_PREFIX}/usr
 
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
