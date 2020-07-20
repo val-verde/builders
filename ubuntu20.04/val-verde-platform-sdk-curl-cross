@@ -17,16 +17,18 @@ wget -c https://curl.haxx.se/download/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VE
 tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
-${PACKAGE_BASE_NAME}-platform-sdk-configure \
-    ${SOURCE_ROOT}/configure \
-    --disable-doc \
-    --disable-static \
-    --enable-shared \
-    --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
-    --with-ssl=${PACKAGE_PREFIX}
+
+${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+    -DBUILD_SHARED_LIBS=TRUE \
+    -DBUILD_TESTING=FALSE \
+    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+    -DCURL_TARGET_WINDOWS_VERSION=0x0A00 \
+    -DHAVE_POLL_FINE_EXITCODE=0 \
+    -DHAVE_POLL_FINE_EXITCODE__TRYRUN_OUTPUT=1 \
+    ${SOURCE_ROOT} \
 
 # Build the package
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-make-build
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Install the package
