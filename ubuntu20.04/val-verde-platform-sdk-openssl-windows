@@ -28,8 +28,9 @@ ${SOURCE_ROOT}/Configure \
     mingw64
 
 # Build the package
-make install_sw \
-     install_ssldirs
+make -j${NUM_PROCESSORS}
+make -j${NUM_PROCESSORS} install_sw
+make -j${NUM_PROCESSORS} install_ssldirs
 
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
