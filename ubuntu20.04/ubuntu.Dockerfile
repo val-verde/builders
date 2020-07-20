@@ -532,7 +532,7 @@ COPY mingw-sdk.modulemap \
 # mingw-w64 source
 RUN export SOURCE_PACKAGE_NAME=mingw-w64 \
     && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && git clone https://github.com/mirror/mingw-w64.git --single-branch --branch master ${SOURCE_ROOT}
+    && git clone https://github.com/val-verde/mingw-w64.git --single-branch --branch master ${SOURCE_ROOT}
 
 # windows mingw-headers build
 FROM WINDOWS_SOURCES_BUILDER AS WINDOWS_MINGW_HEADERS_BUILDER
