@@ -774,10 +774,10 @@ RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
                         -L${SYSROOT}/lib/swift/windows/${HOST_PROCESSOR}" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-windows
 RUN dpkg -i /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}-${BUILD_PROCESSOR}.deb \
-            /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}-${BUILD_PROCESSOR}.deb
+            /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}-${BUILD_PROCESSOR}.deb \
+            /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb
 
 # HACK: Enable these when Windows Foundation is built.
-# /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb \
 # /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb \
 
 RUN cp /sources/build-staging/swift-corelibs-foundation-mingw32-x86_64/Sources/Foundation/lib*.dll \
@@ -788,13 +788,6 @@ RUN cp /sources/build-staging/swift-corelibs-foundation-mingw32-x86_64/Sources/F
           ${SYSROOT}/lib/swift/windows/ \
     && cp /sources/build-staging/swift-corelibs-foundation-mingw32-x86_64/swift/*.swift* \
           ${SYSROOT}/lib/swift/windows/${HOST_PROCESSOR} \
-    && cp /sources/build-staging/swift-corelibs-libdispatch-mingw32-x86_64/lib*.dll \
-          ${SYSROOT}/lib/swift/windows/ \
-    && cp /sources/build-staging/swift-corelibs-libdispatch-mingw32-x86_64/src/swift/lib*.a \
-          ${SYSROOT}/lib/swift/windows/ \
-    && cp /sources/build-staging/swift-corelibs-libdispatch-mingw32-x86_64/src/swift/swift/*.swift* \
-          ${SYSROOT}/lib/swift/windows/${HOST_PROCESSOR} \
-    && cp -r ${PACKAGE_ROOT}/lib/swift/dispatch ${SYSROOT}/lib/swift \
     && cp -r ${PACKAGE_ROOT}/lib/swift/CoreFoundation ${SYSROOT}/lib/swift
 
 # windows llbuild build

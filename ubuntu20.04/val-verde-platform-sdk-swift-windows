@@ -66,6 +66,12 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
 
 # Package the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+
+rm -f install${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot/bin/*libdispatch* \
+      install${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot/bin/*BlocksRuntime* \
+      install${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot/lib/*libdispatch* \
+      install${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot/lib/*BlocksRuntime*
+
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Build the package
