@@ -735,11 +735,8 @@ FROM WINDOWS_LLDB_BUILDER AS WINDOWS_LIBDISPATCH_BUILDER
 RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            LIBS="-lc++abi -lunwind" \
-           SWIFTCFLAGS="-lswiftSwiftOnoneSupport \
-                        -lswiftWinSDK \
-                        -use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
-                        -L${SYSROOT}/lib \
-                        -L${SYSROOT}/lib/swift/windows/${HOST_PROCESSOR}" \
+           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
+                        -L${SYSROOT}/lib" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-windows
 
 # windows foundation build
@@ -752,12 +749,8 @@ RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2 \
                    -Wno-switch" \
            CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            LIBS="-lc++abi -lunwind" \
-           SWIFTCFLAGS="-lswiftMSVCRT \
-                        -lswiftSwiftOnoneSupport \
-                        -lswiftWinSDK \
-                        -use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
-                        -L${SYSROOT}/lib \
-                        -L${SYSROOT}/lib/swift/windows/${HOST_PROCESSOR}" \
+           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
+                        -L${SYSROOT}/lib" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-windows || true
 
 # windows xctest build
@@ -766,12 +759,8 @@ FROM WINDOWS_FOUNDATION_BUILDER AS WINDOWS_XCTEST_BUILDER
 RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            LIBS="-lc++abi -lunwind" \
-           SWIFTCFLAGS="-lswiftMSVCRT \
-                        -lswiftSwiftOnoneSupport \
-                        -lswiftWinSDK \
-                        -use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
-                        -L${SYSROOT}/lib \
-                        -L${SYSROOT}/lib/swift/windows/${HOST_PROCESSOR}" \
+           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
+                        -L${SYSROOT}/lib" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-windows
 RUN dpkg -i /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}-${BUILD_PROCESSOR}.deb \
             /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}-${BUILD_PROCESSOR}.deb \
@@ -796,12 +785,8 @@ FROM WINDOWS_XCTEST_BUILDER AS WINDOWS_LLBUILD_BUILDER
 RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2 -I/sources/swift-llbuild/lib/llvm/Support" \
            LIBS="-lc++abi -lunwind" \
-           SWIFTCFLAGS="-lswiftMSVCRT \
-                        -lswiftSwiftOnoneSupport \
-                        -lswiftWinSDK \
-                        -use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
-                        -L${SYSROOT}/lib \
-                        -L${SYSROOT}/lib/swift/windows" \
+           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
+                        -L${SYSROOT}/lib" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-cross || true
 
 # windows swift-tools-support-core build
@@ -810,12 +795,8 @@ FROM WINDOWS_LLBUILD_BUILDER AS WINDOWS_SWIFT_TOOLS_SUPPORT_CORE_BUILDER
 RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2 -I/sources/swift-llbuild/lib/llvm/Support" \
            LIBS="-lc++abi -lunwind" \
-           SWIFTCFLAGS="-lswiftMSVCRT \
-                        -lswiftSwiftOnoneSupport \
-                        -lswiftWinSDK \
-                        -use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
-                        -L${SYSROOT}/lib \
-                        -L${SYSROOT}/lib/swift/windows" \
+           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
+                        -L${SYSROOT}/lib" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-builder-android || true
 
 # windows yams build
@@ -824,12 +805,8 @@ FROM WINDOWS_SWIFT_TOOLS_SUPPORT_CORE_BUILDER AS WINDOWS_YAMS_BUILDER
 RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2 -I/sources/swift-llbuild/lib/llvm/Support" \
            LIBS="-lc++abi -lunwind" \
-           SWIFTCFLAGS="-lswiftMSVCRT \
-                        -lswiftSwiftOnoneSupport \
-                        -lswiftWinSDK \
-                        -use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
-                        -L${SYSROOT}/lib \
-                        -L${SYSROOT}/lib/swift/windows" \
+           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
+                        -L${SYSROOT}/lib" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-yams-cross || true
 
 # windows swift-driver build
@@ -838,12 +815,8 @@ FROM WINDOWS_YAMS_BUILDER AS WINDOWS_SWIFT_DRIVER
 RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2 -I/sources/swift-llbuild/lib/llvm/Support" \
            LIBS="-lc++abi -lunwind" \
-           SWIFTCFLAGS="-lswiftMSVCRT \
-                        -lswiftSwiftOnoneSupport \
-                        -lswiftWinSDK \
-                        -use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
-                        -L${SYSROOT}/lib \
-                        -L${SYSROOT}/lib/swift/windows" \
+           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
+                        -L${SYSROOT}/lib" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross || true
 
 # windows swiftpm build
@@ -852,10 +825,7 @@ FROM WINDOWS_SWIFT_DRIVER AS WINDOWS_SWIFTPM_BUILDER
 RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2 -I/sources/swift-llbuild/lib/llvm/Support" \
            LIBS="-lc++abi -lunwind" \
-           SWIFTCFLAGS="-lswiftMSVCRT \
-                        -lswiftSwiftOnoneSupport \
-                        -lswiftWinSDK \
-                        -use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
+           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
                         -L${SYSROOT}/lib" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross || true
 
