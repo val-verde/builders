@@ -1,6 +1,9 @@
 #!/bin/bash
 
+set -e
+
 args=$@
-args=`echo ${args}|sed -r 's/-implib/\/implib/g'`
+args=`echo ${args}|sed -r 's/-implib:/\/implib:/g'`
+args=`echo ${args}|sed -r 's/-Bsymbolic//g'`
 
 ${PACKAGE_ROOT}/bin/ld.lld ${args}

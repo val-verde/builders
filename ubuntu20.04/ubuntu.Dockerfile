@@ -625,9 +625,9 @@ RUN export LIBS="-lc++abi -lunwind" \
 # windows icu build
 FROM WINDOWS_LIBCXX_BUILDER AS WINDOWS_ICU_BUILDER
 
-RUN export LDFLAGS="-fuse-ld=${PACKAGE_ROOT}/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-ld" \
-           LIBS="-lmingwex -lmsvcrt -lmingw32 -lmsvcr120_app -lc++abi -lunwind" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross || true
+RUN export LDFLAGS="-fuse-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink" \
+           LIBS="-lc++abi -lucrt -lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross
 
 # windows xz build
 FROM WINDOWS_ICU_BUILDER AS WINDOWS_XZ_BUILDER
