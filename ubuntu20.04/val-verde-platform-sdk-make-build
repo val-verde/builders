@@ -2,4 +2,6 @@
 
 set -e
 
-make -j${NUM_PROCESSORS} ${TARGETS} install
+TARGETS=${TARGETS:-install}
+
+make -j${NUM_PROCESSORS} ${TARGETS}

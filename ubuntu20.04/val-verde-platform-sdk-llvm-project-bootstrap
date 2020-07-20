@@ -19,8 +19,12 @@ export BINDIR=/usr/bin \
        CC=clang \
        CXX=clang++
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+    -DBUILD_SHARED_LIBS=FALSE \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
     -DCLANG_DEFAULT_RTLIB=compiler-rt \
+    -DCLANG_DEFAULT_UNWINDLIB=libunwind \
+    -DCLANG_ENABLE_ARCMT=FALSE \
+    -DCLANG_ENABLE_STATIC_ANALYZER=FALSE \
     -DCLANG_INCLUDE_DOCS=FALSE \
     -DCLANG_INCLUDE_TESTS=FALSE \
     -DCLANG_LINK_CLANG_DYLIB=FALSE \
@@ -88,7 +92,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLLVM_ENABLE_THREADS=TRUE \
     -DLLVM_ENABLE_UNWIND_TABLES=FALSE \
     -DLLVM_ENABLE_WARNINGS=FALSE \
-    -DLLVM_ENABLE_Z3_SOLVER=TRUE \
+    -DLLVM_ENABLE_Z3_SOLVER=FALSE \
     -DLLVM_ENABLE_ZLIB=TRUE \
     -DLLVM_HOST_TRIPLE=${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS} \
     -DLLVM_INCLUDE_DOCS=FALSE \
@@ -112,11 +116,13 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
 
 # Build the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+
+# Package the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Build the package
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
 
 # Clean up packages
-apt remove -y clang libllvm10 lld
+apt remove -y clang lld
 apt autoremove -y

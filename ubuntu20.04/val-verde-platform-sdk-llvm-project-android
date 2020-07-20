@@ -21,6 +21,9 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DBUILD_SHARED_LIBS=TRUE \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
     -DCLANG_DEFAULT_RTLIB=compiler-rt \
+    -DCLANG_DEFAULT_UNWINDLIB=libunwind \
+    -DCLANG_ENABLE_ARCMT=TRUE \
+    -DCLANG_ENABLE_STATIC_ANALYZER=TRUE \
     -DCLANG_INCLUDE_DOCS=FALSE \
     -DCLANG_INCLUDE_TESTS=FALSE \
     -DCLANG_LINK_CLANG_DYLIB=FALSE \
@@ -84,7 +87,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLLVM_ENABLE_LIBCXX=TRUE \
     -DLLVM_ENABLE_LLD=TRUE \
     -DLLVM_ENABLE_LTO=${ENABLE_FLTO} \
-    -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;compiler-rt;libclc;libunwind;lld;openmp;parallel-libs;polly;pstl" \
+    -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;compiler-rt;libclc;lld;openmp;parallel-libs;polly;pstl" \
     -DLLVM_ENABLE_RTTI=TRUE \
     -DLLVM_ENABLE_THREADS=TRUE \
     -DLLVM_ENABLE_UNWIND_TABLES=FALSE \
@@ -115,12 +118,11 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DZ3_LIBRARIES=${SYSROOT}/lib/libz3.so \
     ${SOURCE_ROOT}/llvm
 
-# Package the components
+# Build the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
-# Remove cross libunwind as it is supeceded by llvm-project's libunwind
-apt remove -y ${PACKAGE_BASE_NAME}-libunwind-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+# Package the components
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Build the package
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install

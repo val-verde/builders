@@ -28,6 +28,9 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DBUILD_SHARED_LIBS=TRUE \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
     -DCLANG_DEFAULT_RTLIB=compiler-rt \
+    -DCLANG_DEFAULT_UNWINDLIB=libunwind \
+    -DCLANG_ENABLE_ARCMT=TRUE \
+    -DCLANG_ENABLE_STATIC_ANALYZER=TRUE \
     -DCLANG_INCLUDE_DOCS=FALSE \
     -DCLANG_INCLUDE_TESTS=FALSE \
     -DCLANG_LINK_CLANG_DYLIB=FALSE \
@@ -118,7 +121,13 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     ${SOURCE_ROOT}/llvm
 
 # Build the components
+export TARGETS="MLIRCallOpInterfacesIncGen MLIRTypeInferOpInterfaceIncGen"
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+
+unset TARGETS
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+
+# Package the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Build the package
