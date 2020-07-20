@@ -532,7 +532,7 @@ COPY mingw-sdk.modulemap \
 # mingw-w64 source
 RUN export SOURCE_PACKAGE_NAME=mingw-w64 \
     && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && git clone https://github.com/mirror/mingw-w64.git --single-branch --branch master ${SOURCE_ROOT}
+    && git clone https://github.com/val-verde/mingw-w64.git --single-branch --branch master ${SOURCE_ROOT}
 
 # windows mingw-headers build
 FROM WINDOWS_SOURCES_BUILDER AS WINDOWS_MINGW_HEADERS_BUILDER
@@ -625,9 +625,9 @@ RUN export LIBS="-lc++abi -lunwind" \
 # windows icu build
 FROM WINDOWS_LIBCXX_BUILDER AS WINDOWS_ICU_BUILDER
 
-RUN export LDFLAGS="-fuse-ld=${PACKAGE_ROOT}/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-ld" \
-           LIBS="-lmingwex -lmsvcrt -lmingw32 -lmsvcr120_app -lc++abi -lunwind" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross || true
+RUN export LDFLAGS="-fuse-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink" \
+           LIBS="-lc++abi -lucrt -lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross
 
 # windows xz build
 FROM WINDOWS_ICU_BUILDER AS WINDOWS_XZ_BUILDER
@@ -774,10 +774,10 @@ RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
                         -L${SYSROOT}/lib/swift/windows/${HOST_PROCESSOR}" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-windows
 RUN dpkg -i /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}-${BUILD_PROCESSOR}.deb \
-            /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}-${BUILD_PROCESSOR}.deb
+            /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}-${BUILD_PROCESSOR}.deb \
+            /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb
 
 # HACK: Enable these when Windows Foundation is built.
-# /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb \
 # /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb \
 
 RUN cp /sources/build-staging/swift-corelibs-foundation-mingw32-x86_64/Sources/Foundation/lib*.dll \
@@ -788,13 +788,6 @@ RUN cp /sources/build-staging/swift-corelibs-foundation-mingw32-x86_64/Sources/F
           ${SYSROOT}/lib/swift/windows/ \
     && cp /sources/build-staging/swift-corelibs-foundation-mingw32-x86_64/swift/*.swift* \
           ${SYSROOT}/lib/swift/windows/${HOST_PROCESSOR} \
-    && cp /sources/build-staging/swift-corelibs-libdispatch-mingw32-x86_64/lib*.dll \
-          ${SYSROOT}/lib/swift/windows/ \
-    && cp /sources/build-staging/swift-corelibs-libdispatch-mingw32-x86_64/src/swift/lib*.a \
-          ${SYSROOT}/lib/swift/windows/ \
-    && cp /sources/build-staging/swift-corelibs-libdispatch-mingw32-x86_64/src/swift/swift/*.swift* \
-          ${SYSROOT}/lib/swift/windows/${HOST_PROCESSOR} \
-    && cp -r ${PACKAGE_ROOT}/lib/swift/dispatch ${SYSROOT}/lib/swift \
     && cp -r ${PACKAGE_ROOT}/lib/swift/CoreFoundation ${SYSROOT}/lib/swift
 
 # windows llbuild build
