@@ -103,6 +103,8 @@ module mingw [system] {
       }
     }
   }
+
+  link "ucrt"
 }
 
 module win32 {
@@ -122,4 +124,5 @@ module win32 {
   header "shlobj.h"
   header "ws2tcpip.h"
   export *
+  link "ucrt"
 }
