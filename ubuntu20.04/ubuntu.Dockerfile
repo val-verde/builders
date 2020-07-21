@@ -295,25 +295,8 @@ FROM ANDROID_NDK_HEADERS_BUILDER AS ANDROID_NDK_RUNTIME_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-runtime
 
-# android libgcc build
-FROM ANDROID_NDK_RUNTIME_BUILDER AS ANDROID_LIBGCC_BUILDER
-
-# RUN export ARCH_FLAGS="-march=haswell -mtune=haswell" \
-#            AS_FOR_TARGET="${PACKAGE_ROOT}/bin/clang --target=${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}${TARGET_OS_API_LEVEL}" \
-#            LD_FOR_TARGET=${PACKAGE_ROOT}/bin/clang \
-#            LDFLAGS_FOR_TARGET="-rtlib=libgcc --target=${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}${TARGET_OS_API_LEVEL}" \
-#            HOST_KERNEL=${BUILD_KERNEL} \
-#            HOST_OS=${BUILD_OS} \
-#            HOST_OS_API_LEVEL= \
-#            HOST_PROCESSOR=${BUILD_PROCESSOR} \
-#            SYSROOT=/ \
-#            TARGET_ARCH_FLAGS="${ARCH_FLAGS}" \
-#     && export BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS} \
-#               HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-#     && bash ${PACKAGE_BASE_NAME}-platform-sdk-libgcc-cross
-
 # android compiler-rt build (for host)
-FROM ANDROID_LIBGCC_BUILDER AS ANDROID_COMPILER_RT_BUILDER
+FROM ANDROID_NDK_RUNTIME_BUILDER AS ANDROID_COMPILER_RT_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt
 
@@ -325,12 +308,12 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
 # android libcxxabi build
 FROM ANDROID_LIBUNWIND_BUILDER AS ANDROID_LIBCXXABI_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-android
+# RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-android
 
 # android libcxx build
 FROM ANDROID_LIBCXXABI_BUILDER AS ANDROID_LIBCXX_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-android
+# RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-android
 
 # android icu build
 FROM ANDROID_LIBCXX_BUILDER AS ANDROID_ICU_BUILDER
@@ -566,25 +549,8 @@ RUN export ARCH_FLAGS="-march=haswell -mtune=haswell" \
               HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-gcc
 
-# windows libgcc build
-FROM WINDOWS_GCC_HOST_BUILDER AS WINDOWS_LIBGCC_BUILDER
-
-RUN export ARCH_FLAGS="-march=haswell -mtune=haswell" \
-           AS_FOR_TARGET=${PACKAGE_ROOT}/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-as \
-           HOST_KERNEL=${BUILD_KERNEL} \
-           HOST_OS=${BUILD_OS} \
-           HOST_OS_API_LEVEL= \
-           HOST_PROCESSOR=${BUILD_PROCESSOR} \
-           LDFLAGS_FOR_TARGET="-Wl,/force:multiple" \
-           RC_FOR_TARGET=${PACKAGE_ROOT}/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-windres \
-           SYSROOT=/ \
-           TARGET_ARCH_FLAGS="${ARCH_FLAGS}" \
-    && export BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS} \
-              HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-libgcc-cross
-
 # windows compiler-rt build (for host)
-FROM WINDOWS_LIBGCC_BUILDER AS WINDOWS_COMPILER_RT_BUILDER
+FROM WINDOWS_GCC_HOST_BUILDER AS WINDOWS_COMPILER_RT_BUILDER
 
 RUN export CLANG_RT_LIB=clang_rt.builtins-${HOST_PROCESSOR} \
            SDK=windows \

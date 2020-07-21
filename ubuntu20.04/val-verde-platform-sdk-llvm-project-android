@@ -87,7 +87,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLLVM_ENABLE_LIBCXX=TRUE \
     -DLLVM_ENABLE_LLD=TRUE \
     -DLLVM_ENABLE_LTO=${ENABLE_FLTO} \
-    -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;compiler-rt;libclc;lld;openmp;parallel-libs;polly;pstl" \
+    -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;compiler-rt;libclc;libunwind;lld;openmp;parallel-libs;polly;pstl" \
     -DLLVM_ENABLE_RTTI=TRUE \
     -DLLVM_ENABLE_THREADS=TRUE \
     -DLLVM_ENABLE_UNWIND_TABLES=FALSE \
@@ -114,8 +114,10 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DMLIR_TABLEGEN=/sources/build-staging/llvm-project/bin/mlir-tblgen \
     -DPYTHON_EXECUTABLE=/usr/bin/python2 \
     -DSANITIZER_CXX_ABI=libc++ \
-    -DZ3_INCLUDE_DIR=${SYSROOT}/include \
-    -DZ3_LIBRARIES=${SYSROOT}/lib/libz3.so \
+    -DZ3_INCLUDE_DIR=${SYSROOT}/usr/include \
+    -DZ3_LIBRARIES=${SYSROOT}/usr/lib/libz3.so \
+    -DZ3_RETURNCODE=0 \
+    -DZ3_RETURNCODE__TRYRUN_OUTPUT=4.8.7 \
     ${SOURCE_ROOT}/llvm
 
 # Build the components
@@ -123,6 +125,9 @@ source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 # Package the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+
+# Remove cross libunwind as it is supeceded by llvm-project's libunwind
+apt remove -y ${PACKAGE_BASE_NAME}-libunwind-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
 
 # Build the package
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install

@@ -15,8 +15,10 @@ export CLANG_RT_LIB=${CLANG_RT_LIB:-clang_rt.builtins-${HOST_PROCESSOR}-${HOST_O
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
-    -DCMAKE_C_FLAGS="-rtlib=libgcc" \
-    -DCMAKE_CXX_FLAGS="-nostdlib++ -rtlib=libgcc" \
+    -DCMAKE_C_FLAGS="-nostdlib" \
+    -DCMAKE_CXX_FLAGS="-nostdlib" \
+    -DCMAKE_C_COMPILER_WORKS=TRUE \
+    -DCMAKE_CXX_COMPILER_WORKS=TRUE \
     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install-staging${PACKAGE_ROOT} \
     -DCOMPILER_RT_BUILD_LIBFUZZER=FALSE \
     -DCOMPILER_RT_BUILD_PROFILE=FALSE \

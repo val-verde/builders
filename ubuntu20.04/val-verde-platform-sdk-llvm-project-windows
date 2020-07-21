@@ -118,6 +118,8 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DSANITIZER_CXX_ABI=libc++ \
     -DZ3_INCLUDE_DIR=${SYSROOT}/include \
     -DZ3_LIBRARIES=${SYSROOT}/lib/libz3.dll.a \
+    -DZ3_RETURNCODE=0 \
+    -DZ3_RETURNCODE__TRYRUN_OUTPUT=4.8.7 \
     ${SOURCE_ROOT}/llvm
 
 # Build the components

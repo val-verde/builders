@@ -22,6 +22,7 @@ rsync -aPx ${SYSROOT}/usr/include/${HOST_TRIPLE}/asm \
            ${SYSROOT}/usr/include/arpa \
            ${SYSROOT}/usr/include/asm-generic \
            ${SYSROOT}/usr/include/bits \
+           ${SYSROOT}/usr/include/c++ \
            ${SYSROOT}/usr/include/linux \
            ${SYSROOT}/usr/include/net \
            ${SYSROOT}/usr/include/netinet \
