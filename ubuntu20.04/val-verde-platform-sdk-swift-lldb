@@ -7,6 +7,8 @@ export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
 export SOURCE_PACKAGE_NAME=swift-lldb
 export SOURCE_ROOT=/sources/llvm-project/lldb
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+export LLVM_STAGE_ROOT=/sources/build-staging/llvm-project
+export SWIFT_STAGE_ROOT=/sources/build-staging/swift
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
 
@@ -15,22 +17,22 @@ mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
-    -DBUILD_SHARED_LIBS=TRUE \
-    -DClang_DIR=${PACKAGE_PREFIX}/lib/cmake/clang \
+    -DClang_DIR=${LLVM_STAGE_ROOT}/lib/cmake/clang \
     -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS} ${LIBS} -O2" \
     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
     -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
     -DLLDB_ENABLE_SWIFT_SUPPORT=TRUE \
     -DLLDB_INCLUDE_TESTS=FALSE \
-    -DLLVM_BUILD_MAIN_SRC_DIR=/sources/llvm-project/llvm \
+    -DLLVM_BUILD_MAIN_SRC_DIR=${LLVM_SOURCE_ROOT}/llvm \
+    -DLLVM_DIR=${LLVM_STAGE_ROOT}/lib/cmake/llvm \
     -DLLVM_ENABLE_LIBCXX=TRUE \
     -DLLVM_ENABLE_LLD=TRUE \
     -DLLVM_ENABLE_LTO=${ENABLE_FLTO} \
+    -DLLVM_INSTALL_TOOLCHAIN_ONLY=TRUE \
     -DLLVM_LINK_LLVM_DYLIB=FALSE \
-    -DLLVM_MAIN_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DLLVM_DIR=${PACKAGE_PREFIX}/lib/cmake/llvm \
-    -DLLVM_TABLEGEN=/sources/build-staging/llvm-project/bin/llvm-tblgen \
-    -DSwift_DIR=/sources/build-staging/swift/lib/cmake/swift \
+    -DLLVM_MAIN_INCLUDE_DIR=${LLVM_STAGE_ROOT}/include \
+    -DLLVM_TABLEGEN=${LLVM_STAGE_ROOT}/bin/llvm-tblgen \
+    -DSwift_DIR=${SWIFT_STAGE_ROOT}/lib/cmake/swift \
     ${SOURCE_ROOT}
 
 # Build the components
