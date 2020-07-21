@@ -108,14 +108,13 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-yams \
      /sources/
 
-# LTO configuration: OFF or Full
-# Set to full for prod
-ENV ENABLE_FLTO=OFF
-
 # llvm bootstrap build
 FROM BASE AS LLVM_BOOTSTRAP_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap
+
+# LTO configuration: [OFF | Full | Thin]
+ENV ENABLE_FLTO=Thin
 
 # llvm build
 FROM LLVM_BOOTSTRAP_BUILDER AS LLVM_BUILDER

@@ -15,9 +15,7 @@ git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branc
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-export BINDIR=/usr/bin \
-       CC=clang \
-       CXX=clang++
+export BINDIR=/usr/bin
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DBUILD_SHARED_LIBS=FALSE \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
