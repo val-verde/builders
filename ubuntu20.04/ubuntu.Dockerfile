@@ -158,8 +158,8 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation
 FROM FOUNDATION_BUILDER AS XCTEST_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}-${HOST_PROCESSOR}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}-${HOST_PROCESSOR}.deb
+    && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb
 
 # llbuild build
 FROM XCTEST_BUILDER AS LLBUILD_BUILDER

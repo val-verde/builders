@@ -34,5 +34,5 @@ source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Install the package
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
-dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-yams-${HOST_OS}-${HOST_PROCESSOR}.deb
-dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-tools-support-core-${HOST_OS}-${HOST_PROCESSOR}.deb
+dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-yams-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb
+dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-tools-support-core-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb

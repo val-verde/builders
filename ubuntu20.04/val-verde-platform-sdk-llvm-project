@@ -19,6 +19,7 @@ export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+export EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;libclc;mlir;openmp;parallel-libs;polly;pstl"}
 
 # Configure the package
 rm -rf ${STAGE_ROOT}/*
@@ -93,7 +94,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLLVM_ENABLE_LIBCXX=TRUE \
     -DLLVM_ENABLE_LLD=TRUE \
     -DLLVM_ENABLE_LTO=${ENABLE_FLTO} \
-    -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;compiler-rt;libcxx;libcxxabi;libclc;libunwind;lld;mlir;openmp;parallel-libs;polly;pstl" \
+    -DLLVM_ENABLE_PROJECTS="clang;compiler-rt;libcxx;libcxxabi;libunwind;lld;${EXTRA_PROJECTS}" \
     -DLLVM_ENABLE_RTTI=TRUE \
     -DLLVM_ENABLE_THREADS=TRUE \
     -DLLVM_ENABLE_UNWIND_TABLES=FALSE \
@@ -116,7 +117,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLLVM_USE_NEWPM=TRUE \
     -DLLVM_USE_RELATIVE_PATHS_IN_DEBUG_INFO=TRUE \
     -DLLVM_USE_RELATIVE_PATHS_IN_FILES=TRUE \
-    -DLLVM_Z3_INSTALL_DIR=${PACKAGE_PREFIX} \
+    -DLLVM_Z3_INSTALL_DIR=${SYSROOT} \
     -DPYTHON_EXECUTABLE=/usr/bin/python2 \
     -DSANITIZER_CXX_ABI=libc++ \
     ${SOURCE_ROOT}/llvm

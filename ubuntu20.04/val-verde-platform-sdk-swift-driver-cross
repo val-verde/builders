@@ -19,9 +19,9 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCMAKE_Swift_COMPILER_TARGET=${HOST_TRIPLE} \
     -DCMAKE_Swift_FLAGS="${SWIFTCFLAGS} \
                          -sdk ${SYSROOT}" \
-    -DLLBuild_DIR=/sources/build-staging/swift-llbuild-${HOST_OS}-${HOST_PROCESSOR}/cmake/modules \
-    -DTSC_DIR=/sources/build-staging/swift-tools-support-core-${HOST_OS}-${HOST_PROCESSOR}/cmake/modules \
-    -DYams_DIR=/sources/build-staging/yams-${HOST_OS}-${HOST_PROCESSOR}/cmake/modules \
+    -DLLBuild_DIR=/sources/build-staging/swift-llbuild-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/cmake/modules \
+    -DTSC_DIR=/sources/build-staging/swift-tools-support-core-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/cmake/modules \
+    -DYams_DIR=/sources/build-staging/yams-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/cmake/modules \
     ${SOURCE_ROOT}
 
 # Build the components

@@ -30,7 +30,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCURL_LIBRARY=${PACKAGE_PREFIX}/lib/libcurl.a \
     -DLIBXML2_INCLUDE_DIR=${PACKAGE_PREFIX}/include/libxml2 \
     -DLIBXML2_LIBRARY=${PACKAGE_PREFIX}/lib/libxml2.a \
-    -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}-${HOST_PROCESSOR}/cmake/modules \
+    -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/cmake/modules \
     ${SOURCE_ROOT}
 
 # Package the components
