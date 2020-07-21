@@ -684,7 +684,7 @@ FROM WINDOWS_LLDB_BUILDER AS WINDOWS_LIBDISPATCH_BUILDER
 
 RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
-           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
+           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
                         -L${SYSROOT}/lib" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-windows
 
@@ -697,7 +697,7 @@ RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2 \
                    -Wno-pointer-sign \
                    -Wno-switch" \
            CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
-           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
+           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
                         -L${SYSROOT}/lib" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-windows || true
 
@@ -706,7 +706,7 @@ FROM WINDOWS_FOUNDATION_BUILDER AS WINDOWS_XCTEST_BUILDER
 
 RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
-           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
+           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
                         -L${SYSROOT}/lib" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-windows
 RUN dpkg -i /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}-${BUILD_PROCESSOR}.deb \
@@ -731,7 +731,7 @@ FROM WINDOWS_XCTEST_BUILDER AS WINDOWS_LLBUILD_BUILDER
 
 RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2 -I/sources/swift-llbuild/lib/llvm/Support" \
-           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
+           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
                         -L${SYSROOT}/lib" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-cross || true
 
@@ -740,7 +740,7 @@ FROM WINDOWS_LLBUILD_BUILDER AS WINDOWS_SWIFT_TOOLS_SUPPORT_CORE_BUILDER
 
 RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2 -I/sources/swift-llbuild/lib/llvm/Support" \
-           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
+           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
                         -L${SYSROOT}/lib" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-builder-android || true
 
@@ -749,7 +749,7 @@ FROM WINDOWS_SWIFT_TOOLS_SUPPORT_CORE_BUILDER AS WINDOWS_YAMS_BUILDER
 
 RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2 -I/sources/swift-llbuild/lib/llvm/Support" \
-           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
+           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
                         -L${SYSROOT}/lib" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-yams-cross || true
 
@@ -758,7 +758,7 @@ FROM WINDOWS_YAMS_BUILDER AS WINDOWS_SWIFT_DRIVER
 
 RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2 -I/sources/swift-llbuild/lib/llvm/Support" \
-           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
+           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
                         -L${SYSROOT}/lib" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross || true
 
@@ -767,7 +767,7 @@ FROM WINDOWS_SWIFT_DRIVER AS WINDOWS_SWIFTPM_BUILDER
 
 RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2 -I/sources/swift-llbuild/lib/llvm/Support" \
-           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
+           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
                         -L${SYSROOT}/lib" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross || true
 
