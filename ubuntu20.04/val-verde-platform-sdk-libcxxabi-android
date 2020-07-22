@@ -20,6 +20,7 @@ export CXXFLAGS="-nostdlib++ \
                  -D_Unwind_Personality_Fn=__personality_routine"
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+    -DLIBCXXABI_ENABLE_ASSERTIONS=FALSE \
     -DLIBCXXABI_ENABLE_EXCEPTIONS=TRUE \
     -DLIBCXXABI_ENABLE_STATIC=FALSE \
     -DLIBCXXABI_ENABLE_SHARED=TRUE \

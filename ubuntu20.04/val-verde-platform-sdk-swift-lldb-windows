@@ -39,6 +39,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLLDB_TABLEGEN=/sources/build-staging/swift-lldb/bin/lldb-tblgen \
     -DLLVM_BUILD_MAIN_SRC_DIR=${LLVM_SOURCE_ROOT}/llvm \
     -DLLVM_DIR=${LLVM_STAGE_ROOT}/lib/cmake/llvm \
+    -DLLVM_ENABLE_ASSERTIONS=FALSE \
     -DLLVM_ENABLE_LIBCXX=TRUE \
     -DLLVM_ENABLE_LLD=TRUE \
     -DLLVM_ENABLE_LTO=${ENABLE_FLTO} \
