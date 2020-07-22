@@ -66,7 +66,7 @@ cmake \
     -DCMAKE_NM=${NM} \
     -DCMAKE_OBJCOPY=${OBJCOPY} \
     -DCMAKE_OBJDUMP=${OBJDUMP} \
-    -DCMAKE_PREFIX_PATH=${SYSROOT}/lib/pkgconfig \
+    -DCMAKE_PREFIX_PATH=${SYSROOT}/usr/lib/pkgconfig \
     -DCMAKE_RANLIB=${RANLIB} \
     -DCMAKE_RC_COMPILER=${RC} \
     -DCMAKE_READELF=${READELF} \

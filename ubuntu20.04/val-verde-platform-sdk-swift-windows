@@ -17,22 +17,22 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
-       CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
-       UniversalCRTSdkDir=${PACKAGE_PREFIX} \
+export CFLAGS="-fms-extensions -fms-compatibility-version=19.2 ${CFLAGS]" \
+       CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2 ${CXXFLAGS}" \
+       UniversalCRTSdkDir=${SYSROOT} \
        UCRTVersion=git \
-       VCToolsInstallDir=${PACKAGE_PREFIX}
+       VCToolsInstallDir=${SYSROOT}
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DClang_DIR=${LLVM_STAGE_ROOT}/lib/cmake/clang \
     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
-    -DICU_I18N_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
-    -DICU_I18N_LIBRARIES=${PACKAGE_PREFIX}/lib/libicuinswift.dll.a \
-    -DICU_UC_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
-    -DICU_UC_LIBRARIES=${PACKAGE_PREFIX}/lib/libicuucswift.dll.a \
-    -DLibEdit_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
-    -DLibEdit_LIBRARIES=${PACKAGE_PREFIX}/lib/edit.dll \
-    -DLIBXML2_INCLUDE_DIR=${PACKAGE_PREFIX}/include/libxml2 \
-    -DLIBXML2_LIBRARY=${PACKAGE_PREFIX}/lib/libxml2.a \
+    -DICU_I18N_INCLUDE_DIRS=${SYSROOT}/usr/include \
+    -DICU_I18N_LIBRARIES=${SYSROOT}/usr/lib/libicuinswift.dll.a \
+    -DICU_UC_INCLUDE_DIRS=${SYSROOT}/usr/include \
+    -DICU_UC_LIBRARIES=${SYSROOT}/usr/lib/libicuucswift.dll.a \
+    -DLibEdit_INCLUDE_DIRS=${SYSROOT}/usr/include \
+    -DLibEdit_LIBRARIES=${SYSROOT}/usr/lib/edit.dll \
+    -DLIBXML2_INCLUDE_DIR=${SYSROOT}/usr/include/libxml2 \
+    -DLIBXML2_LIBRARY=${SYSROOT}/usr/lib/libxml2.a \
     -DLLVM_BUILD_LIBRARY_DIR=${LLVM_STAGE_ROOT}/lib \
     -DLLVM_BUILD_MAIN_SRC_DIR=${LLVM_SOURCE_ROOT}/llvm \
     -DLLVM_DIR=${LLVM_STAGE_ROOT}/lib/cmake/llvm \
@@ -64,8 +64,8 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DSWIFT_USE_LINKER=lld \
     -DSWIFT_WINDOWS_NATIVE_SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot \
     -DUSE_POSIX_SEM=1 \
-    -DUUID_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DUUID_LIBRARY=${PACKAGE_PREFIX}/lib/libuuid.a \
+    -DUUID_INCLUDE_DIR=${SYSROOT}/usr/include \
+    -DUUID_LIBRARY=${SYSROOT}/usr/lib/libuuid.a \
     ${SOURCE_ROOT}
 
 # Package the components
