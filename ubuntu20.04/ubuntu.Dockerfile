@@ -304,18 +304,8 @@ FROM ANDROID_COMPILER_RT_BUILDER AS ANDROID_LIBUNWIND_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
 
-# android libcxxabi build
-FROM ANDROID_LIBUNWIND_BUILDER AS ANDROID_LIBCXXABI_BUILDER
-
-# RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-android
-
-# android libcxx build
-FROM ANDROID_LIBCXXABI_BUILDER AS ANDROID_LIBCXX_BUILDER
-
-# RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-android
-
 # android icu build
-FROM ANDROID_LIBCXX_BUILDER AS ANDROID_ICU_BUILDER
+FROM ANDROID_LIBUNWIND_BUILDER AS ANDROID_ICU_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross
 
@@ -505,7 +495,7 @@ COPY mingw-sdk.modulemap \
 # mingw-w64 source
 RUN export SOURCE_PACKAGE_NAME=mingw-w64 \
     && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && git clone https://github.com/val-verde/mingw-w64.git --single-branch --branch master ${SOURCE_ROOT}
+    && git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT}
 
 # windows mingw-headers build
 FROM WINDOWS_SOURCES_BUILDER AS WINDOWS_MINGW_HEADERS_BUILDER
