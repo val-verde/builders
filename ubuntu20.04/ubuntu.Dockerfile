@@ -48,17 +48,6 @@ ENV ARCH_FLAGS="-march=haswell -mtune=haswell" \
 
 ENV LD_LIBRARY_PATH=${PACKAGE_ROOT}/lib
 
-# swift build config
-ENV SWIFTPM_BUILD_ARGS="\
-    -Xcc -Oz \
-    -Xcxx -Oz \
-    -Xlinker -s \
-    -Xlinker -O2 \
-    -Xswiftc -whole-module-optimization \
-    -Xswiftc -Osize \
-    --configuration release \
-    --enable-test-discovery"
-
 # platform sdk tool wrapper scripts
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-configure \
      ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
