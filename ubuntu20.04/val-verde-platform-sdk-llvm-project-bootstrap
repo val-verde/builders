@@ -13,7 +13,7 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 USE_NEWPM=${USE_NEWPM:-FALSE}
 
 # Configure the build
-git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT}
+git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master /sources/llvm-project
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
@@ -112,7 +112,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLLVM_POLLY_LINK_INTO_TOOLS=TRUE \
     -DLLVM_TARGETS_TO_BUILD=X86 \
     -DLLVM_TOOL_LLVM_C_TEST_BUILD=FALSE \
-    -DLLVM_USE_HOST_TOOLS=TRUE \
+    -DLLVM_USE_HOST_TOOLS=FALSE \
     -DLLVM_USE_NEWPM=${USE_NEWPM} \
     -DLLVM_USE_RELATIVE_PATHS_IN_DEBUG_INFO=TRUE \
     -DLLVM_USE_RELATIVE_PATHS_IN_FILES=TRUE \
@@ -134,5 +134,5 @@ source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
 
 # Clean up packages
-apt remove -y clang lld
+apt remove -y clang libc++-dev libc++abi-dev lld llvm
 apt autoremove -y

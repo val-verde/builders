@@ -11,7 +11,7 @@ export LLVM_NATIVE_STAGE_ROOT=/sources/build-staging/llvm-project
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
 
-EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;libclc;openmp;parallel-libs;polly;pstl"}
+EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;libclc;mlir;openmp;parallel-libs;polly;pstl"}
 USE_NEWPM=${USE_NEWPM:-FALSE}
 
 # Configure the package
@@ -30,7 +30,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCLANG_ENABLE_STATIC_ANALYZER=TRUE \
     -DCLANG_INCLUDE_DOCS=FALSE \
     -DCLANG_INCLUDE_TESTS=FALSE \
-    -DCLANG_LINK_CLANG_DYLIB=FALSE \
+    -DCLANG_LINK_CLANG_DYLIB=TRUE \
     -DCLANG_TABLEGEN=${LLVM_NATIVE_STAGE_ROOT}/bin/clang-tblgen \
     -DCLANG_TOOL_ARCMT_TEST_BUILD=FALSE \
     -DCLANG_TOOL_CLANG_IMPORT_TEST_BUILD=FALSE \
@@ -88,7 +88,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLLD_INCLUDE_TESTS=FALSE \
     -DLLVM_BUILD_EXAMPLES=FALSE \
     -DLLVM_BUILD_DOCS=FALSE \
-    -DLLVM_BUILD_LLVM_DYLIB=FALSE \
+    -DLLVM_BUILD_LLVM_DYLIB=TRUE \
     -DLLVM_BUILD_TESTS=FALSE \
     -DLLVM_BUILD_UTILS=TRUE \
     -DLLVM_CONFIG_PATH=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config \
@@ -113,7 +113,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLLVM_INCLUDE_TESTS=FALSE \
     -DLLVM_INCLUDE_UTILS=TRUE \
     -DLLVM_INSTALL_TOOLCHAIN_ONLY=TRUE \
-    -DLLVM_LINK_LLVM_DYLIB=FALSE \
+    -DLLVM_LINK_LLVM_DYLIB=TRUE \
     -DLLVM_OPTIMIZED_TABLEGEN=TRUE \
     -DLLVM_POLLY_LINK_INTO_TOOLS=TRUE \
     -DLLVM_TABLEGEN=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-tblgen \
@@ -134,6 +134,43 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     ${SOURCE_ROOT}/llvm
 
 # Build the components
+export TARGETS="\
+    MLIRAffineOpsIncGen \
+    MLIRCallOpInterfacesIncGen \
+    MLIRFxpMathOpsIncGen \
+    MLIRGPUOpsIncGen \
+    MLIRGPUToNVVMIncGen \
+    MLIRLinalgOpsIncGen \
+    MLIRLinalgStructuredOpsIncGen \
+    MLIRLoopLikeInterfaceIncGen \
+    MLIRLoopOpsIncGen \
+    MLIRLLVMConversionsIncGen \
+    MLIRLLVMOpsIncGen \
+    MLIRNVVMOpsIncGen \
+    MLIRNVVMConversionsIncGen \
+    MLIROpAsmInterfacesIncGen \
+    MLIRQuantOpsIncGen \
+    MLIRROCDLConversionsIncGen \
+    MLIRROCDLOpsIncGen
+    MLIRStandardOpsIncGen \
+    MLIRStandardToSPIRVIncGen \
+    MLIRSPIRVAvailabilityIncGen \
+    MLIRSPIRVCanonicalizationIncGen \
+    MLIRSPIRVEnumAvailabilityIncGen \
+    MLIRSPIRVEnumsIncGen \
+    MLIRSPIRVOpsIncGen \
+    MLIRSPIRVTargetAndABIIncGen \
+    MLIRTableGenEnumsIncGen \
+    MLIRTableGenStructAttrIncGen \
+    MLIRTestLinalgTransformPatternsIncGen \
+    MLIRTestOpsIncGen \
+    MLIRTestVectorTransformPatternsIncGen \
+    MLIRTypeInferOpInterfaceIncGen \
+    MLIRVectorOpsIncGen \
+    MLIRVectorTransformPatternsIncGen"
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+
+unset TARGETS
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 rsync -aPx ${STAGE_ROOT}/bin/llvm-dlltool \
