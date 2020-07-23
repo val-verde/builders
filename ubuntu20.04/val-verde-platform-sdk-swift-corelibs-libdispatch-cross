@@ -28,8 +28,6 @@ source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 mv install${PACKAGE_PREFIX}/lib/swift/linux \
     install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}
-mv install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}/${BUILD_PROCESSOR} \
-    install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}/${HOST_PROCESSOR}
 
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 

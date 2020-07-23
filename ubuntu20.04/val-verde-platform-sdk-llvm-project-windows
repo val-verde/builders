@@ -39,7 +39,10 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCMAKE_ASM_MASM_COMPILER=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ml64 \
     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
     -DCOMPILER_RT_CAN_EXECUTE_TESTS=FALSE \
+    -DCOMPILER_RT_HAS_NODEFAULTLIBS_FLAG=FALSE \
     -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
+    -DFFI_INCLUDE_PATH=${SYSROOT}/usr/include \
+    -DFFI_LIBRARY_DIR=${SYSROOT}/usr/lib \
     -DHAVE_CXX_ATOMICS_WITH_LIB=TRUE \
     -DHAVE_CXX_ATOMICS64_WITH_LIB=TRUE \
     -DHAVE_GNU_POSIX_REGEX=TRUE \
@@ -137,6 +140,9 @@ source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 unset TARGETS
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+
+rsync -aPx ${STAGE_ROOT}/bin/llvm-dlltool* \
+           ${STAGE_ROOT}/install${PACKAGE_PREFIX}/bin
 
 # Package the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build

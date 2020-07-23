@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 BINDIR=${BINDIR:-${PACKAGE_ROOT}/bin}
 LINKER_OPTIMIZATION_LEVEL=${LINKER_OPTIMIZATION_LEVEL:-2}
 OPTIMIZATION_LEVEL=${OPTIMIZATION_LEVEL:-z}
@@ -28,9 +30,9 @@ ${BINDIR}/${PACKAGE_BASE_NAME}-platform-sdk-swift-tool \
     --build-path ${STAGE_ROOT} \
     --configuration ${SWIFT_BUILD_TYPE} \
     --enable-test-discovery \
-    "${FLTO_CFLAG}" \
-    "${FLTO_CXXFLAG}" \
-    "${FLTO_LDFLAG}" \
-    "${FLTO_SWIFTCFLAGS}" \
-    "${SWIFT_FLAGS}" \
-    "${SWIFT_LDFLAG}"
+    ${FLTO_CFLAG} \
+    ${FLTO_CXXFLAG} \
+    ${FLTO_LDFLAG} \
+    ${FLTO_SWIFTCFLAGS} \
+    ${SWIFT_FLAGS} \
+    ${SWIFT_LDFLAG}

@@ -74,6 +74,7 @@ RUN chmod +x ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang++ \
+             ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ml64 \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swift-build \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swift-tool
@@ -114,7 +115,7 @@ FROM BASE AS LLVM_BOOTSTRAP_BUILDER
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap
 
 # LTO configuration: [OFF | Full | Thin]
-ENV ENABLE_FLTO=Thin
+# ENV ENABLE_FLTO=Thin
 
 # llvm build
 FROM LLVM_BOOTSTRAP_BUILDER AS LLVM_BUILDER
@@ -476,6 +477,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-binutils \
      ${PACKAGE_BASE_NAME}-platform-sdk-gcc \
      ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-windows \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-mingw-w64-headers \
      ${PACKAGE_BASE_NAME}-platform-sdk-mingw-w64-crt \
@@ -541,8 +543,9 @@ RUN export ARCH_FLAGS="-march=haswell -mtune=haswell" \
 # windows compiler-rt build (for host)
 FROM WINDOWS_GCC_HOST_BUILDER AS WINDOWS_COMPILER_RT_BUILDER
 
-RUN export CLANG_RT_LIB=clang_rt.builtins-${HOST_PROCESSOR} \
-           SDK=windows \
+RUN export CLANG_RT_LIB=clang_rt.builtins-${HOST_PROCESSOR}.lib \
+           DST_CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a \
+           LDFLAGS="-Wl,/force:unresolved" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt
 
 # windows mingw-winpthreads build
@@ -555,7 +558,9 @@ RUN export RC=${PACKAGE_ROOT}/bin/x86_64-w64-mingw32-windres \
 # windows libunwind build
 FROM WINDOWS_MINGW_WINPTHREADS_BUILDER AS WINDOWS_LIBUNWIND_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
+RUN  export LDFLAGS="-unwindlib=none" \
+             LIBS="-lmingwex" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
 
 # windows libcxxabi build
 FROM WINDOWS_LIBUNWIND_BUILDER AS WINDOWS_LIBCXXABI_BUILDER
@@ -565,13 +570,14 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-windows
 # windows libcxx build
 FROM WINDOWS_LIBCXXABI_BUILDER AS WINDOWS_LIBCXX_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows
+RUN export LIBS="-lmingw32 -lmingwex -lmsvcrt -lkernel32 -lunwind" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows
 
 # windows icu build
 FROM WINDOWS_LIBCXX_BUILDER AS WINDOWS_ICU_BUILDER
 
 RUN export LDFLAGS="-fuse-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink" \
-           LIBS="-lucrt" \
+           LIBS="-lc++abi -lucrt" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross
 
 # windows xz build
@@ -593,7 +599,8 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
 # android ncurses build
 FROM WINDOWS_XML_BUILDER AS WINDOWS_NCURSES_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross
+RUN export LIBS="-lc++abi" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross
 
 # windows editline build
 FROM WINDOWS_NCURSES_BUILDER AS WINDOWS_WINEDITLINE_BUILDER
@@ -641,7 +648,8 @@ FROM WINDOWS_LIBFFI_BUILDER AS WINDOWS_LIBPYTHON_BUILDER
 # windows z3 build
 FROM WINDOWS_LIBPYTHON_BUILDER AS WINDOWS_Z3_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
+RUN export LIBS="-lc++abi" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
 
 FROM WINDOWS_Z3_BUILDER AS WINDOWS_JWASM_BUILDER
 
@@ -650,7 +658,10 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-jwasm
 # windows llvm build
 FROM WINDOWS_JWASM_BUILDER AS WINDOWS_LLVM_BUILDER
 
-RUN export RC=${PACKAGE_ROOT}/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-windres \
+RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
+           CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
+           LIBS="-lc++abi -lole32 -luuid" \
+           RC=${PACKAGE_ROOT}/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-windres \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-windows
 
 # windows cmark build
@@ -661,12 +672,13 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark-cross
 # windows swift build
 FROM WINDOWS_CMARK_BUILDER AS WINDOWS_SWIFT_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-windows
+RUN export LIBS="-lc++abi" \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-windows
 
 # windows lldb build
 FROM WINDOWS_SWIFT_BUILDER AS WINDOWS_LLDB_BUILDER
 
-RUN export LIBS="-lpsapi" \
+RUN export LIBS="-lc++abi -lpsapi" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb-windows
 
 # windows libdispatch build
