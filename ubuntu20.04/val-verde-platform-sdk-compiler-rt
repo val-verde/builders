@@ -10,6 +10,7 @@ export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_PROCESSOR}
 export CLANG_RT_LIB=${CLANG_RT_LIB:-libclang_rt.builtins-${HOST_PROCESSOR}-${HOST_OS}.a}
+export LLVM_NATIVE_STAGE_ROOT=/sources/build-staging/llvm-project
 
 # Configure the package
 mkdir -p ${STAGE_ROOT}
@@ -27,7 +28,8 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCOMPILER_RT_CAN_EXECUTE_TESTS=FALSE \
     -DCOMPILER_RT_DEFAULT_TARGET_TRIPLE=${HOST_TRIPLE} \
     -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
-    -DLLVM_TABLEGEN=/sources/build-staging/llvm-project/bin/llvm-tblgen \
+    -DLLVM_CONFIG_PATH=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config \
+    -DLLVM_TABLEGEN=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-tblgen \
     ${SOURCE_ROOT}
 
 # Build the components

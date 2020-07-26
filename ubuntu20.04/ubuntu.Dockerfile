@@ -548,8 +548,7 @@ RUN export RC=${PACKAGE_ROOT}/bin/x86_64-w64-mingw32-windres \
 FROM WINDOWS_MINGW_WINPTHREADS_BUILDER AS WINDOWS_LIBUNWIND_BUILDER
 
 RUN  export LDFLAGS="-unwindlib=none" \
-             LIBS="-lmingwex" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-windows
 
 # windows libcxxabi build
 FROM WINDOWS_LIBUNWIND_BUILDER AS WINDOWS_LIBCXXABI_BUILDER
@@ -559,7 +558,7 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-windows
 # windows libcxx build
 FROM WINDOWS_LIBCXXABI_BUILDER AS WINDOWS_LIBCXX_BUILDER
 
-RUN export LIBS="-lmingw32 -lmingwex -lmsvcrt -lkernel32 -lunwind" \
+RUN export LIBS="-lunwind" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows
 
 # windows icu build
