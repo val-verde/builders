@@ -466,6 +466,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-binutils \
      ${PACKAGE_BASE_NAME}-platform-sdk-gcc \
      ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-windows \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-mingw-w64-headers \
@@ -605,8 +606,14 @@ FROM WINDOWS_SQLITE3_BUILDER AS WINDOWS_OPENSSL_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-openssl-windows
 
+# windows libssh2 build
+FROM WINDOWS_OPENSSL_BUILDER AS WINDOWS_LIBSSH2_BUILDER
+
+RUN export RC=${PACKAGE_ROOT}/bin/x86_64-w64-mingw32-windres \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
+
 # windows curl build
-FROM WINDOWS_OPENSSL_BUILDER AS WINDOWS_CURL_BUILDER
+FROM WINDOWS_LIBSSH2_BUILDER AS WINDOWS_CURL_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
 
