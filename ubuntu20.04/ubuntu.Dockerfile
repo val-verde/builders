@@ -761,5 +761,52 @@ RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
                         -L${SYSROOT}/usr/lib" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross || true
 
+# webassembly environment
+ENV HOST_KERNEL=unknown \
+    HOST_OS=wasi \
+    HOST_OS_API_LEVEL= \
+    HOST_PROCESSOR=wasm32
+
+ENV TARGET_PROCESSOR=${HOST_PROCESSOR} \
+    TARGET_KERNEL=${HOST_KERNEL} \
+    TARGET_OS=${HOST_OS} \
+    TARGET_OS_API_LEVEL=${HOST_OS_API_LEVEL}
+
+ENV ARCH_FLAGS= \
+    HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
+    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot \
+    SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot \
+    SYSTEM_NAME=Wasi
+
+COPY ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt-wasi \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-wasi \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-wasi \
+     ${PACKAGE_BASE_NAME}-platform-sdk-wasi-libc \
+     /sources/
+
+# webassembly libc
+FROM WINDOWS_SWIFTPM_BUILDER AS WASI_LIBC_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-wasi-libc
+
+# webassembly compiler-rt
+FROM WASI_LIBC_BUILDER AS WASI_COMPILER_RT_BUILDER
+
+RUN export LDFLAGS="-Wl,--no-entry" \
+           SYSTEM_NAME=Fuchsia \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt-wasi
+
+# webassembly libcxxabi
+FROM WASI_COMPILER_RT_BUILDER AS WASI_LIBCXXABI_BUILDER
+
+RUN export SYSTEM_NAME=Fuchsia \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-wasi
+
+# webassembly libcxx
+FROM WASI_LIBCXXABI_BUILDER AS WASI_LIBCXX_BUILDER
+
+RUN export SYSTEM_NAME=Fuchsia \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-wasi
+
 CMD []
 ENTRYPOINT ["tail", "-f", "/dev/null"]
