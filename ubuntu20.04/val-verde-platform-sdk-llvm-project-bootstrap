@@ -134,5 +134,15 @@ source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
 
 # Clean up packages
-apt remove -y clang libc++-dev libc++abi-dev lld llvm
+apt remove -y \
+    clang \
+    clang-10 \
+    libc++-dev \
+    libc++1 \
+    libc++abi-dev \
+    libc++abi1 \
+    lld \
+    lld-10 \
+    llvm \
+    llvm-10
 apt autoremove -y

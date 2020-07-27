@@ -77,8 +77,11 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-make-build \
 # platform sdk package build scripts
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt \
+     ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-icu4c \
      ${PACKAGE_BASE_NAME}-platform-sdk-jwasm \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap \
      ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit \
@@ -95,7 +98,9 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core \
+     ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-yams \
+     ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross \
      /sources/
 
 # llvm bootstrap build
@@ -106,20 +111,46 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap
 # LTO configuration: [OFF | Full | Thin]
 # ENV ENABLE_FLTO=Thin
 
-# llvm build
-FROM LLVM_BOOTSTRAP_BUILDER AS LLVM_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project
-
 # icu build
-FROM LLVM_BUILDER AS ICU_BUILDER
+FROM LLVM_BOOTSTRAP_BUILDER AS ICU_BUILDER
 
 COPY icu-uconfig-prepend.h .
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c
 
+# xz build
+FROM ICU_BUILDER AS XZ_BUILDER
+
+RUN export RC=${PACKAGE_ROOT}/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-windres \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
+
+# zlib build
+FROM XZ_BUILDER AS ZLIB_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
+
+# libxml2 build
+FROM ZLIB_BUILDER AS LIBXML2_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
+
+# libssh2 build
+FROM LIBXML2_BUILDER AS LIBSSH2_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
+
+# curl build
+FROM LIBSSH2_BUILDER AS CURL_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
+
+# llvm build
+FROM CURL_BUILDER AS LLVM_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project
+
 # cmark build
-FROM ICU_BUILDER AS CMARK_BUILDER
+FROM LLVM_BUILDER AS CMARK_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark
 
@@ -215,15 +246,13 @@ COPY android-ndk-linux-time-h.diff /sources/android-ndk-${ANDROID_NDK_VERSION}
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk
 
 # platform independent package builders
-COPY ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
+COPY ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libgcc-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libuuid-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-python-cross \
@@ -239,10 +268,8 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-yams-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross \
      /sources/
 
 # android package builders
@@ -334,8 +361,13 @@ FROM ANDROID_SQLITE3_BUILDER AS ANDROID_OPENSSL_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross
 
+# android libssh2 build
+FROM ANDROID_OPENSSL_BUILDER AS ANDROID_LIBSSH2_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
+
 # android curl build
-FROM ANDROID_OPENSSL_BUILDER AS ANDROID_CURL_BUILDER
+FROM ANDROID_LIBSSH2_BUILDER AS ANDROID_CURL_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
 
@@ -466,7 +498,6 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-binutils \
      ${PACKAGE_BASE_NAME}-platform-sdk-gcc \
      ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-windows \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-mingw-w64-headers \
