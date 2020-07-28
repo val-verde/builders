@@ -111,8 +111,13 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap
 # LTO configuration: [OFF | Full | Thin]
 # ENV ENABLE_FLTO=Thin
 
+# zlib build
+FROM LLVM_BOOTSTRAP_BUILDER AS ZLIB_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
+
 # icu build
-FROM LLVM_BOOTSTRAP_BUILDER AS ICU_BUILDER
+FROM ZLIB_BUILDER AS ICU_BUILDER
 
 COPY icu-uconfig-prepend.h .
 
@@ -124,13 +129,8 @@ FROM ICU_BUILDER AS XZ_BUILDER
 RUN export RC=${PACKAGE_ROOT}/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-windres \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
 
-# zlib build
-FROM XZ_BUILDER AS ZLIB_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
-
 # libxml2 build
-FROM ZLIB_BUILDER AS LIBXML2_BUILDER
+FROM XZ_BUILDER AS LIBXML2_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
 
@@ -593,8 +593,13 @@ FROM WINDOWS_LIBCXXABI_BUILDER AS WINDOWS_LIBCXX_BUILDER
 RUN export LIBS="-lunwind" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows
 
+# windows zlib build
+FROM WINDOWS_LIBCXX_BUILDER AS WINDOWS_ZLIB_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
+
 # windows icu build
-FROM WINDOWS_LIBCXX_BUILDER AS WINDOWS_ICU_BUILDER
+FROM WINDOWS_ZLIB_BUILDER AS WINDOWS_ICU_BUILDER
 
 RUN export LDFLAGS="-fuse-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink" \
            LIBS="-lc++abi -lucrt" \
@@ -606,13 +611,8 @@ FROM WINDOWS_ICU_BUILDER AS WINDOWS_XZ_BUILDER
 RUN export RC=${PACKAGE_ROOT}/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-windres \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
 
-# windows zlib build
-FROM WINDOWS_XZ_BUILDER AS WINDOWS_ZLIB_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
-
 # windows libxml2 build
-FROM WINDOWS_ZLIB_BUILDER AS WINDOWS_XML_BUILDER
+FROM WINDOWS_XZ_BUILDER AS WINDOWS_XML_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
 
