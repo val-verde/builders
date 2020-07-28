@@ -80,6 +80,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-icu4c \
      ${PACKAGE_BASE_NAME}-platform-sdk-jwasm \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
@@ -144,8 +145,13 @@ FROM LIBSSH2_BUILDER AS CURL_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
 
+# libffi build
+FROM CURL_BUILDER AS LIBFFI_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
+
 # llvm build
-FROM CURL_BUILDER AS LLVM_BUILDER
+FROM LIBFFI_BUILDER AS LLVM_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project
 
@@ -249,7 +255,6 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libgcc-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libuuid-cross \
