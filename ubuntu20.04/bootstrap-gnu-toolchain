@@ -12,7 +12,6 @@ apt install -y \
     cmake \
     expat \
     git \
-    g++ \
     flex \
     icu-devtools \
     libc++-dev \
