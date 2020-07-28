@@ -154,6 +154,9 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
 FROM LIBFFI_BUILDER AS LLVM_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project
+RUN apt remove -y libicu-dev \
+                  zlib1g-dev \
+    && apt autoremove -y
 
 # cmark build
 FROM LLVM_BUILDER AS CMARK_BUILDER

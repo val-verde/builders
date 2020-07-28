@@ -16,12 +16,8 @@ apt install -y \
     icu-devtools \
     libc++-dev \
     libc++abi-dev \
-    libcurl4-openssl-dev \
     libedit-dev \
     libelf-dev \
-    libffi-dev \
-    libicu-dev \
-    liblzma-dev \
     libmpc-dev \
     libmpfr-dev \
     libncurses-dev \
