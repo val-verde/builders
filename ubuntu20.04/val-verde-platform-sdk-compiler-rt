@@ -15,8 +15,8 @@ export LLVM_NATIVE_STAGE_ROOT=/sources/build-staging/llvm-project
 # Configure the package
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
-export CFLAGS="-nostdlib" \
-       CXXFLAGS="-nostdlib"
+export CFLAGS="-nostdlib ${CFLAGS}" \
+       CXXFLAGS="-nostdlib ${CXXFLAGS}"
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCMAKE_C_COMPILER_WORKS=TRUE \
     -DCMAKE_CXX_COMPILER_WORKS=TRUE \
@@ -36,9 +36,10 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
+DST_SDK_PLATFORM_DIR=$DST_SDK_PLATFORM_DIR:-${SDK_PLATFORM_DIR}}
 mkdir -p install${PACKAGE_ROOT}/lib/clang/10.0.0/lib/${SDK_PLATFORM_DIR}
 mv install-staging${PACKAGE_ROOT}/lib/${SDK_PLATFORM_DIR}/${CLANG_RT_LIB} \
-   install${PACKAGE_ROOT}/lib/clang/10.0.0/lib/${SDK_PLATFORM_DIR}/${DST_CLANG_RT_LIB}
+   install${PACKAGE_ROOT}/lib/clang/10.0.0/lib/${DST_SDK_PLATFORM_DIR}/${DST_CLANG_RT_LIB}
 
 # Build the package
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
