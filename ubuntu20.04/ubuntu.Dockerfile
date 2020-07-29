@@ -112,6 +112,9 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap
 # LTO configuration: [OFF | Full | Thin]
 # ENV ENABLE_FLTO=Thin
 
+# Optimization level speed: [0-3] or size: [s, z]
+ENV OPTIMIZATION_LEVEL=3
+
 # zlib build
 FROM LLVM_BOOTSTRAP_BUILDER AS ZLIB_BUILDER
 
