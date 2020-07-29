@@ -52,8 +52,8 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DSWIFT_PATH_TO_LIBDISPATCH_SOURCE=/sources/swift-corelibs-libdispatch \
     -DSWIFT_TOOLS_ENABLE_LTO=${ENABLE_FLTO} \
     -DSWIFT_USE_LINKER=lld \
-    -DUUID_INCLUDE_DIR=${SYSROOT}/usr/include \
-    -DUUID_LIBRARY=${SYSROOT}/usr/lib/${HOST_TRIPLE}/libuuid.so \
+    -DUUID_INCLUDE_DIRS=${SYSROOT}/usr/include \
+    -DUUID_LIBRARIES=${SYSROOT}/usr/lib/${HOST_TRIPLE}/libuuid.so \
     ${SOURCE_ROOT}
 
 # Build the components

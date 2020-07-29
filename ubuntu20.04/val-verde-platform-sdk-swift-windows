@@ -17,7 +17,7 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-export CFLAGS="-fms-extensions -fms-compatibility-version=19.2 ${CFLAGS]" \
+export CFLAGS="-fms-extensions -fms-compatibility-version=19.2 ${CFLAGS}" \
        CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2 ${CXXFLAGS}" \
        UniversalCRTSdkDir=${SYSROOT} \
        UCRTVersion=git \
@@ -64,8 +64,8 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DSWIFT_USE_LINKER=lld \
     -DSWIFT_WINDOWS_NATIVE_SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot \
     -DUSE_POSIX_SEM=1 \
-    -DUUID_INCLUDE_DIR=${SYSROOT}/usr/include \
-    -DUUID_LIBRARY=${SYSROOT}/usr/lib/libuuid.a \
+    -DUUID_INCLUDE_DIRS=${SYSROOT}/usr/include \
+    -DUUID_LIBRARIES=${SYSROOT}/usr/lib/libuuid.a \
     ${SOURCE_ROOT}
 
 # Package the components

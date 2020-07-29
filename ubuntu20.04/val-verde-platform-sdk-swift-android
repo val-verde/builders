@@ -65,8 +65,8 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DSWIFT_TOOLS_ENABLE_LTO=${ENABLE_FLTO} \
     -DSWIFT_USE_LINKER=lld \
     -DUSE_POSIX_SEM=1 \
-    -DUUID_INCLUDE_DIR=${SYSROOT}/usr/include \
-    -DUUID_LIBRARY=${SYSROOT}/usr/lib/libuuid.so \
+    -DUUID_INCLUDE_DIRS=${SYSROOT}/usr/include \
+    -DUUID_LIBRARIES=${SYSROOT}/usr/lib/libuuid.so \
     ${SOURCE_ROOT}
 
 # Package the components

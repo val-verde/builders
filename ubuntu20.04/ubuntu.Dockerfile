@@ -706,13 +706,13 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark-cross
 # windows swift build
 FROM WINDOWS_CMARK_BUILDER AS WINDOWS_SWIFT_BUILDER
 
-RUN export LIBS="-lc++abi" \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-windows
+RUN export LIBS="-lc++abi -lole32" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-windows
 
 # windows lldb build
 FROM WINDOWS_SWIFT_BUILDER AS WINDOWS_LLDB_BUILDER
 
-RUN export LIBS="-lc++abi -lpsapi" \
+RUN export LIBS="-lc++abi -lole32 -lpsapi -luuid" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb-windows
 
 # windows libdispatch build
