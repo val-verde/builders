@@ -8,7 +8,7 @@ export SOURCE_PACKAGE_NAME=swift-corelibs-foundation
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
-export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}-${HOST_PROCESSOR}
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
 
 # Configure the package
 rm -rf ${SOURCE_ROOT}
@@ -19,6 +19,14 @@ cd ${STAGE_ROOT}
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
     -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
+    -DICU_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DICU_LIBRARY=${PACKAGE_PREFIX}/lib/libicudataswift.so \
+    -DICU_I18N_LIBRARY_RELEASE=${PACKAGE_PREFIX}/lib/libicui18nswift.so \
+    -DICU_UC_LIBRARY_RELEASE=${PACKAGE_PREFIX}/lib/libicuucswift.so \
+    -DCURL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DCURL_LIBRARY=${PACKAGE_PREFIX}/lib/libcurl.so \
+    -DLIBXML2_INCLUDE_DIR=${PACKAGE_PREFIX}/include/libxml2 \
+    -DLIBXML2_LIBRARY=${PACKAGE_PREFIX}/lib/libxml2.so \
     -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch/cmake/modules \
     ${SOURCE_ROOT}
 

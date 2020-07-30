@@ -2,4 +2,6 @@
 
 set -e
 
-ninja -j${NUM_PROCESSORS} ${TARGETS} install
+TARGETS=${TARGETS:-install}
+
+ninja -j${NUM_PROCESSORS} ${TARGETS}

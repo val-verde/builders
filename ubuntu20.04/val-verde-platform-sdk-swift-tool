@@ -1,12 +1,18 @@
 #!/bin/bash
 
-SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/val-verde-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot}
+set -e
+
+if [ "${SYSROOT}" != "/" ]; then
+    SYSROOT_CMD="\
+        -Xcc --sysroot=${SYSROOT} \
+        -Xcxx --sysroot=${SYSROOT} \
+        -Xswiftc -sdk -Xswiftc ${SYSROOT} \
+    "
+fi
 
 ${PACKAGE_ROOT}/bin/swift \
     "$@" \
-    -Xcc --sysroot=${SYSROOT} \
     -Xcc --target=${HOST_TRIPLE} \
-    -Xcxx --sysroot=${SYSROOT} \
     -Xcxx --target=${HOST_TRIPLE} \
-    -Xswiftc -sdk -Xswiftc ${SYSROOT} \
-    -Xswiftc -target -Xswiftc ${HOST_TRIPLE}
+    -Xswiftc -target -Xswiftc ${HOST_TRIPLE} \
+    ${SYSROOT_CMD}

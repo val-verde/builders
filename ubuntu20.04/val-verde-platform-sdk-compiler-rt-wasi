@@ -7,20 +7,22 @@ export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
 export SOURCE_PACKAGE_NAME=compiler-rt
 export SOURCE_ROOT=/sources/llvm-project/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+export LLVM_NATIVE_STAGE_ROOT=/sources/build-staging/llvm-project
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_PROCESSOR}
-export CLANG_RT_LIB=${CLANG_RT_LIB:-libclang_rt.builtins-${HOST_PROCESSOR}-${HOST_OS}.a}
-export LLVM_NATIVE_STAGE_ROOT=/sources/build-staging/llvm-project
+export CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a
 
 # Configure the package
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
-export CFLAGS="-nostdlib ${CFLAGS}" \
-       CXXFLAGS="-nostdlib ${CXXFLAGS}"
+export CFLAGS="-nostdlib" \
+       CXXFLAGS="-nostdlib" \
+       SYSTEM_NAME=Fuchsia
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCMAKE_C_COMPILER_WORKS=TRUE \
     -DCMAKE_CXX_COMPILER_WORKS=TRUE \
     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install-staging${PACKAGE_ROOT} \
+    -DCMAKE_SIZEOF_VOID_P=4 \
     -DCOMPILER_RT_BUILD_LIBFUZZER=FALSE \
     -DCOMPILER_RT_BUILD_PROFILE=FALSE \
     -DCOMPILER_RT_BUILD_SANITIZERS=FALSE \
@@ -36,10 +38,9 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
-DST_SDK_PLATFORM_DIR=${DST_SDK_PLATFORM_DIR:-${SDK_PLATFORM_DIR}}
-mkdir -p install${PACKAGE_ROOT}/lib/clang/10.0.0/lib/${SDK_PLATFORM_DIR}
+mkdir -p install${PACKAGE_ROOT}/lib/clang/10.0.0/lib/wasi
 mv install-staging${PACKAGE_ROOT}/lib/${SDK_PLATFORM_DIR}/${CLANG_RT_LIB} \
-   install${PACKAGE_ROOT}/lib/clang/10.0.0/lib/${DST_SDK_PLATFORM_DIR}/${DST_CLANG_RT_LIB}
+   install${PACKAGE_ROOT}/lib/clang/10.0.0/lib/wasi/${DST_CLANG_RT_LIB}
 
 # Build the package
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build

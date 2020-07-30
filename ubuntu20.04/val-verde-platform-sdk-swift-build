@@ -1,23 +1,38 @@
 #!/bin/bash
 
-if [ "${ENABLE_FLTO}" = "Full" ]; then
-    FLTO_CFLAG="-Xcc -flto"
-    FLTO_CXXFLAG="-Xcxx -flto"
-    FLTO_LDFLAG="-Xlinker -s -Xlinker -O2"
+set -e
+
+BINDIR=${BINDIR:-${PACKAGE_ROOT}/bin}
+LINKER_OPTIMIZATION_LEVEL=${LINKER_OPTIMIZATION_LEVEL:-2}
+OPTIMIZATION_LEVEL=${OPTIMIZATION_LEVEL:-z}
+SWIFT_BUILD_TYPE=${SWIFT_BUILD_TYPE:-release}
+SWIFT_OPTIMIZATION_LEVEL=${SWIFT_OPTIMIZATION_LEVEL:-size}
+SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot}
+
+if [ -z "${DISABLE_STRIP}" ]; then
+    SWIFT_LDFLAG="-Xlinker -s"
 fi
 
-BINDIR=${PACKAGE_ROOT}/bin
-OPTIMIZATION_LEVEL=${OPTIMIZATION_LEVEL:-z}
-SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot
+if [ -n "${ENABLE_FLTO}" ]; then
+    FLTO_OPTION=`echo ${ENABLE_FLTO} | tr '[:upper:]' '[:lower:]'`
+    FLTO_CFLAG="-Xcc -flto=${FLTO_OPTION}"
+    FLTO_CXXFLAG="-Xcxx -flto=${FLTO_OPTION}"
+    FLTO_CXXFLAG="-Xlinker -flto=${FLTO_OPTION}"
+    FLTO_SWIFTCFLAGS="-Xswiftc -whole-module-optimization"
+fi
 
-${BINDIR}/${PACKAGE_BASE_NAME}-platform-sdk-swift-tool build \
+${BINDIR}/${PACKAGE_BASE_NAME}-platform-sdk-swift-tool \
+    build \
     -Xcc -O${OPTIMIZATION_LEVEL} \
     -Xcxx -O${OPTIMIZATION_LEVEL} \
-    -Xswiftc -whole-module-optimization \
-    -Xswiftc -Osize \
+    -Xlinker -O${LINKER_OPTIMIZATION_LEVEL} \
+    -Xswiftc -O${SWIFT_OPTIMIZATION_LEVEL} \
     --build-path ${STAGE_ROOT} \
-    --configuration release \
+    --configuration ${SWIFT_BUILD_TYPE} \
     --enable-test-discovery \
     ${FLTO_CFLAG} \
     ${FLTO_CXXFLAG} \
-    ${FLTO_LDFLAG}
+    ${FLTO_LDFLAG} \
+    ${FLTO_SWIFTCFLAGS} \
+    ${SWIFT_FLAGS} \
+    ${SWIFT_LDFLAG}

@@ -38,7 +38,8 @@ ENV BUILD_KERNEL=${BUILD_KERNEL} \
     HOST_PROCESSOR=${HOST_PROCESSOR} \
     PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME} \
     PACKAGE_ROOT=${PACKAGE_ROOT} \
-    SYSROOT=/
+    SYSROOT=/ \
+    SYSTEM_NAME=Linux
 
 ENV ARCH_FLAGS="-march=haswell -mtune=haswell" \
     BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS} \
@@ -46,17 +47,6 @@ ENV ARCH_FLAGS="-march=haswell -mtune=haswell" \
     PACKAGE_PREFIX=${PACKAGE_ROOT}
 
 ENV LD_LIBRARY_PATH=${PACKAGE_ROOT}/lib
-
-# swift build config
-ENV SWIFTPM_BUILD_ARGS="\
-    -Xcc -Oz \
-    -Xcxx -Oz \
-    -Xlinker -s \
-    -Xlinker -O2 \
-    -Xswiftc -whole-module-optimization \
-    -Xswiftc -Osize \
-    --configuration release \
-    --enable-test-discovery"
 
 # platform sdk tool wrapper scripts
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-configure \
@@ -73,6 +63,7 @@ RUN chmod +x ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang++ \
+             ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ml64 \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swift-build \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swift-tool
@@ -86,8 +77,12 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-make-build \
 # platform sdk package build scripts
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt \
+     ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-icu4c \
      ${PACKAGE_BASE_NAME}-platform-sdk-jwasm \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap \
      ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit \
@@ -104,98 +99,124 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core \
+     ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-yams \
+     ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross \
      /sources/
-
-# LTO configuration: OFF or Full
-# Set to full for prod
-ENV ENABLE_FLTO=OFF
 
 # llvm bootstrap build
 FROM BASE AS LLVM_BOOTSTRAP_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap
 
-# llvm build
-FROM LLVM_BOOTSTRAP_BUILDER AS LLVM_BUILDER
+# LTO configuration: [OFF | Full | Thin]
+# ENV ENABLE_FLTO=Thin
 
-RUN export LIBS="-lc++abi -lunwind" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project
+# Optimization level speed: [0-3] or size: [s, z]
+ENV OPTIMIZATION_LEVEL=3
+
+# zlib build
+FROM LLVM_BOOTSTRAP_BUILDER AS ZLIB_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
 
 # icu build
-FROM LLVM_BUILDER AS ICU_BUILDER
+FROM ZLIB_BUILDER AS ICU_BUILDER
 
 COPY icu-uconfig-prepend.h .
 
-RUN export LDFLAGS="-lunwind" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c
+
+# xz build
+FROM ICU_BUILDER AS XZ_BUILDER
+
+RUN export RC=${PACKAGE_ROOT}/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-windres \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
+
+# libxml2 build
+FROM XZ_BUILDER AS LIBXML2_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
+
+# libssh2 build
+FROM LIBXML2_BUILDER AS LIBSSH2_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
+
+# curl build
+FROM LIBSSH2_BUILDER AS CURL_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
+
+# libffi build
+FROM CURL_BUILDER AS LIBFFI_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
+
+# llvm build
+FROM LIBFFI_BUILDER AS LLVM_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project
+RUN apt remove -y libicu-dev \
+                  zlib1g-dev \
+    && apt autoremove -y
 
 # cmark build
-FROM ICU_BUILDER AS CMARK_BUILDER
+FROM LLVM_BUILDER AS CMARK_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark
 
 # swift build
 FROM CMARK_BUILDER AS SWIFT_BUILDER
 
-RUN export LIBS="-lc++abi -lunwind" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift
 
 # lldb build
 FROM SWIFT_BUILDER AS LLDB_BUILDER
 
-RUN export LIBS="-lc++abi -lunwind" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb
 
 # libdispatch build
 FROM LLDB_BUILDER AS LIBDISPATCH_BUILDER
 
-RUN export LIBS="-lc++abi -lunwind" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch
 
 # foundation build
 FROM LIBDISPATCH_BUILDER AS FOUNDATION_BUILDER
 
-RUN export LIBS="-lc++abi -lunwind" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation
 
 # xctest build
 FROM FOUNDATION_BUILDER AS XCTEST_BUILDER
 
-RUN export LIBS="-lc++abi -lunwind" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}-${HOST_PROCESSOR}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}-${HOST_PROCESSOR}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb
 
 # llbuild build
 FROM XCTEST_BUILDER AS LLBUILD_BUILDER
 
-RUN export LIBS="-lc++abi -lunwind" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild
 
 # swift-tools-support-core build
 FROM LLBUILD_BUILDER AS SWIFT_TOOLS_SUPPORT_CORE_BUILDER
 
-RUN export LIBS="-lc++abi -lunwind" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core
 
 # yams build
 FROM SWIFT_TOOLS_SUPPORT_CORE_BUILDER AS YAMS_BUILDER
 
-RUN export LIBS="-lc++abi -lunwind" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-yams
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-yams
 
 # swift-driver build
 FROM YAMS_BUILDER AS SWIFT_DRIVER
 
-RUN export LIBS="-lc++abi -lunwind" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver
 
 # swiftpm build
 FROM SWIFT_DRIVER AS SWIFTPM_BUILDER
 
-RUN export LIBS="-lc++abi -lunwind" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager
 
 # swift-syntax build
 FROM SWIFTPM_BUILDER AS SWIFT_SYNTAX_BUILDER
@@ -237,15 +258,12 @@ COPY android-ndk-linux-time-h.diff /sources/android-ndk-${ANDROID_NDK_VERSION}
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk
 
 # platform independent package builders
-COPY ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
+COPY ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libgcc-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libuuid-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-python-cross \
@@ -261,15 +279,15 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-yams-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross \
      /sources/
 
 # android package builders
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-headers \
      ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-runtime \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-android \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-android \
@@ -291,7 +309,8 @@ ENV TARGET_KERNEL=${HOST_KERNEL} \
 ENV ARCH_FLAGS="-march=armv8-a -mtune=cortex-a57" \
     HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
     PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot/usr \
-    SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot
+    SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot \
+    SYSTEM_NAME=Linux
 
 # android ndk headers build
 FROM ANDROID_NDK_BUILDER AS ANDROID_NDK_HEADERS_BUILDER
@@ -303,25 +322,8 @@ FROM ANDROID_NDK_HEADERS_BUILDER AS ANDROID_NDK_RUNTIME_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-runtime
 
-# android libgcc build
-FROM ANDROID_NDK_RUNTIME_BUILDER AS ANDROID_LIBGCC_BUILDER
-
-# RUN export ARCH_FLAGS="-march=haswell -mtune=haswell" \
-#            AS_FOR_TARGET="${PACKAGE_ROOT}/bin/clang --target=${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}${TARGET_OS_API_LEVEL}" \
-#            LD_FOR_TARGET=${PACKAGE_ROOT}/bin/clang \
-#            LDFLAGS_FOR_TARGET="-rtlib=libgcc --target=${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}${TARGET_OS_API_LEVEL}" \
-#            HOST_KERNEL=${BUILD_KERNEL} \
-#            HOST_OS=${BUILD_OS} \
-#            HOST_OS_API_LEVEL= \
-#            HOST_PROCESSOR=${BUILD_PROCESSOR} \
-#            SYSROOT=/ \
-#            TARGET_ARCH_FLAGS="${ARCH_FLAGS}" \
-#     && export BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS} \
-#               HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-#     && bash ${PACKAGE_BASE_NAME}-platform-sdk-libgcc-cross
-
 # android compiler-rt build (for host)
-FROM ANDROID_LIBGCC_BUILDER AS ANDROID_COMPILER_RT_BUILDER
+FROM ANDROID_NDK_RUNTIME_BUILDER AS ANDROID_COMPILER_RT_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt
 
@@ -370,8 +372,13 @@ FROM ANDROID_SQLITE3_BUILDER AS ANDROID_OPENSSL_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross
 
+# android libssh2 build
+FROM ANDROID_OPENSSL_BUILDER AS ANDROID_LIBSSH2_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
+
 # android curl build
-FROM ANDROID_OPENSSL_BUILDER AS ANDROID_CURL_BUILDER
+FROM ANDROID_LIBSSH2_BUILDER AS ANDROID_CURL_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
 
@@ -398,8 +405,7 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
 # android llvm build
 FROM ANDROID_Z3_BUILDER AS ANDROID_LLVM_BUILDER
 
-RUN export LIBS="-lunwind" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-android
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-android
 
 # android cmark build
 FROM ANDROID_LLVM_BUILDER AS ANDROID_CMARK_BUILDER
@@ -409,32 +415,27 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark-cross
 # android swift build
 FROM ANDROID_CMARK_BUILDER AS ANDROID_SWIFT_BUILDER
 
-RUN export LIBS="-lunwind" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-android
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-android
 
 # android lldb build
 FROM ANDROID_SWIFT_BUILDER AS ANDROID_LLDB_BUILDER
 
-RUN export LIBS="-lunwind" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb-cross
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb-cross
 
 # android libdispatch build
 FROM ANDROID_LLDB_BUILDER AS ANDROID_LIBDISPATCH_BUILDER
 
-RUN export LIBS="-lunwind" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-cross
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-cross
 
 # android foundation build
 FROM ANDROID_LIBDISPATCH_BUILDER AS ANDROID_FOUNDATION_BUILDER
 
-RUN export LIBS="-lunwind" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-cross
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-cross
 
 # android xctest build
 FROM ANDROID_FOUNDATION_BUILDER AS ANDROID_XCTEST_BUILDER
 
-RUN export LIBS="-lunwind" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-cross \
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-cross \
     && dpkg -i /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}-${BUILD_PROCESSOR}.deb \
                /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}-${BUILD_PROCESSOR}.deb \
                /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb \
@@ -443,32 +444,27 @@ RUN export LIBS="-lunwind" \
 # android llbuild build
 FROM ANDROID_XCTEST_BUILDER AS ANDROID_LLBUILD_BUILDER
 
-RUN export LIBS="-lunwind" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-android
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-android
 
 # android swift-tools-support-core build
 FROM ANDROID_LLBUILD_BUILDER AS ANDROID_SWIFT_TOOLS_SUPPORT_CORE_BUILDER
 
-RUN export LIBS="-lunwind" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-builder-android
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-builder-android
 
 # android yams build
 FROM ANDROID_SWIFT_TOOLS_SUPPORT_CORE_BUILDER AS ANDROID_YAMS_BUILDER
 
-RUN export LIBS="-lunwind" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-yams-cross
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-yams-cross
 
 # android swift-driver build
 FROM ANDROID_YAMS_BUILDER AS ANDROID_SWIFT_DRIVER
 
-RUN export LIBS="-lunwind" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross
 
 # android swiftpm build
 FROM ANDROID_SWIFT_DRIVER AS ANDROID_SWIFTPM_BUILDER
 
-RUN export LIBS="-lunwind" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross
 
 # android swift-syntax build
 FROM ANDROID_SWIFTPM_BUILDER AS ANDROID_SWIFT_SYNTAX_BUILDER
@@ -513,6 +509,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-binutils \
      ${PACKAGE_BASE_NAME}-platform-sdk-gcc \
      ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-windows \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-mingw-w64-headers \
      ${PACKAGE_BASE_NAME}-platform-sdk-mingw-w64-crt \
@@ -532,7 +529,7 @@ COPY mingw-sdk.modulemap \
 # mingw-w64 source
 RUN export SOURCE_PACKAGE_NAME=mingw-w64 \
     && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && git clone https://github.com/val-verde/mingw-w64.git --single-branch --branch master ${SOURCE_ROOT}
+    && git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT}
 
 # windows mingw-headers build
 FROM WINDOWS_SOURCES_BUILDER AS WINDOWS_MINGW_HEADERS_BUILDER
@@ -575,28 +572,12 @@ RUN export ARCH_FLAGS="-march=haswell -mtune=haswell" \
               HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-gcc
 
-# windows libgcc build
-FROM WINDOWS_GCC_HOST_BUILDER AS WINDOWS_LIBGCC_BUILDER
-
-RUN export ARCH_FLAGS="-march=haswell -mtune=haswell" \
-           AS_FOR_TARGET=${PACKAGE_ROOT}/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-as \
-           HOST_KERNEL=${BUILD_KERNEL} \
-           HOST_OS=${BUILD_OS} \
-           HOST_OS_API_LEVEL= \
-           HOST_PROCESSOR=${BUILD_PROCESSOR} \
-           LDFLAGS_FOR_TARGET="-Wl,/force:multiple" \
-           RC_FOR_TARGET=${PACKAGE_ROOT}/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-windres \
-           SYSROOT=/ \
-           TARGET_ARCH_FLAGS="${ARCH_FLAGS}" \
-    && export BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS} \
-              HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-libgcc-cross
-
 # windows compiler-rt build (for host)
-FROM WINDOWS_LIBGCC_BUILDER AS WINDOWS_COMPILER_RT_BUILDER
+FROM WINDOWS_GCC_HOST_BUILDER AS WINDOWS_COMPILER_RT_BUILDER
 
-RUN export CLANG_RT_LIB=clang_rt.builtins-${HOST_PROCESSOR} \
-           SDK=windows \
+RUN export CLANG_RT_LIB=clang_rt.builtins-${HOST_PROCESSOR}.lib \
+           DST_CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a \
+           LDFLAGS="-Wl,/force:unresolved" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt
 
 # windows mingw-winpthreads build
@@ -609,7 +590,8 @@ RUN export RC=${PACKAGE_ROOT}/bin/x86_64-w64-mingw32-windres \
 # windows libunwind build
 FROM WINDOWS_MINGW_WINPTHREADS_BUILDER AS WINDOWS_LIBUNWIND_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
+RUN  export LDFLAGS="-unwindlib=none" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-windows
 
 # windows libcxxabi build
 FROM WINDOWS_LIBUNWIND_BUILDER AS WINDOWS_LIBCXXABI_BUILDER
@@ -619,14 +601,19 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-windows
 # windows libcxx build
 FROM WINDOWS_LIBCXXABI_BUILDER AS WINDOWS_LIBCXX_BUILDER
 
-RUN export LIBS="-lc++abi -lunwind" \
+RUN export LIBS="-lunwind" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows
 
+# windows zlib build
+FROM WINDOWS_LIBCXX_BUILDER AS WINDOWS_ZLIB_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
+
 # windows icu build
-FROM WINDOWS_LIBCXX_BUILDER AS WINDOWS_ICU_BUILDER
+FROM WINDOWS_ZLIB_BUILDER AS WINDOWS_ICU_BUILDER
 
 RUN export LDFLAGS="-fuse-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink" \
-           LIBS="-lc++abi -lucrt -lunwind" \
+           LIBS="-lc++abi -lucrt" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross
 
 # windows xz build
@@ -635,20 +622,15 @@ FROM WINDOWS_ICU_BUILDER AS WINDOWS_XZ_BUILDER
 RUN export RC=${PACKAGE_ROOT}/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-windres \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
 
-# windows zlib build
-FROM WINDOWS_XZ_BUILDER AS WINDOWS_ZLIB_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
-
 # windows libxml2 build
-FROM WINDOWS_ZLIB_BUILDER AS WINDOWS_XML_BUILDER
+FROM WINDOWS_XZ_BUILDER AS WINDOWS_XML_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
 
 # android ncurses build
 FROM WINDOWS_XML_BUILDER AS WINDOWS_NCURSES_BUILDER
 
-RUN export LDFLAGS="-lc++abi -lunwind" \
+RUN export LIBS="-lc++abi" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross
 
 # windows editline build
@@ -666,8 +648,14 @@ FROM WINDOWS_SQLITE3_BUILDER AS WINDOWS_OPENSSL_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-openssl-windows
 
+# windows libssh2 build
+FROM WINDOWS_OPENSSL_BUILDER AS WINDOWS_LIBSSH2_BUILDER
+
+RUN export RC=${PACKAGE_ROOT}/bin/x86_64-w64-mingw32-windres \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
+
 # windows curl build
-FROM WINDOWS_OPENSSL_BUILDER AS WINDOWS_CURL_BUILDER
+FROM WINDOWS_LIBSSH2_BUILDER AS WINDOWS_CURL_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
 
@@ -697,7 +685,7 @@ FROM WINDOWS_LIBFFI_BUILDER AS WINDOWS_LIBPYTHON_BUILDER
 # windows z3 build
 FROM WINDOWS_LIBPYTHON_BUILDER AS WINDOWS_Z3_BUILDER
 
-RUN export LIBS="-lc++abi -lunwind" \
+RUN export LIBS="-lc++abi" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
 
 FROM WINDOWS_Z3_BUILDER AS WINDOWS_JWASM_BUILDER
@@ -707,26 +695,27 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-jwasm
 # windows llvm build
 FROM WINDOWS_JWASM_BUILDER AS WINDOWS_LLVM_BUILDER
 
-RUN export LIBS="-lc++abi -lunwind" \
+RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
+           CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
+           LIBS="-lc++abi -lole32 -luuid" \
            RC=${PACKAGE_ROOT}/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-windres \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-windows
 
 # windows cmark build
 FROM WINDOWS_LLVM_BUILDER AS WINDOWS_CMARK_BUILDER
 
-RUN export LIBS="-lc++abi -lunwind" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark-cross
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark-cross
 
 # windows swift build
 FROM WINDOWS_CMARK_BUILDER AS WINDOWS_SWIFT_BUILDER
 
-RUN export LIBS="-lc++abi -lunwind" \
+RUN export LIBS="-lc++abi -lole32" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-windows
 
 # windows lldb build
 FROM WINDOWS_SWIFT_BUILDER AS WINDOWS_LLDB_BUILDER
 
-RUN export LIBS="-lpsapi -lc++abi -lunwind" \
+RUN export LIBS="-lc++abi -lole32 -lpsapi -luuid" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb-windows
 
 # windows libdispatch build
@@ -734,12 +723,8 @@ FROM WINDOWS_LLDB_BUILDER AS WINDOWS_LIBDISPATCH_BUILDER
 
 RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
-           LIBS="-lc++abi -lunwind" \
-           SWIFTCFLAGS="-lswiftSwiftOnoneSupport \
-                        -lswiftWinSDK \
-                        -use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
-                        -L${SYSROOT}/lib \
-                        -L${SYSROOT}/lib/swift/windows/${HOST_PROCESSOR}" \
+           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+                        -L${SYSROOT}/usr/lib" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-windows
 
 # windows foundation build
@@ -751,13 +736,8 @@ RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2 \
                    -Wno-pointer-sign \
                    -Wno-switch" \
            CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
-           LIBS="-lc++abi -lunwind" \
-           SWIFTCFLAGS="-lswiftMSVCRT \
-                        -lswiftSwiftOnoneSupport \
-                        -lswiftWinSDK \
-                        -use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
-                        -L${SYSROOT}/lib \
-                        -L${SYSROOT}/lib/swift/windows/${HOST_PROCESSOR}" \
+           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+                        -L${SYSROOT}/usr/lib" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-windows || true
 
 # windows xctest build
@@ -765,13 +745,8 @@ FROM WINDOWS_FOUNDATION_BUILDER AS WINDOWS_XCTEST_BUILDER
 
 RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
-           LIBS="-lc++abi -lunwind" \
-           SWIFTCFLAGS="-lswiftMSVCRT \
-                        -lswiftSwiftOnoneSupport \
-                        -lswiftWinSDK \
-                        -use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
-                        -L${SYSROOT}/lib \
-                        -L${SYSROOT}/lib/swift/windows/${HOST_PROCESSOR}" \
+           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+                        -L${SYSROOT}/usr/lib" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-windows
 RUN dpkg -i /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}-${BUILD_PROCESSOR}.deb \
             /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}-${BUILD_PROCESSOR}.deb \
@@ -781,27 +756,22 @@ RUN dpkg -i /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}-
 # /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb \
 
 RUN cp /sources/build-staging/swift-corelibs-foundation-mingw32-x86_64/Sources/Foundation/lib*.dll \
-       ${SYSROOT}/lib/swift/windows/ \
+       ${SYSROOT}/usr/lib/swift/windows/ \
     && cp /sources/build-staging/swift-corelibs-foundation-mingw32-x86_64/Sources/Foundation/lib*.a \
-          ${SYSROOT}/lib/swift/windows/ \
+          ${SYSROOT}/usr/lib/swift/windows/ \
     && cp /sources/build-staging/swift-corelibs-foundation-mingw32-x86_64/CoreFoundation/lib*.a \
-          ${SYSROOT}/lib/swift/windows/ \
+          ${SYSROOT}/usr/lib/swift/windows/ \
     && cp /sources/build-staging/swift-corelibs-foundation-mingw32-x86_64/swift/*.swift* \
-          ${SYSROOT}/lib/swift/windows/${HOST_PROCESSOR} \
-    && cp -r ${PACKAGE_ROOT}/lib/swift/CoreFoundation ${SYSROOT}/lib/swift
+          ${SYSROOT}/usr/lib/swift/windows/${HOST_PROCESSOR} \
+    && cp -r ${PACKAGE_ROOT}/lib/swift/CoreFoundation ${SYSROOT}/usr/lib/swift
 
 # windows llbuild build
 FROM WINDOWS_XCTEST_BUILDER AS WINDOWS_LLBUILD_BUILDER
 
 RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2 -I/sources/swift-llbuild/lib/llvm/Support" \
-           LIBS="-lc++abi -lunwind" \
-           SWIFTCFLAGS="-lswiftMSVCRT \
-                        -lswiftSwiftOnoneSupport \
-                        -lswiftWinSDK \
-                        -use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
-                        -L${SYSROOT}/lib \
-                        -L${SYSROOT}/lib/swift/windows" \
+           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+                        -L${SYSROOT}/usr/lib" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-cross || true
 
 # windows swift-tools-support-core build
@@ -809,13 +779,8 @@ FROM WINDOWS_LLBUILD_BUILDER AS WINDOWS_SWIFT_TOOLS_SUPPORT_CORE_BUILDER
 
 RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2 -I/sources/swift-llbuild/lib/llvm/Support" \
-           LIBS="-lc++abi -lunwind" \
-           SWIFTCFLAGS="-lswiftMSVCRT \
-                        -lswiftSwiftOnoneSupport \
-                        -lswiftWinSDK \
-                        -use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
-                        -L${SYSROOT}/lib \
-                        -L${SYSROOT}/lib/swift/windows" \
+           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+                        -L${SYSROOT}/usr/lib" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-builder-android || true
 
 # windows yams build
@@ -823,13 +788,8 @@ FROM WINDOWS_SWIFT_TOOLS_SUPPORT_CORE_BUILDER AS WINDOWS_YAMS_BUILDER
 
 RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2 -I/sources/swift-llbuild/lib/llvm/Support" \
-           LIBS="-lc++abi -lunwind" \
-           SWIFTCFLAGS="-lswiftMSVCRT \
-                        -lswiftSwiftOnoneSupport \
-                        -lswiftWinSDK \
-                        -use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
-                        -L${SYSROOT}/lib \
-                        -L${SYSROOT}/lib/swift/windows" \
+           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+                        -L${SYSROOT}/usr/lib" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-yams-cross || true
 
 # windows swift-driver build
@@ -837,13 +797,8 @@ FROM WINDOWS_YAMS_BUILDER AS WINDOWS_SWIFT_DRIVER
 
 RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2 -I/sources/swift-llbuild/lib/llvm/Support" \
-           LIBS="-lc++abi -lunwind" \
-           SWIFTCFLAGS="-lswiftMSVCRT \
-                        -lswiftSwiftOnoneSupport \
-                        -lswiftWinSDK \
-                        -use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
-                        -L${SYSROOT}/lib \
-                        -L${SYSROOT}/lib/swift/windows" \
+           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+                        -L${SYSROOT}/usr/lib" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross || true
 
 # windows swiftpm build
@@ -851,13 +806,56 @@ FROM WINDOWS_SWIFT_DRIVER AS WINDOWS_SWIFTPM_BUILDER
 
 RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2 -I/sources/swift-llbuild/lib/llvm/Support" \
-           LIBS="-lc++abi -lunwind" \
-           SWIFTCFLAGS="-lswiftMSVCRT \
-                        -lswiftSwiftOnoneSupport \
-                        -lswiftWinSDK \
-                        -use-ld=${PACKAGE_ROOT}/bin/val-verde-platform-sdk-mslink \
-                        -L${SYSROOT}/lib" \
+           SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+                        -L${SYSROOT}/usr/lib" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross || true
+
+# webassembly environment
+ENV HOST_KERNEL=unknown \
+    HOST_OS=wasi \
+    HOST_OS_API_LEVEL= \
+    HOST_PROCESSOR=wasm32
+
+ENV TARGET_PROCESSOR=${HOST_PROCESSOR} \
+    TARGET_KERNEL=${HOST_KERNEL} \
+    TARGET_OS=${HOST_OS} \
+    TARGET_OS_API_LEVEL=${HOST_OS_API_LEVEL}
+
+ENV ARCH_FLAGS= \
+    HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
+    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot \
+    SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot \
+    SYSTEM_NAME=Wasi
+
+COPY ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt-wasi \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-wasi \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-wasi \
+     ${PACKAGE_BASE_NAME}-platform-sdk-wasi-libc \
+     /sources/
+
+# webassembly libc
+FROM WINDOWS_SWIFTPM_BUILDER AS WASI_LIBC_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-wasi-libc
+
+# webassembly compiler-rt
+FROM WASI_LIBC_BUILDER AS WASI_COMPILER_RT_BUILDER
+
+RUN export LDFLAGS="-Wl,--no-entry" \
+           SYSTEM_NAME=Fuchsia \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt-wasi
+
+# webassembly libcxxabi
+FROM WASI_COMPILER_RT_BUILDER AS WASI_LIBCXXABI_BUILDER
+
+RUN export SYSTEM_NAME=Fuchsia \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-wasi
+
+# webassembly libcxx
+FROM WASI_LIBCXXABI_BUILDER AS WASI_LIBCXX_BUILDER
+
+RUN export SYSTEM_NAME=Fuchsia \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-wasi
 
 CMD []
 ENTRYPOINT ["tail", "-f", "/dev/null"]
