@@ -143,8 +143,7 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c
 # xz build
 FROM ICU_BUILDER AS XZ_BUILDER
 
-RUN export RC=${PACKAGE_ROOT}/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-windres \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
 
 # libxml2 build
 FROM XZ_BUILDER AS LIBXML2_BUILDER
