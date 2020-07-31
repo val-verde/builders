@@ -17,11 +17,24 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-export CFLAGS="-fms-extensions -fms-compatibility-version=19.2 ${CFLAGS}" \
-       CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2 ${CXXFLAGS}" \
-       UniversalCRTSdkDir=${SYSROOT} \
-       UCRTVersion=git \
-       VCToolsInstallDir=${SYSROOT}
+export CFLAGS="\
+    -fms-compatibility-version=19.2 \
+    -fms-extensions \
+    ${CFLAGS} \
+"
+export CXXFLAGS="\
+    -fms-compatibility-version=19.2 \
+    -fms-extensions \
+    ${CXXFLAGS} \
+"
+export LIBS="\
+    -lc++abi \
+    -lole32 \
+    ${LIBS} \
+"
+export UniversalCRTSdkDir=${SYSROOT}
+export UCRTVersion=git
+export VCToolsInstallDir=${SYSROOT}
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DClang_DIR=${LLVM_STAGE_ROOT}/lib/cmake/clang \
     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
