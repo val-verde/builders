@@ -4,34 +4,42 @@ set -e
 
 # Set all environment vars
 export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
-export SOURCE_PACKAGE_NAME=swift-llbuild
+export SOURCE_PACKAGE_NAME=yams
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
 
 # Configure the package
-cd ${SOURCE_ROOT}
-git remote set-branches --add origin dutch-android-master
-git fetch origin dutch-android-master
-git checkout dutch-android-master
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
+export CFLAGS="
+    -fms-compatibility-version=19.2 \
+    -fms-extensions \
+    ${CFLAGS} \
+"
+export CXXFLAGS="\
+    -fms-compatibility-version=19.2 \
+    -fms-extensions \
+    ${CXXFLAGS} \
+"
+export SWIFTCFLAGS="\
+    -sdk ${SYSROOT} \
+    -use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+    -L${SYSROOT}/usr/lib \
+    -L${SYSROOT}/usr/lib/swift/windows \
+    ${SWIFTCFLAGS} \
+"
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
     -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
     -DCMAKE_Swift_COMPILER_TARGET=${HOST_TRIPLE} \
-    -DCMAKE_Swift_FLAGS="${SWIFTCFLAGS} \
-                         -sdk ${SYSROOT}" \
-    -DLLBUILD_SUPPORT_BINDINGS=Swift \
+    -DCMAKE_Swift_FLAGS="${SWIFTCFLAGS}" \
     ${SOURCE_ROOT}
 
-# Package the components
+# Build the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
-rsync -aPx ${STAGE_ROOT}/lib/*.so* install${PACKAGE_PREFIX}/lib
+# Build the package
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
-
-# Install the components
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install

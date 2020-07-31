@@ -12,7 +12,7 @@ export LLVM_NATIVE_STAGE_ROOT=/sources/build-staging/llvm-project
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
 
 EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;clang-tools-extra;libclc;mlir;openmp;parallel-libs;polly;pstl"}
-USE_NEWPM=${USE_NEWPM:-FALSE}
+USE_NEWPM=${USE_NEWPM:-TRUE}
 
 # Configure the package
 cd ${SOURCE_ROOT}
@@ -20,6 +20,25 @@ git checkout dutch-master
 
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
+
+export CFLAGS="\
+    -fms-compatibility-version=19.2 \
+    -fms-extensions \
+    ${CFLAGS} \
+"
+export CXXFLAGS="\
+    -fms-compatibility-version=19.2 \
+    -fms-extensions \
+    ${CXXFLAGS} \
+"
+export LIBS="\
+    -lc++abi \
+    -lole32 \
+    -luuid \
+    ${LIBS}
+"
+export RC=${RC:-${PACKAGE_ROOT}/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-windres}
+
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DBUILD_SHARED_LIBS=FALSE \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \

@@ -18,6 +18,14 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 # Configure the package
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
+
+export LIBS="
+    -lc++abi \
+    -lole32 \
+    -lpsapi \
+    -luuid \
+    ${LIBS} \
+"
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DClang_DIR=${LLVM_STAGE_ROOT}/lib/cmake/clang \
     -DCLANG_LINK_CLANG_DYLIB=TRUE \
@@ -45,6 +53,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLLVM_ENABLE_LIBCXX=TRUE \
     -DLLVM_ENABLE_LLD=TRUE \
     -DLLVM_ENABLE_LTO=${ENABLE_FLTO} \
+    -DLLVM_INCLUDE_TESTS=FALSE \
     -DLLVM_INSTALL_TOOLCHAIN_ONLY=TRUE \
     -DLLVM_LINK_LLVM_DYLIB=TRUE \
     -DLLVM_MAIN_INCLUDE_DIR=${LLVM_SOURCE_ROOT}/llvm/include \
@@ -56,7 +65,6 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DSwift_DIR=${SWIFT_STAGE_ROOT}/lib/cmake/swift \
     -DSWIG_EXECUTABLE=/usr/bin/swig \
     ${SOURCE_ROOT}
-
 
 # Package the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
