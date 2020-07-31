@@ -76,8 +76,10 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-make-build \
 
 # platform sdk package build scripts
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
+     ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt \
      ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-git-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-icu4c \
      ${PACKAGE_BASE_NAME}-platform-sdk-jwasm \
      ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross \
@@ -85,6 +87,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap \
+     ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark \
@@ -170,15 +173,33 @@ FROM LIBFFI_BUILDER AS Z3_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
 
-# llvm build
-FROM Z3_BUILDER AS LLVM_BUILDER
+# git build
+FROM Z3_BUILDER AS GIT_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project
-RUN apt remove -y libffi-dev \
-                  libicu-dev \
-                  libxml2-dev \
-                  libz3-dev \
-                  zlib1g-dev \
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-git-cross
+
+# ninja build
+FROM GIT_BUILDER AS NINJA_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
+
+# cmake build
+FROM NINJA_BUILDER AS CMAKE_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross
+
+# llvm build
+FROM CMAKE_BUILDER AS LLVM_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
+    && apt remove -y cmake \
+                     git \
+                     libffi-dev \
+                     libicu-dev \
+                     libxml2-dev \
+                     libz3-dev \
+                     ninja-build \
+                     zlib1g-dev \
     && apt autoremove -y
 
 # cmark build

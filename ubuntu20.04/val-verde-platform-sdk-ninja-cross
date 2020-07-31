@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
+export SOURCE_PACKAGE_NAME=ninja
+export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+
+rm -rf ${SOURCE_ROOT}
+git clone https://github.com/ninja-build/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT}
+mkdir -p ${STAGE_ROOT}
+cd ${STAGE_ROOT}
+
+${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+    ${SOURCE_ROOT} \
+
+# Build the package
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+
+# Install the package
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
