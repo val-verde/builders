@@ -780,7 +780,7 @@ RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross || true
 
 # webassembly environment
-FROM SWIFTPM_BUILDER AS WASI_SOURCES_BUILDER
+FROM WINDOWS_SWIFTPM_BUILDER AS WASI_SOURCES_BUILDER
 
 ENV HOST_KERNEL=unknown \
     HOST_OS=wasi \
