@@ -108,6 +108,18 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
 FROM BASE AS LLVM_BOOTSTRAP_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap
+RUN apt remove -y clang \
+                  clang-10 \
+                  libc++-dev \
+                  libc++1 \
+                  libc++abi-dev \
+                  libc++abi1 \
+                  libunwind-dev \
+                  lld \
+                  lld-10 \
+                  llvm \
+                  llvm-10 \
+    && apt autoremove -y
 
 # LTO configuration: [OFF | Full | Thin]
 # ENV ENABLE_FLTO=Thin
@@ -157,7 +169,9 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
 FROM LIBFFI_BUILDER AS LLVM_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project
-RUN apt remove -y libicu-dev \
+RUN apt remove -y libffi-dev \
+                  libicu-dev \
+                  libxml2-dev \
                   zlib1g-dev \
     && apt autoremove -y
 

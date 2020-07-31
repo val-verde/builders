@@ -57,6 +57,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLIBCXX_ENABLE_EXPERIMENTAL_LIBRARY=TRUE \
     -DLIBCXX_ENABLE_EXCEPTIONS=TRUE \
     -DLIBCXX_ENABLE_FILESYSTEM=TRUE \
+    -DLIBCXX_ENABLE_PARALLEL_ALGORITHMS=TRUE \
     -DLIBCXX_ENABLE_RTTI=TRUE \
     -DLIBCXX_ENABLE_STATIC=FALSE \
     -DLIBCXX_ENABLE_SHARED=TRUE \
@@ -79,6 +80,8 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLIBOMP_ENABLE_ASSERTIONS=FALSE \
     -DLIBOMPTARGET_DEP_LIBELF_INCLUDE_DIRS=${SYSROOT}/usr/include \
     -DLIBOMPTARGET_DEP_LIBELF_LIBRARIES=${SYSROOT}/usr/lib/${HOST_TRIPLE}/libelf.so \
+    -DLIBOMPTARGET_DEP_LIBUNWIND_INCLUDE_DIRS=${SYSROOT}/usr/include \
+    -DLIBOMPTARGET_DEP_LIBUNWIND_LIBRARIES=${SYSROOT}/usr/lib/${HOST_TRIPLE}/libunwind.so \
     -DLIBOMPTARGET_SEARCH_LIBFFI_INCLUDE_DIRS=${SYSROOT}/usr/include \
     -DLIBOMPTARGET_SEARCH_LIBFFI_LIBRARY_DIRS=${SYSROOT}/usr/lib/${HOST_TRIPLE} \
     -DLIBOMPTARGET_NVPTX_ALTERNATE_HOST_COMPILER=gcc-8 \
@@ -102,7 +105,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLLVM_ENABLE_LIBCXX=FALSE \
     -DLLVM_ENABLE_LLD=TRUE \
     -DLLVM_ENABLE_LTO=${ENABLE_FLTO} \
-    -DLLVM_ENABLE_PROJECTS="clang;compiler-rt;libcxx;libcxxabi;libunwind;lld;polly" \
+    -DLLVM_ENABLE_PROJECTS="clang;compiler-rt;libcxx;libcxxabi;libunwind;lld;openmp;parallel-libs;polly;pstl" \
     -DLLVM_ENABLE_RTTI=TRUE \
     -DLLVM_ENABLE_THREADS=TRUE \
     -DLLVM_ENABLE_UNWIND_TABLES=FALSE \
@@ -143,17 +146,3 @@ source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Build the package
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
-
-# Clean up packages
-apt remove -y \
-    clang \
-    clang-10 \
-    libc++-dev \
-    libc++1 \
-    libc++abi-dev \
-    libc++abi1 \
-    lld \
-    lld-10 \
-    llvm \
-    llvm-10
-apt autoremove -y
