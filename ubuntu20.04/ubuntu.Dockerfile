@@ -101,6 +101,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core \
      ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-yams \
+     ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross \
      /sources/
 
@@ -165,13 +166,19 @@ FROM CURL_BUILDER AS LIBFFI_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
 
+# z3 build
+FROM LIBFFI_BUILDER AS Z3_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
+
 # llvm build
-FROM LIBFFI_BUILDER AS LLVM_BUILDER
+FROM Z3_BUILDER AS LLVM_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project
 RUN apt remove -y libffi-dev \
                   libicu-dev \
                   libxml2-dev \
+                  libz3-dev \
                   zlib1g-dev \
     && apt autoremove -y
 
@@ -294,7 +301,6 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-yams-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross \
      /sources/
 
 # android package builders
