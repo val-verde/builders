@@ -797,7 +797,8 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-windows
 # windows foundation build
 FROM WINDOWS_LIBDISPATCH_BUILDER AS WINDOWS_FOUNDATION_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-windows || true
+RUN export LIBS="-licuucswift -lxml2 -lz -llzma" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-windows
 
 # windows xctest build
 FROM WINDOWS_FOUNDATION_BUILDER AS WINDOWS_XCTEST_BUILDER
