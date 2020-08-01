@@ -234,9 +234,7 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation
 # xctest build
 FROM FOUNDATION_BUILDER AS XCTEST_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest
 
 # llbuild build
 FROM XCTEST_BUILDER AS LLBUILD_BUILDER
@@ -262,6 +260,10 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver
 FROM SWIFT_DRIVER AS SWIFTPM_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb
 
 # swift-syntax build
 FROM SWIFTPM_BUILDER AS SWIFT_SYNTAX_BUILDER
@@ -495,11 +497,7 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-cross
 # android xctest build
 FROM ANDROID_FOUNDATION_BUILDER AS ANDROID_XCTEST_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-cross \
-    && dpkg -i /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}-${BUILD_PROCESSOR}.deb \
-               /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}-${BUILD_PROCESSOR}.deb \
-               /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb \
-               /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-cross
 
 # android llbuild build
 FROM ANDROID_XCTEST_BUILDER AS ANDROID_LLBUILD_BUILDER
@@ -525,6 +523,12 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross
 FROM ANDROID_SWIFT_DRIVER AS ANDROID_SWIFTPM_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-cross \
+    && dpkg -i /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}-${BUILD_PROCESSOR}.deb \
+               /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}-${BUILD_PROCESSOR}.deb \
+               /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb \
+               /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb
 
 # android swift-syntax build
 FROM ANDROID_SWIFTPM_BUILDER AS ANDROID_SWIFT_SYNTAX_BUILDER
