@@ -58,7 +58,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
 # Package the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
-rsync -aPx ${STAGE_ROOT}/lib/*.so* install${PACKAGE_PREFIX}/lib
+rsync -aPx ${STAGE_ROOT}/lib/*.dll* install${PACKAGE_PREFIX}/lib
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Install the components
