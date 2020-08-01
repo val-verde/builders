@@ -808,28 +808,12 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-windows
 # windows llbuild build
 FROM WINDOWS_XCTEST_BUILDER AS WINDOWS_LLBUILD_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-windows || true
-RUN dpkg -i /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}-${BUILD_PROCESSOR}.deb \
-            /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}-${BUILD_PROCESSOR}.deb \
-            /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb
-
-# HACK: Enable these when Windows Foundation is built.
-# /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb \
-
-RUN cp /sources/build-staging/swift-corelibs-foundation-mingw32-x86_64/Sources/Foundation/lib*.dll \
-       ${SYSROOT}/usr/lib/swift/windows/ \
-    && cp /sources/build-staging/swift-corelibs-foundation-mingw32-x86_64/Sources/Foundation/lib*.a \
-          ${SYSROOT}/usr/lib/swift/windows/ \
-    && cp /sources/build-staging/swift-corelibs-foundation-mingw32-x86_64/CoreFoundation/lib*.a \
-          ${SYSROOT}/usr/lib/swift/windows/ \
-    && cp /sources/build-staging/swift-corelibs-foundation-mingw32-x86_64/swift/*.swift* \
-          ${SYSROOT}/usr/lib/swift/windows/${HOST_PROCESSOR} \
-    && cp -r ${PACKAGE_ROOT}/lib/swift/CoreFoundation ${SYSROOT}/usr/lib/swift
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-windows
 
 # windows swift-tools-support-core build
 FROM WINDOWS_LLBUILD_BUILDER AS WINDOWS_SWIFT_TOOLS_SUPPORT_CORE_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-windows || true
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-windows
 
 # windows yams build
 FROM WINDOWS_SWIFT_TOOLS_SUPPORT_CORE_BUILDER AS WINDOWS_YAMS_BUILDER
@@ -844,7 +828,7 @@ RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
                         -L${SYSROOT}/usr/lib \
                         -L${SYSROOT}/usr/lib/swift/windows" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross || true
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross
 
 # windows swiftpm build
 FROM WINDOWS_SWIFT_DRIVER AS WINDOWS_SWIFTPM_BUILDER
@@ -854,7 +838,11 @@ RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
                         -L${SYSROOT}/usr/lib \
                         -L${SYSROOT}/usr/lib/swift/windows" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross || true
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross
+RUN dpkg -i /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}-${BUILD_PROCESSOR}.deb \
+            /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb \
+            /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}-${BUILD_PROCESSOR}.deb \
+            /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb
 
 # webassembly environment
 FROM WINDOWS_SWIFTPM_BUILDER AS WASI_SOURCES_BUILDER
