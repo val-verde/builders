@@ -134,7 +134,8 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
 # Build the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
-rsync -aPx ${STAGE_ROOT}/bin/llvm-dlltool \
+rsync -aPx ${STAGE_ROOT}/bin/llvm-as* \
+           ${STAGE_ROOT}/bin/llvm-dlltool* \
            ${STAGE_ROOT}/install${PACKAGE_PREFIX}/bin
 
 # Package the components
