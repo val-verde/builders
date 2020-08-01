@@ -11,23 +11,29 @@ export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
 
+if [ "${HOST_OS}" != "android" ]; then
+    NEEDS_LIBRT=1
+fi
+
 # Configure the package
 rm -rf ${SOURCE_ROOT}
-cd /sources
-wget -c https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}/archive/v${SOURCE_PACKAGE_VERSION}.tar.gz \
-     -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
-tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
+git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT}
 
 mkdir -p ${STAGE_ROOT}
-
 cd ${STAGE_ROOT}
-rsync -aPx ${SOURCE_ROOT}/* .
+
+rsync -ax ${SOURCE_ROOT}/* .
 autoreconf -i
 ${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${STAGE_ROOT}/configure \
-    --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX}
+    --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+    --with-curl=${SYSROOT}/usr \
+    ac_cv_fread_reads_directories=true \
+    ac_cv_iconv_omits_bom=true \
+    ac_cv_snprintf_returns_bogus=false
 
 # Build the package
+export TARGETS="NEEDS_LIBRT=${NEEDS_LIBRT} install"
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
