@@ -326,6 +326,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
 # android package builders
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-headers \
      ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-runtime \
+     ${PACKAGE_BASE_NAME}-platform-sdk-cmake-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-android \
@@ -442,8 +443,23 @@ FROM ANDROID_LIBPYTHON_BUILDER AS ANDROID_Z3_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
 
+# android git build
+FROM ANDROID_Z3_BUILDER AS ANDROID_GIT_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-git-cross
+
+# android ninja build
+FROM ANDROID_GIT_BUILDER AS ANDROID_NINJA_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
+
+# android cmake build
+FROM ANDROID_NINJA_BUILDER AS ANDROID_CMAKE_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-android
+
 # android llvm build
-FROM ANDROID_Z3_BUILDER AS ANDROID_LLVM_BUILDER
+FROM ANDROID_CMAKE_BUILDER AS ANDROID_LLVM_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-android
 
@@ -733,8 +749,20 @@ FROM WINDOWS_Z3_BUILDER AS WINDOWS_JWASM_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-jwasm
 
+# windows ninja build
+FROM WINDOWS_JWASM_BUILDER AS WINDOWS_NINJA_BUILDER
+
+RUN export LIBS="-lc++abi" \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
+
+# windows cmake build
+FROM WINDOWS_NINJA_BUILDER AS WINDOWS_CMAKE_BUILDER
+
+RUN export LIBS="-lc++abi -lole32 -loleaut32" && \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross
+
 # windows llvm build
-FROM WINDOWS_JWASM_BUILDER AS WINDOWS_LLVM_BUILDER
+FROM WINDOWS_CMAKE_BUILDER AS WINDOWS_LLVM_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-windows
 
