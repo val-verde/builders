@@ -14,6 +14,7 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+    -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/cmake/modules \
     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
     -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
     -DCMAKE_Swift_COMPILER_TARGET=${HOST_TRIPLE} \
@@ -27,13 +28,15 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCURL_LIBRARY=${PACKAGE_PREFIX}/lib/libcurl.so \
     -DLIBXML2_INCLUDE_DIR=${PACKAGE_PREFIX}/include/libxml2 \
     -DLIBXML2_LIBRARY=${PACKAGE_PREFIX}/lib/libxml2.so \
-    -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/cmake/modules \
+    -DOPENSSL_CRYPTO_LIBRARY=${SYSROOT}/usr/lib/libcrypto.so \
+    -DOPENSSL_INCLUDE_DIR=${SYSROOT}/usr/include \
+    -DOPENSSL_SSL_LIBRARY=${SYSROOT}/usr/lib/libssl.so \
     ${SOURCE_ROOT}
 
 # Package the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 mv install${PACKAGE_PREFIX}/lib/swift/linux \
-    install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}
+   install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}
 
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
