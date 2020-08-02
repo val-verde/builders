@@ -23,7 +23,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCLANG_LINK_CLANG_DYLIB=TRUE \
     -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS} ${LIBS} -O2" \
     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
-    -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
+    -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swiftc \
     -DCURSES_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/ncurses \
     -DCURSES_LIBRARIES="${PACKAGE_PREFIX}/lib/libncurses.so" \
     -DLibEdit_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
