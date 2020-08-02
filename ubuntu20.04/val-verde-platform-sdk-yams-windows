@@ -14,7 +14,7 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-export CFLAGS="
+export CFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
     ${CFLAGS} \
