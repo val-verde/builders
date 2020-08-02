@@ -824,20 +824,18 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-yams-windows
 FROM WINDOWS_YAMS_BUILDER AS WINDOWS_SWIFT_DRIVER
 
 RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
-           CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2 -I/sources/swift-llbuild/lib/llvm/Support" \
+           CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
-                        -L${SYSROOT}/usr/lib \
-                        -L${SYSROOT}/usr/lib/swift/windows" \
+                        -L${SYSROOT}/usr/lib/swift/windows/${HOST_PROCESSOR}" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross
 
 # windows swiftpm build
 FROM WINDOWS_SWIFT_DRIVER AS WINDOWS_SWIFTPM_BUILDER
 
 RUN export CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
-           CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2 -I/sources/swift-llbuild/lib/llvm/Support" \
+           CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
            SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
-                        -L${SYSROOT}/usr/lib \
-                        -L${SYSROOT}/usr/lib/swift/windows" \
+                        -L${SYSROOT}/usr/lib/swift/windows/${HOST_PROCESSOR}" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross
 RUN dpkg -i /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}-${BUILD_PROCESSOR}.deb \
             /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb \
