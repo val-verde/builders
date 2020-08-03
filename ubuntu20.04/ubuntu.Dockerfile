@@ -55,6 +55,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-configure \
      ${PACKAGE_BASE_NAME}-platform-sdk-clang++ \
      ${PACKAGE_BASE_NAME}-platform-sdk-ml64 \
      ${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+     ${PACKAGE_BASE_NAME}-platform-sdk-rc \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-build \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-tool \
      ${PACKAGE_BASE_NAME}-platform-sdk-swiftc \
@@ -66,6 +67,7 @@ RUN chmod +x ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang++ \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ml64 \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+             ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rc \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swift-build \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swift-tool \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swiftc
@@ -571,9 +573,7 @@ ENV ARCH_FLAGS="-march=haswell -mtune=haswell" \
     SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot \
     SYSTEM_NAME=Windows
 
-COPY ${PACKAGE_BASE_NAME}-platform-sdk-binutils \
-     ${PACKAGE_BASE_NAME}-platform-sdk-gcc \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows \
+COPY ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-windows \
@@ -611,22 +611,8 @@ FROM WINDOWS_MINGW_HEADERS_BUILDER AS WINDOWS_MINGW_CRT_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-mingw-w64-crt
 
-# windows binutils (host)
-FROM WINDOWS_MINGW_CRT_BUILDER AS WINDOWS_BINUTILS_HOST_BUILDER
-
-RUN export ARCH_FLAGS="-march=haswell -mtune=haswell" \
-           HOST_KERNEL=${BUILD_KERNEL} \
-           HOST_OS=${BUILD_OS} \
-           HOST_OS_API_LEVEL= \
-           HOST_PROCESSOR=${BUILD_PROCESSOR} \
-           SYSROOT=/ \
-           TARGET_ARCH_FLAGS="${ARCH_FLAGS}" \
-    && export BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS} \
-              HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-binutils
-
 # windows compiler-rt build (for host)
-FROM WINDOWS_BINUTILS_HOST_BUILDER AS WINDOWS_COMPILER_RT_BUILDER
+FROM WINDOWS_MINGW_CRT_BUILDER AS WINDOWS_COMPILER_RT_BUILDER
 
 RUN export CLANG_RT_LIB=clang_rt.builtins-${HOST_PROCESSOR}.lib \
            DST_CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a \
@@ -637,13 +623,6 @@ RUN export CLANG_RT_LIB=clang_rt.builtins-${HOST_PROCESSOR}.lib \
 FROM WINDOWS_COMPILER_RT_BUILDER AS WINDOWS_MINGW_WINPTHREADS_BUILDER
 
 RUN export LD=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
-           RC=${PACKAGE_ROOT}/bin/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}-windres \
-           RCFLAGS="\
-               --preprocessor=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang \
-               --preprocessor-arg=-E \
-               --preprocessor-arg=-DRC_INVOKED \
-               --preprocessor-arg=-xc \
-           " \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-winpthreads-cross
 
 # windows libunwind build
@@ -676,14 +655,7 @@ RUN export LDFLAGS="-fuse-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-s
 # windows xz build
 FROM WINDOWS_ICU_BUILDER AS WINDOWS_XZ_BUILDER
 
-RUN export RC=${PACKAGE_ROOT}/bin/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}-windres \
-           RCFLAGS="\
-               --preprocessor=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang \
-               --preprocessor-arg=-E \
-               --preprocessor-arg=-DRC_INVOKED \
-               --preprocessor-arg=-xc \
-           " \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
 
 # windows libxml2 build
 FROM WINDOWS_XZ_BUILDER AS WINDOWS_XML_BUILDER
@@ -713,14 +685,7 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-openssl-windows
 # windows libssh2 build
 FROM WINDOWS_OPENSSL_BUILDER AS WINDOWS_LIBSSH2_BUILDER
 
-RUN export RC=${PACKAGE_ROOT}/bin/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}-windres \
-           RCFLAGS="\
-               --preprocessor=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang \
-               --preprocessor-arg=-E \
-               --preprocessor-arg=-DRC_INVOKED \
-               --preprocessor-arg=-xc \
-           " \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
 
 # windows curl build
 FROM WINDOWS_LIBSSH2_BUILDER AS WINDOWS_CURL_BUILDER

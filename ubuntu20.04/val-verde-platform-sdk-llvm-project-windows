@@ -21,30 +21,22 @@ git checkout dutch-master
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-export CFLAGS="\
+CFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
     ${CFLAGS} \
-"
-export CXXFLAGS="\
+" \
+CXXFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
     -D_Unwind_Personality_Fn=__personality_routine \
     ${CXXFLAGS} \
-"
-export LIBS="\
+" \
+LIBS="\
     -lole32 \
     -luuid \
     ${LIBS} \
-"
-export RC=${RC:-${PACKAGE_ROOT}/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-windres}
-export RCFLAGS="\
-    --preprocessor=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang \
-    --preprocessor-arg=-E \
-    --preprocessor-arg=-DRC_INVOKED \
-    --preprocessor-arg=-xc \
-"
-
+" \
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DBUILD_SHARED_LIBS=FALSE \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
