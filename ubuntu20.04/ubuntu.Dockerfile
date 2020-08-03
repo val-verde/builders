@@ -817,32 +817,14 @@ ENV ARCH_FLAGS= \
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt-wasi \
      ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-wasi \
      ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-wasi \
+     ${PACKAGE_BASE_NAME}-platform-sdk-wasi-compiler-deps \
      ${PACKAGE_BASE_NAME}-platform-sdk-wasi-libc \
      /sources/
 
 # webassembly libc
 FROM WASI_SOURCES_BUILDER AS WASI_LIBC_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-wasi-libc
-
-# webassembly compiler-rt
-FROM WASI_LIBC_BUILDER AS WASI_COMPILER_RT_BUILDER
-
-RUN export LDFLAGS="-Wl,--no-entry" \
-           SYSTEM_NAME=Fuchsia \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt-wasi
-
-# webassembly libcxxabi
-FROM WASI_COMPILER_RT_BUILDER AS WASI_LIBCXXABI_BUILDER
-
-RUN export SYSTEM_NAME=Fuchsia \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-wasi
-
-# webassembly libcxx
-FROM WASI_LIBCXXABI_BUILDER AS WASI_LIBCXX_BUILDER
-
-RUN export SYSTEM_NAME=Fuchsia \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-wasi
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-wasi-compiler-deps
 
 CMD []
 ENTRYPOINT ["tail", "-f", "/dev/null"]
