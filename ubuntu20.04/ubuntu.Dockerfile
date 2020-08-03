@@ -635,8 +635,14 @@ RUN export CLANG_RT_LIB=clang_rt.builtins-${HOST_PROCESSOR}.lib \
 # windows mingw-winpthreads build
 FROM WINDOWS_COMPILER_RT_BUILDER AS WINDOWS_MINGW_WINPTHREADS_BUILDER
 
-RUN export RC=${PACKAGE_ROOT}/bin/x86_64-w64-mingw32-windres \
-           RCFLAGS="--preprocessor-arg=--sysroot=${PACKAGE_PREFIX}" \
+RUN export LD=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+           RC=${PACKAGE_ROOT}/bin/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}-windres \
+           RCFLAGS="\
+               --preprocessor=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang \
+               --preprocessor-arg=-E \
+               --preprocessor-arg=-DRC_INVOKED \
+               --preprocessor-arg=-xc \
+           " \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-winpthreads-cross
 
 # windows libunwind build
@@ -669,7 +675,13 @@ RUN export LDFLAGS="-fuse-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-s
 # windows xz build
 FROM WINDOWS_ICU_BUILDER AS WINDOWS_XZ_BUILDER
 
-RUN export RC=${PACKAGE_ROOT}/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-windres \
+RUN export RC=${PACKAGE_ROOT}/bin/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}-windres \
+           RCFLAGS="\
+               --preprocessor=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang \
+               --preprocessor-arg=-E \
+               --preprocessor-arg=-DRC_INVOKED \
+               --preprocessor-arg=-xc \
+           " \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
 
 # windows libxml2 build
@@ -701,7 +713,13 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-openssl-windows
 # windows libssh2 build
 FROM WINDOWS_OPENSSL_BUILDER AS WINDOWS_LIBSSH2_BUILDER
 
-RUN export RC=${PACKAGE_ROOT}/bin/x86_64-w64-mingw32-windres \
+RUN export RC=${PACKAGE_ROOT}/bin/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}-windres \
+           RCFLAGS="\
+               --preprocessor=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang \
+               --preprocessor-arg=-E \
+               --preprocessor-arg=-DRC_INVOKED \
+               --preprocessor-arg=-xc \
+           " \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
 
 # windows curl build

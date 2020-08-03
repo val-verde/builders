@@ -21,7 +21,13 @@ cd ${STAGE_ROOT}
 export AR=${PACKAGE_ROOT}/bin/llvm-ar \
        CC=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang \
        RANLIB=${PACKAGE_ROOT}/bin/llvm-ranlib \
-       RC=${PACKAGE_ROOT}/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-windres
+       RC=${PACKAGE_ROOT}/bin/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}-windres \
+       RCFLAGS="\
+           --preprocessor=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang \
+           --preprocessor-arg=-E \
+           --preprocessor-arg=-DRC_INVOKED \
+           --preprocessor-arg=-xc \
+       "
 ${SOURCE_ROOT}/Configure \
     --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
     --openssldir=etc/ssl \
