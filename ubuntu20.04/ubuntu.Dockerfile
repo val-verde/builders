@@ -669,7 +669,7 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
 FROM WINDOWS_ZLIB_BUILDER AS WINDOWS_ICU_BUILDER
 
 RUN export LDFLAGS="-fuse-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink" \
-           LIBS="-lc++abi -lucrt" \
+           LIBS="-lucrt" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross
 
 # windows xz build
@@ -692,8 +692,7 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
 # android ncurses build
 FROM WINDOWS_XML_BUILDER AS WINDOWS_NCURSES_BUILDER
 
-RUN export LIBS="-lc++abi" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross
 
 # windows editline build
 FROM WINDOWS_NCURSES_BUILDER AS WINDOWS_WINEDITLINE_BUILDER
@@ -753,8 +752,7 @@ FROM WINDOWS_LIBFFI_BUILDER AS WINDOWS_LIBPYTHON_BUILDER
 # windows z3 build
 FROM WINDOWS_LIBPYTHON_BUILDER AS WINDOWS_Z3_BUILDER
 
-RUN export LIBS="-lc++abi" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
 
 FROM WINDOWS_Z3_BUILDER AS WINDOWS_JWASM_BUILDER
 
@@ -763,13 +761,12 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-jwasm
 # windows ninja build
 FROM WINDOWS_JWASM_BUILDER AS WINDOWS_NINJA_BUILDER
 
-RUN export LIBS="-lc++abi" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
 
 # windows cmake build
 FROM WINDOWS_NINJA_BUILDER AS WINDOWS_CMAKE_BUILDER
 
-RUN export LIBS="-lc++abi -lole32 -loleaut32" && \
+RUN export LIBS="-lole32 -loleaut32" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross
 
 # windows llvm build

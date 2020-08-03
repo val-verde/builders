@@ -20,7 +20,6 @@ mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
 export LIBS="\
-    -lc++abi \
     -lole32 \
     -lpsapi \
     -luuid \

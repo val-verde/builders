@@ -28,7 +28,6 @@ export CXXFLAGS="\
     ${CXXFLAGS} \
 "
 export LIBS="\
-    -lc++abi \
     -lole32 \
     ${LIBS} \
 "
