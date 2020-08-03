@@ -624,25 +624,8 @@ RUN export ARCH_FLAGS="-march=haswell -mtune=haswell" \
               HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-binutils
 
-# windows gcc (host)
-FROM WINDOWS_BINUTILS_HOST_BUILDER AS WINDOWS_GCC_HOST_BUILDER
-
-RUN export ARCH_FLAGS="-march=haswell -mtune=haswell" \
-           AS_FOR_TARGET=${PACKAGE_ROOT}/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-as \
-           HOST_KERNEL=${BUILD_KERNEL} \
-           HOST_OS=${BUILD_OS} \
-           HOST_OS_API_LEVEL= \
-           HOST_PROCESSOR=${BUILD_PROCESSOR} \
-           LDFLAGS_FOR_TARGET="-Wl,/force:multiple" \
-           RC_FOR_TARGET=${PACKAGE_ROOT}/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-windres \
-           SYSROOT=/ \
-           TARGET_ARCH_FLAGS="${ARCH_FLAGS}" \
-    && export BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS} \
-              HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-gcc
-
 # windows compiler-rt build (for host)
-FROM WINDOWS_GCC_HOST_BUILDER AS WINDOWS_COMPILER_RT_BUILDER
+FROM WINDOWS_BINUTILS_HOST_BUILDER AS WINDOWS_COMPILER_RT_BUILDER
 
 RUN export CLANG_RT_LIB=clang_rt.builtins-${HOST_PROCESSOR}.lib \
            DST_CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a \
