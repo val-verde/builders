@@ -31,12 +31,13 @@ export CXXFLAGS="\
 export SWIFTCFLAGS="\
     -sdk ${SYSROOT} \
     -use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
-    -L${SYSROOT}/usr/lib \
+    -L${SYSROOT}/usr/lib/swift/windows/${HOST_PROCESSOR} \
     ${SWIFTCFLAGS} \
 "
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+    -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/cmake/modules \
     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
-    -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
+    -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swiftc \
     -DCMAKE_Swift_COMPILER_TARGET=${HOST_TRIPLE} \
     -DCMAKE_Swift_FLAGS="${SWIFTCFLAGS}" \
     -DICU_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
@@ -47,7 +48,9 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCURL_LIBRARY=${PACKAGE_PREFIX}/lib/libcurl.a \
     -DLIBXML2_INCLUDE_DIR=${PACKAGE_PREFIX}/include/libxml2 \
     -DLIBXML2_LIBRARY=${PACKAGE_PREFIX}/lib/libxml2.a \
-    -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/cmake/modules \
+    -DOPENSSL_CRYPTO_LIBRARY=${SYSROOT}/usr/lib/libcrypto.a \
+    -DOPENSSL_INCLUDE_DIR=${SYSROOT}/usr/include \
+    -DOPENSSL_SSL_LIBRARY=${SYSROOT}/usr/lib/libssl.a \
     ${SOURCE_ROOT}
 
 # Package the components

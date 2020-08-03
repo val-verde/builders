@@ -26,6 +26,7 @@ rsync -aPx ${SYSROOT}/usr/include/${HOST_TRIPLE}/asm \
            ${SYSROOT}/usr/include/linux \
            ${SYSROOT}/usr/include/net \
            ${SYSROOT}/usr/include/netinet \
+           ${SYSROOT}/usr/include/netpacket \
            ${SYSROOT}/usr/include/sys \
            ${STAGE_ROOT}/install${PACKAGE_PREFIX}/include
 

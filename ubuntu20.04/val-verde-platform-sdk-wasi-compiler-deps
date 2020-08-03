@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+# webassembly libc
+bash ${PACKAGE_BASE_NAME}-platform-sdk-wasi-libc
+
+# webassembly compiler-rt
+LDFLAGS="-Wl,--no-entry" \
+SYSTEM_NAME=Fuchsia \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt-wasi
+
+# webassembly libcxxabi
+SYSTEM_NAME=Fuchsia \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-wasi
+
+# webassembly libcxx
+SYSTEM_NAME=Fuchsia \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-wasi

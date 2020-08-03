@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+
+args=("$@")
+for ((i=0; i<"${#args[@]}"; ++i)); do
+    case ${args[i]} in
+        -pthread)
+        unset args[i]
+        break
+    esac
+done
+
+${PACKAGE_ROOT}/bin/swiftc "${args[@]}"

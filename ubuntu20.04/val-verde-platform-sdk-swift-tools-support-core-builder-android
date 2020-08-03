@@ -18,13 +18,15 @@ git checkout dutch-android-master
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+    -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/cmake/modules \
     -DCMAKE_C_FLAGS="-D__GLIBC_PREREQ\(a,b\)=1" \
     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
-    -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/swiftc \
+    -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swiftc \
     -DCMAKE_Swift_COMPILER_TARGET=${HOST_TRIPLE} \
     -DCMAKE_Swift_FLAGS="${SWIFTCFLAGS} \
                          -sdk ${SYSROOT}" \
-   ${SOURCE_ROOT}
+    -DFoundation_DIR=/sources/build-staging/swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/cmake/modules \
+    ${SOURCE_ROOT}
 
 # Package the components
 ninja -j${NUM_PROCESSORS}
