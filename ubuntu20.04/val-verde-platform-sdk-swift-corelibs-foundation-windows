@@ -31,7 +31,7 @@ export CXXFLAGS="\
 export SWIFTCFLAGS="\
     -sdk ${SYSROOT} \
     -use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
-    -L${SYSROOT}/usr/lib \
+    -L${SYSROOT}/usr/lib/swift/windows/${HOST_PROCESSOR} \
     ${SWIFTCFLAGS} \
 "
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \

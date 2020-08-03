@@ -25,7 +25,7 @@ export CXXFLAGS="\
 export SWIFTCFLAGS="\
     -sdk ${SYSROOT} \
     -use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
-    -L${SYSROOT}/usr/lib \
+    -L${SYSROOT}/usr/lib/swift/windows/${HOST_PROCESSOR} \
 "
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/cmake/modules \
