@@ -15,7 +15,6 @@ apt install -y \
     flex \
     icu-devtools \
     libc++-dev \
-    libc++abi-dev \
     libedit-dev \
     libelf-dev \
     libffi-dev \
