@@ -215,6 +215,13 @@ rsync -aPx ${STAGE_ROOT}/bin/llvm-as* \
            ${STAGE_ROOT}/bin/llvm-dlltool* \
            ${STAGE_ROOT}/install${PACKAGE_PREFIX}/bin
 
+CLANG_RT_LIB=clang_rt.builtins-${HOST_PROCESSOR}.lib
+DST_CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a
+SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
+DST_SDK_PLATFORM_DIR=${DST_SDK_PLATFORM_DIR:-${SDK_PLATFORM_DIR}}
+ln -sf ${CLANG_RT_LIB} \
+       install${PACKAGE_PREFIX}/lib/clang/10.0.0/lib/${DST_SDK_PLATFORM_DIR}/${DST_CLANG_RT_LIB}
+
 # Package the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
