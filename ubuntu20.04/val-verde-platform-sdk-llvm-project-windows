@@ -21,30 +21,22 @@ git checkout dutch-master
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-export CFLAGS="\
+CFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
     ${CFLAGS} \
-"
-export CXXFLAGS="\
+" \
+CXXFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
     -D_Unwind_Personality_Fn=__personality_routine \
     ${CXXFLAGS} \
-"
-export LIBS="\
+" \
+LIBS="\
     -lole32 \
     -luuid \
     ${LIBS} \
-"
-export RC=${RC:-${PACKAGE_ROOT}/bin/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS}-windres}
-export RCFLAGS="\
-    --preprocessor=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang \
-    --preprocessor-arg=-E \
-    --preprocessor-arg=-DRC_INVOKED \
-    --preprocessor-arg=-xc \
-"
-
+" \
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DBUILD_SHARED_LIBS=FALSE \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
@@ -222,6 +214,13 @@ source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 rsync -aPx ${STAGE_ROOT}/bin/llvm-as* \
            ${STAGE_ROOT}/bin/llvm-dlltool* \
            ${STAGE_ROOT}/install${PACKAGE_PREFIX}/bin
+
+CLANG_RT_LIB=clang_rt.builtins-${HOST_PROCESSOR}.lib
+DST_CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a
+SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
+DST_SDK_PLATFORM_DIR=${DST_SDK_PLATFORM_DIR:-${SDK_PLATFORM_DIR}}
+ln -sf ${CLANG_RT_LIB} \
+       install${PACKAGE_PREFIX}/lib/clang/10.0.0/lib/${DST_SDK_PLATFORM_DIR}/${DST_CLANG_RT_LIB}
 
 # Package the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
