@@ -4,12 +4,12 @@ set -e
 
 # TODO:
 # Replace all sources to ${PACKAGE_ROOT}/src/${PACKAGE_NAME}
-# Replace all build-staging to ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/build
+# Replace all build-staging to ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/build
 # SOURCE_ROOT to ${PACKAGE_ROOT}/src (global variable)
 # All fetched resources should be tar'ed, alien'ed and stored in sources (and the deb packages here should be appended with src)
 # Variable-ize where possible
 # Intermediates where there are steps between ninja and ninja install, these should be 
-# ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/build/${SOURCE_PACKAGE_NAME}
+# ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/build/${SOURCE_PACKAGE_NAME}
 # Copy , chmod +x, stage into install and make deb files for each (cmake/clang++/swift build)
 # Set all environment vars
 
@@ -18,7 +18,7 @@ export SOURCE_PACKAGE_NAME=llvm-project
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
-export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
 
 EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;libclc;mlir;openmp;parallel-libs;polly;pstl"}
 USE_NEWPM=${USE_NEWPM:-TRUE}

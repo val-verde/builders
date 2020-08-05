@@ -29,8 +29,10 @@ ARG HOST_PROCESSOR
 ARG PACKAGE_BASE_NAME
 ARG PACKAGE_ROOT
 
-ENV BUILD_KERNEL=${BUILD_KERNEL} \
+ENV BUILD_CPU=haswell \
+    BUILD_KERNEL=${BUILD_KERNEL} \
     BUILD_OS=${BUILD_OS} \
+    BUILD_OS_API_LEVEL= \
     BUILD_PROCESSOR=${BUILD_PROCESSOR} \
     DEB_PATH=${DEB_PATH} \
     HOST_KERNEL=${HOST_KERNEL} \
@@ -277,8 +279,8 @@ FROM SWIFT_DRIVER AS SWIFTPM_BUILDER
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb
+    && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}.deb \
+    && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}.deb
 
 # swift-syntax build
 FROM SWIFTPM_BUILDER AS SWIFT_SYNTAX_BUILDER
@@ -356,7 +358,8 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-headers \
      /sources/
 
 # android environment
-ENV HOST_KERNEL=linux \
+ENV HOST_CPU=cortex-a57 \
+    HOST_KERNEL=linux \
     HOST_OS=android \
     HOST_OS_API_LEVEL=29 \
     HOST_PROCESSOR=aarch64
@@ -367,10 +370,9 @@ ENV TARGET_KERNEL=${HOST_KERNEL} \
     TARGET_PROCESSOR=${HOST_PROCESSOR}
 
 ENV ARCH_FLAGS="-march=armv8-a" \
-    HOST_CPU=cortex-a57 \
     HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot/usr \
-    SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot \
+    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/sysroot/usr \
+    SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/sysroot \
     SYSTEM_NAME=Linux
 
 # android ndk headers build
@@ -503,6 +505,11 @@ FROM ANDROID_LLDB_BUILDER AS ANDROID_LIBDISPATCH_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-cross
 
+# remove host foundation and libdispatch to avoid module collisions
+RUN BUILD_PROCESSOR=`echo ${BUILD_PROCESSOR} | tr _ -` \
+    && apt remove -y ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU} \
+                     ${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}
+
 # android foundation build
 FROM ANDROID_LIBDISPATCH_BUILDER AS ANDROID_FOUNDATION_BUILDER
 
@@ -539,10 +546,10 @@ FROM ANDROID_SWIFT_DRIVER AS ANDROID_SWIFTPM_BUILDER
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-cross \
-    && dpkg -i /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}-${BUILD_PROCESSOR}.deb \
-               /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}-${BUILD_PROCESSOR}.deb \
-               /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb \
-               /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}.deb
+    && dpkg -i /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}.deb \
+               /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}.deb \
+               /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}.deb \
+               /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}.deb
 
 # android swift-syntax build
 FROM ANDROID_SWIFTPM_BUILDER AS ANDROID_SWIFT_SYNTAX_BUILDER
@@ -567,7 +574,8 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit-cross
 # windows environment
 FROM ANDROID_PYTHONKIT_BUILDER AS WINDOWS_SOURCES_BUILDER
 
-ENV HOST_KERNEL=w64 \
+ENV HOST_CPU=haswell \
+    HOST_KERNEL=w64 \
     HOST_OS=mingw32 \
     HOST_OS_API_LEVEL= \
     HOST_PROCESSOR=x86_64
@@ -578,10 +586,9 @@ ENV TARGET_PROCESSOR=${HOST_PROCESSOR} \
     TARGET_OS_API_LEVEL=${HOST_OS_API_LEVEL}
 
 ENV ARCH_FLAGS="-march=haswell" \
-    HOST_CPU=haswell \
     HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot \
-    SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot \
+    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/sysroot \
+    SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/sysroot \
     SYSTEM_NAME=Windows
 
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows \
@@ -766,6 +773,11 @@ FROM WINDOWS_SWIFT_BUILDER AS WINDOWS_LLDB_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb-windows
 
+# remove host foundation and libdispatch to avoid module collisions
+RUN BUILD_PROCESSOR=`echo ${BUILD_PROCESSOR} | tr _ -` \
+    && apt remove -y ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU} \
+                     ${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}
+
 # windows swift sdk build
 FROM WINDOWS_LLDB_BUILDER AS WINDOWS_SWIFT_SDK_BUILDER
 
@@ -774,7 +786,7 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-sdk-windows
 # webassembly environment
 FROM WINDOWS_SWIFT_SDK_BUILDER AS WASI_SOURCES_BUILDER
 
-ENV HOST_CPU= \
+ENV HOST_CPU=wasm32 \
     HOST_KERNEL=unknown \
     HOST_OS=wasi \
     HOST_OS_API_LEVEL= \
@@ -787,8 +799,8 @@ ENV TARGET_PROCESSOR=${HOST_PROCESSOR} \
 
 ENV ARCH_FLAGS= \
     HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot \
-    SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}/sysroot \
+    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/sysroot \
+    SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/sysroot \
     SYSTEM_NAME=Wasi
 
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt-wasi \
