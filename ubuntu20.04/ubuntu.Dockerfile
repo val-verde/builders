@@ -351,7 +351,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-headers \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-android \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-builder-android \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-android \
      /sources/
 
 # android environment
@@ -519,7 +519,7 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-android
 # android swift-tools-support-core build
 FROM ANDROID_LLBUILD_BUILDER AS ANDROID_SWIFT_TOOLS_SUPPORT_CORE_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-builder-android
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-android
 
 # android yams build
 FROM ANDROID_SWIFT_TOOLS_SUPPORT_CORE_BUILDER AS ANDROID_YAMS_BUILDER
