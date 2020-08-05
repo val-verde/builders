@@ -84,7 +84,10 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-make-build \
 # linux sources
 FROM BASE AS SOURCES_BUILDER
 
-RUN git clone https://github.com/${PACKAGE_BASE_NAME}/llvm-project.git --single-branch --branch dutch-master /sources/llvm-project
+RUN git clone https://github.com/${PACKAGE_BASE_NAME}/llvm-project.git \
+              --branch dutch-master \
+              --single-branch \
+              /sources/llvm-project
 
 # platform sdk package build scripts
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
@@ -617,7 +620,10 @@ COPY mingw-sdk.modulemap \
 # mingw-w64 source
 RUN export SOURCE_PACKAGE_NAME=mingw-w64 \
     && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT}
+    && git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
+                 --branch master \
+                 --single-branch \
+                 ${SOURCE_ROOT}
 
 # windows mingw-headers build
 FROM WINDOWS_SOURCES_BUILDER AS WINDOWS_MINGW_HEADERS_BUILDER
