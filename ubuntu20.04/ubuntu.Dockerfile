@@ -78,6 +78,11 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-make-build \
      ${PACKAGE_BASE_NAME}-platform-sdk-package-install \
      /sources/
 
+# linux sources
+FROM BASE AS SOURCES_BUILDER
+
+RUN git clone https://github.com/${PACKAGE_BASE_NAME}/llvm-project.git --single-branch --branch dutch-master /sources/llvm-project
+
 # platform sdk package build scripts
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross \
@@ -86,6 +91,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-git-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-icu4c \
      ${PACKAGE_BASE_NAME}-platform-sdk-jwasm \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross \
@@ -113,15 +119,19 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      /sources/
 
 # llvm bootstrap build
-FROM BASE AS LLVM_BOOTSTRAP_BUILDER
+FROM SOURCES_BUILDER AS LIBCXXABI_BOOTSTRAP_BUILDER
+
+RUN export BINDIR=/usr/bin \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-cross
+
+# llvm bootstrap build
+FROM LIBCXXABI_BOOTSTRAP_BUILDER AS LLVM_BOOTSTRAP_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap
 RUN apt remove -y clang \
                   clang-10 \
                   libc++-dev \
                   libc++1 \
-                  libc++abi-dev \
-                  libc++abi1 \
                   libunwind-dev \
                   lld \
                   lld-10 \
@@ -337,13 +347,11 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-headers \
      ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-runtime \
      ${PACKAGE_BASE_NAME}-platform-sdk-cmake-android \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-android \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-android \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-builder-android \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-android \
      /sources/
 
 # android environment
@@ -511,7 +519,7 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-android
 # android swift-tools-support-core build
 FROM ANDROID_LLBUILD_BUILDER AS ANDROID_SWIFT_TOOLS_SUPPORT_CORE_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-builder-android
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-android
 
 # android yams build
 FROM ANDROID_SWIFT_TOOLS_SUPPORT_CORE_BUILDER AS ANDROID_YAMS_BUILDER
