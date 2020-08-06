@@ -6,9 +6,9 @@ set -e
 export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
 export SOURCE_PACKAGE_NAME=swift-llbuild
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
+export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
-export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
 # Configure the package
 cd ${SOURCE_ROOT}
@@ -43,12 +43,12 @@ export SWIFTCFLAGS="\
     ${SWIFTCFLAGS} \
 "
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
-    -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/cmake/modules \
+    -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
     -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swiftc \
     -DCMAKE_Swift_COMPILER_TARGET=${HOST_TRIPLE} \
     -DCMAKE_Swift_FLAGS="${SWIFTCFLAGS}" \
-    -DFoundation_DIR=/sources/build-staging/swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/cmake/modules \
+    -DFoundation_DIR=/sources/build-staging/swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DLLBUILD_SUPPORT_BINDINGS=Swift \
     -DSQLite3_INCLUDE_DIR=${SYSROOT}/usr/include \
     -DSQLite3_LIBRARY=${SYSROOT}/usr/lib/libsqlite3.a \

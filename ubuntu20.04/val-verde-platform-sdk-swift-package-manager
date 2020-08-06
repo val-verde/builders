@@ -8,7 +8,7 @@ export SOURCE_PACKAGE_NAME=swift-package-manager
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
-export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
 # Configure the package
 rm -rf ${SOURCE_ROOT}
@@ -36,5 +36,5 @@ source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Install the package
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
-dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-yams-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}.deb
-dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-tools-support-core-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}.deb
+dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-yams-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb
+dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-tools-support-core-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb

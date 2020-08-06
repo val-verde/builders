@@ -35,7 +35,7 @@ SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslin
              -L${SYSROOT}/usr/lib/swift/windows/${HOST_PROCESSOR}" \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross
 
-dpkg -i /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}.deb \
-        /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}.deb \
-        /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}.deb \
-        /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}.deb
+dpkg -i /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
+        /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
+        /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
+        /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb

@@ -8,7 +8,7 @@ export SOURCE_PACKAGE_NAME=llvm-project
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
-export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
 USE_NEWPM=${USE_NEWPM:-TRUE}
 
@@ -161,7 +161,7 @@ source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # remove libcxx, libcxxabi and libunwind as they are superceded by llvm-project.
 HOST_PROCESSOR=`echo ${HOST_PROCESSOR} | tr _ -`
-apt remove -y ${PACKAGE_BASE_NAME}-libcxxabi-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
+apt remove -y ${PACKAGE_BASE_NAME}-libcxxabi-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
 # Build the package
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
