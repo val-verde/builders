@@ -146,6 +146,10 @@ RUN apt remove -y clang \
                   llvm-10 \
     && apt autoremove -y
 
+# Enable Polly optimizer
+ENV CFLAGS="-mllvm -polly" \
+    CXXFLAGs="-mllvm -polly"
+
 # LTO configuration: [OFF | Full | Thin]
 # ENV ENABLE_FLTO=Thin
 
