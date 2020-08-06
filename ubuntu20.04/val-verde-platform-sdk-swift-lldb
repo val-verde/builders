@@ -11,7 +11,7 @@ export LLVM_SOURCE_ROOT=/sources/llvm-project
 export LLVM_STAGE_ROOT=/sources/build-staging/llvm-project
 export SWIFT_STAGE_ROOT=/sources/build-staging/swift
 
-export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
 
 # Configure the package
 mkdir -p ${STAGE_ROOT}

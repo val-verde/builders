@@ -5,9 +5,9 @@ set -e
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=swift-format
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
 
-export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_PROCESSOR}
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
 
 # Configure & build the package
 mkdir -p ${STAGE_ROOT}
