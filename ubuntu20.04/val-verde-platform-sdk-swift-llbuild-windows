@@ -17,12 +17,12 @@ git pull
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-export CFLAGS="\
+CFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
     ${CFLAGS} \
-"
-export CXXFLAGS="\
+" \
+CXXFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
     -I/sources/swift-llbuild/lib/llvm/Support \
@@ -30,18 +30,18 @@ export CXXFLAGS="\
     -Wno-macro-redefined \
     -Wno-unused-function \
     ${CXXFLAGS} \
-"
-export LIBS="\
+" \
+LIBS="\
     -lole32 \
     -luuid \
     ${LIBS} \
-"
-export SWIFTCFLAGS="\
+" \
+SWIFTCFLAGS="\
     -sdk ${SYSROOT} \
     -use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
     -L${SYSROOT}/usr/lib/swift/windows/${HOST_PROCESSOR} \
     ${SWIFTCFLAGS} \
-"
+" \
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \

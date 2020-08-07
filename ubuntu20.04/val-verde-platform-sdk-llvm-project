@@ -27,7 +27,10 @@ USE_NEWPM=${USE_NEWPM:-TRUE}
 rm -rf ${STAGE_ROOT}/*
 cd ${STAGE_ROOT}
 
-LDFLAGS="-L${PACKAGE_PREFIX}/lib ${LDFLAGS}" \
+LDFLAGS="\
+    -L${PACKAGE_PREFIX}/lib \
+    ${LDFLAGS} \
+" \
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DBUILD_SHARED_LIBS=FALSE \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \

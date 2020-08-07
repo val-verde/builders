@@ -16,8 +16,11 @@ USE_NEWPM=${USE_NEWPM:-TRUE}
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-export BINDIR=/usr/bin \
-       LDFLAGS="-L${PACKAGE_PREFIX}/lib ${LDFLAGS}"
+BINDIR=/usr/bin \
+LDFLAGS="\
+    -L${PACKAGE_PREFIX}/lib \
+    ${LDFLAGS} \
+" \
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DBUILD_SHARED_LIBS=FALSE \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \

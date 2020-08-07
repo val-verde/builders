@@ -6,7 +6,10 @@ set -e
 bash ${PACKAGE_BASE_NAME}-platform-sdk-wasi-libc
 
 # webassembly compiler-rt
-LDFLAGS="-Wl,--no-entry" \
+LDFLAGS="\
+    -Wl,--no-entry \
+    ${LDFLAGS} \
+" \
 SYSTEM_NAME=Fuchsia \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt-wasi
 

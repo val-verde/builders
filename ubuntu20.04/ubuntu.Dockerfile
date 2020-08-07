@@ -128,8 +128,8 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
 # llvm bootstrap build
 FROM SOURCES_BUILDER AS LIBCXXABI_BOOTSTRAP_BUILDER
 
-RUN export BINDIR=/usr/bin \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-cross
+RUN BINDIR=/usr/bin \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-cross
 
 # llvm bootstrap build
 FROM LIBCXXABI_BOOTSTRAP_BUILDER AS LLVM_BOOTSTRAP_BUILDER
@@ -148,7 +148,8 @@ RUN apt remove -y clang \
 
 # Enable Polly optimizer
 ENV CFLAGS="-mllvm -polly" \
-    CXXFLAGs="-mllvm -polly"
+    CXXFLAGS="-mllvm -polly" \
+    LDFLAGS="-mllvm -polly"
 
 # LTO configuration: [OFF | Full | Thin]
 # ENV ENABLE_FLTO=Thin
@@ -667,9 +668,15 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
 # windows icu build
 FROM WINDOWS_ZLIB_BUILDER AS WINDOWS_ICU_BUILDER
 
-RUN export LDFLAGS="-fuse-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink" \
-           LIBS="-lucrt" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross
+RUN LDFLAGS="\
+        -fuse-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+        ${LDFLAGS} \
+    " \
+    LIBS="\
+        -lucrt \
+        ${LIBS} \
+    " \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross
 
 # windows xz build
 FROM WINDOWS_ICU_BUILDER AS WINDOWS_XZ_BUILDER
@@ -751,8 +758,12 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
 # windows cmake build
 FROM WINDOWS_NINJA_BUILDER AS WINDOWS_CMAKE_BUILDER
 
-RUN export LIBS="-lole32 -loleaut32" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross
+RUN LIBS="\
+        -lole32 \
+        -loleaut32\
+        ${LIBS} \
+    " \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross
 
 # windows llvm build
 FROM WINDOWS_CMAKE_BUILDER AS WINDOWS_LLVM_BUILDER

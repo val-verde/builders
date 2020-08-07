@@ -12,13 +12,19 @@ OPTIMIZATION_LEVEL=${OPTIMIZATION_LEVEL:-z}
 SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot}
 
 if [ -z "${DISABLE_STRIP}" ]; then
-    LDFLAGS="${LDFLAGS} -s"
+    LDFLAGS="\
+        -s \
+        ${LDFLAGS} \
+    "
 fi
 
 if [ -n "${ENABLE_FLTO}" ]; then
     FLTO_OPTION=`echo ${ENABLE_FLTO} | tr '[:upper:]' '[:lower:]'`
     FLTO_CFLAG="-flto=${FLTO_OPTION}"
-    LDFLAGS="${LDFLAGS} ${FLTO_CFLAG}"
+    LDFLAGS="\
+        ${FLTO_CFLAG} \
+        ${LDFLAGS} \
+    "
 fi
 
 if [ -n "${LDFLAGS}" ]; then
@@ -47,19 +53,50 @@ STRINGS=${STRINGS:-${BINTOOLS_PATH_PREFIX}strings}
 STRIP=${STRIP:-${BINTOOLS_PATH_PREFIX}strip}
 
 if [ -n "${HOST_ARCH}" ]; then
-    ARCH_FLAGS="${ARCH_FLAGS} -march=${HOST_ARCH}"
+    ARCH_FLAGS="\
+        -march=${HOST_ARCH} \
+        ${ARCH_FLAGS} \
+    "
 fi
 
 if [ -n "${HOST_CPU}" ]; then
-    ARCH_FLAGS="${ARCH_FLAGS} -mtune=${HOST_CPU}"
+    ARCH_FLAGS="\
+        -mtune=${HOST_CPU} \
+        ${ARCH_FLAGS} \
+    "
 fi
 
-CFLAGS="${ARCH_FLAGS} ${FLTO_CFLAG} ${OPTIMIZATION_FLAGS} -O${OPTIMIZATION_LEVEL} ${CFLAGS}"
-CXXFLAGS="${ARCH_FLAGS} ${FLTO_CFLAG} ${OPTIMIZATION_FLAGS} -O${OPTIMIZATION_LEVEL} ${CXXFLAGS}"
-LDFLAGS="${ARCH_FLAGS} ${LDFLAGS} -O${LINKER_OPTIMIZATION_LEVEL}"
-
+ASFLAGS="\
+    ${ARCH_FLAGS} \
+    ${FLTO_CFLAG} \
+    ${OPTIMIZATION_FLAGS} \
+    -O${OPTIMIZATION_LEVEL} \
+    ${ASMFLAGS} \
+" \
+CFLAGS="\
+    ${ARCH_FLAGS} \
+    ${FLTO_CFLAG} \
+    ${OPTIMIZATION_FLAGS} \
+    -O${OPTIMIZATION_LEVEL} \
+    ${CFLAGS} \
+" \
+CXXFLAGS="\
+    ${ARCH_FLAGS} \
+    ${FLTO_CFLAG} \
+    ${OPTIMIZATION_FLAGS} \
+    -O${OPTIMIZATION_LEVEL} \
+    ${CXXFLAGS} \
+" \
+LDFLAGS="\
+    ${ARCH_FLAGS} \
+    ${FLTO_LDFLAG} \
+    ${LDFLAGS} \
+    -O${LINKER_OPTIMIZATION_LEVEL} \
+" \
+LIBS="${LIBS}" \
 "$@" AR=${AR} \
      AS=${CC} \
+     ASFLAGS="${ASFLAGS}" \
      CC=${CC} \
      CFLAGS="${CFLAGS}" \
      CPP="${CPP}" \
@@ -68,6 +105,7 @@ LDFLAGS="${ARCH_FLAGS} ${LDFLAGS} -O${LINKER_OPTIMIZATION_LEVEL}"
      DLLTOOL=${DLLTOOL} \
      LD=${LD} \
      LDFLAGS="${LDFLAGS}" \
+     LIBS="${LIBS}" \
      LIBTOOLFLAGS="-avoid-version" \
      MANIFEST_TOOL=${MANIFEST_TOOL} \
      NM=${NM} \
@@ -76,6 +114,7 @@ LDFLAGS="${ARCH_FLAGS} ${LDFLAGS} -O${LINKER_OPTIMIZATION_LEVEL}"
      PKG_CONFIG_PATH=${SYSROOT}/usr/lib/pkgconfig \
      RANLIB=${RANLIB} \
      RC=${RC} \
+     RCFLAGS=${RCFLAGS} \
      READELF=${READELF} \
      SIZE=${SIZE} \
      STRIP=${STRIP} \

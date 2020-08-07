@@ -15,10 +15,18 @@ fi
 
 if [ -n "${ENABLE_FLTO}" ]; then
     FLTO_OPTION=`echo ${ENABLE_FLTO} | tr '[:upper:]' '[:lower:]'`
-    FLTO_CFLAG="-Xcc -flto=${FLTO_OPTION}"
-    FLTO_CXXFLAG="-Xcxx -flto=${FLTO_OPTION}"
-    FLTO_CXXFLAG="-Xlinker -flto=${FLTO_OPTION}"
-    FLTO_SWIFTCFLAGS="-Xswiftc -whole-module-optimization"
+    FLTO_CFLAG="\
+        -Xcc -flto=${FLTO_OPTION} \
+    "
+    FLTO_CXXFLAG="\
+        -Xcxx -flto=${FLTO_OPTION} \
+    "
+    FLTO_CXXFLAG="\
+        -Xlinker -flto=${FLTO_OPTION} \
+    "
+    FLTO_SWIFTCFLAGS="\
+        -Xswiftc -whole-module-optimization \
+    "
 fi
 
 ${BINDIR}/${PACKAGE_BASE_NAME}-platform-sdk-swift-tool \

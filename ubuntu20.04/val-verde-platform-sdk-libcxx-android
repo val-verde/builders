@@ -14,10 +14,13 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-export CXXFLAGS="-nostdlib++ \
-                 -D_LIBCXXABI_BUILDING_LIBRARY=1 \
-                 -Wno-macro-redefined \
-                 -Wno-unused-command-line-argument"
+CXXFLAGS="\
+    -nostdlib++ \
+    -D_LIBCXXABI_BUILDING_LIBRARY=1 \
+    -Wno-macro-redefined \
+    -Wno-unused-command-line-argument \
+    ${CXXFLAGS} \
+" \
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
     -DHAVE_LIBUNWIND=TRUE \

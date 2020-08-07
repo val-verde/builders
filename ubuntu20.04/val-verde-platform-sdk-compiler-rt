@@ -15,8 +15,14 @@ export LLVM_NATIVE_STAGE_ROOT=/sources/build-staging/llvm-project
 # Configure the package
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
-export CFLAGS="-nostdlib ${CFLAGS}" \
-       CXXFLAGS="-nostdlib ${CXXFLAGS}"
+CFLAGS="\
+    -nostdlib \
+    ${CFLAGS} \
+" \
+CXXFLAGS="\
+    -nostdlib \
+    ${CXXFLAGS} \
+" \
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCMAKE_C_COMPILER_WORKS=TRUE \
     -DCMAKE_CXX_COMPILER_WORKS=TRUE \

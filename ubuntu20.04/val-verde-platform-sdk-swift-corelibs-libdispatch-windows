@@ -14,23 +14,22 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-export CFLAGS="\
+CFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
     ${CFLAGS} \
-"
-export CXXFLAGS="\
+" \
+CXXFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
     ${CXXFLAGS} \
-"
-export SWIFTCFLAGS="\
+" \
+SWIFTCFLAGS="\
     -sdk ${SYSROOT} \
     -use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
     -L${SYSROOT}/usr/lib/swift/windows/${HOST_PROCESSOR} \
     ${SWIFTCFLAGS} \
-"
-
+" \
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DBUILD_TESTING=FALSE \
     -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \

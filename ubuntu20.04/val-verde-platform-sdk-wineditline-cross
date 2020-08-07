@@ -21,7 +21,10 @@ wget -c https://raw.githubusercontent.com/nuigroup/ccv-multicam/master/branches/
 mkdir -p ${STAGE_ROOT}/install${PACKAGE_PREFIX}
 cd ${STAGE_ROOT}
 
-export CFLAGS="${CFLAGS} -I${SOURCE_ROOT}"
+CFLAGS="\
+     -I${SOURCE_ROOT} \
+     ${CFLAGS} \
+" \
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     ${SOURCE_ROOT}
 

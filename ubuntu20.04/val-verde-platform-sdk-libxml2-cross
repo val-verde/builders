@@ -17,7 +17,10 @@ wget -c http://xmlsoft.org/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSI
 tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
-CFLAGS="-I${PACKAGE_PREFIX}/include" \
+CFLAGS="\
+    -I${PACKAGE_PREFIX}/include \
+    ${CFLAGS} \
+" \
 ${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
     --disable-static \

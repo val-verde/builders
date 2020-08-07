@@ -17,8 +17,17 @@ wget -c https://www.thrysoee.dk/editline/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE
 tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
-CFLAGS="-I${PACKAGE_PREFIX}/include -I${PACKAGE_PREFIX}/include/ncurses -D__STDC_ISO_10646__=201103L -DNBBY=CHAR_BIT" \
-LDFLAGS="-L${PACKAGE_PREFIX}/lib" \
+CFLAGS="\
+    -D__STDC_ISO_10646__=201103L \
+    -DNBBY=CHAR_BIT \
+    -I${PACKAGE_PREFIX}/include \
+    -I${PACKAGE_PREFIX}/include/ncurses \
+    ${CFLAGS} \
+" \
+LDFLAGS="\
+    -L${PACKAGE_PREFIX}/lib \
+    ${LDFLAGS} \
+" \
 ${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
     --disable-static \

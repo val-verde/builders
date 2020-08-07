@@ -15,9 +15,15 @@ export CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a
 # Configure the package
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
-export CFLAGS="-nostdlib" \
-       CXXFLAGS="-nostdlib" \
-       SYSTEM_NAME=Fuchsia
+CFLAGS="\
+    -nostdlib \
+    ${CFLAGS} \
+" \
+CXXFLAGS="\
+    -nostdlib \
+    ${CXXFLAGS} \
+" \
+SYSTEM_NAME=Fuchsia \
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCMAKE_C_COMPILER_WORKS=TRUE \
     -DCMAKE_CXX_COMPILER_WORKS=TRUE \

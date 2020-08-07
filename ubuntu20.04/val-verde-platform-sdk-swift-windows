@@ -17,20 +17,20 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-export CFLAGS="\
+CFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
     ${CFLAGS} \
-"
-export CXXFLAGS="\
+" \
+CXXFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
     ${CXXFLAGS} \
-"
-export LIBS="\
+" \
+LIBS="\
     -lole32 \
     ${LIBS} \
-"
+" \
 export UniversalCRTSdkDir=${SYSROOT}
 export UCRTVersion=git
 export VCToolsInstallDir=${SYSROOT}
