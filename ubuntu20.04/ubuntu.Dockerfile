@@ -182,14 +182,16 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
 # libssh2 build
 FROM LIBXML2_BUILDER AS LIBSSH2_BUILDER
 
-RUN export MAKE_PROGRAM=/usr/bin/ninja \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
+RUN CMAKE_BINDIR=/usr/bin \
+    MAKE_PROGRAM=/usr/bin/ninja \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
 
 # curl build
 FROM LIBSSH2_BUILDER AS CURL_BUILDER
 
-RUN export MAKE_PROGRAM=/usr/bin/ninja \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
+RUN CMAKE_BINDIR=/usr/bin \
+    MAKE_PROGRAM=/usr/bin/ninja \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
 
 # libffi build
 FROM CURL_BUILDER AS LIBFFI_BUILDER
@@ -199,8 +201,9 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
 # z3 build
 FROM LIBFFI_BUILDER AS Z3_BUILDER
 
-RUN export MAKE_PROGRAM=/usr/bin/ninja \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
+RUN CMAKE_BINDIR=/usr/bin \
+    MAKE_PROGRAM=/usr/bin/ninja \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
 
 # git build
 FROM Z3_BUILDER AS GIT_BUILDER
@@ -210,13 +213,15 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-git-cross
 # ninja build
 FROM GIT_BUILDER AS NINJA_BUILDER
 
-RUN export MAKE_PROGRAM=/usr/bin/ninja \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
+RUN CMAKE_BINDIR=/usr/bin \
+    MAKE_PROGRAM=/usr/bin/ninja \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
 
 # cmake build
 FROM NINJA_BUILDER AS CMAKE_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross
+RUN CMAKE_BINDIR=/usr/bin \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross
 
 # llvm build
 FROM CMAKE_BUILDER AS LLVM_BUILDER
