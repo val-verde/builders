@@ -61,7 +61,6 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-configure \
      ${PACKAGE_BASE_NAME}-platform-sdk-mslink \
      ${PACKAGE_BASE_NAME}-platform-sdk-rc \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-build \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-tool \
      ${PACKAGE_BASE_NAME}-platform-sdk-swiftc \
      ${PACKAGE_ROOT}/bin/
 
@@ -73,7 +72,6 @@ RUN chmod +x ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rc \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swift-build \
-             ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swift-tool \
              ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swiftc
 
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-make-build \
@@ -145,11 +143,6 @@ RUN apt remove -y clang \
                   llvm \
                   llvm-10 \
     && apt autoremove -y
-
-# Enable Polly optimizer
-ENV CFLAGS="-mllvm -polly" \
-    CXXFLAGS="-mllvm -polly" \
-    LDFLAGS="-mllvm -polly"
 
 # LTO configuration: [OFF | Full | Thin]
 # ENV ENABLE_FLTO=Thin
