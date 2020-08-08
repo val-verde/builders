@@ -17,8 +17,6 @@ mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
-    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
-    -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swiftc \
     ${SOURCE_ROOT}
 
 # Build the components

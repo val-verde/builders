@@ -18,8 +18,6 @@ cd ${STAGE_ROOT}
 
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch/cmake/modules \
-    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
-    -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swiftc \
     -DFoundation_DIR=/sources/build-staging/swift-corelibs-foundation/cmake/modules \
     ${SOURCE_ROOT}
 

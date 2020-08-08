@@ -19,12 +19,19 @@ wget https://raw.githubusercontent.com/libarchive/libarchive/master/contrib/andr
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
+if [ "${HOST_OS}" = "mingw32" ]; then
+    CMake_HAVE_CXX_FILESYSTEM=FALSE
+else
+    CMake_HAVE_CXX_FILESYSTEM=TRUE
+fi
+
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DBUILD_TESTING=FALSE \
-    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+    -DCMake_HAVE_CXX_FILESYSTEM=${CMake_HAVE_CXX_FILESYSTEM} \
+    -DCMake_HAVE_CXX_UNIQUE_PTR=TRUE \
     -DHAVE_POLL_FINE_EXITCODE=0 \
     -DHAVE_POLL_FINE_EXITCODE__TRYRUN_OUTPUT=1 \
-    ${SOURCE_ROOT} \
+    ${SOURCE_ROOT}
 
 # Build the package
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build

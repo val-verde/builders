@@ -23,7 +23,6 @@ mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
-    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
     -DClang_DIR=${LLVM_STAGE_ROOT}/lib/cmake/clang \
     -DICU_I18N_INCLUDE_DIRS=${SYSROOT}/usr/include \
     -DICU_I18N_LIBRARIES=${SYSROOT}/usr/lib/libicui18nswift.so \

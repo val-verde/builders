@@ -17,7 +17,6 @@ mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
-    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
     ${SOURCE_ROOT}
 
 # Build the components

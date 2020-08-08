@@ -14,12 +14,12 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 mkdir -p ${STAGE_ROOT}
 
 cd ${STAGE_ROOT}
+
+SWIFTCFLAGS="\
+    -sdk ${SYSROOT} \
+    ${SWIFTCFLAGS} \
+" \
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
-    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
-    -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swiftc \
-    -DCMAKE_Swift_COMPILER_TARGET=${HOST_TRIPLE} \
-    -DCMAKE_Swift_FLAGS="${SWIFTCFLAGS} \
-                         -sdk ${SYSROOT}" \
     ${SOURCE_ROOT}
 
 # Build the components

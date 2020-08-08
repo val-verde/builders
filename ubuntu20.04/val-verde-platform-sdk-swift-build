@@ -8,7 +8,7 @@ OPTIMIZATION_LEVEL=${OPTIMIZATION_LEVEL:-z}
 SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
 SWIFT_BUILD_TYPE=${SWIFT_BUILD_TYPE:-release}
 SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot}
-TARGET=${TARGET:-${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}}
+TARGET=${TARGET:-${HOST_OS}-unknown-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}}
 TEMP_FILE=`mktemp`
 
 if [ -z "${DISABLE_STRIP}" ]; then
@@ -20,11 +20,7 @@ if [ -n "${ENABLE_FLTO}" ]; then
     FLTO_CFLAG="-flto=${FLTO_OPTION}"
     FLTO_CXXFLAG="-flto=${FLTO_OPTION}"
     FLTO_LDFLAG="-flto=${FLTO_OPTION}"
-    FLTO_SWIFTCFLAG="-whole-module-optimization"
-fi
-
-if [ "${SDK_PLATFORM_DIR}" != "windows" ]; then
-    FPIC_CFLAG="-fPIC"
+    FLTO_SWIFTCFLAGS="-whole-module-optimization"
 fi
 
 echo -e "{ \n\
@@ -36,21 +32,18 @@ echo -e "{ \n\
         \"-march=${HOST_ARCH}\", \n\
         \"-mllvm\", \"-polly\", \n\
         \"-mtune=${HOST_CPU}\", \n\
-        \"-O${OPTIMIZATION_LEVEL}\", \n\
-        \"${FPIC_CFLAG}\" \n\
+        \"-O${OPTIMIZATION_LEVEL}\" \n\
     ], \n\
     \"extra-cpp-flags\": [ \n\
         \"-march=${HOST_ARCH}\", \n\
         \"-mllvm\", \"-polly\", \n\
         \"-mtune=${HOST_CPU}\", \n\
-        \"${FLTO_CXXFLAG}\", \n\
-        \"${FPIC_CFLAG}\" \n\
+        \"${FLTO_CXXFLAG}\" \n\
     ], \n\
     \"extra-linker-flags\": [ \n\
         \"-disable-verify\", \n\
         \"-mllvm\", \"-polly\", \n\
         \"-O${LINKER_OPTIMIZATION_LEVEL}\", \n\
-        \"-Xcc\", \"${FPIC_CFLAG}\", \n\
         \"${FLTO_LDFLAG}\", \n\
         \"${STRIP_LDFLAG}\" \n\
     ], \n\
@@ -60,7 +53,7 @@ echo -e "{ \n\
         \"-O${SWIFT_OPTIMIZATION_LEVEL}\", \n\
         \"-Xfrontend\", \"-disable-llvm-verify\", \n\
         \"-Xllvm\", \"-polly\", \n\
-        \"${FLTO_SWIFTCFLAG}\" \n\
+        \"${FLTO_SWIFTCFLAGS}\" \n\
     ] \n\
 } \n\
 " > ${TEMP_FILE}

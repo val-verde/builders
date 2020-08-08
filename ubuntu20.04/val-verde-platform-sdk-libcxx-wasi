@@ -23,7 +23,6 @@ CXXFLAGS="\
     ${CXXFLAGS} \
 " \
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
-    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
     -DHAVE_LIBUNWIND=FALSE \
     -DLIBCXX_CXX_ABI=libcxxabi \
     -DLIBCXX_CXX_ABI_INCLUDE_PATHS=${SYSROOT}/include \

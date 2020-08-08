@@ -285,8 +285,7 @@ FROM SWIFT_DRIVER AS SWIFTPM_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest \
-    && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
+RUN dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
     && dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb
 
 # swift-syntax build
