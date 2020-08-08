@@ -565,7 +565,7 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross
 # android swift-doc build
 FROM ANDROID_SWIFT_FORMAT_BUILDER AS ANDROID_SWIFT_DOC_BUILDER
 
-# RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-android
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-android
 
 # android pythonkit build
 FROM ANDROID_SWIFT_DOC_BUILDER AS ANDROID_PYTHONKIT_BUILDER
