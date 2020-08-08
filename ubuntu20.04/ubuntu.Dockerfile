@@ -343,6 +343,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-cross \
