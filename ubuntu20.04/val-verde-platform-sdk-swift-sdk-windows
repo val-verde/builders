@@ -2,8 +2,6 @@
 
 set -e
 
-export TARGET=${HOST_OS}-unknown-windows-gnu
-
 # windows libdispatch build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-windows
 
