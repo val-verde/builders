@@ -104,6 +104,11 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
 # Package the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
+rsync -aPx ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/*.a \
+           ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
+mv ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/swift/windows/*.a \
+   ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/swift/windows/*.lib \
+   ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
 rm -f ${STAGE_ROOT}/install${PACKAGE_PREFIX}/bin/*libdispatch* \
       ${STAGE_ROOT}/install${PACKAGE_PREFIX}/bin/*BlocksRuntime* \
       ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/*libdispatch* \
