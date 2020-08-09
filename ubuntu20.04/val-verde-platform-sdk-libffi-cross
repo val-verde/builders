@@ -15,11 +15,14 @@ rm -rf ${SOURCE_ROOT}
 cd /sources
 wget -c https://gcc.gnu.org/pub/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
 tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
+sed -i "s/'auto-import'/'ld'/g" ${SOURCE_ROOT}/configure
+
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 ${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
     --disable-static \
+    --disable-symvers \
     --enable-shared \
     --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX}
 

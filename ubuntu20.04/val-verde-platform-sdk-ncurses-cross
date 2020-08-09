@@ -16,6 +16,8 @@ cd /sources
 wget -c https://ftp.gnu.org/gnu/ncurses/ncurses-6.2.tar.gz
 rm -rf ${STAGE_ROOT}/*
 tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
+sed -i "s/'auto-import'/'ld'/g" ${SOURCE_ROOT}/configure
+
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
