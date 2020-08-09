@@ -132,6 +132,12 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross \
      /sources/
 
+# LTO configuration: [OFF | Full | Thin]
+# ENV ENABLE_FLTO=Thin
+
+# Optimization level speed: [0-3] or size: [s, z]
+ENV OPTIMIZATION_LEVEL=3
+
 # libunwind bootstrap build
 FROM SOURCES_BUILDER AS LIBUNWIND_BOOTSTRAP_BUILDER
 
@@ -165,12 +171,6 @@ RUN apt remove -y clang \
                   llvm \
                   llvm-10 \
     && apt autoremove -y
-
-# LTO configuration: [OFF | Full | Thin]
-# ENV ENABLE_FLTO=Thin
-
-# Optimization level speed: [0-3] or size: [s, z]
-ENV OPTIMIZATION_LEVEL=3
 
 # zlib build
 FROM LLVM_BOOTSTRAP_BUILDER AS ZLIB_BUILDER
@@ -225,6 +225,7 @@ RUN CMAKE_BINDIR=/usr/bin \
 FROM LIBSSH2_BUILDER AS CURL_BUILDER
 
 RUN CMAKE_BINDIR=/usr/bin \
+    DISABLE_POLLY=TRUE \
     MAKE_PROGRAM=/usr/bin/ninja \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
 
@@ -241,12 +242,14 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
 # libpython build
 FROM LIBFFI_BUILDER AS LIBPYTHON_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-python-cross
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-python-cross
 
 # z3 build
 FROM LIBPYTHON_BUILDER AS Z3_BUILDER
 
 RUN CMAKE_BINDIR=/usr/bin \
+    DISABLE_POLLY=TRUE \
     MAKE_PROGRAM=/usr/bin/ninja \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
 
@@ -266,12 +269,14 @@ RUN CMAKE_BINDIR=/usr/bin \
 FROM NINJA_BUILDER AS CMAKE_BUILDER
 
 RUN CMAKE_BINDIR=/usr/bin \
+    DISABLE_POLLY=TRUE \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross
 
 # llvm build
 FROM CMAKE_BUILDER AS LLVM_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
     && apt remove -y cmake \
                      git \
                      libedit-dev \
@@ -296,12 +301,14 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark
 # swift build
 FROM CMARK_BUILDER AS SWIFT_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift
 
 # lldb build
 FROM SWIFT_BUILDER AS LLDB_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb
 
 # libdispatch build
 FROM LLDB_BUILDER AS LIBDISPATCH_BUILDER
@@ -311,7 +318,8 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch
 # foundation build
 FROM LIBDISPATCH_BUILDER AS FOUNDATION_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation
 
 # xctest build
 FROM FOUNDATION_BUILDER AS XCTEST_BUILDER
@@ -321,7 +329,8 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest
 # llbuild build
 FROM XCTEST_BUILDER AS LLBUILD_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild
 
 # swift-tools-support-core build
 FROM LLBUILD_BUILDER AS SWIFT_TOOLS_SUPPORT_CORE_BUILDER
@@ -369,7 +378,8 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit
 # jwasm (ml64) cross compiler
 FROM PYTHONKIT_BUILDER AS JWASM_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-jwasm
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-jwasm
 
 # android-ndk package
 FROM JWASM_BUILDER AS ANDROID_NDK_BUILDER
@@ -502,7 +512,8 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
 # android curl build
 FROM ANDROID_LIBSSH2_BUILDER AS ANDROID_CURL_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
 
 # android libexpat build
 FROM ANDROID_CURL_BUILDER AS ANDROID_LIBEXPAT_BUILDER
@@ -517,12 +528,15 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
 # android libpython build
 FROM ANDROID_LIBFFI_BUILDER AS ANDROID_LIBPYTHON_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-python-cross
+RUN DISABLE_POLLY=TRUE \
+    PYTHON_FOR_BUILD=${PACKAGE_ROOT}/bin/python2.7 \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-python-cross
 
 # android z3 build
 FROM ANDROID_LIBPYTHON_BUILDER AS ANDROID_Z3_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
 
 # android git build
 FROM ANDROID_Z3_BUILDER AS ANDROID_GIT_BUILDER
@@ -537,12 +551,14 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
 # android cmake build
 FROM ANDROID_NINJA_BUILDER AS ANDROID_CMAKE_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-android
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-android
 
 # android llvm build
 FROM ANDROID_CMAKE_BUILDER AS ANDROID_LLVM_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-android
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-android
 
 # android cmark build
 FROM ANDROID_LLVM_BUILDER AS ANDROID_CMARK_BUILDER
@@ -552,12 +568,14 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark-cross
 # android swift build
 FROM ANDROID_CMARK_BUILDER AS ANDROID_SWIFT_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-android
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-android
 
 # android lldb build
 FROM ANDROID_SWIFT_BUILDER AS ANDROID_LLDB_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb-cross
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb-cross
 
 # android libdispatch build
 FROM ANDROID_LLDB_BUILDER AS ANDROID_LIBDISPATCH_BUILDER
@@ -571,7 +589,8 @@ RUN apt remove -y ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}${BU
 # android foundation build
 FROM ANDROID_LIBDISPATCH_BUILDER AS ANDROID_FOUNDATION_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-cross
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-cross
 
 # android xctest build
 FROM ANDROID_FOUNDATION_BUILDER AS ANDROID_XCTEST_BUILDER
@@ -581,7 +600,8 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-cross
 # android llbuild build
 FROM ANDROID_XCTEST_BUILDER AS ANDROID_LLBUILD_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-android
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-android
 
 # android swift-tools-support-core build
 FROM ANDROID_LLBUILD_BUILDER AS ANDROID_SWIFT_TOOLS_SUPPORT_CORE_BUILDER
@@ -626,7 +646,8 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-android
 # android pythonkit build
 FROM ANDROID_SWIFT_DOC_BUILDER AS ANDROID_PYTHONKIT_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit-cross
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit-cross
 
 # windows environment
 FROM ANDROID_PYTHONKIT_BUILDER AS WINDOWS_SOURCES_BUILDER
@@ -711,7 +732,8 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-windows
 # windows libcxx build
 FROM WINDOWS_LIBCXXABI_BUILDER AS WINDOWS_LIBCXX_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows
 
 # windows zlib build
 FROM WINDOWS_LIBCXX_BUILDER AS WINDOWS_ZLIB_BUILDER
@@ -769,7 +791,8 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
 # windows curl build
 FROM WINDOWS_LIBSSH2_BUILDER AS WINDOWS_CURL_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
 
 # windows libexpat build
 FROM WINDOWS_CURL_BUILDER AS WINDOWS_LIBEXPAT_BUILDER
@@ -797,21 +820,25 @@ FROM WINDOWS_LIBFFI_BUILDER AS WINDOWS_LIBPYTHON_BUILDER
 # windows z3 build
 FROM WINDOWS_LIBPYTHON_BUILDER AS WINDOWS_Z3_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
 
 FROM WINDOWS_Z3_BUILDER AS WINDOWS_JWASM_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-jwasm
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-jwasm
 
 # windows ninja build
 FROM WINDOWS_JWASM_BUILDER AS WINDOWS_NINJA_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
 
 # windows cmake build
 FROM WINDOWS_NINJA_BUILDER AS WINDOWS_CMAKE_BUILDER
 
-RUN LIBS="\
+RUN DISABLE_POLLY=TRUE \
+    LIBS="\
         -lole32 \
         -loleaut32\
         ${LIBS} \
@@ -821,7 +848,8 @@ RUN LIBS="\
 # windows llvm build
 FROM WINDOWS_CMAKE_BUILDER AS WINDOWS_LLVM_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-windows
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-windows
 
 # windows cmark build
 FROM WINDOWS_LLVM_BUILDER AS WINDOWS_CMARK_BUILDER
@@ -831,12 +859,14 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark-cross
 # windows swift build
 FROM WINDOWS_CMARK_BUILDER AS WINDOWS_SWIFT_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-windows
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-windows
 
 # windows lldb build
 FROM WINDOWS_SWIFT_BUILDER AS WINDOWS_LLDB_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb-windows
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb-windows
 
 # remove host foundation and libdispatch to avoid module collisions
 RUN apt remove -y ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH} \

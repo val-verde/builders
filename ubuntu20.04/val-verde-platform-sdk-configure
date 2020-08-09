@@ -11,9 +11,31 @@ OPTIMIZATION_FLAGS=${OPTIMIZATION_FLAGS:-"-DNDEBUG"}
 OPTIMIZATION_LEVEL=${OPTIMIZATION_LEVEL:-z}
 SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot}
 
+if [ -z "${DISABLE_POLLY}" ]; then
+    CFLAGS="\
+        -mllvm -polly \
+        ${CFLAGS} \
+    "
+    CXXFLAGS="\
+        -mllvm -polly \
+        ${CXXFLAGS} \
+    "
+    LDFLAGS="\
+        -mllvm -polly \
+        ${LDFLAGS} \
+    "
+fi
+
 if [ -z "${DISABLE_STRIP}" ]; then
     LDFLAGS="\
         -s \
+        ${LDFLAGS} \
+    "
+fi
+
+if [ -z "${ENABLE_LLVM_VERIFIER}" ]; then
+    LDFLAGS="\
+        -disable-llvm-verifier \
         ${LDFLAGS} \
     "
 fi

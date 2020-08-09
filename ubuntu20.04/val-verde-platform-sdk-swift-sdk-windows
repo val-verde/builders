@@ -8,6 +8,7 @@ export COMPILER_TARGET=${HOST_PROCESSOR}-unknown-windows-gnu
 bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-windows
 
 # windows foundation build
+DISABLE_POLLY=TRUE \
 LIBS="\
     -licuucswift \
     -lxml2 \
@@ -20,6 +21,7 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-windows
 bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-windows
 
 # windows llbuild build
+DISABLE_POLLY=TRUE \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-windows
 
 # windows swift-tools-support-core build
