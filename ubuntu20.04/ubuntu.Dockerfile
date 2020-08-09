@@ -97,10 +97,12 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-git-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-icu4c \
      ${PACKAGE_BASE_NAME}-platform-sdk-jwasm \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libuuid-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
@@ -130,14 +132,27 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross \
      /sources/
 
+# libunwind bootstrap build
+FROM SOURCES_BUILDER AS LIBUNWIND_BOOTSTRAP_BUILDER
+
+RUN BINDIR=/usr/bin \
+    LLVM_NATIVE_STAGE_ROOT=/usr \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
+
 # llvm bootstrap build
-FROM SOURCES_BUILDER AS LIBCXXABI_BOOTSTRAP_BUILDER
+FROM LIBUNWIND_BOOTSTRAP_BUILDER AS LIBCXXABI_BOOTSTRAP_BUILDER
 
 RUN BINDIR=/usr/bin \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-cross
 
 # llvm bootstrap build
-FROM LIBCXXABI_BOOTSTRAP_BUILDER AS LLVM_BOOTSTRAP_BUILDER
+FROM LIBCXXABI_BOOTSTRAP_BUILDER AS LIBCXX_BOOTSTRAP_BUILDER
+
+RUN BINDIR=/usr/bin \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-cross
+
+# llvm bootstrap build
+FROM LIBCXX_BOOTSTRAP_BUILDER AS LLVM_BOOTSTRAP_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap
 RUN apt remove -y clang \
@@ -375,7 +390,6 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libgcc-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libuuid-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross \
