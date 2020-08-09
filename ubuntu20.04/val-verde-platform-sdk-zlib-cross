@@ -18,7 +18,7 @@ tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
 
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
-export CC=${CC:-${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang}
+CC=${CC:-${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang} \
 ${SOURCE_ROOT}/configure \
     --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX}
 
