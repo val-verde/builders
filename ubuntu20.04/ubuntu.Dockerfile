@@ -93,16 +93,23 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt \
      ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-git-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-icu4c \
      ${PACKAGE_BASE_NAME}-platform-sdk-jwasm \
      ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libuuid-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap \
+     ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-python-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark \
@@ -172,8 +179,28 @@ FROM XZ_BUILDER AS LIBXML2_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
 
+# libuuid build
+FROM LIBXML2_BUILDER AS UUID_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libuuid-cross
+
+# ncurses build
+FROM UUID_BUILDER AS NCURSES_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross
+
+# libedit build
+FROM NCURSES_BUILDER AS LIBEDIT_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross
+
+# sqlite3 build
+FROM LIBEDIT_BUILDER AS SQLITE3_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross
+
 # libssh2 build
-FROM LIBXML2_BUILDER AS LIBSSH2_BUILDER
+FROM SQLITE3_BUILDER AS LIBSSH2_BUILDER
 
 RUN CMAKE_BINDIR=/usr/bin \
     MAKE_PROGRAM=/usr/bin/ninja \
@@ -186,13 +213,23 @@ RUN CMAKE_BINDIR=/usr/bin \
     MAKE_PROGRAM=/usr/bin/ninja \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
 
+# libexpat build
+FROM CURL_BUILDER AS LIBEXPAT_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross
+
 # libffi build
-FROM CURL_BUILDER AS LIBFFI_BUILDER
+FROM LIBEXPAT_BUILDER AS LIBFFI_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
 
+# libpython build
+FROM LIBFFI_BUILDER AS LIBPYTHON_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-python-cross
+
 # z3 build
-FROM LIBFFI_BUILDER AS Z3_BUILDER
+FROM LIBPYTHON_BUILDER AS Z3_BUILDER
 
 RUN CMAKE_BINDIR=/usr/bin \
     MAKE_PROGRAM=/usr/bin/ninja \
@@ -222,11 +259,17 @@ FROM CMAKE_BUILDER AS LLVM_BUILDER
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
     && apt remove -y cmake \
                      git \
+                     libedit-dev \
                      libffi-dev \
                      libicu-dev \
+                     libncurses-dev \
+                     libpython2.7 \
+                     libpython2.7-dev \
+                     libsqlite3-dev \
                      libxml2-dev \
                      libz3-dev \
                      ninja-build \
+                     uuid-dev \
                      zlib1g-dev \
     && apt autoremove -y
 
@@ -408,12 +451,12 @@ FROM ANDROID_ICU_BUILDER AS ANDROID_XZ_BUILDER
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
 
 # android libxml2 build
-FROM ANDROID_XZ_BUILDER AS ANDROID_XML_BUILDER
+FROM ANDROID_XZ_BUILDER AS ANDROID_LIBXML2_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
 
 # android libuuid build
-FROM ANDROID_XML_BUILDER AS ANDROID_UUID_BUILDER
+FROM ANDROID_LIBXML2_BUILDER AS ANDROID_UUID_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libuuid-cross
 
@@ -680,12 +723,12 @@ FROM WINDOWS_ICU_BUILDER AS WINDOWS_XZ_BUILDER
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
 
 # windows libxml2 build
-FROM WINDOWS_XZ_BUILDER AS WINDOWS_XML_BUILDER
+FROM WINDOWS_XZ_BUILDER AS WINDOWS_LIBXML2_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
 
 # android ncurses build
-FROM WINDOWS_XML_BUILDER AS WINDOWS_NCURSES_BUILDER
+FROM WINDOWS_LIBXML2_BUILDER AS WINDOWS_NCURSES_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross
 
