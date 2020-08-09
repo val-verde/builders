@@ -32,6 +32,7 @@ SWIFTCFLAGS="\
 " \
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
+    -DBUILD_TESTING=FALSE \
     -DFoundation_DIR=/sources/build-staging/swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     ${SOURCE_ROOT}
 
