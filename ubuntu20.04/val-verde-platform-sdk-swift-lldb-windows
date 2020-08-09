@@ -44,9 +44,9 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLibEdit_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
     -DLibEdit_LIBRARIES=${PACKAGE_PREFIX}/bin/libedit.dll.a \
     -DLIBLZMA_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DLIBLZMA_LIBRARY=${PACKAGE_PREFIX}/lib/liblzma.a \
+    -DLIBLZMA_LIBRARY=${PACKAGE_PREFIX}/lib/liblzma.dll.a \
     -DLIBXML2_INCLUDE_DIR=${PACKAGE_PREFIX}/include/libxml2 \
-    -DLIBXML2_LIBRARY="${PACKAGE_PREFIX}/lib/libxml2.a;${PACKAGE_PREFIX}/lib/liblzma.a;${PACKAGE_PREFIX}/lib/libicuucswift.dll.a;${PACKAGE_PREFIX}/lib/libz.a" \
+    -DLIBXML2_LIBRARY="${PACKAGE_PREFIX}/lib/libxml2.a;${PACKAGE_PREFIX}/lib/liblzma.dll.a;${PACKAGE_PREFIX}/lib/libicuucswift.dll.a;${PACKAGE_PREFIX}/lib/libz.a" \
     -DLLDB_ENABLE_PYTHON=FALSE \
     -DLLDB_ENABLE_SWIFT_SUPPORT=TRUE \
     -DLLDB_ENABLE_WERROR=FALSE \
