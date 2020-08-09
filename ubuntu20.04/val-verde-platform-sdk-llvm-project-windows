@@ -215,6 +215,8 @@ source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 rsync -aPx ${STAGE_ROOT}/bin/llvm-as* \
            ${STAGE_ROOT}/bin/llvm-dlltool* \
+           ${STAGE_ROOT}/bin/llvm-mt* \
+           ${STAGE_ROOT}/bin/llvm-pdbutil* \
            ${STAGE_ROOT}/install${PACKAGE_PREFIX}/bin
 
 CLANG_RT_LIB=clang_rt.builtins-${HOST_PROCESSOR}.lib
