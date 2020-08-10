@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# windows zlib build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
+
+# windows icu build
+LDFLAGS="\
+    -fuse-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+    ${LDFLAGS} \
+" \
+LIBS="\
+    -lucrt \
+    ${LIBS} \
+" \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross
+
+# windows xz build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
+
+# windows libxml2 build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
+
+# android ncurses build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross
+
+# windows editline build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-wineditline-cross
+
+# windows sqlite3 build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross
+
+# windows openssl build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-openssl-windows
+
+# windows libssh2 build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
+
+# windows curl build
+DISABLE_POLLY=TRUE \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
+
+# windows libexpat build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross
+
+# windows libffi build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
+
+# windows libpython build
+# RUN export CONFIGURE_FLAGS="--host=${TARGET_PROCESSOR}-${TARGET_KERNEL}-cygwin" \
+#            CFLAGS="-fms-extensions -fms-compatibility-version=19 -DMS_NO_COREDLL=1 -DMS_WINDOWS=1 -v -D_UWIN=1" \
+#            LDFLAGS="-Wl,/force:multiple" \
+#            DYNLOADFILE=dynload_win.o \
+#     && bash ${PACKAGE_BASE_NAME}-platform-sdk-python-cross || true
+
+# windows z3 build
+DISABLE_POLLY=TRUE \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross

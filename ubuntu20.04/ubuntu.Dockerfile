@@ -667,6 +667,7 @@ ENV HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-windows \
+     ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-mingw-w64-headers \
      ${PACKAGE_BASE_NAME}-platform-sdk-mingw-w64-crt \
@@ -735,95 +736,12 @@ FROM WINDOWS_LIBCXXABI_BUILDER AS WINDOWS_LIBCXX_BUILDER
 RUN DISABLE_POLLY=TRUE \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows
 
-# windows zlib build
-FROM WINDOWS_LIBCXX_BUILDER AS WINDOWS_ZLIB_BUILDER
+# windows llvm dependencies
+FROM WINDOWS_LIBCXX_BUILDER AS WINDOWS_LLVM_DEPENDENCIES_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-windows
 
-# windows icu build
-FROM WINDOWS_ZLIB_BUILDER AS WINDOWS_ICU_BUILDER
-
-RUN LDFLAGS="\
-        -fuse-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
-        ${LDFLAGS} \
-    " \
-    LIBS="\
-        -lucrt \
-        ${LIBS} \
-    " \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross
-
-# windows xz build
-FROM WINDOWS_ICU_BUILDER AS WINDOWS_XZ_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
-
-# windows libxml2 build
-FROM WINDOWS_XZ_BUILDER AS WINDOWS_LIBXML2_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
-
-# android ncurses build
-FROM WINDOWS_LIBXML2_BUILDER AS WINDOWS_NCURSES_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross
-
-# windows editline build
-FROM WINDOWS_NCURSES_BUILDER AS WINDOWS_WINEDITLINE_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-wineditline-cross
-
-# windows sqlite3 build
-FROM WINDOWS_WINEDITLINE_BUILDER AS WINDOWS_SQLITE3_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross
-
-# windows openssl build
-FROM WINDOWS_SQLITE3_BUILDER AS WINDOWS_OPENSSL_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-openssl-windows
-
-# windows libssh2 build
-FROM WINDOWS_OPENSSL_BUILDER AS WINDOWS_LIBSSH2_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
-
-# windows curl build
-FROM WINDOWS_LIBSSH2_BUILDER AS WINDOWS_CURL_BUILDER
-
-RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
-
-# windows libexpat build
-FROM WINDOWS_CURL_BUILDER AS WINDOWS_LIBEXPAT_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross
-
-# windows libffi build
-FROM WINDOWS_LIBEXPAT_BUILDER AS WINDOWS_LIBFFI_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
-
-# windows libpython build
-FROM WINDOWS_LIBFFI_BUILDER AS WINDOWS_LIBPYTHON_BUILDER
-
-# COPY ${PACKAGE_BASE_NAME}-platform-sdk-python-cross-new \
-#      /sources/${PACKAGE_BASE_NAME}-platform-sdk-python-cross
-# COPY patch-python /sources
-
-# RUN export CONFIGURE_FLAGS="--host=${TARGET_PROCESSOR}-${TARGET_KERNEL}-cygwin" \
-#            CFLAGS="-fms-extensions -fms-compatibility-version=19 -DMS_NO_COREDLL=1 -DMS_WINDOWS=1 -v -D_UWIN=1" \
-#            LDFLAGS="-Wl,/force:multiple" \
-#            DYNLOADFILE=dynload_win.o \
-#     && bash ${PACKAGE_BASE_NAME}-platform-sdk-python-cross || true
-
-# windows z3 build
-FROM WINDOWS_LIBPYTHON_BUILDER AS WINDOWS_Z3_BUILDER
-
-RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
-
-FROM WINDOWS_Z3_BUILDER AS WINDOWS_JWASM_BUILDER
+FROM WINDOWS_LLVM_DEPENDENCIES_BUILDER AS WINDOWS_JWASM_BUILDER
 
 RUN DISABLE_POLLY=TRUE \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-jwasm
