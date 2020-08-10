@@ -47,7 +47,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DFoundation_DIR=/sources/build-staging/swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DLLBUILD_SUPPORT_BINDINGS=Swift \
     -DSQLite3_INCLUDE_DIR=${SYSROOT}/usr/include \
-    -DSQLite3_LIBRARY=${SYSROOT}/usr/lib/libsqlite3.a \
+    -DSQLite3_LIBRARY=${SYSROOT}/usr/lib/libsqlite3.dll.a \
     ${SOURCE_ROOT}
 
 # Package the components

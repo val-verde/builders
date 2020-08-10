@@ -5,6 +5,7 @@ set -e
 BINDIR=${BINDIR:-${PACKAGE_ROOT}/bin}
 LINKER_OPTIMIZATION_LEVEL=${LINKER_OPTIMIZATION_LEVEL:-2}
 OPTIMIZATION_LEVEL=${OPTIMIZATION_LEVEL:-z}
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-"${SYSROOT}/usr/lib/pkgconfig:${SYSROOT}/usr/share/pkgconfig"}
 SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
 SWIFT_BUILD_TYPE=${SWIFT_BUILD_TYPE:-release}
 SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot}
@@ -67,7 +68,7 @@ echo -e "{ \n\
 } \n\
 " > ${TEMP_FILE}
 
-PKG_CONFIG_PATH=${SYSROOT}/usr/lib/pkgconfig \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH} \
 ${BINDIR}/swift \
     build \
     --build-path ${STAGE_ROOT} \

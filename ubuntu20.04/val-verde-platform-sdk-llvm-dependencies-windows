@@ -18,6 +18,11 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross
 bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
 
 # windows libxml2 build
+LDFLAGS="\
+    -Wc,-fuse-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+    ${LDFLAGS} \
+" \
+Z_LIBS="-lzlib" \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
 
 # android ncurses build

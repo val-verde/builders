@@ -175,7 +175,9 @@ RUN apt remove -y clang \
 # zlib build
 FROM LLVM_BOOTSTRAP_BUILDER AS ZLIB_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
+RUN CMAKE_BINDIR=/usr/bin \
+    MAKE_PROGRAM=/usr/bin/ninja \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
 
 # icu build
 FROM ZLIB_BUILDER AS ICU_BUILDER
@@ -464,8 +466,13 @@ FROM ANDROID_COMPILER_RT_BUILDER AS ANDROID_LIBUNWIND_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
 
+# android zlib build
+FROM ANDROID_LIBUNWIND_BUILDER AS ANDROID_ZLIB_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
+
 # android icu build
-FROM ANDROID_LIBUNWIND_BUILDER AS ANDROID_ICU_BUILDER
+FROM ANDROID_ZLIB_BUILDER AS ANDROID_ICU_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross
 
