@@ -112,7 +112,9 @@ mv ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/swift/windows/*.dll \
 rm -f ${STAGE_ROOT}/install${PACKAGE_PREFIX}/bin/*libdispatch* \
       ${STAGE_ROOT}/install${PACKAGE_PREFIX}/bin/*BlocksRuntime* \
       ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/*libdispatch* \
-      ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/*BlocksRuntime*
+      ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/*BlocksRuntime* \
+      ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}/*libdispatch* \
+      ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}/*BlocksRuntime*
 
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
