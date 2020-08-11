@@ -721,19 +721,19 @@ RUN export CLANG_RT_LIB=clang_rt.builtins-${HOST_PROCESSOR}.lib \
            LDFLAGS="-Wl,/force:unresolved" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt
 
+# windows libunwind build
+FROM WINDOWS_COMPILER_RT_BUILDER AS WINDOWS_LIBUNWIND_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-windows
+
 # windows mingw-winpthreads build
-FROM WINDOWS_COMPILER_RT_BUILDER AS WINDOWS_MINGW_WINPTHREADS_BUILDER
+FROM WINDOWS_LIBUNWIND_BUILDER AS WINDOWS_MINGW_WINPTHREADS_BUILDER
 
 RUN export LD=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-winpthreads-cross
 
-# windows libunwind build
-FROM WINDOWS_MINGW_WINPTHREADS_BUILDER AS WINDOWS_LIBUNWIND_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-windows
-
 # windows libcxxabi build
-FROM WINDOWS_LIBUNWIND_BUILDER AS WINDOWS_LIBCXXABI_BUILDER
+FROM WINDOWS_MINGW_WINPTHREADS_BUILDER AS WINDOWS_LIBCXXABI_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-windows
 
