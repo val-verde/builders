@@ -5,34 +5,73 @@ set -e
 BINDIR=${BINDIR:-${PACKAGE_ROOT}/bin}
 LINKER_OPTIMIZATION_LEVEL=${LINKER_OPTIMIZATION_LEVEL:-2}
 OPTIMIZATION_LEVEL=${OPTIMIZATION_LEVEL:-z}
+SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
 SWIFT_BUILD_TYPE=${SWIFT_BUILD_TYPE:-release}
-SWIFT_OPTIMIZATION_LEVEL=${SWIFT_OPTIMIZATION_LEVEL:-size}
-SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/sysroot}
+SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot}
+TEMP_FILE=`mktemp`
 
 if [ -z "${DISABLE_STRIP}" ]; then
-    SWIFT_LDFLAG="-Xlinker -s"
+    STRIP_LDFLAG="-s"
 fi
 
 if [ -n "${ENABLE_FLTO}" ]; then
     FLTO_OPTION=`echo ${ENABLE_FLTO} | tr '[:upper:]' '[:lower:]'`
-    FLTO_CFLAG="-Xcc -flto=${FLTO_OPTION}"
-    FLTO_CXXFLAG="-Xcxx -flto=${FLTO_OPTION}"
-    FLTO_CXXFLAG="-Xlinker -flto=${FLTO_OPTION}"
-    FLTO_SWIFTCFLAGS="-Xswiftc -whole-module-optimization"
+    FLTO_CFLAG="-flto=${FLTO_OPTION}"
+    FLTO_CXXFLAG="-flto=${FLTO_OPTION}"
+    FLTO_LDFLAG="-flto=${FLTO_OPTION}"
+    FLTO_SWIFTCFLAG="-whole-module-optimization"
 fi
 
-${BINDIR}/${PACKAGE_BASE_NAME}-platform-sdk-swift-tool \
+if [ "${SDK_PLATFORM_DIR}" != "windows" ]; then
+    FPIC_CFLAG="-fPIC"
+    TARGET=${TARGET:-${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}}
+else
+    TARGET=${TARGET:-${HOST_PROCESSOR}-unknown-windows-gnu}
+fi
+
+echo -e "{ \n\
+    \"version\": 1, \n\
+    \"sdk\": \"${SYSROOT}\", \n\
+    \"toolchain-bin-dir\": \"${BINDIR}\", \n\
+    \"target\": \"${TARGET}\", \n\
+    \"extra-cc-flags\": [ \n\
+        \"-march=${HOST_ARCH}\", \n\
+        \"-mllvm\", \"-polly\", \n\
+        \"-mtune=${HOST_CPU}\", \n\
+        \"-O${OPTIMIZATION_LEVEL}\", \n\
+        \"${FPIC_CFLAG}\" \n\
+    ], \n\
+    \"extra-cpp-flags\": [ \n\
+        \"-march=${HOST_ARCH}\", \n\
+        \"-mllvm\", \"-polly\", \n\
+        \"-mtune=${HOST_CPU}\", \n\
+        \"${FLTO_CXXFLAG}\", \n\
+        \"${FPIC_CFLAG}\" \n\
+    ], \n\
+    \"extra-linker-flags\": [ \n\
+        \"-disable-verify\", \n\
+        \"-mllvm\", \"-polly\", \n\
+        \"-O${LINKER_OPTIMIZATION_LEVEL}\", \n\
+        \"-Xcc\", \"${FPIC_CFLAG}\", \n\
+        \"${FLTO_LDFLAG}\", \n\
+        \"${STRIP_LDFLAG}\" \n\
+    ], \n\
+    \"extra-swiftc-flags\": [ \n\
+        \"-target-cpu\", \"${HOST_CPU}\", \n\
+        \"-L${SYSROOT}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}\", \n\
+        \"-O${SWIFT_OPTIMIZATION_LEVEL}\", \n\
+        \"-Xfrontend\", \"-disable-llvm-verify\", \n\
+        \"-Xllvm\", \"-polly\", \n\
+        \"${FLTO_SWIFTCFLAG}\" \n\
+    ] \n\
+} \n\
+" > ${TEMP_FILE}
+
+PKG_CONFIG_PATH=${SYSROOT}/usr/lib/pkgconfig \
+${BINDIR}/swift \
     build \
-    -Xcc -O${OPTIMIZATION_LEVEL} \
-    -Xcxx -O${OPTIMIZATION_LEVEL} \
-    -Xlinker -O${LINKER_OPTIMIZATION_LEVEL} \
-    -Xswiftc -O${SWIFT_OPTIMIZATION_LEVEL} \
     --build-path ${STAGE_ROOT} \
     --configuration ${SWIFT_BUILD_TYPE} \
+    --destination ${TEMP_FILE} \
     --enable-test-discovery \
-    ${FLTO_CFLAG} \
-    ${FLTO_CXXFLAG} \
-    ${FLTO_LDFLAG} \
-    ${FLTO_SWIFTCFLAGS} \
-    ${SWIFT_FLAGS} \
-    ${SWIFT_LDFLAG}
+    ${SWIFT_BUILD_FLAGS}

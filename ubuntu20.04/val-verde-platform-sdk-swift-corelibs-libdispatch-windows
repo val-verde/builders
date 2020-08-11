@@ -6,40 +6,39 @@ set -e
 export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
 export SOURCE_PACKAGE_NAME=swift-corelibs-libdispatch
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
+export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
-export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
 # Configure the package
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-export CFLAGS="\
+CFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
     ${CFLAGS} \
-"
-export CXXFLAGS="\
+" \
+CXXFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
     ${CXXFLAGS} \
-"
-export SWIFTCFLAGS="\
+" \
+SWIFTCFLAGS="\
     -sdk ${SYSROOT} \
     -use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
     -L${SYSROOT}/usr/lib/swift/windows/${HOST_PROCESSOR} \
     ${SWIFTCFLAGS} \
-"
-
+" \
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DBUILD_TESTING=FALSE \
-    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
-    -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swiftc \
-    -DCMAKE_Swift_COMPILER_TARGET=${HOST_TRIPLE} \
-    -DCMAKE_Swift_FLAGS="${SWIFTCFLAGS}" \
     -DENABLE_SWIFT=TRUE \
     ${SOURCE_ROOT}
 
 # Package the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+
+mv ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/swift/windows/*.a \
+   ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
+
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build

@@ -7,9 +7,9 @@ export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
 export SOURCE_PACKAGE_NAME=libedit
 export SOURCE_PACKAGE_VERSION=20191231-3.1
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
+export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
-export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
 rm -rf ${SOURCE_ROOT}
 cd /sources
@@ -17,8 +17,17 @@ wget -c https://www.thrysoee.dk/editline/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE
 tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
-CFLAGS="-I${PACKAGE_PREFIX}/include -I${PACKAGE_PREFIX}/include/ncurses -D__STDC_ISO_10646__=201103L -DNBBY=CHAR_BIT" \
-LDFLAGS="-L${PACKAGE_PREFIX}/lib" \
+CFLAGS="\
+    -D__STDC_ISO_10646__=201103L \
+    -DNBBY=CHAR_BIT \
+    -I${PACKAGE_PREFIX}/include \
+    -I${PACKAGE_PREFIX}/include/ncurses \
+    ${CFLAGS} \
+" \
+LDFLAGS="\
+    -L${PACKAGE_PREFIX}/lib \
+    ${LDFLAGS} \
+" \
 ${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
     --disable-static \

@@ -4,12 +4,12 @@ set -e
 
 # TODO:
 # Replace all sources to ${PACKAGE_ROOT}/src/${PACKAGE_NAME}
-# Replace all build-staging to ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/build
+# Replace all build-staging to ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/build
 # SOURCE_ROOT to ${PACKAGE_ROOT}/src (global variable)
 # All fetched resources should be tar'ed, alien'ed and stored in sources (and the deb packages here should be appended with src)
 # Variable-ize where possible
 # Intermediates where there are steps between ninja and ninja install, these should be 
-# ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/build/${SOURCE_PACKAGE_NAME}
+# ${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/build/${SOURCE_PACKAGE_NAME}
 # Copy , chmod +x, stage into install and make deb files for each (cmake/clang++/swift build)
 # Set all environment vars
 
@@ -18,20 +18,24 @@ export SOURCE_PACKAGE_NAME=llvm-project
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
-export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
 EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;libclc;mlir;openmp;parallel-libs;polly;pstl"}
-USE_NEWPM=${USE_NEWPM:-TRUE}
 
 # Configure the package
 rm -rf ${STAGE_ROOT}/*
 cd ${STAGE_ROOT}
 
-LDFLAGS="-L${PACKAGE_PREFIX}/lib ${LDFLAGS}" \
+LDFLAGS="\
+    -L${PACKAGE_PREFIX}/lib \
+    ${LDFLAGS} \
+" \
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DBUILD_SHARED_LIBS=FALSE \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
     -DCLANG_DEFAULT_RTLIB=compiler-rt \
+    -DCLANG_DEFAULT_STD_C=gnu2x \
+    -DCLANG_DEFAULT_STD_CXX=gnucxx2a \
     -DCLANG_DEFAULT_UNWINDLIB=libunwind \
     -DCLANG_ENABLE_ARCMT=TRUE \
     -DCLANG_ENABLE_STATIC_ANALYZER=TRUE \
@@ -43,9 +47,9 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCLANG_TOOL_CLANG_REFACTOR_TEST_BUILD=FALSE \
     -DCLANG_TOOL_C_ARCMT_TEST_BUILD=FALSE \
     -DCLANG_TOOL_C_INDEX_TEST_BUILD=FALSE \
-    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
     -DCOMPILER_RT_CAN_EXECUTE_TESTS=FALSE \
     -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
+    -DENABLE_EXPERIMENTAL_NEW_PASS_MANAGER=TRUE \
     -DFFI_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DFFI_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
     -DFFI_LIBRARY_DIR=${PACKAGE_PREFIX}/lib \
@@ -113,7 +117,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLIBUNWIND_SUPPORTS_NODEFAULTLIBS_FLAG=TRUE \
     -DLIBUNWIND_USE_COMPILER_RT=TRUE \
     -DLLD_INCLUDE_TESTS=FALSE \
-    -DLLVM_INCLUDE_BENCHMARKS=FALSE \
+    -DLLVM_ABI_BREAKING_CHECKS=FORCE_OFF \
     -DLLVM_BUILD_EXAMPLES=FALSE \
     -DLLVM_BUILD_DOCS=FALSE \
     -DLLVM_BUILD_LLVM_DYLIB=TRUE \
@@ -121,19 +125,22 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLLVM_BUILD_UTILS=TRUE \
     -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS} \
     -DLLVM_ENABLE_ASSERTIONS=FALSE \
+    -DLLVM_ENABLE_DOXYGEN=FALSE \
     -DLLVM_ENABLE_EH=TRUE \
     -DLLVM_ENABLE_FFI=TRUE \
-    -DLLVM_ENABLE_LIBCXX=TRUE \
+    -DLLVM_ENABLE_LIBCXX=FALSE \
     -DLLVM_ENABLE_LLD=TRUE \
     -DLLVM_ENABLE_LTO=${ENABLE_FLTO} \
     -DLLVM_ENABLE_PROJECTS="clang;compiler-rt;libcxx;libcxxabi;libunwind;lld;${EXTRA_PROJECTS}" \
     -DLLVM_ENABLE_RTTI=TRUE \
+    -DLLVM_ENABLE_TERMINFO=FALSE \
     -DLLVM_ENABLE_THREADS=TRUE \
     -DLLVM_ENABLE_UNWIND_TABLES=FALSE \
     -DLLVM_ENABLE_WARNINGS=FALSE \
     -DLLVM_ENABLE_Z3_SOLVER=TRUE \
     -DLLVM_ENABLE_ZLIB=TRUE \
     -DLLVM_HOST_TRIPLE=${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS} \
+    -DLLVM_INCLUDE_BENCHMARKS=FALSE \
     -DLLVM_INCLUDE_DOCS=FALSE \
     -DLLVM_INCLUDE_EXAMPLES=FALSE \
     -DLLVM_INCLUDE_GO_TESTS=FALSE \
@@ -146,10 +153,13 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLLVM_TARGETS_TO_BUILD="AArch64;AMDGPU;ARM;Hexagon;NVPTX;PowerPC;RISCV;WebAssembly;X86" \
     -DLLVM_TOOL_LLVM_C_TEST_BUILD=FALSE \
     -DLLVM_USE_HOST_TOOLS=FALSE \
-    -DLLVM_USE_NEWPM=${USE_NEWPM} \
+    -DLLVM_USE_NEWPM=FALSE \
     -DLLVM_USE_RELATIVE_PATHS_IN_DEBUG_INFO=TRUE \
     -DLLVM_USE_RELATIVE_PATHS_IN_FILES=TRUE \
+    -DLLVM_VERSION_SUFFIX="-${PACKAGE_BASE_NAME}" \
     -DLLVM_Z3_INSTALL_DIR=${SYSROOT} \
+    -DMLIR_CUDA_RUNNER_ENABLED=TRUE \
+    -DPOLLY_ENABLE_GPGPU_CODEGEN=TRUE \
     -DPYTHON_EXECUTABLE=/usr/bin/python2 \
     -DSANITIZER_CXX_ABI=libc++ \
     ${SOURCE_ROOT}/llvm
@@ -196,6 +206,8 @@ source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 rsync -aPx ${STAGE_ROOT}/bin/llvm-as* \
            ${STAGE_ROOT}/bin/llvm-dlltool* \
+           ${STAGE_ROOT}/bin/llvm-mt* \
+           ${STAGE_ROOT}/bin/llvm-pdbutil* \
            ${STAGE_ROOT}/install${PACKAGE_PREFIX}/bin
 
 # Package the components

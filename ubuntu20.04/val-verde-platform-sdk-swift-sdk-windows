@@ -2,17 +2,26 @@
 
 set -e
 
+export COMPILER_TARGET=${HOST_PROCESSOR}-unknown-windows-gnu
+
 # windows libdispatch build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-windows
 
 # windows foundation build
-LIBS="-licuucswift -lxml2 -lz -llzma" \
+DISABLE_POLLY=TRUE \
+LIBS="\
+    -licuucswift \
+    -lxml2 \
+    -lz \
+    -llzma \
+" \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-windows
 
 # windows xctest build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-windows
 
 # windows llbuild build
+DISABLE_POLLY=TRUE \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-windows
 
 # windows swift-tools-support-core build
@@ -22,20 +31,51 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-windows
 bash ${PACKAGE_BASE_NAME}-platform-sdk-yams-windows
 
 # windows swift-driver build
-CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
-CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
-SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
-             -L${SYSROOT}/usr/lib/swift/windows/${HOST_PROCESSOR}" \
+CFLAGS="\
+    -fms-compatibility-version=19.2 \
+    -fms-extensions \
+    ${CFLAGS} \
+" \
+CXXFLAGS="\
+    -fms-compatibility-version=19.2 \
+    -fms-extensions \
+    ${CXXFLAGS} \
+" \
+SWIFTCFLAGS="\
+    -use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+    -L${SYSROOT}/usr/lib/swift/windows/${HOST_PROCESSOR} \
+    ${SWIFTCFLAGS} \
+" \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross
 
 # windows swiftpm build
-CFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
-CXXFLAGS="-fms-extensions -fms-compatibility-version=19.2" \
-SWIFTCFLAGS="-use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
-             -L${SYSROOT}/usr/lib/swift/windows/${HOST_PROCESSOR}" \
+CFLAGS="\
+    -fms-compatibility-version=19.2 \
+    -fms-extensions \
+    ${CFLAGS} \
+" \
+CXXFLAGS="\
+    -fms-compatibility-version=19.2 \
+    -fms-extensions \
+    ${CXXFLAGS} \
+" \
+SWIFTCFLAGS="\
+    -use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+    -L${SYSROOT}/usr/lib/swift/windows/${HOST_PROCESSOR} \
+    ${SWIFTCFLAGS} \
+" \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross
 
-dpkg -i /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}.deb \
-        /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}.deb \
-        /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}.deb \
-        /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}.deb
+dpkg -i /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
+        /sources/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
+        /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
+        /sources/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb
+
+# windows swift-syntax build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross
+
+# windows swift-format build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross
+
+# windows swift-doc build
+# bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross

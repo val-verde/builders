@@ -6,15 +6,15 @@ set -e
 export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
 export SOURCE_PACKAGE_NAME=swift-corelibs-foundation
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
+export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
-export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
 # Configure the package
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-export CFLAGS="\
+CFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
     -Wno-implicit-int-float-conversion \
@@ -22,37 +22,37 @@ export CFLAGS="\
     -Wno-pointer-sign \
     -Wno-switch \
     ${CFLAGS} \
-"
-export CXXFLAGS="\
+" \
+CXXFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
     ${CXXFLAGS} \
-"
-export SWIFTCFLAGS="\
+" \
+SWIFTCFLAGS="\
     -sdk ${SYSROOT} \
     -use-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
     -L${SYSROOT}/usr/lib/swift/windows/${HOST_PROCESSOR} \
     ${SWIFTCFLAGS} \
-"
+" \
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
-    -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/cmake/modules \
-    -DCMAKE_INSTALL_PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
-    -DCMAKE_Swift_COMPILER=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swiftc \
-    -DCMAKE_Swift_COMPILER_TARGET=${HOST_TRIPLE} \
-    -DCMAKE_Swift_FLAGS="${SWIFTCFLAGS}" \
+    -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DICU_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DICU_LIBRARY=${PACKAGE_PREFIX}/lib/libicudataswift.dll.a \
     -DICU_I18N_LIBRARY_RELEASE=${PACKAGE_PREFIX}/lib/libicuinswift.dll.a \
     -DICU_UC_LIBRARY_RELEASE=${PACKAGE_PREFIX}/lib/libicuucswift.dll.a \
     -DCURL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DCURL_LIBRARY=${PACKAGE_PREFIX}/lib/libcurl.a \
+    -DCURL_LIBRARY=${PACKAGE_PREFIX}/lib/libcurl_imp.lib \
     -DLIBXML2_INCLUDE_DIR=${PACKAGE_PREFIX}/include/libxml2 \
     -DLIBXML2_LIBRARY=${PACKAGE_PREFIX}/lib/libxml2.a \
-    -DOPENSSL_CRYPTO_LIBRARY=${SYSROOT}/usr/lib/libcrypto.a \
+    -DOPENSSL_CRYPTO_LIBRARY=${SYSROOT}/usr/lib/libcrypto.dll..a \
     -DOPENSSL_INCLUDE_DIR=${SYSROOT}/usr/include \
-    -DOPENSSL_SSL_LIBRARY=${SYSROOT}/usr/lib/libssl.a \
+    -DOPENSSL_SSL_LIBRARY=${SYSROOT}/usr/lib/libssl.dll.a \
     ${SOURCE_ROOT}
 
 # Package the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+
+mv ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/swift/windows/*.a \
+   ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
+
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
