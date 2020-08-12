@@ -13,6 +13,9 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
+sed -i \
+    "s/'auto-import'/'ld'/g" \
+    ${SOURCE_ROOT}/configure
 ${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
     --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \

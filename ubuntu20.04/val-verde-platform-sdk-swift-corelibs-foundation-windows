@@ -43,7 +43,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCURL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DCURL_LIBRARY=${PACKAGE_PREFIX}/lib/libcurl_imp.lib \
     -DLIBXML2_INCLUDE_DIR=${PACKAGE_PREFIX}/include/libxml2 \
-    -DLIBXML2_LIBRARY=${PACKAGE_PREFIX}/lib/libxml2.a \
+    -DLIBXML2_LIBRARY=${PACKAGE_PREFIX}/lib/libxml2.dll.a \
     -DOPENSSL_CRYPTO_LIBRARY=${SYSROOT}/usr/lib/libcrypto.dll..a \
     -DOPENSSL_INCLUDE_DIR=${SYSROOT}/usr/include \
     -DOPENSSL_SSL_LIBRARY=${SYSROOT}/usr/lib/libssl.dll.a \

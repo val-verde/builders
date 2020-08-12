@@ -40,13 +40,13 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCLANG_LINK_CLANG_DYLIB=TRUE \
     -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS} ${LIBS} -O2" \
     -DCURSES_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/ncurses \
-    -DCURSES_LIBRARIES="${PACKAGE_PREFIX}/lib/libncurses.dll.a" \
+    -DCURSES_LIBRARIES=${PACKAGE_PREFIX}/lib/libncurses.dll.a \
     -DLibEdit_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
     -DLibEdit_LIBRARIES=${PACKAGE_PREFIX}/bin/libedit.dll.a \
     -DLIBLZMA_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DLIBLZMA_LIBRARY=${PACKAGE_PREFIX}/lib/liblzma.dll.a \
     -DLIBXML2_INCLUDE_DIR=${PACKAGE_PREFIX}/include/libxml2 \
-    -DLIBXML2_LIBRARY="${PACKAGE_PREFIX}/lib/libxml2.a;${PACKAGE_PREFIX}/lib/liblzma.dll.a;${PACKAGE_PREFIX}/lib/libicuucswift.dll.a;${PACKAGE_PREFIX}/lib/libz.a" \
+    -DLIBXML2_LIBRARY=${PACKAGE_PREFIX}/lib/libxml2.dll.a \
     -DLLDB_ENABLE_PYTHON=FALSE \
     -DLLDB_ENABLE_SWIFT_SUPPORT=TRUE \
     -DLLDB_ENABLE_WERROR=FALSE \
