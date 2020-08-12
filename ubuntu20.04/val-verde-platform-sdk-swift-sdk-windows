@@ -72,4 +72,4 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross
 bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross
 
 # windows swift-doc build
-# bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross
+bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross
