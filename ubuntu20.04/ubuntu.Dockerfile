@@ -113,6 +113,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-python-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit \
+     ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation \
@@ -126,6 +127,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core \
+     ${PACKAGE_BASE_NAME}-platform-sdk-vapor \
      ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-yams \
      ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross \
@@ -372,8 +374,20 @@ FROM SWIFT_FORMAT_BUILDER AS SWIFT_DOC_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc
 
+# sourcekit-lsp build
+FROM SWIFT_DOC_BUILDER AS SOURCEKIT_LSP_BUILDER
+
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp
+
+# vapor build
+FROM SOURCEKIT_LSP_BUILDER AS VAPOR_BUILDER
+
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-vapor
+
 # pythonkit build
-FROM SWIFT_DOC_BUILDER AS PYTHONKIT_BUILDER
+FROM VAPOR_BUILDER AS PYTHONKIT_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit
 
@@ -407,6 +421,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-python-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-cross \
@@ -650,8 +665,14 @@ FROM ANDROID_SWIFT_FORMAT_BUILDER AS ANDROID_SWIFT_DOC_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-android
 
-# android pythonkit build
-FROM ANDROID_SWIFT_DOC_BUILDER AS ANDROID_PYTHONKIT_BUILDER
+# android sourcekit-lsp build
+FROM ANDROID_SWIFT_DOC_BUILDER AS ANDROID_SOURCEKIT_LSP_BUILDER
+
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp-android
+
+# andrid pythonkit build
+FROM ANDROID_SOURCEKIT_LSP_BUILDER AS ANDROID_PYTHONKIT_BUILDER
 
 RUN DISABLE_POLLY=TRUE \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit-cross
@@ -679,6 +700,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-mingw-w64-headers \
      ${PACKAGE_BASE_NAME}-platform-sdk-mingw-w64-crt \
      ${PACKAGE_BASE_NAME}-platform-sdk-openssl-windows \
+     ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-windows \

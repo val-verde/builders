@@ -73,3 +73,8 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross
 
 # windows swift-doc build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross
+
+# windows sourcekit-lsp build
+
+DISABLE_POLLY=TRUE \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp-windows
