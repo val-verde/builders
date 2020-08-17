@@ -1,0 +1,44 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=sourcekit-lsp
+export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+
+# Configure & build the package
+rm -rf ${SOURCE_ROOT}
+git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git \
+          --single-branch \
+          --branch dutch-android-master \
+          ${SOURCE_ROOT}
+
+mkdir -p ${STAGE_ROOT}
+cd ${SOURCE_ROOT}
+
+SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
+SWIFT_BUILD_FLAGS="\
+    -Xcc -D__GLIBC_PREREQ(a,b)=0 \
+    -Xlinker -lc++ \
+    -Xlinker -lncurses \
+    -Xlinker -lunwind \
+    -Xlinker -L${PACKAGE_PREFIX}/lib \
+    -Xswiftc -I${PACKAGE_PREFIX}/lib/swift/${SDK_PLATFORM_DIR} \
+    -Xswiftc -I${PACKAGE_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/Block \
+    ${SWIFT_BUILD_FLAGS} \
+" \
+${PACKAGE_BASE_NAME}-platform-sdk-swift-build
+
+cd ${STAGE_ROOT}
+mkdir -p install${PACKAGE_PREFIX}/bin
+cp `find -type f -name sourcekit-lsp\*` \
+   ${STAGE_ROOT}/install${PACKAGE_PREFIX}/bin
+
+# Build the package
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+
+# Install the package
+source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install

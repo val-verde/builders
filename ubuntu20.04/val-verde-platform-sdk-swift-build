@@ -11,6 +11,11 @@ SWIFT_BUILD_TYPE=${SWIFT_BUILD_TYPE:-release}
 SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot}
 TEMP_FILE=`mktemp`
 
+if [ -z "${DISABLE_POLLY}" ]; then
+    POLLY_CFLAG="\"-mllvm\", \"-polly\""
+    POLLY_SWIFTCFLAG="\"-Xllvm\", \"-polly\""
+fi
+
 if [ -z "${DISABLE_STRIP}" ]; then
     STRIP_LDFLAG="-s"
 fi
@@ -18,8 +23,6 @@ fi
 if [ -n "${ENABLE_FLTO}" ]; then
     FLTO_OPTION=`echo ${ENABLE_FLTO} | tr '[:upper:]' '[:lower:]'`
     FLTO_CFLAG="-flto=${FLTO_OPTION}"
-    FLTO_CXXFLAG="-flto=${FLTO_OPTION}"
-    FLTO_LDFLAG="-flto=${FLTO_OPTION}"
     FLTO_SWIFTCFLAG="-whole-module-optimization"
 fi
 
@@ -37,33 +40,34 @@ echo -e "{ \n\
     \"target\": \"${TARGET}\", \n\
     \"extra-cc-flags\": [ \n\
         \"-march=${HOST_ARCH}\", \n\
-        \"-mllvm\", \"-polly\", \n\
         \"-mtune=${HOST_CPU}\", \n\
+        \"-I${PACKAGE_PREFIX}/lib/swift\", \n\
+        \"-I${PACKAGE_PREFIX}/lib/swift/Block\", \n\
         \"-O${OPTIMIZATION_LEVEL}\", \n\
-        \"${FPIC_CFLAG}\" \n\
+        \"${FLTO_CFLAG}\", \n\
+        \"${FPIC_CFLAG}\", \n\
+        ${POLLY_CFLAG} \n\
     ], \n\
     \"extra-cpp-flags\": [ \n\
-        \"-march=${HOST_ARCH}\", \n\
-        \"-mllvm\", \"-polly\", \n\
-        \"-mtune=${HOST_CPU}\", \n\
-        \"${FLTO_CXXFLAG}\", \n\
-        \"${FPIC_CFLAG}\" \n\
+        \"-I${PACKAGE_PREFIX}/lib/swift\", \n\
+        \"-I${PACKAGE_PREFIX}/lib/swift/Block\", \n\
+        \"${FLTO_CFLAG}\", \n\
+        ${POLLY_CFLAG} \n\
     ], \n\
     \"extra-linker-flags\": [ \n\
         \"-disable-verify\", \n\
-        \"-mllvm\", \"-polly\", \n\
         \"-O${LINKER_OPTIMIZATION_LEVEL}\", \n\
-        \"-Xcc\", \"${FPIC_CFLAG}\", \n\
-        \"${FLTO_LDFLAG}\", \n\
-        \"${STRIP_LDFLAG}\" \n\
+        \"${FLTO_CFLAG}\", \n\
+        \"${STRIP_LDFLAG}\", \n\
+        ${POLLY_CFLAG} \n\
     ], \n\
     \"extra-swiftc-flags\": [ \n\
         \"-target-cpu\", \"${HOST_CPU}\", \n\
         \"-L${SYSROOT}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}\", \n\
         \"-O${SWIFT_OPTIMIZATION_LEVEL}\", \n\
         \"-Xfrontend\", \"-disable-llvm-verify\", \n\
-        \"-Xllvm\", \"-polly\", \n\
-        \"${FLTO_SWIFTCFLAG}\" \n\
+        \"${FLTO_SWIFTCFLAG}\", \n\
+       ${POLLY_SWIFTCFLAG} \n\
     ] \n\
 } \n\
 " > ${TEMP_FILE}
