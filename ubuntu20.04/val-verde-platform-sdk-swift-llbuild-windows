@@ -13,7 +13,6 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 # Configure the package
 cd ${SOURCE_ROOT}
 git checkout dutch-master
-git pull
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
