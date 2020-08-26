@@ -30,6 +30,3 @@ mv install${PACKAGE_PREFIX}/lib/swift/linux \
    install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}
 
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
-
-# Install the package
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
