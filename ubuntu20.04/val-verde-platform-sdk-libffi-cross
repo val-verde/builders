@@ -19,14 +19,20 @@ sed -i \
     "s/'auto-import'/'ld'/g" \
     ${SOURCE_ROOT}/configure
 
+SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
+
+if [ "${SDK_PLATFORM_DIR}" = "windows" ]; then
+    SYMVER_CMD="--disable-symvers"
+fi
+
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 ${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
     --disable-static \
-    --disable-symvers \
     --enable-shared \
-    --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX}
+    --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+    "${SYMVER_CMD}"
 
 # Build the components
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-make-build
