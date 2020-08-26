@@ -4,7 +4,7 @@ set -e
 
 # Set all environment vars
 export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
-export SOURCE_PACKAGE_NAME=swift-package-manager
+export SOURCE_PACKAGE_NAME=swift-argument-parser
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
 
@@ -18,20 +18,16 @@ cd ${STAGE_ROOT}
 
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch/cmake/modules \
-    -DArgumentParser_DIR=/sources/build-staging/swift-argument-parser/cmake/modules \
+    -DBUILD_EXAMPLES=FALSE \
+    -DBUILD_TESTING=FALSE \
     -DFoundation_DIR=/sources/build-staging/swift-corelibs-foundation/cmake/modules \
-    -DLLBuild_DIR=/sources/build-staging/swift-llbuild/cmake/modules \
-    -DSwiftDriver_DIR=/sources/build-staging/swift-driver/cmake/modules \
-    -DTSC_DIR=/sources/build-staging/swift-tools-support-core/cmake/modules \
-    -DYams_DIR=/sources/build-staging/yams/cmake/modules \
+    -DXCTest_DIR=/sources/build-staging/swift-corelibs-xctest/cmake/modules \
     ${SOURCE_ROOT}
 
 # Build the components
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+ninja -j${NUM_PROCESSORS}
+mkdir -p install${PACKAGE_ROOT}
+rsync -aPx lib install${PACKAGE_ROOT}
 
 # Build the package
-rsync -aPx ${STAGE_ROOT}/bin ${STAGE_ROOT}/lib install${PACKAGE_ROOT}
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
-
-# Install the package
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
