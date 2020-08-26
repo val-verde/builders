@@ -25,6 +25,7 @@ apt install -y \
     libpython2.7-dev \
     libssl-dev \
     libsqlite3-dev \
+    libxext-dev \
     libxml2-dev \
     libz3-dev \
     lld \
