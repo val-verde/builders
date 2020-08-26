@@ -115,6 +115,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit \
      ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-argument-parser \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch \
@@ -352,12 +353,21 @@ FROM YAMS_BUILDER AS SWIFT_DRIVER
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver
 
 # swiftpm build
-FROM SWIFT_DRIVER AS SWIFTPM_BUILDER
+FROM SWIFT_DRIVER AS SWIFT_ARGUMENT_PARSER_BUILDER
+
+RUN bash val-verde-platform-sdk-swift-argument-parser
+
+# swiftpm build
+FROM SWIFT_ARGUMENT_PARSER_BUILDER AS SWIFTPM_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager
 
-RUN dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-            ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb
+RUN dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-argument-parser-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
+            ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
+            ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
+            ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-tools-support-core-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
+            ${DEB_PATH}/${PACKAGE_BASE_NAME}-yams-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb
+            
 
 # swift-syntax build
 FROM SWIFTPM_BUILDER AS SWIFT_SYNTAX_BUILDER
@@ -423,6 +433,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-argument-parser-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-cross \
@@ -636,12 +647,17 @@ FROM ANDROID_SWIFT_TOOLS_SUPPORT_CORE_BUILDER AS ANDROID_YAMS_BUILDER
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-yams-cross
 
 # android swift-driver build
-FROM ANDROID_YAMS_BUILDER AS ANDROID_SWIFT_DRIVER
+FROM ANDROID_YAMS_BUILDER AS ANDROID_SWIFT_DRIVER_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross
 
+# android swift-argument-parser build
+FROM ANDROID_SWIFT_DRIVER_BUILDER AS ANDROID_SWIFT_ARGUMENT_PARSER_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-argument-parser-cross
+
 # android swiftpm build
-FROM ANDROID_SWIFT_DRIVER AS ANDROID_SWIFTPM_BUILDER
+FROM ANDROID_SWIFT_ARGUMENT_PARSER_BUILDER AS ANDROID_SWIFTPM_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross
 
