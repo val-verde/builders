@@ -26,6 +26,8 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DCMAKE_C_FLAGS="-D__GLIBC_PREREQ\(a,b\)=1" \
     -DFoundation_DIR=/sources/build-staging/swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
+    -DSQLite3_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DSQLite3_LIBRARY=${PACKAGE_PREFIX}/lib/libsqlite3.so \
     ${SOURCE_ROOT}
 
 # Build the components

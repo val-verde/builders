@@ -19,6 +19,8 @@ cd ${STAGE_ROOT}
 ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch/cmake/modules \
     -DFoundation_DIR=/sources/build-staging/swift-corelibs-foundation/cmake/modules \
+    -DSQLite3_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DSQLite3_LIBRARY=${PACKAGE_PREFIX}/lib/libsqlite3.so \
     ${SOURCE_ROOT}
 
 # Build the components
