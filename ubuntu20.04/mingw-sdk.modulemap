@@ -20,6 +20,11 @@ module mingw [system] {
             export *
         }
 
+        module direct {
+            header "direct.h"
+            export *
+        }
+
         module errno {
             header "errno.h"
             export *
@@ -32,6 +37,11 @@ module mingw [system] {
 
         module inttypes {
             header "inttypes.h"
+            export *
+        }
+
+        module io {
+            header "io.h"
             export *
         }
 
@@ -193,10 +203,10 @@ module directx {
 
 module win32 {
     header "windef.h"
+    header "winsock2.h"
     header "windows.h"
     header "winuser.h"
     header "winnt.h"
-    header "winsock2.h"
     export *
 
     module debug {
