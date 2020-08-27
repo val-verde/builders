@@ -736,6 +736,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-sdk-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-windows \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-wineditline-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-winpthreads-cross \
@@ -820,35 +821,17 @@ RUN DISABLE_POLLY=TRUE \
     " \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross
 
-# windows llvm build
-FROM WINDOWS_CMAKE_BUILDER AS WINDOWS_LLVM_BUILDER
+# windows swift tools build
+FROM WINDOWS_CMAKE_BUILDER AS WINDOWS_SWIFT_TOOLS_BUILDER
 
-RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-windows
-
-# windows cmark build
-FROM WINDOWS_LLVM_BUILDER AS WINDOWS_CMARK_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark-cross
-
-# windows swift build
-FROM WINDOWS_CMARK_BUILDER AS WINDOWS_SWIFT_BUILDER
-
-RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-windows
-
-# windows lldb build
-FROM WINDOWS_SWIFT_BUILDER AS WINDOWS_LLDB_BUILDER
-
-RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb-windows
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-windows
 
 # remove host foundation and libdispatch to avoid module collisions
 RUN apt remove -y ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH} \
                   ${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}
 
 # windows swift sdk build
-FROM WINDOWS_LLDB_BUILDER AS WINDOWS_SWIFT_SDK_BUILDER
+FROM WINDOWS_SWIFT_TOOLS_BUILDER AS WINDOWS_SWIFT_SDK_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-sdk-windows
 
