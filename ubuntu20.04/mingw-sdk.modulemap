@@ -209,32 +209,101 @@ module win32 {
     header "winnt.h"
     export *
 
-    module debug {
-        header "dbghelp.h"
-        header "imagehlp.h"
+    module advapi32 {
+        header "winreg.h"
+        export *
+
+        link "advapi32"
+    }
+
+    module app {
+        header "pathcch.h"
+        export *
+
+        link "windowsapp"
+    }
+
+    module bcrypt {
+        header "bcrypt.h"
+        header "wincrypt.h"
+        export *
+
+        link "bcrypt"
+    }
+
+    module com {
+        header "combaseapi.h"
+        header "objbase.h"
         export *
     }
 
-    module ole {
+    module dbghelp {
+        header "dbghelp.h"
+        export *
+
+        link "dbghelp"
+    }
+
+    module imagehlp {
+        header "imagehlp.h"
+        export *
+
+        link "imagehlp"
+    }
+
+    module iphlpapi {
         header "iphlpapi.h"
+        export *
+
+        link "iphlpapi"
+    }
+
+    module known_folders {
+        header "knownfolders.h"
+        export *
+
+        link "uuid"
+    }
+
+    module ole {
+        header "ole2.h"
+        header "oleauto.h"
         export *
 
         link "oleaut32"
         link "ole32"
-        link "psapi"
-        link "uuid"
     }
 
     module process {
         header "process.h"
         header "processenv.h"
         export *
+
+        link "kernel32"
     }
 
-    module shell {
-        header "knownfolders.h"
-        header "pathcch.h"
+    module psapi {
+        header "psapi.h"
+        export *
+
+        link "psapi"
+    }
+
+    module richedit {
+        header "richedit.h"
+        export *
+
+        link "riched20"
+    }
+
+    module shell32 {
         header "shlobj.h"
+        export *
+
+        link "shell32"
+    }
+
+    module shlwapi {
         header "shlwapi.h"
         export *
 

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # windows zlib build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
 

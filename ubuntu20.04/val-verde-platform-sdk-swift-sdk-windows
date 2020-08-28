@@ -103,10 +103,6 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross
 # windows sourcekit-lsp build
 
 DISABLE_POLLY=TRUE \
-SWIFT_BUILD_FLAGS="\
-    -Xlinker -lwindowsapp \
-    ${SWIFT_BUILD_FLAGS}
-" \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp-windows
 
 # windows sdl build
