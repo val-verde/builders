@@ -50,13 +50,23 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross
 # windows libffi build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
 
-# windows libpython build
-# RUN export CONFIGURE_FLAGS="--host=${TARGET_PROCESSOR}-${TARGET_KERNEL}-cygwin" \
-#            CFLAGS="-fms-extensions -fms-compatibility-version=19 -DMS_NO_COREDLL=1 -DMS_WINDOWS=1 -v -D_UWIN=1" \
-#            LDFLAGS="-Wl,/force:multiple" \
-#            DYNLOADFILE=dynload_win.o \
-#     && bash ${PACKAGE_BASE_NAME}-platform-sdk-python-cross || true
-
 # windows z3 build
 DISABLE_POLLY=TRUE \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
+
+# windows jwasm build
+DISABLE_POLLY=TRUE \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-jwasm
+
+# windows ninja build
+DISABLE_POLLY=TRUE \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
+
+# windows cmake build
+DISABLE_POLLY=TRUE \
+LIBS="\
+    -lole32 \
+    -loleaut32\
+    ${LIBS} \
+" \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross

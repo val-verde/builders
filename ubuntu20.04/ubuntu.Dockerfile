@@ -823,30 +823,8 @@ FROM WINDOWS_LIBCXX_BUILDER AS WINDOWS_LLVM_DEPENDENCIES_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-windows
 
-FROM WINDOWS_LLVM_DEPENDENCIES_BUILDER AS WINDOWS_JWASM_BUILDER
-
-RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-jwasm
-
-# windows ninja build
-FROM WINDOWS_JWASM_BUILDER AS WINDOWS_NINJA_BUILDER
-
-RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
-
-# windows cmake build
-FROM WINDOWS_NINJA_BUILDER AS WINDOWS_CMAKE_BUILDER
-
-RUN DISABLE_POLLY=TRUE \
-    LIBS="\
-        -lole32 \
-        -loleaut32\
-        ${LIBS} \
-    " \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross
-
 # windows swift tools build
-FROM WINDOWS_CMAKE_BUILDER AS WINDOWS_SWIFT_TOOLS_BUILDER
+FROM WINDOWS_LLVM_DEPENDENCIES_BUILDER AS WINDOWS_SWIFT_TOOLS_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-windows
 
