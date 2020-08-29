@@ -32,6 +32,10 @@ ninja -j${NUM_PROCESSORS}
 mkdir -p install${PACKAGE_PREFIX}
 rsync -aPx lib install${PACKAGE_PREFIX}
 
+if [ "${SDK_PLATFORM_DIR}" = "windows" ]; then
+    rsync -aPx bin install${PACKAGE_PREFIX}
+fi
+
 # Build the package
 source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
