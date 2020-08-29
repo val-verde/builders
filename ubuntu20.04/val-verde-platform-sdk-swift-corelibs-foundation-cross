@@ -28,9 +28,9 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCURL_LIBRARY=${PACKAGE_PREFIX}/lib/libcurl.so \
     -DLIBXML2_INCLUDE_DIR=${PACKAGE_PREFIX}/include/libxml2 \
     -DLIBXML2_LIBRARY=${PACKAGE_PREFIX}/lib/libxml2.so \
-    -DOPENSSL_CRYPTO_LIBRARY=${SYSROOT}/usr/lib/libcrypto.so \
-    -DOPENSSL_INCLUDE_DIR=${SYSROOT}/usr/include \
-    -DOPENSSL_SSL_LIBRARY=${SYSROOT}/usr/lib/libssl.so \
+    -DOPENSSL_CRYPTO_LIBRARY=${PACKAGE_PREFIX}/lib/libcrypto.so \
+    -DOPENSSL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DOPENSSL_SSL_LIBRARY=${PACKAGE_PREFIX}/lib/libssl.so \
     ${SOURCE_ROOT}
 
 # Package the components
