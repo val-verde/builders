@@ -23,7 +23,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-configure \
     --disable-tools \
     --enable-shared \
     --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
-    --with-cross-build=/sources/build-staging/${SOURCE_PACKAGE_NAME} \
+    --with-cross-build=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH} \
     --with-library-suffix=swift
 
 # Build the package

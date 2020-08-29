@@ -18,7 +18,7 @@ tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-export ANDROID_NDK_HOME=/sources/build-staging/android-ndk/install${PACKAGE_ROOT}/android-ndk-${ANDROID_NDK_VERSION}
+export ANDROID_NDK_HOME=/sources/build-staging/android-ndk-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/install${PACKAGE_ROOT}/android-ndk-${ANDROID_NDK_VERSION}
 export PATH=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}/bin:${PATH}
 ${SOURCE_ROOT}/Configure \
     -D__ANDROID_API__=${HOST_OS_API_LEVEL} \

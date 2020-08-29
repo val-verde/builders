@@ -8,9 +8,9 @@ export SOURCE_PACKAGE_NAME=swift-lldb
 export SOURCE_ROOT=/sources/llvm-project/lldb
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 export LLVM_SOURCE_ROOT=/sources/llvm-project
-export LLVM_NATIVE_STAGE_ROOT=/sources/build-staging/llvm-project
+export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-/sources/build-staging/llvm-project-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
 export LLVM_STAGE_ROOT=/sources/build-staging/llvm-project-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export SWIFT_NATIVE_STAGE_ROOT=/sources/build-staging/swift
+export SWIFT_NATIVE_STAGE_ROOT=${SWIFT_NATIVE_STAGE_ROOT:-/sources/build-staging/swift-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
 export SWIFT_STAGE_ROOT=/sources/build-staging/swift-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
@@ -53,7 +53,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLLDB_INCLUDE_TESTS=FALSE \
     -DLLDB_PATH_TO_NATIVE_SWIFT_BUILD=${SWIFT_NATIVE_STAGE_ROOT}/lib/cmake/swift \
     -DLLDB_PYTHON_DEFAULT_RELATIVE_PATH=lib/python2.7 \
-    -DLLDB_TABLEGEN=/sources/build-staging/swift-lldb/bin/lldb-tblgen \
+    -DLLDB_TABLEGEN=/sources/build-staging/swift-lldb-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/bin/lldb-tblgen \
     -DLLVM_BUILD_LIBRARY_DIR=${LLVM_STAGE_ROOT}/lib \
     -DLLVM_BUILD_MAIN_SRC_DIR=${LLVM_SOURCE_ROOT}/llvm \
     -DLLVM_DIR=${LLVM_STAGE_ROOT}/lib/cmake/llvm \

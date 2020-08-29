@@ -6,10 +6,10 @@ set -e
 export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
 export SOURCE_PACKAGE_NAME=swift-lldb
 export SOURCE_ROOT=/sources/llvm-project/lldb
-export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}
+export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 export LLVM_SOURCE_ROOT=/sources/llvm-project
-export LLVM_STAGE_ROOT=/sources/build-staging/llvm-project
-export SWIFT_STAGE_ROOT=/sources/build-staging/swift
+export LLVM_STAGE_ROOT=/sources/build-staging/llvm-project-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export SWIFT_STAGE_ROOT=/sources/build-staging/swift-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
