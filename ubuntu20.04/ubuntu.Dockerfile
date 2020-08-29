@@ -103,7 +103,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libuuid-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-util-linux-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap \
@@ -201,13 +201,13 @@ FROM XZ_BUILDER AS LIBXML2_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
 
-# libuuid build
-FROM LIBXML2_BUILDER AS UUID_BUILDER
+# util-linux build
+FROM LIBXML2_BUILDER AS UTIL_LINUX_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libuuid-cross
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-util-linux-cross
 
 # ncurses build
-FROM UUID_BUILDER AS NCURSES_BUILDER
+FROM UTIL_LINUX_BUILDER AS NCURSES_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross
 
@@ -442,7 +442,6 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libgcc-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libuuid-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-python-cross \
@@ -528,13 +527,13 @@ FROM ANDROID_XZ_BUILDER AS ANDROID_LIBXML2_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
 
-# android libuuid build
-FROM ANDROID_LIBXML2_BUILDER AS ANDROID_UUID_BUILDER
+# android util-linux build
+FROM ANDROID_LIBXML2_BUILDER AS ANDROID_UTIL_LINUX_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libuuid-cross
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-util-linux-cross
 
 # android ncurses build
-FROM ANDROID_UUID_BUILDER AS ANDROID_NCURSES_BUILDER
+FROM ANDROID_UTIL_LINUX_BUILDER AS ANDROID_NCURSES_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross
 
