@@ -110,9 +110,11 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-opengl-headers-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-python-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit \
+     ${PACKAGE_BASE_NAME}-platform-sdk-sdl-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-argument-parser \
@@ -404,8 +406,19 @@ FROM VAPOR_BUILDER AS PYTHONKIT_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit
 
+# opengl headers build
+FROM PYTHONKIT_BUILDER AS OPENGL_HEADERS_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-opengl-headers-cross
+
+# sdl build
+FROM OPENGL_HEADERS_BUILDER AS SDL_BUILDER
+
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-sdl-cross
+
 # jwasm (ml64) cross compiler
-FROM PYTHONKIT_BUILDER AS JWASM_BUILDER
+FROM SDL_BUILDER AS JWASM_BUILDER
 
 RUN DISABLE_POLLY=TRUE \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-jwasm
@@ -699,14 +712,25 @@ FROM ANDROID_SWIFT_DOC_BUILDER AS ANDROID_SOURCEKIT_LSP_BUILDER
 RUN DISABLE_POLLY=TRUE \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp-android
 
-# andrid pythonkit build
+# android pythonkit build
 FROM ANDROID_SOURCEKIT_LSP_BUILDER AS ANDROID_PYTHONKIT_BUILDER
 
 RUN DISABLE_POLLY=TRUE \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit-cross
 
+# android opengl headers build
+FROM ANDROID_PYTHONKIT_BUILDER AS ANDROID_OPENGL_HEADERS_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-opengl-headers-cross
+
+# android sdl build
+FROM ANDROID_OPENGL_HEADERS_BUILDER AS ANDROID_SDL_BUILDER
+
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-sdl-cross
+
 # windows environment
-FROM ANDROID_PYTHONKIT_BUILDER AS WINDOWS_SOURCES_BUILDER
+FROM ANDROID_SDL_BUILDER AS WINDOWS_SOURCES_BUILDER
 
 ENV HOST_ARCH=haswell \
     HOST_CPU=skylake \
@@ -799,30 +823,8 @@ FROM WINDOWS_LIBCXX_BUILDER AS WINDOWS_LLVM_DEPENDENCIES_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-windows
 
-FROM WINDOWS_LLVM_DEPENDENCIES_BUILDER AS WINDOWS_JWASM_BUILDER
-
-RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-jwasm
-
-# windows ninja build
-FROM WINDOWS_JWASM_BUILDER AS WINDOWS_NINJA_BUILDER
-
-RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
-
-# windows cmake build
-FROM WINDOWS_NINJA_BUILDER AS WINDOWS_CMAKE_BUILDER
-
-RUN DISABLE_POLLY=TRUE \
-    LIBS="\
-        -lole32 \
-        -loleaut32\
-        ${LIBS} \
-    " \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross
-
 # windows swift tools build
-FROM WINDOWS_CMAKE_BUILDER AS WINDOWS_SWIFT_TOOLS_BUILDER
+FROM WINDOWS_LLVM_DEPENDENCIES_BUILDER AS WINDOWS_SWIFT_TOOLS_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-windows
 
