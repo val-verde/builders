@@ -1,0 +1,66 @@
+#!/bin/bash
+
+set -e
+
+# android zlib build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
+
+# android icu build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross
+
+# android xz build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
+
+# android libxml2 build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
+
+# android util-linux build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-util-linux-cross
+
+# android ncurses build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross
+
+# android libedit build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross
+
+# android sqlite3 build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross
+
+# android openssl build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross
+
+# android libssh2 build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
+
+# android curl build
+DISABLE_POLLY=TRUE \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
+
+# android libexpat build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross
+
+# android libffi build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
+
+# android libpython build
+DISABLE_POLLY=TRUE \
+PYTHON_FOR_BUILD=${PACKAGE_ROOT}/bin/python2.7 \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-python-cross
+
+# android z3 build
+DISABLE_POLLY=TRUE \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
+
+# android jwasm (ml64) cross compiler build
+DISABLE_POLLY=TRUE \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-jwasm
+
+# android git build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-git-cross
+
+# android ninja build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
+
+# android cmake build
+DISABLE_POLLY=TRUE \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-android
