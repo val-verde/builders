@@ -42,16 +42,19 @@ ENV BUILD_ARCH=haswell \
     HOST_OS=${HOST_OS} \
     HOST_PROCESSOR=${HOST_PROCESSOR} \
     PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME} \
-    SYSROOT=/ \
+    PACKAGE_ROOT=${PACKAGE_ROOT} \
     SYSTEM_NAME=Linux
 
-ENV BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS} \
+ENV BUILD_PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr \
+    BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS} \
     HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-    PACKAGE_ROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr \
-    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr
+    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr \
+    SYSROOT=/
 
 ENV LD_LIBRARY_PATH=${PACKAGE_PREFIX}/lib:${LD_LIBRARY_PATH} \
     PATH=${PACKAGE_PREFIX}/bin:${PATH}
+
+RUN mkdir -p ${BUILD_PACKAGE_PREFIX}
 
 # platform sdk tool wrapper scripts
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-configure \
@@ -63,23 +66,23 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-configure \
      ${PACKAGE_BASE_NAME}-platform-sdk-rc \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-build \
      ${PACKAGE_BASE_NAME}-platform-sdk-swiftc \
-     ${PACKAGE_ROOT}/bin/
+     ${BUILD_PACKAGE_PREFIX}/bin/
 
-RUN chmod +x ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
-             ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
-             ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang \
-             ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang++ \
-             ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ml64 \
-             ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
-             ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rc \
-             ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swift-build \
-             ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swiftc
+RUN chmod +x ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
+             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang \
+             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang++ \
+             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ml64 \
+             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rc \
+             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swift-build \
+             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swiftc
 
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-make-build \
      ${PACKAGE_BASE_NAME}-platform-sdk-ninja-build \
      ${PACKAGE_BASE_NAME}-platform-sdk-package-build \
      ${PACKAGE_BASE_NAME}-platform-sdk-package-install \
-     /sources/
+     ${BUILD_PACKAGE_PREFIX}/bin/
 
 # linux sources
 FROM BASE AS SOURCES_BUILDER
@@ -149,14 +152,23 @@ ENV OPTIMIZATION_LEVEL=3
 # musl libc build
 FROM SOURCES_BUILDER AS MUSL_LIBC_BUILDER
 
-RUN BINDIR=/usr/bin \
-    CC=/usr/bin/clang \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-musl-libc
+# RUN BINDIR=/usr/bin \
+#     CC=/usr/bin/clang \
+#     SYSROOT=/ \
+#     bash ${PACKAGE_BASE_NAME}-platform-sdk-musl-libc
 
 # libunwind bootstrap build
 FROM MUSL_LIBC_BUILDER AS LIBUNWIND_BOOTSTRAP_BUILDER
 
 RUN BINDIR=/usr/bin \
+    CFLAGS="\
+        -rtlib=compiler-rt \
+        ${CFLAGS} \
+    " \
+    CXXFLAGS="\
+        -rtlib=compiler-rt \
+        ${CXXFLAGS} \
+    " \
     LLVM_NATIVE_STAGE_ROOT=/usr \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
 
@@ -170,12 +182,22 @@ RUN BINDIR=/usr/bin \
 FROM LIBCXXABI_BOOTSTRAP_BUILDER AS LIBCXX_BOOTSTRAP_BUILDER
 
 RUN BINDIR=/usr/bin \
+    CFLAGS="\
+        -rtlib=compiler-rt \
+        ${CFLAGS} \
+    " \
+    CXXFLAGS="\
+        -rtlib=compiler-rt \
+        ${CXXFLAGS} \
+    " \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-cross
 
 # llvm bootstrap build
 FROM LIBCXX_BOOTSTRAP_BUILDER AS LLVM_BOOTSTRAP_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap
+
+# remove host compiler and libraries as it is superceded by bootstrapped clang
 RUN apt remove -y clang \
                   clang-10 \
                   libc++-dev \
@@ -584,8 +606,8 @@ ENV HOST_ARCH=haswell \
     HOST_PROCESSOR=x86_64
 
 ENV HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
-    SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
+    PACKAGE_PREFIX=/usr/local/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
+    SYSROOT=/usr/local/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
     SYSTEM_NAME=Windows
 
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows \
@@ -648,7 +670,7 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-windows
 # windows mingw-winpthreads build
 FROM WINDOWS_LIBUNWIND_BUILDER AS WINDOWS_MINGW_WINPTHREADS_BUILDER
 
-RUN export LD=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+RUN export LD=${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-winpthreads-cross
 
 # windows libcxxabi build
@@ -692,8 +714,8 @@ ENV HOST_ARCH=wasm32 \
     HOST_PROCESSOR=wasm32
 
 ENV HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
-    SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
+    PACKAGE_PREFIX=/usr/local/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
+    SYSROOT=/usr/local/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
     SYSTEM_NAME=Wasi
 
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt-wasi \

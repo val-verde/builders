@@ -20,15 +20,17 @@ sed -i "s/'auto-import'/'ld'/g" ${SOURCE_ROOT}/configure
 
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
-${PACKAGE_BASE_NAME}-platform-sdk-configure \
+${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
     --disable-static \
     --enable-shared \
     --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX}
 
 # Build the package
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-make-build
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
+
+# Build the package
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Install the package
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install

@@ -19,10 +19,10 @@ mkdir -p ${STAGE_ROOT}/install${PACKAGE_PREFIX}
 # Build the package
 cd ${SOURCE_ROOT}
 export TARGETS="INSTALL_DIR=${STAGE_ROOT}/install${PACKAGE_PREFIX} OBJDIR=${STAGE_ROOT}"
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-make-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 
 cd ${STAGE_ROOT}
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Install the package
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install

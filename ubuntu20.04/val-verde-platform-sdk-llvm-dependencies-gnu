@@ -55,10 +55,6 @@ DISABLE_POLLY=TRUE \
 MAKE_PROGRAM=/usr/bin/ninja \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
 
-# jwasm (ml64) cross compiler build
-DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-jwasm
-
 # git build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-git-cross
 
@@ -79,3 +75,7 @@ CXXFLAGS="\
 " \
 DISABLE_POLLY=TRUE \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross
+
+# jwasm (ml64) cross compiler build
+DISABLE_POLLY=TRUE \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-jwasm

@@ -25,7 +25,7 @@ cp `find -type f -name swift-doc\*` \
 popd
 
 # Build the package
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Install the package
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install

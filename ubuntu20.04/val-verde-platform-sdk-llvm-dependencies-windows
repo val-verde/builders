@@ -7,7 +7,7 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
 
 # windows icu build
 LDFLAGS="\
-    -fuse-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+    -fuse-ld=${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
     ${LDFLAGS} \
 " \
 LIBS="\
@@ -21,7 +21,7 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
 
 # windows libxml2 build
 LDFLAGS="\
-    -Wc,-fuse-ld=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+    -Wc,-fuse-ld=${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
     ${LDFLAGS} \
 " \
 Z_LIBS="-lzlib" \

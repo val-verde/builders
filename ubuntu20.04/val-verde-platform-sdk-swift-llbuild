@@ -16,7 +16,7 @@ git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branc
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DFoundation_DIR=/sources/build-staging/swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DLLBUILD_SUPPORT_BINDINGS=Swift \
@@ -25,8 +25,8 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     ${SOURCE_ROOT}
 
 # Build the components
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 # Build the package
-rsync -aPx ${STAGE_ROOT}/lib/*.so* install${PACKAGE_ROOT}/lib
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+rsync -aPx ${STAGE_ROOT}/lib/*.so* install${BUILD_PACKAGE_PREFIX}/lib
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build

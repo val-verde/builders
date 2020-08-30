@@ -20,7 +20,7 @@ CXXFLAGS="\
     -D_LIBCPP_HAS_THREAD_API_WIN32=1  \
     -D_Unwind_Personality_Fn=__personality_routine \
 " \
-${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCMAKE_C_COMPILER_WORKS=TRUE \
     -DCMAKE_CXX_COMPILER_WORKS=TRUE \
     -DLIBCXXABI_ENABLE_ASSERTIONS=FALSE \
@@ -39,13 +39,13 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     ${SOURCE_ROOT}
 
 # Build the components
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 mkdir -p ${STAGE_ROOT}/install${PACKAGE_PREFIX}/include
 cp ${SOURCE_ROOT}/include/* \
    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/include
 
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Build the package
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install

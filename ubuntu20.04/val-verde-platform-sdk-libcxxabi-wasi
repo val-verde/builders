@@ -21,7 +21,7 @@ cd ${STAGE_ROOT}
     -D_LIBCPP_HAS_NO_THREADS \
     ${CXXFLAGS} \
 " \
-${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLIBCXXABI_ENABLE_ASSERTIONS=FALSE \
     -DLIBCXXABI_ENABLE_EXCEPTIONS=FALSE \
     -DLIBCXXABI_ENABLE_SHARED=FALSE \
@@ -38,13 +38,13 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     ${SOURCE_ROOT}
 
 # Build the components
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 mkdir -p ${STAGE_ROOT}/install${PACKAGE_PREFIX}/include
 cp ${SOURCE_ROOT}/include/* \
    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/include
 
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Build the package
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install

@@ -23,9 +23,9 @@ CXXFLAGS="\
     -nostdlib \
     ${CXXFLAGS} \
 " \
-INSTALL_PREFIX=${STAGE_ROOT}/install-staging${PACKAGE_ROOT} \
+INSTALL_PREFIX=${STAGE_ROOT}/install-staging${BUILD_PACKAGE_PREFIX} \
 SYSTEM_NAME=Fuchsia \
-${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCMAKE_C_COMPILER_WORKS=TRUE \
     -DCMAKE_CXX_COMPILER_WORKS=TRUE \
     -DCMAKE_SIZEOF_VOID_P=4 \
@@ -41,13 +41,13 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     ${SOURCE_ROOT}
 
 # Build the components
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
-mkdir -p install${PACKAGE_ROOT}/lib/clang/10.0.0/lib/wasi
-mv install-staging${PACKAGE_ROOT}/lib/${SDK_PLATFORM_DIR}/${CLANG_RT_LIB} \
-   install${PACKAGE_ROOT}/lib/clang/10.0.0/lib/wasi/${DST_CLANG_RT_LIB}
+mkdir -p install${BUILD_PACKAGE_PREFIX}/lib/clang/10.0.0/lib/wasi
+mv install-staging${BUILD_PACKAGE_PREFIX}/lib/${SDK_PLATFORM_DIR}/${CLANG_RT_LIB} \
+   install${BUILD_PACKAGE_PREFIX}/lib/clang/10.0.0/lib/wasi/${DST_CLANG_RT_LIB}
 
 # Build the package
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install

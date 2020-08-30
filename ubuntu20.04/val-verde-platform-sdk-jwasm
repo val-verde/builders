@@ -16,7 +16,7 @@ git clone https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}.git -
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     ${SOURCE_ROOT}
 
 # Build the components
@@ -26,7 +26,7 @@ mkdir -p ${STAGE_ROOT}/install${PACKAGE_PREFIX}/bin
 cp ${STAGE_ROOT}/jwasm* \
    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/bin/
 
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Build the package
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install

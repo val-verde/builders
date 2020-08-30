@@ -4,5 +4,5 @@ args=$@
 args=`echo ${args}|sed -r 's/\/c/-c/g'`
 args=`echo ${args}|sed -r 's/\/Fo/-Fo/g'`
 
-${PACKAGE_ROOT}/bin/jwasm -win64 \
-                          ${args}
+${BUILD_PACKAGE_PREFIX}/bin/jwasm -win64 \
+                                  ${args}

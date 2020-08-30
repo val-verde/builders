@@ -22,7 +22,7 @@ git checkout dutch-android-master
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DClang_DIR=${LLVM_STAGE_ROOT}/lib/cmake/clang \
     -DICU_I18N_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
     -DICU_I18N_LIBRARIES=${PACKAGE_PREFIX}/lib/libicui18nswift.so \
@@ -69,9 +69,9 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DSWIFT_INCLUDE_APINOTES=FALSE \
     -DSWIFT_INCLUDE_DOCS=FALSE \
     -DSWIFT_INCLUDE_TESTS=FALSE \
-    -DSWIFT_NATIVE_CLANG_TOOLS_PATH=${PACKAGE_ROOT}/bin \
-    -DSWIFT_NATIVE_LLVM_TOOLS_PATH=${PACKAGE_ROOT}/bin \
-    -DSWIFT_NATIVE_SWIFT_TOOLS_PATH=${PACKAGE_ROOT}/bin \
+    -DSWIFT_NATIVE_CLANG_TOOLS_PATH=${BUILD_PACKAGE_PREFIX}/bin \
+    -DSWIFT_NATIVE_LLVM_TOOLS_PATH=${BUILD_PACKAGE_PREFIX}/bin \
+    -DSWIFT_NATIVE_SWIFT_TOOLS_PATH=${BUILD_PACKAGE_PREFIX}/bin \
     -DSWIFT_PATH_TO_CMARK_BUILD=/sources/build-staging/swift-cmark-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} \
     -DSWIFT_PATH_TO_CMARK_SOURCE=/sources/swift-cmark \
     -DSWIFT_PATH_TO_LIBDISPATCH_SOURCE=/sources/swift-corelibs-libdispatch \
@@ -84,7 +84,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DSWIFT_TOOL_SWIFT_SYNTAX_PARSER_TEST_BUILD=FALSE \
     -DSWIFT_TOOL_SWIFT_SYNTAX_TEST_BUILD=FALSE \
     -DSWIFT_TOOLS_ENABLE_LTO=${ENABLE_FLTO} \
-    -DSWIFT_USE_LINKER=${PACKAGE_ROOT}/bin/ld.lld \
+    -DSWIFT_USE_LINKER=${BUILD_PACKAGE_PREFIX}/bin/ld.lld \
     -DSWIFT_VENDOR="${PACKAGE_BASE_NAME}" \
     -DUSE_POSIX_SEM=1 \
     -DUUID_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
@@ -92,12 +92,12 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     ${SOURCE_ROOT}
 
 # Package the components
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 sed -i 's/\/usr/\.\.\/\.\.\/\.\.\/\.\./g' \
        install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}/${HOST_PROCESSOR}/glibc.modulemap
 
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Build the package
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install

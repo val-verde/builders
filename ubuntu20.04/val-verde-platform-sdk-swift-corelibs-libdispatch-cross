@@ -18,13 +18,13 @@ SWIFTCFLAGS="\
     -sdk ${SYSROOT} \
     ${SWIFTCFLAGS} \
 " \
-${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DBUILD_TESTING=FALSE \
     -DENABLE_SWIFT=TRUE \
     ${SOURCE_ROOT}
 
 # Package the components
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
 
@@ -33,4 +33,4 @@ if [ "${SDK_PLATFORM_DIR}" != "${HOST_OS}" ]; then
        install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}
 fi
 
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build

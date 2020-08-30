@@ -44,7 +44,7 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
 
 # android libpython build
 DISABLE_POLLY=TRUE \
-PYTHON_FOR_BUILD=${PACKAGE_ROOT}/bin/python2.7 \
+PYTHON_FOR_BUILD=${BUILD_PACKAGE_PREFIX}/bin/python2.7 \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-python-cross
 
 # android z3 build
