@@ -109,6 +109,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-gnu \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap \
+     ${PACKAGE_BASE_NAME}-platform-sdk-musl-libc \
      ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross \
@@ -145,8 +146,15 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
 # Optimization level speed: [0-3] or size: [s, z]
 ENV OPTIMIZATION_LEVEL=3
 
+# musl libc build
+FROM SOURCES_BUILDER AS MUSL_LIBC_BUILDER
+
+RUN BINDIR=/usr/bin \
+    CC=/usr/bin/clang \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-musl-libc
+
 # libunwind bootstrap build
-FROM SOURCES_BUILDER AS LIBUNWIND_BOOTSTRAP_BUILDER
+FROM MUSL_LIBC_BUILDER AS LIBUNWIND_BOOTSTRAP_BUILDER
 
 RUN BINDIR=/usr/bin \
     LLVM_NATIVE_STAGE_ROOT=/usr \
