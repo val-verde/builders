@@ -66,6 +66,16 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
 
 # Build the components
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+
+# RPATH fixups
+COMPONENTS="\
+    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/bin/lldb \
+    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/bin/repl_swift \
+    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/liblldb.so \
+" \
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rpath-fixup
+
+# Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Build the package
