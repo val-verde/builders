@@ -5,7 +5,7 @@ set -e
 BINDIR=${BINDIR:-${PACKAGE_ROOT}/bin}
 LINKER_OPTIMIZATION_LEVEL=${LINKER_OPTIMIZATION_LEVEL:-2}
 OPTIMIZATION_LEVEL=${OPTIMIZATION_LEVEL:-z}
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-"${SYSROOT}/usr/lib/pkgconfig:${SYSROOT}/usr/share/pkgconfig"}
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-"${PACKAGE_PREFIX}/lib/pkgconfig:${PACKAGE_PREFIX}/share/pkgconfig"}
 SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
 SWIFT_BUILD_TYPE=${SWIFT_BUILD_TYPE:-release}
 SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot}
@@ -63,7 +63,7 @@ echo -e "{ \n\
     ], \n\
     \"extra-swiftc-flags\": [ \n\
         \"-target-cpu\", \"${HOST_CPU}\", \n\
-        \"-L${SYSROOT}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}\", \n\
+        \"-L${PACKAGE_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}\", \n\
         \"-O${SWIFT_OPTIMIZATION_LEVEL}\", \n\
         \"-Xfrontend\", \"-disable-llvm-verify\", \n\
         \"${FLTO_SWIFTCFLAG}\", \n\

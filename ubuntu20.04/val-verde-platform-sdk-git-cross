@@ -27,7 +27,7 @@ autoreconf -i
 ${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${STAGE_ROOT}/configure \
     --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
-    --with-curl=${SYSROOT}/usr \
+    --with-curl=${PACKAGE_PREFIX} \
     ac_cv_fread_reads_directories=true \
     ac_cv_iconv_omits_bom=true \
     ac_cv_snprintf_returns_bogus=false

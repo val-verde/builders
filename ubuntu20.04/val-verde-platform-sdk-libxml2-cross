@@ -21,6 +21,10 @@ sed -i \
 
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
+CFLAGS="\
+     -I${PACKAGE_PREFIX}/include \
+     ${CFLAGS} \
+" \
 ${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
     lt_cv_deplibs_check_method=pass_all \

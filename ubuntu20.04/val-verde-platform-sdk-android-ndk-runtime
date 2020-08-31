@@ -10,14 +10,13 @@ export SOURCE_PACKAGE_VERSION=${ANDROID_NDK_VERSION}
 export ANDROID_NDK_STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_BASE_NAME}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 export TOOLCHAIN_ROOT=${ANDROID_NDK_STAGE_ROOT}/install${PACKAGE_ROOT}/android-ndk-${ANDROID_NDK_VERSION}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}
-export SYSROOT=${TOOLCHAIN_ROOT}/sysroot
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
 mkdir -p ${STAGE_ROOT}/install${PACKAGE_PREFIX}/include
 
-rsync -aPx ${SYSROOT}/usr/lib/${HOST_TRIPLE}/*.so \
-           ${SYSROOT}/usr/lib/${HOST_TRIPLE}/${HOST_OS_API_LEVEL}/* \
+rsync -aPx ${TOOLCHAIN_ROOT}/sysroot/usr/lib/${HOST_TRIPLE}/*.so \
+           ${TOOLCHAIN_ROOT}/sysroot/usr/lib/${HOST_TRIPLE}/${HOST_OS_API_LEVEL}/* \
            ${TOOLCHAIN_ROOT}/lib/gcc/${HOST_TRIPLE}/4.9.x/*.o \
            ${TOOLCHAIN_ROOT}/${HOST_TRIPLE}/lib64/*.a \
            ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib

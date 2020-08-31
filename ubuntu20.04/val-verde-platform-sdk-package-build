@@ -6,5 +6,6 @@ cd ${STAGE_ROOT}/install
 tar cf ${PACKAGE_NAME}.tar usr/
 
 alien ${PACKAGE_NAME}.tar
+rm ${PACKAGE_NAME}.tar
 mv *${SOURCE_PACKAGE_NAME}*.deb \
    ${DEB_PATH}/${PACKAGE_NAME}.deb

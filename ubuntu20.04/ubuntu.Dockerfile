@@ -36,21 +36,22 @@ ENV BUILD_ARCH=haswell \
     BUILD_OS_API_LEVEL= \
     BUILD_PROCESSOR=${BUILD_PROCESSOR} \
     DEB_PATH=${DEB_PATH} \
+    HOST_ARCH=haswell \
+    HOST_CPU=skylake \
     HOST_KERNEL=${HOST_KERNEL} \
     HOST_OS=${HOST_OS} \
     HOST_PROCESSOR=${HOST_PROCESSOR} \
     PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME} \
-    PACKAGE_ROOT=${PACKAGE_ROOT} \
     SYSROOT=/ \
     SYSTEM_NAME=Linux
 
 ENV BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS} \
-    HOST_ARCH=haswell \
-    HOST_CPU=skylake \
     HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-    PACKAGE_PREFIX=${PACKAGE_ROOT}
+    PACKAGE_ROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr \
+    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr
 
-ENV LD_LIBRARY_PATH=${PACKAGE_ROOT}/lib
+ENV LD_LIBRARY_PATH=${PACKAGE_PREFIX}/lib:${LD_LIBRARY_PATH} \
+    PATH=${PACKAGE_PREFIX}/bin:${PATH}
 
 # platform sdk tool wrapper scripts
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-configure \
@@ -150,13 +151,13 @@ RUN BINDIR=/usr/bin \
     LLVM_NATIVE_STAGE_ROOT=/usr \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
 
-# llvm bootstrap build
+# libcxxabi bootstrap build
 FROM LIBUNWIND_BOOTSTRAP_BUILDER AS LIBCXXABI_BOOTSTRAP_BUILDER
 
 RUN BINDIR=/usr/bin \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-cross
 
-# llvm bootstrap build
+# libcxx bootstrap build
 FROM LIBCXXABI_BOOTSTRAP_BUILDER AS LIBCXX_BOOTSTRAP_BUILDER
 
 RUN BINDIR=/usr/bin \
@@ -269,6 +270,10 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-git-cross
 FROM GIT_BUILDER AS NINJA_BUILDER
 
 RUN CMAKE_BINDIR=/usr/bin \
+    CXXFLAGS="\
+        -I${PACKAGE_PREFIX}/include \
+        ${CXXFLAGS} \
+    " \
     MAKE_PROGRAM=/usr/bin/ninja \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
 
@@ -276,13 +281,21 @@ RUN CMAKE_BINDIR=/usr/bin \
 FROM NINJA_BUILDER AS CMAKE_BUILDER
 
 RUN CMAKE_BINDIR=/usr/bin \
+    CXXFLAGS="\
+        -I${PACKAGE_PREFIX}/include \
+        ${CXXFLAGS} \
+    " \
     DISABLE_POLLY=TRUE \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross
 
 # llvm build
 FROM CMAKE_BUILDER AS LLVM_BUILDER
 
-RUN DISABLE_POLLY=TRUE \
+RUN CXXFLAGS="\
+        -I${PACKAGE_PREFIX}/include \
+        ${CXXFLAGS} \
+    " \
+    DISABLE_POLLY=TRUE \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
     && apt remove -y cmake \
                      git \
@@ -308,13 +321,21 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark
 # swift build
 FROM CMARK_BUILDER AS SWIFT_BUILDER
 
-RUN DISABLE_POLLY=TRUE \
+RUN CXXFLAGS="\
+        -I${PACKAGE_PREFIX}/include \
+        ${CXXFLAGS} \
+    " \
+    DISABLE_POLLY=TRUE \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-swift
 
 # lldb build
 FROM SWIFT_BUILDER AS LLDB_BUILDER
 
-RUN DISABLE_POLLY=TRUE \
+RUN CXXFLAGS="\
+        -I${PACKAGE_PREFIX}/include \
+        ${CXXFLAGS} \
+    " \
+    DISABLE_POLLY=TRUE \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb
 
 # libdispatch build
@@ -325,7 +346,11 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch
 # foundation build
 FROM LIBDISPATCH_BUILDER AS FOUNDATION_BUILDER
 
-RUN DISABLE_POLLY=TRUE \
+RUN CFLAGS="\
+        -I${PACKAGE_PREFIX}/include \
+        ${CFLAGS} \
+    " \
+    DISABLE_POLLY=TRUE \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation
 
 # xctest build
@@ -387,18 +412,30 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-format
 # swift-doc build
 FROM SWIFT_FORMAT_BUILDER AS SWIFT_DOC_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc
+RUN SWIFT_BUILD_FLAGS="\
+        -Xcc -I${PACKAGE_PREFIX}/include \
+        ${SWIFT_BUILD_FLAGS} \
+    " \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc
 
 # sourcekit-lsp build
 FROM SWIFT_DOC_BUILDER AS SOURCEKIT_LSP_BUILDER
 
 RUN DISABLE_POLLY=TRUE \
+    SWIFT_BUILD_FLAGS="\
+        -Xcc -I${PACKAGE_PREFIX}/include \
+        ${SWIFT_BUILD_FLAGS} \
+    " \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp
 
 # vapor build
 FROM SOURCEKIT_LSP_BUILDER AS VAPOR_BUILDER
 
 RUN DISABLE_POLLY=TRUE \
+    SWIFT_BUILD_FLAGS="\
+        -Xcc -I${PACKAGE_PREFIX}/include \
+        ${SWIFT_BUILD_FLAGS} \
+    " \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-vapor
 
 # pythonkit build
