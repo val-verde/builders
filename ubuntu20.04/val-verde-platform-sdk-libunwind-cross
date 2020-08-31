@@ -14,8 +14,12 @@ export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-/sources/build-staging/l
 # Configure the package
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
-${PACKAGE_BASE_NAME}-platform-sdk-cmake \
-    -DCMAKE_CXX_FLAGS="-nostdlib++" \
+
+CXXFLAGS="\
+    -nostdlib++ \
+    ${CXXFLAGS} \
+" \
+${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLIBUNWIND_ENABLE_ASSERTIONS=FALSE \
     -DLIBUNWIND_ENABLE_PEDANTIC=FALSE \
     -DLIBUNWIND_ENABLE_SHARED=TRUE \
@@ -33,8 +37,10 @@ ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     ${SOURCE_ROOT}
 
 # Build the components
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 # Build the package
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+
+# Build the package
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install

@@ -18,7 +18,7 @@ tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-BINDIR=${PACKAGE_ROOT}/bin
+BINDIR=${BUILD_PACKAGE_PREFIX}/bin
 OPTIMIZATION_FLAGS=${OPTIMIZATION_FLAGS:-"-DNDEBUG"}
 
 AS_FOR_TARGET=${AS_FOR_TARGET:-${BINDIR}/llvm-as}
@@ -70,7 +70,7 @@ CXXFLAGS="\
     ${CXXFLAGS} \
     ${WARNING_CFLAGS} \
 " \
-${PACKAGE_BASE_NAME}-platform-sdk-configure \
+${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
     --disable-bootstrap \
     --disable-gomp \
@@ -81,7 +81,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-configure \
     --disable-multilib \
     --disable-werror \
     --enable-languages=c \
-    --prefix=${STAGE_ROOT}/install${PACKAGE_ROOT} \
+    --prefix=${STAGE_ROOT}/install${BUILD_PACKAGE_PREFIX} \
     --target=${TARGET_TRIPLE} \
     --with-build-sysroot=${TARGET_SYSROOT} \
     --with-native-system-header-dir=/include \
@@ -112,7 +112,7 @@ make -j${NUM_PROCESSORS} install-gcc
 rm -rf install${PACKAGE_PREFIX}/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS} \
        install${PACKAGE_PREFIX}/lib/gcc
 
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Install the package
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install

@@ -18,10 +18,10 @@ wget -c ${ANDROID_NDK_URL}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BU
 unzip ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.zip
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
-mkdir -p install${PACKAGE_ROOT}
-mv ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} install${PACKAGE_ROOT}
+mkdir -p install${BUILD_PACKAGE_PREFIX}
+mv ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} install${BUILD_PACKAGE_PREFIX}
 
 patch -i ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-linux-time-h.diff \
-         ${STAGE_ROOT}/install${PACKAGE_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/sysroot/usr/include/linux/time.h
+         ${STAGE_ROOT}/install${BUILD_PACKAGE_PREFIX}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/sysroot/usr/include/linux/time.h
 patch -i ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-linux-time-h.diff \
-         ${STAGE_ROOT}/install${PACKAGE_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}/sysroot/usr/include/linux/time.h
+         ${STAGE_ROOT}/install${BUILD_PACKAGE_PREFIX}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}/sysroot/usr/include/linux/time.h

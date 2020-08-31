@@ -18,11 +18,11 @@ cd ${SOURCE_ROOT}
 ${PACKAGE_BASE_NAME}-platform-sdk-swift-build
 
 cd ${STAGE_ROOT}
-mkdir -p install${PACKAGE_ROOT}/bin
-rsync -aPx release/swift-doc install${PACKAGE_ROOT}/bin
+mkdir -p install${BUILD_PACKAGE_PREFIX}/bin
+rsync -aPx release/swift-doc install${BUILD_PACKAGE_PREFIX}/bin
 
 # Build the package
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Install the package
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install

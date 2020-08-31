@@ -42,16 +42,19 @@ ENV BUILD_ARCH=haswell \
     HOST_OS=${HOST_OS} \
     HOST_PROCESSOR=${HOST_PROCESSOR} \
     PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME} \
-    SYSROOT=/ \
+    PACKAGE_ROOT=${PACKAGE_ROOT} \
     SYSTEM_NAME=Linux
 
-ENV BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS} \
+ENV BUILD_PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr \
+    BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS} \
     HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-    PACKAGE_ROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr \
-    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr
+    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr \
+    SYSROOT=/
 
 ENV LD_LIBRARY_PATH=${PACKAGE_PREFIX}/lib:${LD_LIBRARY_PATH} \
     PATH=${PACKAGE_PREFIX}/bin:${PATH}
+
+RUN mkdir -p ${BUILD_PACKAGE_PREFIX}
 
 # platform sdk tool wrapper scripts
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-configure \
@@ -63,23 +66,23 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-configure \
      ${PACKAGE_BASE_NAME}-platform-sdk-rc \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-build \
      ${PACKAGE_BASE_NAME}-platform-sdk-swiftc \
-     ${PACKAGE_ROOT}/bin/
+     ${BUILD_PACKAGE_PREFIX}/bin/
 
-RUN chmod +x ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
-             ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
-             ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang \
-             ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang++ \
-             ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ml64 \
-             ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
-             ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rc \
-             ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swift-build \
-             ${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swiftc
+RUN chmod +x ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
+             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang \
+             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang++ \
+             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ml64 \
+             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rc \
+             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swift-build \
+             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swiftc
 
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-make-build \
      ${PACKAGE_BASE_NAME}-platform-sdk-ninja-build \
      ${PACKAGE_BASE_NAME}-platform-sdk-package-build \
      ${PACKAGE_BASE_NAME}-platform-sdk-package-install \
-     /sources/
+     ${BUILD_PACKAGE_PREFIX}/bin/
 
 # linux sources
 FROM BASE AS SOURCES_BUILDER
@@ -106,8 +109,10 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-util-linux-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-gnu \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap \
+     ${PACKAGE_BASE_NAME}-platform-sdk-musl-libc \
      ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross \
@@ -144,10 +149,26 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
 # Optimization level speed: [0-3] or size: [s, z]
 ENV OPTIMIZATION_LEVEL=3
 
+# musl libc build
+FROM SOURCES_BUILDER AS MUSL_LIBC_BUILDER
+
+# RUN BINDIR=/usr/bin \
+#     CC=/usr/bin/clang \
+#     SYSROOT=/ \
+#     bash ${PACKAGE_BASE_NAME}-platform-sdk-musl-libc
+
 # libunwind bootstrap build
-FROM SOURCES_BUILDER AS LIBUNWIND_BOOTSTRAP_BUILDER
+FROM MUSL_LIBC_BUILDER AS LIBUNWIND_BOOTSTRAP_BUILDER
 
 RUN BINDIR=/usr/bin \
+    CFLAGS="\
+        -rtlib=compiler-rt \
+        ${CFLAGS} \
+    " \
+    CXXFLAGS="\
+        -rtlib=compiler-rt \
+        ${CXXFLAGS} \
+    " \
     LLVM_NATIVE_STAGE_ROOT=/usr \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
 
@@ -161,12 +182,22 @@ RUN BINDIR=/usr/bin \
 FROM LIBCXXABI_BOOTSTRAP_BUILDER AS LIBCXX_BOOTSTRAP_BUILDER
 
 RUN BINDIR=/usr/bin \
+    CFLAGS="\
+        -rtlib=compiler-rt \
+        ${CFLAGS} \
+    " \
+    CXXFLAGS="\
+        -rtlib=compiler-rt \
+        ${CXXFLAGS} \
+    " \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-cross
 
 # llvm bootstrap build
 FROM LIBCXX_BOOTSTRAP_BUILDER AS LLVM_BOOTSTRAP_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap
+
+# remove host compiler and libraries as it is superceded by bootstrapped clang
 RUN apt remove -y clang \
                   clang-10 \
                   libc++-dev \
@@ -178,118 +209,12 @@ RUN apt remove -y clang \
                   llvm-10 \
     && apt autoremove -y
 
-# zlib build
-FROM LLVM_BOOTSTRAP_BUILDER AS ZLIB_BUILDER
+FROM LLVM_BOOTSTRAP_BUILDER AS LLVM_DEPENDENCIES_BUILDER
 
-RUN CMAKE_BINDIR=/usr/bin \
-    MAKE_PROGRAM=/usr/bin/ninja \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
-
-# icu build
-FROM ZLIB_BUILDER AS ICU_BUILDER
-
-COPY icu-uconfig-prepend.h .
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c
-
-# xz build
-FROM ICU_BUILDER AS XZ_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
-
-# libxml2 build
-FROM XZ_BUILDER AS LIBXML2_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
-
-# util-linux build
-FROM LIBXML2_BUILDER AS UTIL_LINUX_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-util-linux-cross
-
-# ncurses build
-FROM UTIL_LINUX_BUILDER AS NCURSES_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross
-
-# libedit build
-FROM NCURSES_BUILDER AS LIBEDIT_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross
-
-# sqlite3 build
-FROM LIBEDIT_BUILDER AS SQLITE3_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross
-
-# libssh2 build
-FROM SQLITE3_BUILDER AS LIBSSH2_BUILDER
-
-RUN CMAKE_BINDIR=/usr/bin \
-    MAKE_PROGRAM=/usr/bin/ninja \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
-
-# curl build
-FROM LIBSSH2_BUILDER AS CURL_BUILDER
-
-RUN CMAKE_BINDIR=/usr/bin \
-    DISABLE_POLLY=TRUE \
-    MAKE_PROGRAM=/usr/bin/ninja \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
-
-# libexpat build
-FROM CURL_BUILDER AS LIBEXPAT_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross
-
-# libffi build
-FROM LIBEXPAT_BUILDER AS LIBFFI_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
-
-# libpython build
-FROM LIBFFI_BUILDER AS LIBPYTHON_BUILDER
-
-RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-python-cross
-
-# z3 build
-FROM LIBPYTHON_BUILDER AS Z3_BUILDER
-
-RUN CMAKE_BINDIR=/usr/bin \
-    DISABLE_POLLY=TRUE \
-    MAKE_PROGRAM=/usr/bin/ninja \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
-
-# git build
-FROM Z3_BUILDER AS GIT_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-git-cross
-
-# ninja build
-FROM GIT_BUILDER AS NINJA_BUILDER
-
-RUN CMAKE_BINDIR=/usr/bin \
-    CXXFLAGS="\
-        -I${PACKAGE_PREFIX}/include \
-        ${CXXFLAGS} \
-    " \
-    MAKE_PROGRAM=/usr/bin/ninja \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
-
-# cmake build
-FROM NINJA_BUILDER AS CMAKE_BUILDER
-
-RUN CMAKE_BINDIR=/usr/bin \
-    CXXFLAGS="\
-        -I${PACKAGE_PREFIX}/include \
-        ${CXXFLAGS} \
-    " \
-    DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-gnu
 
 # llvm build
-FROM CMAKE_BUILDER AS LLVM_BUILDER
+FROM LLVM_DEPENDENCIES_BUILDER AS LLVM_BUILDER
 
 RUN CXXFLAGS="\
         -I${PACKAGE_PREFIX}/include \
@@ -454,14 +379,8 @@ FROM OPENGL_HEADERS_BUILDER AS SDL_BUILDER
 RUN DISABLE_POLLY=TRUE \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-sdl-cross
 
-# jwasm (ml64) cross compiler
-FROM SDL_BUILDER AS JWASM_BUILDER
-
-RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-jwasm
-
 # android-ndk package
-FROM JWASM_BUILDER AS ANDROID_NDK_BUILDER
+FROM SDL_BUILDER AS ANDROID_NDK_BUILDER
 
 ENV ANDROID_NDK_VERSION=r21d
 
@@ -505,6 +424,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-headers \
      ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-runtime \
      ${PACKAGE_BASE_NAME}-platform-sdk-cmake-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-android \
+     ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-android \
@@ -544,103 +464,13 @@ FROM ANDROID_COMPILER_RT_BUILDER AS ANDROID_LIBUNWIND_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
 
-# android zlib build
-FROM ANDROID_LIBUNWIND_BUILDER AS ANDROID_ZLIB_BUILDER
+# android llvm dependencies build
+FROM ANDROID_LIBUNWIND_BUILDER AS ANDROID_LLVM_DEPENDENCIES_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
-
-# android icu build
-FROM ANDROID_ZLIB_BUILDER AS ANDROID_ICU_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross
-
-# android xz build
-FROM ANDROID_ICU_BUILDER AS ANDROID_XZ_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
-
-# android libxml2 build
-FROM ANDROID_XZ_BUILDER AS ANDROID_LIBXML2_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
-
-# android util-linux build
-FROM ANDROID_LIBXML2_BUILDER AS ANDROID_UTIL_LINUX_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-util-linux-cross
-
-# android ncurses build
-FROM ANDROID_UTIL_LINUX_BUILDER AS ANDROID_NCURSES_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross
-
-# android libedit build
-FROM ANDROID_NCURSES_BUILDER AS ANDROID_LIBEDIT_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross
-
-# android sqlite3 build
-FROM ANDROID_LIBEDIT_BUILDER AS ANDROID_SQLITE3_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross
-
-# android openssl build
-FROM ANDROID_SQLITE3_BUILDER AS ANDROID_OPENSSL_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross
-
-# android libssh2 build
-FROM ANDROID_OPENSSL_BUILDER AS ANDROID_LIBSSH2_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
-
-# android curl build
-FROM ANDROID_LIBSSH2_BUILDER AS ANDROID_CURL_BUILDER
-
-RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
-
-# android libexpat build
-FROM ANDROID_CURL_BUILDER AS ANDROID_LIBEXPAT_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross
-
-# android libffi build
-FROM ANDROID_LIBEXPAT_BUILDER AS ANDROID_LIBFFI_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
-
-# android libpython build
-FROM ANDROID_LIBFFI_BUILDER AS ANDROID_LIBPYTHON_BUILDER
-
-RUN DISABLE_POLLY=TRUE \
-    PYTHON_FOR_BUILD=${PACKAGE_ROOT}/bin/python2.7 \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-python-cross
-
-# android z3 build
-FROM ANDROID_LIBPYTHON_BUILDER AS ANDROID_Z3_BUILDER
-
-RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
-
-# android git build
-FROM ANDROID_Z3_BUILDER AS ANDROID_GIT_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-git-cross
-
-# android ninja build
-FROM ANDROID_GIT_BUILDER AS ANDROID_NINJA_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
-
-# android cmake build
-FROM ANDROID_NINJA_BUILDER AS ANDROID_CMAKE_BUILDER
-
-RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-android
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-android
 
 # android llvm build
-FROM ANDROID_CMAKE_BUILDER AS ANDROID_LLVM_BUILDER
+FROM ANDROID_LLVM_DEPENDENCIES_BUILDER AS ANDROID_LLVM_BUILDER
 
 RUN DISABLE_POLLY=TRUE \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-android
@@ -776,8 +606,8 @@ ENV HOST_ARCH=haswell \
     HOST_PROCESSOR=x86_64
 
 ENV HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
-    SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
+    PACKAGE_PREFIX=/usr/local/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
+    SYSROOT=/usr/local/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
     SYSTEM_NAME=Windows
 
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows \
@@ -840,7 +670,7 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-windows
 # windows mingw-winpthreads build
 FROM WINDOWS_LIBUNWIND_BUILDER AS WINDOWS_MINGW_WINPTHREADS_BUILDER
 
-RUN export LD=${PACKAGE_ROOT}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+RUN export LD=${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-winpthreads-cross
 
 # windows libcxxabi build
@@ -884,8 +714,8 @@ ENV HOST_ARCH=wasm32 \
     HOST_PROCESSOR=wasm32
 
 ENV HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
-    SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
+    PACKAGE_PREFIX=/usr/local/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
+    SYSROOT=/usr/local/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
     SYSTEM_NAME=Wasi
 
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt-wasi \

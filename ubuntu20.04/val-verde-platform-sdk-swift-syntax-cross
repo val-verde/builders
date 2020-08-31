@@ -23,7 +23,7 @@ rsync -aPx release/Swift*.swiftmodule install${PACKAGE_PREFIX}/lib/swift
 rsync -aPx release/libSwift*.a install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}
 
 # Build the package
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Install the package
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install

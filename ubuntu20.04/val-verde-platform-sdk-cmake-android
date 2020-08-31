@@ -19,14 +19,14 @@ wget https://raw.githubusercontent.com/libarchive/libarchive/master/contrib/andr
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DHAVE_POLL_FINE_EXITCODE=0 \
     -DHAVE_POLL_FINE_EXITCODE__TRYRUN_OUTPUT=1 \
     ${SOURCE_ROOT} \
 
 # Build the package
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Install the package
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install

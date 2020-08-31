@@ -9,7 +9,7 @@ export SOURCE_PACKAGE_NAME=${SOURCE_PACKAGE_BASE_NAME}-runtime
 export SOURCE_PACKAGE_VERSION=${ANDROID_NDK_VERSION}
 export ANDROID_NDK_STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_BASE_NAME}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export TOOLCHAIN_ROOT=${ANDROID_NDK_STAGE_ROOT}/install${PACKAGE_ROOT}/android-ndk-${ANDROID_NDK_VERSION}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}
+export TOOLCHAIN_ROOT=${ANDROID_NDK_STAGE_ROOT}/install${BUILD_PACKAGE_PREFIX}/android-ndk-${ANDROID_NDK_VERSION}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
@@ -25,7 +25,7 @@ rsync -aPx ${TOOLCHAIN_ROOT}/sysroot/usr/lib/${HOST_TRIPLE}/*.so \
 rm -f ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/libz.*
 
 # Build the package
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Install the package
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install

@@ -16,7 +16,7 @@ git clone https://github.com/apple/${SOURCE_PACKAGE_NAME}.git  --single-branch -
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     ${SOURCE_ROOT}
 
 # Build the components

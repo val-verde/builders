@@ -1,0 +1,81 @@
+#!/bin/bash
+
+set -e
+
+# zlib build
+CMAKE_BINDIR=/usr/bin \
+MAKE_PROGRAM=/usr/bin/ninja \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
+
+# icu build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c
+
+# xz build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
+
+# libxml2 build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
+
+# util-linux build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-util-linux-cross
+
+# ncurses build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross
+
+# libedit build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross
+
+# sqlite3 build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross
+
+# libssh2 build
+CMAKE_BINDIR=/usr/bin \
+MAKE_PROGRAM=/usr/bin/ninja \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
+
+# curl build
+CMAKE_BINDIR=/usr/bin \
+DISABLE_POLLY=TRUE \
+MAKE_PROGRAM=/usr/bin/ninja \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
+
+# libexpat build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross
+
+# libffi build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
+
+# libpython build
+DISABLE_POLLY=TRUE \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-python-cross
+
+# z3 build
+CMAKE_BINDIR=/usr/bin \
+DISABLE_POLLY=TRUE \
+MAKE_PROGRAM=/usr/bin/ninja \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
+
+# git build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-git-cross
+
+# ninja build
+CMAKE_BINDIR=/usr/bin \
+CXXFLAGS="\
+    -I${PACKAGE_PREFIX}/include \
+    ${CXXFLAGS} \
+" \
+MAKE_PROGRAM=/usr/bin/ninja \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
+
+# cmake build
+CMAKE_BINDIR=/usr/bin \
+CXXFLAGS="\
+    -I${PACKAGE_PREFIX}/include \
+    ${CXXFLAGS} \
+" \
+DISABLE_POLLY=TRUE \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross
+
+# jwasm (ml64) cross compiler build
+DISABLE_POLLY=TRUE \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-jwasm

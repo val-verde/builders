@@ -22,7 +22,7 @@ mkdir -p ${STAGE_ROOT}/bin
 ln -sf /usr/bin/true \
        ${STAGE_ROOT}/bin/makeinfo
 
-BINDIR=${PACKAGE_ROOT}/bin
+BINDIR=${BUILD_PACKAGE_PREFIX}/bin
 OPTIMIZATION_FLAGS=${OPTIMIZATION_FLAGS:-"-DNDEBUG"}
 
 AS_FOR_TARGET=${AS_FOR_TARGET:-${BINDIR}/llvm-as}
@@ -36,11 +36,11 @@ CPPFLAGS_FOR_TARGET="${CFLAGS_FOR_TARGET} ${CPPFLAGS_FOR_TARGET}"
 CXXFLAGS_FOR_TARGET="${CFLAGS_FOR_TARGET} ${CXXFLAGS_FOR_TARGET}"
 
 export PATH=${PATH}:${STAGE_ROOT}/bin
-${PACKAGE_BASE_NAME}-platform-sdk-configure \
+${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     /sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/configure \
     --disable-multilib \
     --disable-werror \
-    --prefix=${STAGE_ROOT}/install${PACKAGE_ROOT} \
+    --prefix=${STAGE_ROOT}/install${BUILD_PACKAGE_PREFIX} \
     --target=${TARGET_TRIPLE} \
     --with-sysroot=${TARGET_SYSROOT} \
     AR_FOR_TARGET=${BINDIR}/llvm-ar \
@@ -65,8 +65,8 @@ ${PACKAGE_BASE_NAME}-platform-sdk-configure \
 
 # Build the components
 make -j${NUM_PROCESSORS}
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-make-build
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Install the package
-source /sources/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install

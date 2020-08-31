@@ -7,4 +7,4 @@ args=`echo ${args}|sed -r 's/-implib:/\/implib:/g'`
 args=`echo ${args}|sed -r 's/-Bsymbolic//g'`
 args=`echo ${args}|sed -r 's/--version-script=[^[:space:]]+//g'`
 
-${PACKAGE_ROOT}/bin/ld.lld ${args}
+${BUILD_PACKAGE_PREFIX}/bin/ld.lld ${args}
