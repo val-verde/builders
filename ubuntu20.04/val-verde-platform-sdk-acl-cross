@@ -4,8 +4,8 @@ set -e
 
 # Set all environment vars
 export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
-export SOURCE_PACKAGE_NAME=util-linux
-export SOURCE_PACKAGE_VERSION=2.36
+export SOURCE_PACKAGE_NAME=acl
+export SOURCE_PACKAGE_VERSION=2.2.52
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
@@ -13,24 +13,36 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 
 rm -rf ${SOURCE_ROOT}
 cd /sources
-wget -c https://cdn.kernel.org/pub/linux/utils/${SOURCE_PACKAGE_NAME}/v${SOURCE_PACKAGE_VERSION}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
-tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
+wget -c http://download.savannah.gnu.org/releases/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.src.tar.gz
+tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.src.tar.gz
+sed -i \
+    "s/'auto-import'/'ld'/g" \
+    ${SOURCE_ROOT}/configure
+
 mkdir -p ${STAGE_ROOT}
+rsync -ax ${SOURCE_ROOT}/* ${STAGE_ROOT}/
+
 cd ${STAGE_ROOT}
+
+export CFLAGS="\
+    -I${PACKAGE_PREFIX}/include \
+    ${CFLAGS} \
+"
+export CPPFLAGS="\
+    -I${PACKAGE_PREFIX}/include \
+    ${CPPFLAGS} \
+"
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
-    ${SOURCE_ROOT}/configure \
-    ac_cv_func_setns=yes \
-    ac_cv_func_unshare=yes \
-    --disable-all-programs \
-    --disable-bash-completion \
+    ${STAGE_ROOT}/configure \
     --disable-static \
-    --enable-libblkid \
-    --enable-libmount \
-    --enable-libuuid \
     --enable-shared \
+    --includedir=${PACKAGE_PREFIX}/include \
     --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX}
 
-# Build the package
+# Build the components
+make -j${NUM_PROCESSORS}
+
+TARGETS="install install-dev install-lib" \
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 
 # Build the package

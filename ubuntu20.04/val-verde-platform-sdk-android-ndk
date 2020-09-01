@@ -21,7 +21,19 @@ cd ${STAGE_ROOT}
 mkdir -p install${BUILD_PACKAGE_PREFIX}
 mv ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} install${BUILD_PACKAGE_PREFIX}
 
+patch -p1 \
+      -i ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-dirent-versionsort.diff \
+         ${STAGE_ROOT}/install${BUILD_PACKAGE_PREFIX}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/sysroot/usr/include/dirent.h
 patch -i ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-linux-time-h.diff \
          ${STAGE_ROOT}/install${BUILD_PACKAGE_PREFIX}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/sysroot/usr/include/linux/time.h
+patch -p1 \
+      -i ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-string-strverscmp.diff \
+         ${STAGE_ROOT}/install${BUILD_PACKAGE_PREFIX}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/sysroot/usr/include/string.h
+patch -p1 \
+      -i ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-dirent-versionsort.diff \
+         ${STAGE_ROOT}/install${BUILD_PACKAGE_PREFIX}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}/sysroot/usr/include/dirent.h
 patch -i ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-linux-time-h.diff \
          ${STAGE_ROOT}/install${BUILD_PACKAGE_PREFIX}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}/sysroot/usr/include/linux/time.h
+patch -p1 \
+      -i ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-string-strverscmp.diff \
+         ${STAGE_ROOT}/install${BUILD_PACKAGE_PREFIX}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}/sysroot/usr/include/string.h

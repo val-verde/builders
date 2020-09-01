@@ -37,7 +37,7 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-wineditline-cross
 bash ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross
 
 # windows openssl build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-openssl-windows
+bash ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross
 
 # windows libssh2 build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross

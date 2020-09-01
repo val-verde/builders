@@ -95,11 +95,21 @@ RUN git clone https://github.com/${PACKAGE_BASE_NAME}/llvm-project.git \
 
 # platform sdk package build scripts
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
+     ${PACKAGE_BASE_NAME}-platform-sdk-acl-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-attr-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-autoconf-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-automake-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-bash-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-bison-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt \
+     ${PACKAGE_BASE_NAME}-platform-sdk-coreutils-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-gawk-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-gettext-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-git-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-gperf-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-icu4c \
      ${PACKAGE_BASE_NAME}-platform-sdk-jwasm \
      ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-cross \
@@ -108,11 +118,12 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-util-linux-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libcap-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-gnu \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap \
+     ${PACKAGE_BASE_NAME}-platform-sdk-make-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-musl-libc \
      ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross \
@@ -120,9 +131,12 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-opengl-headers-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-python-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-pkg-config-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit \
      ${PACKAGE_BASE_NAME}-platform-sdk-sdl-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-sed-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp \
+     ${PACKAGE_BASE_NAME}-platform-sdk-strace-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-argument-parser \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark \
@@ -137,7 +151,11 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core \
+     ${PACKAGE_BASE_NAME}-platform-sdk-systemd \
+     ${PACKAGE_BASE_NAME}-platform-sdk-tar-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-util-linux-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-vapor \
+     ${PACKAGE_BASE_NAME}-platform-sdk-wget-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-yams \
      ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross \
@@ -209,6 +227,10 @@ RUN apt remove -y clang \
                   llvm \
                   llvm-10 \
     && apt autoremove -y
+
+# llvm dependencies' patches
+COPY patch-coreutils-ls-android.diff \
+     /sources/
 
 FROM LLVM_BOOTSTRAP_BUILDER AS LLVM_DEPENDENCIES_BUILDER
 
@@ -385,12 +407,13 @@ FROM SDL_BUILDER AS ANDROID_NDK_BUILDER
 
 ENV ANDROID_NDK_VERSION=r21d
 
-RUN export SOURCE_PACKAGE_NAME=android-ndk \
-    && export SOURCE_PACKAGE_VERSION=${ANDROID_NDK_VERSION} \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
-    && mkdir ${SOURCE_ROOT}
+RUN mkdir /sources/android-ndk-${ANDROID_NDK_VERSION}
 
-COPY android-ndk-linux-time-h.diff /sources/android-ndk-${ANDROID_NDK_VERSION}
+# android ndk patches
+COPY android-ndk-dirent-versionsort.diff \
+     android-ndk-linux-time-h.diff \
+     android-ndk-string-strverscmp.diff \
+     /sources/android-ndk-${ANDROID_NDK_VERSION}/
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk
 
@@ -618,7 +641,6 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-mingw-w64-headers \
      ${PACKAGE_BASE_NAME}-platform-sdk-mingw-w64-crt \
-     ${PACKAGE_BASE_NAME}-platform-sdk-openssl-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-windows \

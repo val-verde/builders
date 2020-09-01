@@ -18,19 +18,48 @@ tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-export ANDROID_NDK_HOME=/sources/build-staging/android-ndk-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/install${BUILD_PACKAGE_PREFIX}/android-ndk-${ANDROID_NDK_VERSION}
-export PATH=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}/bin:${PATH}
+OPENSSL_DIR=/etc/ssl
+OPENSSL_OS=${HOST_OS}
+OPENSSL_PROCESSOR=${HOST_PROCESSOR}
+
+if [ "${HOST_OS}" = "android" ]; then
+    OPENSSL_DIR=etc/ssl
+    OPENSSL_PROCESSOR=arm64
+    OPENSSL_DEFINES="-D__ANDROID_API__=${HOST_OS_API_LEVEL}"
+
+    export ANDROID_NDK_HOME=/sources/build-staging/android-ndk-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/install${BUILD_PACKAGE_PREFIX}/android-ndk-${ANDROID_NDK_VERSION}
+    export PATH=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}/bin:${PATH}
+elif [ "${HOST_OS}" = "gnu" ]; then
+    OPENSSL_OS=linux
+fi
+
+if [ "${OPENSSL_PROCESSOR}" = "aarch64" ]; then
+    OPENSSL_PROCESSOR=arm64
+fi
+
+OPENSSL_TARGET=${OPENSSL_OS}-${OPENSSL_PROCESSOR}
+
+if [ "${HOST_OS}" = "mingw32" ]; then
+    OPENSSL_TARGET=mingw64
+fi
+
+AR=${AR:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar} \
+CC=${CC:-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang} \
+RANLIB=${RANLIB:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib} \
+RC=${RC:-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rc} \
 ${SOURCE_ROOT}/Configure \
-    -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
     --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
-    --openssldir=etc/ssl \
-    ${HOST_OS}-arm64 \
+    --openssldir=${OPENSSL_DIR} \
+    "${OPENSSL_DEFINES}" \
+    ${OPENSSL_TARGET}
+
+# Build the components
+make -j${NUM_PROCESSORS}
+
+TARGETS="install_sw install_ssldirs" \
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 
 # Build the package
-make -j${NUM_PROCESSORS}
-make -j${NUM_PROCESSORS} install_sw
-make -j${NUM_PROCESSORS} install_ssldirs
-
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Install the package

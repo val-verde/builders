@@ -5,6 +5,18 @@ set -e
 # android zlib build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
 
+# android autoconf build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-autoconf-cross
+
+# android automake build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-automake-cross
+
+# android make build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-make-cross
+
+# android pkg-config build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-pkg-config-cross
+
 # android icu build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross
 
@@ -14,8 +26,8 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
 # android libxml2 build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
 
-# android util-linux build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-util-linux-cross
+# android libffi build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
 
 # android ncurses build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross
@@ -29,6 +41,9 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross
 # android openssl build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross
 
+# android libexpat build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross
+
 # android libssh2 build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
 
@@ -36,11 +51,62 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
 DISABLE_POLLY=TRUE \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
 
-# android libexpat build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross
+# android gettext build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-gettext-cross
 
-# android libffi build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
+# android attr build
+CFLAGS="\
+    -D__THROW= \
+    ${CFLAGS} \
+" \
+DISABLE_POLLY=TRUE \
+LDFLAGS="\
+    -lintl \
+    ${LDFLAGS} \
+" \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-attr-cross
+
+# android acl build
+CFLAGS="\
+    -D__THROW= \
+    ${CFLAGS} \
+" \
+DISABLE_POLLY=TRUE \
+LDFLAGS="\
+    -lintl \
+    ${LDFLAGS} \
+" \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-acl-cross
+
+# android util-linux build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-util-linux-cross
+
+# android strace build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-strace-cross
+
+# android sed build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-sed-cross
+
+# android bison build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-bison-cross
+
+# android gawk build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-gawk-cross
+
+# android gperf build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-gperf-cross
+
+# android tar build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-tar-cross
+
+# android bash build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-bash-cross
+
+# android coreutils build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-coreutils-cross
+
+# android wget build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-wget-cross
 
 # android libpython build
 DISABLE_POLLY=TRUE \
@@ -51,10 +117,6 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-python-cross
 DISABLE_POLLY=TRUE \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
 
-# android jwasm (ml64) cross compiler build
-DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-jwasm
-
 # android git build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-git-cross
 
@@ -64,3 +126,7 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
 # android cmake build
 DISABLE_POLLY=TRUE \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-android
+
+# android jwasm (ml64) cross compiler build
+DISABLE_POLLY=TRUE \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-jwasm
