@@ -34,6 +34,7 @@ apt install -y \
     ninja-build \
     nvidia-cuda-dev \
     nvidia-cuda-toolkit \
+    patchelf \
     pkg-config \
     python \
     python3-distutils \

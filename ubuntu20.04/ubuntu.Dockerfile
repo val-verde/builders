@@ -82,6 +82,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-make-build \
      ${PACKAGE_BASE_NAME}-platform-sdk-ninja-build \
      ${PACKAGE_BASE_NAME}-platform-sdk-package-build \
      ${PACKAGE_BASE_NAME}-platform-sdk-package-install \
+     ${PACKAGE_BASE_NAME}-platform-sdk-rpath-fixup \
      ${BUILD_PACKAGE_PREFIX}/bin/
 
 # linux sources
@@ -413,7 +414,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-yams-cross \
@@ -490,7 +491,7 @@ RUN DISABLE_POLLY=TRUE \
 FROM ANDROID_SWIFT_BUILDER AS ANDROID_LLDB_BUILDER
 
 RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb-cross
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb-android
 
 # android libdispatch build
 FROM ANDROID_LLDB_BUILDER AS ANDROID_LIBDISPATCH_BUILDER
