@@ -237,6 +237,28 @@ FROM LLVM_BOOTSTRAP_BUILDER AS LLVM_DEPENDENCIES_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-gnu
 
+# remove host tools as they are superceded by native equivalents
+RUN apt remove -y cmake \
+                  bison \
+                  expat \
+                  git \
+                  libedit-dev \
+                  libffi-dev \
+                  libicu-dev \
+                  libncurses-dev \
+                  libpython2.7 \
+                  libpython2.7-dev \
+                  libsqlite3-dev \
+                  libssl-dev \
+                  libxml2-dev \
+                  libz3-dev \
+                  make \
+                  ninja-build \
+                  pkg-config \
+                  uuid-dev \
+                  zlib1g-dev \
+    && apt autoremove -y
+
 # llvm build
 FROM LLVM_DEPENDENCIES_BUILDER AS LLVM_BUILDER
 
@@ -245,22 +267,7 @@ RUN CXXFLAGS="\
         ${CXXFLAGS} \
     " \
     DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
-    && apt remove -y cmake \
-                     git \
-                     libedit-dev \
-                     libffi-dev \
-                     libicu-dev \
-                     libncurses-dev \
-                     libpython2.7 \
-                     libpython2.7-dev \
-                     libsqlite3-dev \
-                     libxml2-dev \
-                     libz3-dev \
-                     ninja-build \
-                     uuid-dev \
-                     zlib1g-dev \
-    && apt autoremove -y
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project
 
 # cmark build
 FROM LLVM_BUILDER AS CMARK_BUILDER
