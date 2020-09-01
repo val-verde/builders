@@ -22,6 +22,8 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     --disable-all-programs \
     --disable-bash-completion \
     --disable-static \
+    --enable-libblkid \
+    --enable-libmount \
     --enable-libuuid \
     --enable-shared \
     --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX}
