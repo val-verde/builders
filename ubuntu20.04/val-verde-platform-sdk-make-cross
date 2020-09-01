@@ -15,14 +15,29 @@ rm -rf ${SOURCE_ROOT}
 cd /sources
 wget -c https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
 tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
+sed -i \
+    's/fcntl (intptr_t fd, int cmd, ...)/unused_fcntl (intptr_t fd, int cmd, ...)/g' \
+    ${SOURCE_ROOT}/src/output.h \
+    ${SOURCE_ROOT}/src/w32/compat/posixfcn.c
 
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
+SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
+
+if [ "${SDK_PLATFORM_DIR}" = "windows" ]; then
+    MAKE_FS_CMD="--enable-case-insensitive-file-system"
+fi
+
+CFLAGS="\
+    -U__MINGW32__ \
+    ${CFLAGS} \
+" \
 FORCE_UNSAFE_CONFIGURE=1 \
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
-    --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX}
+    --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+    "${MAKE_FS_CMD}"
 
 # Build the components
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build

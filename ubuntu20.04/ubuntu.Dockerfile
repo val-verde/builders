@@ -61,6 +61,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-configure \
      ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
      ${PACKAGE_BASE_NAME}-platform-sdk-clang \
      ${PACKAGE_BASE_NAME}-platform-sdk-clang++ \
+     ${PACKAGE_BASE_NAME}-platform-sdk-gcc-mingw32 \
      ${PACKAGE_BASE_NAME}-platform-sdk-ml64 \
      ${PACKAGE_BASE_NAME}-platform-sdk-mslink \
      ${PACKAGE_BASE_NAME}-platform-sdk-rc \
@@ -72,6 +73,7 @@ RUN chmod +x ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-confi
              ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
              ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang \
              ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang++ \
+             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-gcc-mingw32 \
              ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ml64 \
              ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
              ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rc \
@@ -252,11 +254,9 @@ RUN apt remove -y cmake \
                   libssl-dev \
                   libxml2-dev \
                   libz3-dev \
-                  make \
                   ninja-build \
                   pkg-config \
                   uuid-dev \
-                  zlib1g-dev \
     && apt autoremove -y
 
 # llvm build

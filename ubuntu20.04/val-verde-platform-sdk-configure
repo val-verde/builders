@@ -142,6 +142,7 @@ LIBS="${LIBS}" \
      SIZE=${SIZE} \
      STRIP=${STRIP} \
      STRINGS=${STRINGS} \
+     WINDRES=${RC} \
     --build=${BUILD_TRIPLE} \
     --host=${CONFIGURE_HOST_TRIPLE} \
     "${CONFIGURE_FLAGS}" \

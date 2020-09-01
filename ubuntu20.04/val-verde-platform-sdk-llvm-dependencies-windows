@@ -5,6 +5,18 @@ set -e
 # windows zlib build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
 
+# windows autoconf build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-autoconf-cross
+
+# windows automake build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-automake-cross
+
+# windows make build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-make-cross
+
+# windows pkg-config build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-pkg-config-cross
+
 # windows icu build
 LDFLAGS="\
     -fuse-ld=${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
@@ -24,8 +36,14 @@ LDFLAGS="\
     -Wc,-fuse-ld=${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
     ${LDFLAGS} \
 " \
-Z_LIBS="-lzlib" \
+Z_LIBS="\
+    -lzlib \
+    ${Z_LIBS} \
+" \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
+
+# windows libffi build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
 
 # android ncurses build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross
@@ -39,6 +57,12 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross
 # windows openssl build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross
 
+# windows libcap build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-libcap-cross
+
+# windows libexpat build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross
+
 # windows libssh2 build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
 
@@ -46,11 +70,18 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
 DISABLE_POLLY=TRUE \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
 
-# windows libexpat build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross
+# windows bison build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-bison-cross
 
-# windows libffi build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
+# windows gperf build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-gperf-cross
+
+# windows wget build
+ZLIB_LIBS="\
+    -lzlib \
+    ${ZLIB_LIBS} \
+" \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-wget-cross
 
 # windows z3 build
 DISABLE_POLLY=TRUE \
