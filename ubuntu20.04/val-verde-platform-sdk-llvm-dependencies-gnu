@@ -98,6 +98,9 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-bash-cross
 # coreutils build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-coreutils-cross
 
+# dpkg build
+# bash ${PACKAGE_BASE_NAME}-platform-sdk-dpkg-cross
+
 # systemd build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-systemd
 

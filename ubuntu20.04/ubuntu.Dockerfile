@@ -105,6 +105,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt \
      ${PACKAGE_BASE_NAME}-platform-sdk-coreutils-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-dpkg-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-gawk-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-gettext-cross \

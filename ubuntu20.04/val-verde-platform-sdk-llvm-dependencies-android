@@ -105,6 +105,9 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-bash-cross
 # android coreutils build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-coreutils-cross
 
+# android dpkg build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-dpkg-cross
+
 # android wget build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-wget-cross
 
