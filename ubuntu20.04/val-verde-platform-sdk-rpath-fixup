@@ -5,6 +5,10 @@ set -e
 SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
 
 if [ "${SDK_PLATFORM_DIR}" != "windows" ]; then
+    if [ "${SDK_PLATFORM_DIR}" != "${HOST_OS}" ]; then
+        SDK_PLATFORM_DIR=${HOST_OS}
+    fi
+
     COMPONENT_RPATH=${COMPONENT_RPATH:-"\$ORIGIN/../lib:\$ORIGIN/../lib/swift/${SDK_PLATFORM_DIR}"}
 
     for COMPONENT in ${COMPONENTS}; do
