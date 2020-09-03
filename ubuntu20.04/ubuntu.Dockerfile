@@ -347,10 +347,10 @@ FROM YAMS_BUILDER AS SWIFT_DRIVER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver
 
-# swiftpm build
+# swift argument parser build
 FROM SWIFT_DRIVER AS SWIFT_ARGUMENT_PARSER_BUILDER
 
-RUN bash val-verde-platform-sdk-swift-argument-parser
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-argument-parser
 
 # swiftpm build
 FROM SWIFT_ARGUMENT_PARSER_BUILDER AS SWIFTPM_BUILDER
