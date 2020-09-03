@@ -18,7 +18,7 @@ cd ${STAGE_ROOT}
 
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DPYTHON_EXECUTABLE=/usr/bin/python2 \
-    ${SOURCE_ROOT} \
+    ${SOURCE_ROOT}
 
 # Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build

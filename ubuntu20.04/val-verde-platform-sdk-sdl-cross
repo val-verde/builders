@@ -27,7 +27,7 @@ fi
 
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     "${PLATFORM_CMD}" \
-    ${SOURCE_ROOT} \
+    ${SOURCE_ROOT}
 
 # Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
