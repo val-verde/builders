@@ -1,0 +1,26 @@
+diff --git a/layers/CMakeLists.txt b/layers/CMakeLists.txt
+index 323512dd..d1134e8e 100644
+--- a/layers/CMakeLists.txt
++++ b/layers/CMakeLists.txt
+@@ -139,7 +139,7 @@ endif()
+
+ include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/generated ${VulkanHeaders_INCLUDE_DIR})
+
+-if(WIN32)
++if(MSVC)
+     # Applies to all configurations
+     add_definitions(-D_CRT_SECURE_NO_WARNINGS -DNOMINMAX)
+     # Avoid: fatal error C1128: number of sections exceeded object file format limit: compile with /bigobj
+diff --git a/layers/vk_loader_platform.h b/layers/vk_loader_platform.h
+index 3c7528b1..7d296c24 100644
+--- a/layers/vk_loader_platform.h
++++ b/layers/vk_loader_platform.h
+@@ -25,7 +25,7 @@
+
+ #if defined(_WIN32)
+ // WinSock2.h must be included *BEFORE* windows.h
+-#include <WinSock2.h>
++#include <winsock2.h>
+ #endif  // _WIN32
+
+ #include "vulkan/vk_platform.h"
