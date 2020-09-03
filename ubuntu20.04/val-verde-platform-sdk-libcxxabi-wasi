@@ -44,7 +44,8 @@ mkdir -p ${STAGE_ROOT}/install${PACKAGE_PREFIX}/include
 cp ${SOURCE_ROOT}/include/* \
    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/include
 
+# Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
-# Build the package
+# Install the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install

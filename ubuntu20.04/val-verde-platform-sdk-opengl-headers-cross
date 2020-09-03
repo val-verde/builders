@@ -13,13 +13,16 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 
 # Configure the build
 rm -rf ${SOURCE_ROOT}
-git clone https://github.com/KhronosGroup/OpenGL-Registry.git --single-branch --branch master ${SOURCE_ROOT}
+git clone https://github.com/KhronosGroup/OpenGL-Registry.git \
+    --branch master \
+    --single-branch \
+    ${SOURCE_ROOT}
 
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
 mkdir -p install${PACKAGE_PREFIX}/include
-rsync -aPx ${SOURCE_ROOT}/api/* \
+rsync -aPx ${SOURCE_ROOT}/api/GL \
            install${PACKAGE_PREFIX}/include/
 
 # Build the package

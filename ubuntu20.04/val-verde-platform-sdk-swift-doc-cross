@@ -11,8 +11,12 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 
 # Configure & build the package
 rm -rf ${SOURCE_ROOT}
-git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT}
+git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
+          --branch dutch-master \
+          --single-branch \
+          ${SOURCE_ROOT}
 
+# Build the components
 mkdir -p ${STAGE_ROOT}
 cd ${SOURCE_ROOT}
 ${PACKAGE_BASE_NAME}-platform-sdk-swift-build

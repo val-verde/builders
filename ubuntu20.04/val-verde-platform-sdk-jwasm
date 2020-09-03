@@ -12,7 +12,10 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 
 # Configure the package
 rm -rf ${SOURCE_ROOT}
-git clone https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT}
+git clone https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}.git \
+          --branch master \
+          --single-branch \
+          ${SOURCE_ROOT}
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 

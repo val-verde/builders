@@ -35,10 +35,11 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DENABLE_SWIFT=TRUE \
     ${SOURCE_ROOT}
 
-# Package the components
+# Build the components
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 mv ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/swift/windows/*.a \
    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
 
+# Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build

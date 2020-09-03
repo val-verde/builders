@@ -20,7 +20,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     --with-default-msvcrt=ucrt \
     --with-default-win32-winnt=0x0A00
 
-# Build the package
+# Build the components
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 
 cp /sources/mingw-sdk.modulemap \

@@ -23,7 +23,6 @@ rsync -ax ${SOURCE_ROOT}/* \
 
 
 # Build the components
-
 lib=lib \
 prefix=/ \
 AR=${AR:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar} \

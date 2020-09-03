@@ -16,8 +16,14 @@ USE_NEWPM=${USE_NEWPM:-TRUE}
 # Configure the package
 rm -rf /sources/swift-corelibs-libdispatch \
        ${SOURCE_ROOT}
-git clone https://github.com/val-verde/swift-corelibs-libdispatch.git --single-branch --branch dutch-master /sources/swift-corelibs-libdispatch
-git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git  --single-branch --branch dutch-master ${SOURCE_ROOT}
+git clone https://github.com/${PACKAGE_BASE_NAME}/swift-corelibs-libdispatch.git \
+          --branch dutch-master \
+          --single-branch \
+          /sources/swift-corelibs-libdispatch
+git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
+          --branch dutch-master \
+          --single-branch \
+          ${SOURCE_ROOT}
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \

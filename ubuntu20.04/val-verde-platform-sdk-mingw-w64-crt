@@ -20,10 +20,11 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
     --with-default-msvcrt=ucrt
 
-# Build the package
+# Build the components
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 
-ln -sf libuuid.a ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/libwinuuid.a
+ln -sf libuuid.a \
+       ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/libwinuuid.a
 
 # Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build

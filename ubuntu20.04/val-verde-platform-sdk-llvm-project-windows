@@ -235,7 +235,7 @@ DST_SDK_PLATFORM_DIR=${DST_SDK_PLATFORM_DIR:-${SDK_PLATFORM_DIR}}
 ln -sf ${CLANG_RT_LIB} \
        install${PACKAGE_PREFIX}/lib/clang/10.0.0/lib/${DST_SDK_PLATFORM_DIR}/${DST_CLANG_RT_LIB}
 
-# Package the components
+# Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # remove libcxx, libcxxabi and libunwind as they are superceded by llvm-project.
@@ -244,5 +244,5 @@ apt remove -y ${PACKAGE_BASE_NAME}-libcxx-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_
               ${PACKAGE_BASE_NAME}-libcxxabi-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} \
               ${PACKAGE_BASE_NAME}-libunwind-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
-# Build the package
+# Install the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install

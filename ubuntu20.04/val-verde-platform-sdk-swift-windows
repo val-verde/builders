@@ -101,7 +101,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DUUID_LIBRARIES=${PACKAGE_PREFIX}/lib/libuuid.a \
     ${SOURCE_ROOT}
 
-# Package the components
+# Build the components
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 rsync -aPx ${STAGE_ROOT}/lib/*.a \
@@ -119,5 +119,5 @@ rm -f ${STAGE_ROOT}/install${PACKAGE_PREFIX}/bin/*libdispatch* \
 # Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
-# Build the package
+# Install the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install

@@ -11,14 +11,15 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 
 # Configure & build the package
 rm -rf ${SOURCE_ROOT}
-git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git \
-          --single-branch \
+git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
           --branch dutch-master \
+          --single-branch \
           ${SOURCE_ROOT}
 
 mkdir -p ${STAGE_ROOT}
 cd ${SOURCE_ROOT}
 
+# Build the components
 SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
 SWIFT_BUILD_FLAGS="\
     -Xlinker -lc++ \

@@ -118,8 +118,8 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-gawk-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-gettext-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-git-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-gperf-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-glslang-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-gperf-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-graphics-sdk-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-icu4c \
      ${PACKAGE_BASE_NAME}-platform-sdk-jwasm \
