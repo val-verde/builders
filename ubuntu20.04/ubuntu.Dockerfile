@@ -115,6 +115,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-dpkg-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-egl-headers-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-filament-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-gawk-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-gettext-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-git-cross \
@@ -415,6 +416,10 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit
 FROM PYTHONKIT_BUILDER AS GRAPHICS_SDK_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-graphics-sdk-cross
+
+# filament build
+RUN DISABLE_POLLY=TRUE \
+    bash val-verde-platform-sdk-filament-cross
 
 # android-ndk package
 FROM GRAPHICS_SDK_BUILDER AS ANDROID_NDK_BUILDER
