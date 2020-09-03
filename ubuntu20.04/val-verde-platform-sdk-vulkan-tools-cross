@@ -19,13 +19,24 @@ git clone https://github.com/KhronosGroup/${SOURCE_PACKAGE_NAME}.git \
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
+if [ "${HOST_OS}" = "mingw32" ]; then
+    LIB_SUFFIX=dll.a
+    LIB_VERSION_SUFFIX=-1
+    export LIBS="\
+        -lgdi32 \
+        ${LDFLAGS} \
+    "
+else
+    LIB_SUFFIX=so
+fi
+
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DBUILD_ICD=FALSE \
     -DBUILD_WSI_DIRECTFB_SUPPORT=FALSE \
     -DBUILD_WSI_WAYLAND_SUPPORT=FALSE \
     -DBUILD_WSI_XLIB_SUPPORT=FALSE \
     -DGLSLANG_VALIDATOR=${BUILD_PACKAGE_PREFIX}/bin/glslangValidator \
-    -DVulkan_LIBRARY=${PACKAGE_PREFIX}/lib/libvulkan-1.dll.a \
+    -DVulkan_LIBRARY=${PACKAGE_PREFIX}/lib/libvulkan${LIB_VERSION_SUFFIX}.${LIB_SUFFIX} \
     ${SOURCE_ROOT}
 
 # Build the components
