@@ -1,0 +1,11 @@
+--- a/ls.c	2020-09-01 09:13:57.495418346 +0000
++++ b/ls.c	2020-09-01 09:13:32.955275118 +0000
+@@ -3018,7 +3018,7 @@
+           if (errno != EOVERFLOW)
+             break;
+         }
+-#ifdef __linux__
++#if defined(__linux__) && !defined(__ANDROID__)
+       else if (! found_any_entries)
+         {
+           /* If readdir finds no directory entries at all, not even "." or

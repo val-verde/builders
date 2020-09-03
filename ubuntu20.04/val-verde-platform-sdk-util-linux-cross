@@ -19,9 +19,13 @@ mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
+    ac_cv_func_setns=yes \
+    ac_cv_func_unshare=yes \
     --disable-all-programs \
     --disable-bash-completion \
     --disable-static \
+    --enable-libblkid \
+    --enable-libmount \
     --enable-libuuid \
     --enable-shared \
     --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX}

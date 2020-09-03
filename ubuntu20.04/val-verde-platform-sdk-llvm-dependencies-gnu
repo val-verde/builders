@@ -7,6 +7,18 @@ CMAKE_BINDIR=/usr/bin \
 MAKE_PROGRAM=/usr/bin/ninja \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
 
+# autoconf build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-autoconf-cross
+
+# automake build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-automake-cross
+
+# make build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-make-cross
+
+# pkg-config build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-pkg-config-cross
+
 # icu build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c
 
@@ -16,8 +28,8 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
 # libxml2 build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
 
-# util-linux build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-util-linux-cross
+# libffi build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
 
 # ncurses build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross
@@ -27,6 +39,15 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross
 
 # sqlite3 build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross
+
+# openssl build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross
+
+# libcap build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-libcap-cross
+
+# libexpat build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross
 
 # libssh2 build
 CMAKE_BINDIR=/usr/bin \
@@ -39,11 +60,52 @@ DISABLE_POLLY=TRUE \
 MAKE_PROGRAM=/usr/bin/ninja \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
 
-# libexpat build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross
+# gettext build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-gettext-cross
 
-# libffi build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
+# attr build
+DISABLE_POLLY=TRUE \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-attr-cross
+
+# acl build
+DISABLE_POLLY=TRUE \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-acl-cross
+
+# util-linux build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-util-linux-cross
+
+# strace build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-strace-cross
+
+# sed build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-sed-cross
+
+# bison build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-bison-cross
+
+# gawk build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-gawk-cross
+
+# gperf build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-gperf-cross
+
+# tar build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-tar-cross
+
+# bash build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-bash-cross
+
+# coreutils build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-coreutils-cross
+
+# dpkg build
+# bash ${PACKAGE_BASE_NAME}-platform-sdk-dpkg-cross
+
+# systemd build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-systemd
+
+# wget build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-wget-cross
 
 # libpython build
 DISABLE_POLLY=TRUE \
