@@ -159,7 +159,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-format \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild \
@@ -385,7 +385,7 @@ RUN SWIFT_BUILD_FLAGS="\
         -Xcc -I${PACKAGE_PREFIX}/include \
         ${SWIFT_BUILD_FLAGS} \
     " \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross
 
 # sourcekit-lsp build
 FROM SWIFT_DOC_BUILDER AS SOURCEKIT_LSP_BUILDER
@@ -452,7 +452,6 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-cross \
@@ -469,7 +468,6 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-headers \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-android \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-android \
      /sources/
@@ -613,7 +611,7 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross
 # android swift-doc build
 FROM ANDROID_SWIFT_FORMAT_BUILDER AS ANDROID_SWIFT_DOC_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-android
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross
 
 # android sourcekit-lsp build
 FROM ANDROID_SWIFT_DOC_BUILDER AS ANDROID_SOURCEKIT_LSP_BUILDER
