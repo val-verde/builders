@@ -161,11 +161,11 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-format \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core \
      ${PACKAGE_BASE_NAME}-platform-sdk-systemd \
      ${PACKAGE_BASE_NAME}-platform-sdk-tar-cross \
@@ -371,12 +371,12 @@ RUN dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-argument-parser-${HOST_OS}${H
 # swift-syntax build
 FROM SWIFTPM_BUILDER AS SWIFT_SYNTAX_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross
 
 # swift-format build
 FROM SWIFT_SYNTAX_BUILDER AS SWIFT_FORMAT_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-format
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross
 
 # swift-doc build
 FROM SWIFT_FORMAT_BUILDER AS SWIFT_DOC_BUILDER
@@ -453,11 +453,9 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-yams-cross \
      /sources/
 
