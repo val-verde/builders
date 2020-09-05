@@ -12,10 +12,10 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 
 # Configure the build
 rm -rf ${SOURCE_ROOT}
-git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT}
-wget https://raw.githubusercontent.com/libarchive/libarchive/master/contrib/android/include/android_lf.h \
-     -O ${SOURCE_ROOT}/Utilities/cmlibarchive/libarchive/android_lf.h
-
+git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
+          --branch dutch-master \
+          --single-branch \
+          ${SOURCE_ROOT}
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
@@ -33,8 +33,10 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DHAVE_POLL_FINE_EXITCODE__TRYRUN_OUTPUT=1 \
     ${SOURCE_ROOT}
 
-# Build the package
+# Build the components
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+
+# Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Install the package

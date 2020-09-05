@@ -49,8 +49,11 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DSQLite3_LIBRARY=${PACKAGE_PREFIX}/lib/libsqlite3.dll.a \
     ${SOURCE_ROOT}
 
-# Package the components
+# Build the components
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
-rsync -aPx ${STAGE_ROOT}/lib/*.dll* install${PACKAGE_PREFIX}/lib
+rsync -aPx ${STAGE_ROOT}/lib/*.dll* \
+           install${PACKAGE_PREFIX}/lib
+
+# Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build

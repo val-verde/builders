@@ -4,18 +4,18 @@ set -e
 
 # Set all environment vars
 export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
-export SOURCE_PACKAGE_NAME=jwasm
+export SOURCE_PACKAGE_NAME=vulkan-headers
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
-# Configure the package
 rm -rf ${SOURCE_ROOT}
-git clone https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}.git \
+git clone https://github.com/KhronosGroup/${SOURCE_PACKAGE_NAME}.git \
           --branch master \
           --single-branch \
           ${SOURCE_ROOT}
+
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
@@ -23,13 +23,10 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     ${SOURCE_ROOT}
 
 # Build the components
-ninja -j${NUM_PROCESSORS}
-mkdir -p ${STAGE_ROOT}/install${PACKAGE_PREFIX}/bin
-
-cp ${STAGE_ROOT}/jwasm* \
-   ${STAGE_ROOT}/install${PACKAGE_PREFIX}/bin/
-
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 # Build the package
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+
+# Install the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install

@@ -31,6 +31,9 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
 # Build the components
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
+rsync -aPx ${STAGE_ROOT}/bin \
+           ${STAGE_ROOT}/lib \
+           install${PACKAGE_PREFIX}
+
 # Build the package
-rsync -aPx ${STAGE_ROOT}/bin ${STAGE_ROOT}/lib install${PACKAGE_PREFIX}
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build

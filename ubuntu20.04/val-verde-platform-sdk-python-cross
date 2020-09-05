@@ -27,7 +27,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     --enable-shared \
     --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX}
 
-# Build the package
+# Build the components
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 
 # Build the package

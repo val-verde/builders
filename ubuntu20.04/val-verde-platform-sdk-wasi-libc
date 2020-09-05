@@ -12,15 +12,23 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 
 # Configure the package
 rm -rf ${SOURCE_ROOT}
-git clone https://github.com/WebAssembly/${SOURCE_PACKAGE_NAME}.git --single-branch --branch master ${SOURCE_ROOT}
-
+git clone https://github.com/WebAssembly/${SOURCE_PACKAGE_NAME}.git \
+          --branch master \
+          --single-branch \
+          ${SOURCE_ROOT}
+rsync -aPx ${SOURCE_ROOT}/* \
+           ${STAGE_ROOT}/
+cd ${STAGE_ROOT}
 mkdir -p ${STAGE_ROOT}/install${PACKAGE_PREFIX}
 
-# Build the package
-cd ${SOURCE_ROOT}
-export TARGETS="INSTALL_DIR=${STAGE_ROOT}/install${PACKAGE_PREFIX} OBJDIR=${STAGE_ROOT}"
+# Build the components
+TARGETS="\
+    INSTALL_DIR=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+    OBJDIR=${STAGE_ROOT} \
+" \
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 
+# Build the package
 cd ${STAGE_ROOT}
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 

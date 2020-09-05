@@ -104,8 +104,3 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross
 
 DISABLE_POLLY=TRUE \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp-windows
-
-# windows sdl build
-DISABLE_POLLY=TRUE \
-DXSDK_DIR=${SYSROOT} \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-sdl-cross

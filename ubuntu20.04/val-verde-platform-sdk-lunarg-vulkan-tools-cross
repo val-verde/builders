@@ -4,22 +4,33 @@ set -e
 
 # Set all environment vars
 export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
-export SOURCE_PACKAGE_NAME=pythonkit
+export SOURCE_PACKAGE_NAME=lunarg-vulkan-tools
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
-# Configure the package
 rm -rf ${SOURCE_ROOT}
-git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
-          --branch dutch-master \
+git clone https://github.com/LunarG/VulkanTools.git \
           --single-branch \
+          --branch master \
           ${SOURCE_ROOT}
+
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+    -DBUILD_WSI_DIRECTFB_SUPPORT=FALSE \
+    -DBUILD_WSI_WAYLAND_SUPPORT=FALSE \
+    -DBUILD_WSI_XLIB_SUPPORT=FALSE \
+    -DJSONCPP_INCLUDE_DIR=/sources/spirv-headers/tools/buildHeaders/jsoncpp/dist \
+    -DJSONCPP_SEARCH_PATH=/sources/spirv-headers/tools/buildHeaders/jsoncpp/dist \
+    -DJSONCPP_SOURCE_DIR=/sources/spirv-headers/tools/buildHeaders/jsoncpp/dist \
+    -DVkLayer_utils_LIBRARY=${PACKAGE_PREFIX}/lib/libVkLayer_utils.a \
+    -DVulkan_LIBRARY=${PACKAGE_PREFIX}/lib/libvulkan-1.dll.a \
+    -DVULKAN_HEADERS_INSTALL_DIR=${PACKAGE_PREFIX} \
+    -DVULKAN_LOADER_INSTALL_DIR=${PACKAGE_PREFIX} \
+    -DVULKAN_VALIDATIONLAYERS_INSTALL_DIR=${PACKAGE_PREFIX} \
     ${SOURCE_ROOT}
 
 # Build the components

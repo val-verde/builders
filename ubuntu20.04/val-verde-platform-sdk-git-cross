@@ -17,8 +17,10 @@ fi
 
 # Configure the package
 rm -rf ${SOURCE_ROOT}
-git clone https://github.com/val-verde/${SOURCE_PACKAGE_NAME}.git --single-branch --branch dutch-master ${SOURCE_ROOT}
-
+git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
+          --branch dutch-master \
+          --single-branch \
+          ${SOURCE_ROOT}
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
@@ -34,9 +36,11 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ac_cv_iconv_omits_bom=true \
     ac_cv_snprintf_returns_bogus=false
 
-# Build the package
-export TARGETS="NEEDS_LIBRT=${NEEDS_LIBRT} install"
+# Build the components
+TARGETS="NEEDS_LIBRT=${NEEDS_LIBRT} install" \
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
+
+# Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Install the package

@@ -13,7 +13,7 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 
 # Configure the package
 rm -rf ${SOURCE_ROOT}
-git clone https://github.com/val-verde/icu.git \
+git clone https://github.com/${PACKAGE_BASE_NAME}/icu.git \
           --branch dutch-master \
           --single-branch \
           ${SOURCE_ROOT}

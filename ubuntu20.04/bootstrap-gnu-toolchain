@@ -27,6 +27,8 @@ apt install -y \
     libssl-dev \
     libsqlite3-dev \
     libxext-dev \
+    libxi-dev \
+    libxxf86vm-dev \
     libxml2-dev \
     libz3-dev \
     lld \

@@ -87,6 +87,11 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-make-build \
      ${PACKAGE_BASE_NAME}-platform-sdk-rpath-fixup \
      ${BUILD_PACKAGE_PREFIX}/bin/
 
+# source patches
+COPY patch-coreutils-ls-android.diff \
+     patch-vulkan-validation-layers-windows-fixes.diff \
+     /sources/
+
 # linux sources
 FROM BASE AS SOURCES_BUILDER
 
@@ -108,13 +113,18 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-coreutils-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-dpkg-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-egl-headers-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-filament-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-gawk-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-gettext-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-git-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-glslang-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-gperf-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-graphics-sdk-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-icu4c \
      ${PACKAGE_BASE_NAME}-platform-sdk-jwasm \
+     ${PACKAGE_BASE_NAME}-platform-sdk-khr-headers-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross \
@@ -132,6 +142,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-opengl-headers-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-opengl-es-headers-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-python-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-pkg-config-cross \
@@ -139,6 +150,8 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-sdl-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-sed-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp \
+     ${PACKAGE_BASE_NAME}-platform-sdk-spirv-headers-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-spirv-tools-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-strace-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-argument-parser \
@@ -146,18 +159,22 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-format \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core \
      ${PACKAGE_BASE_NAME}-platform-sdk-systemd \
      ${PACKAGE_BASE_NAME}-platform-sdk-tar-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-util-linux-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-vapor \
+     ${PACKAGE_BASE_NAME}-platform-sdk-vulkan-headers-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-vulkan-loader-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-vulkan-tools-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-vulkan-validation-layers-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-wget-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-yams \
@@ -230,10 +247,6 @@ RUN apt remove -y clang \
                   llvm \
                   llvm-10 \
     && apt autoremove -y
-
-# llvm dependencies' patches
-COPY patch-coreutils-ls-android.diff \
-     /sources/
 
 FROM LLVM_BOOTSTRAP_BUILDER AS LLVM_DEPENDENCIES_BUILDER
 
@@ -335,10 +348,10 @@ FROM YAMS_BUILDER AS SWIFT_DRIVER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver
 
-# swiftpm build
+# swift argument parser build
 FROM SWIFT_DRIVER AS SWIFT_ARGUMENT_PARSER_BUILDER
 
-RUN bash val-verde-platform-sdk-swift-argument-parser
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-argument-parser
 
 # swiftpm build
 FROM SWIFT_ARGUMENT_PARSER_BUILDER AS SWIFTPM_BUILDER
@@ -358,12 +371,12 @@ RUN dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-argument-parser-${HOST_OS}${H
 # swift-syntax build
 FROM SWIFTPM_BUILDER AS SWIFT_SYNTAX_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross
 
 # swift-format build
 FROM SWIFT_SYNTAX_BUILDER AS SWIFT_FORMAT_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-format
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross
 
 # swift-doc build
 FROM SWIFT_FORMAT_BUILDER AS SWIFT_DOC_BUILDER
@@ -372,7 +385,7 @@ RUN SWIFT_BUILD_FLAGS="\
         -Xcc -I${PACKAGE_PREFIX}/include \
         ${SWIFT_BUILD_FLAGS} \
     " \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross
 
 # sourcekit-lsp build
 FROM SWIFT_DOC_BUILDER AS SOURCEKIT_LSP_BUILDER
@@ -399,19 +412,17 @@ FROM VAPOR_BUILDER AS PYTHONKIT_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit
 
-# opengl headers build
-FROM PYTHONKIT_BUILDER AS OPENGL_HEADERS_BUILDER
+# graphics sdk build
+FROM PYTHONKIT_BUILDER AS GRAPHICS_SDK_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-opengl-headers-cross
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-graphics-sdk-cross
 
-# sdl build
-FROM OPENGL_HEADERS_BUILDER AS SDL_BUILDER
-
+# filament build
 RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-sdl-cross
+    bash val-verde-platform-sdk-filament-cross
 
 # android-ndk package
-FROM SDL_BUILDER AS ANDROID_NDK_BUILDER
+FROM GRAPHICS_SDK_BUILDER AS ANDROID_NDK_BUILDER
 
 ENV ANDROID_NDK_VERSION=r21d
 
@@ -441,13 +452,10 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-yams-cross \
      /sources/
 
@@ -458,7 +466,6 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-headers \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-android \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-android \
      /sources/
@@ -602,7 +609,7 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross
 # android swift-doc build
 FROM ANDROID_SWIFT_FORMAT_BUILDER AS ANDROID_SWIFT_DOC_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-android
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross
 
 # android sourcekit-lsp build
 FROM ANDROID_SWIFT_DOC_BUILDER AS ANDROID_SOURCEKIT_LSP_BUILDER
@@ -616,19 +623,13 @@ FROM ANDROID_SOURCEKIT_LSP_BUILDER AS ANDROID_PYTHONKIT_BUILDER
 RUN DISABLE_POLLY=TRUE \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit-cross
 
-# android opengl headers build
-FROM ANDROID_PYTHONKIT_BUILDER AS ANDROID_OPENGL_HEADERS_BUILDER
+# android graphics sdk build
+FROM ANDROID_PYTHONKIT_BUILDER AS ANDROID_GRAPHICS_SDK_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-opengl-headers-cross
-
-# android sdl build
-FROM ANDROID_OPENGL_HEADERS_BUILDER AS ANDROID_SDL_BUILDER
-
-RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-sdl-cross
+# RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-graphics-sdk-cross
 
 # windows environment
-FROM ANDROID_SDL_BUILDER AS WINDOWS_SOURCES_BUILDER
+FROM ANDROID_GRAPHICS_SDK_BUILDER AS WINDOWS_SOURCES_BUILDER
 
 ENV HOST_ARCH=haswell \
     HOST_CPU=skylake \
@@ -734,8 +735,13 @@ FROM WINDOWS_SWIFT_TOOLS_BUILDER AS WINDOWS_SWIFT_SDK_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-sdk-windows
 
+# windows graphics sdk build
+FROM WINDOWS_SWIFT_SDK_BUILDER AS WINDOWS_GRAPHICS_SDK_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-graphics-sdk-cross
+
 # webassembly environment
-FROM WINDOWS_SWIFT_SDK_BUILDER AS WASI_SOURCES_BUILDER
+FROM WINDOWS_GRAPHICS_SDK_BUILDER AS WASI_SOURCES_BUILDER
 
 ENV HOST_ARCH=wasm32 \
     HOST_CPU=wasm32 \

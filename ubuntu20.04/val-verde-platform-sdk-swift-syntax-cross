@@ -10,17 +10,26 @@ export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
-# Configure & build the package
+# Configure the package
+rm -rf ${SOURCE_ROOT}
+git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
+          --branch dutch-master \
+          --single-branch \
+          ${SOURCE_ROOT}
+
+# Build the components
 mkdir -p ${STAGE_ROOT}
 cd ${SOURCE_ROOT}
-
 ${PACKAGE_BASE_NAME}-platform-sdk-swift-build
 
 cd ${STAGE_ROOT}
 mkdir -p install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}
-rsync -aPx release/Swift*.swiftdoc install${PACKAGE_PREFIX}/lib/${HOST_OS}
-rsync -aPx release/Swift*.swiftmodule install${PACKAGE_PREFIX}/lib/swift
-rsync -aPx release/libSwift*.a install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}
+rsync -aPx release/Swift*.swiftdoc \
+           install${PACKAGE_PREFIX}/lib/${HOST_OS}
+rsync -aPx release/Swift*.swiftmodule \
+           install${PACKAGE_PREFIX}/lib/swift
+rsync -aPx release/libSwift*.a \
+           install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}
 
 # Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
