@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -e
+
+function generate-control-file {
+    PACKAGE_NAME=$1
+    if [[ "$HOST_ARCH" =~ ^(broadwell|haswell|skylake|x86_64)$ ]];
+    then
+        SYSTEM_ARCH=amd64
+    elif [[ "$HOST_ARCH" =~ ^(wasm32|wasm64)$ ]];
+    then
+        SYSTEM_ARCH=wasi
+    elif [[ "$HOST_ARCH" =~ ^(armv8-a)$ ]];
+    then
+        SYSTEM_ARCH=aarch64
+    fi
+
+    # Template definition
+    cat << EOF
+Package: ${PACKAGE_NAME}
+Version: 1.0
+Architecture: ${SYSTEM_ARCH}
+Maintainer: Val Verde Inc. <openvalverde@gmail.com>
+Section: contrib/devel
+Priority: optional
+Depends:
+Description: ${PACKAGE_NAME} deb for ${SYSTEM_ARCH}
+EOF
+}
+

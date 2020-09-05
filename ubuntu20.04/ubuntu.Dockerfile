@@ -105,7 +105,10 @@ RUN chmod +x ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-confi
              ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swift-build \
              ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swiftc
 
-COPY ${PACKAGE_BASE_NAME}-platform-sdk-make-build \
+COPY ${PACKAGE_BASE_NAME}-platform-sdk-deb-build \
+     ${PACKAGE_BASE_NAME}-platform-sdk-gen-deb-files \
+     ${PACKAGE_BASE_NAME}-platform-sdk-gen-gpg-key \
+     ${PACKAGE_BASE_NAME}-platform-sdk-make-build \
      ${PACKAGE_BASE_NAME}-platform-sdk-ninja-build \
      ${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build \
      ${PACKAGE_BASE_NAME}-platform-sdk-package-install \
@@ -214,6 +217,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-yams \
      ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross \
+     ${PACKAGE_BASE_NAME}-deb-templates \
      /sources/
 
 # LTO configuration: [OFF | Full | Thin]
