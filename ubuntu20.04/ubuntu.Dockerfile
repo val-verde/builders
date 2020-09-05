@@ -96,7 +96,7 @@ COPY patch-coreutils-ls-android.diff \
 FROM BASE AS SOURCES_BUILDER
 
 RUN git clone https://github.com/${PACKAGE_BASE_NAME}/llvm-project.git \
-              --branch dutch-master  \
+              --branch dutch-master \
               --single-branch \
               /sources/llvm-project
 
@@ -106,6 +106,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-attr-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-autoconf-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-automake-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-baikonur \
      ${PACKAGE_BASE_NAME}-platform-sdk-bash-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-bison-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross \
@@ -170,7 +171,6 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-systemd \
      ${PACKAGE_BASE_NAME}-platform-sdk-tar-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-util-linux-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-vapor \
      ${PACKAGE_BASE_NAME}-platform-sdk-vulkan-headers-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-vulkan-loader-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-vulkan-tools-cross \
@@ -397,8 +397,8 @@ RUN DISABLE_POLLY=TRUE \
     " \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp
 
-# vapor build
-FROM SOURCEKIT_LSP_BUILDER AS VAPOR_BUILDER
+# baikonur build
+FROM SOURCEKIT_LSP_BUILDER AS BAIKONUR_BUILDER
 
 RUN DISABLE_POLLY=TRUE \
     SWIFT_BUILD_FLAGS="\
@@ -407,10 +407,10 @@ RUN DISABLE_POLLY=TRUE \
         -Xcxx -Wno-unused-command-line-argument \
         ${SWIFT_BUILD_FLAGS} \
     " \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-vapor
+    bash val-verde-platform-sdk-baikonur
 
 # pythonkit build
-FROM VAPOR_BUILDER AS PYTHONKIT_BUILDER
+FROM BAIKONUR_BUILDER AS PYTHONKIT_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit
 
