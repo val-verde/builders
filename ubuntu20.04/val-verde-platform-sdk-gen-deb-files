@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -e
+
+VERSION=${VERSION:='1.0.0'}
+DEPENDS=${DEPENDS:=''}
+
+function generate-control-file {
+    PACKAGE_NAME=$1
+    if [[ "$HOST_ARCH" =~ ^(broadwell|haswell|skylake|x86_64)$ ]];
+    then
+        SYSTEM_ARCH=amd64
+    elif [[ "$HOST_ARCH" =~ ^(wasm32|wasm64)$ ]];
+    then
+        SYSTEM_ARCH=wasi
+    elif [[ "$HOST_ARCH" =~ ^(armv8-a)$ ]];
+    then
+        SYSTEM_ARCH=aarch64
+    fi
+
+    # Template definition
+    cd /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+    echo 10 > DEBIAN/compat
+    sed "s|DEPENDS|${DEPENDS}|g; \
+         s|PACKAGE_NAME|${PACKAGE_NAME}|g; \
+         s|PACKAGE_BASE_NAME|${PACKAGE_BASE_NAME}|g; \
+         s|SOURCE_PACKAGE_VERSION|${SOURCE_PACKAGE_VERSION}|g; \
+         s|SYSTEM_ARCH|${SYSTEM_ARCH}|g; \
+         s|VERSION|${VERSION}|g" \
+         /sources/control.tmpl > DEBIAN/control
+    sed "s|PACKAGE_NAME|${PACKAGE_NAME}|g" \
+         /sources/copyright.tmpl > DEBIAN/copyright
+    sed "s|CURRENT_DATE|`date`|g; \
+         s|PACKAGE_NAME|${PACKAGE_NAME}|g; \
+         s|SOURCE_PACKAGE_VERSION|${SOURCE_PACKAGE_VERSION}|g" \
+         /sources/changelog.tmpl > DEBIAN/changelog
+}
+

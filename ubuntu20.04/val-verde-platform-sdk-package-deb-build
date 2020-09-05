@@ -1,4 +1,5 @@
 #!/bin/bash
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-config-deb
 
 set -e
 
@@ -11,3 +12,5 @@ alien ${PACKAGE_NAME}.tar
 rm ${PACKAGE_NAME}.tar
 mv *${SOURCE_PACKAGE_NAME}*.deb \
    ${DEB_PATH}/${PACKAGE_NAME}.deb
+
+config-deb "${PACKAGE_NAME}"

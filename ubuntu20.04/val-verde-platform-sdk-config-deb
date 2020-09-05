@@ -1,0 +1,16 @@
+#!/bin/bash
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-gen-deb-files
+
+set -e
+
+function config-deb {
+    PACKAGE_NAME=$1
+    cd /sources
+    mkdir -p /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+    dpkg-deb -R ${PACKAGE_NAME}.deb /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+    rm ${PACKAGE_NAME}.deb
+    generate-control-file "${PACKAGE_NAME}"
+    dpkg -b /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+    mv /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}.deb ${DEB_PATH}/${PACKAGE_NAME}.deb
+    rm -r /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}
+}
