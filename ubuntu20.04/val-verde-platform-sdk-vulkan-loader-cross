@@ -11,31 +11,25 @@ export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
 rm -rf ${SOURCE_ROOT}
-git clone https://github.com/KhronosGroup/${SOURCE_PACKAGE_NAME}.git \
-          --branch master \
+git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
+          --branch dutch-master \
           --single-branch \
           ${SOURCE_ROOT}
-sed -i \
-    's/Cfgmgr32/cfgmgr32/g' \
-    ${SOURCE_ROOT}/loader/CMakeLists.txt
 
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-CFLAGS="\
-    -DSTRSAFE_NO_DEPRECATE \
-    -Wno-incompatible-pointer-types \
-    -Wno-sign-compare \
-    -Wno-unused-command-line-argument \
-    -Wno-unused-function \
-    -Wno-unused-variable \
-    ${CFLAGS} \
-" \
+if [ "${HOST_OS}" = "android" ]; then
+    CMAKE_ANDROID_DEFINE_CMD="-DANDROID=TRUE"
+fi
+
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DBUILD_WSI_DIRECTFB_SUPPORT=FALSE \
     -DBUILD_WSI_WAYLAND_SUPPORT=FALSE \
     -DBUILD_WSI_XLIB_SUPPORT=FALSE \
     -DCMAKE_ASM_MASM_COMPILER_WORKS=FALSE \
+    -DPKG_CONFIG_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/pkg-config \
+    "${CMAKE_ANDROID_DEFINE_CMD}" \
     ${SOURCE_ROOT}
 
 # Build the components
