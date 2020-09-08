@@ -21,10 +21,10 @@ CFLAGS="\
     ${CFLAGS} \
 " \
 CXXFLAGS="\
-    -cxx-isystem ${SOURCE_ROOT}/libcxx/include \
     -fPIC \
     -rtlib=compiler-rt \
     -stdlib=libc++ \
+    -stdlib++-isystem ${SOURCE_ROOT}/libcxx/include \
     ${CXXFLAGS} \
 " \
 LDFLAGS="\
