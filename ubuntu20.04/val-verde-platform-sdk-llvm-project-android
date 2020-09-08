@@ -20,6 +20,9 @@ git fetch origin dutch-android-master
 git checkout dutch-android-master
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
+
+export PATH=${PATH}:${LLVM_NATIVE_STAGE_ROOT}/bin
+
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DBUILD_SHARED_LIBS=FALSE \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \

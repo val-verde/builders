@@ -20,6 +20,8 @@ git checkout dutch-master
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
+export PATH=${PATH}:${LLVM_NATIVE_STAGE_ROOT}/bin
+
 CFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
