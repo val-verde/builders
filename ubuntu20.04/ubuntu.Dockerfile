@@ -403,6 +403,8 @@ FROM SOURCEKIT_LSP_BUILDER AS VAPOR_BUILDER
 RUN DISABLE_POLLY=TRUE \
     SWIFT_BUILD_FLAGS="\
         -Xcc -I${PACKAGE_PREFIX}/include \
+        -Xcxx -fno-modules \
+        -Xcxx -Wno-unused-command-line-argument \
         ${SWIFT_BUILD_FLAGS} \
     " \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-vapor
