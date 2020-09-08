@@ -21,8 +21,9 @@ rsync -aPx ${TOOLCHAIN_ROOT}/sysroot/usr/lib/${HOST_TRIPLE}/*.so \
            ${TOOLCHAIN_ROOT}/${HOST_TRIPLE}/lib64/*.a \
            ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib
 
-# Remove zlib components as they are rebuilt.
-rm -f ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/libz.*
+# Remove vulkan and zlib components as they are rebuilt.
+rm -f ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/libvulkan* \
+      ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/libz.*
 
 # Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build

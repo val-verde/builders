@@ -19,7 +19,12 @@ git clone https://github.com/KhronosGroup/${SOURCE_PACKAGE_NAME}.git \
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
+if [ "${HOST_OS}" = "android" ]; then
+    CMAKE_ANDROID_DEFINE_CMD="-DANDROID=1"
+fi
+
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+    "${CMAKE_ANDROID_DEFINE_CMD}" \
     ${SOURCE_ROOT}
 
 # Build the components

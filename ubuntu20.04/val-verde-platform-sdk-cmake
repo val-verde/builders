@@ -56,6 +56,8 @@ if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
 fi
 
 AR=${AR:-${BINTOOLS_PATH_PREFIX}ar}
+AS=${AS:-${BINDIR}/clang}
+AS_COMPILER_ID=${AS_COMPILER_ID:-Clang}
 CC=${CC:-${BINDIR}/clang}
 CPP=${CPP:-"${CC} -E"}
 CXX=${CXX:-${BINDIR}/clang++}
@@ -81,13 +83,13 @@ if [ -n "${HOST_CPU}" ]; then
     ARCH_FLAGS="${ARCH_FLAGS} -mtune=${HOST_CPU}"
 fi
 
-ASMFLAGS="\
+ASMFLAGS=${ASMFLAGS:-"\
     ${ARCH_FLAGS} \
     ${FLTO_CFLAG} \
     ${OPTIMIZATION_FLAGS} \
     -O${OPTIMIZATION_LEVEL} \
     ${ASMFLAGS} \
-"
+"}
 CFLAGS="\
     ${ARCH_FLAGS} \
     ${FLTO_CFLAG} \
@@ -112,9 +114,9 @@ LDFLAGS="\
 ${CMAKE_BINDIR}/cmake \
     -G Ninja \
     -DCMAKE_AR=${AR} \
-    -DCMAKE_ASM_COMPILER=${CC} \
+    -DCMAKE_ASM_COMPILER=${AS} \
     -DCMAKE_ASM_COMPILER_TARGET=${COMPILER_TARGET} \
-    -DCMAKE_ASM_COMPILER_ID=Clang \
+    -DCMAKE_ASM_COMPILER_ID=${AS_COMPILER_ID} \
     -DCMAKE_ASM_FLAGS_MINSIZEREL="${ASMFLAGS}" \
     -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
     -DCMAKE_C_COMPILER=${CC} \

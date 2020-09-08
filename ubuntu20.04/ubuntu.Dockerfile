@@ -417,10 +417,6 @@ FROM PYTHONKIT_BUILDER AS GRAPHICS_SDK_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-graphics-sdk-cross
 
-# filament build
-RUN DISABLE_POLLY=TRUE \
-    bash val-verde-platform-sdk-filament-cross
-
 # android-ndk package
 FROM GRAPHICS_SDK_BUILDER AS ANDROID_NDK_BUILDER
 
@@ -626,7 +622,7 @@ RUN DISABLE_POLLY=TRUE \
 # android graphics sdk build
 FROM ANDROID_PYTHONKIT_BUILDER AS ANDROID_GRAPHICS_SDK_BUILDER
 
-# RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-graphics-sdk-cross
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-graphics-sdk-cross
 
 # windows environment
 FROM ANDROID_GRAPHICS_SDK_BUILDER AS WINDOWS_SOURCES_BUILDER

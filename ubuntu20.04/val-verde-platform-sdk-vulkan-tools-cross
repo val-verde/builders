@@ -19,7 +19,15 @@ git clone https://github.com/KhronosGroup/${SOURCE_PACKAGE_NAME}.git \
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-if [ "${HOST_OS}" = "mingw32" ]; then
+CMAKE_XCB_CMD="-DBUILD_WSI_XCB_SUPPORT=TRUE"
+CUBE_WSI_SELECTION=XCB
+
+if [ "${HOST_OS}" = "android" ]; then
+    CMAKE_ANDROID_DEFINE_CMD="-DANDROID=1"
+    CUBE_WSI_SELECTION=Display
+    CMAKE_XCB_CMD="-DBUILD_WSI_XCB_SUPPORT=FALSE"
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    CMAKE_XCB_CMD="-DBUILD_WSI_XCB_SUPPORT=FALSE"
     LIB_SUFFIX=dll.a
     LIB_VERSION_SUFFIX=-1
     export LIBS="\
@@ -31,12 +39,17 @@ else
 fi
 
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+    -DBUILD_CUBE=FALSE \
     -DBUILD_ICD=FALSE \
     -DBUILD_WSI_DIRECTFB_SUPPORT=FALSE \
     -DBUILD_WSI_WAYLAND_SUPPORT=FALSE \
     -DBUILD_WSI_XLIB_SUPPORT=FALSE \
+    -DCUBE_WSI_SELECTION=${CUBE_WSI_SELECTION} \
     -DGLSLANG_VALIDATOR=${BUILD_PACKAGE_PREFIX}/bin/glslangValidator \
+    -DPKG_CONFIG_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/pkg-config \
     -DVulkan_LIBRARY=${PACKAGE_PREFIX}/lib/libvulkan${LIB_VERSION_SUFFIX}.${LIB_SUFFIX} \
+    "${CMAKE_ANDROID_DEFINE_CMD}" \
+    "${CMAKE_XCB_CMD}" \
     ${SOURCE_ROOT}
 
 # Build the components
