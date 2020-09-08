@@ -96,7 +96,7 @@ COPY patch-coreutils-ls-android.diff \
 FROM BASE AS SOURCES_BUILDER
 
 RUN git clone https://github.com/${PACKAGE_BASE_NAME}/llvm-project.git \
-              --branch dutch-master \
+              --branch dutch-master  \
               --single-branch \
               /sources/llvm-project
 
