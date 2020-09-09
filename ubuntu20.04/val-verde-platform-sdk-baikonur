@@ -27,10 +27,15 @@ SWIFT_BUILD_FLAGS="\
 ${PACKAGE_BASE_NAME}-platform-sdk-swift-build
 
 cd ${STAGE_ROOT}
-mkdir -p install${BUILD_PACKAGE_PREFIX}/bin
-mkdir -p install${BUILD_PACKAGE_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}
+mkdir -p install${PACKAGE_PREFIX}/bin
 rsync -aPx release/baikonur* \
-           install${BUILD_PACKAGE_PREFIX}/bin
+           install${PACKAGE_PREFIX}/bin
+
+# RPATH fixups
+COMPONENTS="\
+    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/bin/baikonur \
+" \
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rpath-fixup
 
 # Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build

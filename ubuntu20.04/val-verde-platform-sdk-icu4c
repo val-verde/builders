@@ -35,6 +35,17 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
 make -j${NUM_PROCESSORS}
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 
+# RPATH fixups
+COMPONENTS="\
+    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/libicudataswift.so \
+    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/libicui18nswift.so \
+    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/libicuioswift.so \
+    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/libicutestswift.so \
+    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/libicutuswift.so \
+    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/libicuucswift.so \
+" \
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rpath-fixup
+
 # Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 

@@ -22,14 +22,20 @@ mkdir -p ${STAGE_ROOT}
 cd ${SOURCE_ROOT}
 ${PACKAGE_BASE_NAME}-platform-sdk-swift-build
 
+SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
+
+if [ "${HOST_OS}" = "android" ]; then
+    SDK_PLATFORM_DIR="android"
+fi
+
 cd ${STAGE_ROOT}
-mkdir -p install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}
+mkdir -p install${PACKAGE_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
 rsync -aPx release/Swift*.swiftdoc \
-           install${PACKAGE_PREFIX}/lib/${HOST_OS}
+           install${PACKAGE_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
 rsync -aPx release/Swift*.swiftmodule \
-           install${PACKAGE_PREFIX}/lib/swift
+           install${PACKAGE_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
 rsync -aPx release/libSwift*.a \
-           install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}
+           install${PACKAGE_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/
 
 # Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
