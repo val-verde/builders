@@ -27,5 +27,12 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
 # Build the components
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
+# RPATH fixups
+COMPONENTS="\
+    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}/lib*.so \
+" \
+COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rpath-fixup
+
 # Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
