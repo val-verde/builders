@@ -22,6 +22,7 @@ CXXFLAGS="\
     -Wno-unused-command-line-argument \
     ${CXXFLAGS} \
 " \
+SYSTEM_NAME=Fuchsia \
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLIBCXX_CXX_ABI=libcxxabi \
     -DLIBCXX_CXX_ABI_INCLUDE_PATHS=${PACKAGE_PREFIX}/include \
