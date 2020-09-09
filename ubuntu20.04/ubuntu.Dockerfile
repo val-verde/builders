@@ -663,14 +663,11 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-yams-windows \
      /sources/
 
-COPY mingw-sdk.modulemap \
-     /sources/
-
 # mingw-w64 source
 RUN export SOURCE_PACKAGE_NAME=mingw-w64 \
     && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
     && git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
-                 --branch master \
+                 --branch dutch-master \
                  --single-branch \
                  ${SOURCE_ROOT}
 
