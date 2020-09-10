@@ -5,19 +5,37 @@ set -e
 # webassembly libc
 bash ${PACKAGE_BASE_NAME}-platform-sdk-wasi-libc
 
-# webassembly compiler-rt
+# webassembly compiler-rt (bootstrap)
+CFLAGS="\
+    -nostdlib \
+    ${CFLAGS} \
+" \
+CXXFLAGS="\
+    -nostdlib \
+    ${CXXFLAGS} \
+" \
 LDFLAGS="\
+    -Wl,--allow-undefined \
     -Wl,--no-entry \
     ${LDFLAGS} \
 " \
-SYSTEM_NAME=Fuchsia \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt-wasi
 
 # webassembly libcxxabi
-SYSTEM_NAME=Fuchsia \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-wasi
 
 # webassembly libcxx
 DISABLE_POLLY=TRUE \
-SYSTEM_NAME=Fuchsia \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-wasi
+
+# webassembly compiler-rt (rebuild with c++)
+CXXFLAGS="\
+    -stdlib++-isystem ${PACKAGE_PREFIX}/include/c++/v1 \
+    -I${PACKAGE_PREFIX}/include \
+    ${CXXFLAGS} \
+" \
+LDFLAGS="\
+    -L${PACKAGE_PREFIX}/lib \
+    ${LDFLAGS} \
+" \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt-wasi

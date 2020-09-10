@@ -20,12 +20,15 @@ git fetch origin dutch-android-master
 git checkout dutch-android-master
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
+
+export PATH=${PATH}:${LLVM_NATIVE_STAGE_ROOT}/bin
+
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DBUILD_SHARED_LIBS=FALSE \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
     -DCLANG_DEFAULT_RTLIB=compiler-rt \
     -DCLANG_DEFAULT_STD_C=gnu2x \
-    -DCLANG_DEFAULT_STD_CXX=gnucxx2a \
+    -DCLANG_DEFAULT_STD_CXX=gnucxx20 \
     -DCLANG_DEFAULT_UNWINDLIB=libunwind \
     -DCLANG_ENABLE_ARCMT=TRUE \
     -DCLANG_ENABLE_STATIC_ANALYZER=TRUE \
@@ -169,43 +172,6 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     ${SOURCE_ROOT}/llvm
 
 # Build the components
-export TARGETS="\
-    MLIRAffineOpsIncGen \
-    MLIRCallOpInterfacesIncGen \
-    MLIRFxpMathOpsIncGen \
-    MLIRGPUOpsIncGen \
-    MLIRGPUToNVVMIncGen \
-    MLIRLinalgOpsIncGen \
-    MLIRLinalgStructuredOpsIncGen \
-    MLIRLoopLikeInterfaceIncGen \
-    MLIRLoopOpsIncGen \
-    MLIRLLVMConversionsIncGen \
-    MLIRLLVMOpsIncGen \
-    MLIRNVVMOpsIncGen \
-    MLIRNVVMConversionsIncGen \
-    MLIROpAsmInterfacesIncGen \
-    MLIRQuantOpsIncGen \
-    MLIRROCDLConversionsIncGen \
-    MLIRROCDLOpsIncGen
-    MLIRStandardOpsIncGen \
-    MLIRStandardToSPIRVIncGen \
-    MLIRSPIRVAvailabilityIncGen \
-    MLIRSPIRVCanonicalizationIncGen \
-    MLIRSPIRVEnumAvailabilityIncGen \
-    MLIRSPIRVEnumsIncGen \
-    MLIRSPIRVOpsIncGen \
-    MLIRSPIRVTargetAndABIIncGen \
-    MLIRTableGenEnumsIncGen \
-    MLIRTableGenStructAttrIncGen \
-    MLIRTestLinalgTransformPatternsIncGen \
-    MLIRTestOpsIncGen \
-    MLIRTestVectorTransformPatternsIncGen \
-    MLIRTypeInferOpInterfaceIncGen \
-    MLIRVectorOpsIncGen \
-    MLIRVectorTransformPatternsIncGen"
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
-
-unset TARGETS
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 rsync -aPx ${STAGE_ROOT}/bin/llvm-as* \

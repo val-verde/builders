@@ -21,10 +21,10 @@ CFLAGS="\
     ${CFLAGS} \
 " \
 CXXFLAGS="\
-    -cxx-isystem ${SOURCE_ROOT}/libcxx/include \
     -fPIC \
     -rtlib=compiler-rt \
     -stdlib=libc++ \
+    -stdlib++-isystem ${SOURCE_ROOT}/libcxx/include \
     ${CXXFLAGS} \
 " \
 LDFLAGS="\
@@ -40,7 +40,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
     -DCLANG_DEFAULT_RTLIB=compiler-rt \
     -DCLANG_DEFAULT_STD_C=gnu2x \
-    -DCLANG_DEFAULT_STD_CXX=gnucxx2a \
+    -DCLANG_DEFAULT_STD_CXX=gnucxx20 \
     -DCLANG_DEFAULT_UNWINDLIB=libunwind \
     -DCLANG_ENABLE_ARCMT=FALSE \
     -DCLANG_ENABLE_STATIC_ANALYZER=FALSE \

@@ -23,8 +23,8 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
 # Build the components
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 
-cp /sources/mingw-sdk.modulemap \
-   ${STAGE_ROOT}/install${PACKAGE_PREFIX}/include/module.modulemap
+cp ${SOURCE_ROOT}/include/module.modulemap \
+   ${STAGE_ROOT}/install${PACKAGE_PREFIX}/include/
 ln -sf . \
        ${STAGE_ROOT}/install${PACKAGE_PREFIX}/mingw
 ln -sf . \

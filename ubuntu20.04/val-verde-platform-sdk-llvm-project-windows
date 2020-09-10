@@ -20,6 +20,8 @@ git checkout dutch-master
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
+export PATH=${PATH}:${LLVM_NATIVE_STAGE_ROOT}/bin
+
 CFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
@@ -41,7 +43,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
     -DCLANG_DEFAULT_RTLIB=compiler-rt \
     -DCLANG_DEFAULT_STD_C=gnu2x \
-    -DCLANG_DEFAULT_STD_CXX=gnucxx2a \
+    -DCLANG_DEFAULT_STD_CXX=gnucxx20 \
     -DCLANG_DEFAULT_UNWINDLIB=libunwind \
     -DCLANG_ENABLE_ARCMT=TRUE \
     -DCLANG_ENABLE_STATIC_ANALYZER=TRUE \
@@ -105,6 +107,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLIBCXXABI_ENABLE_STATIC=TRUE \
     -DLIBCXXABI_ENABLE_THREADS=TRUE \
     -DLIBCXXABI_HAS_NOSTDINCXX_FLAG=TRUE \
+    -DLIBCXXABI_HAS_WIN32_THREADS_API=TRUE \
     -DLIBCXXABI_INSTALL_LIBRARY=TRUE \
     -DLIBCXXABI_STATICALLY_LINK_UNWINDER_IN_SHARED_LIBRARY=FALSE \
     -DLIBCXXABI_USE_COMPILER_RT=TRUE \
@@ -176,7 +179,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DMLIR_CUDA_RUNNER_ENABLED=FALSE \
     -DMLIR_TABLEGEN=${LLVM_NATIVE_STAGE_ROOT}/bin/mlir-tblgen \
     -DPOLLY_ENABLE_GPGPU_CODEGEN=FALSE \
-    -DPYTHON_EXECUTABLE=/usr/bin/python2 \
+    -DPYTHON3_EXECUTABLE=/usr/bin/python3 \
     -DSANITIZER_CXX_ABI=libc++ \
     -DZ3_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DZ3_LIBRARIES=${PACKAGE_PREFIX}/lib/libz3.dll.a \
@@ -187,43 +190,6 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     ${SOURCE_ROOT}/llvm
 
 # Build the components
-export TARGETS="\
-    MLIRAffineOpsIncGen \
-    MLIRCallOpInterfacesIncGen \
-    MLIRFxpMathOpsIncGen \
-    MLIRGPUOpsIncGen \
-    MLIRGPUToNVVMIncGen \
-    MLIRLinalgOpsIncGen \
-    MLIRLinalgStructuredOpsIncGen \
-    MLIRLoopLikeInterfaceIncGen \
-    MLIRLoopOpsIncGen \
-    MLIRLLVMConversionsIncGen \
-    MLIRLLVMOpsIncGen \
-    MLIRNVVMOpsIncGen \
-    MLIRNVVMConversionsIncGen \
-    MLIROpAsmInterfacesIncGen \
-    MLIRQuantOpsIncGen \
-    MLIRROCDLConversionsIncGen \
-    MLIRROCDLOpsIncGen
-    MLIRStandardOpsIncGen \
-    MLIRStandardToSPIRVIncGen \
-    MLIRSPIRVAvailabilityIncGen \
-    MLIRSPIRVCanonicalizationIncGen \
-    MLIRSPIRVEnumAvailabilityIncGen \
-    MLIRSPIRVEnumsIncGen \
-    MLIRSPIRVOpsIncGen \
-    MLIRSPIRVTargetAndABIIncGen \
-    MLIRTableGenEnumsIncGen \
-    MLIRTableGenStructAttrIncGen \
-    MLIRTestLinalgTransformPatternsIncGen \
-    MLIRTestOpsIncGen \
-    MLIRTestVectorTransformPatternsIncGen \
-    MLIRTypeInferOpInterfaceIncGen \
-    MLIRVectorOpsIncGen \
-    MLIRVectorTransformPatternsIncGen"
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
-
-unset TARGETS
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 rsync -aPx ${STAGE_ROOT}/bin/llvm-as* \
@@ -237,7 +203,7 @@ DST_CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a
 SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
 DST_SDK_PLATFORM_DIR=${DST_SDK_PLATFORM_DIR:-${SDK_PLATFORM_DIR}}
 ln -sf ${CLANG_RT_LIB} \
-       install${PACKAGE_PREFIX}/lib/clang/10.0.0/lib/${DST_SDK_PLATFORM_DIR}/${DST_CLANG_RT_LIB}
+       install${PACKAGE_PREFIX}/lib/clang/11.0.0/lib/${DST_SDK_PLATFORM_DIR}/${DST_CLANG_RT_LIB}
 
 # Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
