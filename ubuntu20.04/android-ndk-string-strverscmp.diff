@@ -1,5 +1,5 @@
---- /usr/local/val-verde-platform-sdk-android29-armv8-a/sysroot/usr/include/string.h	2020-05-26 11:33:22.000000000 +0000
-+++ string.h	2020-09-02 05:21:40.113684512 +0000
+--- a/string.h	2020-05-26 11:33:22.000000000 +0000
++++ b/string.h	2020-09-02 05:21:40.113684512 +0000
 @@ -30,6 +30,7 @@
  #define _STRING_H
 
