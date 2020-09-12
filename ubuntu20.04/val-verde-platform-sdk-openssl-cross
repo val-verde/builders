@@ -24,7 +24,6 @@ OPENSSL_PROCESSOR=${HOST_PROCESSOR}
 
 if [ "${HOST_OS}" = "android" ]; then
     OPENSSL_DIR=/data/local/tmp${PACKAGE_PREFIX}/etc/ssl
-    OPENSSL_PROCESSOR=arm64
     OPENSSL_DEFINES="-D__ANDROID_API__=${HOST_OS_API_LEVEL}"
 
     export ANDROID_NDK_HOME=/sources/build-staging/android-ndk-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/install${BUILD_PACKAGE_PREFIX}/android-ndk-${ANDROID_NDK_VERSION}
