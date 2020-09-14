@@ -102,6 +102,7 @@ RUN git clone https://github.com/${PACKAGE_BASE_NAME}/llvm-project.git \
 
 # platform sdk package build scripts
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
+     ${PACKAGE_BASE_NAME}-platform-sdk-android-patch-elf-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-acl-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-attr-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-autoconf-cross \
@@ -145,7 +146,6 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-opengl-headers-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-opengl-es-headers-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-python-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-pkg-config-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit \
      ${PACKAGE_BASE_NAME}-platform-sdk-sdl-cross \
@@ -153,6 +153,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp \
      ${PACKAGE_BASE_NAME}-platform-sdk-spirv-headers-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-spirv-tools-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-strace-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-argument-parser \
@@ -435,16 +436,9 @@ COPY android-ndk-dirent-versionsort.diff \
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk
 
 # platform independent package builders
-COPY ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libgcc-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-python-cross \
+COPY ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp-android \
-     ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-argument-parser-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-cross \

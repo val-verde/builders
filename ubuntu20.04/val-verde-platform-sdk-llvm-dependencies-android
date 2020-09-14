@@ -130,6 +130,9 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
 DISABLE_POLLY=TRUE \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-android
 
+# android patch elf
+bash ${PACKAGE_BASE_NAME}-platform-sdk-android-patch-elf-cross
+
 # android jwasm (ml64) cross compiler build
 DISABLE_POLLY=TRUE \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-jwasm
