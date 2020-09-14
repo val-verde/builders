@@ -87,10 +87,6 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-wget-cross
 DISABLE_POLLY=TRUE \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
 
-# windows jwasm build
-DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-jwasm
-
 # windows ninja build
 DISABLE_POLLY=TRUE \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
@@ -103,3 +99,7 @@ LIBS="\
     ${LIBS} \
 " \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross
+
+# windows jwasm build
+DISABLE_POLLY=TRUE \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-jwasm

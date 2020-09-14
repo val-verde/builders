@@ -102,6 +102,7 @@ RUN git clone https://github.com/${PACKAGE_BASE_NAME}/llvm-project.git \
 
 # platform sdk package build scripts
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
+     ${PACKAGE_BASE_NAME}-platform-sdk-android-patch-elf-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-acl-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-attr-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-autoconf-cross \
