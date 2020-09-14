@@ -27,6 +27,8 @@ TARGETS="\
     CC=${CC} \
     CFLAGS=${CFLAGS} \
     DSTROOT=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+    OUTDIR=${STAGE_ROOT} \
+    install \
 " \
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 
