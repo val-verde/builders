@@ -19,7 +19,7 @@ mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
-    -DPYTHON_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/python \
+    -DPYTHON_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/python3 \
     ${SOURCE_ROOT}
 
 # Build the components

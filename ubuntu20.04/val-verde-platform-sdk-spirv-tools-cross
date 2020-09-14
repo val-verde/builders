@@ -20,6 +20,7 @@ mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+    -DPYTHON_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/python3 \
     -DSPIRV-Headers_SOURCE_DIR=${PACKAGE_PREFIX} \
     ${SOURCE_ROOT}
 

@@ -117,9 +117,32 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-dpkg-cross
 # android wget build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-wget-cross
 
-# android libpython build
+# android python build
+_PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
+CFLAGS="\
+    -fPIC \
+    -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
+    --sysroot=${SYSROOT} \
+    ${CFLAGS} \
+" \
+CPPFLAGS="\
+    -fPIC \
+    -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
+    --sysroot=${SYSROOT} \
+    ${CPPFLAGS} \
+" \
+CXXFLAGS="\
+    -fPIC \
+    -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
+    --sysroot=${SYSROOT} \
+    ${CXXFLAGS} \
+" \
 DISABLE_POLLY=TRUE \
-PYTHON_FOR_BUILD=${BUILD_PACKAGE_PREFIX}/bin/python2.7 \
+LDFLAGS="\
+    --sysroot=${SYSROOT} \
+    ${LDFLAGS} \
+" \
+PYTHON_FOR_BUILD=${BUILD_PACKAGE_PREFIX}/bin/python3 \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-python-cross
 
 # android z3 build

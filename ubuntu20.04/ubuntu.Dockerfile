@@ -265,16 +265,19 @@ RUN apt remove -y cmake \
                   libffi-dev \
                   libicu-dev \
                   libncurses-dev \
-                  libpython2.7 \
-                  libpython2.7-dev \
+                  libpython3.8 \
+                  libpython3.8-dev \
                   libsqlite3-dev \
                   libssl-dev \
                   libxml2-dev \
                   libz3-dev \
                   ninja-build \
                   pkg-config \
+                  python3 \
                   uuid-dev \
     && apt autoremove -y
+
+ENV PYTHONHOME=${PACKAGE_PREFIX}
 
 # llvm build
 FROM LLVM_DEPENDENCIES_BUILDER AS LLVM_BUILDER

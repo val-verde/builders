@@ -52,7 +52,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLLDB_ENABLE_WERROR=FALSE \
     -DLLDB_INCLUDE_TESTS=FALSE \
     -DLLDB_PATH_TO_NATIVE_SWIFT_BUILD=${SWIFT_NATIVE_STAGE_ROOT}/lib/cmake/swift \
-    -DLLDB_PYTHON_DEFAULT_RELATIVE_PATH=lib/python2.7 \
+    -DLLDB_PYTHON_DEFAULT_RELATIVE_PATH=lib/python3.10 \
     -DLLDB_TABLEGEN=/sources/build-staging/swift-lldb-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/bin/lldb-tblgen \
     -DLLVM_BUILD_LIBRARY_DIR=${LLVM_STAGE_ROOT}/lib \
     -DLLVM_BUILD_MAIN_SRC_DIR=${LLVM_SOURCE_ROOT}/llvm \
@@ -71,7 +71,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DNATIVE_Clang_DIR=${LLVM_NATIVE_STAGE_ROOT}/lib/cmake/clang \
     -DNATIVE_LLVM_DIR=${LLVM_NATIVE_STAGE_ROOT}/lib/cmake/lib \
     -DPANEL_LIBRARIES=${PACKAGE_PREFIX}/lib/libpanel.dll.a \
-    -DPYTHON_EXECUTABLE=/usr/bin/python2 \
+    -DPYTHON_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/python3 \
     -DSwift_DIR=${SWIFT_STAGE_ROOT}/lib/cmake/swift \
     -DSWIG_EXECUTABLE=/usr/bin/swig \
     ${SOURCE_ROOT}

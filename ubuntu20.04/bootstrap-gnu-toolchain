@@ -22,8 +22,8 @@ apt install -y \
     libmpfr-dev \
     libncurses-dev \
     libnvidia-compute-440 \
-    libpython2.7 \
-    libpython2.7-dev \
+    libpython3.8 \
+    libpython3.8-dev \
     libssl-dev \
     libsqlite3-dev \
     libxext-dev \
@@ -40,7 +40,7 @@ apt install -y \
     nvidia-cuda-toolkit \
     patchelf \
     pkg-config \
-    python \
+    python3 \
     python3-distutils \
     python3-six \
     rsync \

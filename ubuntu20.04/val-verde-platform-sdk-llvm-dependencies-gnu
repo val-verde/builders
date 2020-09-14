@@ -113,7 +113,26 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-systemd
 # wget build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-wget-cross
 
-# libpython build
+# python build
+CFLAGS="\
+    -fPIC \
+    -I${PACKAGE_PREFIX}/include \
+    ${CFLAGS} \
+" \
+CPPFLAGS="\
+    -fPIC \
+    -I${PACKAGE_PREFIX}/include \
+    ${CPPFLAGS} \
+" \
+CXXFLAGS="\
+    -fPIC \
+    -I${PACKAGE_PREFIX}/include \
+    ${CXXFLAGS} \
+" \
+LDFLAGS="\
+    -L${PACKAGE_PREFIX}/lib \
+    ${LDFLAGS} \
+" \
 DISABLE_POLLY=TRUE \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-python-cross
 
