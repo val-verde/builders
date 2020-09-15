@@ -7,6 +7,9 @@ CMAKE_BINDIR=/usr/bin \
 MAKE_PROGRAM=/usr/bin/ninja \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
 
+# bzip2 build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-bzip2-cross
+
 # autoconf build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-autoconf-cross
 
@@ -30,6 +33,9 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
 
 # libffi build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
+
+# gdbm build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-gdbm-cross
 
 # ncurses build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross

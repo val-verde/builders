@@ -5,6 +5,9 @@ set -e
 # windows zlib build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
 
+# windows bzip2 build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-bzip2-cross
+
 # windows autoconf build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-autoconf-cross
 

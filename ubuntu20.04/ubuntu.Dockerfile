@@ -110,6 +110,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-baikonur \
      ${PACKAGE_BASE_NAME}-platform-sdk-bash-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-bison-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-bzip2-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt \
      ${PACKAGE_BASE_NAME}-platform-sdk-coreutils-cross \
@@ -119,6 +120,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-filament-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-gawk-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-gdbm-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-gettext-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-git-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-glslang-cross \
