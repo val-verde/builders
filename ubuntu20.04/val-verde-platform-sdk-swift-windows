@@ -59,8 +59,8 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLLVM_TABLEGEN=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-tblgen \
     -DLLVM_USE_NEWPM=${USE_NEWPM} \
     -DLLVM_USE_RELATIVE_PATHS_IN_DEBUG_INFO=TRUE \
-    -DPython2_EXECUTABLE=/usr/bin/python2 \
-    -DPYTHON_EXECUTABLE=/usr/bin/python2 \
+    -DPython3_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/python3 \
+    -DPKG_CONFIG_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/pkg-config \
     -DSWIFT_BUILD_DYNAMIC_SDK_OVERLAY=TRUE \
     -DSWIFT_BUILD_DYNAMIC_STDLIB=TRUE \
     -DSWIFT_BUILD_PERF_TESTSUITE=FALSE \
@@ -109,6 +109,8 @@ rsync -aPx ${STAGE_ROOT}/lib/*.a \
            ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
 mv ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/swift/windows/*.dll \
    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
+mv ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/swift/windows/*.swift* \
+   ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}/
 rm -f ${STAGE_ROOT}/install${PACKAGE_PREFIX}/bin/*libdispatch* \
       ${STAGE_ROOT}/install${PACKAGE_PREFIX}/bin/*BlocksRuntime* \
       ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/*libdispatch* \

@@ -4,30 +4,41 @@ set -e
 
 # Set all environment vars
 export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
-export SOURCE_PACKAGE_NAME=android-patch-elf
-export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+export SOURCE_PACKAGE_NAME=bzip2
+export SOURCE_PACKAGE_VERSION=1.0.8
+export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
 # Configure the package
 rm -rf ${SOURCE_ROOT}
-git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
-          --branch master \
-          --single-branch \
-          ${SOURCE_ROOT}
+wget -c https://sourceware.org/pub/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
+     -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
+tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
 rsync -aPx ${SOURCE_ROOT}/* \
            ${STAGE_ROOT}/
 
 # Build the components
 cd ${SOURCE_ROOT}
 mkdir -p ${STAGE_ROOT}/install${PACKAGE_PREFIX}
+
+if [ "${HOST_OS}" != "mingw32" ]; then
+    CFLAGS="\
+        -fPIC \
+        ${CFLAGS} \
+    "
+fi
+
+AR=${AR:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar}
 CC=${CC:-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang}
+CFLAGS=`echo ${CFLAGS} | xargs`
+RANLIB=${RANLIB:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib}
 TARGETS="\
+    AR=${AR} \
     CC=${CC} \
     CFLAGS=${CFLAGS} \
-    DSTROOT=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
-    OUTDIR=${STAGE_ROOT} \
+    PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
     install \
 " \
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build

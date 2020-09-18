@@ -110,6 +110,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-baikonur \
      ${PACKAGE_BASE_NAME}-platform-sdk-bash-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-bison-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-bzip2-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt \
      ${PACKAGE_BASE_NAME}-platform-sdk-coreutils-cross \
@@ -119,6 +120,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-filament-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-gawk-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-gdbm-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-gettext-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-git-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-glslang-cross \
@@ -142,6 +144,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-musl-libc \
      ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-node-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-opengl-headers-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-opengl-es-headers-cross \
@@ -262,16 +265,19 @@ RUN apt remove -y cmake \
                   libffi-dev \
                   libicu-dev \
                   libncurses-dev \
-                  libpython2.7 \
-                  libpython2.7-dev \
+                  libpython3.8 \
+                  libpython3.8-dev \
                   libsqlite3-dev \
                   libssl-dev \
                   libxml2-dev \
                   libz3-dev \
                   ninja-build \
                   pkg-config \
+                  python3 \
                   uuid-dev \
     && apt autoremove -y
+
+ENV PYTHONHOME=${PACKAGE_PREFIX}
 
 # llvm build
 FROM LLVM_DEPENDENCIES_BUILDER AS LLVM_BUILDER
@@ -420,8 +426,13 @@ FROM PYTHONKIT_BUILDER AS GRAPHICS_SDK_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-graphics-sdk-cross
 
+# node build
+FROM GRAPHICS_SDK_BUILDER AS NODE_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-node-cross
+
 # android-ndk package
-FROM GRAPHICS_SDK_BUILDER AS ANDROID_NDK_BUILDER
+FROM NODE_BUILDER AS ANDROID_NDK_BUILDER
 
 ENV ANDROID_NDK_VERSION=r21d
 
@@ -620,8 +631,13 @@ FROM ANDROID_PYTHONKIT_BUILDER AS ANDROID_GRAPHICS_SDK_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-graphics-sdk-cross
 
+# android node build
+FROM ANDROID_GRAPHICS_SDK_BUILDER AS ANDROID_NODE_BUILDER
+
+# RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-node-cross
+
 # windows environment
-FROM ANDROID_GRAPHICS_SDK_BUILDER AS WINDOWS_SOURCES_BUILDER
+FROM ANDROID_NODE_BUILDER AS WINDOWS_SOURCES_BUILDER
 
 ENV HOST_ARCH=haswell \
     HOST_CPU=skylake \

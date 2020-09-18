@@ -5,6 +5,9 @@ set -e
 # android zlib build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
 
+# android bzip2 build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-bzip2-cross
+
 # android autoconf build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-autoconf-cross
 
@@ -28,6 +31,9 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
 
 # android libffi build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
+
+# android gdbm build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-gdbm-cross
 
 # android ncurses build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross
@@ -111,9 +117,32 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-dpkg-cross
 # android wget build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-wget-cross
 
-# android libpython build
+# android python build
+_PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
+CFLAGS="\
+    -fPIC \
+    -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
+    --sysroot=${SYSROOT} \
+    ${CFLAGS} \
+" \
+CPPFLAGS="\
+    -fPIC \
+    -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
+    --sysroot=${SYSROOT} \
+    ${CPPFLAGS} \
+" \
+CXXFLAGS="\
+    -fPIC \
+    -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
+    --sysroot=${SYSROOT} \
+    ${CXXFLAGS} \
+" \
 DISABLE_POLLY=TRUE \
-PYTHON_FOR_BUILD=${BUILD_PACKAGE_PREFIX}/bin/python2.7 \
+LDFLAGS="\
+    --sysroot=${SYSROOT} \
+    ${LDFLAGS} \
+" \
+PYTHON_FOR_BUILD=${BUILD_PACKAGE_PREFIX}/bin/python3 \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-python-cross
 
 # android z3 build

@@ -5,7 +5,7 @@ set -e
 # Set all environment vars
 export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
 export SOURCE_PACKAGE_NAME=python
-export SOURCE_PACKAGE_VERSION=2.7.18
+export SOURCE_PACKAGE_VERSION=git
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
@@ -13,19 +13,48 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 
 rm -rf ${SOURCE_ROOT}
 cd /sources
-wget -c https://www.python.org/ftp/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_VERSION}/Python-${SOURCE_PACKAGE_VERSION}.tgz
-tar -zxf Python-${SOURCE_PACKAGE_VERSION}.tgz
-mv Python-${SOURCE_PACKAGE_VERSION} ${SOURCE_PACKAGE_NAME}
+git clone https://github.com/${PACKAGE_BASE_NAME}/cpython.git \
+          --branch dutch-master \
+          --single-branch \
+          ${SOURCE_ROOT}
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
+
+export _PYTHON_PROJECT_BASE=${STAGE_ROOT} \
+CFLAGS="\
+    -I${PACKAGE_PREFIX}/include/ncurses \
+    -I${PACKAGE_PREFIX}/include/uuid \
+    ${CFLAGS} \
+" \
+CPPFLAGS="\
+    -I${PACKAGE_PREFIX}/include/ncurses \
+    -I${PACKAGE_PREFIX}/include/uuid \
+    ${CPPFLAGS} \
+" \
+CXXFLAGS="\
+    -I${PACKAGE_PREFIX}/include/ncurses \
+    -I${PACKAGE_PREFIX}/include/uuid \
+    ${CXXFLAGS} \
+" \
+LIBS="\
+    -lexpat \
+    ${LIBS} \
+"
+
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
     ac_cv_buggy_getaddrinfo=no \
     ac_cv_file__dev_ptc=no \
-    ac_cv_file__dev_ptmx=no \
-    --disable-static \
+    ac_cv_file__dev_ptmx=yes \
     --enable-shared \
-    --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX}
+    --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+    --with-ensurepip=yes \
+    --with-openssl=${PACKAGE_PREFIX}/include \
+    --with-system-expat \
+    --with-system-ffi \
+    OPENSSL_CFLAGS="-I${PACKAGE_PREFIX}/include" \
+    OPENSSL_LDFLAGS="-L${PACKAGE_PREFIX}/lib" \
+    OPENSSL_LIBS="-lcrypto -lssl"
 
 # Build the components
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
