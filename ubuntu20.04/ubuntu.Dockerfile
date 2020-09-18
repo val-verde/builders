@@ -408,12 +408,6 @@ RUN DISABLE_POLLY=TRUE \
 FROM SOURCEKIT_LSP_BUILDER AS BAIKONUR_BUILDER
 
 RUN DISABLE_POLLY=TRUE \
-    SWIFT_BUILD_FLAGS="\
-        -Xcc -I${PACKAGE_PREFIX}/include \
-        -Xcxx -fno-modules \
-        -Xcxx -Wno-unused-command-line-argument \
-        ${SWIFT_BUILD_FLAGS} \
-    " \
     bash val-verde-platform-sdk-baikonur
 
 # pythonkit build
@@ -620,8 +614,14 @@ FROM ANDROID_SWIFT_DOC_BUILDER AS ANDROID_SOURCEKIT_LSP_BUILDER
 RUN DISABLE_POLLY=TRUE \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp-android
 
+# android baikonur build
+FROM ANDROID_SOURCEKIT_LSP_BUILDER AS ANDROID_BAIKONUR_BUILDER
+
+RUN DISABLE_POLLY=TRUE \
+    bash val-verde-platform-sdk-baikonur
+
 # android pythonkit build
-FROM ANDROID_SOURCEKIT_LSP_BUILDER AS ANDROID_PYTHONKIT_BUILDER
+FROM ANDROID_BAIKONUR_BUILDER AS ANDROID_PYTHONKIT_BUILDER
 
 RUN DISABLE_POLLY=TRUE \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit-cross
