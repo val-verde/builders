@@ -98,6 +98,9 @@ source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 sed -i 's/\/usr/\.\.\/\.\.\/\.\.\/\.\./g' \
        install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}/${HOST_PROCESSOR}/glibc.modulemap
 
+mv install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}/*.swift* \
+   install${PACKAGE_PREFIX}/lib/swift/${HOST_OS}/${HOST_PROCESSOR}/
+
 # RPATH fixups
 COMPONENTS="\
     ${STAGE_ROOT}/install${PACKAGE_PREFIX}/bin/swift \
