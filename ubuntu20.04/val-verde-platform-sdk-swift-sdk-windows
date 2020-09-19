@@ -24,24 +24,6 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-windows
 # windows yams build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-yams-windows
 
-# windows swift-driver build
-CFLAGS="\
-    -fms-compatibility-version=19.2 \
-    -fms-extensions \
-    ${CFLAGS} \
-" \
-CXXFLAGS="\
-    -fms-compatibility-version=19.2 \
-    -fms-extensions \
-    ${CXXFLAGS} \
-" \
-SWIFTCFLAGS="\
-    -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
-    -L${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR} \
-    ${SWIFTCFLAGS} \
-" \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross
-
 # windows swift-argument-parser build
 CFLAGS="\
     -fms-compatibility-version=19.2 \
@@ -59,6 +41,24 @@ SWIFTCFLAGS="\
     ${SWIFTCFLAGS} \
 " \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-argument-parser-cross
+
+# windows swift-driver build
+CFLAGS="\
+    -fms-compatibility-version=19.2 \
+    -fms-extensions \
+    ${CFLAGS} \
+" \
+CXXFLAGS="\
+    -fms-compatibility-version=19.2 \
+    -fms-extensions \
+    ${CXXFLAGS} \
+" \
+SWIFTCFLAGS="\
+    -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+    -L${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR} \
+    ${SWIFTCFLAGS} \
+" \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross
 
 # windows swiftpm build
 CFLAGS="\
