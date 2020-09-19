@@ -171,6 +171,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-tensorflow-apis \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core \
      ${PACKAGE_BASE_NAME}-platform-sdk-systemd \
      ${PACKAGE_BASE_NAME}-platform-sdk-tar-cross \
@@ -414,6 +415,10 @@ RUN DISABLE_POLLY=TRUE \
 FROM BAIKONUR_BUILDER AS PYTHONKIT_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit
+
+# swift tensorflows apis build
+# RUN DISABLE_POLLY=TRUE \
+#    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tensorflow-apis
 
 # graphics sdk build
 FROM PYTHONKIT_BUILDER AS GRAPHICS_SDK_BUILDER
