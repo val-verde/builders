@@ -699,7 +699,7 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-mingw-w64-crt
 # windows compiler-rt build (for host)
 FROM WINDOWS_MINGW_CRT_BUILDER AS WINDOWS_COMPILER_RT_BUILDER
 
-RUN export CLANG_RT_LIB=clang_rt.builtins-${HOST_PROCESSOR}.lib \
+RUN export CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a \
            DST_CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a \
            LDFLAGS="-Wl,/force:unresolved" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt
