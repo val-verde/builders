@@ -3,7 +3,7 @@
 set -e
 
 cd ${STAGE_ROOT}/install
-tar cf ${PACKAGE_NAME}.tar usr/
+tar cf ${PACKAGE_NAME}.tar opt/
 
 alien ${PACKAGE_NAME}.tar
 rm ${PACKAGE_NAME}.tar
