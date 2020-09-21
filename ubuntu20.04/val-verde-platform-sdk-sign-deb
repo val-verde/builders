@@ -1,0 +1,16 @@
+#!/bin/bash
+source /sources/val-verde-platform-sdk-generate-control-file
+
+set -e
+
+function sign-deb {
+    PACKAGE_NAME=$1
+    cd /sources
+    mkdir -p ./pkg-intermediates/${PACKAGE_NAME}
+    dpkg-deb -R ${PACKAGE_NAME}.deb ./pkg-intermediates/${PACKAGE_NAME}
+    rm ${PACKAGE_NAME}.deb
+    generate-control-file "${PACKAGE_NAME}" > ./pkg-intermediates/${PACKAGE_NAME}/DEBIAN/control
+    dpkg -b ./pkg-intermediates/${PACKAGE_NAME}
+    mv ./pkg-intermediates/${PACKAGE_NAME}.deb ${DEB_PATH}/${PACKAGE_NAME}.deb
+    rm -r ./pkg-intermediates
+}

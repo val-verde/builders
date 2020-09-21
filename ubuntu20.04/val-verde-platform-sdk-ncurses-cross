@@ -8,6 +8,7 @@ export SOURCE_PACKAGE_NAME=ncurses
 export SOURCE_PACKAGE_VERSION=6.2
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export INSTALL_ROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-staging-${SOURCE_PACKAGE_NAME}/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
@@ -38,7 +39,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     --with-curses-h \
     --with-cxx \
     --with-cxx-shared \
-    --with-install-prefix=${STAGE_ROOT}/install \
+    --with-install-prefix=${INSTALL_ROOT}/ \
     --with-pkg-config=/usr/bin/pkg-config \
     --with-pkg-config-libdir=${PACKAGE_PREFIX}/lib/pkgconfig \
     --with-shared \

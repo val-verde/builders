@@ -32,7 +32,7 @@ ${PACKAGE_BASE_NAME}-platform-sdk-swift-build
 cd ${STAGE_ROOT}
 mkdir -p install${BUILD_PACKAGE_PREFIX}/bin
 cp `find -type f -name sourcekit-lsp\*` \
-   ${STAGE_ROOT}/install${BUILD_PACKAGE_PREFIX}/bin
+   ${INSTALL_ROOT}/${BUILD_PACKAGE_PREFIX}/bin
 
 # Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
