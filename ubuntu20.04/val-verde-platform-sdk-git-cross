@@ -8,6 +8,7 @@ export SOURCE_PACKAGE_NAME=git
 export SOURCE_PACKAGE_VERSION=2.28.0
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export INSTALL_ROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-staging-${SOURCE_PACKAGE_NAME}/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
@@ -28,7 +29,7 @@ rsync -ax ${SOURCE_ROOT}/* .
 autoreconf -i
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${STAGE_ROOT}/configure \
-    --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_ROOT}/${PACKAGE_PREFIX} \
     --with-curl=${PACKAGE_PREFIX} \
     --with-expat=${PACKAGE_PREFIX} \
     --with-openssl=${PACKAGE_PREFIX} \

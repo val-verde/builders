@@ -8,6 +8,7 @@ export SOURCE_PACKAGE_NAME=icu4c
 export SOURCE_PACKAGE_VERSION=git
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export INSTALL_ROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-staging-${SOURCE_PACKAGE_NAME}/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
@@ -28,7 +29,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     --disable-static \
     --disable-tests \
     --enable-shared \
-    --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_ROOT}/${PACKAGE_PREFIX} \
     --with-library-suffix=swift
 
 # Build the components
@@ -37,12 +38,12 @@ source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 
 # RPATH fixups
 COMPONENTS="\
-    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/libicudataswift.so \
-    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/libicui18nswift.so \
-    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/libicuioswift.so \
-    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/libicutestswift.so \
-    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/libicutuswift.so \
-    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/libicuucswift.so \
+    ${INSTALL_ROOT}/${PACKAGE_PREFIX}/lib/libicudataswift.so \
+    ${INSTALL_ROOT}/${PACKAGE_PREFIX}/lib/libicui18nswift.so \
+    ${INSTALL_ROOT}/${PACKAGE_PREFIX}/lib/libicuioswift.so \
+    ${INSTALL_ROOT}/${PACKAGE_PREFIX}/lib/libicutestswift.so \
+    ${INSTALL_ROOT}/${PACKAGE_PREFIX}/lib/libicutuswift.so \
+    ${INSTALL_ROOT}/${PACKAGE_PREFIX}/lib/libicuucswift.so \
 " \
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rpath-fixup
 

@@ -7,7 +7,8 @@ export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
 export SOURCE_PACKAGE_NAME=node
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export NODE_NATIVE_STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}
+export INSTALL_ROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-staging-${SOURCE_PACKAGE_NAME}/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+NODE_NATIVE_STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
@@ -98,7 +99,7 @@ export RANLIB_target=${RANLIB:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib}
 ${STAGE_ROOT}/configure \
     --dest-cpu=${CONFIGURE_HOST_PROCESSOR} \
     --dest-os=${CONFIGURE_HOST_OS} \
-    --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_ROOT}/${PACKAGE_PREFIX} \
     --shared-openssl \
     --shared-zlib \
     --with-intl=system-icu \

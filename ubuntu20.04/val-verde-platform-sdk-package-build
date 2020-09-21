@@ -2,8 +2,10 @@
 
 set -e
 
-cd ${STAGE_ROOT}/install
-tar cf ${PACKAGE_NAME}.tar opt/
+BASE_DIRECTORY=$(echo "${PACKAGE_ROOT}" | cut -d "/" -f2)
+
+cd ${INSTALL_ROOT}
+tar cf ${PACKAGE_NAME}.tar ${BASE_DIRECTORY}
 
 alien ${PACKAGE_NAME}.tar
 rm ${PACKAGE_NAME}.tar

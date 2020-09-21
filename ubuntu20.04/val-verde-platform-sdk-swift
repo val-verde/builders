@@ -9,6 +9,7 @@ export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 export LLVM_SOURCE_ROOT=/sources/llvm-project
 export LLVM_STAGE_ROOT=/sources/build-staging/llvm-project-${HOST_OS}${HOST_OS_API_LEVEL}-${BUILD_ARCH}
+export INSTALL_ROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-staging-${SOURCE_PACKAGE_NAME}/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 USE_NEWPM=${USE_NEWPM:-TRUE}
@@ -90,12 +91,12 @@ source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 # RPATH fixups
 COMPONENTS="\
-    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/bin/swift \
+    ${INSTALL_ROOT}/${PACKAGE_PREFIX}/bin/swift \
 " \
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rpath-fixup
 
 COMPONENTS="\
-    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/swift/${HOST_KERNEL}/lib*.so \
+    ${INSTALL_ROOT}/${PACKAGE_PREFIX}/lib/swift/${HOST_KERNEL}/lib*.so \
 " \
 COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rpath-fixup
