@@ -64,8 +64,8 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DNATIVE_LLVM_DIR=${LLVM_NATIVE_STAGE_ROOT}/lib/cmake/lib \
     -DPANEL_LIBRARIES=${PACKAGE_PREFIX}/lib/libpanel.so \
     -DPYTHON_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/python3 \
-    -DPYTHON_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/python3.10 \
-    -DPYTHON_LIBRARIES=${PACKAGE_PREFIX}/lib/libpython3.10.so \
+    -DPYTHON_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/python3.9 \
+    -DPYTHON_LIBRARIES=${PACKAGE_PREFIX}/lib/libpython3.9.so \
     -DSwift_DIR=${SWIFT_STAGE_ROOT}/lib/cmake/swift \
     -DSWIG_EXECUTABLE=/usr/bin/swig \
     ${SOURCE_ROOT}

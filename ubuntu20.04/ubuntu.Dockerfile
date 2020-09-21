@@ -171,6 +171,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swift-tensorflow-apis \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core \
      ${PACKAGE_BASE_NAME}-platform-sdk-systemd \
      ${PACKAGE_BASE_NAME}-platform-sdk-tar-cross \
@@ -350,18 +351,18 @@ FROM SWIFT_TOOLS_SUPPORT_CORE_BUILDER AS YAMS_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-yams
 
-# swift-driver build
-FROM YAMS_BUILDER AS SWIFT_DRIVER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver
-
 # swift argument parser build
-FROM SWIFT_DRIVER AS SWIFT_ARGUMENT_PARSER_BUILDER
+FROM YAMS_BUILDER AS SWIFT_ARGUMENT_PARSER_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-argument-parser
 
+# swift-driver build
+FROM SWIFT_ARGUMENT_PARSER_BUILDER AS SWIFT_DRIVER_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver
+
 # swiftpm build
-FROM SWIFT_ARGUMENT_PARSER_BUILDER AS SWIFTPM_BUILDER
+FROM SWIFT_DRIVER_BUILDER AS SWIFTPM_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager
 
@@ -408,18 +409,16 @@ RUN DISABLE_POLLY=TRUE \
 FROM SOURCEKIT_LSP_BUILDER AS BAIKONUR_BUILDER
 
 RUN DISABLE_POLLY=TRUE \
-    SWIFT_BUILD_FLAGS="\
-        -Xcc -I${PACKAGE_PREFIX}/include \
-        -Xcxx -fno-modules \
-        -Xcxx -Wno-unused-command-line-argument \
-        ${SWIFT_BUILD_FLAGS} \
-    " \
     bash val-verde-platform-sdk-baikonur
 
 # pythonkit build
 FROM BAIKONUR_BUILDER AS PYTHONKIT_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit
+
+# swift tensorflows apis build
+# RUN DISABLE_POLLY=TRUE \
+#    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tensorflow-apis
 
 # graphics sdk build
 FROM PYTHONKIT_BUILDER AS GRAPHICS_SDK_BUILDER
@@ -571,18 +570,18 @@ FROM ANDROID_SWIFT_TOOLS_SUPPORT_CORE_BUILDER AS ANDROID_YAMS_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-yams-cross
 
-# android swift-driver build
-FROM ANDROID_YAMS_BUILDER AS ANDROID_SWIFT_DRIVER_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross
-
 # android swift-argument-parser build
-FROM ANDROID_SWIFT_DRIVER_BUILDER AS ANDROID_SWIFT_ARGUMENT_PARSER_BUILDER
+FROM ANDROID_YAMS_BUILDER AS ANDROID_SWIFT_ARGUMENT_PARSER_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-argument-parser-cross
 
+# android swift-driver build
+FROM ANDROID_SWIFT_ARGUMENT_PARSER_BUILDER AS ANDROID_SWIFT_DRIVER_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross
+
 # android swiftpm build
-FROM ANDROID_SWIFT_ARGUMENT_PARSER_BUILDER AS ANDROID_SWIFTPM_BUILDER
+FROM ANDROID_SWIFT_DRIVER_BUILDER AS ANDROID_SWIFTPM_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross
 
@@ -620,8 +619,14 @@ FROM ANDROID_SWIFT_DOC_BUILDER AS ANDROID_SOURCEKIT_LSP_BUILDER
 RUN DISABLE_POLLY=TRUE \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp-android
 
+# android baikonur build
+FROM ANDROID_SOURCEKIT_LSP_BUILDER AS ANDROID_BAIKONUR_BUILDER
+
+RUN DISABLE_POLLY=TRUE \
+    bash val-verde-platform-sdk-baikonur
+
 # android pythonkit build
-FROM ANDROID_SOURCEKIT_LSP_BUILDER AS ANDROID_PYTHONKIT_BUILDER
+FROM ANDROID_BAIKONUR_BUILDER AS ANDROID_PYTHONKIT_BUILDER
 
 RUN DISABLE_POLLY=TRUE \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit-cross
@@ -694,7 +699,7 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-mingw-w64-crt
 # windows compiler-rt build (for host)
 FROM WINDOWS_MINGW_CRT_BUILDER AS WINDOWS_COMPILER_RT_BUILDER
 
-RUN export CLANG_RT_LIB=clang_rt.builtins-${HOST_PROCESSOR}.lib \
+RUN export CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a \
            DST_CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a \
            LDFLAGS="-Wl,/force:unresolved" \
     && bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt
