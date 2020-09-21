@@ -16,6 +16,6 @@ buildArgs='--build-arg BUILD_KERNEL=linux
            --build-arg HOST_OS=gnu
            --build-arg HOST_PROCESSOR=x86_64
            --build-arg PACKAGE_BASE_NAME=val-verde
-           --build-arg PACKAGE_ROOT=/usr/local'
+           --build-arg PACKAGE_ROOT=/opt'
 
 docker build -f ubuntu.Dockerfile -t $prefix/$target-$packageType:$tag-$version $buildArgs .
