@@ -471,6 +471,7 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk
 
 # platform independent package builders
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libiconv-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-argument-parser-cross \
@@ -501,7 +502,7 @@ ENV HOST_ARCH=armv8-a \
     HOST_CPU=cortex-a57 \
     HOST_KERNEL=linux \
     HOST_OS=android \
-    HOST_OS_API_LEVEL=29 \
+    HOST_OS_API_LEVEL=26 \
     HOST_PROCESSOR=aarch64
 
 ENV HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
