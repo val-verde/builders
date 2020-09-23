@@ -31,7 +31,8 @@ rsync -aPx ${INCLUDES_PATH}/${HOST_TRIPLE}/asm \
            ${STAGE_ROOT}/install${PACKAGE_PREFIX}/include
 
 # Remove zlib components as they are rebuilt.
-rm -f ${STAGE_ROOT}/install${PACKAGE_PREFIX}/include/zconf.h \
+rm -f ${STAGE_ROOT}/install${PACKAGE_PREFIX}/include/iconv.h \
+      ${STAGE_ROOT}/install${PACKAGE_PREFIX}/include/zconf.h \
       ${STAGE_ROOT}/install${PACKAGE_PREFIX}/include/zlib.h
 
 # Build the package

@@ -19,6 +19,9 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-automake-cross
 # make build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-make-cross
 
+# libiconv build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-libiconv-cross
+
 # pkg-config build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-pkg-config-cross
 

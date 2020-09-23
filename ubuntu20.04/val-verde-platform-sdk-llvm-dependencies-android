@@ -17,6 +17,9 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-automake-cross
 # android make build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-make-cross
 
+# android libiconv build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-libiconv-cross
+
 # android pkg-config build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-pkg-config-cross
 

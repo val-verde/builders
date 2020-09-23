@@ -129,13 +129,14 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-icu4c \
      ${PACKAGE_BASE_NAME}-platform-sdk-jwasm \
      ${PACKAGE_BASE_NAME}-platform-sdk-khr-headers-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libcap-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libiconv-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libcap-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-gnu \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
@@ -477,7 +478,7 @@ ENV HOST_ARCH=armv8-a \
     HOST_CPU=cortex-a57 \
     HOST_KERNEL=linux \
     HOST_OS=android \
-    HOST_OS_API_LEVEL=29 \
+    HOST_OS_API_LEVEL=26 \
     HOST_PROCESSOR=aarch64
 
 ENV HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
