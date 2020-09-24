@@ -1,0 +1,1552 @@
+[
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "alive2",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.0.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/mansij7479/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "alsa-lib",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.2.4",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/alsa-project/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "android-ndk-patches",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.0.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "android-patch-elf",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.0.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "baikonur",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.0.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "bazel",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "3.7.2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/${SOURCE_PACKAGE_NAME}build/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "bzip2",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.0.8",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "bzip2",
+        "sourceBranchIndicator": "windows",
+        "sourcePackageVersion": "1.0.8",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "cmake",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "3.18.1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/kitware/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "cmake",
+        "sourceBranchIndicator": "android",
+        "sourcePackageVersion": "3.18.1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/kitware/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "coreutils",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "8.32",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "cups",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2.3.3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/apple/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "egl-headers",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.0.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/egl-registry.git",
+        "upstreamUrl": "https://github.com/khronosgroup/egl-registry.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "elfutils",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0.181",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "filament",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.8.1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/google/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "findutils",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "4.7.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "fontconfig",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2.13.93",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "freetype2",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2.10.2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/freetype/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "git",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2.28.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "glib",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.1.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/gnome/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "glslang",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "10-11.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/khronosgroup/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "gnulib",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.0.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "grep",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "3.6",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "gobject-introspection",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.45.2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/gnome/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "grep",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "3.6",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "hiredis",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.0.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/redis/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "icu4c",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "68.1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/icu.git",
+        "upstreamUrl": "https://github.com/unicode-org/icu.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "jwasm",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2.13",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "khr-headers",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.0.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/egl-registry.git",
+        "upstreamUrl": "https://github.com/khronosgroup/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "klee",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2.2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "ldns",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.7.1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/nlnetlabs/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "libarchive",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "3.4.3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "libsecret",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0.20.4",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/gnome/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "libssh2",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.9.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "libuv",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.40.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "libx11",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.7.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/mirror/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "libxext",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.3.3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "llvm-project",
+        "sourceBranchIndicator": "default-next",
+        "sourcePackageVersion": "12.0.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/apple/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "llvm-project",
+        "sourceBranchIndicator": "android-next",
+        "sourcePackageVersion": "12.0.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/apple/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "lua",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "5.4.1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "lunarg-vulkan-tools",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.2.154",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/lunarg/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "lz4",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.9.3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "m4",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.4.18",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "mesa",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "21.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/${SOURCE_PACKAGE_NAME}3d/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "mesa-drm",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2.4.103",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "meson",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0.56",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/${SOURCE_PACKAGE_NAME}build/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "mingw-w64",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "6.0.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/mirror/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "musl-fts",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.2.7",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/void-linux/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "musl-libc",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.0.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/${SOURCE_PACKAGE_NAME}-build/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "ninja",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.10.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "node",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "15.3.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/${SOURCE_PACKAGE_NAME}js/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "opengl-es-headers",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.0.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/OpenGL-Registry.git",
+        "upstreamUrl": "https://github.com/khronosgroup/OpenGL-Registry.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "opengl-headers",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.0.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/OpenGL-Registry.git",
+        "upstreamUrl": "https://github.com/khronosgroup/OpenGL-Registry.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "openjdk",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "16",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "openssh-portable",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "8.4p1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/openssh/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "perl",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "5.32.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "pixman",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.0.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "python",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "3.6.8",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/c${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/c${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "pythonkit",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "5.3.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/pvieito/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "pythonkit",
+        "sourceBranchIndicator": "android",
+        "sourcePackageVersion": "5.3.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/pvieito/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "qemu",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "5.2.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "qemu-dtc",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.6.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/qemu/dtc.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "rsync",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "3.2.3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/wayned/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "rust",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.47.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/${SOURCE_PACKAGE_NAME}-lang/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "souper",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.0.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/google/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "sourcekit-lsp",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "5.2.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/apple/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "sourcekit-lsp",
+        "sourceBranchIndicator": "android",
+        "sourcePackageVersion": "5.2.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/apple/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "spirv-headers",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.5.4",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/khronosgroup/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "spirv-tools",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2020.5",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/khronosgroup/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "strace",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "5.9",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "swift",
+        "sourceBranchIndicator": "default-next",
+        "sourcePackageVersion": "5.3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/apple/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "swift",
+        "sourceBranchIndicator": "android-next",
+        "sourcePackageVersion": "5.3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/apple/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "swift-cmark",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "5.3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/apple/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "swift-argument-parser",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "5.3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/apple/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "swift-corelibs-foundation",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "5.3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/apple/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "swift-corelibs-libdispatch",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "5.3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/apple/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "swift-corelibs-xctest",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "5.3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/apple/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "swift-doc",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "5.3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/swiftdocarg/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "swift-doc",
+        "sourceBranchIndicator": "android",
+        "sourcePackageVersion": "5.3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/swiftdocarg/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "swift-driver",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "5.3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/apple/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "swift-format",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "5.3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/apple/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "swift-log",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "5.3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/apple/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "swift-llbuild",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "5.3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/apple/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "swift-llbuild",
+        "sourceBranchIndicator": "android",
+        "sourcePackageVersion": "5.3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/apple/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "swift-package-manager",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "5.3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/apple/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "swift-syntax",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "5.3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/apple/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "swift-tensorflow-apis",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "5.3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/tensorflow/swift-apis.git",
+        "enableSubmodules": "false"
+
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "swift-tools-support-core",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "5.3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/apple/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "swift-tools-support-core",
+        "sourceBranchIndicator": "android",
+        "sourcePackageVersion": "5.3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/apple/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "tensorflow",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2.4.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "vulkan-headers",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.2.62",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/khronosgroup/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "vulkan-loader",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.2.151",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/khronosgroup/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "vulkan-tools",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.2.161",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/khronosgroup/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "vulkan-validation-layers",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.2.156",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/Vulkan-ValidationLayers.git",
+        "upstreamUrl": "https://github.com/khronosgroup/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "wasi-libc",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0.1.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/webassembly/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "wayland",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.18.91",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "wayland-protocols",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.20",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "wine",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "6.0.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "wineditline",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2.201",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "xcb-libxcb",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.12",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "xcb-pthread-stubs",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0.4.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "xcbproto",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.14.1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "xorg-libice",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.0.9",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "xorg-libpciaccess",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0.16",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "xorg-libsm",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.2.2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "xorg-libxau",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.0.8",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "xorg-libxkbfile",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.0'9",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "xorg-libxfixes",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "5.0.3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "xorg-libxi",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.7.10",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "xorg-libxrandr",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.5.2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "xorg-libxrender",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0.9.10",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "xorg-libxshmfence",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "xorg-libxtrans",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.14.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "xorg-libxt",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.2.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "xorg-libxtst",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.2.3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "xorg-libxxf86vm",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.1.4",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "xorg-macros",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.19.1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "xorg-xinput",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.6.3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "xorg-xorgproto",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2020.1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "xorg-xserver",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.20.10",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "xxhash",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0.8.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/cyna4973/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "yams",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "3.0.1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/jpsim/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "yautja-server",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.0.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "z3",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "4.8.9",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/z3prover/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "zlib",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.2.11",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/madler/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "zstd",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0.4.2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "upstreamUrl": "https://github.com/facebook/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "attr",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "2.4.47",
+        "sourcePackageUrl": "http://download.savannah.gnu.org/releases/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.src.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "acl",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "2.2.52",
+        "sourcePackageUrl": "http://download.savannah.gnu.org/releases/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.src.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "autoconf",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "2.69",
+        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "automake",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "1.16.3",
+        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "bash",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "5.1",
+        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "bison",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "3.7.4",
+        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "curl",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "7.73.0",
+        "sourcePackageUrl": "https://curl.haxx.se/download/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "dpkg",
+        "sourceBranchIndicator": "wget-xz",
+        "sourcePackageVersion": "1.20.5",
+        "sourcePackageUrl": "http://ftp.debian.org/debian/pool/main/d/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}_${SOURCE_PACKAGE_VERSION}.tar.xz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "expat",
+        "sourceBranchIndicator": "wget-xz",
+        "sourcePackageVersion": "2.2.10",
+        "sourcePackageUrl": "https://fossies.org/linux/www/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "gawk",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "5.1.0",
+        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "gdbm",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "1.18.1",
+        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "gettext",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "0.21",
+        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "gperf",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "3.1",
+        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "grep",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "3.6",
+        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "gzip",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "1.10",
+        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "libcap",
+        "sourceBranchIndicator": "wget-xz",
+        "sourcePackageVersion": "2.45",
+        "sourcePackageUrl": "https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "libedit",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "20191231-3.1",
+        "sourcePackageUrl": "https://www.thrysoee.dk/editline/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "libffi",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "3.3",
+        "sourcePackageUrl": "https://gcc.gnu.org/pub/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "libiconv",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "1.16",
+        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "libmicrohttpd",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "0.9.71",
+        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "libtool",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "2.4.6",
+        "sourcePackageUrl": "https://ftp.gnu.org/pub/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "libxml2",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "2.9.10",
+        "sourcePackageUrl": "http://xmlsoft.org/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "linux",
+        "sourceBranchIndicator": "wget-xz",
+        "sourcePackageVersion": "5.10.2",
+        "sourcePackageUrl": "https://cdn.kernel.org/pub/${SOURCE_PACKAGE_NAME}/kernel/v5.x/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "make",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "4.3",
+        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "mako",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "1.1.3",
+        "sourcePackageUrl": "https://ftp.osuosl.org/pub/blfs/conglomeration/python-modules/Mako-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "ncurses",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "6.2",
+        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "openssl",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "1.1.1i",
+        "sourcePackageUrl": "https://www.openssl.org/source/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "pcre",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "8.44",
+        "sourcePackageUrl": "https://ftp.pcre.org/pub/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "pkg-config",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "0.29.2",
+        "sourcePackageUrl": "https://pkgconfig.freedesktop.org/releases/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "sdl",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "2.0.12",
+        "sourcePackageUrl": "https://www.libsdl.org/release/SDL2-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "sed",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "4.8",
+        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "sqlite",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "autoconf-3330000",
+        "sourcePackageUrl": "https://sqlite.org/2020/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "swig",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "4.0.2",
+        "sourcePackageUrl": "https://ftp.osuosl.org/pub/blfs/conglomeration/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "systemd",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "247",
+        "sourcePackageUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}/archive/v${SOURCE_PACKAGE_VERSION}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "tar",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "1.32",
+        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "unzip",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "60",
+        "sourcePackageUrl": "ftp://ftp.info-zip.org/pub/infozip/src/${SOURCE_PACKAGE_NAME}${SOURCE_PACKAGE_VERSION}.tgz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "util-linux",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "2.36.1",
+        "sourcePackageUrl": "https://cdn.kernel.org/pub/linux/utils/${SOURCE_PACKAGE_NAME}/v2.36/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "vim",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "8.2.2057",
+        "sourcePackageUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}/archive/v${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "wget",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "1.20.3",
+        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "xz",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "5.2.5",
+        "sourcePackageUrl": "http://download.openpkg.org/components/cache/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "zip",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "30",
+        "sourcePackageUrl": "ftp://ftp.info-zip.org/pub/infozip/src/${SOURCE_PACKAGE_NAME}${SOURCE_PACKAGE_VERSION}.tgz"
+    }
+]
