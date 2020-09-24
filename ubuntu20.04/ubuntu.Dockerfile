@@ -52,11 +52,27 @@ ENV BUILD_PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOS
     SYSROOT=/
 
 
-ENV CFLAGS= \
-    CPPFLAGS= \
-    CXXFLAGS= \
-    SWIFT_BUILD_FLAGS= \
-    SWIFTCFLAGS=
+ENV CFLAGS="\
+        -I${PACKAGE_PREFIX}/include \
+    " \
+    CPPFLAGS="\
+        -I${PACKAGE_PREFIX}/include \
+    " \
+    CXXFLAGS="\
+        -I${PACKAGE_PREFIX}/include \
+    " \
+    LDFLAGS="\
+        -L${PACKAGE_PREFIX}/lib \
+    " \
+    SWIFT_BUILD_FLAGS="\
+        -Xcc -I${PACKAGE_PREFIX}/include \
+        -Xcxx -I${PACKAGE_PREFIX}/include \
+        -Xlinker -L${PACKAGE_PREFIX}/lib \
+    " \
+    SWIFTCFLAGS="\
+        -I${PACKAGE_PREFIX}/include \
+        -L${PACKAGE_PREFIX}/lib \
+    "
 
 ENV LD_LIBRARY_PATH=${PACKAGE_PREFIX}/lib:${LD_LIBRARY_PATH} \
     PATH=${PACKAGE_PREFIX}/bin:${PATH}
@@ -295,11 +311,7 @@ ENV PYTHONHOME=${PACKAGE_PREFIX}
 # llvm build
 FROM LLVM_DEPENDENCIES_BUILDER AS LLVM_BUILDER
 
-RUN CXXFLAGS="\
-        -I${PACKAGE_PREFIX}/include \
-        ${CXXFLAGS} \
-    " \
-    DISABLE_POLLY=TRUE \
+RUN DISABLE_POLLY=TRUE \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project
 
 # cmark build
@@ -506,9 +518,15 @@ ENV CFLAGS="\
     CXXFLAGS="\
         -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
     " \
+    LDFLAGS="\
+        -L${PACKAGE_PREFIX}/lib \
+    " \
     SWIFT_BUILD_FLAGS="\
         -Xcc -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
+        -Xcc -I${PACKAGE_PREFIX}/include \
         -Xcxx -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
+        -Xcxx -I${PACKAGE_PREFIX}/include \
+        -Xlinker -L${PACKAGE_PREFIX}/lib \
     " \
     SWIFTCFLAGS="\
         -sdk ${SYSROOT} \
@@ -688,7 +706,12 @@ ENV HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
 ENV CFLAGS= \
     CPPFLAGS= \
     CXXFLAGS= \
-    SWIFT_BUILD_FLAGS= \
+    LDFLAGS= \
+    SWIFT_BUILD_FLAGS="\
+        -Xcc -I${PACKAGE_PREFIX}/include \
+        -Xcxx -I${PACKAGE_PREFIX}/include \
+        -Xlinker -L${PACKAGE_PREFIX}/lib \
+    " \
     SWIFTCFLAGS="\
         -sdk ${SYSROOT} \
     "
@@ -802,10 +825,19 @@ ENV HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
     SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
     SYSTEM_NAME=Wasi
 
-ENV CFLAGS= \
-    CPPFLAGS= \
-    CXXFLAGS= \
+    ENV CFLAGS="\
+        -I${PACKAGE_PREFIX}/include \
+    " \
+    CPPFLAGS="\
+        -I${PACKAGE_PREFIX}/include \
+    " \
+    CXXFLAGS="\
+        -I${PACKAGE_PREFIX}/include \
+    " \
     SWIFT_BUILD_FLAGS= \
+    LDFLAGS="\
+        -L${PACKAGE_PREFIX}/lib \
+    " \
     SWIFTCFLAGS="\
         -sdk ${SYSROOT} \
     "

@@ -24,14 +24,6 @@ rsync -ax ${SOURCE_ROOT}/* ${STAGE_ROOT}/
 
 cd ${STAGE_ROOT}
 
-export CFLAGS="\
-    -I${PACKAGE_PREFIX}/include \
-    ${CFLAGS} \
-"
-export CPPFLAGS="\
-    -I${PACKAGE_PREFIX}/include \
-    ${CPPFLAGS} \
-"
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${STAGE_ROOT}/configure \
     --disable-static \

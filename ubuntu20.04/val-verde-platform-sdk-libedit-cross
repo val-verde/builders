@@ -20,13 +20,8 @@ cd ${STAGE_ROOT}
 CFLAGS="\
     -D__STDC_ISO_10646__=201103L \
     -DNBBY=CHAR_BIT \
-    -I${PACKAGE_PREFIX}/include \
     -I${PACKAGE_PREFIX}/include/ncurses \
     ${CFLAGS} \
-" \
-LDFLAGS="\
-    -L${PACKAGE_PREFIX}/lib \
-    ${LDFLAGS} \
 " \
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \

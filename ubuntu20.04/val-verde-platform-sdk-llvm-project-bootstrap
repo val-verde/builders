@@ -27,10 +27,6 @@ CXXFLAGS="\
     -stdlib++-isystem ${SOURCE_ROOT}/libcxx/include \
     ${CXXFLAGS} \
 " \
-LDFLAGS="\
-    -L${PACKAGE_PREFIX}/lib \
-    ${LDFLAGS} \
-" \
 LIBS="\
     -lunwind \
     ${LIBS} \

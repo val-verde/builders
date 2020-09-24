@@ -122,25 +122,6 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-systemd
 bash ${PACKAGE_BASE_NAME}-platform-sdk-wget-cross
 
 # python build
-CFLAGS="\
-    -fPIC \
-    -I${PACKAGE_PREFIX}/include \
-    ${CFLAGS} \
-" \
-CPPFLAGS="\
-    -fPIC \
-    -I${PACKAGE_PREFIX}/include \
-    ${CPPFLAGS} \
-" \
-CXXFLAGS="\
-    -fPIC \
-    -I${PACKAGE_PREFIX}/include \
-    ${CXXFLAGS} \
-" \
-LDFLAGS="\
-    -L${PACKAGE_PREFIX}/lib \
-    ${LDFLAGS} \
-" \
 DISABLE_POLLY=TRUE \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-python-cross
 
@@ -155,19 +136,11 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-git-cross
 
 # ninja build
 CMAKE_BINDIR=/usr/bin \
-CXXFLAGS="\
-    -I${PACKAGE_PREFIX}/include \
-    ${CXXFLAGS} \
-" \
 MAKE_PROGRAM=/usr/bin/ninja \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
 
 # cmake build
 CMAKE_BINDIR=/usr/bin \
-CXXFLAGS="\
-    -I${PACKAGE_PREFIX}/include \
-    ${CXXFLAGS} \
-" \
 DISABLE_POLLY=TRUE \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross
 

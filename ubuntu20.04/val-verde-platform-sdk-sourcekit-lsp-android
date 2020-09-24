@@ -32,7 +32,6 @@ SWIFT_BUILD_FLAGS="\
     -Xlinker -lc++ \
     -Xlinker -lncurses \
     -Xlinker -lunwind \
-    -Xlinker -L${PACKAGE_PREFIX}/lib \
     ${SWIFT_BUILD_FLAGS} \
 " \
 ${PACKAGE_BASE_NAME}-platform-sdk-swift-build

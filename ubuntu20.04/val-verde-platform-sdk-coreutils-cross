@@ -22,15 +22,6 @@ patch -p1 \
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-CFLAGS="\
-    -I${PACKAGE_PREFIX}/include \
-    -v \
-    ${CFLAGS} \
-" \
-CPPFLAGS="\
-    -I${PACKAGE_PREFIX}/include \
-    ${CPPFLAGS} \
-" \
 FORCE_UNSAFE_CONFIGURE=1 \
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
