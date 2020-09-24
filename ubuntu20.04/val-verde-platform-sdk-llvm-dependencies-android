@@ -91,7 +91,15 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-acl-cross
 bash ${PACKAGE_BASE_NAME}-platform-sdk-util-linux-cross
 
 # android strace build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-strace-cross
+if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-strace-cross
+else
+    CFLAGS="\
+        -Dfputs_unlocked=fputs \
+        ${CFLAGS} \
+    " \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-strace-cross
+fi
 
 # android sed build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-sed-cross
@@ -106,7 +114,9 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-gawk-cross
 bash ${PACKAGE_BASE_NAME}-platform-sdk-gperf-cross
 
 # android tar build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-tar-cross
+if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-tar-cross
+fi
 
 # android bash build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-bash-cross
@@ -156,7 +166,9 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
 bash ${PACKAGE_BASE_NAME}-platform-sdk-git-cross
 
 # android ninja build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
+if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
+fi
 
 # android cmake build
 DISABLE_POLLY=TRUE \
