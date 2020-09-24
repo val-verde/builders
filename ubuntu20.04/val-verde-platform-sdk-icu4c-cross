@@ -22,7 +22,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     --disable-tests \
     --disable-tools \
     --enable-shared \
-    --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
     --with-cross-build=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH} \
     --with-library-suffix=swift
 
@@ -31,10 +31,10 @@ source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 
 # RPATH fixups
 COMPONENTS="\
-    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/libicudataswift.so \
-    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/libicui18nswift.so \
-    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/libicuioswift.so \
-    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/libicuucswift.so \
+    ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/libicudataswift.so \
+    ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/libicui18nswift.so \
+    ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/libicuioswift.so \
+    ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/libicuucswift.so \
 " \
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rpath-fixup
 
