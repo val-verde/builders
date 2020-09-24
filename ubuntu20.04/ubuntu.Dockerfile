@@ -51,6 +51,13 @@ ENV BUILD_PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOS
     PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr \
     SYSROOT=/
 
+
+ENV CFLAGS= \
+    CPPFLAGS= \
+    CXXFLAGS= \
+    SWIFT_BUILD_FLAGS= \
+    SWIFTCFLAGS=
+
 ENV LD_LIBRARY_PATH=${PACKAGE_PREFIX}/lib:${LD_LIBRARY_PATH} \
     PATH=${PACKAGE_PREFIX}/bin:${PATH}
 
@@ -478,13 +485,30 @@ ENV HOST_ARCH=armv8-a \
     HOST_CPU=cortex-a57 \
     HOST_KERNEL=linux \
     HOST_OS=android \
-    HOST_OS_API_LEVEL=26 \
+    HOST_OS_API_LEVEL=29 \
     HOST_PROCESSOR=aarch64
 
 ENV HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
     PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr \
     SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
     SYSTEM_NAME=Linux
+
+ENV CFLAGS="\
+        -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
+    " \
+    CPPFLAGS="\
+        -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
+    " \
+    CXXFLAGS="\
+        -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
+    " \
+    SWIFT_BUILD_FLAGS="\
+        -Xcc -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
+        -Xcxx -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
+    " \
+    SWIFTCFLAGS="\
+        -sdk ${SYSROOT} \
+    "
 
 # android ndk headers build
 FROM ANDROID_NDK_BUILDER AS ANDROID_NDK_HEADERS_BUILDER
@@ -657,6 +681,14 @@ ENV HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
     SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
     SYSTEM_NAME=Windows
 
+ENV CFLAGS= \
+    CPPFLAGS= \
+    CXXFLAGS= \
+    SWIFT_BUILD_FLAGS= \
+    SWIFTCFLAGS="\
+        -sdk ${SYSROOT} \
+    "
+
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-windows \
@@ -765,6 +797,14 @@ ENV HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
     PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
     SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
     SYSTEM_NAME=Wasi
+
+ENV CFLAGS= \
+    CPPFLAGS= \
+    CXXFLAGS= \
+    SWIFT_BUILD_FLAGS= \
+    SWIFTCFLAGS="\
+        -sdk ${SYSROOT} \
+    "
 
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt-wasi \
      ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-wasi \

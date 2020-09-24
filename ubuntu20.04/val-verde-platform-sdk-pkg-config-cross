@@ -19,6 +19,18 @@ tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
+CFLAGS="\
+    -I${PACKAGE_PREFIX}/include \
+    ${CFLAGS} \
+" \
+CPPFLAGS="\
+    -I${PACKAGE_PREFIX}/include \
+    ${CPPFLAGS} \
+" \
+CXXFLAGS="\
+    -I${PACKAGE_PREFIX}/include \
+    ${CXXFLAGS} \
+" \
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
     ac_cv_func_posix_getgrgid_r=yes \
