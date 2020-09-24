@@ -16,10 +16,6 @@ git checkout dutch-master
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-SWIFTCFLAGS="\
-    -sdk ${SYSROOT} \
-    ${SWIFTCFLAGS} \
-" \
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DFoundation_DIR=/sources/build-staging/swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
