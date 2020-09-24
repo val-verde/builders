@@ -222,12 +222,14 @@ RUN BINDIR=/usr/bin \
         ${CXXFLAGS} \
     " \
     LLVM_NATIVE_STAGE_ROOT=/usr \
+    MAKE_PROGRAM=/usr/bin/ninja \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
 
 # libcxxabi bootstrap build
 FROM LIBUNWIND_BOOTSTRAP_BUILDER AS LIBCXXABI_BOOTSTRAP_BUILDER
 
 RUN BINDIR=/usr/bin \
+    MAKE_PROGRAM=/usr/bin/ninja \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-cross
 
 # libcxx bootstrap build
@@ -242,12 +244,14 @@ RUN BINDIR=/usr/bin \
         -rtlib=compiler-rt \
         ${CXXFLAGS} \
     " \
+    MAKE_PROGRAM=/usr/bin/ninja \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-cross
 
 # llvm bootstrap build
 FROM LIBCXX_BOOTSTRAP_BUILDER AS LLVM_BOOTSTRAP_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap
+RUN MAKE_PROGRAM=/usr/bin/ninja \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap
 
 # remove host compiler and libraries as it is superceded by bootstrapped clang
 RUN apt remove -y clang \

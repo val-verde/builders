@@ -8,15 +8,19 @@ MAKE_PROGRAM=/usr/bin/ninja \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
 
 # bzip2 build
+MAKE_PROGRAM=/usr/bin/make \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-bzip2-cross
 
 # autoconf build
+MAKE_PROGRAM=/usr/bin/make \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-autoconf-cross
 
 # automake build
+MAKE_PROGRAM=/usr/bin/make \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-automake-cross
 
 # make build
+MAKE_PROGRAM=/usr/bin/make \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-make-cross
 
 # libiconv build
@@ -111,6 +115,7 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-coreutils-cross
 # bash ${PACKAGE_BASE_NAME}-platform-sdk-dpkg-cross
 
 # systemd build
+MAKE_PROGRAM=/usr/bin/ninja \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-systemd
 
 # wget build
