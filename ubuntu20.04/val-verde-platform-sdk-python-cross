@@ -8,7 +8,8 @@ export SOURCE_PACKAGE_NAME=python
 export SOURCE_PACKAGE_VERSION=git
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export INSTALL_ROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-staging-${SOURCE_PACKAGE_NAME}/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export INSTALL_ROOT=${TEMPDIR}/org.${PACKAGE_BASE_NAME}/${QUALIFIED_PACKAGE_NAME}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
@@ -18,7 +19,7 @@ git clone https://github.com/${PACKAGE_BASE_NAME}/cpython.git \
           --branch dutch-master \
           --single-branch \
           ${SOURCE_ROOT}
-mkdir -p ${STAGE_ROOT}
+mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
 
 export _PYTHON_PROJECT_BASE=${STAGE_ROOT} \
@@ -60,7 +61,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
 # Build the components
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 
-ln -sf python3 ${STAGE_ROOT}/install${PACKAGE_PREFIX}/bin/python
+ln -sf python3 ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin/python
 
 # Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build

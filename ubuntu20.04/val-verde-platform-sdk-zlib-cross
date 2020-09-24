@@ -8,7 +8,8 @@ export SOURCE_PACKAGE_NAME=zlib
 export SOURCE_PACKAGE_VERSION=1.2.11
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export INSTALL_ROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-staging-${SOURCE_PACKAGE_NAME}/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export INSTALL_ROOT=${TEMPDIR}/org.${PACKAGE_BASE_NAME}/${QUALIFIED_PACKAGE_NAME}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
@@ -17,7 +18,7 @@ cd /sources
 wget -c https://zlib.net/fossils/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
 tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
 
-mkdir -p ${STAGE_ROOT}
+mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     ${SOURCE_ROOT}
@@ -25,8 +26,8 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
 # Build the components
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
-mv install${PACKAGE_PREFIX}/share/pkgconfig \
-   install${PACKAGE_PREFIX}/lib/pkgconfig
+mv ${INSTALL_ROOT}${PACKAGE_PREFIX}/share/pkgconfig \
+   ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/pkgconfig
 
 # Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build

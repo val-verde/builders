@@ -45,11 +45,12 @@ ENV BUILD_ARCH=haswell \
     PACKAGE_ROOT=${PACKAGE_ROOT} \
     SYSTEM_NAME=Linux
 
-ENV BUILD_PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr \
+ENV BUILD_PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr \
     BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS} \
     HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
     PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr \
-    SYSROOT=/
+    SYSROOT=/ \
+    TEMPDIR=${TEMPDIR:-/tmp}
 
 
 ENV CFLAGS="\
@@ -239,10 +240,13 @@ RUN BINDIR=/usr/bin \
     " \
     LLVM_NATIVE_STAGE_ROOT=/usr \
 <<<<<<< HEAD
+<<<<<<< HEAD
     MAKE_PROGRAM=/usr/bin/ninja \
 =======
     BUILD_DEPENDENCIES="libmagic-mgc, perl-modules-5.30, file, mime-support, libmagic1, libperl5.30" \
 >>>>>>> add install roots for linux build to avoid /usr/local as install location
+=======
+>>>>>>> standardize usage of install root for linux builds
     bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
 
 # libcxxabi bootstrap build

@@ -8,7 +8,8 @@ export SOURCE_PACKAGE_NAME=openssl
 export SOURCE_PACKAGE_VERSION=1.1.1g
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export INSTALL_ROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-staging-${SOURCE_PACKAGE_NAME}/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export INSTALL_ROOT=${TEMPDIR}/org.${PACKAGE_BASE_NAME}/${QUALIFIED_PACKAGE_NAME}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
@@ -16,7 +17,7 @@ rm -rf ${SOURCE_ROOT}
 cd /sources
 wget -c https://www.openssl.org/source/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
 tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
-mkdir -p ${STAGE_ROOT}
+mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
 
 OPENSSL_DIR=/etc/ssl
@@ -27,7 +28,7 @@ if [ "${HOST_OS}" = "android" ]; then
     OPENSSL_DIR=/data/local/tmp${PACKAGE_PREFIX}/etc/ssl
     OPENSSL_DEFINES="-D__ANDROID_API__=${HOST_OS_API_LEVEL}"
 
-    export ANDROID_NDK_HOME=/sources/build-staging/android-ndk-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/install${BUILD_PACKAGE_PREFIX}/android-ndk-${ANDROID_NDK_VERSION}
+    export ANDROID_NDK_HOME=/sources/build-staging/android-ndk-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/android-ndk-${ANDROID_NDK_VERSION}
     export PATH=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}/bin:${PATH}
 elif [ "${HOST_OS}" = "gnu" ]; then
     OPENSSL_OS=linux

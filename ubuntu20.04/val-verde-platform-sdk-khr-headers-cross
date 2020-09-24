@@ -8,7 +8,8 @@ export SOURCE_PACKAGE_NAME=khr-headers
 export SOURCE_PACKAGE_VERSION=git
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export INSTALL_ROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-staging-${SOURCE_PACKAGE_NAME}/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export INSTALL_ROOT=${TEMPDIR}/org.${PACKAGE_BASE_NAME}/${QUALIFIED_PACKAGE_NAME}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
@@ -18,12 +19,12 @@ git clone https://github.com/KhronosGroup/EGL-Registry.git \
           --branch master \
           --single-branch \
           ${SOURCE_ROOT}
-mkdir -p ${STAGE_ROOT}
+mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
 
-mkdir -p install${PACKAGE_PREFIX}/include
+mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}/include
 rsync -aPx ${SOURCE_ROOT}/api/KHR \
-           install${PACKAGE_PREFIX}/include/
+           ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/
 
 # Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build

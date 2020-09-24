@@ -5,18 +5,12 @@ apt update
 apt dist-upgrade -y
 apt install -y \
     alien \
-    automake \
-    autotools-dev \
     bison \
     build-essential \
     ca-certificates \
     clang \
     cmake \
-    debhelper \
-    devscripts \
-    dh-make \
     expat \
-    fakeroot \
     git \
     flex \
     icu-devtools \
@@ -37,7 +31,6 @@ apt install -y \
     libxxf86vm-dev \
     libxml2-dev \
     libz3-dev \
-    lintian \
     lld \
     llvm \
     make \
@@ -46,3 +39,15 @@ apt install -y \
     nvidia-cuda-dev \
     nvidia-cuda-toolkit \
     patchelf \
+    pkg-config \
+    python3 \
+    python3-distutils \
+    python3-six \
+    rsync \
+    ssh \
+    swig \
+    uuid-dev \
+    unzip \
+    zlib1g-dev
+apt autoremove
+apt clean

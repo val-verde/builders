@@ -6,7 +6,8 @@ set -e
 export SOURCE_PACKAGE_NAME=swift-doc
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export INSTALL_ROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-staging-${SOURCE_PACKAGE_NAME}/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export INSTALL_ROOT=${TEMPDIR}/org.${PACKAGE_BASE_NAME}/${QUALIFIED_PACKAGE_NAME}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
@@ -25,12 +26,12 @@ git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
           ${SOURCE_ROOT}
 
 # Build the components
-mkdir -p ${STAGE_ROOT}
+mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${SOURCE_ROOT}
 ${PACKAGE_BASE_NAME}-platform-sdk-swift-build
 
 cd ${STAGE_ROOT}
-mkdir -p install${PACKAGE_PREFIX}/bin
+mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin
 pushd release
 cp `find -type f -name swift-doc\*` \
    ${INSTALL_ROOT}/${PACKAGE_PREFIX}/bin
