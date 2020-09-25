@@ -20,20 +20,14 @@ cd ${SOURCE_ROOT}
 
 CC=${CC:-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang} \
 CFLAGS="\
-     -I${PACKAGE_PREFIX}/include \
      -L${PACKAGE_PREFIX}/lib \
      ${CFLAGS} \
 " \
 CPPFLAGS="\
-     -I${PACKAGE_PREFIX}/include \
      -L${PACKAGE_PREFIX}/lib \
      ${CPPFLAGS} \
 " \
 LD=${LD:-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang} \
-LDFLAGS="\
-     -L${PACKAGE_PREFIX}/lib \
-     ${LDFLAGS} \
-" \
 PKG_CONFIG_PATH="${PACKAGE_PREFIX}/lib/pkgconfig:${PKG_CONFIG_PATH}" \
 meson \
     -Dbuildtype=release \

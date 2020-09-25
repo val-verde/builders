@@ -51,6 +51,29 @@ ENV BUILD_PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOS
     PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr \
     SYSROOT=/
 
+
+ENV CFLAGS="\
+        -I${PACKAGE_PREFIX}/include \
+    " \
+    CPPFLAGS="\
+        -I${PACKAGE_PREFIX}/include \
+    " \
+    CXXFLAGS="\
+        -I${PACKAGE_PREFIX}/include \
+    " \
+    LDFLAGS="\
+        -L${PACKAGE_PREFIX}/lib \
+    " \
+    SWIFT_BUILD_FLAGS="\
+        -Xcc -I${PACKAGE_PREFIX}/include \
+        -Xcxx -I${PACKAGE_PREFIX}/include \
+        -Xlinker -L${PACKAGE_PREFIX}/lib \
+    " \
+    SWIFTCFLAGS="\
+        -I${PACKAGE_PREFIX}/include \
+        -L${PACKAGE_PREFIX}/lib \
+    "
+
 ENV LD_LIBRARY_PATH=${PACKAGE_PREFIX}/lib:${LD_LIBRARY_PATH} \
     PATH=${PACKAGE_PREFIX}/bin:${PATH}
 
@@ -129,13 +152,14 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-icu4c \
      ${PACKAGE_BASE_NAME}-platform-sdk-jwasm \
      ${PACKAGE_BASE_NAME}-platform-sdk-khr-headers-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libcap-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libiconv-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libcap-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-gnu \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
@@ -214,12 +238,14 @@ RUN BINDIR=/usr/bin \
         ${CXXFLAGS} \
     " \
     LLVM_NATIVE_STAGE_ROOT=/usr \
+    MAKE_PROGRAM=/usr/bin/ninja \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
 
 # libcxxabi bootstrap build
 FROM LIBUNWIND_BOOTSTRAP_BUILDER AS LIBCXXABI_BOOTSTRAP_BUILDER
 
 RUN BINDIR=/usr/bin \
+    MAKE_PROGRAM=/usr/bin/ninja \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-cross
 
 # libcxx bootstrap build
@@ -234,12 +260,14 @@ RUN BINDIR=/usr/bin \
         -rtlib=compiler-rt \
         ${CXXFLAGS} \
     " \
+    MAKE_PROGRAM=/usr/bin/ninja \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-cross
 
 # llvm bootstrap build
 FROM LIBCXX_BOOTSTRAP_BUILDER AS LLVM_BOOTSTRAP_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap
+RUN MAKE_PROGRAM=/usr/bin/ninja \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap
 
 # remove host compiler and libraries as it is superceded by bootstrapped clang
 RUN apt remove -y clang \
@@ -283,11 +311,7 @@ ENV PYTHONHOME=${PACKAGE_PREFIX}
 # llvm build
 FROM LLVM_DEPENDENCIES_BUILDER AS LLVM_BUILDER
 
-RUN CXXFLAGS="\
-        -I${PACKAGE_PREFIX}/include \
-        ${CXXFLAGS} \
-    " \
-    DISABLE_POLLY=TRUE \
+RUN DISABLE_POLLY=TRUE \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project
 
 # cmark build
@@ -485,6 +509,29 @@ ENV HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
     SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
     SYSTEM_NAME=Linux
 
+ENV CFLAGS="\
+        -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
+    " \
+    CPPFLAGS="\
+        -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
+    " \
+    CXXFLAGS="\
+        -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
+    " \
+    LDFLAGS="\
+        -L${PACKAGE_PREFIX}/lib \
+    " \
+    SWIFT_BUILD_FLAGS="\
+        -Xcc -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
+        -Xcc -I${PACKAGE_PREFIX}/include \
+        -Xcxx -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
+        -Xcxx -I${PACKAGE_PREFIX}/include \
+        -Xlinker -L${PACKAGE_PREFIX}/lib \
+    " \
+    SWIFTCFLAGS="\
+        -sdk ${SYSROOT} \
+    "
+
 # android ndk headers build
 FROM ANDROID_NDK_BUILDER AS ANDROID_NDK_HEADERS_BUILDER
 
@@ -656,6 +703,19 @@ ENV HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
     SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
     SYSTEM_NAME=Windows
 
+ENV CFLAGS= \
+    CPPFLAGS= \
+    CXXFLAGS= \
+    LDFLAGS= \
+    SWIFT_BUILD_FLAGS="\
+        -Xcc -I${PACKAGE_PREFIX}/include \
+        -Xcxx -I${PACKAGE_PREFIX}/include \
+        -Xlinker -L${PACKAGE_PREFIX}/lib \
+    " \
+    SWIFTCFLAGS="\
+        -sdk ${SYSROOT} \
+    "
+
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-windows \
      ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-windows \
@@ -764,6 +824,23 @@ ENV HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
     PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
     SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
     SYSTEM_NAME=Wasi
+
+    ENV CFLAGS="\
+        -I${PACKAGE_PREFIX}/include \
+    " \
+    CPPFLAGS="\
+        -I${PACKAGE_PREFIX}/include \
+    " \
+    CXXFLAGS="\
+        -I${PACKAGE_PREFIX}/include \
+    " \
+    SWIFT_BUILD_FLAGS= \
+    LDFLAGS="\
+        -L${PACKAGE_PREFIX}/lib \
+    " \
+    SWIFTCFLAGS="\
+        -sdk ${SYSROOT} \
+    "
 
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt-wasi \
      ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-wasi \

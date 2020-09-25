@@ -21,7 +21,6 @@ rsync -aPx ${SOURCE_ROOT}/* \
 
 # Build the components
 cd ${SOURCE_ROOT}
-mkdir -p ${STAGE_ROOT}/install${PACKAGE_PREFIX}
 
 if [ "${HOST_OS}" != "mingw32" ]; then
     CFLAGS="\
@@ -30,21 +29,27 @@ if [ "${HOST_OS}" != "mingw32" ]; then
     "
 fi
 
+mkdir -p ${STAGE_ROOT}/install${PACKAGE_PREFIX}
+cd ${STAGE_ROOT}
+
+rsync -aPx ${SOURCE_ROOT}/* \
+           ${STAGE_ROOT}/
+
 AR=${AR:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar}
 CC=${CC:-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang}
 CFLAGS=`echo ${CFLAGS} | xargs`
+MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILD_PACKAGE_PREFIX}/bin/make}
 RANLIB=${RANLIB:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib}
-TARGETS="\
+
+${MAKE_PROGRAM} \
     AR=${AR} \
     CC=${CC} \
-    CFLAGS=${CFLAGS} \
+    CFLAGS="${CFLAGS}" \
     PREFIX=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
-    install \
-" \
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
+    RANLIB=${RANLIB} \
+    install
 
 # Build the package
-cd ${STAGE_ROOT}
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Install the package

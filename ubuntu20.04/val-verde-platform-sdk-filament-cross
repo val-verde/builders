@@ -49,13 +49,11 @@ fi
 
 CFLAGS="\
     -fno-builtin \
-    -I${PACKAGE_PREFIX}/include \
     ${CFLAGS} \
 " \
 CXXFLAGS="\
     -fno-builtin \
     -DSTRSAFE_NO_DEPRECATE \
-    -I${PACKAGE_PREFIX}/include \
     ${CXXFLAGS} \
 " \
 LDFLAGS="${LDFLAGS}" \

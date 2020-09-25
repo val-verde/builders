@@ -19,16 +19,19 @@ git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
 mkdir -p ${STAGE_ROOT}
 cd ${SOURCE_ROOT}
 
+if [ "${HOST_OS_API_LEVEL}" -lt "28" ]; then
+    SWIFT_BUILD_FLAGS="\
+        -Xswiftc -DDISABLE_POSIX_SPAWN \
+        ${SWIFT_BUILD_FLAGS} \
+    "
+fi
+
 # Build the components
-SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
 SWIFT_BUILD_FLAGS="\
     -Xcc -D__GLIBC_PREREQ(a,b)=0 \
     -Xlinker -lc++ \
     -Xlinker -lncurses \
     -Xlinker -lunwind \
-    -Xlinker -L${PACKAGE_PREFIX}/lib \
-    -Xswiftc -I${PACKAGE_PREFIX}/lib/swift/${SDK_PLATFORM_DIR} \
-    -Xswiftc -I${PACKAGE_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/Block \
     ${SWIFT_BUILD_FLAGS} \
 " \
 ${PACKAGE_BASE_NAME}-platform-sdk-swift-build

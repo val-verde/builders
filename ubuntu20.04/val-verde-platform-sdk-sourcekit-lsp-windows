@@ -25,7 +25,6 @@ SWIFT_BUILD_FLAGS="\
     -Xcc -DLLVM_ON_WIN32=1 \
     -Xcc -I${STAGE_ROOT}/checkouts/swift-llbuild/lib/llvm/Support \
     -Xlinker -lc++ \
-    -Xlinker -L${PACKAGE_PREFIX}/lib \
     -Xswiftc -I${PACKAGE_PREFIX}/lib/swift/${SDK_PLATFORM_DIR} \
     -Xswiftc -I${PACKAGE_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/Block \
     ${SWIFT_BUILD_FLAGS} \

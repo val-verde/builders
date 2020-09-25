@@ -26,7 +26,8 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     glib_cv_stack_grows=no \
     glib_cv_uscore=no \
     --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
-    --with-internal-glib
+    --with-internal-glib \
+    --with-libiconv=gnu
 
 # Build the components
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build

@@ -23,18 +23,6 @@ sed -i \
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-CFLAGS="\
-    -I${PACKAGE_PREFIX}/include \
-    ${CFLAGS} \
-" \
-CPPFLAGS="\
-    -I${PACKAGE_PREFIX}/include \
-    ${CPPFLAGS} \
-" \
-CXXFLAGS="\
-    -I${PACKAGE_PREFIX}/include \
-    ${CXXFLAGS} \
-" \
 LDFLAGS="\
     -Wl,-allow-multiple-definition \
     ${LDFLAGS} \

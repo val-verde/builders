@@ -83,34 +83,34 @@ if [ -n "${HOST_CPU}" ]; then
     ARCH_FLAGS="${ARCH_FLAGS} -mtune=${HOST_CPU}"
 fi
 
-ASMFLAGS=${ASMFLAGS:-"\
+ASMFLAGS=${ASMFLAGS:-`echo "\
     ${ARCH_FLAGS} \
     ${FLTO_CFLAG} \
     ${OPTIMIZATION_FLAGS} \
     -O${OPTIMIZATION_LEVEL} \
     ${ASMFLAGS} \
-"}
-CFLAGS="\
+" | xargs`}
+CFLAGS=`echo "\
     ${ARCH_FLAGS} \
     ${FLTO_CFLAG} \
     ${OPTIMIZATION_FLAGS} \
     -O${OPTIMIZATION_LEVEL} \
     ${CFLAGS} \
-"
-CXXFLAGS="\
+" | xargs`
+CXXFLAGS=`echo "\
     ${ARCH_FLAGS} \
     ${FLTO_CFLAG} \
     ${OPTIMIZATION_FLAGS} \
     -O${OPTIMIZATION_LEVEL} \
     ${CXXFLAGS} \
-"
-LDFLAGS="\
+" | xargs`
+LDFLAGS=`echo "\
     ${ARCH_FLAGS} \
     ${FLTO_LDFLAG} \
     ${LDFLAGS} \
     ${LIBS} \
     -O${LINKER_OPTIMIZATION_LEVEL} \
-"
+" | xargs`
 ${CMAKE_BINDIR}/cmake \
     -G Ninja \
     -DCMAKE_AR=${AR} \

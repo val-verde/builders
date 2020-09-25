@@ -2,6 +2,8 @@
 
 set -e
 
+MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILD_PACKAGE_PREFIX}/bin/make}
 TARGETS=${TARGETS:-install}
 
-make -j${NUM_PROCESSORS} ${TARGETS}
+${MAKE_PROGRAM} -j${NUM_PROCESSORS} \
+                ${TARGETS}

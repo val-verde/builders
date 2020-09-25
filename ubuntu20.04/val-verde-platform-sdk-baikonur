@@ -25,12 +25,10 @@ if [ "${HOST_OS}" = "android" ]; then
 fi
 
 SWIFT_BUILD_FLAGS="\
-    -Xcc -I${PACKAGE_PREFIX}/include \
     -Xcxx -fno-modules \
     -Xcxx -Wno-unused-command-line-argument \
     -Xlinker -lc++ \
     -Xlinker -lunwind \
-    -Xlinker -L${PACKAGE_PREFIX}/lib \
     ${SWIFT_BUILD_FLAGS} \
 " \
 ${PACKAGE_BASE_NAME}-platform-sdk-swift-build
