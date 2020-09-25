@@ -28,7 +28,7 @@ FORCE_UNSAFE_CONFIGURE=1 \
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
     --with-openssl \
-    --prefix=${INSTALL_ROOT}/${PACKAGE_PREFIX}
+    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX}
 
 # Build the components
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build

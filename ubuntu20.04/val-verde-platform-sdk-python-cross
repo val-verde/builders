@@ -49,7 +49,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ac_cv_file__dev_ptc=no \
     ac_cv_file__dev_ptmx=yes \
     --enable-shared \
-    --prefix=${INSTALL_ROOT}/${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
     --with-ensurepip=yes \
     --with-openssl=${PACKAGE_PREFIX}/include \
     --with-system-expat \

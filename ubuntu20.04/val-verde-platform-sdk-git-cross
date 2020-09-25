@@ -30,7 +30,7 @@ rsync -ax ${SOURCE_ROOT}/* .
 autoreconf -i
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${STAGE_ROOT}/configure \
-    --prefix=${INSTALL_ROOT}/${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
     --with-curl=${PACKAGE_PREFIX} \
     --with-expat=${PACKAGE_PREFIX} \
     --with-openssl=${PACKAGE_PREFIX} \

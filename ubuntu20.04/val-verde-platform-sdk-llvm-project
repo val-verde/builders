@@ -185,7 +185,7 @@ rsync -aPx ${STAGE_ROOT}/bin/llvm-as* \
            ${STAGE_ROOT}/bin/llvm-dlltool* \
            ${STAGE_ROOT}/bin/llvm-mt* \
            ${STAGE_ROOT}/bin/llvm-pdbutil* \
-           ${INSTALL_ROOT}/${PACKAGE_PREFIX}/bin
+           ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin
 
 # Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build

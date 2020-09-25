@@ -28,7 +28,7 @@ if [ "${HOST_OS}" = "android" ]; then
     OPENSSL_DIR=/data/local/tmp${PACKAGE_PREFIX}/etc/ssl
     OPENSSL_DEFINES="-D__ANDROID_API__=${HOST_OS_API_LEVEL}"
 
-    export ANDROID_NDK_HOME=/sources/build-staging/android-ndk-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/android-ndk-${ANDROID_NDK_VERSION}
+    export ANDROID_NDK_HOME=${TEMPDIR}/org.${PACKAGE_BASE_NAME}/android-ndk-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}${BUILD_PACKAGE_PREFIX}/android-ndk-${ANDROID_NDK_VERSION}
     export PATH=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}/bin:${PATH}
 elif [ "${HOST_OS}" = "gnu" ]; then
     OPENSSL_OS=linux
@@ -51,7 +51,7 @@ CC=${CC:-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang} \
 RANLIB=${RANLIB:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib} \
 RC=${RC:-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rc} \
 ${SOURCE_ROOT}/Configure \
-    --prefix=${INSTALL_ROOT}/${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
     --openssldir=${OPENSSL_DIR} \
     "${OPENSSL_DEFINES}" \
     ${OPENSSL_TARGET}

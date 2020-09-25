@@ -34,7 +34,7 @@ PKG_CONFIG_PATH="${PACKAGE_PREFIX}/lib/pkgconfig:${PKG_CONFIG_PATH}" \
 meson \
     -Dbuildtype=release \
     -Doptimization=${OPTIMIZATION_LEVEL} \
-    -Dprefix=${INSTALL_ROOT}/${PACKAGE_PREFIX} \
+    -Dprefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
     ${STAGE_ROOT}
 
 cd ${STAGE_ROOT}

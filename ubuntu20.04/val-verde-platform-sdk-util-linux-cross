@@ -30,7 +30,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     --enable-libmount \
     --enable-libuuid \
     --enable-shared \
-    --prefix=${INSTALL_ROOT}/${PACKAGE_PREFIX}
+    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX}
 
 # Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build

@@ -30,7 +30,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     --disable-static \
     --disable-tests \
     --enable-shared \
-    --prefix=${INSTALL_ROOT}/${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
     --with-library-suffix=swift
 
 # Build the components
@@ -39,12 +39,12 @@ source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 
 # RPATH fixups
 COMPONENTS="\
-    ${INSTALL_ROOT}/${PACKAGE_PREFIX}/lib/libicudataswift.so \
-    ${INSTALL_ROOT}/${PACKAGE_PREFIX}/lib/libicui18nswift.so \
-    ${INSTALL_ROOT}/${PACKAGE_PREFIX}/lib/libicuioswift.so \
-    ${INSTALL_ROOT}/${PACKAGE_PREFIX}/lib/libicutestswift.so \
-    ${INSTALL_ROOT}/${PACKAGE_PREFIX}/lib/libicutuswift.so \
-    ${INSTALL_ROOT}/${PACKAGE_PREFIX}/lib/libicuucswift.so \
+    ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/libicudataswift.so \
+    ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/libicui18nswift.so \
+    ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/libicuioswift.so \
+    ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/libicutestswift.so \
+    ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/libicutuswift.so \
+    ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/libicuucswift.so \
 " \
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rpath-fixup
 
