@@ -38,7 +38,7 @@ CFLAGS="\
 FORCE_UNSAFE_CONFIGURE=1 \
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
-    --prefix=${INSTALL_ROOT}/${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
     "${MAKE_FS_CMD}"
 
 # Build the components

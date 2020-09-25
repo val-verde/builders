@@ -26,7 +26,7 @@ cd ${STAGE_ROOT}
 mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin
 pushd release
 cp `find -type f -name swift-format\*` \
-   ${INSTALL_ROOT}/${PACKAGE_PREFIX}/bin
+   ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin
 popd
 
 # Build the package

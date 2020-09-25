@@ -78,6 +78,12 @@ ENV CFLAGS="\
 ENV LD_LIBRARY_PATH=${PACKAGE_PREFIX}/lib:${LD_LIBRARY_PATH} \
     PATH=${PACKAGE_PREFIX}/bin:${PATH}
 
+
+RUN git clone https://github.com/${PACKAGE_BASE_NAME}/llvm-project.git \
+              --branch dutch-master \
+              --single-branch \
+              /sources/llvm-project
+
 RUN mkdir -p ${BUILD_PACKAGE_PREFIX}
 
 # platform sdk tool wrapper scripts
@@ -119,10 +125,10 @@ COPY patch-coreutils-ls-android.diff \
 # linux sources
 FROM BASE AS SOURCES_BUILDER
 
-RUN git clone https://github.com/${PACKAGE_BASE_NAME}/llvm-project.git \
-              --branch dutch-master \
-              --single-branch \
-              /sources/llvm-project
+# RUN git clone https://github.com/${PACKAGE_BASE_NAME}/llvm-project.git \
+#               --branch dutch-master \
+#               --single-branch \
+#               /sources/llvm-project
 
 # platform sdk package build scripts
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
@@ -239,14 +245,7 @@ RUN BINDIR=/usr/bin \
         ${CXXFLAGS} \
     " \
     LLVM_NATIVE_STAGE_ROOT=/usr \
-<<<<<<< HEAD
-<<<<<<< HEAD
     MAKE_PROGRAM=/usr/bin/ninja \
-=======
-    BUILD_DEPENDENCIES="libmagic-mgc, perl-modules-5.30, file, mime-support, libmagic1, libperl5.30" \
->>>>>>> add install roots for linux build to avoid /usr/local as install location
-=======
->>>>>>> standardize usage of install root for linux builds
     bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
 
 # libcxxabi bootstrap build
@@ -515,7 +514,7 @@ ENV HOST_ARCH=armv8-a \
 
 ENV HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
     PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr \
-    SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
+    SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
     SYSTEM_NAME=Linux
 
 ENV CFLAGS="\
@@ -551,7 +550,7 @@ FROM ANDROID_NDK_HEADERS_BUILDER AS ANDROID_NDK_RUNTIME_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-runtime
 
-# android compiler-rt build (for host)
+android compiler-rt build (for host)
 FROM ANDROID_NDK_RUNTIME_BUILDER AS ANDROID_COMPILER_RT_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt
@@ -561,9 +560,9 @@ FROM ANDROID_COMPILER_RT_BUILDER AS ANDROID_LIBUNWIND_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
 
-# android llvm dependencies build
+android llvm dependencies build
 FROM ANDROID_LIBUNWIND_BUILDER AS ANDROID_LLVM_DEPENDENCIES_BUILDER
-
+ 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-android
 
 # android llvm build
@@ -709,7 +708,7 @@ ENV HOST_ARCH=haswell \
 
 ENV HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
     PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
-    SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
+    SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
     SYSTEM_NAME=Windows
 
 ENV CFLAGS= \

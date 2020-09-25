@@ -23,7 +23,6 @@ rsync -aPx ${SOURCE_ROOT}/* \
 
 # Build the components
 cd ${SOURCE_ROOT}
-mkdir -p ${INSTALL_ROOT}/${PACKAGE_PREFIX}
 
 if [ "${HOST_OS}" != "mingw32" ]; then
     CFLAGS="\
@@ -32,7 +31,7 @@ if [ "${HOST_OS}" != "mingw32" ]; then
     "
 fi
 
-mkdir -p ${STAGE_ROOT}/install${PACKAGE_PREFIX}
+mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}
 cd ${STAGE_ROOT}
 
 rsync -aPx ${SOURCE_ROOT}/* \
@@ -48,14 +47,11 @@ ${MAKE_PROGRAM} \
     AR=${AR} \
     CC=${CC} \
     CFLAGS=${CFLAGS} \
-    PREFIX=${INSTALL_ROOT}/${PACKAGE_PREFIX} \
+    PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX} \
     RANLIB=${RANLIB} \
-    install \
-" \
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
+    install
 
 # Build the package
-#cd ${INSTALL_ROOT}
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 
 # Install the package

@@ -26,10 +26,10 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
 
 # Build the components
 ninja -j${NUM_PROCESSORS}
-mkdir -p ${INSTALL_ROOT}/${PACKAGE_PREFIX}/bin
+mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin
 
 cp ${STAGE_ROOT}/jwasm* \
-   ${INSTALL_ROOT}/${PACKAGE_PREFIX}/bin/
+   ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin/
 
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
 

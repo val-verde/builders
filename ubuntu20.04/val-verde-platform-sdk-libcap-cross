@@ -30,7 +30,7 @@ prefix=/ \
 AR=${AR:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar} \
 CC=${CC:-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang} \
 BUILD_CC=${CC:-${BUILD_PACKAGE_PREFIX}/bin/clang} \
-DESTDIR=${INSTALL_ROOT}/${PACKAGE_PREFIX} \
+DESTDIR=${INSTALL_ROOT}${PACKAGE_PREFIX} \
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 
 # Build the package

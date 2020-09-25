@@ -28,7 +28,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     lt_cv_deplibs_check_method=pass_all \
     --disable-static \
     --enable-shared \
-    --prefix=${INSTALL_ROOT}/${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
     --with-icu \
     --without-python
 
@@ -37,7 +37,7 @@ source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 
 # RPATH fixups
 COMPONENTS="\
-    ${INSTALL_ROOT}/${PACKAGE_PREFIX}/lib/libxml2.so \
+    ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/libxml2.so \
 " \
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rpath-fixup
 

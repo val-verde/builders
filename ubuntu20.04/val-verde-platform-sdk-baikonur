@@ -43,7 +43,7 @@ rsync -aPx `find release/baikonur* -executable -type f` \
 
 # RPATH fixups
 COMPONENTS="\
-    ${INSTALL_ROOT}/${PACKAGE_PREFIX}/bin/baikonur \
+    ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin/baikonur \
 " \
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rpath-fixup
 

@@ -81,11 +81,11 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
 # Build the components
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
-mkdir -p ${INSTALL_ROOT}/${PACKAGE_PREFIX}/lib/cmake
+mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/cmake
 
 if [ "${BUILD_TRIPLE}" == ${HOST_TRIPLE} ]; then
     rsync -aPx ${STAGE_ROOT}/ImportExecutables-${BUILD_TYPE}.cmake \
-               ${INSTALL_ROOT}/${PACKAGE_PREFIX}/lib/cmake/${SOURCE_PACKAGE_NAME}.cmake
+               ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/cmake/${SOURCE_PACKAGE_NAME}.cmake
 fi
 
 # Build the package

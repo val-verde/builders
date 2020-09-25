@@ -43,9 +43,9 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
 # Build the components
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
-mkdir -p ${INSTALL_ROOT}/${PACKAGE_PREFIX}/include
+mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}/include
 cp ${SOURCE_ROOT}/include/* \
-   ${INSTALL_ROOT}/${PACKAGE_PREFIX}/include
+   ${INSTALL_ROOT}${PACKAGE_PREFIX}/include
 
 # Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build

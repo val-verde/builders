@@ -12,11 +12,13 @@ export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-/sources/build-staging/l
 export LLVM_STAGE_ROOT=/sources/build-staging/llvm-project-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 export SWIFT_NATIVE_STAGE_ROOT=${SWIFT_NATIVE_STAGE_ROOT:-/sources/build-staging/swift-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
 export SWIFT_STAGE_ROOT=/sources/build-staging/swift-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export INSTALL_ROOT=${TEMPDIR}/org.${PACKAGE_BASE_NAME}/${QUALIFIED_PACKAGE_NAME}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
 # Configure the package
-mkdir -p ${STAGE_ROOT}
+mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
 
 CFLAGS="\
@@ -75,9 +77,9 @@ source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 # RPATH fixups
 COMPONENTS="\
-    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/bin/lldb \
-    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/bin/repl_swift \
-    ${STAGE_ROOT}/install${PACKAGE_PREFIX}/lib/liblldb.so \
+    ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin/lldb \
+    ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin/repl_swift \
+    ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/liblldb.so \
 " \
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rpath-fixup
 

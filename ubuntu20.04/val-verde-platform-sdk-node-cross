@@ -9,7 +9,7 @@ export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 export INSTALL_ROOT=${TEMPDIR}/org.${PACKAGE_BASE_NAME}/${QUALIFIED_PACKAGE_NAME}
-NODE_NATIVE_STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}
+export NODE_NATIVE_STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
@@ -100,7 +100,7 @@ export RANLIB_target=${RANLIB:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib}
 ${STAGE_ROOT}/configure \
     --dest-cpu=${CONFIGURE_HOST_PROCESSOR} \
     --dest-os=${CONFIGURE_HOST_OS} \
-    --prefix=${INSTALL_ROOT}/${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
     --shared-openssl \
     --shared-zlib \
     --with-intl=system-icu \
@@ -112,7 +112,7 @@ source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 if [ "${HOST_OS}" = "android" ]; then
     sed -i \
         's|/usr/bin/env|/system/bin/env|g' \
-        `grep -r "/usr/bin/env" ${STAGE_ROOT}/install${PACKAGE_PREFIX} | cut -d: -f1`
+        `grep -r "/usr/bin/env" ${INSTALL_ROOT}${PACKAGE_PREFIX} | cut -d: -f1`
 fi
 
 # Build the package

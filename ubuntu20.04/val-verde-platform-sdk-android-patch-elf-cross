@@ -23,14 +23,14 @@ rsync -aPx ${SOURCE_ROOT}/* \
 
 # Build the components
 cd ${SOURCE_ROOT}
-mkdir -p ${INSTALL_ROOT}/${PACKAGE_PREFIX}
+mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}
 CC=${CC:-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang}
 MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILD_PACKAGE_PREFIX}/bin/make}
 
 ${MAKE_PROGRAM} \
     CC=${CC} \
-    CFLAGS=${CFLAGS} \
-    DSTROOT=${INSTALL_ROOT}/${PACKAGE_PREFIX} \
+    CFLAGS="${CFLAGS}" \
+    DSTROOT=${INSTALL_ROOT}${PACKAGE_PREFIX} \
     OUTDIR=${STAGE_ROOT} \
     install
 

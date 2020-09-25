@@ -27,7 +27,7 @@ CXXFLAGS="\
 " \
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
-    --prefix=${INSTALL_ROOT}/${PACKAGE_PREFIX}
+    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX}
 
 # Build the components
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
