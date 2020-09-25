@@ -17,6 +17,9 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-automake-cross
 # windows make build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-make-cross
 
+# windows libiconv build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-libiconv-cross
+
 # windows pkg-config build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-pkg-config-cross
 
