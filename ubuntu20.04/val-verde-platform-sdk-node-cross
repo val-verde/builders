@@ -21,7 +21,7 @@ mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
 rsync -aPx ${SOURCE_ROOT}/* \
-           ${STAGE_ROOT}
+           ${STAGE_ROOT}/
 
 CONFIGURE_BUILD_OS=${BUILD_OS}
 CONFIGURE_HOST_OS=${HOST_OS}
@@ -47,7 +47,6 @@ elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
     CONFIGURE_HOST_PROCESSOR=x64
 fi
 
-export AR_host=${AR_host:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar}
 if [ "${HOST_OS}" = "android" ]; then
     export GYP_DEFINES="\
         android_target_arch=${CONFIGURE_HOST_PROCESSOR} \
@@ -69,15 +68,28 @@ export AS_host=${AS_host:-${BUILD_PACKAGE_PREFIX}/bin/clang}
 export AS_target=${AS:-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang}
 export CC_host=${CC_host:-${BUILD_PACKAGE_PREFIX}/bin/clang}
 export CC_target=${CC:-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang}
-export CFLAGS=${CFLAGS}
+export CFLAGS_host="\
+    -I${BUILD_PACKAGE_PREFIX}/include \
+"
+export CFLAGS_target=${CFLAGS}
 export CPP_host=${CPP_host:-"${BUILD_PACKAGE_PREFIX}/bin/clang -E"}
 export CPP_target=${CPP:-"${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang -E"}
-export CPPFLAGS=${CPPFLAGS}
+export CPPFLAGS_host="\
+    -I${BUILD_PACKAGE_PREFIX}/include \
+"
+export CPPFLAGS_target=${CPPFLAGS}
 export CXX_host=${CXX_host:-"${BUILD_PACKAGE_PREFIX}/bin/clang++ -cxx-isystem ${BUILD_PACKAGE_PREFIX}/include/c++/v1"}
 export CXX_target=${CXX_target:-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang++}
-export LD_host=${LD_host:-${BUILD_PACKAGE_PREFIX}/bin/clang}
-export LD_target=${LD_target:-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang}
+export CXXFLAGS_host="\
+    -cxx-isystem ${BUILD_PACKAGE_PREFIX}/include/c++/v1 \
+    -I${BUILD_PACKAGE_PREFIX}/include \
+"
+LDFLAGS_host="\
+    -L${BUILD_PACKAGE_PREFIX}/lib \
+"
 export LDFLAGS=${LDFLAGS}
+export LINK_host="${LD_host:-${BUILD_PACKAGE_PREFIX}/bin/clang++} ${LDFLAGS_host}"
+export LINK_target=${LD_target:-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang++}
 export PKG_CONFIG=${PKG_CONFIG:-${BUILD_PACKAGE_PREFIX}/bin/pkg-config}
 export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-${PACKAGE_PREFIX}/lib/pkgconfig}
 export RANLIB_host=${RANLIB_host:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib}
@@ -94,6 +106,12 @@ ${STAGE_ROOT}/configure \
 
 # Build the components
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
+
+if [ "${HOST_OS}" = "android" ]; then
+    sed -i \
+        's|/usr/bin/env|/system/bin/env|g' \
+        `grep -r "/usr/bin/env" ${STAGE_ROOT}/install${PACKAGE_PREFIX} | cut -d: -f1`
+fi
 
 # Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
