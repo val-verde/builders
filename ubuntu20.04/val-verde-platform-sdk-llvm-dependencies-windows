@@ -76,6 +76,9 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
 DISABLE_POLLY=TRUE \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
 
+# windows gettext build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-gettext-cross
+
 # windows bison build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-bison-cross
 
