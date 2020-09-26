@@ -8,7 +8,7 @@ RUN apt update \
 
 WORKDIR /staging
 
-COPY ./updateRepo .
+COPY ./scripts/updateRepo .
 
 #Execute script from within the container to see errord
 #RUN bash updateRepo
