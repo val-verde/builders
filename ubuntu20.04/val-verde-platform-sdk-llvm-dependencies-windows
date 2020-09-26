@@ -17,6 +17,9 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-automake-cross
 # windows make build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-make-cross
 
+# windows libiconv build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-libiconv-cross
+
 # windows pkg-config build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-pkg-config-cross
 
@@ -72,6 +75,9 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
 # windows curl build
 DISABLE_POLLY=TRUE \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
+
+# windows gettext build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-gettext-cross
 
 # windows bison build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-bison-cross

@@ -17,11 +17,13 @@ for ((i=0; i<"${#args[@]}"; ++i)); do
         i=$((i+1))
         ;;
     -D)
-        OTHER_FLAGS="${OTHER_FLAGS} -D${args[i+1]}"
+        DEFINE=`echo ${args[i+1]} | xargs`
+        OTHER_FLAGS="${OTHER_FLAGS} -D${DEFINE}"
         i=$((i+1))
         ;;
     -I)
-        OTHER_FLAGS="${OTHER_FLAGS} -I${args[i+1]}"
+        INCLUDE=`echo ${args[i+1]} | xargs`
+        OTHER_FLAGS="${OTHER_FLAGS} -I${INCLUDE}"
         i=$((i+1))
         ;;
     --target*)
@@ -29,8 +31,12 @@ for ((i=0; i<"${#args[@]}"; ++i)); do
     *.rc)
         IN_FILE=${args[i]}
         ;;
+    -*)
+        OTHER=`echo ${args[i]} | xargs`
+        OTHER_FLAGS="${OTHER_FLAGS} ${OTHER}"
+        ;;
     *)
-        OTHER_FLAGS="${OTHER_FLAGS} ${args[i]}"
+        OUT_FILE=${args[i]}
         ;;
     esac
 done

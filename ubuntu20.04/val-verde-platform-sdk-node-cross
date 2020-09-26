@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e -x
+set -e
 
 # Set all environment vars
 export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
