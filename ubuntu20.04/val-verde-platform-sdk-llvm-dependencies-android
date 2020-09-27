@@ -155,7 +155,6 @@ LDFLAGS="\
     --sysroot=${SYSROOT} \
     ${LDFLAGS} \
 " \
-PYTHON_FOR_BUILD=${BUILD_PACKAGE_PREFIX}/bin/python3 \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-python-cross
 
 # android z3 build
