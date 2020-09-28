@@ -12,8 +12,8 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 
 # Configure the package
 rm -rf ${SOURCE_ROOT}
-git clone https://github.com/WebAssembly/${SOURCE_PACKAGE_NAME}.git \
-          --branch master \
+git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
+          --branch dutch-master \
           --single-branch \
           ${SOURCE_ROOT}
 rsync -aPx ${SOURCE_ROOT}/* \
@@ -22,11 +22,21 @@ cd ${STAGE_ROOT}
 mkdir -p ${STAGE_ROOT}/install${PACKAGE_PREFIX}
 
 # Build the components
-TARGETS="\
-    INSTALL_DIR=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
-    OBJDIR=${STAGE_ROOT} \
-" \
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
+CFLAGS=`echo "\
+    -D_WASI_EMULATED_MMAN \
+    -D_WASI_EMULATED_SIGNAL \
+" | xargs`
+
+INSTALL_DIR=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+OBJDIR=${STAGE_ROOT} \
+THREAD_MODEL=local-exec \
+WASM_AR=${BUILD_PACKAGE_PREFIX}/bin/llvm-ar \
+WASM_CC=${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang \
+WASM_CFLAGS=${CFLAGS} \
+WASM_NM=${BUILD_PACKAGE_PREFIX}/bin/llvm-nm \
+SYSROOT=${STAGE_ROOT}/sysroot \
+${BUILD_PACKAGE_PREFIX}/bin/make \
+    install
 
 # Build the package
 cd ${STAGE_ROOT}
