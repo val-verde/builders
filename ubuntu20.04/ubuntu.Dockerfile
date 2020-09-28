@@ -686,7 +686,7 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-graphics-sdk-cross
 # android node build
 FROM ANDROID_GRAPHICS_SDK_BUILDER AS ANDROID_NODE_BUILDER
 
-# RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-node-cross
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-node-cross
 
 # windows environment
 FROM ANDROID_NODE_BUILDER AS WINDOWS_SOURCES_BUILDER
