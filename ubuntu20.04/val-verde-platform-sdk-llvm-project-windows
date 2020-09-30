@@ -8,6 +8,8 @@ export SOURCE_PACKAGE_NAME=llvm-project
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-/sources/build-staging/llvm-project-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
+export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export INSTALL_ROOT=${TEMPDIR}/org.${PACKAGE_BASE_NAME}/${QUALIFIED_PACKAGE_NAME}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
@@ -17,7 +19,7 @@ EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;clang-tools-extra;libclc;mli
 cd ${SOURCE_ROOT}
 git checkout dutch-master
 
-mkdir -p ${STAGE_ROOT}
+mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
 
 export PATH=${PATH}:${LLVM_NATIVE_STAGE_ROOT}/bin
@@ -196,14 +198,14 @@ rsync -aPx ${STAGE_ROOT}/bin/llvm-as* \
            ${STAGE_ROOT}/bin/llvm-dlltool* \
            ${STAGE_ROOT}/bin/llvm-mt* \
            ${STAGE_ROOT}/bin/llvm-pdbutil* \
-           ${STAGE_ROOT}/install${PACKAGE_PREFIX}/bin
+           ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin
 
 CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a
 DST_CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a
 SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
 DST_SDK_PLATFORM_DIR=${DST_SDK_PLATFORM_DIR:-${SDK_PLATFORM_DIR}}
 ln -sf ${CLANG_RT_LIB} \
-       install${PACKAGE_PREFIX}/lib/clang/11.0.0/lib/${DST_SDK_PLATFORM_DIR}/${DST_CLANG_RT_LIB}
+       ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/clang/11.0.0/lib/${DST_SDK_PLATFORM_DIR}/${DST_CLANG_RT_LIB}
 
 # Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
