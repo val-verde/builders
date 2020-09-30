@@ -78,12 +78,6 @@ ENV CFLAGS="\
 ENV LD_LIBRARY_PATH=${PACKAGE_PREFIX}/lib:${LD_LIBRARY_PATH} \
     PATH=${PACKAGE_PREFIX}/bin:${PATH}
 
-
-RUN git clone https://github.com/${PACKAGE_BASE_NAME}/llvm-project.git \
-              --branch dutch-master \
-              --single-branch \
-              /sources/llvm-project
-
 RUN mkdir -p ${BUILD_PACKAGE_PREFIX}
 
 # platform sdk tool wrapper scripts
@@ -125,10 +119,10 @@ COPY patch-coreutils-ls-android.diff \
 # linux sources
 FROM BASE AS SOURCES_BUILDER
 
-# RUN git clone https://github.com/${PACKAGE_BASE_NAME}/llvm-project.git \
-#               --branch dutch-master \
-#               --single-branch \
-#               /sources/llvm-project
+RUN git clone https://github.com/${PACKAGE_BASE_NAME}/llvm-project.git \
+              --branch dutch-master \
+              --single-branch \
+              /sources/llvm-project
 
 # platform sdk package build scripts
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
@@ -478,7 +472,6 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk
 
 # platform independent package builders
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libiconv-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-argument-parser-cross \
@@ -550,7 +543,7 @@ FROM ANDROID_NDK_HEADERS_BUILDER AS ANDROID_NDK_RUNTIME_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-runtime
 
-android compiler-rt build (for host)
+# android compiler-rt build (for host)
 FROM ANDROID_NDK_RUNTIME_BUILDER AS ANDROID_COMPILER_RT_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt
@@ -560,9 +553,9 @@ FROM ANDROID_COMPILER_RT_BUILDER AS ANDROID_LIBUNWIND_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
 
-android llvm dependencies build
+# android llvm dependencies build
 FROM ANDROID_LIBUNWIND_BUILDER AS ANDROID_LLVM_DEPENDENCIES_BUILDER
- 
+
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-android
 
 # android llvm build
@@ -707,7 +700,7 @@ ENV HOST_ARCH=haswell \
     HOST_PROCESSOR=x86_64
 
 ENV HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
+    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
     SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
     SYSTEM_NAME=Windows
 
@@ -829,8 +822,8 @@ ENV HOST_ARCH=wasm32 \
     HOST_PROCESSOR=wasm32
 
 ENV HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
-    SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
+    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
+    SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
     SYSTEM_NAME=Wasi
 
     ENV CFLAGS="\

@@ -8,6 +8,8 @@ export SOURCE_PACKAGE_NAME=compiler-rt
 export SOURCE_ROOT=/sources/llvm-project/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-/sources/build-staging/llvm-project-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
+export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export INSTALL_ROOT=${TEMPDIR}/org.${PACKAGE_BASE_NAME}/${QUALIFIED_PACKAGE_NAME}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}
 export CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a
@@ -40,9 +42,9 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
-mkdir -p install${BUILD_PACKAGE_PREFIX}/lib/clang/11.0.0/lib/wasi
+mkdir -p ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/11.0.0/lib/wasi
 mv install-staging${BUILD_PACKAGE_PREFIX}/lib/${SDK_PLATFORM_DIR}/${CLANG_RT_LIB} \
-   install${BUILD_PACKAGE_PREFIX}/lib/clang/11.0.0/lib/wasi/${DST_CLANG_RT_LIB}
+   ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/11.0.0/lib/wasi/${DST_CLANG_RT_LIB}
 
 # Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
