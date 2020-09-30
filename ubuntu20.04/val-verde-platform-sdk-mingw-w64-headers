@@ -7,16 +7,18 @@ export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
 export SOURCE_PACKAGE_NAME=mingw-w64-headers
 export SOURCE_ROOT=/sources/mingw-w64/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export INSTALL_ROOT=${TEMPDIR}/org.${PACKAGE_BASE_NAME}/${QUALIFIED_PACKAGE_NAME}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
-mkdir -p ${STAGE_ROOT}
+mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
     --enable-crt \
     --enable-sdk=all \
-    --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
     --with-default-msvcrt=ucrt \
     --with-default-win32-winnt=0x0A00
 
@@ -24,11 +26,11 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 
 cp ${SOURCE_ROOT}/include/module.modulemap \
-   ${STAGE_ROOT}/install${PACKAGE_PREFIX}/include/
+   ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/
 ln -sf . \
-       ${STAGE_ROOT}/install${PACKAGE_PREFIX}/mingw
+       ${INSTALL_ROOT}${PACKAGE_PREFIX}/mingw
 ln -sf . \
-       ${STAGE_ROOT}/install${PACKAGE_PREFIX}/usr
+       ${INSTALL_ROOT}${PACKAGE_PREFIX}/usr
 
 # Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
