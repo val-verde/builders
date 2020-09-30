@@ -46,7 +46,7 @@ RANLIB=${RANLIB:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib}
 ${MAKE_PROGRAM} \
     AR=${AR} \
     CC=${CC} \
-    CFLAGS=${CFLAGS} \
+    CFLAGS="${CFLAGS}" \
     PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX} \
     RANLIB=${RANLIB} \
     install

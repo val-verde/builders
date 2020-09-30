@@ -8,6 +8,8 @@ export SOURCE_PACKAGE_NAME=wineditline
 export SOURCE_PACKAGE_VERSION=git
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export INSTALL_ROOT=${TEMPDIR}/org.${PACKAGE_BASE_NAME}/${QUALIFIED_PACKAGE_NAME}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
@@ -17,7 +19,7 @@ git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
           --branch dutch-master \
           --single-branch \
           ${SOURCE_ROOT}
-mkdir -p ${STAGE_ROOT}/install${PACKAGE_PREFIX}
+mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}${PACKAGE_PREFIX}
 cd ${STAGE_ROOT}
 
 CFLAGS="\
@@ -34,7 +36,7 @@ source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 mv ${SOURCE_ROOT}/src/bin \
    ${SOURCE_ROOT}/src/include \
    ${SOURCE_ROOT}/src/lib \
-   ${STAGE_ROOT}/install${PACKAGE_PREFIX}
+   ${INSTALL_ROOT}${PACKAGE_PREFIX}
 
 # Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build

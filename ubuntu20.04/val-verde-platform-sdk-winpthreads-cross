@@ -7,10 +7,12 @@ export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
 export SOURCE_PACKAGE_NAME=winpthreads
 export SOURCE_ROOT=/sources/mingw-w64/mingw-w64-libraries/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export INSTALL_ROOT=${TEMPDIR}/org.${PACKAGE_BASE_NAME}/${QUALIFIED_PACKAGE_NAME}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
-mkdir -p ${STAGE_ROOT}
+mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
 
 sed -i \
@@ -18,14 +20,14 @@ sed -i \
     ${SOURCE_ROOT}/configure
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
-    --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
 
 # Build the components
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 
-rm -rf install${PACKAGE_PREFIX}/include/pthread_signal.h \
-       install${PACKAGE_PREFIX}/include/pthread_time.h \
-       install${PACKAGE_PREFIX}/include/pthread_unistd.h
+rm -rf ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/pthread_signal.h \
+       ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/pthread_time.h \
+       ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/pthread_unistd.h
 
 # Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
