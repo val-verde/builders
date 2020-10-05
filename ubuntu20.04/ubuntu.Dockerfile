@@ -43,7 +43,8 @@ ENV BUILD_ARCH=haswell \
     HOST_PROCESSOR=${HOST_PROCESSOR} \
     PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME} \
     PACKAGE_ROOT=${PACKAGE_ROOT} \
-    SYSTEM_NAME=Linux
+    SYSTEM_NAME=Linux \
+    PACKAGE_CLASS=deb
 
 ENV BUILD_PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr \
     BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS} \
@@ -106,7 +107,7 @@ RUN chmod +x ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-confi
 
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-make-build \
      ${PACKAGE_BASE_NAME}-platform-sdk-ninja-build \
-     ${PACKAGE_BASE_NAME}-platform-sdk-package-build \
+     ${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build \
      ${PACKAGE_BASE_NAME}-platform-sdk-package-install \
      ${PACKAGE_BASE_NAME}-platform-sdk-rpath-fixup \
      ${BUILD_PACKAGE_PREFIX}/bin/

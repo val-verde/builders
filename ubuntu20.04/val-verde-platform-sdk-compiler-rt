@@ -52,7 +52,7 @@ mv install-staging${BUILD_PACKAGE_PREFIX}/lib/${SDK_PLATFORM_DIR}/${CLANG_RT_LIB
    ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/11.0.0/lib/${DST_SDK_PLATFORM_DIR}/${DST_CLANG_RT_LIB}
 
 # Build the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
 
 # Install the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install
