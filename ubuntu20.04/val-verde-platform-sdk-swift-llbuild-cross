@@ -31,4 +31,4 @@ rsync -aPx ${STAGE_ROOT}/lib/*.so* \
            install${PACKAGE_PREFIX}/lib
 
 # Build the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build

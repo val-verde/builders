@@ -31,7 +31,7 @@ mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin
 cp ${STAGE_ROOT}/jwasm* \
    ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin/
 
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
 
 # Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install
