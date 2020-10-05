@@ -1,16 +1,14 @@
 #!/bin/bash
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-config-deb
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-gen-deb-files
 
 set -e
 
 BASE_DIRECTORY=$(echo "${PACKAGE_ROOT}" | cut -d "/" -f2)
 
 cd ${INSTALL_ROOT}
-tar cf ${PACKAGE_NAME}.tar ${BASE_DIRECTORY}
-
-alien ${PACKAGE_NAME}.tar
-rm ${PACKAGE_NAME}.tar
-mv *${SOURCE_PACKAGE_NAME}*.deb \
-   ${DEB_PATH}/${PACKAGE_NAME}.deb
-
-config-deb "${PACKAGE_NAME}"
+mkdir -p /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+rsync -aPx ${BASE_DIRECTORY} /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+generate-control-file "${PACKAGE_NAME}"
+dpkg -b /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+mv /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}.deb ${DEB_PATH}/${PACKAGE_NAME}.deb
+rm -r /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}

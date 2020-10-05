@@ -80,6 +80,10 @@ ENV LD_LIBRARY_PATH=${PACKAGE_PREFIX}/lib:${LD_LIBRARY_PATH} \
     PATH=${PACKAGE_PREFIX}/bin:${PATH}
 
 RUN mkdir -p ${BUILD_PACKAGE_PREFIX}
+RUN git clone https://github.com/${PACKAGE_BASE_NAME}/llvm-project.git \
+              --branch dutch-master \
+              --single-branch \
+              /sources/llvm-project
 
 # platform sdk tool wrapper scripts
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-configure \
@@ -105,7 +109,7 @@ RUN chmod +x ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-confi
              ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swift-build \
              ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swiftc
 
-COPY ${PACKAGE_BASE_NAME}-platform-sdk-deb-build \
+COPY ${PACKAGE_BASE_NAME}-platform-sdk-config-deb \
      ${PACKAGE_BASE_NAME}-platform-sdk-gen-deb-files \
      ${PACKAGE_BASE_NAME}-platform-sdk-gen-gpg-key \
      ${PACKAGE_BASE_NAME}-platform-sdk-make-build \
@@ -233,6 +237,8 @@ FROM SOURCES_BUILDER AS MUSL_LIBC_BUILDER
 #     CC=/usr/bin/clang \
 #     SYSROOT=/ \
 #     bash ${PACKAGE_BASE_NAME}-platform-sdk-musl-libc
+
+# Table with 3 columns: simplified_name | ubuntu/val-verde | version 
 
 # libunwind bootstrap build
 FROM MUSL_LIBC_BUILDER AS LIBUNWIND_BOOTSTRAP_BUILDER
