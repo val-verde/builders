@@ -12,6 +12,9 @@ export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEV
 export INSTALL_ROOT=${TEMPDIR}/org.${PACKAGE_BASE_NAME}/${QUALIFIED_PACKAGE_NAME}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export DEPENDS="${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+                ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+                ${PACKAGE_BASE_NAME}-swift-corelibs-xctest-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 
 # Configure the package
 rm -rf ${SOURCE_ROOT}

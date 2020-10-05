@@ -20,6 +20,7 @@ function generate-control-file {
 
     # Template definition
     cd /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+    mkdir DEBIAN
     echo 10 > DEBIAN/compat
     sed "s|DEPENDS|${DEPENDS}|g; \
          s|PACKAGE_NAME|${PACKAGE_NAME}|g; \
