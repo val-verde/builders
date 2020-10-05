@@ -171,6 +171,10 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DPython3_EXECUTABLE=/usr/bin/python3 \
     -DPOLLY_ENABLE_GPGPU_CODEGEN=FALSE \
     -DSANITIZER_CXX_ABI=libc++ \
+    -DZ3_INCLUDE_DIR=${SYSROOT}/usr/include \
+    -DZ3_LIBRARIES=${SYSROOT}/usr/lib/${HOST_TRIPLE}/libz3.so \
+    -DZ3_RETURNCODE=0 \
+    -DZ3_RETURNCODE__TRYRUN_OUTPUT=4.8.8 \
     ${SOURCE_ROOT}/llvm
 
 # Build the components
