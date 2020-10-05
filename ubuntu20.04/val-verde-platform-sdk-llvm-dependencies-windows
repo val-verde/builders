@@ -23,6 +23,9 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-libiconv-cross
 # windows pkg-config build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-pkg-config-cross
 
+# windows pcre build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-pcre-cross
+
 # windows icu build
 LDFLAGS="\
     -fuse-ld=${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \

@@ -23,6 +23,9 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-libiconv-cross
 # android pkg-config build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-pkg-config-cross
 
+# android pcre build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-pcre-cross
+
 # android icu build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross
 
@@ -156,6 +159,9 @@ LDFLAGS="\
     ${LDFLAGS} \
 " \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-python-cross
+
+# android swig build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-swig-cross
 
 # android z3 build
 DISABLE_POLLY=TRUE \

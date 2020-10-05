@@ -173,6 +173,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-opengl-headers-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-opengl-es-headers-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-pcre-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-python-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-pkg-config-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit \
@@ -198,6 +199,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-tensorflow-apis \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core \
+     ${PACKAGE_BASE_NAME}-platform-sdk-swig-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-systemd \
      ${PACKAGE_BASE_NAME}-platform-sdk-tar-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-util-linux-cross \
