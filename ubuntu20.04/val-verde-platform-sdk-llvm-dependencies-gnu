@@ -29,6 +29,9 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-libiconv-cross
 # pkg-config build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-pkg-config-cross
 
+# pcre build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-pcre-cross
+
 # icu build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c
 
@@ -124,6 +127,9 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-wget-cross
 # python build
 DISABLE_POLLY=TRUE \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-python-cross
+
+# swig build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-swig-cross
 
 # z3 build
 CMAKE_BINDIR=/usr/bin \
