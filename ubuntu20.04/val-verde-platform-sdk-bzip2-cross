@@ -22,20 +22,19 @@ rsync -aPx ${SOURCE_ROOT}/* \
            ${STAGE_ROOT}/
 
 # Build the components
-cd ${SOURCE_ROOT}
-
 if [ "${HOST_OS}" != "mingw32" ]; then
     CFLAGS="\
         -fPIC \
         ${CFLAGS} \
     "
+else
+    patch -i /sources/bzip2-mingw32.diff \
+          -p1 \
+          ${STAGE_ROOT}/Makefile
 fi
 
 mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}
 cd ${STAGE_ROOT}
-
-rsync -aPx ${SOURCE_ROOT}/* \
-           ${STAGE_ROOT}/
 
 AR=${AR:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar}
 CC=${CC:-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang}

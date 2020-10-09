@@ -113,7 +113,8 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-make-build \
      ${BUILD_PACKAGE_PREFIX}/bin/
 
 # source patches
-COPY patch-coreutils-ls-android.diff \
+COPY bzip2-mingw32.diff \
+     patch-coreutils-ls-android.diff \
      patch-vulkan-validation-layers-windows-fixes.diff \
      /sources/
 
