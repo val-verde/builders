@@ -122,7 +122,7 @@ COPY bzip2-mingw32.diff \
 FROM BASE AS SOURCES_BUILDER
 
 RUN git clone https://github.com/${PACKAGE_BASE_NAME}/llvm-project.git \
-              --branch dutch-master \
+              --branch dutch-master-next \
               --single-branch \
               /sources/llvm-project
 

@@ -23,7 +23,7 @@ git clone https://github.com/${PACKAGE_BASE_NAME}/swift-corelibs-libdispatch.git
           --single-branch \
           /sources/swift-corelibs-libdispatch
 git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
-          --branch dutch-master \
+          --branch dutch-master-next \
           --single-branch \
           ${SOURCE_ROOT}
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
