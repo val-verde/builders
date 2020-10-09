@@ -459,8 +459,23 @@ FROM GRAPHICS_SDK_BUILDER AS NODE_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-node-cross
 
+# android-ndk package/
+FROM NODE_BUILDER AS ANDROID_NDK_BUILDER
+
+ENV ANDROID_NDK_VERSION=r21d
+
+RUN mkdir /sources/android-ndk-${ANDROID_NDK_VERSION}
+
+# android ndk patches
+COPY android-ndk-dirent-versionsort.diff \
+     android-ndk-linux-time-h.diff \
+     android-ndk-string-strverscmp.diff \
+     /sources/android-ndk-${ANDROID_NDK_VERSION}/
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk
+
 # webassembly environment
-FROM NODE_BUILDER AS WASI_SOURCES_BUILDER
+FROM ANDROID_NDK_BUILDER AS WASI_SOURCES_BUILDER
 
 ENV HOST_ARCH=wasm32 \
     HOST_CPU=wasm32 \
@@ -503,20 +518,7 @@ FROM WASI_SOURCES_BUILDER AS WASI_COMPILER_DEPS_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-wasi-compiler-deps
 
-# android-ndk package
-FROM WASI_COMPILER_DEPS_BUILDER AS ANDROID_NDK_BUILDER
-
-ENV ANDROID_NDK_VERSION=r21d
-
-RUN mkdir /sources/android-ndk-${ANDROID_NDK_VERSION}
-
-# android ndk patches
-COPY android-ndk-dirent-versionsort.diff \
-     android-ndk-linux-time-h.diff \
-     android-ndk-string-strverscmp.diff \
-     /sources/android-ndk-${ANDROID_NDK_VERSION}/
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk
+# android build
 
 # platform independent package builders
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross \
@@ -582,7 +584,7 @@ ENV CFLAGS="\
     "
 
 # android ndk headers build
-FROM ANDROID_NDK_BUILDER AS ANDROID_NDK_HEADERS_BUILDER
+FROM WASI_COMPILER_DEPS_BUILDER AS ANDROID_NDK_HEADERS_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-headers
 
