@@ -459,8 +459,52 @@ FROM GRAPHICS_SDK_BUILDER AS NODE_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-node-cross
 
+# webassembly environment
+FROM NODE_BUILDER AS WASI_SOURCES_BUILDER
+
+ENV HOST_ARCH=wasm32 \
+    HOST_CPU=wasm32 \
+    HOST_KERNEL=unknown \
+    HOST_OS=wasi \
+    HOST_OS_API_LEVEL= \
+    HOST_PROCESSOR=wasm32
+
+ENV HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
+    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
+    SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
+    SYSTEM_NAME=Wasi
+
+    ENV CFLAGS="\
+        -I${PACKAGE_PREFIX}/include \
+    " \
+    CPPFLAGS="\
+        -I${PACKAGE_PREFIX}/include \
+    " \
+    CXXFLAGS="\
+        -I${PACKAGE_PREFIX}/include \
+    " \
+    SWIFT_BUILD_FLAGS= \
+    LDFLAGS="\
+        -L${PACKAGE_PREFIX}/lib \
+    " \
+    SWIFTCFLAGS="\
+        -sdk ${SYSROOT} \
+    "
+
+COPY ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt-wasi \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-wasi \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-wasi \
+     ${PACKAGE_BASE_NAME}-platform-sdk-wasi-compiler-deps \
+     ${PACKAGE_BASE_NAME}-platform-sdk-wasi-libc \
+     /sources/
+
+# webassembly compiler dependencies
+FROM WASI_SOURCES_BUILDER AS WASI_COMPILER_DEPS_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-wasi-compiler-deps
+
 # android-ndk package
-FROM NODE_BUILDER AS ANDROID_NDK_BUILDER
+FROM WASI_COMPILER_DEPS_BUILDER AS ANDROID_NDK_BUILDER
 
 ENV ANDROID_NDK_VERSION=r21d
 
@@ -814,50 +858,6 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-sdk-windows
 FROM WINDOWS_SWIFT_SDK_BUILDER AS WINDOWS_GRAPHICS_SDK_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-graphics-sdk-cross
-
-# webassembly environment
-FROM WINDOWS_GRAPHICS_SDK_BUILDER AS WASI_SOURCES_BUILDER
-
-ENV HOST_ARCH=wasm32 \
-    HOST_CPU=wasm32 \
-    HOST_KERNEL=unknown \
-    HOST_OS=wasi \
-    HOST_OS_API_LEVEL= \
-    HOST_PROCESSOR=wasm32
-
-ENV HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
-    SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
-    SYSTEM_NAME=Wasi
-
-    ENV CFLAGS="\
-        -I${PACKAGE_PREFIX}/include \
-    " \
-    CPPFLAGS="\
-        -I${PACKAGE_PREFIX}/include \
-    " \
-    CXXFLAGS="\
-        -I${PACKAGE_PREFIX}/include \
-    " \
-    SWIFT_BUILD_FLAGS= \
-    LDFLAGS="\
-        -L${PACKAGE_PREFIX}/lib \
-    " \
-    SWIFTCFLAGS="\
-        -sdk ${SYSROOT} \
-    "
-
-COPY ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt-wasi \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-wasi \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-wasi \
-     ${PACKAGE_BASE_NAME}-platform-sdk-wasi-compiler-deps \
-     ${PACKAGE_BASE_NAME}-platform-sdk-wasi-libc \
-     /sources/
-
-# webassembly libc
-FROM WASI_SOURCES_BUILDER AS WASI_LIBC_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-wasi-compiler-deps
 
 CMD []
 ENTRYPOINT ["tail", "-f", "/dev/null"]
