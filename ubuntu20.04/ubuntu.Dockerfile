@@ -250,6 +250,7 @@ RUN BINDIR=/usr/bin \
 FROM LIBUNWIND_BOOTSTRAP_BUILDER AS LIBCXXABI_BOOTSTRAP_BUILDER
 
 RUN BINDIR=/usr/bin \
+    LLVM_NATIVE_STAGE_ROOT=/usr \
     MAKE_PROGRAM=/usr/bin/ninja \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-cross
 
@@ -265,6 +266,7 @@ RUN BINDIR=/usr/bin \
         -rtlib=compiler-rt \
         ${CXXFLAGS} \
     " \
+    LLVM_NATIVE_STAGE_ROOT=/usr \
     MAKE_PROGRAM=/usr/bin/ninja \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-cross
 
@@ -603,8 +605,19 @@ FROM ANDROID_COMPILER_RT_BUILDER AS ANDROID_LIBUNWIND_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
 
+# android libcxxabi build
+FROM ANDROID_LIBUNWIND_BUILDER AS ANDROID_LIBCXXABI_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-cross
+
+# android libcxx build
+FROM ANDROID_LIBCXXABI_BUILDER AS ANDROID_LIBCXX_BUILDER
+
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-cross
+
 # android llvm dependencies build
-FROM ANDROID_LIBUNWIND_BUILDER AS ANDROID_LLVM_DEPENDENCIES_BUILDER
+FROM ANDROID_LIBCXX_BUILDER AS ANDROID_LLVM_DEPENDENCIES_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-android
 
