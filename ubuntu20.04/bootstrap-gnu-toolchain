@@ -45,7 +45,6 @@ apt install -y \
     python3-six \
     rsync \
     ssh \
-    swig \
     uuid-dev \
     unzip \
     zlib1g-dev

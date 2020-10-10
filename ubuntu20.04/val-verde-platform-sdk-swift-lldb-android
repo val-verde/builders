@@ -69,7 +69,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DPython3_LIBRARIES=${PACKAGE_PREFIX}/lib/libpython3.9.so \
     -DPANEL_LIBRARIES=${PACKAGE_PREFIX}/lib/libpanel.so \
     -DSwift_DIR=${SWIFT_STAGE_ROOT}/lib/cmake/swift \
-    -DSWIG_EXECUTABLE=/usr/bin/swig \
+    -DSWIG_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/swig \
     ${SOURCE_ROOT}
 
 # Package the components
