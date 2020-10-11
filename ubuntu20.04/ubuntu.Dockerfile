@@ -113,7 +113,8 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-make-build \
      ${BUILD_PACKAGE_PREFIX}/bin/
 
 # source patches
-COPY patch-coreutils-ls-android.diff \
+COPY bzip2-mingw32.diff \
+     patch-coreutils-ls-android.diff \
      patch-vulkan-validation-layers-windows-fixes.diff \
      /sources/
 
@@ -121,7 +122,7 @@ COPY patch-coreutils-ls-android.diff \
 FROM BASE AS SOURCES_BUILDER
 
 RUN git clone https://github.com/${PACKAGE_BASE_NAME}/llvm-project.git \
-              --branch dutch-master \
+              --branch dutch-master-next \
               --single-branch \
               /sources/llvm-project
 
@@ -458,7 +459,7 @@ FROM GRAPHICS_SDK_BUILDER AS NODE_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-node-cross
 
-# android-ndk package
+# android-ndk package/
 FROM NODE_BUILDER AS ANDROID_NDK_BUILDER
 
 ENV ANDROID_NDK_VERSION=r21d
@@ -472,6 +473,52 @@ COPY android-ndk-dirent-versionsort.diff \
      /sources/android-ndk-${ANDROID_NDK_VERSION}/
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk
+
+# webassembly environment
+FROM ANDROID_NDK_BUILDER AS WASI_SOURCES_BUILDER
+
+ENV HOST_ARCH=wasm32 \
+    HOST_CPU=wasm32 \
+    HOST_KERNEL=unknown \
+    HOST_OS=wasi \
+    HOST_OS_API_LEVEL= \
+    HOST_PROCESSOR=wasm32
+
+ENV HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
+    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
+    SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
+    SYSTEM_NAME=Wasi
+
+    ENV CFLAGS="\
+        -I${PACKAGE_PREFIX}/include \
+    " \
+    CPPFLAGS="\
+        -I${PACKAGE_PREFIX}/include \
+    " \
+    CXXFLAGS="\
+        -I${PACKAGE_PREFIX}/include \
+    " \
+    SWIFT_BUILD_FLAGS= \
+    LDFLAGS="\
+        -L${PACKAGE_PREFIX}/lib \
+    " \
+    SWIFTCFLAGS="\
+        -sdk ${SYSROOT} \
+    "
+
+COPY ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt-wasi \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-wasi \
+     ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-wasi \
+     ${PACKAGE_BASE_NAME}-platform-sdk-wasi-compiler-deps \
+     ${PACKAGE_BASE_NAME}-platform-sdk-wasi-libc \
+     /sources/
+
+# webassembly compiler dependencies
+FROM WASI_SOURCES_BUILDER AS WASI_COMPILER_DEPS_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-wasi-compiler-deps
+
+# android build
 
 # platform independent package builders
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross \
@@ -537,7 +584,7 @@ ENV CFLAGS="\
     "
 
 # android ndk headers build
-FROM ANDROID_NDK_BUILDER AS ANDROID_NDK_HEADERS_BUILDER
+FROM WASI_COMPILER_DEPS_BUILDER AS ANDROID_NDK_HEADERS_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-headers
 
@@ -813,50 +860,6 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-sdk-windows
 FROM WINDOWS_SWIFT_SDK_BUILDER AS WINDOWS_GRAPHICS_SDK_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-graphics-sdk-cross
-
-# webassembly environment
-FROM WINDOWS_GRAPHICS_SDK_BUILDER AS WASI_SOURCES_BUILDER
-
-ENV HOST_ARCH=wasm32 \
-    HOST_CPU=wasm32 \
-    HOST_KERNEL=unknown \
-    HOST_OS=wasi \
-    HOST_OS_API_LEVEL= \
-    HOST_PROCESSOR=wasm32
-
-ENV HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
-    SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
-    SYSTEM_NAME=Wasi
-
-    ENV CFLAGS="\
-        -I${PACKAGE_PREFIX}/include \
-    " \
-    CPPFLAGS="\
-        -I${PACKAGE_PREFIX}/include \
-    " \
-    CXXFLAGS="\
-        -I${PACKAGE_PREFIX}/include \
-    " \
-    SWIFT_BUILD_FLAGS= \
-    LDFLAGS="\
-        -L${PACKAGE_PREFIX}/lib \
-    " \
-    SWIFTCFLAGS="\
-        -sdk ${SYSROOT} \
-    "
-
-COPY ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt-wasi \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-wasi \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-wasi \
-     ${PACKAGE_BASE_NAME}-platform-sdk-wasi-compiler-deps \
-     ${PACKAGE_BASE_NAME}-platform-sdk-wasi-libc \
-     /sources/
-
-# webassembly libc
-FROM WASI_SOURCES_BUILDER AS WASI_LIBC_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-wasi-compiler-deps
 
 CMD []
 ENTRYPOINT ["tail", "-f", "/dev/null"]

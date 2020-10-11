@@ -18,9 +18,9 @@ USE_NEWPM=${USE_NEWPM:-TRUE}
 
 # Configure the package
 cd ${SOURCE_ROOT}
-git remote set-branches --add origin dutch-android-master
-git fetch origin dutch-android-master
-git checkout dutch-android-master
+git remote set-branches --add origin dutch-android-master-next
+git fetch origin dutch-android-master-next
+git checkout dutch-android-master-next
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
 
