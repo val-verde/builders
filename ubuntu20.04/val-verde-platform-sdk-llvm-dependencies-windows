@@ -112,6 +112,10 @@ LIBS="\
 " \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross
 
+# windows lua build
+DISABLE_POLLY=TRUE \
+bash ${PACKAGE_BASE_NAME}-platform-sdk-lua-cross
+
 # windows jwasm build
 DISABLE_POLLY=TRUE \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-jwasm

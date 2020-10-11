@@ -166,6 +166,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-gnu \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap \
+     ${PACKAGE_BASE_NAME}-platform-sdk-lua-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-make-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-musl-libc \
      ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross \
