@@ -626,6 +626,15 @@ FROM ANDROID_LLVM_DEPENDENCIES_BUILDER AS ANDROID_LLVM_BUILDER
 RUN DISABLE_POLLY=TRUE \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-android
 
+# TODO: Remove these explicit rebuilds when deb dependencies is resolved.
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-bash-cross \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-bison-cross \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-dpkg-cross
+
 # android cmark build
 FROM ANDROID_LLVM_BUILDER AS ANDROID_CMARK_BUILDER
 
