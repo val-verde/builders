@@ -114,8 +114,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-gen-deb-files \
      ${BUILD_PACKAGE_PREFIX}/bin/
 
 # source patches
-COPY bzip2-mingw32.diff \
-     patch-coreutils-ls-android.diff \
+COPY patch-coreutils-ls-android.diff \
      /sources/
 
 # linux sources
