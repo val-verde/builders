@@ -7,15 +7,13 @@ DEPENDS=${DEPENDS:=''}
 
 function generate-control-file {
     PACKAGE_NAME=$1
-    if [[ "$HOST_ARCH" =~ ^(broadwell|haswell|skylake|x86_64)$ ]];
-    then
-        SYSTEM_ARCH=amd64
-    elif [[ "$HOST_ARCH" =~ ^(wasm32|wasm64)$ ]];
-    then
-        SYSTEM_ARCH=wasi
-    elif [[ "$HOST_ARCH" =~ ^(armv8-a)$ ]];
-    then
+    PACKAGE_ARCH=${PACKAGE_ARCH:-${HOST_PROCESSOR}}
+    if [[ "${PACKAGE_ARCH}" =~ ^(aarch64)$ ]]; then
         SYSTEM_ARCH=aarch64
+    elif [[ "${PACKAGE_ARCH}" =~ ^(wasm32|wasm64)$ ]]; then
+        SYSTEM_ARCH=unknown
+    elif [[ "${PACKAGE_ARCH}" =~ ^(x86_64)$ ]]; then
+        SYSTEM_ARCH=amd64
     fi
 
     # Template definition
