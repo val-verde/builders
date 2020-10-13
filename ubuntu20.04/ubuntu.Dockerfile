@@ -80,10 +80,6 @@ ENV LD_LIBRARY_PATH=${PACKAGE_PREFIX}/lib:${LD_LIBRARY_PATH} \
     PATH=${PACKAGE_PREFIX}/bin:${PATH}
 
 RUN mkdir -p ${BUILD_PACKAGE_PREFIX}
-RUN git clone https://github.com/${PACKAGE_BASE_NAME}/llvm-project.git \
-              --branch dutch-master \
-              --single-branch \
-              /sources/llvm-project
 
 # platform sdk tool wrapper scripts
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-configure \
@@ -484,7 +480,8 @@ COPY android-ndk-dirent-versionsort.diff \
      android-ndk-string-strverscmp.diff \
      /sources/android-ndk-${ANDROID_NDK_VERSION}/
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk
+RUN PACKAGE_ARCH=${BUILD_PROCESSOR} \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk
 
 # webassembly environment
 FROM ANDROID_NDK_BUILDER AS WASI_SOURCES_BUILDER
@@ -657,7 +654,8 @@ FROM WINDOWS_MINGW_CRT_BUILDER AS WINDOWS_COMPILER_RT_BUILDER
 RUN export CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a \
            DST_CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a \
            LDFLAGS="-Wl,/force:unresolved" \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt
+    && PACKAGE_ARCH=${BUILD_PROCESSOR} \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt
 
 # windows libunwind build
 FROM WINDOWS_COMPILER_RT_BUILDER AS WINDOWS_LIBUNWIND_BUILDER
@@ -692,8 +690,7 @@ FROM WINDOWS_LLVM_DEPENDENCIES_BUILDER AS WINDOWS_SWIFT_TOOLS_BUILDER
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-windows
 
 # remove host foundation and libdispatch to avoid module collisions
-RUN apt remove -y ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH} \
-                  ${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}
+RUN apt remove -y ${SWIFT_PM_PACKAGES}
 
 # windows swift sdk build
 FROM WINDOWS_SWIFT_TOOLS_BUILDER AS WINDOWS_SWIFT_SDK_BUILDER
