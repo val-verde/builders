@@ -361,7 +361,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-windows \
 # windows build
 FROM WINDOWS_SOURCES_BUILDER AS WINDOWS_BUILDER
 
-RUN HOST_ARCH=haswell \
+RUN HOST_ARCH=ivybridge \
     HOST_CPU=skylake \
     HOST_KERNEL=w64 \
     HOST_OS=mingw32 \
