@@ -160,6 +160,9 @@ LDFLAGS="\
 " \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-python-cross
 
+# android lua build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-lua-cross
+
 # android swig build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-swig-cross
 

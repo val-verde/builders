@@ -23,7 +23,6 @@ rsync -aPx ${INCLUDES_PATH}/${HOST_TRIPLE}/asm \
            ${INCLUDES_PATH}/arpa \
            ${INCLUDES_PATH}/asm-generic \
            ${INCLUDES_PATH}/bits \
-           ${INCLUDES_PATH}/c++ \
            ${INCLUDES_PATH}/linux \
            ${INCLUDES_PATH}/net \
            ${INCLUDES_PATH}/netinet \

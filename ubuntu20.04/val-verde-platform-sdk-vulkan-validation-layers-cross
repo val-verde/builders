@@ -13,15 +13,13 @@ export INSTALL_ROOT=${TEMPDIR}/org.${PACKAGE_BASE_NAME}/${QUALIFIED_PACKAGE_NAME
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
 rm -rf ${SOURCE_ROOT}
-git clone https://github.com/KhronosGroup/Vulkan-ValidationLayers.git \
-          --branch master \
+git clone https://github.com/${PACKAGE_BASE_NAME}/Vulkan-ValidationLayers.git \
+          --branch dutch-master \
           --single-branch \
           ${SOURCE_ROOT}
-cd ${SOURCE_ROOT}
-patch -p1 \
-      -i /sources/patch-vulkan-validation-layers-windows-fixes.diff
 
-mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
+mkdir -p ${STAGE_ROOT} \
+         ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
 
 CMAKE_XCB_CMD="-DBUILD_WSI_XCB_SUPPORT=FALSE"

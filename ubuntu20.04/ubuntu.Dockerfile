@@ -115,7 +115,6 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-make-build \
 # source patches
 COPY bzip2-mingw32.diff \
      patch-coreutils-ls-android.diff \
-     patch-vulkan-validation-layers-windows-fixes.diff \
      /sources/
 
 # linux sources
@@ -167,6 +166,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-gnu \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
      ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap \
+     ${PACKAGE_BASE_NAME}-platform-sdk-lua-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-make-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-musl-libc \
      ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross \
@@ -250,6 +250,7 @@ RUN BINDIR=/usr/bin \
 FROM LIBUNWIND_BOOTSTRAP_BUILDER AS LIBCXXABI_BOOTSTRAP_BUILDER
 
 RUN BINDIR=/usr/bin \
+    LLVM_NATIVE_STAGE_ROOT=/usr \
     MAKE_PROGRAM=/usr/bin/ninja \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-cross
 
@@ -265,6 +266,7 @@ RUN BINDIR=/usr/bin \
         -rtlib=compiler-rt \
         ${CXXFLAGS} \
     " \
+    LLVM_NATIVE_STAGE_ROOT=/usr \
     MAKE_PROGRAM=/usr/bin/ninja \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-cross
 
@@ -603,8 +605,19 @@ FROM ANDROID_COMPILER_RT_BUILDER AS ANDROID_LIBUNWIND_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
 
+# android libcxxabi build
+FROM ANDROID_LIBUNWIND_BUILDER AS ANDROID_LIBCXXABI_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-cross
+
+# android libcxx build
+FROM ANDROID_LIBCXXABI_BUILDER AS ANDROID_LIBCXX_BUILDER
+
+RUN DISABLE_POLLY=TRUE \
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-cross
+
 # android llvm dependencies build
-FROM ANDROID_LIBUNWIND_BUILDER AS ANDROID_LLVM_DEPENDENCIES_BUILDER
+FROM ANDROID_LIBCXX_BUILDER AS ANDROID_LLVM_DEPENDENCIES_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-android
 
@@ -613,6 +626,15 @@ FROM ANDROID_LLVM_DEPENDENCIES_BUILDER AS ANDROID_LLVM_BUILDER
 
 RUN DISABLE_POLLY=TRUE \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-android
+
+# TODO: Remove these explicit rebuilds when deb dependencies is resolved.
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-bash-cross \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-bison-cross \
+    && bash ${PACKAGE_BASE_NAME}-platform-sdk-dpkg-cross
 
 # android cmark build
 FROM ANDROID_LLVM_BUILDER AS ANDROID_CMARK_BUILDER
