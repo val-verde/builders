@@ -521,9 +521,11 @@ FROM WASI_SOURCES_BUILDER AS WASI_COMPILER_DEPS_BUILDER
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-wasi-compiler-deps
 
 # android build
+FROM WASI_COMPILER_DEPS_BUILDER AS ANDROID_BUILDER
 
 # platform independent package builders
-COPY ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross \
+COPY ${PACKAGE_BASE_NAME}-platform-sdk-android \
+     ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp-android \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-argument-parser-cross \
@@ -549,7 +551,9 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-headers \
      ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-android \
      /sources/
 
-# android environment
+ENV SYSTEM_NAME=Linux
+
+# android-aarch64 environment
 ENV HOST_ARCH=armv8-a \
     HOST_CPU=cortex-a57 \
     HOST_KERNEL=linux \
@@ -557,212 +561,20 @@ ENV HOST_ARCH=armv8-a \
     HOST_OS_API_LEVEL=29 \
     HOST_PROCESSOR=aarch64
 
-ENV HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr \
-    SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
-    SYSTEM_NAME=Linux
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android || true
 
-ENV CFLAGS="\
-        -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
-    " \
-    CPPFLAGS="\
-        -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
-    " \
-    CXXFLAGS="\
-        -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
-    " \
-    LDFLAGS="\
-        -L${PACKAGE_PREFIX}/lib \
-    " \
-    SWIFT_BUILD_FLAGS="\
-        -Xcc -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
-        -Xcc -I${PACKAGE_PREFIX}/include \
-        -Xcxx -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
-        -Xcxx -I${PACKAGE_PREFIX}/include \
-        -Xlinker -L${PACKAGE_PREFIX}/lib \
-    " \
-    SWIFTCFLAGS="\
-        -sdk ${SYSROOT} \
-    "
+# android-x86_64 environment
+ENV HOST_ARCH=westmere \
+    HOST_CPU=westmere \
+    HOST_KERNEL=linux \
+    HOST_OS=android \
+    HOST_OS_API_LEVEL=29 \
+    HOST_PROCESSOR=x86_64
 
-# android ndk headers build
-FROM WASI_COMPILER_DEPS_BUILDER AS ANDROID_NDK_HEADERS_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-headers
-
-# android ndk runtime build
-FROM ANDROID_NDK_HEADERS_BUILDER AS ANDROID_NDK_RUNTIME_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-runtime
-
-# android compiler-rt build (for host)
-FROM ANDROID_NDK_RUNTIME_BUILDER AS ANDROID_COMPILER_RT_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt
-
-# android libunwind build
-FROM ANDROID_COMPILER_RT_BUILDER AS ANDROID_LIBUNWIND_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
-
-# android libcxxabi build
-FROM ANDROID_LIBUNWIND_BUILDER AS ANDROID_LIBCXXABI_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-cross
-
-# android libcxx build
-FROM ANDROID_LIBCXXABI_BUILDER AS ANDROID_LIBCXX_BUILDER
-
-RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-cross
-
-# android llvm dependencies build
-FROM ANDROID_LIBCXX_BUILDER AS ANDROID_LLVM_DEPENDENCIES_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-android
-
-# android llvm build
-FROM ANDROID_LLVM_DEPENDENCIES_BUILDER AS ANDROID_LLVM_BUILDER
-
-RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-android
-
-# TODO: Remove these explicit rebuilds when deb dependencies is resolved.
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-bash-cross \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-bison-cross \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-dpkg-cross
-
-# android cmark build
-FROM ANDROID_LLVM_BUILDER AS ANDROID_CMARK_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark-cross
-
-# android swift build
-FROM ANDROID_CMARK_BUILDER AS ANDROID_SWIFT_BUILDER
-
-RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-android
-
-# android lldb build
-FROM ANDROID_SWIFT_BUILDER AS ANDROID_LLDB_BUILDER
-
-RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb-android
-
-# android libdispatch build
-FROM ANDROID_LLDB_BUILDER AS ANDROID_LIBDISPATCH_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-cross
-
-# remove host foundation and libdispatch to avoid module collisions
-RUN apt remove -y ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH} \
-                  ${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH} \
-                  ${PACKAGE_BASE_NAME}-swift-corelibs-xctest-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}
-
-# android foundation build
-FROM ANDROID_LIBDISPATCH_BUILDER AS ANDROID_FOUNDATION_BUILDER
-
-RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-cross
-
-# android xctest build
-FROM ANDROID_FOUNDATION_BUILDER AS ANDROID_XCTEST_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-cross
-
-# android llbuild build
-FROM ANDROID_XCTEST_BUILDER AS ANDROID_LLBUILD_BUILDER
-
-RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-android
-
-# android swift-tools-support-core build
-FROM ANDROID_LLBUILD_BUILDER AS ANDROID_SWIFT_TOOLS_SUPPORT_CORE_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-android
-
-# android yams build
-FROM ANDROID_SWIFT_TOOLS_SUPPORT_CORE_BUILDER AS ANDROID_YAMS_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-yams-cross
-
-# android swift-argument-parser build
-FROM ANDROID_YAMS_BUILDER AS ANDROID_SWIFT_ARGUMENT_PARSER_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-argument-parser-cross
-
-# android swift-driver build
-FROM ANDROID_SWIFT_ARGUMENT_PARSER_BUILDER AS ANDROID_SWIFT_DRIVER_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross
-
-# android swiftpm build
-FROM ANDROID_SWIFT_DRIVER_BUILDER AS ANDROID_SWIFTPM_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross
-
-RUN dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
-            ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
-            ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-xctest-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
-            ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-argument-parser-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-            ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-            ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-            ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-driver-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-            ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-llbuild-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-            ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-package-manager-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-            ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-tools-support-core-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-            ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-xctest-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-            ${DEB_PATH}/${PACKAGE_BASE_NAME}-yams-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb
-
-# android swift-syntax build
-FROM ANDROID_SWIFTPM_BUILDER AS ANDROID_SWIFT_SYNTAX_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross
-
-# android swift-format build
-FROM ANDROID_SWIFT_SYNTAX_BUILDER AS ANDROID_SWIFT_FORMAT_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross
-
-# android swift-doc build
-FROM ANDROID_SWIFT_FORMAT_BUILDER AS ANDROID_SWIFT_DOC_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross
-
-# android sourcekit-lsp build
-FROM ANDROID_SWIFT_DOC_BUILDER AS ANDROID_SOURCEKIT_LSP_BUILDER
-
-RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp-android
-
-# android baikonur build
-FROM ANDROID_SOURCEKIT_LSP_BUILDER AS ANDROID_BAIKONUR_BUILDER
-
-RUN DISABLE_POLLY=TRUE \
-    bash val-verde-platform-sdk-baikonur
-
-# android pythonkit build
-FROM ANDROID_BAIKONUR_BUILDER AS ANDROID_PYTHONKIT_BUILDER
-
-RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit-cross
-
-# android graphics sdk build
-FROM ANDROID_PYTHONKIT_BUILDER AS ANDROID_GRAPHICS_SDK_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-graphics-sdk-cross
-
-# android node build
-FROM ANDROID_GRAPHICS_SDK_BUILDER AS ANDROID_NODE_BUILDER
-
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-node-cross
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android || true
 
 # windows environment
-FROM ANDROID_NODE_BUILDER AS WINDOWS_SOURCES_BUILDER
+FROM ANDROID_BUILDER AS WINDOWS_SOURCES_BUILDER
 
 ENV HOST_ARCH=haswell \
     HOST_CPU=skylake \
