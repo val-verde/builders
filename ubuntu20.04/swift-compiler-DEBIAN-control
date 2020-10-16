@@ -1,8 +1,0 @@
-Package: val-verde-swift-compiler
-Version: 1.0
-Architecture: amd64
-Maintainer: Val Verde Inc. <openvalverde@gmail.com>
-Section: contrib/devel
-Priority: optional
-Depends: libcurl4, libedit2, libpython3.8, libxml2
-Description: Swift compiler for Ubuntu 20.04 LTS
