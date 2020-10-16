@@ -3,31 +3,31 @@
 set -e
 
 # android environment
-export HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr \
-export SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
+export HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}
+export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr
+export SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot
 
 # android compiler flags
 export CFLAGS="\
     -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
-" \
-CPPFLAGS="\
+"
+export CPPFLAGS="\
     -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
-" \
-CXXFLAGS="\
+"
+export CXXFLAGS="\
     -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
-" \
-LDFLAGS="\
+"
+export LDFLAGS="\
     -L${PACKAGE_PREFIX}/lib \
-" \
-SWIFT_BUILD_FLAGS="\
+"
+export SWIFT_BUILD_FLAGS="\
     -Xcc -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
     -Xcc -I${PACKAGE_PREFIX}/include \
     -Xcxx -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
     -Xcxx -I${PACKAGE_PREFIX}/include \
     -Xlinker -L${PACKAGE_PREFIX}/lib \
-" \
-SWIFTCFLAGS="\
+"
+export SWIFTCFLAGS="\
     -sdk ${SYSROOT} \
 "
 
@@ -38,6 +38,7 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-headers
 bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-runtime
 
 # android compiler-rt build (for host)
+PACKAGE_ARCH=${BUILD_PROCESSOR} \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt
 
 # android libunwind build
@@ -101,6 +102,7 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross
 # android swiftpm build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross
 
+# reinstall swiftpm for build and host
 dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-argument-parser-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
         ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
         ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
