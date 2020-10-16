@@ -15,17 +15,21 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 export DEPENDS="${PACKAGE_BASE_NAME}-bash-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 
 rm -rf ${SOURCE_ROOT}
-cd /sources
-wget -c https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
-tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
-patch -p1 \
-      -i /sources/patch-coreutils-ls-android.diff \
-      ${SOURCE_ROOT}/src/ls.c
+git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
+          --branch dutch-master \
+          --single-branch \
+          ${SOURCE_ROOT}
 
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
 
-FORCE_UNSAFE_CONFIGURE=1 \
+mkdir -p ${STAGE_ROOT}/bin
+ln -sf /usr/bin/true \
+       ${STAGE_ROOT}/bin/makeinfo
+
+export FORCE_UNSAFE_CONFIGURE=1
+export PATH=${PATH}:${STAGE_ROOT}/bin
+
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
     --with-openssl \

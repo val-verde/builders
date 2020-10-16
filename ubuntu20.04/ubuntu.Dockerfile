@@ -113,10 +113,6 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-gen-deb-files \
      ${PACKAGE_BASE_NAME}-platform-sdk-rpath-fixup \
      ${BUILD_PACKAGE_PREFIX}/bin/
 
-# source patches
-COPY patch-coreutils-ls-android.diff \
-     /sources/
-
 # linux sources
 FROM BASE AS SOURCES_BUILDER
 
