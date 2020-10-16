@@ -105,9 +105,7 @@ RUN chmod +x ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-confi
              ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swift-build \
              ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swiftc
 
-COPY ${PACKAGE_BASE_NAME}-platform-sdk-config-deb \
-     ${PACKAGE_BASE_NAME}-platform-sdk-gen-deb-files \
-     ${PACKAGE_BASE_NAME}-platform-sdk-gen-gpg-key \
+COPY ${PACKAGE_BASE_NAME}-platform-sdk-gen-deb-files \
      ${PACKAGE_BASE_NAME}-platform-sdk-make-build \
      ${PACKAGE_BASE_NAME}-platform-sdk-ninja-build \
      ${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build \
