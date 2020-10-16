@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # android environment
 export HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
 export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr \
@@ -71,8 +73,7 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-cross
 
 # remove host foundation and libdispatch to avoid module collisions
 apt remove -y ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH} \
-              ${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH} \
-              ${PACKAGE_BASE_NAME}-swift-corelibs-xctest-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}
+              ${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}
 
 # android foundation build
 DISABLE_POLLY=TRUE \
@@ -100,17 +101,23 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross
 # android swiftpm build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross
 
-dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
+dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-argument-parser-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
         ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
         ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-xctest-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-driver-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-llbuild-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-package-manager-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-tools-support-core-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-yams-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
         ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-argument-parser-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
         ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
         ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-xctest-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
         ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-driver-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
         ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-llbuild-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
         ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-package-manager-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
         ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-tools-support-core-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-xctest-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
         ${DEB_PATH}/${PACKAGE_BASE_NAME}-yams-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb
 
 # android swift-syntax build

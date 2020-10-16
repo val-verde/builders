@@ -568,6 +568,7 @@ ENV HOST_ARCH=armv8-a \
     HOST_OS_API_LEVEL=29 \
     HOST_PROCESSOR=aarch64
 
+RUN dpkg --add-architecture ${HOST_PROCESSOR}
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android || true
 
 # android-x86_64 environment
@@ -688,9 +689,6 @@ RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-windows
 FROM WINDOWS_LLVM_DEPENDENCIES_BUILDER AS WINDOWS_SWIFT_TOOLS_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-windows
-
-# remove host foundation and libdispatch to avoid module collisions
-RUN apt remove -y ${SWIFT_PM_PACKAGES}
 
 # windows swift sdk build
 FROM WINDOWS_SWIFT_TOOLS_BUILDER AS WINDOWS_SWIFT_SDK_BUILDER
