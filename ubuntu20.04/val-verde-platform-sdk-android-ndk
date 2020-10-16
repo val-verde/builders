@@ -18,10 +18,17 @@ mkdir -p ${SOURCE_ROOT}
 cd ${SOURCE_ROOT}
 wget -c ${ANDROID_NDK_URL}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.zip
 unzip ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.zip
+mkdir patches
+git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}-patches.git \
+          --branch dutch-master \
+          --single-branch \
+          ./patches
+
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
 mkdir -p ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}
 mv ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}
+mv ${SOURCE_ROOT}/patches/* ${SOURCE_ROOT}
 
 patch -p1 \
       -i ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-dirent-versionsort.diff \
