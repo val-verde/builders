@@ -35,7 +35,6 @@ if [ "${SDK_PLATFORM_DIR}" != "windows" ]; then
     "
 fi
 
-# FORCE_UNSAFE_CONFIGURE=1 \
 CFLAGS="${CFLAGS}" \
 LDFLAGS="${LDFLAGS}" \
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
