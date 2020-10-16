@@ -465,14 +465,6 @@ FROM NODE_BUILDER AS ANDROID_NDK_BUILDER
 
 ENV ANDROID_NDK_VERSION=r21d
 
-RUN mkdir /sources/android-ndk-${ANDROID_NDK_VERSION}
-
-# android ndk patches
-COPY android-ndk-dirent-versionsort.diff \
-     android-ndk-linux-time-h.diff \
-     android-ndk-string-strverscmp.diff \
-     /sources/android-ndk-${ANDROID_NDK_VERSION}/
-
 RUN PACKAGE_ARCH=${BUILD_PROCESSOR} \
     bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk
 
