@@ -4,6 +4,10 @@ set -e
 
 export COMPILER_TARGET=${HOST_PROCESSOR}-unknown-windows-gnu
 
+# remove host foundation and libdispatch to avoid module collisions
+apt remove -y ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH} \
+              ${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}
+
 # windows libdispatch build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-windows
 
@@ -78,19 +82,26 @@ SWIFTCFLAGS="\
 " \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross
 
-SWIFT_PM_PACKAGES=`echo ${SWIFT_PM_PACKAGES} | sed "s|${PACKAGE_BASE_NAME}|${DEB_PATH}/${PACKAGE_BASE_NAME}|g"`;
-SWIFT_PM_PACKAGES=`echo ${SWIFT_PM_PACKAGES} | sed "s|${BUILD_ARCH}|${BUILD_ARCH}.deb|g"`;
-dpkg -i ${SWIFT_PM_PACKAGES} \
-    ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-argument-parser-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-    ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-    ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-    ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-driver-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-    ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-llbuild-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-    ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-package-manager-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-    ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-tools-support-core-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-    ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-xctest-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-    ${DEB_PATH}/${PACKAGE_BASE_NAME}-yams-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb
-
+# reinstall swiftpm for build and host
+dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-argument-parser-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-xctest-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-driver-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-llbuild-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-package-manager-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-tools-support-core-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-xctest-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-yams-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-argument-parser-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-driver-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-llbuild-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-package-manager-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-tools-support-core-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-xctest-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-yams-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb
 
 # windows swift-syntax build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross
