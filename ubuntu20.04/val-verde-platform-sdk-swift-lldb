@@ -70,8 +70,8 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLLVM_MAIN_INCLUDE_DIR=${LLVM_SOURCE_ROOT}/llvm/include \
     -DLLVM_TABLEGEN=${LLVM_STAGE_ROOT}/bin/llvm-tblgen \
     -DPython3_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/python3 \
-    -DPython3_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/python3.9 \
-    -DPython3_LIBRARIES=${PACKAGE_PREFIX}/lib/libpython3.9.so \
+    -DPython3_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/python3.8 \
+    -DPython3_LIBRARIES=${PACKAGE_PREFIX}/lib/libpython3.8.so \
     -DPANEL_LIBRARIES=${PACKAGE_PREFIX}/lib/libpanel.so \
     -DSwift_DIR=${SWIFT_STAGE_ROOT}/lib/cmake/swift \
     -DSWIG_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/swig \
