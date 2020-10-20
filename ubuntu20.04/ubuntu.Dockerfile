@@ -83,43 +83,11 @@ ENV LD_LIBRARY_PATH=${PACKAGE_PREFIX}/lib:${LD_LIBRARY_PATH} \
 
 RUN mkdir -p ${BUILD_PACKAGE_PREFIX} ${BUILDER_SCRIPT_PATH}
 
-# platform sdk tool wrapper scripts
-COPY ${PACKAGE_BASE_NAME}-platform-sdk-configure \
-     ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
-     ${PACKAGE_BASE_NAME}-platform-sdk-clang \
-     ${PACKAGE_BASE_NAME}-platform-sdk-clang++ \
-     ${PACKAGE_BASE_NAME}-platform-sdk-gcc-mingw32 \
-     ${PACKAGE_BASE_NAME}-platform-sdk-ml64 \
-     ${PACKAGE_BASE_NAME}-platform-sdk-mslink \
-     ${PACKAGE_BASE_NAME}-platform-sdk-rc \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-build \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swiftc \
-     ${BUILD_PACKAGE_PREFIX}/bin/
-
-RUN chmod +x ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
-             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
-             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang \
-             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang++ \
-             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-gcc-mingw32 \
-             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ml64 \
-             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
-             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rc \
-             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swift-build \
-             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swiftc
-
-COPY ${PACKAGE_BASE_NAME}-platform-sdk-gen-deb-files \
-     ${PACKAGE_BASE_NAME}-platform-sdk-make-build \
-     ${PACKAGE_BASE_NAME}-platform-sdk-ninja-build \
-     ${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build \
-     ${PACKAGE_BASE_NAME}-platform-sdk-package-install \
-     ${PACKAGE_BASE_NAME}-platform-sdk-rpath-fixup \
-     ${BUILD_PACKAGE_PREFIX}/bin/
-
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-builders-bash-scripts \
      ${PACKAGE_BASE_NAME}-${PACKAGE_CLASS}-templates \
      /sources/
 
-RUN bash     ${PACKAGE_BASE_NAME}-platform-sdk-builders-bash-scripts
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-builders-bash-scripts
 
 # linux sources
 FROM BASE AS SOURCES_BUILDER
@@ -128,97 +96,6 @@ RUN git clone https://github.com/${PACKAGE_BASE_NAME}/llvm-project.git \
               --branch dutch-master-next \
               --single-branch \
               /sources/llvm-project
-
-# platform sdk package build scripts
-COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
-     ${PACKAGE_BASE_NAME}-platform-sdk-android-patch-elf-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-acl-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-attr-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-autoconf-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-automake-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-baikonur \
-     ${PACKAGE_BASE_NAME}-platform-sdk-bash-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-bison-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-bzip2-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt \
-     ${PACKAGE_BASE_NAME}-platform-sdk-coreutils-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-dpkg-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-egl-headers-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-filament-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-gawk-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-gdbm-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-gettext-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-git-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-glslang-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-gperf-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-graphics-sdk-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-icu4c \
-     ${PACKAGE_BASE_NAME}-platform-sdk-jwasm \
-     ${PACKAGE_BASE_NAME}-platform-sdk-khr-headers-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libcap-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libiconv-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-gnu \
-     ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
-     ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap \
-     ${PACKAGE_BASE_NAME}-platform-sdk-lua-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-make-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-musl-libc \
-     ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-node-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-opengl-headers-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-opengl-es-headers-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-pcre-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-python-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-pkg-config-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit \
-     ${PACKAGE_BASE_NAME}-platform-sdk-sdl-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-sed-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp \
-     ${PACKAGE_BASE_NAME}-platform-sdk-spirv-headers-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-spirv-tools-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-strace-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-argument-parser \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-tensorflow-apis \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swig-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-systemd \
-     ${PACKAGE_BASE_NAME}-platform-sdk-tar-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-util-linux-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-vulkan-headers-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-vulkan-loader-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-vulkan-tools-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-vulkan-validation-layers-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-wget-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-yams \
-     ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross \
-     /sources/
 
 # LTO configuration: [OFF | Full | Thin]
 # ENV ENABLE_FLTO=Thin
