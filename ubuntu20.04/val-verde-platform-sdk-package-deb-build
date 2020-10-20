@@ -1,7 +1,9 @@
 #!/bin/bash
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-gen-deb-files
-
 set -e
+
+DEB_GEN_SCRIPT_PATH=${DEB_GEN_SCRIPT_PATH:-${BUILDER_SCRIPT_PATH}}
+
+source ${DEB_GEN_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-gen-deb-files
 
 BASE_DIRECTORY=$(echo "${PACKAGE_ROOT}" | cut -d "/" -f2)
 
