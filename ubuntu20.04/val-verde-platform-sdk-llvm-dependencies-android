@@ -90,6 +90,9 @@ LDFLAGS="\
 " \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-acl-cross
 
+# android bash build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-bash-cross
+
 # android util-linux build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-util-linux-cross
 
@@ -120,9 +123,6 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-gperf-cross
 if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
     bash ${PACKAGE_BASE_NAME}-platform-sdk-tar-cross
 fi
-
-# android bash build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-bash-cross
 
 # android coreutils build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-coreutils-cross

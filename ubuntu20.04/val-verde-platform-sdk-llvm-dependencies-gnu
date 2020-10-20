@@ -87,6 +87,9 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-attr-cross
 DISABLE_POLLY=TRUE \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-acl-cross
 
+# bash build
+bash ${PACKAGE_BASE_NAME}-platform-sdk-bash-cross
+
 # util-linux build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-util-linux-cross
 
@@ -107,9 +110,6 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-gperf-cross
 
 # tar build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-tar-cross
-
-# bash build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-bash-cross
 
 # coreutils build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-coreutils-cross
