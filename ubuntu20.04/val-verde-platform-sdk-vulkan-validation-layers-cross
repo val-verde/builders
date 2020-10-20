@@ -30,13 +30,13 @@ if [ "${HOST_OS}" = "linux" ]; then
     CMAKE_XCB_CMD="-DBUILD_WSI_XCB_SUPPORT=TRUE"
 fi
 
-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DBUILD_LAYER_SUPPORT_FILES=TRUE \
     -DBUILD_WSI_DIRECTFB_SUPPORT=FALSE \
     -DBUILD_WSI_WAYLAND_SUPPORT=FALSE \
     -DBUILD_WSI_XLIB_SUPPORT=FALSE \
     -DGLSLANG_INSTALL_DIR=${PACKAGE_PREFIX} \
-    -DPKG_CONFIG_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/pkg-config \
+    -DPKG_CONFIG_EXECUTABLE=${BUILDER_SCRIPT_PATH}/pkg-config \
     -DSPIRV_HEADERS_INSTALL_DIR=${PACKAGE_PREFIX} \
     -DSPIRV_TOOLS_INSTALL_DIR=${PACKAGE_PREFIX} \
     -DSPIRV_TOOLS_LIB=${PACKAGE_PREFIX}/lib/libSPIRV-Tools.a \
@@ -48,10 +48,10 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     ${SOURCE_ROOT}
 
 # Build the components
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+source ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 # Build the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
+source ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
 
 # Install the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-package-install

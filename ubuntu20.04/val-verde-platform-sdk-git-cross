@@ -34,7 +34,7 @@ cd ${STAGE_ROOT}
 
 rsync -ax ${SOURCE_ROOT}/* .
 autoreconf -i
-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
+${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${STAGE_ROOT}/configure \
     --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
     --with-curl=${PACKAGE_PREFIX} \
@@ -46,10 +46,10 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
 
 # Build the components
 TARGETS="NEEDS_LIBRT=${NEEDS_LIBRT} install" \
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
+source ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 
 # Build the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
+source ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
 
 # Install the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-package-install

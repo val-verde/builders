@@ -22,7 +22,7 @@ cd ${STAGE_ROOT}
 rsync -ax ${SOURCE_ROOT}/* \
 	  ${STAGE_ROOT}/
 
-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
+${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${STAGE_ROOT}/configure \
     vim_cv_getcwd_broken=no \
     vim_cv_memmove_handles_overlap=yes \
@@ -34,10 +34,10 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     --with-tlib=ncurses
 
 # Build the components
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
+source ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 
 # Build the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
+source ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
 
 # Install the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-package-install

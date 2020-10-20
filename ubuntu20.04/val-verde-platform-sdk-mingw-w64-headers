@@ -15,7 +15,7 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
+${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
     --enable-crt \
     --enable-sdk=all \
@@ -24,7 +24,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     --with-default-win32-winnt=0x0A00
 
 # Build the components
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
+source ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 
 cp ${SOURCE_ROOT}/include/module.modulemap \
    ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/
@@ -34,7 +34,7 @@ ln -sf . \
        ${INSTALL_ROOT}${PACKAGE_PREFIX}/usr
 
 # Build the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
+source ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
 
 # Install the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-package-install

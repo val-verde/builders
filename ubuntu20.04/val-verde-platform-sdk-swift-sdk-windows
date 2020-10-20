@@ -40,7 +40,7 @@ CXXFLAGS="\
     ${CXXFLAGS} \
 " \
 SWIFTCFLAGS="\
-    -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+    -use-ld=${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
     -L${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR} \
     ${SWIFTCFLAGS} \
 " \
@@ -58,7 +58,7 @@ CXXFLAGS="\
     ${CXXFLAGS} \
 " \
 SWIFTCFLAGS="\
-    -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+    -use-ld=${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
     -L${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR} \
     ${SWIFTCFLAGS} \
 " \
@@ -76,7 +76,7 @@ CXXFLAGS="\
     ${CXXFLAGS} \
 " \
 SWIFTCFLAGS="\
-    -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+    -use-ld=${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
     -L${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR} \
     ${SWIFTCFLAGS} \
 " \

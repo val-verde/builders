@@ -40,7 +40,7 @@ LDFLAGS="\
     -L${PACKAGE_PREFIX}/lib \
     ${LDFLAGS} \
 " \
-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+${BUILDER_SCRIPT_PATH}}-platform-sdk-cmake \
     -DBUILD_SHARED_LIBS=FALSE \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
     -DCLANG_DEFAULT_RTLIB=compiler-rt \
@@ -175,7 +175,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLLVM_VERSION_SUFFIX="-${PACKAGE_BASE_NAME}" \
     -DLLVM_Z3_INSTALL_DIR=${BUILD_PACKAGE_PREFIX} \
     -DMLIR_CUDA_RUNNER_ENABLED=TRUE \
-    -DPython3_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/python3 \
+    -DPython3_EXECUTABLE=${BUILDER_SCRIPT_PATH}
     -DPOLLY_ENABLE_GPGPU_CODEGEN=TRUE \
     -DSANITIZER_CXX_ABI=libc++ \
     -DZ3_INCLUDE_DIR=${BUILD_PACKAGE_PREFIX}/include \
@@ -187,7 +187,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     ${SOURCE_ROOT}/llvm
 
 # Build the components
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+source ${BUILDER_SCRIPT_PATH}}-platform-sdk-ninja-build
 
 rsync -aPx ${STAGE_ROOT}/bin/llvm-as* \
            ${STAGE_ROOT}/bin/llvm-dlltool* \
@@ -196,7 +196,7 @@ rsync -aPx ${STAGE_ROOT}/bin/llvm-as* \
            ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin
 
 # Build the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
+source ${BUILDER_SCRIPT_PATH}}-platform-sdk-package-${PACKAGE_CLASS}-build
 
 # Install the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILDER_SCRIPT_PATH}}-platform-sdk-package-install

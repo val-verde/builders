@@ -70,24 +70,24 @@ elif [ "${HOST_OS}" = "mingw32" ]; then
     CONFIGURE_HOST_OS=win
 fi
 
-export AR_host=${AR_host:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar}
-export AR_target=${AR:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar}
-export AS_host=${AS_host:-${BUILD_PACKAGE_PREFIX}/bin/clang}
-export AS_target=${AS:-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang}
-export CC_host=${CC_host:-${BUILD_PACKAGE_PREFIX}/bin/clang}
-export CC_target=${CC:-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang}
+export AR_host=${AR_host:-${BUILDER_SCRIPT_PATH}/llvm-ar}
+export AR_target=${AR:-${BUILDER_SCRIPT_PATH}/llvm-ar}
+export AS_host=${AS_host:-${BUILDER_SCRIPT_PATH}/clang}
+export AS_target=${AS:-${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-clang}
+export CC_host=${CC_host:-${BUILDER_SCRIPT_PATH}/clang}
+export CC_target=${CC:-${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-clang}
 export CFLAGS_host="\
     -I${BUILD_PACKAGE_PREFIX}/include \
 "
 export CFLAGS_target=${CFLAGS}
-export CPP_host=${CPP_host:-"${BUILD_PACKAGE_PREFIX}/bin/clang -E"}
-export CPP_target=${CPP:-"${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang -E"}
+export CPP_host=${CPP_host:-"${BUILDER_SCRIPT_PATH}/clang -E"}
+export CPP_target=${CPP:-"${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-clang -E"}
 export CPPFLAGS_host="\
     -I${BUILD_PACKAGE_PREFIX}/include \
 "
 export CPPFLAGS_target=${CPPFLAGS}
-export CXX_host=${CXX_host:-"${BUILD_PACKAGE_PREFIX}/bin/clang++ -cxx-isystem ${BUILD_PACKAGE_PREFIX}/include/c++/v1"}
-export CXX_target=${CXX_target:-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang++}
+export CXX_host=${CXX_host:-"${BUILDER_SCRIPT_PATH}/clang++ -cxx-isystem ${BUILD_PACKAGE_PREFIX}/include/c++/v1"}
+export CXX_target=${CXX_target:-${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-clang++}
 export CXXFLAGS_host="\
     -cxx-isystem ${BUILD_PACKAGE_PREFIX}/include/c++/v1 \
     -I${BUILD_PACKAGE_PREFIX}/include \
@@ -96,12 +96,12 @@ LDFLAGS_host="\
     -L${BUILD_PACKAGE_PREFIX}/lib \
 "
 export LDFLAGS=${LDFLAGS}
-export LINK_host="${LD_host:-${BUILD_PACKAGE_PREFIX}/bin/clang++} ${LDFLAGS_host}"
-export LINK_target=${LD_target:-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang++}
-export PKG_CONFIG=${PKG_CONFIG:-${BUILD_PACKAGE_PREFIX}/bin/pkg-config}
+export LINK_host="${LD_host:-${BUILDER_SCRIPT_PATH}/clang++} ${LDFLAGS_host}"
+export LINK_target=${LD_target:-${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-clang++}
+export PKG_CONFIG=${PKG_CONFIG:-${BUILDER_SCRIPT_PATH}/pkg-config}
 export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-${PACKAGE_PREFIX}/lib/pkgconfig}
-export RANLIB_host=${RANLIB_host:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib}
-export RANLIB_target=${RANLIB:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib}
+export RANLIB_host=${RANLIB_host:-${BUILDER_SCRIPT_PATH}/llvm-ranlib}
+export RANLIB_target=${RANLIB:-${BUILDER_SCRIPT_PATH}/llvm-ranlib}
 
 ${STAGE_ROOT}/configure \
     --dest-cpu=${CONFIGURE_HOST_PROCESSOR} \
@@ -113,7 +113,7 @@ ${STAGE_ROOT}/configure \
     ${CROSS_COMPILING_CMD}
 
 # Build the components
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
+source ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 
 if [ "${HOST_OS}" = "android" ]; then
     sed -i \
@@ -122,7 +122,7 @@ if [ "${HOST_OS}" = "android" ]; then
 fi
 
 # Build the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
+source ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
 
 # Install the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-package-install

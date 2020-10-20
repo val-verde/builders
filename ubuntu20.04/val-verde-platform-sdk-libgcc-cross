@@ -18,7 +18,7 @@ tar -zxf gcc-${SOURCE_PACKAGE_VERSION}.tar.gz
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
-BINDIR=${BUILD_PACKAGE_PREFIX}/bin
+BINDIR=${BUILDER_SCRIPT_PATH}
 OPTIMIZATION_FLAGS=${OPTIMIZATION_FLAGS:-"-DNDEBUG"}
 
 AS_FOR_TARGET=${AS_FOR_TARGET:-${BINDIR}/llvm-as}
@@ -68,7 +68,7 @@ CPPFLAGS="\
 CXXFLAGS="\
    ${CXXFLAGS} \
    ${WARNING_CFLAGS}" \
-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
+${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     /sources/gcc-${SOURCE_PACKAGE_VERSION}/configure \
     --disable-bootstrap \
     --disable-gomp \
@@ -115,7 +115,7 @@ mv install${PACKAGE_PREFIX}/lib/gcc/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGE
 rm -rf install${PACKAGE_PREFIX}/${TARGET_PROCESSOR}-${TARGET_KERNEL}-${TARGET_OS} \
        install${PACKAGE_PREFIX}/lib/gcc
 
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
+source ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
 
 # Install the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-package-install

@@ -28,7 +28,7 @@ SWIFTCFLAGS="\
     -L/sources/build-staging/swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/Sources/FoundationNetworking \
     ${SWIFTCFLAGS} \
 " \
-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+${BUILDER_SCRIPT_PATH}_BASE_NAME}-platform-sdk-cmake \
     -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DBUILD_EXAMPLES=FALSE \
     -DBUILD_TESTING=FALSE \
@@ -48,4 +48,4 @@ if [ "${SDK_PLATFORM_DIR}" = "windows" ]; then
 fi
 
 # Build the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
+source ${BUILDER_SCRIPT_PATH}_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build

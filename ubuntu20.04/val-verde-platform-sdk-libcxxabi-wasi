@@ -26,7 +26,7 @@ CXXFLAGS="\
     ${CXXFLAGS} \
 " \
 SYSTEM_NAME=Fuchsia \
-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLIBCXXABI_ENABLE_ASSERTIONS=FALSE \
     -DLIBCXXABI_ENABLE_EXCEPTIONS=TRUE \
     -DLIBCXXABI_ENABLE_SHARED=FALSE \
@@ -43,14 +43,14 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     ${SOURCE_ROOT}
 
 # Build the components
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+source ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}/include
 cp ${SOURCE_ROOT}/include/* \
    ${INSTALL_ROOT}${PACKAGE_PREFIX}/include
 
 # Build the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
+source ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
 
 # Install the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-package-install

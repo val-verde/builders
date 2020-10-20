@@ -28,7 +28,7 @@ git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
 
-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+${BUILDER_SCRIPT_PATH}CKAGE_BASE_NAME}-platform-sdk-cmake \
     -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DBUILD_EXAMPLES=FALSE \
     -DBUILD_TESTING=FALSE \
@@ -42,4 +42,4 @@ mkdir -p ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}
 rsync -aPx lib ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}
 
 # Build the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
+source ${BUILDER_SCRIPT_PATH}CKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build

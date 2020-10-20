@@ -28,7 +28,7 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-pcre-cross
 
 # windows icu build
 LDFLAGS="\
-    -fuse-ld=${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+    -fuse-ld=${BUILDER_SCRIPT_PATH}tform-sdk-mslink \
     ${LDFLAGS} \
 " \
 LIBS="\
@@ -42,7 +42,7 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
 
 # windows libxml2 build
 LDFLAGS="\
-    -Wc,-fuse-ld=${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+    -Wc,-fuse-ld=${BUILDER_SCRIPT_PATH}tform-sdk-mslink \
     ${LDFLAGS} \
 " \
 Z_LIBS="\

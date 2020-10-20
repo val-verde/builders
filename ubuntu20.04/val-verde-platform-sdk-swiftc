@@ -11,4 +11,4 @@ for ((i=0; i<"${#args[@]}"; ++i)); do
     esac
 done
 
-${BUILD_PACKAGE_PREFIX}/bin/swiftc "${args[@]}"
+${BUILDER_SCRIPT_PATH}/swiftc "${args[@]}"

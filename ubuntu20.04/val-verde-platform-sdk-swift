@@ -37,7 +37,7 @@ git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
           ${SOURCE_ROOT}
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+${BUILDER_SCRIPT_PATH}CKAGE_BASE_NAME}-platform-sdk-cmake \
     -DClang_DIR=${LLVM_STAGE_ROOT}/lib/cmake/clang \
     -DICU_I18N_INCLUDE_DIRS=${BUILD_PACKAGE_PREFIX}/include \
     -DICU_I18N_LIBRARIES=${BUILD_PACKAGE_PREFIX}/lib/libicui18nswift.so \
@@ -61,7 +61,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLLVM_TABLEGEN=${LLVM_STAGE_ROOT}/bin/llvm-tblgen \
     -DLLVM_USE_NEWPM=${USE_NEWPM} \
     -DLLVM_USE_RELATIVE_PATHS_IN_DEBUG_INFO=TRUE \
-    -DPython3_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/python3 \
+    -DPython3_EXECUTABLE=${BUILDER_SCRIPT_PATH}on3 \
     -DSWIFT_BUILD_DYNAMIC_SDK_OVERLAY=TRUE \
     -DSWIFT_BUILD_DYNAMIC_STDLIB=TRUE \
     -DSWIFT_BUILD_PERF_TESTSUITE=FALSE \
@@ -76,8 +76,8 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DSWIFT_INCLUDE_APINOTES=FALSE \
     -DSWIFT_INCLUDE_DOCS=FALSE \
     -DSWIFT_INCLUDE_TESTS=FALSE \
-    -DSWIFT_NATIVE_CLANG_TOOLS_PATH=${BUILD_PACKAGE_PREFIX}/bin \
-    -DSWIFT_NATIVE_LLVM_TOOLS_PATH=${BUILD_PACKAGE_PREFIX}/bin \
+    -DSWIFT_NATIVE_CLANG_TOOLS_PATH=${BUILDER_SCRIPT_PATH}
+    -DSWIFT_NATIVE_LLVM_TOOLS_PATH=${BUILDER_SCRIPT_PATH}
     -DSWIFT_PATH_TO_CMARK_BUILD=/sources/build-staging/swift-cmark-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} \
     -DSWIFT_PATH_TO_CMARK_SOURCE=/sources/swift-cmark \
     -DSWIFT_PATH_TO_LIBDISPATCH_SOURCE=/sources/swift-corelibs-libdispatch \
@@ -90,29 +90,29 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DSWIFT_TOOL_SWIFT_SYNTAX_PARSER_TEST_BUILD=FALSE \
     -DSWIFT_TOOL_SWIFT_SYNTAX_TEST_BUILD=FALSE \
     -DSWIFT_TOOLS_ENABLE_LTO=${ENABLE_FLTO} \
-    -DSWIFT_USE_LINKER=${BUILD_PACKAGE_PREFIX}/bin/ld.lld \
+    -DSWIFT_USE_LINKER=${BUILDER_SCRIPT_PATH}ld \
     -DSWIFT_VENDOR="${PACKAGE_BASE_NAME}" \
     -DUUID_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
     -DUUID_LIBRARIES=${PACKAGE_PREFIX}/lib/${HOST_TRIPLE}/libuuid.so \
     ${SOURCE_ROOT}
 
 # Build the components
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+source ${BUILDER_SCRIPT_PATH}CKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 # RPATH fixups
 COMPONENTS="\
     ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin/swift \
 " \
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rpath-fixup
+source ${BUILDER_SCRIPT_PATH}CKAGE_BASE_NAME}-platform-sdk-rpath-fixup
 
 COMPONENTS="\
     ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/swift/${HOST_KERNEL}/lib*.so \
 " \
 COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rpath-fixup
+source ${BUILDER_SCRIPT_PATH}CKAGE_BASE_NAME}-platform-sdk-rpath-fixup
 
 # Build the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
+source ${BUILDER_SCRIPT_PATH}CKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
 
 # Build the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILDER_SCRIPT_PATH}CKAGE_BASE_NAME}-platform-sdk-package-install

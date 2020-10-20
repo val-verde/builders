@@ -47,7 +47,7 @@ if [ "${HOST_OS}" = "android" ]; then
     "
     CMAKE_ANDROID_DEFINE_CMD="-DANDROID=TRUE"
 elif [ "${HOST_OS}" = "mingw32" ]; then
-    CMAKE_ASM_COMPILER_CMD="-DCMAKE_ASM_COMPILER=${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ml64"
+    CMAKE_ASM_COMPILER_CMD="-DCMAKE_ASM_COMPILER=${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-ml64"
     CMAKE_ASM_COMPILER_ID_CMD="-DCMAKE_ASM_COMPILER_ID=MSVC"
     CMAKE_ASM_FLAGS_CMD="-DCMAKE_ASM_FLAGS_MINSIZEREL="
     LDFLAGS="\
@@ -66,7 +66,7 @@ CXXFLAGS="\
     ${CXXFLAGS} \
 " \
 LDFLAGS="${LDFLAGS}" \
-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DBUILD_WSI_DIRECTFB_SUPPORT=FALSE \
     -DBUILD_WSI_WAYLAND_SUPPORT=FALSE \
     -DBUILD_WSI_XLIB_SUPPORT=FALSE \
@@ -76,7 +76,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DFILAMENT_ENABLE_LTO=FALSE \
     -DFILAMENT_SKIP_SAMPLES=TRUE \
     -DFILAMENT_SUPPORTS_VULKAN=TRUE \
-    -DPYTHON_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/python3 \
+    -DPYTHON_EXECUTABLE=${BUILDER_SCRIPT_PATH}/python3 \
     -DSPIRV_WERROR=FALSE \
     -DUSE_STATIC_LIBCXX=FALSE \
     "${CMAKE_ANDROID_DEFINE_CMD}" \
@@ -86,7 +86,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     ${STAGE_ROOT}
 
 # Build the components
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+source ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/cmake
 
@@ -96,7 +96,7 @@ if [ "${BUILD_TRIPLE}" == ${HOST_TRIPLE} ]; then
 fi
 
 # Build the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
+source ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
 
 # Install the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-package-install

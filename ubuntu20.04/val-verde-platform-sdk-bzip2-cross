@@ -41,11 +41,11 @@ fi
 mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}
 cd ${STAGE_ROOT}
 
-AR=${AR:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar}
-CC=${CC:-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang}
+AR=${AR:-${BUILDER_SCRIPT_PATH}/llvm-ar}
+CC=${CC:-${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-clang}
 CFLAGS=`echo ${CFLAGS} | xargs`
-MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILD_PACKAGE_PREFIX}/bin/make}
-RANLIB=${RANLIB:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib}
+MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILDER_SCRIPT_PATH}/make}
+RANLIB=${RANLIB:-${BUILDER_SCRIPT_PATH}/llvm-ranlib}
 
 ${MAKE_PROGRAM} \
     AR=${AR} \
@@ -56,7 +56,7 @@ ${MAKE_PROGRAM} \
     install
 
 # Build the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
+source ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
 
 # Install the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-package-install

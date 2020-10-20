@@ -26,8 +26,8 @@ rsync -aPx ${SOURCE_ROOT}/* \
 # Build the components
 cd ${SOURCE_ROOT}
 mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}
-CC=${CC:-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang}
-MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILD_PACKAGE_PREFIX}/bin/make}
+CC=${CC:-${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-clang}
+MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILDER_SCRIPT_PATH}/make}
 
 ${MAKE_PROGRAM} \
     CC=${CC} \
@@ -38,7 +38,7 @@ ${MAKE_PROGRAM} \
 
 # Build the package
 cd ${STAGE_ROOT}
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
+source ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
 
 # Install the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-package-install

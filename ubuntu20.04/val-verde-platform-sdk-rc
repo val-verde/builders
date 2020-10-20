@@ -3,7 +3,7 @@
 set -e
 
 args=("$@")
-BINDIR=${BINDIR:-${BUILD_PACKAGE_PREFIX}/bin}
+BINDIR=${BINDIR:-${BUILDER_SCRIPT_PATH}}
 TEMP_FILE=`mktemp`
 
 for ((i=0; i<"${#args[@]}"; ++i)); do

@@ -31,7 +31,7 @@ cd ${STAGE_ROOT}
 
 export PATH=${PATH}:${LLVM_NATIVE_STAGE_ROOT}/bin
 
-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+${BUILDER_SCRIPT_PATH}CKAGE_BASE_NAME}-platform-sdk-cmake \
     -DBUILD_SHARED_LIBS=FALSE \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
     -DCLANG_DEFAULT_RTLIB=compiler-rt \
@@ -169,7 +169,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DLLVM_Z3_INSTALL_DIR=${SYSROOT} \
     -DMLIR_CUDA_RUNNER_ENABLED=FALSE \
     -DMLIR_TABLEGEN=${LLVM_NATIVE_STAGE_ROOT}/bin/mlir-tblgen \
-    -DPython3_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/python3 \
+    -DPython3_EXECUTABLE=${BUILDER_SCRIPT_PATH}on3 \
     -DPOLLY_ENABLE_GPGPU_CODEGEN=TRUE \
     -DSANITIZER_CXX_ABI=libcxxabi \
     -DZ3_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
@@ -181,7 +181,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     ${SOURCE_ROOT}/llvm
 
 # Build the components
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+source ${BUILDER_SCRIPT_PATH}CKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 rsync -aPx ${STAGE_ROOT}/bin/llvm-as* \
            ${STAGE_ROOT}/bin/llvm-dlltool* \
@@ -190,7 +190,7 @@ rsync -aPx ${STAGE_ROOT}/bin/llvm-as* \
            ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin
 
 # Build the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
+source ${BUILDER_SCRIPT_PATH}CKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
 
 # remove libcxx, libcxxabi and libunwind as they are superceded by llvm-project.
 HOST_PROCESSOR=`echo ${HOST_PROCESSOR} | tr _ -`
@@ -199,4 +199,4 @@ apt remove -y ${PACKAGE_BASE_NAME}-libcxx-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_
               ${PACKAGE_BASE_NAME}-libunwind-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
 # Install the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILDER_SCRIPT_PATH}CKAGE_BASE_NAME}-platform-sdk-package-install
