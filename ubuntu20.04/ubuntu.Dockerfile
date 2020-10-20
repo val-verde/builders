@@ -51,6 +51,7 @@ ENV BUILD_PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOS
     BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS} \
     HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
     PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr \
+    BUILDER_SCRIPT_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/build-scripts \
     SYSROOT=/ \
     TEMPDIR=${TEMPDIR:-/tmp}
 
@@ -80,7 +81,7 @@ ENV CFLAGS="\
 ENV LD_LIBRARY_PATH=${PACKAGE_PREFIX}/lib:${LD_LIBRARY_PATH} \
     PATH=${PACKAGE_PREFIX}/bin:${PATH}
 
-RUN mkdir -p ${BUILD_PACKAGE_PREFIX}
+RUN mkdir -p ${BUILD_PACKAGE_PREFIX} ${BUILDER_SCRIPT_PATH}
 
 # platform sdk tool wrapper scripts
 COPY ${PACKAGE_BASE_NAME}-platform-sdk-configure \
@@ -113,6 +114,12 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-gen-deb-files \
      ${PACKAGE_BASE_NAME}-platform-sdk-package-install \
      ${PACKAGE_BASE_NAME}-platform-sdk-rpath-fixup \
      ${BUILD_PACKAGE_PREFIX}/bin/
+
+COPY ${PACKAGE_BASE_NAME}-platform-sdk-builders-bash-scripts \
+     ${PACKAGE_BASE_NAME}-${PACKAGE_CLASS}-templates \
+     /sources/
+
+RUN bash     ${PACKAGE_BASE_NAME}-platform-sdk-builders-bash-scripts
 
 # linux sources
 FROM BASE AS SOURCES_BUILDER
@@ -211,7 +218,6 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-yams \
      ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross \
-     ${PACKAGE_BASE_NAME}-deb-templates \
      /sources/
 
 # LTO configuration: [OFF | Full | Thin]
@@ -226,7 +232,7 @@ FROM SOURCES_BUILDER AS MUSL_LIBC_BUILDER
 # RUN BINDIR=/usr/bin \
 #     CC=/usr/bin/clang \
 #     SYSROOT=/ \
-#     bash ${PACKAGE_BASE_NAME}-platform-sdk-musl-libc
+#     bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-musl-libc
 
 # Table with 3 columns: simplified_name | ubuntu/val-verde | version 
 
@@ -244,7 +250,7 @@ RUN BINDIR=/usr/bin \
     " \
     LLVM_NATIVE_STAGE_ROOT=/usr \
     MAKE_PROGRAM=/usr/bin/ninja \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
+    bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
 
 # libcxxabi bootstrap build
 FROM LIBUNWIND_BOOTSTRAP_BUILDER AS LIBCXXABI_BOOTSTRAP_BUILDER
@@ -252,7 +258,7 @@ FROM LIBUNWIND_BOOTSTRAP_BUILDER AS LIBCXXABI_BOOTSTRAP_BUILDER
 RUN BINDIR=/usr/bin \
     LLVM_NATIVE_STAGE_ROOT=/usr \
     MAKE_PROGRAM=/usr/bin/ninja \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-cross
+    bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-cross
 
 # libcxx bootstrap build
 FROM LIBCXXABI_BOOTSTRAP_BUILDER AS LIBCXX_BOOTSTRAP_BUILDER
@@ -268,13 +274,13 @@ RUN BINDIR=/usr/bin \
     " \
     LLVM_NATIVE_STAGE_ROOT=/usr \
     MAKE_PROGRAM=/usr/bin/ninja \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-cross
+    bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-libcxx-cross
 
 # llvm bootstrap build
 FROM LIBCXX_BOOTSTRAP_BUILDER AS LLVM_BOOTSTRAP_BUILDER
 
 RUN MAKE_PROGRAM=/usr/bin/ninja \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap
+    bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap
 
 # remove host compiler and libraries as it is superceded by bootstrapped clang
 RUN apt remove -y clang \
@@ -290,7 +296,7 @@ RUN apt remove -y clang \
 
 FROM LLVM_BOOTSTRAP_BUILDER AS LLVM_DEPENDENCIES_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-gnu
+RUN bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-gnu
 
 # remove host tools as they are superceded by native equivalents
 RUN apt remove -y cmake \
@@ -319,12 +325,12 @@ ENV PYTHONHOME=${PACKAGE_PREFIX}
 FROM LLVM_DEPENDENCIES_BUILDER AS LLVM_BUILDER
 
 RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project
+    bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-llvm-project
 
 # cmark build
 FROM LLVM_BUILDER AS CMARK_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark
+RUN bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark
 
 # swift build
 FROM CMARK_BUILDER AS SWIFT_BUILDER
@@ -334,7 +340,7 @@ RUN CXXFLAGS="\
         ${CXXFLAGS} \
     " \
     DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift
+    bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-swift
 
 # lldb build
 FROM SWIFT_BUILDER AS LLDB_BUILDER
@@ -344,12 +350,12 @@ RUN CXXFLAGS="\
         ${CXXFLAGS} \
     " \
     DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb
+    bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb
 
 # libdispatch build
 FROM LLDB_BUILDER AS LIBDISPATCH_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch
+RUN bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch
 
 # foundation build
 FROM LIBDISPATCH_BUILDER AS FOUNDATION_BUILDER
@@ -359,43 +365,43 @@ RUN CFLAGS="\
         ${CFLAGS} \
     " \
     DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation
+    bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation
 
 # xctest build
 FROM FOUNDATION_BUILDER AS XCTEST_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest
+RUN bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest
 
 # llbuild build
 FROM XCTEST_BUILDER AS LLBUILD_BUILDER
 
 RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild
+    bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild
 
 # swift-tools-support-core build
 FROM LLBUILD_BUILDER AS SWIFT_TOOLS_SUPPORT_CORE_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core
+RUN bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core
 
 # yams build
 FROM SWIFT_TOOLS_SUPPORT_CORE_BUILDER AS YAMS_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-yams
+RUN bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-yams
 
 # swift argument parser build
 FROM YAMS_BUILDER AS SWIFT_ARGUMENT_PARSER_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-argument-parser
+RUN bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-swift-argument-parser
 
 # swift-driver build
 FROM SWIFT_ARGUMENT_PARSER_BUILDER AS SWIFT_DRIVER_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver
+RUN bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-swift-driver
 
 # swiftpm build
 FROM SWIFT_DRIVER_BUILDER AS SWIFTPM_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager
+RUN bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager
 
 RUN dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-argument-parser-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
             ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
@@ -410,12 +416,12 @@ RUN dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-argument-parser-${HOST_OS}${H
 # swift-syntax build
 FROM SWIFTPM_BUILDER AS SWIFT_SYNTAX_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross
+RUN bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross
 
 # swift-format build
 FROM SWIFT_SYNTAX_BUILDER AS SWIFT_FORMAT_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross
+RUN bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross
 
 # swift-doc build
 FROM SWIFT_FORMAT_BUILDER AS SWIFT_DOC_BUILDER
@@ -424,7 +430,7 @@ RUN SWIFT_BUILD_FLAGS="\
         -Xcc -I${PACKAGE_PREFIX}/include \
         ${SWIFT_BUILD_FLAGS} \
     " \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross
+    bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross
 
 # sourcekit-lsp build
 FROM SWIFT_DOC_BUILDER AS SOURCEKIT_LSP_BUILDER
@@ -434,7 +440,7 @@ RUN DISABLE_POLLY=TRUE \
         -Xcc -I${PACKAGE_PREFIX}/include \
         ${SWIFT_BUILD_FLAGS} \
     " \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp
+    bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp
 
 # baikonur build
 FROM SOURCEKIT_LSP_BUILDER AS BAIKONUR_BUILDER
@@ -445,21 +451,21 @@ RUN DISABLE_POLLY=TRUE \
 # pythonkit build
 FROM BAIKONUR_BUILDER AS PYTHONKIT_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit
+RUN bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-pythonkit
 
 # swift tensorflows apis build
 # RUN DISABLE_POLLY=TRUE \
-#    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tensorflow-apis
+#    bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-swift-tensorflow-apis
 
 # graphics sdk build
 FROM PYTHONKIT_BUILDER AS GRAPHICS_SDK_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-graphics-sdk-cross
+RUN bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-graphics-sdk-cross
 
 # node build
 FROM GRAPHICS_SDK_BUILDER AS NODE_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-node-cross
+RUN bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-node-cross
 
 # android-ndk package
 FROM NODE_BUILDER AS ANDROID_NDK_BUILDER
@@ -510,7 +516,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt-wasi \
 # webassembly compiler dependencies
 FROM WASI_SOURCES_BUILDER AS WASI_COMPILER_DEPS_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-wasi-compiler-deps
+RUN bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-wasi-compiler-deps
 
 # android build
 FROM WASI_COMPILER_DEPS_BUILDER AS ANDROID_BUILDER
@@ -554,7 +560,7 @@ ENV HOST_ARCH=armv8-a \
     HOST_PROCESSOR=aarch64
 
 RUN dpkg --add-architecture ${HOST_PROCESSOR}
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android || true
+RUN bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-android || true
 
 # android-x86_64 environment
 ENV HOST_ARCH=westmere \
@@ -564,7 +570,7 @@ ENV HOST_ARCH=westmere \
     HOST_OS_API_LEVEL=29 \
     HOST_PROCESSOR=x86_64
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android || true
+RUN bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-android || true
 
 # windows environment
 FROM ANDROID_BUILDER AS WINDOWS_SOURCES_BUILDER
@@ -627,12 +633,12 @@ RUN export SOURCE_PACKAGE_NAME=mingw-w64 \
 # windows mingw-headers build
 FROM WINDOWS_SOURCES_BUILDER AS WINDOWS_MINGW_HEADERS_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-mingw-w64-headers
+RUN bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-mingw-w64-headers
 
 # windows mingw-crt build
 FROM WINDOWS_MINGW_HEADERS_BUILDER AS WINDOWS_MINGW_CRT_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-mingw-w64-crt
+RUN bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-mingw-w64-crt
 
 # windows compiler-rt build (for host)
 FROM WINDOWS_MINGW_CRT_BUILDER AS WINDOWS_COMPILER_RT_BUILDER
@@ -645,44 +651,44 @@ RUN CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a \
 # windows libunwind build
 FROM WINDOWS_COMPILER_RT_BUILDER AS WINDOWS_LIBUNWIND_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-windows
+RUN bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-libunwind-windows
 
 # windows mingw-winpthreads build
 FROM WINDOWS_LIBUNWIND_BUILDER AS WINDOWS_MINGW_WINPTHREADS_BUILDER
 
 RUN export LD=${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-winpthreads-cross
+    && bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-winpthreads-cross
 
 # windows libcxxabi build
 FROM WINDOWS_MINGW_WINPTHREADS_BUILDER AS WINDOWS_LIBCXXABI_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-windows
+RUN bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-windows
 
 # windows libcxx build
 FROM WINDOWS_LIBCXXABI_BUILDER AS WINDOWS_LIBCXX_BUILDER
 
 RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows
+    bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows
 
 # windows llvm dependencies
 FROM WINDOWS_LIBCXX_BUILDER AS WINDOWS_LLVM_DEPENDENCIES_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-windows
+RUN bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-windows
 
 # windows swift tools build
 FROM WINDOWS_LLVM_DEPENDENCIES_BUILDER AS WINDOWS_SWIFT_TOOLS_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-windows
+RUN bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-windows
 
 # windows swift sdk build
 FROM WINDOWS_SWIFT_TOOLS_BUILDER AS WINDOWS_SWIFT_SDK_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-sdk-windows
+RUN bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-swift-sdk-windows
 
 # windows graphics sdk build
 FROM WINDOWS_SWIFT_SDK_BUILDER AS WINDOWS_GRAPHICS_SDK_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-graphics-sdk-cross
+RUN bash ${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-graphics-sdk-cross
 
 CMD []
 ENTRYPOINT ["tail", "-f", "/dev/null"]
