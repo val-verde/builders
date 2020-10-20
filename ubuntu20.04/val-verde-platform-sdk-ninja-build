@@ -1,9 +1,0 @@
-#!/bin/bash
-
-set -e
-
-MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILDER_SCRIPT_PATH}/ninja}
-TARGETS=${TARGETS:-install}
-
-${MAKE_PROGRAM} -j${NUM_PROCESSORS} \
-                ${TARGETS}

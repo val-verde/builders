@@ -1,9 +1,0 @@
-#!/bin/bash
-
-args=$@
-args=`echo "${args}" | sed -r 's/\/c/-c/g'`
-args=`echo "${args}" | sed -r 's/\/Fo/-Fo/g'`
-args=`echo "${args}" | sed -r 's/-o/-Fo/g'`
-
-${BUILDER_SCRIPT_PATH}/jwasm -win64 \
-                                  ${args}

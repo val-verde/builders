@@ -1,6 +1,0 @@
-#!/bin/bash
-
-set -e
-
-cd /sources
-dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb

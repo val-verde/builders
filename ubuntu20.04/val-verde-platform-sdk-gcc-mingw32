@@ -1,8 +1,0 @@
-#!/bin/bash
-
-set -e
-
-args=$@
-args=`echo "${args}" | sed -r 's/--output-format=[^[:space:]]+//g'`
-
-${BUILDER_SCRIPT_PATH}/${PACKAGE_BASE_NAME}-platform-sdk-clang ${args}
