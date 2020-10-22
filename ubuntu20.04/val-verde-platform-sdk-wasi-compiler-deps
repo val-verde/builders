@@ -3,7 +3,6 @@
 set -e
 
 # webassembly libc
-PACKAGE_ARCH=${BUILD_PROCESSOR} \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-wasi-libc
 
 # webassembly compiler-rt (bootstrap)
@@ -20,16 +19,13 @@ LDFLAGS="\
     -Wl,--no-entry \
     ${LDFLAGS} \
 " \
-PACKAGE_ARCH=${BUILD_PROCESSOR} \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt-wasi
 
 # webassembly libcxxabi
-PACKAGE_ARCH=${BUILD_PROCESSOR} \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-wasi
 
 # webassembly libcxx
 DISABLE_POLLY=TRUE \
-PACKAGE_ARCH=${BUILD_PROCESSOR} \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-wasi
 
 # webassembly compiler-rt (rebuild with c++)
@@ -42,5 +38,4 @@ LDFLAGS="\
     -L${PACKAGE_PREFIX}/lib \
     ${LDFLAGS} \
 " \
-PACKAGE_ARCH=${BUILD_PROCESSOR} \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt-wasi
