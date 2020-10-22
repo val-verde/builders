@@ -38,7 +38,6 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-headers
 bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-runtime
 
 # android compiler-rt build (for host)
-PACKAGE_ARCH=${BUILD_PROCESSOR} \
 bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt
 
 # android libunwind build
