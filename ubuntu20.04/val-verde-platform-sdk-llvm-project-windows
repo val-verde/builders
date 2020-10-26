@@ -23,7 +23,7 @@ EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;clang-tools-extra;libclc;mli
 
 # Configure the package
 cd ${SOURCE_ROOT}
-git checkout dutch-master-next
+git checkout val-verde-mainline-next
 
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}

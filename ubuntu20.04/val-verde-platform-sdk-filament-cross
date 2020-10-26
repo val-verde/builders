@@ -23,7 +23,7 @@ BUILD_TYPE=${BUILD_TYPE:-MinSizeRel}
 rm -rf ${SOURCE_ROOT}
 git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
           --single-branch \
-          --branch dutch-master \
+          --branch val-verde-mainline \
           ${SOURCE_ROOT}
 
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}

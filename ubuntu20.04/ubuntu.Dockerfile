@@ -118,7 +118,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-gen-deb-files \
 FROM BASE AS SOURCES_BUILDER
 
 RUN git clone https://github.com/${PACKAGE_BASE_NAME}/llvm-project.git \
-              --branch dutch-master-next \
+              --branch val-verde-mainline-next \
               --single-branch \
               /sources/llvm-project
 
@@ -622,7 +622,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows \
 RUN export SOURCE_PACKAGE_NAME=mingw-w64 \
     && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
     && git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
-                 --branch dutch-master \
+                 --branch val-verde-mainline \
                  --single-branch \
                  ${SOURCE_ROOT}
 

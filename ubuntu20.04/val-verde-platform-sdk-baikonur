@@ -27,7 +27,7 @@ mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${SOURCE_ROOT}
 
 if [ "${HOST_OS}" = "android" ]; then
-    export DUTCH_MASTER_BRANCH=dutch-android-master
+    export DUTCH_MASTER_BRANCH=val-verde-android-mainline
 fi
 
 SWIFT_BUILD_FLAGS="\

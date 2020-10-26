@@ -28,11 +28,11 @@ USE_NEWPM=${USE_NEWPM:-TRUE}
 rm -rf /sources/swift-corelibs-libdispatch \
        ${SOURCE_ROOT}
 git clone https://github.com/${PACKAGE_BASE_NAME}/swift-corelibs-libdispatch.git \
-          --branch dutch-master \
+          --branch val-verde-mainline \
           --single-branch \
           /sources/swift-corelibs-libdispatch
 git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
-          --branch dutch-master-next \
+          --branch val-verde-mainline-next \
           --single-branch \
           ${SOURCE_ROOT}
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}

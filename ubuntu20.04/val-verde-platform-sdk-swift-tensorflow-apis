@@ -14,7 +14,7 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 # Configure the package
 rm -rf ${SOURCE_ROOT}
 git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
-          --branch dutch-master \
+          --branch val-verde-mainline \
           --single-branch \
           ${SOURCE_ROOT}
 mkdir -p ${STAGE_ROOT}
