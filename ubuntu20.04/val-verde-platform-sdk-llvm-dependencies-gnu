@@ -115,7 +115,7 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-tar-cross
 bash ${PACKAGE_BASE_NAME}-platform-sdk-coreutils-cross
 
 # dpkg build
-# bash ${PACKAGE_BASE_NAME}-platform-sdk-dpkg-cross
+bash ${PACKAGE_BASE_NAME}-platform-sdk-dpkg-cross
 
 # systemd build
 MAKE_PROGRAM=/usr/bin/ninja \

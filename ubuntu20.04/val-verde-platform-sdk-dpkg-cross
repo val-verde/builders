@@ -25,10 +25,15 @@ wget -c http://ftp.debian.org/debian/pool/main/d/${SOURCE_PACKAGE_NAME}/${SOURCE
      -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz
 tar -xf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz
 
-CONFIGURE_HOST_KERNEL=${HOST_KERNEL}
-
-if [ "${HOST_OS}" != "gnu" ]; then
+if [ "${HOST_OS}" = "android" ]; then
+    ADMIN_DIR=/data/local/tmp
     CONFIGURE_HOST_KERNEL=unknown
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    ADMIN_DIR=/
+    CONFIGURE_HOST_KERNEL=unknown
+else
+    ADMIN_DIR=/var/lib/dpkg
+    CONFIGURE_HOST_KERNEL=${HOST_KERNEL}
 fi
 
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
@@ -40,10 +45,15 @@ CXXFLAGS="\
 " \
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
-    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX}
+    --disable-dselect \
+    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+    --with-admindir=${ADMIN_DIR}
 
 # Build the components
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
+
+# Remove unnecessary dpkg var template folder.
+rm -rf ${INSTALL_ROOT}${PACKAGE_PREFIX}/var
 
 # Build the package
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
