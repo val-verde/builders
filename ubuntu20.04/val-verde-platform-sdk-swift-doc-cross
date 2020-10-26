@@ -19,9 +19,9 @@ export DEPENDS="\
 rm -rf ${SOURCE_ROOT}
 
 if [ "${HOST_OS}" = "android" ]; then
-   GIT_BRANCH="dutch-android-master"
+   GIT_BRANCH="val-verde-android-mainline"
 else
-   GIT_BRANCH="dutch-master"
+   GIT_BRANCH="val-verde-mainline"
 fi
 
 git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \

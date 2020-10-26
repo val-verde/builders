@@ -23,9 +23,9 @@ EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;libclc;mlir;openmp;parallel-
 
 # Configure the package
 cd ${SOURCE_ROOT}
-git remote set-branches --add origin dutch-android-master-next
-git fetch origin dutch-android-master-next
-git checkout dutch-android-master-next
+git remote set-branches --add origin val-verde-android-mainline-next
+git fetch origin val-verde-android-mainline-next
+git checkout val-verde-android-mainline-next
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
 

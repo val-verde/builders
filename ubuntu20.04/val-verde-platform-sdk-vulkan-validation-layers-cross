@@ -16,7 +16,7 @@ export DEPENDS="${PACKAGE_BASE_NAME}-vulkan-tools-${HOST_OS}${HOST_OS_API_LEVEL}
 
 rm -rf ${SOURCE_ROOT}
 git clone https://github.com/${PACKAGE_BASE_NAME}/Vulkan-ValidationLayers.git \
-          --branch dutch-master \
+          --branch val-verde-mainline \
           --single-branch \
           ${SOURCE_ROOT}
 

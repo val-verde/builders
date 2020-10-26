@@ -16,7 +16,7 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 # Determine source branch
 
 if [ "${HOST_OS}" = "mingw32" ]; then
-    BRANCH="dutch-windows-master"
+    BRANCH="val-verde-windows-mainline"
 else
     BRANCH=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 fi

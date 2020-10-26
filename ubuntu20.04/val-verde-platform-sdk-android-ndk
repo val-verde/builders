@@ -20,7 +20,7 @@ wget -c ${ANDROID_NDK_URL}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BU
 unzip ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.zip
 mkdir patches
 git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}-patches.git \
-          --branch dutch-master \
+          --branch val-verde-mainline \
           --single-branch \
           ./patches
 

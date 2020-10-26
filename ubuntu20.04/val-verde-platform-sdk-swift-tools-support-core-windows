@@ -21,7 +21,7 @@ export DEPENDS="\
 "
 # Configure the package
 cd ${SOURCE_ROOT}
-git checkout dutch-master
+git checkout val-verde-mainline
 
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}

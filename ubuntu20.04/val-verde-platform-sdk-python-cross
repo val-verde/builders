@@ -25,7 +25,7 @@ export DEPENDS="\
 rm -rf ${SOURCE_ROOT}
 cd /sources
 git clone https://github.com/${PACKAGE_BASE_NAME}/cpython.git \
-          --branch dutch-master \
+          --branch val-verde-mainline \
           --single-branch \
           ${SOURCE_ROOT}
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}

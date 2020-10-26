@@ -17,7 +17,7 @@ export DEPENDS="${PACKAGE_BASE_NAME}-ncurses-${HOST_OS}${HOST_OS_API_LEVEL}-${HO
 # Configure the build
 rm -rf ${SOURCE_ROOT}
 git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
-          --branch dutch-master \
+          --branch val-verde-mainline \
           --single-branch \
           ${SOURCE_ROOT}
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}${PACKAGE_PREFIX}

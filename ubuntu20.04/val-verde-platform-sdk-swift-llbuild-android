@@ -21,9 +21,9 @@ export DEPENDS="\
 "
 # Configure the package
 cd ${SOURCE_ROOT}
-git remote set-branches --add origin dutch-android-master
-git fetch origin dutch-android-master
-git checkout dutch-android-master
+git remote set-branches --add origin val-verde-android-mainline
+git fetch origin val-verde-android-mainline
+git checkout val-verde-android-mainline
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
 
