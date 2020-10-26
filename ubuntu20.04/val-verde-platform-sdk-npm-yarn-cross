@@ -1,0 +1,36 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
+export SOURCE_PACKAGE_NAME=npm-yarn
+export SOURCE_PACKAGE_VERSION=9999-git
+export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export INSTALL_ROOT=${TEMPDIR}/org.${PACKAGE_BASE_NAME}/${QUALIFIED_PACKAGE_NAME}
+export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX}
+
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+
+mkdir -p ${INSTALL_PREFIX}/bin \
+         ${INSTALL_PREFIX}/lib
+
+# Build the components
+cd ${INSTALL_PREFIX}/lib
+${BUILD_PACKAGE_PREFIX}/bin/npm install --no-save yarn
+ln -sf ../lib/node_modules/.bin/yarn \
+       ../lib/node_modules/.bin/yarnpkg \
+       ${INSTALL_PREFIX}/bin/
+rm ${INSTALL_PREFIX}/lib/node_modules/.package-lock.json
+
+if [ "${HOST_OS}" = "android" ]; then
+    sed -i \
+        's|/usr/bin/env|/system/bin/env|g' \
+        `grep -rl "/usr/bin/env" ${INSTALL_ROOT}${PACKAGE_PREFIX}`
+fi
+
+# Build the package
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
+
+# Install the package
+source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install

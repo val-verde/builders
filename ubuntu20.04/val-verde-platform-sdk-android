@@ -145,5 +145,6 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit-cross
 # android graphics sdk build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-graphics-sdk-cross
 
-# android node build
+# android node + sdk build
 bash ${PACKAGE_BASE_NAME}-platform-sdk-node-cross
+bash ${PACKAGE_BASE_NAME}-platform-sdk-npm-yarn-cross

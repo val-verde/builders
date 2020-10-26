@@ -169,6 +169,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-node-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-npm-yarn-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-opengl-headers-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-opengl-es-headers-cross \
@@ -452,10 +453,11 @@ FROM PYTHONKIT_BUILDER AS GRAPHICS_SDK_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-graphics-sdk-cross
 
-# node build
+# node + sdk build
 FROM GRAPHICS_SDK_BUILDER AS NODE_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-node-cross
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-npm-yarn-cross
 
 # rust build
 FROM NODE_BUILDER AS RUST_BUILDER
