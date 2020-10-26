@@ -176,6 +176,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-python-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-pkg-config-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit \
+     ${PACKAGE_BASE_NAME}-platform-sdk-rust-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-sdl-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-sed-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp \
@@ -456,8 +457,13 @@ FROM GRAPHICS_SDK_BUILDER AS NODE_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-node-cross
 
+# rust build
+FROM NODE_BUILDER AS RUST_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-rust-cross
+
 # android-ndk package
-FROM NODE_BUILDER AS ANDROID_NDK_BUILDER
+FROM RUST_BUILDER AS ANDROID_NDK_BUILDER
 
 ENV ANDROID_NDK_VERSION=r21d
 
