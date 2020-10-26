@@ -19,7 +19,7 @@ export DEPENDS="\
 
 rm -rf ${SOURCE_ROOT}
 git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
-          --branch master \
+          --branch val-verde-mainline \
           --single-branch \
           ${SOURCE_ROOT}
 
@@ -27,7 +27,7 @@ mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${SOURCE_ROOT}
 
 if [ "${HOST_OS}" = "android" ]; then
-    export DUTCH_MASTER_BRANCH=val-verde-android-mainline
+    export MAINLINE_BRANCH=val-verde-android-mainline
 fi
 
 SWIFT_BUILD_FLAGS="\
