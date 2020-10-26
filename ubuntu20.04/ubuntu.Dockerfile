@@ -298,18 +298,13 @@ RUN apt remove -y cmake \
                   expat \
                   git \
                   libedit-dev \
-                  libffi-dev \
                   libicu-dev \
                   libncurses-dev \
-                  libpython3.8 \
-                  libpython3.8-dev \
                   libsqlite3-dev \
                   libssl-dev \
                   libxml2-dev \
                   libz3-dev \
                   ninja-build \
-                  pkg-config \
-                  python3 \
                   uuid-dev \
     && apt autoremove -y
 
