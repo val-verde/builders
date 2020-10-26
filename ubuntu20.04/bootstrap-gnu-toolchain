@@ -26,6 +26,7 @@ apt install -y \
     libpython3.8-dev \
     libssl-dev \
     libsqlite3-dev \
+    libxkbfile-dev \
     libxext-dev \
     libxi-dev \
     libxxf86vm-dev \
