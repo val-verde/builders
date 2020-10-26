@@ -548,7 +548,7 @@ ENV HOST_ARCH=armv8-a \
     HOST_OS_API_LEVEL=29 \
     HOST_PROCESSOR=aarch64
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android || true
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android
 
 # android-x86_64 environment
 ENV HOST_ARCH=westmere \
@@ -558,7 +558,7 @@ ENV HOST_ARCH=westmere \
     HOST_OS_API_LEVEL=29 \
     HOST_PROCESSOR=x86_64
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android || true
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android
 
 # windows environment
 FROM ANDROID_BUILDER AS WINDOWS_SOURCES_BUILDER
