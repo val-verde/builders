@@ -435,7 +435,7 @@ RUN DISABLE_POLLY=TRUE \
 FROM SOURCEKIT_LSP_BUILDER AS BAIKONUR_BUILDER
 
 RUN DISABLE_POLLY=TRUE \
-    bash val-verde-platform-sdk-baikonur
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-baikonur
 
 # pythonkit build
 FROM BAIKONUR_BUILDER AS PYTHONKIT_BUILDER
