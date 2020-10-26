@@ -548,7 +548,6 @@ ENV HOST_ARCH=armv8-a \
     HOST_OS_API_LEVEL=29 \
     HOST_PROCESSOR=aarch64
 
-RUN dpkg --add-architecture ${HOST_PROCESSOR}
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android || true
 
 # android-x86_64 environment
