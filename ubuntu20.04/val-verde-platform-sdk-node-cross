@@ -118,7 +118,7 @@ source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
 if [ "${HOST_OS}" = "android" ]; then
     sed -i \
         's|/usr/bin/env|/system/bin/env|g' \
-        `grep -r "/usr/bin/env" ${INSTALL_ROOT}${PACKAGE_PREFIX} | cut -d: -f1`
+        `grep -rl "/usr/bin/env" ${INSTALL_ROOT}${PACKAGE_PREFIX}`
 fi
 
 # Build the package

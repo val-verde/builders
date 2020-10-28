@@ -24,8 +24,10 @@ apt install -y \
     libnvidia-compute-440 \
     libpython3.8 \
     libpython3.8-dev \
+    libsecret-1-dev \
     libssl-dev \
     libsqlite3-dev \
+    libxkbfile-dev \
     libxext-dev \
     libxi-dev \
     libxxf86vm-dev \

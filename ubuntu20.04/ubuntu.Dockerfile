@@ -54,7 +54,6 @@ ENV BUILD_PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOS
     SYSROOT=/ \
     TEMPDIR=${TEMPDIR:-/tmp}
 
-
 ENV CFLAGS="\
         -I${PACKAGE_PREFIX}/include \
     " \
@@ -77,7 +76,8 @@ ENV CFLAGS="\
         -L${PACKAGE_PREFIX}/lib \
     "
 
-ENV LD_LIBRARY_PATH=${PACKAGE_PREFIX}/lib:${LD_LIBRARY_PATH} \
+ENV DPKG_ADMINDIR=/var/lib/dpkg \
+    LD_LIBRARY_PATH=${PACKAGE_PREFIX}/lib:${LD_LIBRARY_PATH} \
     PATH=${PACKAGE_PREFIX}/bin:${PATH}
 
 RUN mkdir -p ${BUILD_PACKAGE_PREFIX}
@@ -169,6 +169,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-node-cross \
+     ${PACKAGE_BASE_NAME}-platform-sdk-npm-yarn-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-opengl-headers-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-opengl-es-headers-cross \
@@ -176,6 +177,7 @@ COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
      ${PACKAGE_BASE_NAME}-platform-sdk-python-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-pkg-config-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit \
+     ${PACKAGE_BASE_NAME}-platform-sdk-rust-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-sdl-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-sed-cross \
      ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp \
@@ -298,18 +300,13 @@ RUN apt remove -y cmake \
                   expat \
                   git \
                   libedit-dev \
-                  libffi-dev \
                   libicu-dev \
                   libncurses-dev \
-                  libpython3.8 \
-                  libpython3.8-dev \
                   libsqlite3-dev \
                   libssl-dev \
                   libxml2-dev \
                   libz3-dev \
                   ninja-build \
-                  pkg-config \
-                  python3 \
                   uuid-dev \
     && apt autoremove -y
 
@@ -440,7 +437,7 @@ RUN DISABLE_POLLY=TRUE \
 FROM SOURCEKIT_LSP_BUILDER AS BAIKONUR_BUILDER
 
 RUN DISABLE_POLLY=TRUE \
-    bash val-verde-platform-sdk-baikonur
+    bash ${PACKAGE_BASE_NAME}-platform-sdk-baikonur
 
 # pythonkit build
 FROM BAIKONUR_BUILDER AS PYTHONKIT_BUILDER
@@ -456,13 +453,19 @@ FROM PYTHONKIT_BUILDER AS GRAPHICS_SDK_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-graphics-sdk-cross
 
-# node build
+# node + sdk build
 FROM GRAPHICS_SDK_BUILDER AS NODE_BUILDER
 
 RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-node-cross
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-npm-yarn-cross
+
+# rust build
+FROM NODE_BUILDER AS RUST_BUILDER
+
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-rust-cross
 
 # android-ndk package
-FROM NODE_BUILDER AS ANDROID_NDK_BUILDER
+FROM RUST_BUILDER AS ANDROID_NDK_BUILDER
 
 ENV ANDROID_NDK_VERSION=r21d
 
@@ -553,8 +556,7 @@ ENV HOST_ARCH=armv8-a \
     HOST_OS_API_LEVEL=29 \
     HOST_PROCESSOR=aarch64
 
-RUN dpkg --add-architecture ${HOST_PROCESSOR}
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android || true
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android
 
 # android-x86_64 environment
 ENV HOST_ARCH=westmere \
@@ -564,7 +566,7 @@ ENV HOST_ARCH=westmere \
     HOST_OS_API_LEVEL=29 \
     HOST_PROCESSOR=x86_64
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android || true
+RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android
 
 # windows environment
 FROM ANDROID_BUILDER AS WINDOWS_SOURCES_BUILDER

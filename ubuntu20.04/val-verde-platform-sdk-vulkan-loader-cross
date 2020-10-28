@@ -32,11 +32,13 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DBUILD_WSI_WAYLAND_SUPPORT=FALSE \
     -DBUILD_WSI_XLIB_SUPPORT=FALSE \
     -DCMAKE_ASM_MASM_COMPILER_WORKS=FALSE \
+    -DJWASM_FOUND=${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ml64 \
     -DPKG_CONFIG_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/pkg-config \
     "${CMAKE_ANDROID_DEFINE_CMD}" \
     ${SOURCE_ROOT}
 
 # Build the components
+PATH=/sources/build-staging/vulkan-loader-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/loader:${PATH} \
 source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
 
 # Build the package

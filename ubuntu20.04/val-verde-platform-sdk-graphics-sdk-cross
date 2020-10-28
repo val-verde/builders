@@ -47,4 +47,4 @@ bash ${PACKAGE_BASE_NAME}-platform-sdk-sdl-cross
 
 # filament build
 DISABLE_POLLY=TRUE \
-bash val-verde-platform-sdk-filament-cross
+bash ${PACKAGE_BASE_NAME}-platform-sdk-filament-cross
