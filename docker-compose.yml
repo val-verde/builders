@@ -17,4 +17,5 @@ services:
                 - HOST_PROCESSOR=x86_64
                 - PACKAGE_BASE_NAME=val-verde
                 - PACKAGE_ROOT=/opt
+                - VAL_VERDE_GH_TEAM=val-verde
         privileged: true
