@@ -116,6 +116,9 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-gen-deb-files \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-rpath-fixup \
      ${BUILD_PACKAGE_PREFIX}/bin/
 
+COPY ${VAL_VERDE_GH_TEAM}-deb-templates \
+     ${BUILD_PACKAGE_PREFIX}/share
+
 # linux sources
 FROM BASE AS SOURCES_BUILDER
 
@@ -215,7 +218,6 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-yams \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-z3-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-zlib-cross \
-     ${VAL_VERDE_GH_TEAM}-deb-templates \
      /sources/
 
 # LTO configuration: [OFF | Full | Thin]
