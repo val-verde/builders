@@ -28,6 +28,7 @@ ARG HOST_OS
 ARG HOST_PROCESSOR
 ARG PACKAGE_BASE_NAME
 ARG PACKAGE_ROOT
+ARG VAL_VERDE_GH_TEAM
 
 ENV BUILD_ARCH=haswell \
     BUILD_CPU=skylake \
@@ -41,11 +42,12 @@ ENV BUILD_ARCH=haswell \
     HOST_KERNEL=${HOST_KERNEL} \
     HOST_OS=${HOST_OS} \
     HOST_PROCESSOR=${HOST_PROCESSOR} \
+    PACKAGE_ARCH=all \
     PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME} \
+    PACKAGE_CLASS=deb \
     PACKAGE_ROOT=${PACKAGE_ROOT} \
     SYSTEM_NAME=Linux \
-    PACKAGE_CLASS=deb \
-    PACKAGE_ARCH=all
+    VAL_VERDE_GH_TEAM=${VAL_VERDE_GH_TEAM}
 
 ENV BUILD_PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr \
     BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS} \
@@ -83,137 +85,137 @@ ENV DPKG_ADMINDIR=/var/lib/dpkg \
 RUN mkdir -p ${BUILD_PACKAGE_PREFIX}
 
 # platform sdk tool wrapper scripts
-COPY ${PACKAGE_BASE_NAME}-platform-sdk-configure \
-     ${PACKAGE_BASE_NAME}-platform-sdk-cmake \
-     ${PACKAGE_BASE_NAME}-platform-sdk-clang \
-     ${PACKAGE_BASE_NAME}-platform-sdk-clang++ \
-     ${PACKAGE_BASE_NAME}-platform-sdk-gcc-mingw32 \
-     ${PACKAGE_BASE_NAME}-platform-sdk-ml64 \
-     ${PACKAGE_BASE_NAME}-platform-sdk-mslink \
-     ${PACKAGE_BASE_NAME}-platform-sdk-rc \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-build \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swiftc \
+COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-clang \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-clang++ \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-cmake \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-configure \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-gcc-mingw32 \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-ml64 \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-rc \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-build \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc \
      ${BUILD_PACKAGE_PREFIX}/bin/
 
-RUN chmod +x ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
-             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
-             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang \
-             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang++ \
-             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-gcc-mingw32 \
-             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ml64 \
-             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
-             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rc \
-             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swift-build \
-             ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-swiftc
+RUN chmod +x ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-configure \
+             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-cmake \
+             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang \
+             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang++ \
+             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-gcc-mingw32 \
+             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-ml64 \
+             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
+             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-rc \
+             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-swift-build \
+             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc
 
-COPY ${PACKAGE_BASE_NAME}-platform-sdk-gen-deb-files \
-     ${PACKAGE_BASE_NAME}-platform-sdk-make-build \
-     ${PACKAGE_BASE_NAME}-platform-sdk-ninja-build \
-     ${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build \
-     ${PACKAGE_BASE_NAME}-platform-sdk-package-install \
-     ${PACKAGE_BASE_NAME}-platform-sdk-rpath-fixup \
+COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-gen-deb-files \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-make-build \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-build \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-package-${PACKAGE_CLASS}-build \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-package-install \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-rpath-fixup \
      ${BUILD_PACKAGE_PREFIX}/bin/
 
 # linux sources
 FROM BASE AS SOURCES_BUILDER
 
-RUN git clone https://github.com/${PACKAGE_BASE_NAME}/llvm-project.git \
+RUN git clone https://github.com/${VAL_VERDE_GH_TEAM}/llvm-project.git \
               --branch val-verde-mainline-next \
               --single-branch \
               /sources/llvm-project
 
 # platform sdk package build scripts
-COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk \
-     ${PACKAGE_BASE_NAME}-platform-sdk-android-patch-elf-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-acl-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-attr-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-autoconf-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-automake-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-baikonur \
-     ${PACKAGE_BASE_NAME}-platform-sdk-bash-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-bison-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-bzip2-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt \
-     ${PACKAGE_BASE_NAME}-platform-sdk-coreutils-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-dpkg-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-egl-headers-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-filament-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-gawk-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-gdbm-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-gettext-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-git-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-glslang-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-gperf-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-graphics-sdk-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-icu4c \
-     ${PACKAGE_BASE_NAME}-platform-sdk-jwasm \
-     ${PACKAGE_BASE_NAME}-platform-sdk-khr-headers-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libcap-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libiconv-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-gnu \
-     ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project \
-     ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap \
-     ${PACKAGE_BASE_NAME}-platform-sdk-lua-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-make-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-musl-libc \
-     ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-node-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-npm-yarn-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-opengl-headers-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-opengl-es-headers-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-pcre-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-python-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-pkg-config-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit \
-     ${PACKAGE_BASE_NAME}-platform-sdk-rust-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-sdl-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-sed-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp \
-     ${PACKAGE_BASE_NAME}-platform-sdk-spirv-headers-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-spirv-tools-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-strace-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-argument-parser \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-tensorflow-apis \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swig-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-systemd \
-     ${PACKAGE_BASE_NAME}-platform-sdk-tar-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-util-linux-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-vulkan-headers-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-vulkan-loader-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-vulkan-tools-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-vulkan-validation-layers-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-wget-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-yams \
-     ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross \
-     ${PACKAGE_BASE_NAME}-deb-templates \
+COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-android-patch-elf-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-acl-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-attr-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-autoconf-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-automake-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-baikonur \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-bash-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-bison-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-bzip2-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-cmake-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-coreutils-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-curl-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-dpkg-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-egl-headers-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-expat-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-filament-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-gawk-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-gdbm-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-gettext-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-git-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-glslang-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-gperf-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-graphics-sdk-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-icu4c \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-jwasm \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-khr-headers-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-libcap-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-libedit-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-libffi-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-libssh2-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-libunwind-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-libxml2-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-dependencies-gnu \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project-bootstrap \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-lua-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-make-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-musl-libc \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-ncurses-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-node-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-npm-yarn-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-openssl-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-opengl-headers-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-opengl-es-headers-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-pcre-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-python-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-pkg-config-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-pythonkit \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-rust-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-sdl-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-sed-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-sourcekit-lsp \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-spirv-headers-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-spirv-tools-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-sqlite-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-strace-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-argument-parser \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-cmark \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-foundation \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-libdispatch \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-xctest \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-doc-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-driver \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-format-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-lldb \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-package-manager \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-syntax-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tensorflow-apis \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-support-core \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swig-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-systemd \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-tar-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-util-linux-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-vulkan-headers-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-vulkan-loader-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-vulkan-tools-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-vulkan-validation-layers-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-wget-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-xz-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-yams \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-z3-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-zlib-cross \
+     ${VAL_VERDE_GH_TEAM}-deb-templates \
      /sources/
 
 # LTO configuration: [OFF | Full | Thin]
@@ -228,7 +230,7 @@ FROM SOURCES_BUILDER AS MUSL_LIBC_BUILDER
 # RUN BINDIR=/usr/bin \
 #     CC=/usr/bin/clang \
 #     SYSROOT=/ \
-#     bash ${PACKAGE_BASE_NAME}-platform-sdk-musl-libc
+#     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-musl-libc
 
 # Table with 3 columns: simplified_name | ubuntu/val-verde | version 
 
@@ -246,7 +248,7 @@ RUN BINDIR=/usr/bin \
     " \
     LLVM_NATIVE_STAGE_ROOT=/usr \
     MAKE_PROGRAM=/usr/bin/ninja \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libunwind-cross
 
 # libcxxabi bootstrap build
 FROM LIBUNWIND_BOOTSTRAP_BUILDER AS LIBCXXABI_BOOTSTRAP_BUILDER
@@ -254,7 +256,7 @@ FROM LIBUNWIND_BOOTSTRAP_BUILDER AS LIBCXXABI_BOOTSTRAP_BUILDER
 RUN BINDIR=/usr/bin \
     LLVM_NATIVE_STAGE_ROOT=/usr \
     MAKE_PROGRAM=/usr/bin/ninja \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-cross
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-cross
 
 # libcxx bootstrap build
 FROM LIBCXXABI_BOOTSTRAP_BUILDER AS LIBCXX_BOOTSTRAP_BUILDER
@@ -270,13 +272,13 @@ RUN BINDIR=/usr/bin \
     " \
     LLVM_NATIVE_STAGE_ROOT=/usr \
     MAKE_PROGRAM=/usr/bin/ninja \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-cross
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-cross
 
 # llvm bootstrap build
 FROM LIBCXX_BOOTSTRAP_BUILDER AS LLVM_BOOTSTRAP_BUILDER
 
 RUN MAKE_PROGRAM=/usr/bin/ninja \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-bootstrap
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project-bootstrap
 
 # remove host compiler and libraries as it is superceded by bootstrapped clang
 RUN apt remove -y clang \
@@ -292,7 +294,7 @@ RUN apt remove -y clang \
 
 FROM LLVM_BOOTSTRAP_BUILDER AS LLVM_DEPENDENCIES_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-gnu
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-dependencies-gnu
 
 # remove host tools as they are superceded by native equivalents
 RUN apt remove -y cmake \
@@ -316,12 +318,12 @@ ENV PYTHONHOME=${PACKAGE_PREFIX}
 FROM LLVM_DEPENDENCIES_BUILDER AS LLVM_BUILDER
 
 RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project
 
 # cmark build
 FROM LLVM_BUILDER AS CMARK_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-cmark
 
 # swift build
 FROM CMARK_BUILDER AS SWIFT_BUILDER
@@ -331,7 +333,7 @@ RUN CXXFLAGS="\
         ${CXXFLAGS} \
     " \
     DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift
 
 # lldb build
 FROM SWIFT_BUILDER AS LLDB_BUILDER
@@ -341,12 +343,12 @@ RUN CXXFLAGS="\
         ${CXXFLAGS} \
     " \
     DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-lldb
 
 # libdispatch build
 FROM LLDB_BUILDER AS LIBDISPATCH_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-libdispatch
 
 # foundation build
 FROM LIBDISPATCH_BUILDER AS FOUNDATION_BUILDER
@@ -356,43 +358,43 @@ RUN CFLAGS="\
         ${CFLAGS} \
     " \
     DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-foundation
 
 # xctest build
 FROM FOUNDATION_BUILDER AS XCTEST_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-xctest
 
 # llbuild build
 FROM XCTEST_BUILDER AS LLBUILD_BUILDER
 
 RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild
 
 # swift-tools-support-core build
 FROM LLBUILD_BUILDER AS SWIFT_TOOLS_SUPPORT_CORE_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-support-core
 
 # yams build
 FROM SWIFT_TOOLS_SUPPORT_CORE_BUILDER AS YAMS_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-yams
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-yams
 
 # swift argument parser build
 FROM YAMS_BUILDER AS SWIFT_ARGUMENT_PARSER_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-argument-parser
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-argument-parser
 
 # swift-driver build
 FROM SWIFT_ARGUMENT_PARSER_BUILDER AS SWIFT_DRIVER_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-driver
 
 # swiftpm build
 FROM SWIFT_DRIVER_BUILDER AS SWIFTPM_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-package-manager
 
 RUN dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-argument-parser-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
             ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
@@ -407,12 +409,12 @@ RUN dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-argument-parser-${HOST_OS}${H
 # swift-syntax build
 FROM SWIFTPM_BUILDER AS SWIFT_SYNTAX_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-syntax-cross
 
 # swift-format build
 FROM SWIFT_SYNTAX_BUILDER AS SWIFT_FORMAT_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-format-cross
 
 # swift-doc build
 FROM SWIFT_FORMAT_BUILDER AS SWIFT_DOC_BUILDER
@@ -421,7 +423,7 @@ RUN SWIFT_BUILD_FLAGS="\
         -Xcc -I${PACKAGE_PREFIX}/include \
         ${SWIFT_BUILD_FLAGS} \
     " \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-doc-cross
 
 # sourcekit-lsp build
 FROM SWIFT_DOC_BUILDER AS SOURCEKIT_LSP_BUILDER
@@ -431,45 +433,45 @@ RUN DISABLE_POLLY=TRUE \
         -Xcc -I${PACKAGE_PREFIX}/include \
         ${SWIFT_BUILD_FLAGS} \
     " \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sourcekit-lsp
 
 # baikonur build
 FROM SOURCEKIT_LSP_BUILDER AS BAIKONUR_BUILDER
 
 RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-baikonur
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-baikonur
 
 # pythonkit build
 FROM BAIKONUR_BUILDER AS PYTHONKIT_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pythonkit
 
 # swift tensorflows apis build
 # RUN DISABLE_POLLY=TRUE \
-#    bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tensorflow-apis
+#    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tensorflow-apis
 
 # graphics sdk build
 FROM PYTHONKIT_BUILDER AS GRAPHICS_SDK_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-graphics-sdk-cross
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-graphics-sdk-cross
 
 # node + sdk build
 FROM GRAPHICS_SDK_BUILDER AS NODE_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-node-cross
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-npm-yarn-cross
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-node-cross
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-npm-yarn-cross
 
 # rust build
 FROM NODE_BUILDER AS RUST_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-rust-cross
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-rust-cross
 
 # android-ndk package
 FROM RUST_BUILDER AS ANDROID_NDK_BUILDER
 
 ENV ANDROID_NDK_VERSION=r21d
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk
 
 # webassembly environment
 FROM ANDROID_NDK_BUILDER AS WASI_SOURCES_BUILDER
@@ -503,47 +505,47 @@ ENV HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
         -sdk ${SYSROOT} \
     "
 
-COPY ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt-wasi \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-wasi \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-wasi \
-     ${PACKAGE_BASE_NAME}-platform-sdk-wasi-compiler-deps \
-     ${PACKAGE_BASE_NAME}-platform-sdk-wasi-libc \
+COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt-wasi \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-wasi \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-wasi \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-wasi-compiler-deps \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-wasi-libc \
      /sources/
 
 # webassembly compiler dependencies
 FROM WASI_SOURCES_BUILDER AS WASI_COMPILER_DEPS_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-wasi-compiler-deps
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wasi-compiler-deps
 
 # android build
 FROM WASI_COMPILER_DEPS_BUILDER AS ANDROID_BUILDER
 
 # platform independent package builders
-COPY ${PACKAGE_BASE_NAME}-platform-sdk-android \
-     ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp-android \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-argument-parser-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb-android \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-yams-cross \
+COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-icu4c-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-pythonkit-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-sourcekit-lsp-android \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-argument-parser-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-cmark-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-foundation-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-libdispatch-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-xctest-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-driver-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-lldb-android \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-package-manager-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-yams-cross \
      /sources/
 
 # android package builders
-COPY ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-headers \
-     ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-runtime \
-     ${PACKAGE_BASE_NAME}-platform-sdk-cmake-android \
-     ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-android \
-     ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-android \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-android \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-android \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-android \
+COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk-headers \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk-runtime \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-cmake-android \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project-android \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-dependencies-android \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-android \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild-android \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-support-core-android \
      /sources/
 
 ENV SYSTEM_NAME=Linux
@@ -556,7 +558,7 @@ ENV HOST_ARCH=armv8-a \
     HOST_OS_API_LEVEL=29 \
     HOST_PROCESSOR=aarch64
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android
 
 # android-x86_64 environment
 ENV HOST_ARCH=westmere \
@@ -566,7 +568,7 @@ ENV HOST_ARCH=westmere \
     HOST_OS_API_LEVEL=29 \
     HOST_PROCESSOR=x86_64
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-android
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android
 
 # windows environment
 FROM ANDROID_BUILDER AS WINDOWS_SOURCES_BUILDER
@@ -596,32 +598,32 @@ ENV CFLAGS= \
         -sdk ${SYSROOT} \
     "
 
-COPY ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-windows \
-     ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-windows \
-     ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-windows \
-     ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-windows \
-     ${PACKAGE_BASE_NAME}-platform-sdk-mingw-w64-headers \
-     ${PACKAGE_BASE_NAME}-platform-sdk-mingw-w64-crt \
-     ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp-windows \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-windows \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-windows \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-windows \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-windows \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb-windows \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-sdk-windows \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-windows \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-windows \
-     ${PACKAGE_BASE_NAME}-platform-sdk-swift-windows \
-     ${PACKAGE_BASE_NAME}-platform-sdk-wineditline-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-winpthreads-cross \
-     ${PACKAGE_BASE_NAME}-platform-sdk-yams-windows \
+COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-windows \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-windows \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-libunwind-windows \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-dependencies-windows \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project-windows \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-mingw-w64-headers \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-mingw-w64-crt \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-sourcekit-lsp-windows \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-foundation-windows \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-libdispatch-windows \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-xctest-windows \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild-windows \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-lldb-windows \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-sdk-windows \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-support-core-windows \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-windows \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-windows \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-wineditline-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-winpthreads-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-yams-windows \
      /sources/
 
 # mingw-w64 source
 RUN export SOURCE_PACKAGE_NAME=mingw-w64 \
     && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
+    && git clone https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git \
                  --branch val-verde-mainline \
                  --single-branch \
                  ${SOURCE_ROOT}
@@ -629,12 +631,12 @@ RUN export SOURCE_PACKAGE_NAME=mingw-w64 \
 # windows mingw-headers build
 FROM WINDOWS_SOURCES_BUILDER AS WINDOWS_MINGW_HEADERS_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-mingw-w64-headers
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-mingw-w64-headers
 
 # windows mingw-crt build
 FROM WINDOWS_MINGW_HEADERS_BUILDER AS WINDOWS_MINGW_CRT_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-mingw-w64-crt
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-mingw-w64-crt
 
 # windows compiler-rt build (for host)
 FROM WINDOWS_MINGW_CRT_BUILDER AS WINDOWS_COMPILER_RT_BUILDER
@@ -642,49 +644,49 @@ FROM WINDOWS_MINGW_CRT_BUILDER AS WINDOWS_COMPILER_RT_BUILDER
 RUN CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a \
     DST_CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a \
     LDFLAGS="-Wl,/force:unresolved" \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt
 
 # windows libunwind build
 FROM WINDOWS_COMPILER_RT_BUILDER AS WINDOWS_LIBUNWIND_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-windows
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libunwind-windows
 
 # windows mingw-winpthreads build
 FROM WINDOWS_LIBUNWIND_BUILDER AS WINDOWS_MINGW_WINPTHREADS_BUILDER
 
-RUN export LD=${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
-    && bash ${PACKAGE_BASE_NAME}-platform-sdk-winpthreads-cross
+RUN export LD=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
+    && bash ${VAL_VERDE_GH_TEAM}-platform-sdk-winpthreads-cross
 
 # windows libcxxabi build
 FROM WINDOWS_MINGW_WINPTHREADS_BUILDER AS WINDOWS_LIBCXXABI_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-windows
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-windows
 
 # windows libcxx build
 FROM WINDOWS_LIBCXXABI_BUILDER AS WINDOWS_LIBCXX_BUILDER
 
 RUN DISABLE_POLLY=TRUE \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-windows
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-windows
 
 # windows llvm dependencies
 FROM WINDOWS_LIBCXX_BUILDER AS WINDOWS_LLVM_DEPENDENCIES_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-windows
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-dependencies-windows
 
 # windows swift tools build
 FROM WINDOWS_LLVM_DEPENDENCIES_BUILDER AS WINDOWS_SWIFT_TOOLS_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-windows
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-windows
 
 # windows swift sdk build
 FROM WINDOWS_SWIFT_TOOLS_BUILDER AS WINDOWS_SWIFT_SDK_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-sdk-windows
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-sdk-windows
 
 # windows graphics sdk build
 FROM WINDOWS_SWIFT_SDK_BUILDER AS WINDOWS_GRAPHICS_SDK_BUILDER
 
-RUN bash ${PACKAGE_BASE_NAME}-platform-sdk-graphics-sdk-cross
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-graphics-sdk-cross
 
 CMD []
 ENTRYPOINT ["tail", "-f", "/dev/null"]
