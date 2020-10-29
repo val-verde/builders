@@ -58,9 +58,9 @@ if [ -n "${LIBS}" ]; then
 fi
 
 AR=${AR:-${BINTOOLS_PATH_PREFIX}ar}
-CC=${CC:-${BINDIR}/${PACKAGE_BASE_NAME}-platform-sdk-clang}
+CC=${CC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-clang}
 CPP=${CPP:-"${CC} -E"}
-CXX=${CXX:-${BINDIR}/${PACKAGE_BASE_NAME}-platform-sdk-clang++}
+CXX=${CXX:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-clang++}
 DLLTOOL=${DLLTOOL:-${BINTOOLS_PATH_PREFIX}dlltool}
 LD=${LD:-${BINDIR}/ld.lld}
 MANIFEST_TOOL=${MANIFEST_TOOL:-${BINTOOLS_PATH_PREFIX}mt}
@@ -68,7 +68,7 @@ NM=${NM:-${BINTOOLS_PATH_PREFIX}nm}
 OBJCOPY=${OBJCOPY:-${BINTOOLS_PATH_PREFIX}objcopy}
 OBJDUMP=${OBJDUMP:-${BINTOOLS_PATH_PREFIX}objdump}
 RANLIB=${RANLIB:-${BINTOOLS_PATH_PREFIX}ranlib}
-RC=${RC:-${BINDIR}/${PACKAGE_BASE_NAME}-platform-sdk-rc}
+RC=${RC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-rc}
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-"${PACKAGE_PREFIX}/lib/pkgconfig"}
 READELF=${READELF:-${BINTOOLS_PATH_PREFIX}readelf}
 SIZE=${SIZE:-${BINTOOLS_PATH_PREFIX}size}

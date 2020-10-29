@@ -3,105 +3,105 @@
 set -e
 
 # windows zlib build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zlib-cross
 
 # windows bzip2 build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-bzip2-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bzip2-cross
 
 # windows autoconf build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-autoconf-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-autoconf-cross
 
 # windows automake build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-automake-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-automake-cross
 
 # windows make build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-make-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-make-cross
 
 # windows libiconv build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-libiconv-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross
 
 # windows pkg-config build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-pkg-config-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pkg-config-cross
 
 # windows pcre build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-pcre-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pcre-cross
 
 # windows icu build
 LDFLAGS="\
-    -fuse-ld=${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+    -fuse-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
     ${LDFLAGS} \
 " \
 LIBS="\
     -lucrt \
     ${LIBS} \
 " \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-icu4c-cross
 
 # windows xz build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xz-cross
 
 # windows libxml2 build
 LDFLAGS="\
-    -Wc,-fuse-ld=${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+    -Wc,-fuse-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
     ${LDFLAGS} \
 " \
 Z_LIBS="\
     -lzlib \
     ${Z_LIBS} \
 " \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libxml2-cross
 
 # windows libffi build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libffi-cross
 
 # android ncurses build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ncurses-cross
 
 # windows editline build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-wineditline-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wineditline-cross
 
 # windows sqlite3 build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sqlite-cross
 
 # windows openssl build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openssl-cross
 
 # windows libcap build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-libcap-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcap-cross
 
 # windows libexpat build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-expat-cross
 
 # windows libssh2 build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libssh2-cross
 
 # windows curl build
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-curl-cross
 
 # windows gettext build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-gettext-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gettext-cross
 
 # windows bison build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-bison-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bison-cross
 
 # windows gperf build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-gperf-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gperf-cross
 
 # windows wget build
 ZLIB_LIBS="\
     -lzlib \
     ${ZLIB_LIBS} \
 " \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-wget-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wget-cross
 
 # windows z3 build
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-z3-cross
 
 # windows ninja build
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross
 
 # windows cmake build
 DISABLE_POLLY=TRUE \
@@ -110,12 +110,12 @@ LIBS="\
     -loleaut32\
     ${LIBS} \
 " \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cmake-cross
 
 # windows lua build
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-lua-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lua-cross
 
 # windows jwasm build
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-jwasm
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-jwasm

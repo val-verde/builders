@@ -32,44 +32,44 @@ export SWIFTCFLAGS="\
 "
 
 # android ndk headers build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-headers
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk-headers
 
 # android ndk runtime build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-android-ndk-runtime
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk-runtime
 
 # android compiler-rt build (for host)
-bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt
 
 # android libunwind build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-libunwind-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libunwind-cross
 
 # android libcxxabi build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-cross
 
 # android libcxx build
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-cross
 
 # android llvm dependencies build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-dependencies-android
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-dependencies-android
 
 # android llvm build
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-llvm-project-android
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project-android
 
 # android cmark build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-cmark-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-cmark-cross
 
 # android swift build
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-android
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-android
 
 # android lldb build
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-lldb-android
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-lldb-android
 
 # android libdispatch build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-libdispatch-cross
 
 # remove host foundation and libdispatch to avoid module collisions
 apt remove -y ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH} \
@@ -77,29 +77,29 @@ apt remove -y ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}${BUILD_
 
 # android foundation build
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-foundation-cross
 
 # android xctest build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-xctest-cross
 
 # android llbuild build
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-android
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild-android
 
 # android swift-tools-support-core build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-android
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-support-core-android
 
 # android yams build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-yams-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-yams-cross
 
 # android swift-argument-parser build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-argument-parser-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-argument-parser-cross
 
 # android swift-driver build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-driver-cross
 
 # android swiftpm build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-package-manager-cross
 
 # reinstall swiftpm for build and host
 dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-argument-parser-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
@@ -122,29 +122,29 @@ dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-argument-parser-${BUILD_OS}${BUIL
         ${DEB_PATH}/${PACKAGE_BASE_NAME}-yams-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb
 
 # android swift-syntax build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-syntax-cross
 
 # android swift-format build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-format-cross
 
 # android swift-doc build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-doc-cross
 
 # android sourcekit-lsp build
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp-android
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sourcekit-lsp-android
 
 # android baikonur build
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-baikonur
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-baikonur
 
 # android pythonkit build
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-pythonkit-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pythonkit-cross
 
 # android graphics sdk build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-graphics-sdk-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-graphics-sdk-cross
 
 # android node + sdk build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-node-cross
-bash ${PACKAGE_BASE_NAME}-platform-sdk-npm-yarn-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-node-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-npm-yarn-cross

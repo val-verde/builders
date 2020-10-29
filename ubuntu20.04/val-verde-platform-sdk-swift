@@ -11,7 +11,7 @@ export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 export LLVM_SOURCE_ROOT=/sources/llvm-project
 export LLVM_STAGE_ROOT=/sources/build-staging/llvm-project-${HOST_OS}${HOST_OS_API_LEVEL}-${BUILD_ARCH}
 export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export INSTALL_ROOT=${TEMPDIR}/org.${PACKAGE_BASE_NAME}/${QUALIFIED_PACKAGE_NAME}
+export INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${QUALIFIED_PACKAGE_NAME}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 export DEPENDS="\
@@ -27,17 +27,17 @@ USE_NEWPM=${USE_NEWPM:-TRUE}
 # Configure the package
 rm -rf /sources/swift-corelibs-libdispatch \
        ${SOURCE_ROOT}
-git clone https://github.com/${PACKAGE_BASE_NAME}/swift-corelibs-libdispatch.git \
+git clone https://github.com/${VAL_VERDE_GH_TEAM}/swift-corelibs-libdispatch.git \
           --branch val-verde-mainline \
           --single-branch \
           /sources/swift-corelibs-libdispatch
-git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
+git clone https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git \
           --branch val-verde-mainline-next \
           --single-branch \
           ${SOURCE_ROOT}
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-cmake \
     -DClang_DIR=${LLVM_STAGE_ROOT}/lib/cmake/clang \
     -DICU_I18N_INCLUDE_DIRS=${BUILD_PACKAGE_PREFIX}/include \
     -DICU_I18N_LIBRARIES=${BUILD_PACKAGE_PREFIX}/lib/libicui18nswift.so \
@@ -97,22 +97,22 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     ${SOURCE_ROOT}
 
 # Build the components
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-build
 
 # RPATH fixups
 COMPONENTS="\
     ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin/swift \
 " \
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rpath-fixup
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-rpath-fixup
 
 COMPONENTS="\
     ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/swift/${HOST_KERNEL}/lib*.so \
 " \
 COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rpath-fixup
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-rpath-fixup
 
 # Build the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-package-${PACKAGE_CLASS}-build
 
 # Build the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-package-install

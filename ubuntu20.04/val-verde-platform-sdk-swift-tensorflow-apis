@@ -13,7 +13,7 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 
 # Configure the package
 rm -rf ${SOURCE_ROOT}
-git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
+git clone https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git \
           --branch val-verde-mainline \
           --single-branch \
           ${SOURCE_ROOT}
@@ -35,15 +35,15 @@ SWIFTCFLAGS=" \
     -I${PACKAGE_PREFIX}/lib/swift/${HOST_OS}/dispatch \
     ${SWIFTCFLAGS} \
 " \
-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-cmake \
     -DBUILD_TESTING=FALSE \
     ${SOURCE_ROOT}
 
 # Build the components
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-build
 
 # Build the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-package-${PACKAGE_CLASS}-build
 
 # Install the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-package-install

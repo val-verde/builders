@@ -10,7 +10,7 @@ export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-/sources/build-staging/llvm-project-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
 export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export INSTALL_ROOT=${TEMPDIR}/org.${PACKAGE_BASE_NAME}/${QUALIFIED_PACKAGE_NAME}
+export INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${QUALIFIED_PACKAGE_NAME}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 export DEPENDS="\
@@ -46,7 +46,7 @@ LIBS="\
     -luuid \
     ${LIBS} \
 " \
-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-cmake \
     -DBUILD_SHARED_LIBS=TRUE \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
     -DCLANG_DEFAULT_RTLIB=compiler-rt \
@@ -64,7 +64,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     -DCLANG_TOOL_CLANG_REFACTOR_TEST_BUILD=FALSE \
     -DCLANG_TOOL_C_ARCMT_TEST_BUILD=FALSE \
     -DCLANG_TOOL_C_INDEX_TEST_BUILD=FALSE \
-    -DCMAKE_ASM_MASM_COMPILER=${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ml64 \
+    -DCMAKE_ASM_MASM_COMPILER=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-ml64 \
     -DCOMPILER_RT_BUILD_LIBFUZZER=TRUE \
     -DCOMPILER_RT_BUILD_PROFILE=TRUE \
     -DCOMPILER_RT_BUILD_SANITIZERS=TRUE \
@@ -198,7 +198,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     ${SOURCE_ROOT}/llvm
 
 # Build the components
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-build
 
 rsync -aPx ${STAGE_ROOT}/bin/llvm-as* \
            ${STAGE_ROOT}/bin/llvm-dlltool* \
@@ -216,7 +216,7 @@ ln -sf ${CLANG_RT_LIB} \
        ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/clang/12.0.0/lib/${DST_SDK_PLATFORM_DIR}/${DST_CLANG_RT_LIB}
 
 # Build the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-package-${PACKAGE_CLASS}-build
 
 # remove libcxx, libcxxabi and libunwind as they are superceded by llvm-project.
 HOST_PROCESSOR=`echo ${HOST_PROCESSOR} | tr _ -`
@@ -225,4 +225,4 @@ apt remove -y ${PACKAGE_BASE_NAME}-libcxx-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_
               ${PACKAGE_BASE_NAME}-libunwind-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
 # Install the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-package-install

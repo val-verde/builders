@@ -9,7 +9,7 @@ export SOURCE_PACKAGE_VERSION=1.0.8
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export INSTALL_ROOT=${TEMPDIR}/org.${PACKAGE_BASE_NAME}/${QUALIFIED_PACKAGE_NAME}
+export INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${QUALIFIED_PACKAGE_NAME}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
@@ -23,7 +23,7 @@ fi
 
 # Configure the package
 rm -rf ${SOURCE_ROOT}
-git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
+git clone https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git \
           --branch ${BRANCH} \
           --single-branch \
           ${SOURCE_ROOT}
@@ -42,7 +42,7 @@ mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}
 cd ${STAGE_ROOT}
 
 AR=${AR:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar}
-CC=${CC:-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang}
+CC=${CC:-${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang}
 CFLAGS=`echo ${CFLAGS} | xargs`
 MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILD_PACKAGE_PREFIX}/bin/make}
 RANLIB=${RANLIB:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib}
@@ -56,7 +56,7 @@ ${MAKE_PROGRAM} \
     install
 
 # Build the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-package-${PACKAGE_CLASS}-build
 
 # Install the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-package-install

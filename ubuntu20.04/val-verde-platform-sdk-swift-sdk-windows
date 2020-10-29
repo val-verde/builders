@@ -9,24 +9,24 @@ apt remove -y ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${BUILD_OS}${BUILD_
               ${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}
 
 # windows libdispatch build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-libdispatch-windows
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-libdispatch-windows
 
 # windows foundation build
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-foundation-windows
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-foundation-windows
 
 # windows xctest build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-corelibs-xctest-windows
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-xctest-windows
 
 # windows llbuild build
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-llbuild-windows
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild-windows
 
 # windows swift-tools-support-core build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-tools-support-core-windows
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-support-core-windows
 
 # windows yams build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-yams-windows
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-yams-windows
 
 # windows swift-argument-parser build
 CFLAGS="\
@@ -40,11 +40,11 @@ CXXFLAGS="\
     ${CXXFLAGS} \
 " \
 SWIFTCFLAGS="\
-    -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+    -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
     -L${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR} \
     ${SWIFTCFLAGS} \
 " \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-argument-parser-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-argument-parser-cross
 
 # windows swift-driver build
 CFLAGS="\
@@ -58,11 +58,11 @@ CXXFLAGS="\
     ${CXXFLAGS} \
 " \
 SWIFTCFLAGS="\
-    -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+    -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
     -L${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR} \
     ${SWIFTCFLAGS} \
 " \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-driver-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-driver-cross
 
 # windows swiftpm build
 CFLAGS="\
@@ -76,11 +76,11 @@ CXXFLAGS="\
     ${CXXFLAGS} \
 " \
 SWIFTCFLAGS="\
-    -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-mslink \
+    -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
     -L${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR} \
     ${SWIFTCFLAGS} \
 " \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-package-manager-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-package-manager-cross
 
 # reinstall swiftpm for build and host
 dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-argument-parser-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.deb \
@@ -104,15 +104,15 @@ dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-argument-parser-${BUILD_OS}${BUIL
         ${DEB_PATH}/${PACKAGE_BASE_NAME}-yams-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb
 
 # windows swift-syntax build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-syntax-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-syntax-cross
 
 # windows swift-format build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-format-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-format-cross
 
 # windows swift-doc build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swift-doc-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-doc-cross
 
 # windows sourcekit-lsp build
 
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-sourcekit-lsp-windows
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sourcekit-lsp-windows

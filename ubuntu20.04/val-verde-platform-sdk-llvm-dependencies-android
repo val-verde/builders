@@ -3,68 +3,68 @@
 set -e
 
 # android zlib build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zlib-cross
 
 # android bzip2 build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-bzip2-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bzip2-cross
 
 # android autoconf build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-autoconf-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-autoconf-cross
 
 # android automake build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-automake-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-automake-cross
 
 # android make build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-make-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-make-cross
 
 # android libiconv build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-libiconv-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross
 
 # android pkg-config build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-pkg-config-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pkg-config-cross
 
 # android pcre build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-pcre-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pcre-cross
 
 # android icu build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-icu4c-cross
 
 # android xz build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xz-cross
 
 # android libxml2 build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libxml2-cross
 
 # android libffi build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libffi-cross
 
 # android gdbm build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-gdbm-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gdbm-cross
 
 # android ncurses build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ncurses-cross
 
 # android libedit build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libedit-cross
 
 # android sqlite3 build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sqlite-cross
 
 # android openssl build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openssl-cross
 
 # android libexpat build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-expat-cross
 
 # android libssh2 build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libssh2-cross
 
 # android curl build
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-curl-cross
 
 # android gettext build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-gettext-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gettext-cross
 
 # android attr build
 CFLAGS="\
@@ -76,7 +76,7 @@ LDFLAGS="\
     -lintl \
     ${LDFLAGS} \
 " \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-attr-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-attr-cross
 
 # android acl build
 CFLAGS="\
@@ -88,50 +88,50 @@ LDFLAGS="\
     -lintl \
     ${LDFLAGS} \
 " \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-acl-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-acl-cross
 
 # android bash build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-bash-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bash-cross
 
 # android util-linux build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-util-linux-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-util-linux-cross
 
 # android strace build
 if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-strace-cross
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-strace-cross
 else
     CFLAGS="\
         -Dfputs_unlocked=fputs \
         ${CFLAGS} \
     " \
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-strace-cross
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-strace-cross
 fi
 
 # android sed build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-sed-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sed-cross
 
 # android bison build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-bison-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bison-cross
 
 # android gawk build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-gawk-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gawk-cross
 
 # android gperf build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-gperf-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gperf-cross
 
 # android tar build
 if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-tar-cross
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-tar-cross
 fi
 
 # android coreutils build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-coreutils-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-coreutils-cross
 
 # android dpkg build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-dpkg-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-dpkg-cross
 
 # android wget build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-wget-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wget-cross
 
 # android python build
 _PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
@@ -158,33 +158,33 @@ LDFLAGS="\
     --sysroot=${SYSROOT} \
     ${LDFLAGS} \
 " \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-python-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-python-cross
 
 # android lua build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-lua-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lua-cross
 
 # android swig build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swig-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swig-cross
 
 # android z3 build
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-z3-cross
 
 # android git build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-git-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-git-cross
 
 # android ninja build
 if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross
 fi
 
 # android cmake build
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-android
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cmake-android
 
 # android patch elf
-bash ${PACKAGE_BASE_NAME}-platform-sdk-android-patch-elf-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android-patch-elf-cross
 
 # android jwasm (ml64) cross compiler build
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-jwasm
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-jwasm

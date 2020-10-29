@@ -9,7 +9,7 @@ export SOURCE_PACKAGE_VERSION=1.1.1g
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export INSTALL_ROOT=${TEMPDIR}/org.${PACKAGE_BASE_NAME}/${QUALIFIED_PACKAGE_NAME}
+export INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${QUALIFIED_PACKAGE_NAME}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
@@ -28,7 +28,7 @@ if [ "${HOST_OS}" = "android" ]; then
     OPENSSL_DIR=/data/local/tmp${PACKAGE_PREFIX}/etc/ssl
     OPENSSL_DEFINES="-D__ANDROID_API__=${HOST_OS_API_LEVEL}"
 
-    export ANDROID_NDK_HOME=${TEMPDIR}/org.${PACKAGE_BASE_NAME}/android-ndk-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}${BUILD_PACKAGE_PREFIX}/android-ndk-${ANDROID_NDK_VERSION}
+    export ANDROID_NDK_HOME=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/android-ndk-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}${BUILD_PACKAGE_PREFIX}/android-ndk-${ANDROID_NDK_VERSION}
     export PATH=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}/bin:${PATH}
 elif [ "${HOST_OS}" = "gnu" ]; then
     OPENSSL_OS=linux
@@ -47,9 +47,9 @@ if [ "${HOST_OS}" = "mingw32" ]; then
 fi
 
 AR=${AR:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar} \
-CC=${CC:-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-clang} \
+CC=${CC:-${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang} \
 RANLIB=${RANLIB:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib} \
-RC=${RC:-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-rc} \
+RC=${RC:-${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-rc} \
 ${SOURCE_ROOT}/Configure \
     --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
     --openssldir=${OPENSSL_DIR} \
@@ -60,10 +60,10 @@ ${SOURCE_ROOT}/Configure \
 make -j${NUM_PROCESSORS}
 
 TARGETS="install_sw install_ssldirs" \
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-make-build
 
 # Build the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-package-${PACKAGE_CLASS}-build
 
 # Install the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-package-install

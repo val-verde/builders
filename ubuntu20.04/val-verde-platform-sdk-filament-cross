@@ -9,7 +9,7 @@ export SOURCE_PACKAGE_VERSION=9999-git
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export INSTALL_ROOT=${TEMPDIR}/org.${PACKAGE_BASE_NAME}/${QUALIFIED_PACKAGE_NAME}
+export INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${QUALIFIED_PACKAGE_NAME}
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 export DEPENDS="\
@@ -21,7 +21,7 @@ export DEPENDS="\
 BUILD_TYPE=${BUILD_TYPE:-MinSizeRel}
 
 rm -rf ${SOURCE_ROOT}
-git clone https://github.com/${PACKAGE_BASE_NAME}/${SOURCE_PACKAGE_NAME}.git \
+git clone https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git \
           --single-branch \
           --branch val-verde-mainline \
           ${SOURCE_ROOT}
@@ -47,7 +47,7 @@ if [ "${HOST_OS}" = "android" ]; then
     "
     CMAKE_ANDROID_DEFINE_CMD="-DANDROID=TRUE"
 elif [ "${HOST_OS}" = "mingw32" ]; then
-    CMAKE_ASM_COMPILER_CMD="-DCMAKE_ASM_COMPILER=${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ml64"
+    CMAKE_ASM_COMPILER_CMD="-DCMAKE_ASM_COMPILER=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-ml64"
     CMAKE_ASM_COMPILER_ID_CMD="-DCMAKE_ASM_COMPILER_ID=MSVC"
     CMAKE_ASM_FLAGS_CMD="-DCMAKE_ASM_FLAGS_MINSIZEREL="
     LDFLAGS="\
@@ -66,7 +66,7 @@ CXXFLAGS="\
     ${CXXFLAGS} \
 " \
 LDFLAGS="${LDFLAGS}" \
-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
+${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-cmake \
     -DBUILD_WSI_DIRECTFB_SUPPORT=FALSE \
     -DBUILD_WSI_WAYLAND_SUPPORT=FALSE \
     -DBUILD_WSI_XLIB_SUPPORT=FALSE \
@@ -86,7 +86,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-cmake \
     ${STAGE_ROOT}
 
 # Build the components
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-ninja-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-build
 
 mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/cmake
 
@@ -96,7 +96,7 @@ if [ "${BUILD_TRIPLE}" == ${HOST_TRIPLE} ]; then
 fi
 
 # Build the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-package-${PACKAGE_CLASS}-build
 
 # Install the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-package-install
