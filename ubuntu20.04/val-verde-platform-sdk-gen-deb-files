@@ -16,12 +16,12 @@ function generate-control-file {
          s|SOURCE_PACKAGE_VERSION|${SOURCE_PACKAGE_VERSION}|g; \
          s|SYSTEM_ARCH|${PACKAGE_ARCH}|g; \
          s|VERSION|${VERSION}|g" \
-         /sources/control.tmpl > DEBIAN/control
+         ${BUILD_PACKAGE_PREFIX}/share/control.in > DEBIAN/control
     sed "s|PACKAGE_NAME|${PACKAGE_NAME}|g" \
-         /sources/copyright.tmpl > DEBIAN/copyright
+         ${BUILD_PACKAGE_PREFIX}/share/copyright.in > DEBIAN/copyright
     sed "s|CURRENT_DATE|`date`|g; \
          s|PACKAGE_NAME|${PACKAGE_NAME}|g; \
          s|SOURCE_PACKAGE_VERSION|${SOURCE_PACKAGE_VERSION}|g" \
-         /sources/changelog.tmpl > DEBIAN/changelog
+         ${BUILD_PACKAGE_PREFIX}/share/changelog.in > DEBIAN/changelog
 }
 
