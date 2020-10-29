@@ -5,46 +5,46 @@ set -e
 SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
 
 # spirv headers build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-spirv-headers-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-spirv-headers-cross
 
 # spirv tools build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-spirv-tools-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-spirv-tools-cross
 
 if [ "${SDK_PLATFORM_DIR}" != "windows" ]; then
     # khr headers build
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-khr-headers-cross
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-khr-headers-cross
 
     # opengl headers build
-    bash ${PACKAGE_BASE_NAME}-platform-sdk-opengl-headers-cross
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-opengl-headers-cross
 fi
 
 # egl headers build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-egl-headers-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-egl-headers-cross
 
 # opengl-es headers build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-opengl-es-headers-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-opengl-es-headers-cross
 
 # glslang build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-glslang-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-glslang-cross
 
 # vulkan headers build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-vulkan-headers-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-vulkan-headers-cross
 
 # vulkan loader build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-vulkan-loader-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-vulkan-loader-cross
 
 # vulkan tools build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-vulkan-tools-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-vulkan-tools-cross
 
 # vulkan validation layers build
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-vulkan-validation-layers-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-vulkan-validation-layers-cross
 
 # sdl build
 DISABLE_POLLY=TRUE \
 DXSDK_DIR=${SYSROOT} \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-sdl-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sdl-cross
 
 # filament build
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-filament-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-filament-cross

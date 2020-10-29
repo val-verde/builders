@@ -1,5 +1,5 @@
 #!/bin/bash
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-gen-deb-files
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-gen-deb-files
 
 set -e
 

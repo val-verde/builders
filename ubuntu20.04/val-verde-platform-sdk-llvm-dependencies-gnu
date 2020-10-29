@@ -5,157 +5,157 @@ set -e
 # zlib build
 CMAKE_BINDIR=/usr/bin \
 MAKE_PROGRAM=/usr/bin/ninja \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-zlib-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zlib-cross
 
 # bzip2 build
 MAKE_PROGRAM=/usr/bin/make \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-bzip2-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bzip2-cross
 
 # autoconf build
 MAKE_PROGRAM=/usr/bin/make \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-autoconf-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-autoconf-cross
 
 # automake build
 MAKE_PROGRAM=/usr/bin/make \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-automake-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-automake-cross
 
 # make build
 MAKE_PROGRAM=/usr/bin/make \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-make-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-make-cross
 
 # libiconv build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-libiconv-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross
 
 # pkg-config build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-pkg-config-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pkg-config-cross
 
 # pcre build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-pcre-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pcre-cross
 
 # icu build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-icu4c
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-icu4c
 
 # xz build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-xz-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xz-cross
 
 # libxml2 build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-libxml2-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libxml2-cross
 
 # libffi build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-libffi-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libffi-cross
 
 # gdbm build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-gdbm-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gdbm-cross
 
 # ncurses build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-ncurses-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ncurses-cross
 
 # libedit build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-libedit-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libedit-cross
 
 # sqlite3 build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-sqlite-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sqlite-cross
 
 # openssl build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-openssl-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openssl-cross
 
 # libcap build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-libcap-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcap-cross
 
 # libexpat build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-expat-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-expat-cross
 
 # libssh2 build
 CMAKE_BINDIR=/usr/bin \
 MAKE_PROGRAM=/usr/bin/ninja \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-libssh2-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libssh2-cross
 
 # curl build
 CMAKE_BINDIR=/usr/bin \
 DISABLE_POLLY=TRUE \
 MAKE_PROGRAM=/usr/bin/ninja \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-curl-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-curl-cross
 
 # gettext build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-gettext-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gettext-cross
 
 # attr build
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-attr-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-attr-cross
 
 # acl build
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-acl-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-acl-cross
 
 # bash build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-bash-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bash-cross
 
 # util-linux build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-util-linux-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-util-linux-cross
 
 # strace build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-strace-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-strace-cross
 
 # sed build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-sed-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sed-cross
 
 # bison build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-bison-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bison-cross
 
 # gawk build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-gawk-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gawk-cross
 
 # gperf build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-gperf-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gperf-cross
 
 # tar build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-tar-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-tar-cross
 
 # coreutils build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-coreutils-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-coreutils-cross
 
 # dpkg build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-dpkg-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-dpkg-cross
 
 # systemd build
 MAKE_PROGRAM=/usr/bin/ninja \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-systemd
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-systemd
 
 # wget build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-wget-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wget-cross
 
 # python build
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-python-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-python-cross
 
 # lua build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-lua-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lua-cross
 
 # swig build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-swig-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swig-cross
 
 # z3 build
 CMAKE_BINDIR=/usr/bin \
 DISABLE_POLLY=TRUE \
 MAKE_PROGRAM=/usr/bin/ninja \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-z3-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-z3-cross
 
 # git build
-bash ${PACKAGE_BASE_NAME}-platform-sdk-git-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-git-cross
 
 # ninja build
 CMAKE_BINDIR=/usr/bin \
 MAKE_PROGRAM=/usr/bin/ninja \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-ninja-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross
 
 # cmake build
 CMAKE_BINDIR=/usr/bin \
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-cmake-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cmake-cross
 
 # android patch elf
-bash ${PACKAGE_BASE_NAME}-platform-sdk-android-patch-elf-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android-patch-elf-cross
 
 # jwasm (ml64) cross compiler build
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-jwasm
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-jwasm

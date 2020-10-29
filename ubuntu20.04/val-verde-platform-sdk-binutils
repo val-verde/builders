@@ -36,7 +36,7 @@ CPPFLAGS_FOR_TARGET="${CFLAGS_FOR_TARGET} ${CPPFLAGS_FOR_TARGET}"
 CXXFLAGS_FOR_TARGET="${CFLAGS_FOR_TARGET} ${CXXFLAGS_FOR_TARGET}"
 
 export PATH=${PATH}:${STAGE_ROOT}/bin
-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
+${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-configure \
     /sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/configure \
     --disable-multilib \
     --disable-werror \
@@ -65,8 +65,8 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
 
 # Build the components
 make -j${NUM_PROCESSORS}
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-make-build
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-${PACKAGE_CLASS}-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-make-build
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-package-${PACKAGE_CLASS}-build
 
 # Install the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-package-install
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-package-install

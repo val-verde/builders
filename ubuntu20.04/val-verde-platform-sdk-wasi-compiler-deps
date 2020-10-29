@@ -3,7 +3,7 @@
 set -e
 
 # webassembly libc
-bash ${PACKAGE_BASE_NAME}-platform-sdk-wasi-libc
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wasi-libc
 
 # webassembly compiler-rt (bootstrap)
 CFLAGS="\
@@ -19,14 +19,14 @@ LDFLAGS="\
     -Wl,--no-entry \
     ${LDFLAGS} \
 " \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt-wasi
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt-wasi
 
 # webassembly libcxxabi
-bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxxabi-wasi
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-wasi
 
 # webassembly libcxx
 DISABLE_POLLY=TRUE \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-libcxx-wasi
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-wasi
 
 # webassembly compiler-rt (rebuild with c++)
 CXXFLAGS="\
@@ -38,4 +38,4 @@ LDFLAGS="\
     -L${PACKAGE_PREFIX}/lib \
     ${LDFLAGS} \
 " \
-bash ${PACKAGE_BASE_NAME}-platform-sdk-compiler-rt-wasi
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt-wasi

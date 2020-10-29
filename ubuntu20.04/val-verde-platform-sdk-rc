@@ -41,7 +41,7 @@ for ((i=0; i<"${#args[@]}"; ++i)); do
     esac
 done
 
-${BINDIR}/${PACKAGE_BASE_NAME}-platform-sdk-gcc-mingw32 \
+${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-gcc-mingw32 \
     -E \
     -DRC_INVOKED \
     -xc \
