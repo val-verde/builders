@@ -2,6 +2,9 @@
 
 set -e
 
+# Source package build helper functions
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
 # Set all environment vars
 export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
 export SOURCE_PACKAGE_NAME=compiler-rt
@@ -40,7 +43,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-cmake \
     ${SOURCE_ROOT}
 
 # Build the components
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-build
+ninja-build
 
 SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
 mkdir -p ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/12.0.0/lib/wasi
@@ -48,7 +51,7 @@ mv install-staging${BUILD_PACKAGE_PREFIX}/lib/${SDK_PLATFORM_DIR}/${CLANG_RT_LIB
    ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/12.0.0/lib/wasi/${DST_CLANG_RT_LIB}
 
 # Build the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-package-${PACKAGE_CLASS}-build
+deb-package-build
 
 # Install the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-package-install
+deb-package-install

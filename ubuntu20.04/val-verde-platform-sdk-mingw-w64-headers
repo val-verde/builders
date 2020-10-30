@@ -2,6 +2,9 @@
 
 set -e
 
+# Source package build helper functions
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
 # Set all environment vars
 export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
 export SOURCE_PACKAGE_NAME=mingw-w64-headers
@@ -26,7 +29,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-configure \
     --with-default-win32-winnt=0x0A00
 
 # Build the components
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-make-build
+make-build
 
 cp ${SOURCE_ROOT}/include/module.modulemap \
    ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/
@@ -36,7 +39,7 @@ ln -sf . \
        ${INSTALL_ROOT}${PACKAGE_PREFIX}/usr
 
 # Build the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-package-${PACKAGE_CLASS}-build
+deb-package-build
 
 # Install the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-package-install
+deb-package-install

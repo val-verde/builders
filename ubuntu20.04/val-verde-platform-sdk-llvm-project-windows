@@ -2,6 +2,9 @@
 
 set -e
 
+# Source package build helper functions
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
 # Set all environment vars
 export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) / 2))"
 export SOURCE_PACKAGE_NAME=llvm-project
@@ -199,7 +202,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-cmake \
     ${SOURCE_ROOT}/llvm
 
 # Build the components
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-build
+ninja-build
 
 rsync -aPx ${STAGE_ROOT}/bin/llvm-as* \
            ${STAGE_ROOT}/bin/llvm-dlltool* \
@@ -217,13 +220,16 @@ ln -sf ${CLANG_RT_LIB} \
        ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/clang/12.0.0/lib/${DST_SDK_PLATFORM_DIR}/${DST_CLANG_RT_LIB}
 
 # Build the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-package-${PACKAGE_CLASS}-build
+deb-package-build
 
 # remove libcxx, libcxxabi and libunwind as they are superceded by llvm-project.
 HOST_PROCESSOR=`echo ${HOST_PROCESSOR} | tr _ -`
-apt remove -y ${PACKAGE_BASE_NAME}-libcxx-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} \
-              ${PACKAGE_BASE_NAME}-libcxxabi-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} \
-              ${PACKAGE_BASE_NAME}-libunwind-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+PACKAGES_TO_MANAGE=( 'libcxx'    'HOST' \
+                     'libcxxabi' 'HOST' \
+                     'libunwind' 'HOST' )
+
+PACKAGE_ACTION=UNINSTALL \
+deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 
 # Install the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-package-install
+deb-package-install

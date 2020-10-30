@@ -2,6 +2,9 @@
 
 set -e
 
+# Source package build helper functions
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
 # Set all environment vars
 export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
 export SOURCE_PACKAGE_NAME=swift-argument-parser
@@ -48,4 +51,4 @@ if [ "${SDK_PLATFORM_DIR}" = "windows" ]; then
 fi
 
 # Build the package
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-package-${PACKAGE_CLASS}-build
+deb-package-build
