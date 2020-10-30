@@ -114,6 +114,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-gen-deb-files \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-package-${PACKAGE_CLASS}-build \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-package-install \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-rpath-fixup \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts \
      ${BUILD_PACKAGE_PREFIX}/bin/
 
 COPY ${VAL_VERDE_GH_TEAM}-deb-templates \
