@@ -21,7 +21,8 @@ export DEPENDS="\
 "
 EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;clang-tools-extra;libclc;mlir;openmp;parallel-libs;polly;pstl"}
 
-# Configure the package
+# Configure the build components
+rm -rf ${STAGE_ROOT}
 cd ${SOURCE_ROOT}
 git checkout val-verde-mainline-next
 

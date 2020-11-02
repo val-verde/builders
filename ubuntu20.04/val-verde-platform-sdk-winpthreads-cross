@@ -15,6 +15,9 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 export DEPENDS="\
     ${PACKAGE_BASE_NAME}-mingw-w64-crt-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
+
+# Configure the build components
+rm -rf ${STAGE_ROOT}
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
 

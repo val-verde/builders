@@ -19,7 +19,9 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
-# Configure the package
+
+# Configure the build components
+rm -rf ${STAGE_ROOT}
 cd ${SOURCE_ROOT}
 git checkout val-verde-mainline
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}

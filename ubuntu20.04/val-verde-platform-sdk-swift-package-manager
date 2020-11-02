@@ -23,8 +23,9 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-swift-llbuild-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-swift-tools-support-core-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
-# Configure the package
-rm -rf ${SOURCE_ROOT}
+
+# Configure the build components
+rm -rf ${STAGE_ROOT}
 git clone https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git \
           --branch val-verde-mainline \
           --single-branch \

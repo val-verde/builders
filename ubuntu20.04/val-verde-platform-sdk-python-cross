@@ -22,7 +22,8 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-xz-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-rm -rf ${SOURCE_ROOT}
+# Configure the build components
+rm -rf ${STAGE_ROOT}
 cd /sources
 git clone https://github.com/${VAL_VERDE_GH_TEAM}/cpython.git \
           --branch val-verde-mainline \

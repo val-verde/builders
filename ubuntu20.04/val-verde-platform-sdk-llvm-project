@@ -23,7 +23,7 @@ export DEPENDS="\
 
 EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;flang;libclc;mlir;openmp;parallel-libs;polly;pstl"}
 
-# Configure the package
+# Configure the build components
 rm -rf ${STAGE_ROOT}/*
 cd ${STAGE_ROOT}
 

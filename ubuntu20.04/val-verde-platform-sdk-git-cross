@@ -23,8 +23,8 @@ if [ "${HOST_OS}" != "android" ]; then
     NEEDS_LIBRT=1
 fi
 
-# Configure the package
-rm -rf ${SOURCE_ROOT}
+# Configure the build components
+rm -rf ${STAGE_ROOT}
 git clone https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git \
           --branch val-verde-mainline \
           --single-branch \
