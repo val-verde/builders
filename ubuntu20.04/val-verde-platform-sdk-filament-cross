@@ -20,7 +20,8 @@ export DEPENDS="\
 
 BUILD_TYPE=${BUILD_TYPE:-MinSizeRel}
 
-rm -rf ${SOURCE_ROOT}
+# Configure the build components
+rm -rf ${STAGE_ROOT}
 git clone https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git \
           --single-branch \
           --branch val-verde-mainline \

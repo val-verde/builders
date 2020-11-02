@@ -15,6 +15,7 @@ export INCLUDES_PATH=${TOOLCHAIN_ROOT}/sysroot/usr/include
 
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
+# Configure the build components
 mkdir -p /sources/ndk-headers
 mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}/include
 rsync -aPx ${INCLUDES_PATH}/${HOST_TRIPLE}/asm \

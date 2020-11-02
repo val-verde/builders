@@ -21,8 +21,8 @@ else
     BRANCH=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 fi
 
-# Configure the package
-rm -rf ${SOURCE_ROOT}
+# Configure the build components
+rm -rf ${STAGE_ROOT}
 git clone https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git \
           --branch ${BRANCH} \
           --single-branch \

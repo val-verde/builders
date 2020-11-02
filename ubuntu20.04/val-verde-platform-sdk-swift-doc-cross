@@ -15,8 +15,9 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-swift-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
-# Configure & build the package
-rm -rf ${SOURCE_ROOT}
+
+# Configure the build components
+rm -rf ${STAGE_ROOT}
 
 if [ "${HOST_OS}" = "android" ]; then
    GIT_BRANCH="val-verde-android-mainline"

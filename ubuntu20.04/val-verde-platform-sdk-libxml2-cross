@@ -18,6 +18,7 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-zlib-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
+# Configure the build components
 rm -rf ${SOURCE_ROOT}
 cd /sources
 wget -c http://xmlsoft.org/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
@@ -28,6 +29,10 @@ sed -i \
 
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
+CFLAGS="\
+    -DTRUE=true \
+    ${CFLAGS} \
+" \
 ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
     lt_cv_deplibs_check_method=pass_all \

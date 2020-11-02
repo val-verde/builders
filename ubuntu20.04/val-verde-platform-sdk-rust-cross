@@ -19,7 +19,8 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-z3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Configure the build
+# Configure the build components
+rm -rf ${STAGE_ROOT}
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
 

@@ -25,7 +25,8 @@ export DEPENDS="\
 "
 USE_NEWPM=${USE_NEWPM:-TRUE}
 
-# Configure the package
+# Configure the build components
+rm -rf ${STAGE_ROOT}
 cd ${SOURCE_ROOT}
 git remote set-branches --add origin val-verde-android-mainline-next
 git fetch origin val-verde-android-mainline-next

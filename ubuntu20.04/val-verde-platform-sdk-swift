@@ -24,7 +24,8 @@ export DEPENDS="\
 "
 USE_NEWPM=${USE_NEWPM:-TRUE}
 
-# Configure the package
+# Configure the build components
+rm -rf ${STAGE_ROOT}
 rm -rf /sources/swift-corelibs-libdispatch \
        ${SOURCE_ROOT}
 git clone https://github.com/${VAL_VERDE_GH_TEAM}/swift-corelibs-libdispatch.git \
