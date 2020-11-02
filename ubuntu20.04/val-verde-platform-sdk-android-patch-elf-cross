@@ -17,7 +17,7 @@ export DEPENDS="${PACKAGE_BASE_NAME}-cmake-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST
 # Configure the build components
 rm -rf ${STAGE_ROOT}
 git clone https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git \
-          --branch master \
+          --branch val-verde-mainline \
           --single-branch \
           ${SOURCE_ROOT}
 rsync -aPx ${SOURCE_ROOT}/* \
