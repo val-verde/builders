@@ -37,7 +37,7 @@ CFLAGS="\
     ${CFLAGS} \
 " \
 ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-configure \
-    ${SOURCE_ROOT}/configure \
+    ${STAGE_ROOT}/configure \
     lt_cv_deplibs_check_method=pass_all \
     --disable-static \
     --enable-shared \
