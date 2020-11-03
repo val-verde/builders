@@ -10,7 +10,7 @@ VERSION=${VERSION:='1.0.0'}
 
 function generate-control-file {
     # Template definition
-    cd /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+    pushd /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
     mkdir DEBIAN
     echo 10 > DEBIAN/compat
     sed "s|DEPENDS|${DEPENDS}|g; \
@@ -26,37 +26,44 @@ function generate-control-file {
          s|PACKAGE_NAME|${PACKAGE_NAME}|g; \
          s|SOURCE_PACKAGE_VERSION|${SOURCE_PACKAGE_VERSION}|g" \
          ${BUILD_PACKAGE_PREFIX}/share/changelog.in > DEBIAN/changelog
+    popd
 }
 
 function make-build {
     MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILD_PACKAGE_PREFIX}/bin/make}
     TARGETS=${TARGETS:-install}
 
+    pushd ${STAGE_ROOT}
     ${MAKE_PROGRAM} -j${NUM_PROCESSORS} \
                     ${TARGETS}
+    popd
 }
 
 function ninja-build {
     MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILD_PACKAGE_PREFIX}/bin/ninja}
     TARGETS=${TARGETS:-install}
 
+    pushd ${STAGE_ROOT}
     ${MAKE_PROGRAM} -j${NUM_PROCESSORS} \
                     ${TARGETS}
+    popd
 }
 
 function deb-package-build {    
-    cd ${INSTALL_ROOT}
+    pushd ${INSTALL_ROOT}
     mkdir -p /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
     rsync -aPx ${BASE_DIRECTORY} /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
     generate-control-file "${PACKAGE_NAME}"
     dpkg -b /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
     mv /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}.deb ${DEB_PATH}/${PACKAGE_NAME}.deb
     rm -r /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}
+    popd
 }
 
 function deb-package-install {
-    cd /sources
+    pushd /sources
     dpkg -i ${DEB_PATH}/${PACKAGE_NAME}.deb
+    popd
 }
 
 function deb-package-mgmt {
