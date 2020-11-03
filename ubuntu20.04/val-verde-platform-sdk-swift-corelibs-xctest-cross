@@ -47,7 +47,7 @@ COMPONENTS="\
     ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/swift/${HOST_OS}/lib*.so \
 " \
 COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-rpath-fixup
+rpath-fixup
 
 # Build the package
 deb-package-build

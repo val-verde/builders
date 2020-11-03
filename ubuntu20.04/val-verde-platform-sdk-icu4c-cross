@@ -43,7 +43,7 @@ COMPONENTS="\
     ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/libicuioswift.so \
     ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/libicuucswift.so \
 " \
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-rpath-fixup
+rpath-fixup
 
 # Build the package
 deb-package-build
