@@ -147,3 +147,10 @@ function rpath-fixup() {
         done
     fi
 }
+
+function yarn-build() {
+    yarn
+    AR=${AR:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar} \
+    CC=${CC:-${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang} \
+    yarn compile
+}
