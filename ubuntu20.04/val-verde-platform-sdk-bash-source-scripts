@@ -8,47 +8,6 @@ SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
 TARGETS=${TARGETS:-install}
 VERSION=${VERSION:='1.0.0'}
 
-function generate-control-file {
-    # Template definition
-    pushd /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
-    mkdir DEBIAN
-    echo 10 > DEBIAN/compat
-    sed "s|DEPENDS|${DEPENDS}|g; \
-         s|PACKAGE_NAME|${PACKAGE_NAME}|g; \
-         s|PACKAGE_BASE_NAME|${PACKAGE_BASE_NAME}|g; \
-         s|SOURCE_PACKAGE_VERSION|${SOURCE_PACKAGE_VERSION}|g; \
-         s|SYSTEM_ARCH|${PACKAGE_ARCH}|g; \
-         s|VERSION|${VERSION}|g" \
-         ${BUILD_PACKAGE_PREFIX}/share/control.in > DEBIAN/control
-    sed "s|PACKAGE_NAME|${PACKAGE_NAME}|g" \
-         ${BUILD_PACKAGE_PREFIX}/share/copyright.in > DEBIAN/copyright
-    sed "s|CURRENT_DATE|`date`|g; \
-         s|PACKAGE_NAME|${PACKAGE_NAME}|g; \
-         s|SOURCE_PACKAGE_VERSION|${SOURCE_PACKAGE_VERSION}|g" \
-         ${BUILD_PACKAGE_PREFIX}/share/changelog.in > DEBIAN/changelog
-    popd
-}
-
-function make-build {
-    MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILD_PACKAGE_PREFIX}/bin/make}
-    TARGETS=${TARGETS:-install}
-
-    pushd ${STAGE_ROOT}
-    ${MAKE_PROGRAM} -j${NUM_PROCESSORS} \
-                    ${TARGETS}
-    popd
-}
-
-function ninja-build {
-    MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILD_PACKAGE_PREFIX}/bin/ninja}
-    TARGETS=${TARGETS:-install}
-
-    pushd ${STAGE_ROOT}
-    ${MAKE_PROGRAM} -j${NUM_PROCESSORS} \
-                    ${TARGETS}
-    popd
-}
-
 function deb-package-build {    
     pushd ${INSTALL_ROOT}
     mkdir -p /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
@@ -91,6 +50,47 @@ function deb-package-mgmt {
         elif [[ ${PACKAGE_ACTION} = 'INSTALL' ]]; then
             dpkg -i ${QUALIFIED_DEB}
         fi
+    popd
+}
+
+function generate-control-file {
+    # Template definition
+    pushd /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+    mkdir DEBIAN
+    echo 10 > DEBIAN/compat
+    sed "s|DEPENDS|${DEPENDS}|g; \
+         s|PACKAGE_NAME|${PACKAGE_NAME}|g; \
+         s|PACKAGE_BASE_NAME|${PACKAGE_BASE_NAME}|g; \
+         s|SOURCE_PACKAGE_VERSION|${SOURCE_PACKAGE_VERSION}|g; \
+         s|SYSTEM_ARCH|${PACKAGE_ARCH}|g; \
+         s|VERSION|${VERSION}|g" \
+         ${BUILD_PACKAGE_PREFIX}/share/control.in > DEBIAN/control
+    sed "s|PACKAGE_NAME|${PACKAGE_NAME}|g" \
+         ${BUILD_PACKAGE_PREFIX}/share/copyright.in > DEBIAN/copyright
+    sed "s|CURRENT_DATE|`date`|g; \
+         s|PACKAGE_NAME|${PACKAGE_NAME}|g; \
+         s|SOURCE_PACKAGE_VERSION|${SOURCE_PACKAGE_VERSION}|g" \
+         ${BUILD_PACKAGE_PREFIX}/share/changelog.in > DEBIAN/changelog
+    popd
+}
+
+function make-build {
+    MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILD_PACKAGE_PREFIX}/bin/make}
+    TARGETS=${TARGETS:-install}
+
+    pushd ${STAGE_ROOT}
+    ${MAKE_PROGRAM} -j${NUM_PROCESSORS} \
+                    ${TARGETS}
+    popd
+}
+
+function ninja-build {
+    MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILD_PACKAGE_PREFIX}/bin/ninja}
+    TARGETS=${TARGETS:-install}
+
+    pushd ${STAGE_ROOT}
+    ${MAKE_PROGRAM} -j${NUM_PROCESSORS} \
+                    ${TARGETS}
     popd
 }
 
