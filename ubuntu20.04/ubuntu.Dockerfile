@@ -42,6 +42,7 @@ ENV BUILD_ARCH=haswell \
     PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME} \
     PACKAGE_CLASS=deb \
     PACKAGE_ROOT=${PACKAGE_ROOT} \
+    NODE_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/web \
     TEMPDIR=${TEMPDIR:-/tmp} \
     VAL_VERDE_GH_TEAM=${VAL_VERDE_GH_TEAM}
 
@@ -51,7 +52,8 @@ ENV BUILD_PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${BUI
 ENV PATH=${BUILD_PACKAGE_PREFIX}/bin:${PATH} \
     LD_LIBRARY_PATH=${BUILD_PACKAGE_PREFIX}/lib
 
-RUN mkdir -p ${BUILD_PACKAGE_PREFIX}
+RUN mkdir -p ${BUILD_PACKAGE_PREFIX} \
+             ${NODE_PATH}
 
 # platform sdk tool wrapper scripts
 COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-clang \
@@ -215,6 +217,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-wget-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-xz-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-yams \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-yarn-yautja-server-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-z3-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-zlib-cross \
      /sources/

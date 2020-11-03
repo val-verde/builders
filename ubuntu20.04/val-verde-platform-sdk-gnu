@@ -117,6 +117,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-graphics-sdk-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-node-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-npm-yarn-cross
 
+# yautja server build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-yarn-yautja-server-cross
+
 # rust build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-rust
 

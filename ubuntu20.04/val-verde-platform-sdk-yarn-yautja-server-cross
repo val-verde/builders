@@ -1,0 +1,40 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=yautja-server
+export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export INSTALL_ROOT=${TEMPDIR}/org.${PACKAGE_BASE_NAME}/${QUALIFIED_PACKAGE_NAME}
+
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export PKG_CONFIG_PATH=${PACKAGE_PREFIX}/lib/pkgconfig:/usr/lib/${BUILD_TRIPLE}/pkgconfig:/usr/share/pkgconfig
+
+# Configure & build the package
+rm -rf ${STAGE_ROOT}
+GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git" \
+git-clone val-verde-mainline
+
+mkdir -p ${INSTALL_ROOT}${NODE_PATH}/${SOURCE_PACKAGE_NAME}
+
+rsync -aPx ${SOURCE_ROOT}/ \
+           ${STAGE_ROOT}
+cd ${STAGE_ROOT}
+
+yarn-build
+
+mv ${STAGE_ROOT}/node_modules \
+   ${NODE_MODULES_INSTALL_PREFIX}/
+rsync -aPx ${STAGE_ROOT}/ \
+           ${INSTALL_ROOT}${NODE_PATH}/${SOURCE_PACKAGE_NAME}
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install
