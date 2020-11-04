@@ -29,16 +29,12 @@ USE_NEWPM=${USE_NEWPM:-TRUE}
 
 # Configure the build components
 rm -rf ${STAGE_ROOT}
-rm -rf /sources/swift-corelibs-libdispatch \
-       ${SOURCE_ROOT}
-git clone https://github.com/${VAL_VERDE_GH_TEAM}/swift-corelibs-libdispatch.git \
-          --branch val-verde-mainline \
-          --single-branch \
-          /sources/swift-corelibs-libdispatch
-git clone https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git \
-          --branch val-verde-mainline-next \
-          --single-branch \
-          ${SOURCE_ROOT}
+GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/swift-corelibs-libdispatch.git" \
+TARGET_ROOT="/sources/swift-corelibs-libdispatch" \
+git-clone val-verde-mainline
+GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git" \
+git-clone val-verde-mainline-next
+
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
 ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-cmake \

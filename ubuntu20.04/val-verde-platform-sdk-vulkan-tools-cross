@@ -19,10 +19,8 @@ export DEPENDS="${PACKAGE_BASE_NAME}-vulkan-loader-${HOST_OS}${HOST_OS_API_LEVEL
 
 # Configure the build components
 rm -rf ${STAGE_ROOT}
-git clone https://github.com/KhronosGroup/${SOURCE_PACKAGE_NAME}.git \
-          --branch master \
-          --single-branch \
-          ${SOURCE_ROOT}
+GIT_URL="https://github.com/KhronosGroup/${SOURCE_PACKAGE_NAME}.git" \
+git-clone master
 
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}

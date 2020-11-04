@@ -26,10 +26,9 @@ fi
 
 # Configure the build components
 rm -rf ${STAGE_ROOT}
-git clone https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git \
-          --branch ${BRANCH} \
-          --single-branch \
-          ${SOURCE_ROOT}
+GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git" \
+git-clone ${BRANCH}
+
 rsync -aPx ${SOURCE_ROOT}/* \
            ${STAGE_ROOT}/
 

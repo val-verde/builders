@@ -28,10 +28,8 @@ else
    GIT_BRANCH="val-verde-mainline"
 fi
 
-git clone https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git \
-          --branch ${GIT_BRANCH} \
-          --single-branch \
-          ${SOURCE_ROOT}
+GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git" \
+git-clone ${GIT_BRANCH}
 
 # Build the components
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}

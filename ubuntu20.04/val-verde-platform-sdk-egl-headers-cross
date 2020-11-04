@@ -18,10 +18,8 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 
 # Configure the build components
 rm -rf ${STAGE_ROOT}
-git clone https://github.com/KhronosGroup/EGL-Registry.git \
-    --branch master \
-    --single-branch \
-    ${SOURCE_ROOT}
+GIT_URL="https://github.com/KhronosGroup/EGL-Registry.git" \
+git-clone master
 
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
