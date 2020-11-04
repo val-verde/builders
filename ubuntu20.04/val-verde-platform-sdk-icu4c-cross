@@ -22,7 +22,7 @@ mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
 
 ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-configure \
-    ${SOURCE_ROOT}/source/configure \
+    ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}/source/configure \
     --disable-extras \
     --disable-samples \
     --disable-static \

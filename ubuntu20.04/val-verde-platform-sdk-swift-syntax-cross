@@ -22,10 +22,8 @@ export DEPENDS="\
 
 # Configure the build components
 rm -rf ${STAGE_ROOT}
-git clone https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git \
-          --branch val-verde-mainline \
-          --single-branch \
-          ${SOURCE_ROOT}
+GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git" \
+git-clone val-verde-mainline
 
 # Build the components
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}

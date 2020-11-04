@@ -16,10 +16,8 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 
 # Configure the build components
 rm -rf ${STAGE_ROOT}
-git clone https://github.com/LunarG/VulkanTools.git \
-          --single-branch \
-          --branch master \
-          ${SOURCE_ROOT}
+GIT_URL="https://github.com/LunarG/VulkanTools.git" \
+git-clone master
 
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}

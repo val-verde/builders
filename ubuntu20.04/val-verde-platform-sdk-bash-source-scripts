@@ -74,6 +74,27 @@ function generate-control-file {
     popd
 }
 
+function git-clone {
+    GIT_BRANCH=$1
+    TARGET_ROOT=${TARGET_ROOT:-${SOURCE_ROOT}}
+    pushd /sources
+
+    if [ ! -d "${TARGET_ROOT}" ] ; then
+        git clone ${GIT_URL} \
+          --branch ${GIT_BRANCH} \
+          --single-branch \
+          ${TARGET_ROOT}
+    else
+        rm -rf ${TARGET_ROOT}
+        git clone ${GIT_URL} \
+          --branch ${GIT_BRANCH} \
+          --single-branch \
+          ${TARGET_ROOT}
+    fi
+
+    popd
+}
+
 function make-build {
     MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILD_PACKAGE_PREFIX}/bin/make}
     TARGETS=${TARGETS:-install}

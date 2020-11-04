@@ -19,10 +19,8 @@ export DEPENDS="${PACKAGE_BASE_NAME}-ninja-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST
 
 # Configure the build components
 rm -rf ${STAGE_ROOT}
-git clone https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git \
-          --branch val-verde-android-mainline \
-          --single-branch \
-          ${SOURCE_ROOT}
+GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git" \
+git-clone val-verde-android-mainline
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
 

@@ -18,10 +18,8 @@ export DEPENDS="${PACKAGE_BASE_NAME}-zlib-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_
 
 # Configure the build components
 rm -rf ${STAGE_ROOT}
-git clone https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}.git \
-          --branch master \
-          --single-branch \
-          ${SOURCE_ROOT}
+GIT_URL="https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}.git" \
+git-clone master
 
 rsync -aPx ${SOURCE_ROOT}/* \
            ${STAGE_ROOT}/
