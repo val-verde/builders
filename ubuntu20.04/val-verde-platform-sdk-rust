@@ -20,82 +20,37 @@ export DEPENDS="\
 "
 
 # Configure the build
+rm -rf ${SOURCE_ROOT}
+git clone https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git \
+          --branch val-verde-mainline \
+          --single-branch \
+          ${SOURCE_ROOT}
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
 
-rsync -aPx ${SOURCE_ROOT}/${VAL_VERDE_GH_TEAM}-config-cross.toml.in \
+rsync -aPx ${SOURCE_ROOT}/${VAL_VERDE_GH_TEAM}-config.toml.in \
            ${STAGE_ROOT}/config.toml
 
 BINDIR=${BUILD_PACKAGE_PREFIX}/bin
-
-if [ "${BUILD_OS}" = "gnu" ]; then
-    BUILD_TRIPLE=${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}
-else
-    BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}
-fi
-
-if [ "${HOST_OS}" = "gnu" ]; then
-    HOST_TRIPLE=${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS}
-else
-    HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}
-fi
-
-SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot}
+BUILD_TRIPLE=${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}${BUILD_OS_API_LEVEL}
 
 AR=${BINDIR}/llvm-ar
-BUILD_CC=${BINDIR}/clang
-BUILD_CFLAGS=`echo "\
-    -I${BUILD_PACKAGE_PREFIX}/include \
-    ${BUILD_CFLAGS} \
-" | xargs`
-BUILD_CXX=${BINDIR}/clang++
-BUILD_CXXFLAGS=`echo "\
-    -I${BUILD_PACKAGE_PREFIX}/include \
-    ${BUILD_CXXFLAGS} \
-" | xargs`
-BUILD_LD=${SOURCE_ROOT}/host-ld-clang \
-BUILD_LDFLAGS=`echo "\
-    -L${BUILD_PACKAGE_PREFIX}/lib \
-    ${BUILD_LDFLAGS} \
-" | xargs`
-CARGO=${BINDIR}/cargo
 CC=${BINDIR}/clang
-CFLAGS=`echo "\
-    -target ${HOST_TRIPLE} \
-    --sysroot ${SYSROOT} \
-    ${CFLAGS} \
-" | xargs`
 CXX=${BINDIR}/clang++
-CXXFLAGS=`echo "\
-    -target ${HOST_TRIPLE} \
-    --sysroot ${SYSROOT} \
-    ${CXXFLAGS} \
-" | xargs`
 FILECHECK=${LLVM_NATIVE_STAGE_ROOT}/bin/FileCheck
-LD=${SOURCE_ROOT}/target-ld-clang
-LDFLAGS=`echo "\
-    -L${PACKAGE_PREFIX}/lib \
-    -L${BUILD_PACKAGE_PREFIX}/lib \
-" | xargs`
+LD=${BINDIR}/clang
 LLVMCONFIG=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config
 NODE=${BINDIR}/node
 PYTHON=${BINDIR}/python3
 RANLIB=${BINDIR}/llvm-ranlib
-RUSTC=${BINDIR}/rustc
-RUSTFMT=${BINDIR}/rustfmt
 
 sed -i "s|@@AR@@|${AR}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@BUILD_CC@@|${BUILD_CC}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@BUILD_CXX@@|${BUILD_CXX}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@BUILD_LD@@|${BUILD_LD}|g" ${STAGE_ROOT}/config.toml
 sed -i "s|@@BUILD_TRIPLE@@|${BUILD_TRIPLE}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@CARGO@@|${CARGO}|g" ${STAGE_ROOT}/config.toml
 sed -i "s|@@CC@@|${CC}|g" ${STAGE_ROOT}/config.toml
 sed -i "s|@@CFLAGS@@|${CFLAGS}|g" ${STAGE_ROOT}/config.toml
 sed -i "s|@@CXX@@|${CXX}|g" ${STAGE_ROOT}/config.toml
 sed -i "s|@@CXXFLAGS@@|${CXXFLAGS}|g" ${STAGE_ROOT}/config.toml
 sed -i "s|@@FILECHECK@@|${FILECHECK}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@HOST_TRIPLE@@|${HOST_TRIPLE}|g" ${STAGE_ROOT}/config.toml
 sed -i "s|@@INSTALL_PREFIX@@|${INSTALL_PREFIX}|g" ${STAGE_ROOT}/config.toml
 sed -i "s|@@LD@@|${LD}|g" ${STAGE_ROOT}/config.toml
 sed -i "s|@@LDFLAGS@@|${LDFLAGS}|g" ${STAGE_ROOT}/config.toml
@@ -103,19 +58,12 @@ sed -i "s|@@LLVMCONFIG@@|${LLVMCONFIG}|g" ${STAGE_ROOT}/config.toml
 sed -i "s|@@NODE@@|${NODE}|g" ${STAGE_ROOT}/config.toml
 sed -i "s|@@PYTHON@@|${PYTHON}|g" ${STAGE_ROOT}/config.toml
 sed -i "s|@@RANLIB@@|${RANLIB}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@RUSTC@@|${RUSTC}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@RUSTFMT@@|${RUSTFMT}|g" ${STAGE_ROOT}/config.toml
 sed -i "s|@@STAGE_ROOT@@|${STAGE_ROOT}|g" ${STAGE_ROOT}/config.toml
 
-export HOST_CFLAGS="${BUILD_CFLAGS}"
-export HOST_CXXFLAGS="${BUILD_CXXFLAGS}"
-export TARGET_CFLAGS="${CFLAGS}"
-export TARGET_CXXFLAGS="${CXXFLAGS}"
 export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-"${PACKAGE_PREFIX}/lib/pkgconfig"}
-unset CFLAGS CXXFLAGS
 
 # Build the components
-${BUILD_PACKAGE_PREFIX}/bin/python3 ${SOURCE_ROOT}/x.py build --config ${STAGE_ROOT}/config.toml --verbose
+${BUILD_PACKAGE_PREFIX}/bin/python3 ${SOURCE_ROOT}/x.py build --config ${STAGE_ROOT}/config.toml
 ${BUILD_PACKAGE_PREFIX}/bin/python3 ${SOURCE_ROOT}/x.py install --config ${STAGE_ROOT}/config.toml
 
 # Build the package

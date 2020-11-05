@@ -182,7 +182,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-python-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-pkg-config-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-pythonkit \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-rust-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-rust \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-sdl-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-sed-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-sourcekit-lsp \
@@ -466,7 +466,7 @@ RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-npm-yarn-cross
 # rust build
 FROM NODE_BUILDER AS RUST_BUILDER
 
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-rust-cross
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-rust
 
 # android-ndk package
 FROM RUST_BUILDER AS ANDROID_NDK_BUILDER
@@ -526,6 +526,7 @@ FROM WASI_COMPILER_DEPS_BUILDER AS ANDROID_BUILDER
 COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-icu4c-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-pythonkit-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-rust-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-sourcekit-lsp-android \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-argument-parser-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-cmark-cross \
