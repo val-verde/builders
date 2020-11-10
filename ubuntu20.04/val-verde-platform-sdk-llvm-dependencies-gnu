@@ -93,6 +93,17 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bash-cross
 # util-linux build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-util-linux-cross
 
+# libarchive build
+CMAKE_BINDIR=/usr/bin \
+MAKE_PROGRAM=/usr/bin/ninja \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libarchive-cross
+
+# libmicrohttpd build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libmicrohttpd-cross
+
+# elfutils build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-elfutils-cross
+
 # strace build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-strace-cross
 

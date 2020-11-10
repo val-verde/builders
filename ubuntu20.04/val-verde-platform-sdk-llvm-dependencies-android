@@ -96,6 +96,19 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bash-cross
 # android util-linux build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-util-linux-cross
 
+# android libarchive build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libarchive-cross
+
+# android libmicrohttpd build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libmicrohttpd-cross
+
+# android elfutils build
+LDFLAGS="\
+    -lintl \
+    ${LDFLAGS} \
+" \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-elfutils-cross
+
 # android strace build
 if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-strace-cross
