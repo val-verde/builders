@@ -145,6 +145,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-curl-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-dpkg-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-egl-headers-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-elfutils-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-expat-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-filament-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-gawk-cross \
@@ -157,12 +158,14 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-icu4c \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-jwasm \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-khr-headers-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-libarchive-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libcap-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libedit-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libffi-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-libmicrohttpd-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libssh2-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libunwind-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libxml2-cross \
@@ -305,6 +308,7 @@ RUN apt remove -y cmake \
                   expat \
                   git \
                   libedit-dev \
+                  libelf-dev \
                   libicu-dev \
                   libncurses-dev \
                   libsqlite3-dev \
