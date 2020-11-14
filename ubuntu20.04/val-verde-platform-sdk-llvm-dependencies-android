@@ -56,6 +56,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openssl-cross
 # android libexpat build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-expat-cross
 
+# android libuv build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libuv-cross
+
 # android libssh2 build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libssh2-cross
 

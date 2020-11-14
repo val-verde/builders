@@ -170,6 +170,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libmicrohttpd-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libssh2-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libunwind-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-libuv-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libxml2-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-dependencies-gnu \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project \
