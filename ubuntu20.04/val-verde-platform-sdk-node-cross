@@ -99,7 +99,7 @@ LDFLAGS_host="\
     -L${BUILD_PACKAGE_PREFIX}/lib \
 "
 export LDFLAGS=${LDFLAGS}
-export LINK_host="${LD_host:-${BUILD_PACKAGE_PREFIX}/bin/clang++} ${LDFLAGS_host}"
+export LINK="${LD_host:-${BUILD_PACKAGE_PREFIX}/bin/clang++} ${LDFLAGS_host}"
 export LINK_target=${LD_target:-${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang++}
 export PKG_CONFIG=${PKG_CONFIG:-${BUILD_PACKAGE_PREFIX}/bin/pkg-config}
 export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-${PACKAGE_PREFIX}/lib/pkgconfig}
