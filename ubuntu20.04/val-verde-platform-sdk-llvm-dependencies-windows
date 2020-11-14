@@ -27,14 +27,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pkg-config-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pcre-cross
 
 # windows icu build
-LDFLAGS="\
-    -fuse-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
-    ${LDFLAGS} \
-" \
-LIBS="\
-    -lucrt \
-    ${LIBS} \
-" \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-icu4c-cross
 
 # windows xz build
