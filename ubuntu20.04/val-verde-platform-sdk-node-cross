@@ -70,7 +70,24 @@ if [ "${HOST_OS}" = "android" ]; then
 elif [ "${HOST_OS}" = "gnu" ]; then
     CONFIGURE_HOST_OS=linux
 elif [ "${HOST_OS}" = "mingw32" ]; then
-    CONFIGURE_HOST_OS=win
+    CFLAGS="\
+        -fms-compatibility-version=19.2 \
+        -fms-extensions \
+        ${CFLAGS} \
+    "
+    CXXFLAGS="\
+        -fms-compatibility-version=19.2 \
+        -fms-extensions \
+        ${CXXFLAGS} \
+    "
+    CONFIGURE_HOST_OS=mingw32
+    export GYP_DEFINES="\
+	host_arch=${CONFIGURE_BUILD_PROCESSOR} \
+        host_os=${CONFIGURE_BUILD_OS} \
+        target_arch=${CONFIGURE_HOST_PROCESSOR} \
+        v8_target_arch=${CONFIGURE_HOST_PROCESSOR} \
+        OS=${CONFIGURE_HOST_OS} \
+    "
 fi
 
 export AR_host=${AR_host:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar}
