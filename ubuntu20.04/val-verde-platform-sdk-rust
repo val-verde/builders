@@ -35,6 +35,17 @@ rsync -aPx ${SOURCE_ROOT}/${VAL_VERDE_GH_TEAM}-config.toml.in \
 BINDIR=${BUILD_PACKAGE_PREFIX}/bin
 BUILD_TRIPLE=${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}${BUILD_OS_API_LEVEL}
 
+if [ -z "${DISABLE_POLLY}" ]; then
+    CFLAGS="\
+        -mllvm -polly \
+        ${CFLAGS} \
+    "
+    CXXFLAGS="\
+        -mllvm -polly \
+        ${CXXFLAGS} \
+    "
+fi
+
 AR=${BINDIR}/llvm-ar
 CC=${BINDIR}/clang
 CXX=${BINDIR}/clang++
