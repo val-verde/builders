@@ -95,28 +95,29 @@ ASFLAGS="\
     ${OPTIMIZATION_FLAGS} \
     -O${OPTIMIZATION_LEVEL} \
     ${ASMFLAGS} \
-" \
+"
 CFLAGS="\
     ${ARCH_FLAGS} \
     ${FLTO_CFLAG} \
     ${OPTIMIZATION_FLAGS} \
     -O${OPTIMIZATION_LEVEL} \
     ${CFLAGS} \
-" \
+"
 CXXFLAGS="\
     ${ARCH_FLAGS} \
     ${FLTO_CFLAG} \
     ${OPTIMIZATION_FLAGS} \
     -O${OPTIMIZATION_LEVEL} \
     ${CXXFLAGS} \
-" \
+"
 LDFLAGS="\
     ${ARCH_FLAGS} \
     ${FLTO_LDFLAG} \
     ${LDFLAGS} \
     -O${LINKER_OPTIMIZATION_LEVEL} \
-" \
-LIBS="${LIBS}" \
+"
+LIBS="${LIBS}"
+
 "$@" AR=${AR} \
      AS=${CC} \
      ASFLAGS="${ASFLAGS}" \
