@@ -52,14 +52,12 @@ echo -e "{ \n\
         \"-I${PACKAGE_PREFIX}/lib/swift\", \n\
         \"-I${PACKAGE_PREFIX}/lib/swift/Block\", \n\
         \"${FLTO_CFLAG}\", \n\
-        ${POLLY_CFLAG} \n\
     ], \n\
     \"extra-linker-flags\": [ \n\
         \"-disable-verify\", \n\
         \"-O${LINKER_OPTIMIZATION_LEVEL}\", \n\
         \"${FLTO_CFLAG}\", \n\
         \"${STRIP_LDFLAG}\", \n\
-        ${POLLY_CFLAG} \n\
     ], \n\
     \"extra-swiftc-flags\": [ \n\
         \"-target-cpu\", \"${HOST_CPU}\", \n\
