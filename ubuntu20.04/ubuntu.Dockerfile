@@ -37,50 +37,19 @@ ENV BUILD_ARCH=haswell \
     BUILD_OS_API_LEVEL= \
     BUILD_PROCESSOR=${BUILD_PROCESSOR} \
     DEB_PATH=${DEB_PATH} \
-    HOST_ARCH=haswell \
-    HOST_CPU=skylake \
-    HOST_KERNEL=${HOST_KERNEL} \
-    HOST_OS=${HOST_OS} \
-    HOST_PROCESSOR=${HOST_PROCESSOR} \
+    DPKG_ADMINDIR=/var/lib/dpkg \
     PACKAGE_ARCH=all \
     PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME} \
     PACKAGE_CLASS=deb \
     PACKAGE_ROOT=${PACKAGE_ROOT} \
-    SYSTEM_NAME=Linux \
+    TEMPDIR=${TEMPDIR:-/tmp} \
     VAL_VERDE_GH_TEAM=${VAL_VERDE_GH_TEAM}
 
-ENV BUILD_PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr \
-    BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS} \
-    HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr \
-    SYSROOT=/ \
-    TEMPDIR=${TEMPDIR:-/tmp}
+ENV BUILD_PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/sysroot/usr \
+    BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}
 
-ENV CFLAGS="\
-        -I${PACKAGE_PREFIX}/include \
-    " \
-    CPPFLAGS="\
-        -I${PACKAGE_PREFIX}/include \
-    " \
-    CXXFLAGS="\
-        -I${PACKAGE_PREFIX}/include \
-    " \
-    LDFLAGS="\
-        -L${PACKAGE_PREFIX}/lib \
-    " \
-    SWIFT_BUILD_FLAGS="\
-        -Xcc -I${PACKAGE_PREFIX}/include \
-        -Xcxx -I${PACKAGE_PREFIX}/include \
-        -Xlinker -L${PACKAGE_PREFIX}/lib \
-    " \
-    SWIFTCFLAGS="\
-        -I${PACKAGE_PREFIX}/include \
-        -L${PACKAGE_PREFIX}/lib \
-    "
-
-ENV DPKG_ADMINDIR=/var/lib/dpkg \
-    LD_LIBRARY_PATH=${PACKAGE_PREFIX}/lib:${LD_LIBRARY_PATH} \
-    PATH=${PACKAGE_PREFIX}/bin:${PATH}
+ENV PATH=${BUILD_PACKAGE_PREFIX}/bin:${PATH} \
+    LD_LIBRARY_PATH=${BUILD_PACKAGE_PREFIX}/lib
 
 RUN mkdir -p ${BUILD_PACKAGE_PREFIX}
 
@@ -129,6 +98,31 @@ RUN git clone https://github.com/${VAL_VERDE_GH_TEAM}/llvm-project.git \
               --single-branch \
               /sources/llvm-project
 
+# platform sdk bootstrap package build scripts
+COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-libunwind-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project-bootstrap \
+     /sources/
+
+# LTO configuration: [OFF | Full | Thin]
+# ENV ENABLE_FLTO=Thin
+
+# Optimization level speed: [0-3] or size: [s, z]
+ENV OPTIMIZATION_LEVEL=3
+
+# gnu bootstrap build
+FROM SOURCES_BUILDER AS GNU_BOOTSTRAP_BUILDER
+
+RUN HOST_ARCH=${BUILD_ARCH} \
+    HOST_CPU=${BUILD_CPU} \
+    HOST_KERNEL=${BUILD_KERNEL} \
+    HOST_OS=${BUILD_OS} \
+    HOST_PROCESSOR=${BUILD_PROCESSOR} \
+    SYSROOT=/ \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap
+
 # platform sdk package build scripts
 COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-android-patch-elf-cross \
@@ -155,6 +149,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-git-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-glslang-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-gperf-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-graphics-sdk-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-icu4c \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-jwasm \
@@ -162,19 +157,15 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-khr-headers-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libarchive-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libcap-cross \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-cross \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libedit-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libffi-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libmicrohttpd-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libssh2-cross \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-libunwind-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libuv-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libxml2-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-dependencies-gnu \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project-bootstrap \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-lua-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-make-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-musl-libc \
@@ -227,307 +218,46 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-zlib-cross \
      /sources/
 
-# LTO configuration: [OFF | Full | Thin]
-# ENV ENABLE_FLTO=Thin
-
-# Optimization level speed: [0-3] or size: [s, z]
-ENV OPTIMIZATION_LEVEL=3
-
-# kernel headers builds
-FROM SOURCES_BUILDER AS KERNEL_HEADERS_BUILDER
-
-RUN CC=/usr/bin/clang \
-    MAKE_PROGRAM=/usr/bin/make \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-kernel-headers-cross
-
-# musl libc build
-FROM KERNEL_HEADERS_BUILDER AS MUSL_LIBC_BUILDER
-
-# RUN BINDIR=/usr/bin \
-#     CC=/usr/bin/clang \
-#     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-musl-libc
-
-# libunwind bootstrap build
-FROM MUSL_LIBC_BUILDER AS LIBUNWIND_BOOTSTRAP_BUILDER
-
-RUN BINDIR=/usr/bin \
-    CFLAGS="\
-        -rtlib=compiler-rt \
-        ${CFLAGS} \
-    " \
-    CXXFLAGS="\
-        -rtlib=compiler-rt \
-        ${CXXFLAGS} \
-    " \
-    LLVM_NATIVE_STAGE_ROOT=/usr \
-    MAKE_PROGRAM=/usr/bin/ninja \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libunwind-cross
-
-# libcxxabi bootstrap build
-FROM LIBUNWIND_BOOTSTRAP_BUILDER AS LIBCXXABI_BOOTSTRAP_BUILDER
-
-RUN BINDIR=/usr/bin \
-    LLVM_NATIVE_STAGE_ROOT=/usr \
-    MAKE_PROGRAM=/usr/bin/ninja \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-cross
-
-# libcxx bootstrap build
-FROM LIBCXXABI_BOOTSTRAP_BUILDER AS LIBCXX_BOOTSTRAP_BUILDER
-
-RUN BINDIR=/usr/bin \
-    CFLAGS="\
-        -rtlib=compiler-rt \
-        ${CFLAGS} \
-    " \
-    CXXFLAGS="\
-        -rtlib=compiler-rt \
-        ${CXXFLAGS} \
-    " \
-    LLVM_NATIVE_STAGE_ROOT=/usr \
-    MAKE_PROGRAM=/usr/bin/ninja \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-cross
-
-# llvm bootstrap build
-FROM LIBCXX_BOOTSTRAP_BUILDER AS LLVM_BOOTSTRAP_BUILDER
-
-RUN MAKE_PROGRAM=/usr/bin/ninja \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project-bootstrap
-
-# remove host compiler and libraries as it is superceded by bootstrapped clang
-RUN apt remove -y clang \
-                  clang-10 \
-                  libc++-dev \
-                  libc++1 \
-                  libunwind-dev \
-                  lld \
-                  lld-10 \
-                  llvm \
-                  llvm-10 \
-    && apt autoremove -y
-
-FROM LLVM_BOOTSTRAP_BUILDER AS LLVM_DEPENDENCIES_BUILDER
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-dependencies-gnu
-
-# remove host tools as they are superceded by native equivalents
-RUN apt remove -y cmake \
-                  bison \
-                  expat \
-                  git \
-                  libedit-dev \
-                  libelf-dev \
-                  libicu-dev \
-                  libncurses-dev \
-                  libsqlite3-dev \
-                  libssl-dev \
-                  libxml2-dev \
-                  libz3-dev \
-                  ninja-build \
-                  uuid-dev \
-    && apt autoremove -y
-
-ENV PYTHONHOME=${PACKAGE_PREFIX}
-
-# llvm build
-FROM LLVM_DEPENDENCIES_BUILDER AS LLVM_BUILDER
-
-RUN DISABLE_POLLY=TRUE \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project
-
-# cmark build
-FROM LLVM_BUILDER AS CMARK_BUILDER
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-cmark
-
-# swift build
-FROM CMARK_BUILDER AS SWIFT_BUILDER
-
-RUN CXXFLAGS="\
-        -I${PACKAGE_PREFIX}/include \
-        ${CXXFLAGS} \
-    " \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift
-
-# lldb build
-FROM SWIFT_BUILDER AS LLDB_BUILDER
-
-RUN CXXFLAGS="\
-        -I${PACKAGE_PREFIX}/include \
-        ${CXXFLAGS} \
-    " \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-lldb
-
-# libdispatch build
-FROM LLDB_BUILDER AS LIBDISPATCH_BUILDER
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-libdispatch
-
-# foundation build
-FROM LIBDISPATCH_BUILDER AS FOUNDATION_BUILDER
-
-RUN CFLAGS="\
-        -I${PACKAGE_PREFIX}/include \
-        ${CFLAGS} \
-    " \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-foundation
-
-# xctest build
-FROM FOUNDATION_BUILDER AS XCTEST_BUILDER
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-xctest
-
-# llbuild build
-FROM XCTEST_BUILDER AS LLBUILD_BUILDER
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild
-
-# swift-tools-support-core build
-FROM LLBUILD_BUILDER AS SWIFT_TOOLS_SUPPORT_CORE_BUILDER
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-support-core
-
-# yams build
-FROM SWIFT_TOOLS_SUPPORT_CORE_BUILDER AS YAMS_BUILDER
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-yams
-
-# swift argument parser build
-FROM YAMS_BUILDER AS SWIFT_ARGUMENT_PARSER_BUILDER
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-argument-parser
-
-# swift-driver build
-FROM SWIFT_ARGUMENT_PARSER_BUILDER AS SWIFT_DRIVER_BUILDER
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-driver
-
-# swiftpm build
-FROM SWIFT_DRIVER_BUILDER AS SWIFTPM_BUILDER
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-package-manager
-
-RUN dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-argument-parser-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-            ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-            ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-            ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-xctest-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-            ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-driver-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-            ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-llbuild-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-            ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-package-manager-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-            ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-tools-support-core-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-            ${DEB_PATH}/${PACKAGE_BASE_NAME}-yams-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb
-
-# swift-syntax build
-FROM SWIFTPM_BUILDER AS SWIFT_SYNTAX_BUILDER
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-syntax-cross
-
-# swift-format build
-FROM SWIFT_SYNTAX_BUILDER AS SWIFT_FORMAT_BUILDER
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-format-cross
-
-# swift-doc build
-FROM SWIFT_FORMAT_BUILDER AS SWIFT_DOC_BUILDER
-
-RUN SWIFT_BUILD_FLAGS="\
-        -Xcc -I${PACKAGE_PREFIX}/include \
-        ${SWIFT_BUILD_FLAGS} \
-    " \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-doc-cross
-
-# sourcekit-lsp build
-FROM SWIFT_DOC_BUILDER AS SOURCEKIT_LSP_BUILDER
-
-RUN SWIFT_BUILD_FLAGS="\
-        -Xcc -I${PACKAGE_PREFIX}/include \
-        ${SWIFT_BUILD_FLAGS} \
-    " \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sourcekit-lsp
-
-# baikonur build
-FROM SOURCEKIT_LSP_BUILDER AS BAIKONUR_BUILDER
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-baikonur
-
-# pythonkit build
-FROM BAIKONUR_BUILDER AS PYTHONKIT_BUILDER
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pythonkit
-
-# swift tensorflows apis build
-# RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tensorflow-apis
-
-# graphics sdk build
-FROM PYTHONKIT_BUILDER AS GRAPHICS_SDK_BUILDER
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-graphics-sdk-cross
-
-# node + sdk build
-FROM GRAPHICS_SDK_BUILDER AS NODE_BUILDER
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-node-cross
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-npm-yarn-cross
-
-# rust build
-FROM NODE_BUILDER AS RUST_BUILDER
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-rust
-
-# android-ndk package
-FROM RUST_BUILDER AS ANDROID_NDK_BUILDER
-
-ENV ANDROID_NDK_VERSION=r21d
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk
-
-# webassembly environment
-FROM ANDROID_NDK_BUILDER AS WASI_SOURCES_BUILDER
-
-ENV HOST_ARCH=wasm32 \
-    HOST_CPU=wasm32 \
-    HOST_KERNEL=unknown \
-    HOST_OS=wasi \
-    HOST_OS_API_LEVEL= \
-    HOST_PROCESSOR=wasm32
-
-ENV HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
-    SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
-    SYSTEM_NAME=Wasi
-
-    ENV CFLAGS="\
-        -I${PACKAGE_PREFIX}/include \
-    " \
-    CPPFLAGS="\
-        -I${PACKAGE_PREFIX}/include \
-    " \
-    CXXFLAGS="\
-        -I${PACKAGE_PREFIX}/include \
-    " \
-    SWIFT_BUILD_FLAGS= \
-    LDFLAGS="\
-        -L${PACKAGE_PREFIX}/lib \
-    " \
-    SWIFTCFLAGS="\
-        -sdk ${SYSROOT} \
-    "
-
-COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt-wasi \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-wasi \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-wasi \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-wasi-compiler-deps \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-wasi-libc \
+# gnu build
+FROM GNU_BOOTSTRAP_BUILDER AS GNU_BUILDER
+
+RUN HOST_ARCH=${BUILD_ARCH} \
+    HOST_CPU=${BUILD_CPU} \
+    HOST_KERNEL=${BUILD_KERNEL} \
+    HOST_OS=${BUILD_OS} \
+    HOST_PROCESSOR=${BUILD_PROCESSOR} \
+    SYSROOT=/ \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu
+
+# musl build
+FROM GNU_BUILDER AS MUSL_BUILDER
+
+COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-dependencies-musl \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-musl \
      /sources/
 
-# webassembly compiler dependencies
-FROM WASI_SOURCES_BUILDER AS WASI_COMPILER_DEPS_BUILDER
+# RUN HOST_ARCH=${BUILD_ARCH} \
+#     HOST_CPU=${BUILD_CPU} \
+#     HOST_KERNEL=${BUILD_KERNEL} \
+#     HOST_OS=musl \
+#     HOST_PROCESSOR=${BUILD_PROCESSOR} \
+#     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-musl
 
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wasi-compiler-deps
+# android-ndk package
+FROM MUSL_BUILDER AS ANDROID_NDK_BUILDER
 
-# android build
-FROM WASI_COMPILER_DEPS_BUILDER AS ANDROID_BUILDER
+RUN ANDROID_NDK_VERSION=r21d \
+    HOST_ARCH=${BUILD_ARCH} \
+    HOST_CPU=${BUILD_CPU} \
+    HOST_KERNEL=${BUILD_KERNEL} \
+    HOST_OS=${BUILD_OS} \
+    HOST_PROCESSOR=${BUILD_PROCESSOR} \
+    SYSROOT=/ \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk
 
 # platform independent package builders
+FROM ANDROID_NDK_BUILDER AS PLATFORM_INDEPENDENT_PACKAGE_BUILDERS
+
 COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-icu4c-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-pythonkit-cross \
@@ -545,6 +275,27 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-yams-cross \
      /sources/
 
+# webassembly build
+FROM PLATFORM_INDEPENDENT_PACKAGE_BUILDERS AS WEBASSEMBLY_BUILDER
+
+COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt-wasi \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-wasi \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-wasi \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-webassembly \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-wasi-libc \
+     /sources/
+
+RUN HOST_ARCH=wasm32 \
+    HOST_CPU=wasm32 \
+    HOST_KERNEL=unknown \
+    HOST_OS=wasi \
+    HOST_OS_API_LEVEL= \
+    HOST_PROCESSOR=wasm32 \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-webassembly
+
+# android build
+FROM WEBASSEMBLY_BUILDER AS ANDROID_BUILDER
+
 # android package builders
 COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk-headers \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk-runtime \
@@ -555,55 +306,28 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk-headers \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-support-core-android \
      /sources/
 
-ENV SYSTEM_NAME=Linux
-
 # android-aarch64 environment
-ENV HOST_ARCH=armv8-a \
+RUN ANDROID_NDK_VERSION=r21d \
+    HOST_ARCH=armv8-a \
     HOST_CPU=cortex-a57 \
     HOST_KERNEL=linux \
     HOST_OS=android \
     HOST_OS_API_LEVEL=29 \
-    HOST_PROCESSOR=aarch64
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android
+    HOST_PROCESSOR=aarch64 \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android
 
 # android-x86_64 environment
-ENV HOST_ARCH=westmere \
+RUN ANDROID_NDK_VERSION=r21d \
+    HOST_ARCH=westmere \
     HOST_CPU=westmere \
     HOST_KERNEL=linux \
     HOST_OS=android \
     HOST_OS_API_LEVEL=29 \
-    HOST_PROCESSOR=x86_64
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android
+    HOST_PROCESSOR=x86_64 \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android
 
 # windows environment
 FROM ANDROID_BUILDER AS WINDOWS_SOURCES_BUILDER
-
-ENV HOST_ARCH=haswell \
-    HOST_CPU=skylake \
-    HOST_KERNEL=w64 \
-    HOST_OS=mingw32 \
-    HOST_OS_API_LEVEL= \
-    HOST_PROCESSOR=x86_64
-
-ENV HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS} \
-    PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
-    SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
-    SYSTEM_NAME=Windows
-
-ENV CFLAGS= \
-    CPPFLAGS= \
-    CXXFLAGS= \
-    LDFLAGS= \
-    SWIFT_BUILD_FLAGS="\
-        -Xcc -I${PACKAGE_PREFIX}/include \
-        -Xcxx -I${PACKAGE_PREFIX}/include \
-        -Xlinker -L${PACKAGE_PREFIX}/lib \
-    " \
-    SWIFTCFLAGS="\
-        -sdk ${SYSROOT} \
-    "
 
 COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-windows \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-windows \
@@ -622,6 +346,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-windows \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-support-core-windows \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-windows \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-windows \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-windows \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-wineditline-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-winpthreads-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-yams-windows \
@@ -635,64 +360,16 @@ RUN export SOURCE_PACKAGE_NAME=mingw-w64 \
                  --single-branch \
                  ${SOURCE_ROOT}
 
-# windows mingw-headers build
-FROM WINDOWS_SOURCES_BUILDER AS WINDOWS_MINGW_HEADERS_BUILDER
+# windows build
+FROM WINDOWS_SOURCES_BUILDER AS WINDOWS_BUILDER
 
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-mingw-w64-headers
-
-# windows mingw-crt build
-FROM WINDOWS_MINGW_HEADERS_BUILDER AS WINDOWS_MINGW_CRT_BUILDER
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-mingw-w64-crt
-
-# windows compiler-rt build (for host)
-FROM WINDOWS_MINGW_CRT_BUILDER AS WINDOWS_COMPILER_RT_BUILDER
-
-RUN CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a \
-    DST_CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a \
-    LDFLAGS="-Wl,/force:unresolved" \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt
-
-# windows libunwind build
-FROM WINDOWS_COMPILER_RT_BUILDER AS WINDOWS_LIBUNWIND_BUILDER
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libunwind-windows
-
-# windows mingw-winpthreads build
-FROM WINDOWS_LIBUNWIND_BUILDER AS WINDOWS_MINGW_WINPTHREADS_BUILDER
-
-RUN export LD=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
-    && bash ${VAL_VERDE_GH_TEAM}-platform-sdk-winpthreads-cross
-
-# windows libcxxabi build
-FROM WINDOWS_MINGW_WINPTHREADS_BUILDER AS WINDOWS_LIBCXXABI_BUILDER
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-windows
-
-# windows libcxx build
-FROM WINDOWS_LIBCXXABI_BUILDER AS WINDOWS_LIBCXX_BUILDER
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-windows
-
-# windows llvm dependencies
-FROM WINDOWS_LIBCXX_BUILDER AS WINDOWS_LLVM_DEPENDENCIES_BUILDER
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-dependencies-windows
-
-# windows swift tools build
-FROM WINDOWS_LLVM_DEPENDENCIES_BUILDER AS WINDOWS_SWIFT_TOOLS_BUILDER
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-windows
-
-# windows swift sdk build
-FROM WINDOWS_SWIFT_TOOLS_BUILDER AS WINDOWS_SWIFT_SDK_BUILDER
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-sdk-windows
-
-# windows graphics sdk build
-FROM WINDOWS_SWIFT_SDK_BUILDER AS WINDOWS_GRAPHICS_SDK_BUILDER
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-graphics-sdk-cross
+RUN HOST_ARCH=haswell \
+    HOST_CPU=skylake \
+    HOST_KERNEL=w64 \
+    HOST_OS=mingw32 \
+    HOST_OS_API_LEVEL= \
+    HOST_PROCESSOR=x86_64 \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows
 
 CMD []
 ENTRYPOINT ["tail", "-f", "/dev/null"]
