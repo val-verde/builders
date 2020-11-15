@@ -23,6 +23,8 @@ rm -rf ${STAGE_ROOT}
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
 
+BINDIR=${BINDIR:-${BUILD_PACKAGE_PREFIX}/bin}
+
 CXXFLAGS="\
     -nostdlib++ \
     -D_LIBCPP_BUILDING_LIBRARY \
@@ -45,6 +47,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-cmake \
     -DLIBCXXABI_USE_LLVM_UNWINDER=TRUE \
     -DLIBCXXABI_USE_SJLJ_EXCEPTIONS=FALSE \
     -DLLVM_CONFIG_PATH=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config \
+    -DPython3_EXECUTABLE=${BINDIR}/python3 \
     ${SOURCE_ROOT}
 
 # Build the components
