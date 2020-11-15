@@ -94,6 +94,17 @@ elif [ "${HOST_OS}" = "mingw32" ]; then
     "
 fi
 
+if [ -z "${DISABLE_POLLY}" ]; then
+    CFLAGS="\
+        -mllvm -polly \
+        ${CFLAGS} \
+    "
+    CXXFLAGS="\
+        -mllvm -polly \
+        ${CXXFLAGS} \
+    "
+fi
+
 export AR_host=${AR_host:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar}
 export AR_target=${AR:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar}
 export AS_host=${AS_host:-${BUILD_PACKAGE_PREFIX}/bin/clang}
