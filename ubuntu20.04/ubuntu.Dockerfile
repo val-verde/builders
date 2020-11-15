@@ -158,6 +158,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-graphics-sdk-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-icu4c \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-jwasm \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-kernel-headers-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-khr-headers-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libarchive-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libcap-cross \
@@ -231,15 +232,19 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
 # Optimization level speed: [0-3] or size: [s, z]
 ENV OPTIMIZATION_LEVEL=3
 
+# kernel headers builds
+FROM SOURCES_BUILDER AS KERNEL_HEADERS_BUILDER
+
+RUN CC=/usr/bin/clang \
+    MAKE_PROGRAM=/usr/bin/make \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-kernel-headers-cross
+
 # musl libc build
-FROM SOURCES_BUILDER AS MUSL_LIBC_BUILDER
+FROM KERNEL_HEADERS_BUILDER AS MUSL_LIBC_BUILDER
 
 # RUN BINDIR=/usr/bin \
 #     CC=/usr/bin/clang \
-#     SYSROOT=/ \
 #     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-musl-libc
-
-# Table with 3 columns: simplified_name | ubuntu/val-verde | version 
 
 # libunwind bootstrap build
 FROM MUSL_LIBC_BUILDER AS LIBUNWIND_BOOTSTRAP_BUILDER
