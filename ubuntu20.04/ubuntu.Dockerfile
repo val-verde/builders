@@ -346,7 +346,6 @@ RUN CXXFLAGS="\
         -I${PACKAGE_PREFIX}/include \
         ${CXXFLAGS} \
     " \
-    DISABLE_POLLY=TRUE \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift
 
 # lldb build
@@ -356,7 +355,6 @@ RUN CXXFLAGS="\
         -I${PACKAGE_PREFIX}/include \
         ${CXXFLAGS} \
     " \
-    DISABLE_POLLY=TRUE \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-lldb
 
 # libdispatch build
@@ -371,7 +369,6 @@ RUN CFLAGS="\
         -I${PACKAGE_PREFIX}/include \
         ${CFLAGS} \
     " \
-    DISABLE_POLLY=TRUE \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-foundation
 
 # xctest build
@@ -382,8 +379,7 @@ RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-xctest
 # llbuild build
 FROM XCTEST_BUILDER AS LLBUILD_BUILDER
 
-RUN DISABLE_POLLY=TRUE \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild
 
 # swift-tools-support-core build
 FROM LLBUILD_BUILDER AS SWIFT_TOOLS_SUPPORT_CORE_BUILDER
@@ -442,8 +438,7 @@ RUN SWIFT_BUILD_FLAGS="\
 # sourcekit-lsp build
 FROM SWIFT_DOC_BUILDER AS SOURCEKIT_LSP_BUILDER
 
-RUN DISABLE_POLLY=TRUE \
-    SWIFT_BUILD_FLAGS="\
+RUN SWIFT_BUILD_FLAGS="\
         -Xcc -I${PACKAGE_PREFIX}/include \
         ${SWIFT_BUILD_FLAGS} \
     " \
@@ -452,8 +447,7 @@ RUN DISABLE_POLLY=TRUE \
 # baikonur build
 FROM SOURCEKIT_LSP_BUILDER AS BAIKONUR_BUILDER
 
-RUN DISABLE_POLLY=TRUE \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-baikonur
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-baikonur
 
 # pythonkit build
 FROM BAIKONUR_BUILDER AS PYTHONKIT_BUILDER
@@ -461,8 +455,7 @@ FROM BAIKONUR_BUILDER AS PYTHONKIT_BUILDER
 RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pythonkit
 
 # swift tensorflows apis build
-# RUN DISABLE_POLLY=TRUE \
-#    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tensorflow-apis
+# RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tensorflow-apis
 
 # graphics sdk build
 FROM PYTHONKIT_BUILDER AS GRAPHICS_SDK_BUILDER
@@ -679,8 +672,7 @@ RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-windows
 # windows libcxx build
 FROM WINDOWS_LIBCXXABI_BUILDER AS WINDOWS_LIBCXX_BUILDER
 
-RUN DISABLE_POLLY=TRUE \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-windows
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-windows
 
 # windows llvm dependencies
 FROM WINDOWS_LIBCXX_BUILDER AS WINDOWS_LLVM_DEPENDENCIES_BUILDER

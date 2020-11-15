@@ -18,14 +18,12 @@ deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-libdispatch-windows
 
 # windows foundation build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-foundation-windows
 
 # windows xctest build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-xctest-windows
 
 # windows llbuild build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild-windows
 
 # windows swift-tools-support-core build
@@ -121,6 +119,4 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-format-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-doc-cross
 
 # windows sourcekit-lsp build
-
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sourcekit-lsp-windows

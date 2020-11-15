@@ -50,25 +50,21 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libunwind-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-cross
 
 # android libcxx build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-cross
 
 # android llvm dependencies build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-dependencies-android
 
 # android llvm build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project-android
 
 # android cmark build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-cmark-cross
 
 # android swift build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-android
 
 # android lldb build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-lldb-android
 
 # android libdispatch build
@@ -82,14 +78,12 @@ PACKAGE_ACTION=UNINSTALL \
 deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 
 # android foundation build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-foundation-cross
 
 # android xctest build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-xctest-cross
 
 # android llbuild build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild-android
 
 # android swift-tools-support-core build
@@ -140,15 +134,12 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-format-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-doc-cross
 
 # android sourcekit-lsp build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sourcekit-lsp-android
 
 # android baikonur build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-baikonur
 
 # android pythonkit build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pythonkit-cross
 
 # android graphics sdk build

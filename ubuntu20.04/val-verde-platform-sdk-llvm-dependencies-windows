@@ -67,7 +67,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libuv-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libssh2-cross
 
 # windows curl build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-curl-cross
 
 # windows gettext build
@@ -89,21 +88,16 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gperf-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wget-cross
 
 # windows z3 build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-z3-cross
 
 # windows ninja build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross
 
 # windows cmake build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cmake-cross
 
 # windows lua build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lua-cross
 
 # windows jwasm build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-jwasm

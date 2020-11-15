@@ -20,10 +20,6 @@ if [ -z "${DISABLE_POLLY}" ]; then
         -mllvm -polly \
         ${CXXFLAGS} \
     "
-    LDFLAGS="\
-        -mllvm -polly \
-        ${LDFLAGS} \
-    "
 fi
 
 if [ -z "${DISABLE_STRIP}" ]; then
