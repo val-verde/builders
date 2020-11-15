@@ -196,7 +196,7 @@ fi
 
 # android cmake build
 DISABLE_POLLY=TRUE \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cmake-android
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cmake-cross
 
 # android patch elf
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android-patch-elf-cross

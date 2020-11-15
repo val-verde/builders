@@ -555,7 +555,6 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android \
 # android package builders
 COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk-headers \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk-runtime \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-cmake-android \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project-android \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-dependencies-android \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-android \

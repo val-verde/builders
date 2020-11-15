@@ -73,6 +73,12 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-curl-cross
 # windows gettext build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gettext-cross
 
+# windows libarchive build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libarchive-cross
+
+# windows libmicrohttpd build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libmicrohttpd-cross
+
 # windows bison build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bison-cross
 
@@ -92,11 +98,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross
 
 # windows cmake build
 DISABLE_POLLY=TRUE \
-LIBS="\
-    -lole32 \
-    -loleaut32\
-    ${LIBS} \
-" \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cmake-cross
 
 # windows lua build
