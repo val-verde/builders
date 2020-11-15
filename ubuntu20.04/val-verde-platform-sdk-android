@@ -13,12 +13,15 @@ export SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOS
 # android compiler flags
 export CFLAGS="\
     -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
+    -D__USE_FORTIFY_LEVEL=0 \
 "
 export CPPFLAGS="\
     -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
+    -D__USE_FORTIFY_LEVEL=0 \
 "
 export CXXFLAGS="\
     -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
+    -D__USE_FORTIFY_LEVEL=0 \
 "
 export LDFLAGS="\
     -L${PACKAGE_PREFIX}/lib \
