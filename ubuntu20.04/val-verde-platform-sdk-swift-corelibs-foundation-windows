@@ -52,7 +52,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-cmake \
     -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DICU_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DICU_LIBRARY=${PACKAGE_PREFIX}/lib/libicudataswift.dll.a \
-    -DICU_I18N_LIBRARY_RELEASE=${PACKAGE_PREFIX}/lib/libicuinswift.dll.a \
+    -DICU_I18N_LIBRARY_RELEASE=${PACKAGE_PREFIX}/lib/libicui18nswift.dll.a \
     -DICU_UC_LIBRARY_RELEASE=${PACKAGE_PREFIX}/lib/libicuucswift.dll.a \
     -DCURL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DCURL_LIBRARY=${PACKAGE_PREFIX}/lib/libcurl_imp.lib \
