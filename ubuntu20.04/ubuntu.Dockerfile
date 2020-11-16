@@ -162,6 +162,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libffi-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libmicrohttpd-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-libsecret-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libssh2-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libuv-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libxml2-cross \

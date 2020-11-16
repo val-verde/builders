@@ -63,6 +63,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sqlite-cross
 # openssl build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openssl-cross
 
+# libsecret build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libsecret-cross
+
 # libcap build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcap-cross
 
