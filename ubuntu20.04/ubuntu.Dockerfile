@@ -92,6 +92,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-clang \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-gcc-mingw32 \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-ml64 \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-nvcc \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-rc \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-build \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc \
