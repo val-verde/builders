@@ -30,7 +30,6 @@ tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
 
-FORCE_UNSAFE_CONFIGURE=1 \
 ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
     --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX}
