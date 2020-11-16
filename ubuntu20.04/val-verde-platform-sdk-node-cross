@@ -105,6 +105,18 @@ if [ -z "${DISABLE_POLLY}" ]; then
     "
 fi
 
+if [ -z "${DISABLE_LIBNODE_SHARED}" ]; then
+    LIBNODE_SHARED_CMD="--shared"
+fi
+
+DISABLED_WARNING_CFLAGS=`echo "\
+    -Wno-deprecated-enum-enum-conversion \
+    -Wno-deprecated-volatile \
+    -Wno-ignored-attributes \
+    -Wno-implicit-const-int-float-conversion \
+    -Wno-macro-redefined \
+" | xargs`
+
 export AR_host=${AR_host:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar}
 export AR_target=${AR:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar}
 export AS_host=${AS_host:-${BUILD_PACKAGE_PREFIX}/bin/clang}
@@ -113,22 +125,14 @@ export CC_host=${CC_host:-${BUILD_PACKAGE_PREFIX}/bin/clang}
 export CC_target=${CC:-${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang}
 export CFLAGS_host=`echo "\
     -I${BUILD_PACKAGE_PREFIX}/include \
-    -Wno-deprecated-enum-enum-conversion \
-    -Wno-deprecated-volatile \
-    -Wno-ignored-attributes \
-    -Wno-implicit-const-int-float-conversion \
-    -Wno-macro-redefined \
+    ${DISABLED_WARNING_CFLAGS} \
 " | xargs`
 export CFLAGS=`echo ${CFLAGS} | xargs`
 export CPP_host=${CPP_host:-"${BUILD_PACKAGE_PREFIX}/bin/clang -E"}
 export CPP_target=${CPP:-"${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang -E"}
 export CPPFLAGS_host=`echo "\
     -I${BUILD_PACKAGE_PREFIX}/include \
-    -Wno-deprecated-enum-enum-conversion \
-    -Wno-deprecated-volatile \
-    -Wno-ignored-attributes \
-    -Wno-implicit-const-int-float-conversion \
-    -Wno-macro-redefined \
+    ${DISABLED_WARNING_CFLAGS} \
 " | xargs`
 export CPPFLAGS=`echo ${CPPFLAGS} | xargs`
 export CXX_host=${CXX_host:-"${BUILD_PACKAGE_PREFIX}/bin/clang++ -cxx-isystem ${BUILD_PACKAGE_PREFIX}/include/c++/v1"}
@@ -136,20 +140,10 @@ export CXX_target=${CXX_target:-${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}
 export CXXFLAGS_host=`echo "\
     -cxx-isystem ${BUILD_PACKAGE_PREFIX}/include/c++/v1 \
     -I${BUILD_PACKAGE_PREFIX}/include \
-    -Wno-ambiguous-reversed-operator \
-    -Wno-deprecated-enum-enum-conversion \
-    -Wno-deprecated-volatile \
-    -Wno-ignored-attributes \
-    -Wno-implicit-const-int-float-conversion \
-    -Wno-macro-redefined \
+    ${DISABLED_WARNING_CFLAGS} \
 " | xargs`
 export CXXFLAGS=`echo "\
-    -Wno-ambiguous-reversed-operator \
-    -Wno-deprecated-enum-enum-conversion \
-    -Wno-deprecated-volatile \
-    -Wno-ignored-attributes \
-    -Wno-implicit-const-int-float-conversion \
-    -Wno-macro-redefined \
+    ${DISABLED_WARNING_CFLAGS} \
     ${CXXFLAGS} \
 " | xargs`
 LDFLAGS_host=`echo "\
@@ -171,10 +165,14 @@ ${STAGE_ROOT}/configure \
     --shared-libuv \
     --shared-zlib \
     --with-intl=system-icu \
-    ${CROSS_COMPILING_CMD}
+    ${CROSS_COMPILING_CMD} \
+    ${LIBNODE_SHARED_CMD}
 
 # Build the components
 make-build
+
+rsync -aPx ${STAGE_ROOT}/out/Release/node \
+           ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin
 
 if [ "${HOST_OS}" = "android" ]; then
     sed -i \
