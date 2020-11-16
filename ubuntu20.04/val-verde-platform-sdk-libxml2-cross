@@ -33,7 +33,7 @@ sed -i \
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
 CFLAGS="\
-    -DTRUE=true \
+    -DTRUE=1 \
     ${CFLAGS} \
 " \
 ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-configure \

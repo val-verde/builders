@@ -37,10 +37,6 @@ LDFLAGS="\
     -Wc,-fuse-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
     ${LDFLAGS} \
 " \
-Z_LIBS="\
-    -lzlib \
-    ${Z_LIBS} \
-" \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libxml2-cross
 
 # windows libffi build
@@ -81,10 +77,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bison-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gperf-cross
 
 # windows wget build
-ZLIB_LIBS="\
-    -lzlib \
-    ${ZLIB_LIBS} \
-" \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wget-cross
 
 # windows z3 build
