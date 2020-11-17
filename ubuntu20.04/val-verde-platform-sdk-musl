@@ -59,7 +59,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-dependencies-musl
 
 # llvm build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project
 
 # cmark build

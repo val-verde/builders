@@ -41,7 +41,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-kernel-headers-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-dependencies-gnu
 
 # llvm build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project
 
 # cmark build
