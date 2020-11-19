@@ -3,16 +3,13 @@
 set -e
 
 # windows llvm build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project-windows
 
 # windows cmark build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-cmark-cross
 
 # windows swift build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-windows
 
 # windows lldb build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-lldb-windows

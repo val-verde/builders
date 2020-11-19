@@ -12,6 +12,8 @@ apt install -y \
     cmake \
     expat \
     git \
+    gobject-introspection \
+    gtk-doc-tools \
     flex \
     icu-devtools \
     intltool \

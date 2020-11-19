@@ -1,6 +1,8 @@
 #!/bin/bash
 
-args=$@
+set -e
+
+args=${@}
 args=`echo "${args}" | sed -r 's/\/c/-c/g'`
 args=`echo "${args}" | sed -r 's/\/Fo/-Fo/g'`
 args=`echo "${args}" | sed -r 's/-o/-Fo/g'`

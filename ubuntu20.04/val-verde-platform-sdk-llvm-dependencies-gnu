@@ -65,6 +65,11 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcap-cross
 # libexpat build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-expat-cross
 
+# libuv build
+CMAKE_BINDIR=/usr/bin \
+MAKE_PROGRAM=/usr/bin/ninja \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libuv-cross
+
 # libssh2 build
 CMAKE_BINDIR=/usr/bin \
 MAKE_PROGRAM=/usr/bin/ninja \
@@ -72,7 +77,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libssh2-cross
 
 # curl build
 CMAKE_BINDIR=/usr/bin \
-DISABLE_POLLY=TRUE \
 MAKE_PROGRAM=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-curl-cross
 
@@ -80,11 +84,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-curl-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gettext-cross
 
 # attr build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-attr-cross
 
 # acl build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-acl-cross
 
 # bash build
@@ -136,7 +138,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-systemd
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wget-cross
 
 # python build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-python-cross
 
 # lua build
@@ -147,7 +148,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swig-cross
 
 # z3 build
 CMAKE_BINDIR=/usr/bin \
-DISABLE_POLLY=TRUE \
 MAKE_PROGRAM=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-z3-cross
 
@@ -161,12 +161,10 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross
 
 # cmake build
 CMAKE_BINDIR=/usr/bin \
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cmake-cross
 
 # android patch elf
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android-patch-elf-cross
 
 # jwasm (ml64) cross compiler build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-jwasm

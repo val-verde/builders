@@ -25,7 +25,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt-wasi
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-wasi
 
 # webassembly libcxx
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-wasi
 
 # webassembly compiler-rt (rebuild with c++)

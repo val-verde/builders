@@ -56,11 +56,13 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openssl-cross
 # android libexpat build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-expat-cross
 
+# android libuv build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libuv-cross
+
 # android libssh2 build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libssh2-cross
 
 # android curl build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-curl-cross
 
 # android gettext build
@@ -71,7 +73,6 @@ CFLAGS="\
     -D__THROW= \
     ${CFLAGS} \
 " \
-DISABLE_POLLY=TRUE \
 LDFLAGS="\
     -lintl \
     ${LDFLAGS} \
@@ -83,7 +84,6 @@ CFLAGS="\
     -D__THROW= \
     ${CFLAGS} \
 " \
-DISABLE_POLLY=TRUE \
 LDFLAGS="\
     -lintl \
     ${LDFLAGS} \
@@ -166,7 +166,6 @@ CXXFLAGS="\
     --sysroot=${SYSROOT} \
     ${CXXFLAGS} \
 " \
-DISABLE_POLLY=TRUE \
 LDFLAGS="\
     --sysroot=${SYSROOT} \
     ${LDFLAGS} \
@@ -180,7 +179,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lua-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swig-cross
 
 # android z3 build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-z3-cross
 
 # android git build
@@ -192,12 +190,10 @@ if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
 fi
 
 # android cmake build
-DISABLE_POLLY=TRUE \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cmake-android
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cmake-cross
 
 # android patch elf
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android-patch-elf-cross
 
 # android jwasm (ml64) cross compiler build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-jwasm

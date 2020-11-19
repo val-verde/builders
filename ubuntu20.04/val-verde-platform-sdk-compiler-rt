@@ -23,6 +23,9 @@ export DEPENDS="${PACKAGE_BASE_NAME}-llvm-project-${BUILD_OS}${BUILD_OS_API_LEVE
 rm -rf ${STAGE_ROOT}
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
+
+BINDIR=${BINDIR:-${BUILD_PACKAGE_PREFIX}/bin}
+
 CFLAGS="\
     -nostdlib \
     ${CFLAGS} \
@@ -44,8 +47,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-cmake \
     -DCOMPILER_RT_EXCLUDE_ATOMIC_BUILTIN=FALSE \
     -DCOMPILER_RT_HAS_ATOMIC_KEYWORD=TRUE \
     -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
-    -DLLVM_CONFIG_PATH=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config \
-    -DLLVM_TABLEGEN=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-tblgen \
+    -DPython3_EXECUTABLE=${BINDIR}/python3 \
     ${SOURCE_ROOT}
 
 # Build the components

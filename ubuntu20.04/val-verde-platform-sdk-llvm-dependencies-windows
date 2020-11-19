@@ -37,10 +37,6 @@ LDFLAGS="\
     -Wc,-fuse-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
     ${LDFLAGS} \
 " \
-Z_LIBS="\
-    -lzlib \
-    ${Z_LIBS} \
-" \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libxml2-cross
 
 # windows libffi build
@@ -64,15 +60,23 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcap-cross
 # windows libexpat build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-expat-cross
 
+# windows libuv build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libuv-cross
+
 # windows libssh2 build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libssh2-cross
 
 # windows curl build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-curl-cross
 
 # windows gettext build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gettext-cross
+
+# windows libarchive build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libarchive-cross
+
+# windows libmicrohttpd build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libmicrohttpd-cross
 
 # windows bison build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bison-cross
@@ -81,33 +85,19 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bison-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gperf-cross
 
 # windows wget build
-ZLIB_LIBS="\
-    -lzlib \
-    ${ZLIB_LIBS} \
-" \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wget-cross
 
 # windows z3 build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-z3-cross
 
 # windows ninja build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross
 
 # windows cmake build
-DISABLE_POLLY=TRUE \
-LIBS="\
-    -lole32 \
-    -loleaut32\
-    ${LIBS} \
-" \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cmake-cross
 
 # windows lua build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lua-cross
 
 # windows jwasm build
-DISABLE_POLLY=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-jwasm
