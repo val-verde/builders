@@ -30,6 +30,8 @@ QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${H
 INSTALL_ROOT=${INSTALL_ROOT:-${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${QUALIFIED_PACKAGE_NAME}}
 INSTALL_PREFIX=${INSTALL_PREFIX:-${INSTALL_ROOT}${PACKAGE_PREFIX}}
 STAGE_ROOT=${STAGE_ROOT:-/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}}
+PACKAGE_SOURCES_ROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources \
+SOURCE_ROOT=${SOURCE_ROOT:-${PACKAGE_SOURCES_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}}
 
 # pre-build cleanup
 rm -rf ${INSTALL_PREFIX}/* \
@@ -336,6 +338,145 @@ function generate-compiler-tools() {
     fi
 }
 
+function fetch-sources() {
+    GIT_INDEX_OVERRIDE=${GIT_INDEX_OVERRIDE:-0}
+    OTHER_INDEX_OVERRIDE=${OTHER_INDEX_OVERRIDE:-0}
+    SOURCE_FILE=${SOURCE_FILE:-${BUILD_PACKAGE_PREFIX}/share/${VAL_VERDE_GH_TEAM}-sources.json}
+
+    pushd /sources
+    
+    echo "Processing source file..."${SOURCE_FILE}
+    gitSourcesCount=( $(jq '.[0] | .gitSources | length' ${SOURCE_FILE}) )
+    otherSourcesCount=( $(jq '.[1] | .otherSources | length' ${SOURCE_FILE}) )
+
+    git config --global user.email "openvalverde@gmail.com"
+
+    for index in `seq "${GIT_INDEX_OVERRIDE}" $(($gitSourcesCount - 1))`; do
+        SOURCE_PACKAGE_NAME=$(jq -r ".[0] | .gitSources | .[$index].sourcePackageName" ${SOURCE_FILE})
+        SOURCE_BRANCH_IND=$(jq -r ".[0] | .gitSources | .[$index].sourceBranchIndicator" ${SOURCE_FILE})
+        SOURCE_PACKAGE_VERSION=$(jq -r ".[0] | .gitSources | .[$index].sourcePackageVersion" ${SOURCE_FILE})
+        SOURCE_URL=$(jq -r ".[0] | .gitSources | .[$index].sourcePackageUrl" ${SOURCE_FILE})
+        PACKAGE_BASE_URL=${SOURCE_URL/'${VAL_VERDE_GH_TEAM}'/${VAL_VERDE_GH_TEAM}}
+        export PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}        
+        
+        if [[ ${PACKAGE_BASE_URL} == *'${SOURCE_PACKAGE_NAME}'* ]]; then
+            PACKAGE_URL=${PACKAGE_BASE_URL//'${SOURCE_PACKAGE_NAME}'/${SOURCE_PACKAGE_NAME}}
+        else
+            PACKAGE_URL=${PACKAGE_BASE_URL}
+        fi
+
+        if [[ ${SOURCE_BRANCH_IND} == "default" ]]; then
+            SOURCE_BRANCH=val-verde-mainline
+        elif [[ ${SOURCE_BRANCH_IND} == "default-next" ]]; then
+            SOURCE_BRANCH=val-verde-mainline-next
+        elif [[ ${SOURCE_BRANCH_IND} == "default-next-testing" ]]; then
+            SOURCE_BRANCH=val-verde-mainline-next-testing
+            PACKAGE_NAME=${PACKAGE_NAME}-testing
+        elif [[ ${SOURCE_BRANCH_IND} == "android" ]]; then
+            SOURCE_BRANCH=val-verde-android-mainline
+            PACKAGE_NAME=${PACKAGE_NAME}-android
+        elif [[ ${SOURCE_BRANCH_IND} == "android-next" ]]; then
+            SOURCE_BRANCH=val-verde-android-mainline-next
+            PACKAGE_NAME=${PACKAGE_NAME}-android
+        elif [[ ${SOURCE_BRANCH_IND} == "android-next-testing" ]]; then
+            SOURCE_BRANCH=val-verde-android-mainline-next-testing
+            PACKAGE_NAME=${PACKAGE_NAME}-android-testing
+        elif [[ ${SOURCE_BRANCH_IND} == "windows" ]]; then
+            SOURCE_BRANCH=val-verde-windows-mainline
+            PACKAGE_NAME=${PACKAGE_NAME}-windows
+        else
+            SOURCE_BRANCH=${SOURCE_BRANCH_IND}
+        fi
+        
+        export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources/${PACKAGE_NAME}
+        export INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-sources
+        
+        # Prepare install directory for source package
+        mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}
+        if [[ ${SOURCE_PACKAGE_NAME} = 'rust' ]]; then
+            GIT_URL=${PACKAGE_URL} \
+            TARGET_ROOT=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+            ENABLE_SUBMODULES=true \
+            git-clone ${SOURCE_BRANCH}
+        else
+            GIT_URL=${PACKAGE_URL} \
+            TARGET_ROOT=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+            git-clone ${SOURCE_BRANCH}
+        fi
+
+        # Prepare source root
+        pushd ${INSTALL_ROOT}${PACKAGE_PREFIX}
+        rm -rf .git*
+        rm -rf "^.git*"
+        git init
+        git add -A
+        git commit -m "Val verde source base commit."
+        popd
+
+        # Build the source deb package
+        deb-package-build
+
+        # Install the source deb package
+        deb-package-install
+
+        # Clean up
+        rm -rf ${INSTALL_ROOT}
+        echo "Retrieved and packaged..."${PACKAGE_NAME}
+    done
+    
+    for index in `seq "${OTHER_INDEX_OVERRIDE}" $(($otherSourcesCount - 1))`; do
+        SOURCE_PACKAGE_NAME=$(jq -r ".[1] | .otherSources | .[$index].sourcePackageName" ${SOURCE_FILE})
+        SOURCE_BRANCH_IND=$(jq -r ".[1] | .otherSources | .[$index].sourceBranchIndicator" ${SOURCE_FILE})
+        SOURCE_PACKAGE_VERSION=$(jq -r ".[1] | .otherSources | .[$index].sourcePackageVersion" ${SOURCE_FILE})
+        SOURCE_URL=$(jq -r ".[1] | .otherSources | .[$index].sourcePackageUrl" ${SOURCE_FILE})
+        PACKAGE_BASE_URL=${SOURCE_URL/'${VAL_VERDE_GH_TEAM}'/${VAL_VERDE_GH_TEAM}}
+        export PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
+
+        if [[ ${PACKAGE_BASE_URL} == *'${SOURCE_PACKAGE_NAME}'* || ${PACKAGE_BASE_URL} == *'${SOURCE_PACKAGE_VERSION}'* ]]; then
+            PACKAGE_URL=${PACKAGE_BASE_URL//'${SOURCE_PACKAGE_NAME}'/${SOURCE_PACKAGE_NAME}}
+            PACKAGE_URL=${PACKAGE_URL//'${SOURCE_PACKAGE_VERSION}'/${SOURCE_PACKAGE_VERSION}}
+        else
+            PACKAGE_URL=${PACKAGE_BASE_URL}
+        fi
+
+        export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources/${PACKAGE_NAME}
+        export INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-sources
+        # Prepare install directory for source package
+        mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}
+
+        if [[ ${SOURCE_BRANCH_IND} == "wget" ]]; then
+            wget -c ${PACKAGE_URL} -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
+            tar -xzvf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
+                -C ${INSTALL_ROOT}${PACKAGE_PREFIX} --strip 1
+            rm ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
+        elif [[ ${SOURCE_BRANCH_IND} == "wget-xz" ]]; then
+            wget -c ${PACKAGE_URL} -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz
+            tar -xvf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz \
+                -C ${INSTALL_ROOT}${PACKAGE_PREFIX} --strip 1
+            rm ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz
+        elif [[ ${SOURCE_BRANCH_IND} == "wget-unzip" ]]; then
+            ANDROID_NDK_URL=https://dl.google.com/android/repository
+            wget -c ${ANDROID_NDK_URL}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.zip \
+                 -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.zip
+            unzip ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.zip \
+                 -d ${INSTALL_ROOT}${PACKAGE_PREFIX}
+            rm ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.zip
+        fi
+        
+        # Build the source deb package
+        deb-package-build
+
+        # Install the source deb package
+        deb-package-install
+
+        # Clean up
+        rm -rf ${INSTALL_ROOT}
+        echo "Retrieved and packaged..."${PACKAGE_NAME}
+    done
+
+    popd
+}
+
 function generate-control-file() {
     # Template definition
     pushd /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
@@ -360,18 +501,24 @@ function generate-control-file() {
 function git-clone() {
     GIT_BRANCH=$1
     TARGET_ROOT=${TARGET_ROOT:-${SOURCE_ROOT}}
+    ENABLE_SUBMODULES=${ENABLE_SUBMODULES:-"false"}
+    
     pushd /sources
+    
+    if [ -d "${TARGET_ROOT}" ]; then
+        rm -rf ${TARGET_ROOT}
+    fi
 
-    if [ ! -d "${TARGET_ROOT}" ] ; then
+    if [[ ${ENABLE_SUBMODULES} = "false" ]]; then
         git clone ${GIT_URL} \
           --branch ${GIT_BRANCH} \
           --single-branch \
           ${TARGET_ROOT}
     else
-        rm -rf ${TARGET_ROOT}
         git clone ${GIT_URL} \
           --branch ${GIT_BRANCH} \
           --single-branch \
+          --recurse-submodules \
           ${TARGET_ROOT}
     fi
 

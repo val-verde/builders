@@ -59,15 +59,8 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-gen-deb-files \
      /sources/scripts-staging/bin/
 
 COPY ${VAL_VERDE_GH_TEAM}-deb-templates \
+     ${VAL_VERDE_GH_TEAM}-sources.json \
      /sources/scripts-staging/share/
-
-# linux sources
-FROM BASE AS SOURCES_BUILDER
-
-RUN git clone https://github.com/${VAL_VERDE_GH_TEAM}/llvm-project.git \
-              --branch val-verde-mainline-next \
-              --single-branch \
-              /sources/llvm-project
 
 # platform sdk bootstrap package build scripts
 COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap \
@@ -85,7 +78,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap \
 ENV OPTIMIZATION_LEVEL=3
 
 # gnu bootstrap build
-FROM SOURCES_BUILDER AS GNU_BOOTSTRAP_BUILDER
+FROM BASE AS GNU_BOOTSTRAP_BUILDER
 
 RUN HOST_ARCH=${BUILD_ARCH} \
     HOST_CPU=${BUILD_CPU} \
