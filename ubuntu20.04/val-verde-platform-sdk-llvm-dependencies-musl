@@ -32,7 +32,7 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnulib-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pcre-cross
 
 # icu build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-icu4c
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-icu4c-cross
 
 # xz build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xz-cross
