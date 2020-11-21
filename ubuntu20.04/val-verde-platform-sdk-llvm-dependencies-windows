@@ -54,9 +54,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sqlite-cross
 # windows openssl build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openssl-cross
 
-# windows libcap build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcap-cross
-
 # windows libexpat build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-expat-cross
 
