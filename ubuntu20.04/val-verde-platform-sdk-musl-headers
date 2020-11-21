@@ -18,9 +18,13 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST
 
 # Configure the build components
 rm -rf ${STAGE_ROOT}
+GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git" \
+git-clone val-verde-mainline
+
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
+CFLAGS_AUTO="-pipe" \
 LIBCC=`${BUILD_PACKAGE_PREFIX}/bin/clang -target ${HOST_TRIPLE} \
                                          --sysroot ${SYSROOT} \
                                          -print-libgcc-file-name` \
@@ -30,8 +34,10 @@ ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-configure \
     --syslibdir=${INSTALL_ROOT}${PACKAGE_PREFIX}/../lib
 
 # Build the components
-TARGETS="install-libs install-tools" \
+TARGETS="install-headers" \
 make-build
+
+rm -rf ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/iconv.h
 
 # Build the package
 deb-package-build

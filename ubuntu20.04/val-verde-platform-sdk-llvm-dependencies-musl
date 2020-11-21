@@ -9,11 +9,11 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zlib-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bzip2-cross
 
 # autoconf build
-CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-linux" \
+CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-gnu" \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-autoconf-cross
 
 # automake build
-CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-linux" \
+CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-gnu" \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-automake-cross
 
 # make build
@@ -44,6 +44,10 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libxml2-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libffi-cross
 
 # gdbm build
+CFLAGS="\
+    -fcommon \
+    ${CFLAGS} \
+" \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gdbm-cross
 
 # ncurses build
@@ -78,9 +82,7 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gettext-cross
 
 # attr build
 CFLAGS="\
-    -D__BEGIN_DECLS= \
-    -D__END_DECLS= \
-    -D__THROW= \
+    -include ${PACKAGE_PREFIX}/include/sys/cdefs.h \
     ${CFLAGS} \
 " \
 CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-linux" \
@@ -88,9 +90,7 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-attr-cross
 
 # acl build
 CFLAGS="\
-    -D__BEGIN_DECLS= \
-    -D__END_DECLS= \
-    -D__THROW= \
+    -include ${PACKAGE_PREFIX}/include/sys/cdefs.h \
     ${CFLAGS} \
 " \
 CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-linux" \
@@ -110,13 +110,11 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libmicrohttpd-cross
 
 # elfutils build
 CFLAGS="\
-    -include ${PACKAGE_PREFIX}/include/gnulib/config.h \
+    -include ${PACKAGE_PREFIX}/include/gnulib/config/config.h \
+    -include ${PACKAGE_PREFIX}/include/sys/cdefs.h \
+    -lgnu \
     -I${PACKAGE_PREFIX}/include/gnulib \
     ${CFLAGS} \
-" \
-LDFLAGS="\
-    -lgnu \
-    ${LIBS} \
 " \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-elfutils-cross
 
@@ -151,8 +149,13 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-dpkg-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wget-cross
 
 # python build
-_PYTHON_HOST_PLATFORM=linux-${HOST_PROCESSOR} \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-python-cross
+if [ "${BUILD_PROCESSOR}" = "${HOST_PROCESSOR}" ]; then
+    PYTHON_FOR_BUILD=${BUILD_PACKAGE_PREFIX}/bin/python3 \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-python-cross
+else
+    _PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-python-cross
+fi
 
 # lua build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lua-cross

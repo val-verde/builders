@@ -1,0 +1,61 @@
+#!/bin/bash
+
+set -e
+
+# libdispatch build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-libdispatch
+
+# foundation build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-foundation
+
+# xctest build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-xctest
+
+# llbuild build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild
+
+# swift tools support core build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-support-core
+
+# yams build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-yams
+
+# swift argument parser build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-argument-parser
+
+# swift driver build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-driver
+
+# swift package manager build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-package-manager
+
+dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-argument-parser-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-xctest-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-driver-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-llbuild-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-package-manager-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-tools-support-core-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
+        ${DEB_PATH}/${PACKAGE_BASE_NAME}-yams-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb
+
+# swift-syntax build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-syntax-cross
+
+# swift-format build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-format-cross
+
+# swift-doc build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-doc-cross
+
+# sourcekit-lsp build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sourcekit-lsp
+
+# baikonur build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-baikonur
+
+# pythonkit build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pythonkit
+
+# swift tensorflows apis build
+# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tensorflow-apis

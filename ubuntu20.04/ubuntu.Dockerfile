@@ -149,7 +149,6 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-gettext-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-git-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-glslang-cross \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-gnulib-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-gperf-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-graphics-sdk-cross \
@@ -170,7 +169,6 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-lua-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-make-cross \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-musl-libc \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-ncurses-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-node-cross \
@@ -231,19 +229,50 @@ RUN HOST_ARCH=${BUILD_ARCH} \
     SYSROOT=/ \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu
 
-# musl build
-FROM GNU_BUILDER AS MUSL_BUILDER
+# platform independent package builders
+FROM GNU_BUILDER AS PLATFORM_INDEPENDENT_PACKAGE_BUILDERS
 
-COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-dependencies-musl \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-musl \
+COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-gnulib-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-icu4c-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-pythonkit-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-rust-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-argument-parser-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-cmark-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-foundation-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-libdispatch-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-xctest-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-driver-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-package-manager-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-yams-cross \
      /sources/
 
-# RUN HOST_ARCH=${BUILD_ARCH} \
-#     HOST_CPU=${BUILD_CPU} \
-#     HOST_KERNEL=${BUILD_KERNEL} \
-#     HOST_OS=musl \
-#     HOST_PROCESSOR=${BUILD_PROCESSOR} \
-#     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-musl
+# musl build
+FROM PLATFORM_INDEPENDENT_PACKAGE_BUILDERS AS MUSL_BUILDER
+
+COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt-musl \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-dependencies-musl \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project-musl \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-musl \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-musl-headers \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-musl-libc \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-sdk-musl \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-musl \
+     /sources/
+
+RUN HOST_ARCH=${BUILD_ARCH} \
+    HOST_CPU=${BUILD_CPU} \
+    HOST_KERNEL=${BUILD_KERNEL} \
+    HOST_OS=musl \
+    HOST_PROCESSOR=${BUILD_PROCESSOR} \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-musl
+
+RUN HOST_ARCH=armv8-a \
+    HOST_CPU=cortex-a57 \
+    HOST_KERNEL=${BUILD_KERNEL} \
+    HOST_OS=musl \
+    HOST_PROCESSOR=aarch64 \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-musl
 
 # android-ndk package
 FROM MUSL_BUILDER AS ANDROID_NDK_BUILDER
@@ -257,28 +286,8 @@ RUN ANDROID_NDK_VERSION=r21d \
     SYSROOT=/ \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk
 
-# platform independent package builders
-FROM ANDROID_NDK_BUILDER AS PLATFORM_INDEPENDENT_PACKAGE_BUILDERS
-
-COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-icu4c-cross \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-pythonkit-cross \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-rust-cross \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-sourcekit-lsp-android \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-argument-parser-cross \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-cmark-cross \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-foundation-cross \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-libdispatch-cross \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-xctest-cross \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-driver-cross \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild-cross \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-lldb-android \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-package-manager-cross \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-yams-cross \
-     /sources/
-
 # webassembly build
-FROM PLATFORM_INDEPENDENT_PACKAGE_BUILDERS AS WEBASSEMBLY_BUILDER
+FROM ANDROID_NDK_BUILDER AS WEBASSEMBLY_BUILDER
 
 COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt-wasi \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-wasi \
@@ -299,12 +308,15 @@ RUN HOST_ARCH=wasm32 \
 FROM WEBASSEMBLY_BUILDER AS ANDROID_BUILDER
 
 # android package builders
-COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk-headers \
+COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk-headers \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk-runtime \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project-android \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-dependencies-android \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-sourcekit-lsp-android \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-android \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild-android \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-lldb-android \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-support-core-android \
      /sources/
 
