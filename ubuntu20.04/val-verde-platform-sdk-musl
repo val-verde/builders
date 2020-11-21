@@ -20,7 +20,7 @@ export CPPFLAGS=`echo "\
     -I${PACKAGE_PREFIX}/include \
 " | xargs`
 export CXXFLAGS=`echo "\
-    -cxx-isystem ${PACKAGE_PREFIX}/include/c++/v1 \
+    -stdlib++-isystem ${PACKAGE_PREFIX}/include/c++/v1 \
     -nostdinc++ \
     -D__USE_FORTIFY_LEVEL=0 \
     -I${PACKAGE_PREFIX}/include \
@@ -30,7 +30,7 @@ export LDFLAGS=`echo "\
 " | xargs`
 export SWIFT_BUILD_FLAGS=`echo "\
     -Xcc -I${PACKAGE_PREFIX}/include \
-    -Xcxx -cxx-isystem -Xcxx ${PACKAGE_PREFIX}/include/c++/v1 \
+    -Xcxx -stdlib++-isystem -Xcxx ${PACKAGE_PREFIX}/include/c++/v1 \
     -Xcxx -nostdinc++ \
     -Xcxx -I${PACKAGE_PREFIX}/include \
     -Xlinker -L${PACKAGE_PREFIX}/lib \
