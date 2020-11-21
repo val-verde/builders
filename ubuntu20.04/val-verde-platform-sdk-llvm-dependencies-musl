@@ -83,6 +83,7 @@ CFLAGS="\
     -D__THROW= \
     ${CFLAGS} \
 " \
+CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-linux" \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-attr-cross
 
 # acl build
@@ -92,6 +93,7 @@ CFLAGS="\
     -D__THROW= \
     ${CFLAGS} \
 " \
+CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-linux" \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-acl-cross
 
 # bash build
