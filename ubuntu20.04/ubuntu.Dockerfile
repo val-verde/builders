@@ -149,6 +149,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-gettext-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-git-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-glslang-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-gnulib-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-gperf-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-graphics-sdk-cross \

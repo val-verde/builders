@@ -1,0 +1,62 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+# Set all environment vars
+export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
+export SOURCE_PACKAGE_NAME=gnulib
+export SOURCE_PACKAGE_VERSION=9999-git
+export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${QUALIFIED_PACKAGE_NAME}
+
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+
+# Configure the build components
+rm -rf ${STAGE_ROOT}
+GIT_URL="git://git.savannah.gnu.org/${SOURCE_PACKAGE_NAME}.git" \
+git-clone master
+
+${SOURCE_ROOT}/gnulib-tool \
+    --dir ${STAGE_ROOT} \
+    --create-testdir \
+    --without-tests \
+    argp \
+    error
+
+mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
+cd ${STAGE_ROOT}
+
+${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-configure \
+    ${STAGE_ROOT}/configure \
+    --disable-static \
+    --enable-shared \
+    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX}
+
+# Build the components
+make-build
+
+mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/gnulib/config \
+         ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib
+sed -i \
+    "s/#define PACKAGE/#define GNULIB_PACKAGE/g" \
+    ${STAGE_ROOT}/config.h
+sed -i \
+    "s/#define VERSION/#define GNULIB_VERSION/g" \
+    ${STAGE_ROOT}/config.h
+rsync -aPx ${STAGE_ROOT}/config.h \
+           ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/gnulib/config/
+rsync -aPx ${STAGE_ROOT}/gllib/*.h \
+           ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/gnulib/
+rsync -aPx ${STAGE_ROOT}/gllib/*.a \
+           ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/
+
+# Build the package
+deb-package-build
+
+# Build the package
+deb-package-install

@@ -25,6 +25,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross
 # pkg-config build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pkg-config-cross
 
+# gnulib build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnulib-cross
+
 # pcre build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pcre-cross
 
@@ -104,7 +107,16 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libarchive-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libmicrohttpd-cross
 
 # elfutils build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-elfutils-cross
+CFLAGS="\
+    -include ${PACKAGE_PREFIX}/include/gnulib/config.h \
+    -I${PACKAGE_PREFIX}/include/gnulib \
+    ${CFLAGS} \
+" \
+LDFLAGS="\
+    -lgnu \
+    ${LIBS} \
+" \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-elfutils-cross
 
 # strace build
 # bash ${VAL_VERDE_GH_TEAM}-platform-sdk-strace-cross
