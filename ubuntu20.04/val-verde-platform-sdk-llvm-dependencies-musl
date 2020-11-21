@@ -149,7 +149,7 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-dpkg-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wget-cross
 
 # python build
-_PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
+_PYTHON_HOST_PLATFORM=linux-${HOST_PROCESSOR} \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-python-cross
 
 # lua build
