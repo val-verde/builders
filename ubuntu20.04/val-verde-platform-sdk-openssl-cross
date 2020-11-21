@@ -34,7 +34,8 @@ if [ "${HOST_OS}" = "android" ]; then
 
     export ANDROID_NDK_HOME=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/android-ndk-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}${BUILD_PACKAGE_PREFIX}/android-ndk-${ANDROID_NDK_VERSION}
     export PATH=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}/bin:${PATH}
-elif [ "${HOST_OS}" = "gnu" ]; then
+elif [ "${HOST_OS}" = "gnu" ] || \
+     [ "${HOST_OS}" = "musl" ]; then
     OPENSSL_OS=linux
 elif [ "${HOST_OS}" = "mingw32" ]; then
     OPENSSL_DIR=${PACKAGE_PREFIX}/etc/ssl
