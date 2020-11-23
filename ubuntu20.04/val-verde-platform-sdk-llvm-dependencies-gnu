@@ -45,6 +45,10 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libxml2-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libffi-cross
 
 # gdbm build
+CFLAGS="\
+    -fcommon \
+    ${CFLAGS} \
+" \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gdbm-cross
 
 # ncurses build
