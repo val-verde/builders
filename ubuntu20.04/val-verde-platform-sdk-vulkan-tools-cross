@@ -19,8 +19,8 @@ export DEPENDS="${PACKAGE_BASE_NAME}-vulkan-loader-${HOST_OS}${HOST_OS_API_LEVEL
 
 # Configure the build components
 rm -rf ${STAGE_ROOT}
-GIT_URL="https://github.com/KhronosGroup/${SOURCE_PACKAGE_NAME}.git" \
-git-clone master
+GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git" \
+git-clone val-verde-mainline
 
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
