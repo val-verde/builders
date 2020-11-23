@@ -29,6 +29,12 @@ wget -c http://ftp.debian.org/debian/pool/main/d/${SOURCE_PACKAGE_NAME}/${SOURCE
      -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz
 tar -xf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz
 
+if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+    CROSS_COMPILING=yes
+else
+    CROSS_COMPILING=no
+fi
+
 if [ "${HOST_OS}" = "android" ]; then
     ADMIN_DIR=/data/local/tmp
     CONFIGURE_HOST_KERNEL=unknown
@@ -49,6 +55,7 @@ CXXFLAGS="\
 " \
 ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
+    cross_compiling=${CROSS_COMPILING} \
     --disable-dselect \
     --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
     --with-admindir=${ADMIN_DIR}
