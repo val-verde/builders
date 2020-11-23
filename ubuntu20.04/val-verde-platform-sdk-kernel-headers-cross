@@ -25,11 +25,18 @@ mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}${PACKAGE_PREFIX}
 
 MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILD_PACKAGE_PREFIX}/bin/make}
 
+ARCH=${HOST_PROCESSOR}
+
+if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+    ARCH=arm64
+fi
+
 cd ${STAGE_ROOT}
 ${MAKE_PROGRAM} \
     -C ${SOURCE_ROOT} \
+    ARCH=${ARCH} \
     CC=${CC:-${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang} \
-    CFLAGS=`echo ${CFLAGS} | xargs` \
+    CFLAGS="`echo ${CFLAGS} | xargs`" \
     INSTALL_HDR_PATH=${INSTALL_ROOT}${PACKAGE_PREFIX} \
     defconfig \
     headers_install
