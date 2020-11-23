@@ -34,15 +34,15 @@ if [ "${HOST_OS}" = "android" ]; then
 
     export ANDROID_NDK_HOME=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/android-ndk-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}${BUILD_PACKAGE_PREFIX}/android-ndk-${ANDROID_NDK_VERSION}
     export PATH=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}/bin:${PATH}
+
+    if [ "${OPENSSL_PROCESSOR}" = "aarch64" ]; then
+        OPENSSL_PROCESSOR=arm64
+    fi
 elif [ "${HOST_OS}" = "gnu" ] || \
      [ "${HOST_OS}" = "musl" ]; then
     OPENSSL_OS=linux
 elif [ "${HOST_OS}" = "mingw32" ]; then
     OPENSSL_DIR=${PACKAGE_PREFIX}/etc/ssl
-fi
-
-if [ "${OPENSSL_PROCESSOR}" = "aarch64" ]; then
-    OPENSSL_PROCESSOR=arm64
 fi
 
 OPENSSL_TARGET=${OPENSSL_OS}-${OPENSSL_PROCESSOR}
@@ -51,10 +51,22 @@ if [ "${HOST_OS}" = "mingw32" ]; then
     OPENSSL_TARGET=mingw64
 fi
 
-AR=${AR:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar} \
-CC=${CC:-${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang} \
-RANLIB=${RANLIB:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib} \
-RC=${RC:-${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-rc} \
+CFLAGS=`echo "\
+    --sysroot=${SYSROOT} \
+    --target=${HOST_TRIPLE} \
+    ${CFLAGS} \
+" | xargs`
+AR=${AR:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar}
+CC=${CC:-${BUILD_PACKAGE_PREFIX}/bin/clang}
+RANLIB=${RANLIB:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib}
+RC=${RC:-${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-rc}
+
+create_host_tool ${CC} CFLAGS ${STAGE_ROOT}/host-clang
+
+AS=${AR} \
+CC=${STAGE_ROOT}/host-clang \
+RANLIB=${RANLIB} \
+RC=${RC} \
 ${SOURCE_ROOT}/Configure \
     --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
     --openssldir=${OPENSSL_DIR} \
