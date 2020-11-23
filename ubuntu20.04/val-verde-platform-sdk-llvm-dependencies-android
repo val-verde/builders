@@ -77,23 +77,17 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gettext-cross
 
 # android attr build
 CFLAGS="\
+    -lintl \
     -D__THROW= \
     ${CFLAGS} \
-" \
-LDFLAGS="\
-    -lintl \
-    ${LDFLAGS} \
 " \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-attr-cross
 
 # android acl build
 CFLAGS="\
+    -lintl \
     -D__THROW= \
     ${CFLAGS} \
-" \
-LDFLAGS="\
-    -lintl \
-    ${LDFLAGS} \
 " \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-acl-cross
 
@@ -110,9 +104,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libarchive-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libmicrohttpd-cross
 
 # android elfutils build
-LDFLAGS="\
+CFLAGS="\
     -lintl \
-    ${LDFLAGS} \
+    ${CFLAGS} \
 " \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-elfutils-cross
 
