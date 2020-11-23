@@ -24,6 +24,12 @@ tar -xf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz
 
 mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
+
+CFLAGS="\
+    -Wno-macro-redefined \
+    -Wno-unused-command-line-argument \
+    ${CFLAGS} \
+" \
 ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
     --enable-mpers=no \
