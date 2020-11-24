@@ -33,9 +33,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-icu4c-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xz-cross
 
 # windows libxml2 build
-LDFLAGS="\
-    -Wc,-fuse-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
-    ${LDFLAGS} \
+CFLAGS="\
+    -fuse-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
+    ${CFLAGS} \
 " \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libxml2-cross
 
