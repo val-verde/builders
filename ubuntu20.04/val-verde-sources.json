@@ -1,0 +1,784 @@
+[
+    {
+        "gitSources": [
+            {
+                "sourcePackageName": "android-ndk-patches",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "android-patch-elf",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "baikonur",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "bzip2",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "1.0.8",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "bzip2",
+                "sourceBranchIndicator": "windows",
+                "sourcePackageVersion": "1.0.8",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "cmake",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "cmake",
+                "sourceBranchIndicator": "android",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "coreutils",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "8.32",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "cups",
+                "sourceBranchIndicator": "master",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/apple/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "egl-headers",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/egl-registry.git"
+            },
+            {
+                "sourcePackageName": "elfutils",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "0.181",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "filament",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "findutils",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "4.7.0",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "git",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "glslang",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "grep",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "3.6",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "gnulib",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "icu4c",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/icu.git"
+            },
+            {
+                "sourcePackageName": "jwasm",
+                "sourceBranchIndicator": "master",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "khr-headers",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/egl-registry.git"
+            },
+            {
+                "sourcePackageName": "libarchive",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "3.4.3",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "libsecret",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "0.20.4",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "libssh2",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "libuv",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "1.40.0",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "libx11",
+                "sourceBranchIndicator": "master",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/mirror/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "llvm-project",
+                "sourceBranchIndicator": "default-next",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "llvm-project",
+                "sourceBranchIndicator": "android-next",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "lua",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "5.4.1",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "lunarg-vulkan-tools",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "m4",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "1.4.18",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "mingw-w64",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "musl-fts",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "musl-libc",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "ninja",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "node",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "opengl-es-headers",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/OpenGL-Registry.git"
+            },
+            {
+                "sourcePackageName": "opengl-headers",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/OpenGL-Registry.git"
+            },
+            {
+                "sourcePackageName": "openjdk",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "16",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "perl",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "5.32.0",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "pixman",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "python",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/c${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "pythonkit",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "pythonkit",
+                "sourceBranchIndicator": "android",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "qemu",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "5.2.0",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "rsync",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "3.2.3",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "rust",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "sourcekit-lsp",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "sourcekit-lsp",
+                "sourceBranchIndicator": "android",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "spirv-headers",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "spirv-tools",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "strace",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "5.9",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "swift",
+                "sourceBranchIndicator": "default-next",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "swift",
+                "sourceBranchIndicator": "android-next",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "swift-cmark",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "swift-argument-parser",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "swift-corelibs-foundation",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "swift-corelibs-libdispatch",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "swift-corelibs-xctest",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "swift-doc",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "swift-doc",
+                "sourceBranchIndicator": "android",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "swift-driver",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "swift-format",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "swift-log",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "swift-llbuild",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "swift-llbuild",
+                "sourceBranchIndicator": "android",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "swift-package-manager",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "swift-syntax",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "swift-tensorflow-apis",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "swift-tools-support-core",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "swift-tools-support-core",
+                "sourceBranchIndicator": "android",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "vulkan-headers",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "vulkan-loader",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "vulkan-tools",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "vulkan-validation-layers",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/Vulkan-ValidationLayers.git"
+            },
+            {
+                "sourcePackageName": "wasi-libc",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-wasm32",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "wine",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "wineditline",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "xcb-libxcb",
+                "sourceBranchIndicator": "master",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "xcbproto",
+                "sourceBranchIndicator": "master",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://gitlab.freedesktop.org/xorg/proto/${SOURCE_PACKAGE_NAME}"
+            },
+            {
+                "sourcePackageName": "xcb-pthread-stubs",
+                "sourceBranchIndicator": "master",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "xorg-libxau",
+                "sourceBranchIndicator": "master",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "xorg-libxtrans",
+                "sourceBranchIndicator": "master",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "xorg-macros",
+                "sourceBranchIndicator": "master",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "xorg-xorgproto",
+                "sourceBranchIndicator": "master",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "yams",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "yautja-server",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "z3",
+                "sourceBranchIndicator": "z3-4.8.9",
+                "sourcePackageVersion": "4.8.9",
+                "sourcePackageUrl": "https://github.com/Z3Prover/${SOURCE_PACKAGE_NAME}.git"
+            },
+            {
+                "sourcePackageName": "zlib",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "1.2.11",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+            }
+        ]
+    },
+    {
+        "otherSources": [
+            {
+                "sourcePackageName": "attr",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "2.4.47",
+                "sourcePackageUrl": "http://download.savannah.gnu.org/releases/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.src.tar.gz"
+            },
+            {
+                "sourcePackageName": "acl",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "2.2.52",
+                "sourcePackageUrl": "http://download.savannah.gnu.org/releases/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.src.tar.gz"
+            },
+            {
+                "sourcePackageName": "autoconf",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "2.69",
+                "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "automake",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "1.16.3",
+                "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "bash",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "5.1-rc3",
+                "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "binutils",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "2.34",
+                "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "bison",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "3.7.4",
+                "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "curl",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "7.73.0",
+                "sourcePackageUrl": "https://curl.haxx.se/download/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "dpkg",
+                "sourceBranchIndicator": "wget-xz",
+                "sourcePackageVersion": "1.20.5",
+                "sourcePackageUrl": "http://ftp.debian.org/debian/pool/main/d/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}_${SOURCE_PACKAGE_VERSION}.tar.xz"
+            },
+            {
+                "sourcePackageName": "expat",
+                "sourceBranchIndicator": "wget-xz",
+                "sourcePackageVersion": "2.2.10",
+                "sourcePackageUrl": "https://fossies.org/linux/www/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz"
+            },
+            {
+                "sourcePackageName": "gawk",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "5.1.0",
+                "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "gcc",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "10.1.0",
+                "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "gdbm",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "1.18.1",
+                "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "gettext",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "0.21",
+                "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "gperf",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "3.1",
+                "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "libcap",
+                "sourceBranchIndicator": "wget-xz",
+                "sourcePackageVersion": "2.45",
+                "sourcePackageUrl": "https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz"
+            },
+            {
+                "sourcePackageName": "libedit",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "20191231-3.1",
+                "sourcePackageUrl": "https://www.thrysoee.dk/editline/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "libffi",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "3.3",
+                "sourcePackageUrl": "https://gcc.gnu.org/pub/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "libgcc",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "10.1.0",
+                "sourcePackageUrl": "https://ftp.gnu.org/gnu/gcc/gcc-${SOURCE_PACKAGE_VERSION}/gcc-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "libiconv",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "1.16",
+                "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "libmicrohttpd",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "0.9.71",
+                "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "libtool",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "2.4.6",
+                "sourcePackageUrl": "https://ftp.gnu.org/pub/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "libxml2",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "2.9.10",
+                "sourcePackageUrl": "http://xmlsoft.org/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "linux",
+                "sourceBranchIndicator": "wget-xz",
+                "sourcePackageVersion": "5.10.1",
+                "sourcePackageUrl": "https://cdn.kernel.org/pub/${SOURCE_PACKAGE_NAME}/kernel/v5.x/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz"
+            },
+            {
+                "sourcePackageName": "make",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "4.3",
+                "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "ncurses",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "6.2",
+                "sourcePackageUrl": "https://ftp.gnu.org/gnu/ncurses/ncurses-6.2.tar.gz"
+            },
+            {
+                "sourcePackageName": "openssl",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "1.1.1i",
+                "sourcePackageUrl": "https://www.openssl.org/source/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "pcre",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "8.44",
+                "sourcePackageUrl": "https://ftp.pcre.org/pub/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "pkg-config",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "0.29.2",
+                "sourcePackageUrl": "https://pkgconfig.freedesktop.org/releases/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "sdl",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "2.0.12",
+                "sourcePackageUrl": "https://www.libsdl.org/release/SDL2-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "sed",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "4.8",
+                "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "sqlite",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "autoconf-3330000",
+                "sourcePackageUrl": "https://sqlite.org/2020/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "swig",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "4.0.2",
+                "sourcePackageUrl": "https://ftp.osuosl.org/pub/blfs/conglomeration/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "systemd",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "247",
+                "sourcePackageUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}/archive/v${SOURCE_PACKAGE_VERSION}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "tar",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "1.32",
+                "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "unzip",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "60",
+                "sourcePackageUrl": "ftp://ftp.info-zip.org/pub/infozip/src/${SOURCE_PACKAGE_NAME}${SOURCE_PACKAGE_VERSION}.tgz"
+            },
+            {
+                "sourcePackageName": "util-linux",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "2.36.1",
+                "sourcePackageUrl": "https://cdn.kernel.org/pub/linux/utils/${SOURCE_PACKAGE_NAME}/v2.36/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "vim",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "8.2.2057",
+                "sourcePackageUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}/archive/v${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "wget",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "1.20.3",
+                "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "xz",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "5.2.5",
+                "sourcePackageUrl": "http://download.openpkg.org/components/cache/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+            },
+            {
+                "sourcePackageName": "zip",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "30",
+                "sourcePackageUrl": "ftp://ftp.info-zip.org/pub/infozip/src/${SOURCE_PACKAGE_NAME}${SOURCE_PACKAGE_VERSION}.tgz"
+            }
+        ]
+    }
+]
