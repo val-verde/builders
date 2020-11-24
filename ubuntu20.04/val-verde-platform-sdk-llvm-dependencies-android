@@ -110,6 +110,15 @@ CFLAGS="\
 " \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-elfutils-cross
 
+# android sed build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sed-cross
+
+# android bison build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bison-cross
+
+# android gawk build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gawk-cross
+
 # android strace build
 if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-strace-cross
@@ -120,15 +129,6 @@ else
     " \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-strace-cross
 fi
-
-# android sed build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sed-cross
-
-# android bison build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bison-cross
-
-# android gawk build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gawk-cross
 
 # android gperf build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gperf-cross
