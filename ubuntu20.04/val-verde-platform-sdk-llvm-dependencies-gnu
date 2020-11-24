@@ -113,9 +113,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libmicrohttpd-cross
 # elfutils build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-elfutils-cross
 
-# strace build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-strace-cross
-
 # sed build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sed-cross
 
@@ -124,6 +121,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bison-cross
 
 # gawk build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gawk-cross
+
+# strace build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-strace-cross
 
 # gperf build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gperf-cross
