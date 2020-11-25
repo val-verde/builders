@@ -2,6 +2,9 @@
 
 set -e
 
+# Source package build helper functions
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
 BINDIR=${BINDIR:-${BUILD_PACKAGE_PREFIX}/bin}
 BINTOOLS_PREFIX=${BINTOOLS_PREFIX:-llvm-}
 BINTOOLS_PATH_PREFIX=${BINDIR}/${BINTOOLS_PREFIX}
@@ -22,6 +25,16 @@ if [ -z "${DISABLE_POLLY}" ]; then
     "
 fi
 
+if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+    HOST_TOOL_FLAGS=`echo "\
+        --sysroot=${SYSROOT} \
+        --target=${HOST_TRIPLE} \
+    " | xargs`
+    HOST_LDFLAGS=`echo "\
+        --sysroot=${SYSROOT} \
+    " | xargs`
+fi
+
 if [ -z "${DISABLE_STRIP}" ]; then
     LDFLAGS="\
         -s \
@@ -31,7 +44,7 @@ fi
 
 if [ -z "${ENABLE_LLVM_VERIFIER}" ]; then
     LDFLAGS="\
-        -disable-llvm-verifier \
+        -disable-verify \
         ${LDFLAGS} \
     "
 fi
@@ -45,18 +58,12 @@ if [ -n "${ENABLE_FLTO}" ]; then
     "
 fi
 
-if [ -n "${LDFLAGS}" ]; then
-    LDFLAGS_CMD="LDFLAGS=${LDFLAGS}"
-fi
-
-if [ -n "${LIBS}" ]; then
-    LIBS_CMD="LIBS=${LIBS}"
-fi
-
-AR=${AR:-${BINTOOLS_PATH_PREFIX}ar}
-CC=${CC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-clang}
-CPP=${CPP:-"${CC} -E"}
-CXX=${CXX:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-clang++}
+AR=${OBJCOPY:-${BINTOOLS_PATH_PREFIX}ar}
+AS=${CC:-${BINDIR}/clang}
+CC=${CC:-${BINDIR}/clang}
+CCLD=${CCLD:-${BINDIR}/clang}
+CPP=${CPP:-${BINDIR}/clang-cpp}
+CXX=${CXX:-${BINDIR}/clang++}
 DLLTOOL=${DLLTOOL:-${BINTOOLS_PATH_PREFIX}dlltool}
 LD=${LD:-${BINDIR}/ld.lld}
 MANIFEST_TOOL=${MANIFEST_TOOL:-${BINTOOLS_PATH_PREFIX}mt}
@@ -85,63 +92,75 @@ if [ -n "${HOST_CPU}" ]; then
     "
 fi
 
-ASFLAGS="\
+ASFLAGS=`echo "\
     ${ARCH_FLAGS} \
     ${FLTO_CFLAG} \
+    ${HOST_TOOL_FLAGS} \
     ${OPTIMIZATION_FLAGS} \
-    -O${OPTIMIZATION_LEVEL} \
     ${ASMFLAGS} \
-"
-CFLAGS="\
+" | xargs`
+CFLAGS=`echo "\
     ${ARCH_FLAGS} \
     ${FLTO_CFLAG} \
+    ${HOST_TOOL_FLAGS} \
     ${OPTIMIZATION_FLAGS} \
-    -O${OPTIMIZATION_LEVEL} \
     ${CFLAGS} \
-"
-CXXFLAGS="\
+" | xargs`
+CPPFLAGS=`echo "\
     ${ARCH_FLAGS} \
     ${FLTO_CFLAG} \
+    ${HOST_TOOL_FLAGS} \
     ${OPTIMIZATION_FLAGS} \
-    -O${OPTIMIZATION_LEVEL} \
-    ${CXXFLAGS} \
-"
-LDFLAGS="\
+    ${CPPFLAGS} \
+" | xargs`
+CXXFLAGS=`echo "\
     ${ARCH_FLAGS} \
+    ${FLTO_CFLAG} \
+    ${HOST_TOOL_FLAGS} \
+    ${OPTIMIZATION_FLAGS} \
+    ${CXXFLAGS} \
+" | xargs`
+LDFLAGS=`echo "\
     ${FLTO_LDFLAG} \
+    ${HOST_LDFLAGS} \
     ${LDFLAGS} \
-    -O${LINKER_OPTIMIZATION_LEVEL} \
-"
+" | xargs`
 LIBS="${LIBS}"
 
-"$@" AR=${AR} \
-     AS=${CC} \
-     ASFLAGS="${ASFLAGS}" \
-     CC=${CC} \
-     CFLAGS="${CFLAGS}" \
-     CPP="${CPP}" \
-     CXX=${CXX} \
-     CXXFLAGS="${CXXFLAGS}" \
-     DLLTOOL=${DLLTOOL} \
-     LD=${LD} \
-     LDFLAGS="${LDFLAGS}" \
-     LIBS="${LIBS}" \
-     LIBTOOLFLAGS="-avoid-version" \
-     MANIFEST_TOOL=${MANIFEST_TOOL} \
-     NM=${NM} \
-     OBJCOPY=${OBJCOPY} \
-     OBJDUMP=${OBJDUMP} \
-     PKG_CONFIG_PATH=${PKG_CONFIG_PATH} \
-     RANLIB=${RANLIB} \
-     RC=${RC} \
-     RCFLAGS=${RCFLAGS} \
-     READELF=${READELF} \
-     SIZE=${SIZE} \
-     STRIP=${STRIP} \
-     STRINGS=${STRINGS} \
-     WINDRES=${RC} \
+create_host_tool ${AS} ASFLAGS ${STAGE_ROOT}/host-clang-as 
+create_host_tool ${CC} CFLAGS ${STAGE_ROOT}/host-clang
+create_host_tool ${CPP} CPPFLAGS ${STAGE_ROOT}/host-clang-cpp
+create_host_tool ${CXX} CXXFLAGS ${STAGE_ROOT}/host-clang++
+create_host_tool ${LD} LDFLAGS ${STAGE_ROOT}/host-clang-ld
+
+AR=${AR} \
+AS=${STAGE_ROOT}/host-clang-as \
+ASFLAGS="-O${OPTIMIZATION_LEVEL}" \
+CC=${STAGE_ROOT}/host-clang \
+CFLAGS="-O${OPTIMIZATION_LEVEL}" \
+CPP=${STAGE_ROOT}/host-clang-cpp \
+CPPFLAGS="-O${OPTIMIZATION_LEVEL}" \
+CXX=${STAGE_ROOT}/host-clang++ \
+CXXFLAGS="-O${OPTIMIZATION_LEVEL}" \
+DLLTOOL=${DLLTOOL} \
+LD=${STAGE_ROOT}/host-clang-ld \
+LDFLAGS="-O${LINKER_OPTIMIZATION_LEVEL}" \
+LIBS="${LIBS}" \
+LIBTOOLFLAGS="-avoid-version" \
+MANIFEST_TOOL=${MANIFEST_TOOL} \
+NM=${NM} \
+OBJCOPY=${OBJCOPY} \
+OBJDUMP=${OBJDUMP} \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH} \
+RANLIB=${RANLIB} \
+RC=${RC} \
+RCFLAGS=${RCFLAGS} \
+READELF=${READELF} \
+SIZE=${SIZE} \
+STRIP=${STRIP} \
+STRINGS=${STRINGS} \
+WINDRES=${RC} \
+"$@" \
     --build=${BUILD_TRIPLE} \
     --host=${CONFIGURE_HOST_TRIPLE} \
-    "${CONFIGURE_FLAGS}" \
-    "${LDFLAGS_CMD}" \
-    "${LIBS_CMD}"
+    ${CONFIGURE_FLAGS}

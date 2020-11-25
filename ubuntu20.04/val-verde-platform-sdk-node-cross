@@ -135,10 +135,10 @@ export CPPFLAGS_host=`echo "\
     ${DISABLED_WARNING_CFLAGS} \
 " | xargs`
 export CPPFLAGS=`echo ${CPPFLAGS} | xargs`
-export CXX_host=${CXX_host:-"${BUILD_PACKAGE_PREFIX}/bin/clang++ -cxx-isystem ${BUILD_PACKAGE_PREFIX}/include/c++/v1"}
+export CXX_host=${CXX_host:-"${BUILD_PACKAGE_PREFIX}/bin/clang++ -stdlib++-isystem ${BUILD_PACKAGE_PREFIX}/include/c++/v1"}
 export CXX_target=${CXX_target:-${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang++}
 export CXXFLAGS_host=`echo "\
-    -cxx-isystem ${BUILD_PACKAGE_PREFIX}/include/c++/v1 \
+    -stdlib++-isystem ${BUILD_PACKAGE_PREFIX}/include/c++/v1 \
     -I${BUILD_PACKAGE_PREFIX}/include \
     ${DISABLED_WARNING_CFLAGS} \
 " | xargs`

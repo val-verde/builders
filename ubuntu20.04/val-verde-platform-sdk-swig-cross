@@ -17,6 +17,7 @@ export INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${QUALIFIED_PACKAGE_NAME
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 export DEPENDS="\
     ${PACKAGE_BASE_NAME}-lua-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-pcre-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-python-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
@@ -31,6 +32,11 @@ sed -i \
 
 mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
+PCRE_CFLAGS=`echo "\
+    -I${PACKAGE_PREFIX}/include \
+    -L${PACKAGE_PREFIX}/lib \
+" | xargs` \
+PCRE_LIBS="-lpcre" \
 ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
     --disable-static \
@@ -38,7 +44,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-configure \
     --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX}
 
 # Build the components
-TARGETS=" " \
+TARGETS="swig" \
 make-build
 
 make-build

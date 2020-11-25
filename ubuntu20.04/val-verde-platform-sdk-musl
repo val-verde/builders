@@ -12,36 +12,41 @@ export SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HO
 export SYSTEM_NAME=Linux
 
 export CFLAGS=`echo "\
+    -fPIC \
     -D__USE_FORTIFY_LEVEL=0 \
-    -I${PACKAGE_PREFIX}/include \
 " | xargs`
 export CPPFLAGS=`echo "\
+    -fPIC \
     -D__USE_FORTIFY_LEVEL=0 \
-    -I${PACKAGE_PREFIX}/include \
 " | xargs`
 export CXXFLAGS=`echo "\
-    -cxx-isystem ${PACKAGE_PREFIX}/include/c++/v1 \
-    -nostdinc++ \
+    -fPIC \
+    -stdlib++-isystem ${PACKAGE_PREFIX}/include/c++/v1 \
     -D__USE_FORTIFY_LEVEL=0 \
-    -I${PACKAGE_PREFIX}/include \
-" | xargs`
-export LDFLAGS=`echo "\
-    -L${PACKAGE_PREFIX}/lib \
 " | xargs`
 export SWIFT_BUILD_FLAGS=`echo "\
-    -Xcc -I${PACKAGE_PREFIX}/include \
-    -Xcxx -cxx-isystem -Xcxx ${PACKAGE_PREFIX}/include/c++/v1 \
-    -Xcxx -nostdinc++ \
-    -Xcxx -I${PACKAGE_PREFIX}/include \
-    -Xlinker -L${PACKAGE_PREFIX}/lib \
+    -Xcc D__USE_FORTIFY_LEVEL=0 \
+    -Xcxx -stdlib++-isystem -Xcxx ${PACKAGE_PREFIX}/include/c++/v1 \
 " | xargs`
 export SWIFTCFLAGS=`echo "\
-    -I${PACKAGE_PREFIX}/include \
-    -L${PACKAGE_PREFIX}/lib \
+    -sdk ${PACKAGE_PREFIX} \
 " | xargs`
 
 # kernel headers builds
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-kernel-headers-cross
+
+# musl headers build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-musl-headers
+
+# compiler-rt build
+if [ "${BUILD_PROCESSOR}" != ${HOST_PROCESSOR} ]; then
+    CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a \
+    CXXFLAGS="\
+        -Dprintf\\\(...\\\)= \
+        ${CXXFLAGS} \
+    " \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt-musl
+fi
 
 # musl libc build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-musl-libc
@@ -53,88 +58,24 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libunwind-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-cross
 
 # libcxx build
+ENABLE_MUSL_LIBC=TRUE \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-cross
 
 # llvm dependencies
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-dependencies-musl
 
-# llvm build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project
+# windows swift tools build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-musl
 
-# cmark build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-cmark
-
-# swift build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift
-
-# lldb build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-lldb
-
-# libdispatch build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-libdispatch
-
-# foundation build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-foundation
-
-# xctest build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-xctest
-
-# llbuild build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild
-
-# swift tools support core build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-support-core
-
-# yams build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-yams
-
-# swift argument parser build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-argument-parser
-
-# swift driver build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-driver
-
-# swift package manager build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-package-manager
-
-dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-argument-parser-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-xctest-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-driver-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-llbuild-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-package-manager-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-tools-support-core-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-yams-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb
-
-# swift-syntax build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-syntax-cross
-
-# swift-format build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-format-cross
-
-# swift-doc build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-doc-cross
-
-# sourcekit-lsp build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sourcekit-lsp
-
-# baikonur build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-baikonur
-
-# pythonkit build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pythonkit
-
-# swift tensorflows apis build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tensorflow-apis
+# windows swift sdk build
+# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-sdk-musl
 
 # graphics sdk build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-graphics-sdk-cross
+# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-graphics-sdk-cross
 
 # node + sdk build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-node-cross
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-npm-yarn-cross
+# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-node-cross
+# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-npm-yarn-cross
 
 # rust build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-rust
-
+# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-rust

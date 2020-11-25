@@ -37,7 +37,8 @@ rsync -aPx ${INCLUDES_PATH}/${HOST_TRIPLE}/asm \
 # Remove zlib components as they are rebuilt.
 rm -f ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/iconv.h \
       ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/zconf.h \
-      ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/zlib.h
+      ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/zlib.h \
+      ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/sys/capability.h
 
 # Build the package
 deb-package-build

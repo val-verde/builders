@@ -35,6 +35,10 @@ ln -sf /usr/bin/true \
 export FORCE_UNSAFE_CONFIGURE=1
 export PATH=${PATH}:${STAGE_ROOT}/bin
 
+CFLAGS="\
+    -Wno-unused-command-line-argument \
+    ${CFLAGS} \
+" \
 ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-configure \
     ${SOURCE_ROOT}/configure \
     --with-openssl \

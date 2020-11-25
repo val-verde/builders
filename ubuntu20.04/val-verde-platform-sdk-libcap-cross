@@ -27,14 +27,21 @@ cd ${STAGE_ROOT}
 rsync -ax ${SOURCE_ROOT}/* \
           ${STAGE_ROOT}/
 
-
 # Build the components
-lib=lib \
-prefix=/ \
-AR=${AR:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar} \
-CC=${CC:-${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang} \
-BUILD_CC=${CC:-${BUILD_PACKAGE_PREFIX}/bin/clang} \
-DESTDIR=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+TARGETS=`echo "\
+    lib=lib \
+    prefix=/ \
+    AR=${AR:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar} \
+    CC=${CC:-${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang} \
+    BUILD_CC=${CC:-${BUILD_PACKAGE_PREFIX}/bin/clang} \
+    DESTDIR=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+    install \
+" | xargs`
+
+TARGETS="${TARGETS} -C ${STAGE_ROOT}/libcap" \
+make-build
+
+TARGETS="${TARGETS} -C ${STAGE_ROOT}/progs" \
 make-build
 
 # Build the package
