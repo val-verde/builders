@@ -166,6 +166,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swig-cross
 # z3 build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-z3-cross
 
+# vim build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-vim-cross
+
 # git build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-git-cross
 

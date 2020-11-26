@@ -210,6 +210,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-systemd \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-tar-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-util-linux-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-vim-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-vulkan-headers-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-vulkan-loader-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-vulkan-tools-cross \
