@@ -14,6 +14,12 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-autoconf-cross
 # windows automake build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-automake-cross
 
+# windows libtool build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libtool-cross
+
+# windows m4 build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-m4-cross
+
 # windows make build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-make-cross
 

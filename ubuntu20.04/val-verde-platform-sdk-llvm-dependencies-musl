@@ -16,6 +16,12 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-autoconf-cross
 CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-gnu" \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-automake-cross
 
+# libtool build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libtool-cross
+
+# m4 build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-m4-cross
+
 # make build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-make-cross
 

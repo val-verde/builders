@@ -19,6 +19,14 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-autoconf-cross
 MAKE_PROGRAM=/usr/bin/make \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-automake-cross
 
+# libtool build
+MAKE_PROGRAM=/usr/bin/make \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libtool-cross
+
+# m4 build
+MAKE_PROGRAM=/usr/bin/make \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-m4-cross
+
 # make build
 MAKE_PROGRAM=/usr/bin/make \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-make-cross

@@ -17,6 +17,12 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-automake-cross
 # android make build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-make-cross
 
+# android libtool build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libtool-cross
+
+# android m4 build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-m4-cross
+
 # android libiconv build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross
 
