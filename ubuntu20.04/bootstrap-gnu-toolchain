@@ -19,6 +19,7 @@ apt install -y \
     intltool \
     libasound2-dev \
     libcups2-dev \
+    jq \
     libedit-dev \
     libelf-dev \
     libffi-dev \
