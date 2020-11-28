@@ -9,8 +9,8 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project-musl
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-cmark
 
 # swift build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift
+# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-musl
 
 # lldb build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-lldb
+# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-lldb-musl
 
