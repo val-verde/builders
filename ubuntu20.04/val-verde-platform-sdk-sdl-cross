@@ -5,7 +5,6 @@ set -e
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=sdl
 export SOURCE_PACKAGE_VERSION=2.0.12
-export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 
 # Source package build helper functions
 source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
@@ -13,13 +12,6 @@ source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 export DEPENDS="${PACKAGE_BASE_NAME}-vulkan-loader-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 
 # Configure the build components
-cd /sources
-rm -rf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-wget -c https://www.libsdl.org/release/SDL2-${SOURCE_PACKAGE_VERSION}.tar.gz \
-     -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
-tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
-mv SDL2-${SOURCE_PACKAGE_VERSION} ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-
 cd ${STAGE_ROOT}
 
 if [ "${HOST_OS}" = "android" ]; then
