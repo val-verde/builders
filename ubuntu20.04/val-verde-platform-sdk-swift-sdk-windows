@@ -45,7 +45,6 @@ CXXFLAGS="\
 " \
 SWIFTCFLAGS="\
     -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
-    -L${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR} \
     ${SWIFTCFLAGS} \
 " \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-argument-parser-cross
@@ -63,7 +62,6 @@ CXXFLAGS="\
 " \
 SWIFTCFLAGS="\
     -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
-    -L${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR} \
     ${SWIFTCFLAGS} \
 " \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-driver-cross
@@ -81,7 +79,6 @@ CXXFLAGS="\
 " \
 SWIFTCFLAGS="\
     -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
-    -L${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR} \
     ${SWIFTCFLAGS} \
 " \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-package-manager-cross

@@ -58,8 +58,6 @@ RUN mkdir -p ${BUILD_PACKAGE_PREFIX} \
 # platform sdk tool wrapper scripts
 COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-clang \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-clang++ \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-cmake \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-configure \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-gcc-mingw32 \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-ml64 \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
@@ -69,9 +67,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-clang \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc \
      ${BUILD_PACKAGE_PREFIX}/bin/
 
-RUN chmod +x ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-configure \
-             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-cmake \
-             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang \
+RUN chmod +x ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang \
              ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang++ \
              ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-gcc-mingw32 \
              ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-ml64 \
@@ -81,13 +77,13 @@ RUN chmod +x ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-confi
              ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-swift-build \
              ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc
 
-COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-gen-deb-files \
+COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-gen-deb-files \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-make-build \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-build \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-package-${PACKAGE_CLASS}-build \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-package-install \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-rpath-fixup \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts \
      ${BUILD_PACKAGE_PREFIX}/bin/
 
 COPY ${VAL_VERDE_GH_TEAM}-deb-templates \

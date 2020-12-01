@@ -2,36 +2,28 @@
 
 set -e
 
-# Source package build helper functions
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
-
 # Set all environment vars
-export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
 export SOURCE_PACKAGE_NAME=pkg-config
 export SOURCE_PACKAGE_VERSION=0.29.2
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${QUALIFIED_PACKAGE_NAME}
 
-export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+# Source package build helper functions
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # Configure the build components
-rm -rf ${STAGE_ROOT}
 cd /sources
 wget -c https://pkgconfig.freedesktop.org/releases/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
 tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
 
-mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
 
-${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-configure \
+package-configure \
     ${SOURCE_ROOT}/configure \
     ac_cv_func_posix_getgrgid_r=yes \
     ac_cv_func_posix_getpwuid_r=yes \
     glib_cv_stack_grows=no \
     glib_cv_uscore=no \
-    --prefix=${INSTALL_ROOT}/${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
     --with-internal-glib \
     --with-libiconv=gnu
 

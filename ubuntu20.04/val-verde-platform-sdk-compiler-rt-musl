@@ -2,26 +2,19 @@
 
 set -e
 
-# Source package build helper functions
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
-
 # Set all environment vars
-export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
 export SOURCE_PACKAGE_NAME=compiler-rt
 export SOURCE_PACKAGE_VERSION=9999
 export SOURCE_ROOT=/sources/llvm-project/${SOURCE_PACKAGE_NAME}
-export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${QUALIFIED_PACKAGE_NAME}
 
-export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}
+# Source package build helper functions
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
 export CLANG_RT_LIB=${CLANG_RT_LIB:-libclang_rt.builtins-${HOST_PROCESSOR}-${HOST_OS}.a}
-export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-/sources/build-staging/llvm-project-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
 export DEPENDS="${PACKAGE_BASE_NAME}-llvm-project-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH} (>=1.0.0)"
+export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-/sources/build-staging/llvm-project-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
 
 # Configure the build components
-rm -rf ${STAGE_ROOT}
-mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
 BINDIR=${BINDIR:-${BUILD_PACKAGE_PREFIX}/bin}
@@ -35,7 +28,7 @@ CXXFLAGS="\
     ${CXXFLAGS} \
 " \
 INSTALL_PREFIX=${STAGE_ROOT}/install-staging${BUILD_PACKAGE_PREFIX} \
-${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-cmake \
+package-cmake \
     -DCMAKE_C_COMPILER_WORKS=TRUE \
     -DCMAKE_CXX_COMPILER_WORKS=TRUE \
     -DCOMPILER_RT_BUILD_LIBFUZZER=FALSE \

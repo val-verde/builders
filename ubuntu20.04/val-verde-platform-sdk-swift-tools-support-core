@@ -2,19 +2,14 @@
 
 set -e
 
-# Source package build helper functions
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
-
 # Set all environment vars
-export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
 export SOURCE_PACKAGE_NAME=swift-tools-support-core
 export SOURCE_PACKAGE_VERSION=9999-git
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${QUALIFIED_PACKAGE_NAME}
 
-export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+# Source package build helper functions
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
 export DEPENDS="\
     ${PACKAGE_BASE_NAME}-llvm-project-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-sqlite-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
@@ -24,13 +19,11 @@ export DEPENDS="\
 "
 
 # Configure the build components
-rm -rf ${STAGE_ROOT}
 GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git" \
 git-clone val-verde-mainline
-mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
-cd ${STAGE_ROOT}
 
-${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-cmake \
+cd ${STAGE_ROOT}
+package-cmake \
     -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DFoundation_DIR=/sources/build-staging/swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DSQLite3_INCLUDE_DIR=${PACKAGE_PREFIX}/include \

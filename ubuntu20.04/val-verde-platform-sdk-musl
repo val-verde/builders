@@ -7,37 +7,7 @@ source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source
 
 # gnu environment
 export HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}
-export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr
-export SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot}
 export SYSTEM_NAME=Linux
-
-export CFLAGS="\
-    -fPIC \
-    -D_ALL_SOURCE=1 \
-    -D__USE_FORTIFY_LEVEL=0 \
-"
-export CPPFLAGS="\
-    -fPIC \
-    -D_ALL_SOURCE=1 \
-    -D__USE_FORTIFY_LEVEL=0 \
-"
-export CXXFLAGS="\
-    -fPIC \
-    -stdlib++-isystem ${PACKAGE_PREFIX}/include/c++/v1 \
-    -D_ALL_SOURCE=1 \
-    -D__USE_FORTIFY_LEVEL=0 \
-"
-export SWIFT_BUILD_FLAGS="\
-    -Xcc -D_ALL_SOURCE=1 \
-    -Xcc -D__USE_FORTIFY_LEVEL=0 \
-    -Xcxx -stdlib++-isystem -Xcxx ${PACKAGE_PREFIX}/include/c++/v1 \
-"
-export SWIFTCFLAGS="\
-    -Xcc -stdlib++-isystem -Xcc ${PACKAGE_PREFIX}/include/c++/v1 \
-    -Xcc -D_ALL_SOURCE=1 \
-    -Xcc -D__USE_FORTIFY_LEVEL=0 \
-    -sdk ${SYSROOT} \
-"
 
 # kernel headers builds
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-kernel-headers-cross

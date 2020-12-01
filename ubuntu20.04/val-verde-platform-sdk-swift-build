@@ -2,13 +2,13 @@
 
 set -e
 
-BINDIR=${BINDIR:-${BUILD_PACKAGE_PREFIX}/bin}
-LINKER_OPTIMIZATION_LEVEL=${LINKER_OPTIMIZATION_LEVEL:-2}
-OPTIMIZATION_LEVEL=${OPTIMIZATION_LEVEL:-z}
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-"${PACKAGE_PREFIX}/lib/pkgconfig"}
+# Source package build helper functions
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export-compiler-environment
+
 SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
 SWIFT_BUILD_TYPE=${SWIFT_BUILD_TYPE:-release}
-SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot}
 TEMP_FILE=`mktemp`
 
 if [ -z "${DISABLE_POLLY}" ]; then
@@ -26,7 +26,21 @@ if [ -n "${ENABLE_FLTO}" ]; then
     FLTO_SWIFTCFLAG="-whole-module-optimization"
 fi
 
-if [ "${SDK_PLATFORM_DIR}" != "windows" ]; then
+if [ "${HOST_OS}" = "android" ]; then
+    SWIFT_BUILD_FLAGS="\
+        -Xcc -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
+        -Xcc -D__USE_FORTIFY_LEVEL=0 \
+        ${SWIFT_BUILD_FLAGS} \
+    "
+elif [ "${HOST_OS}" = "musl" ]; then
+    SWIFT_BUILD_FLAGS="\
+        -Xcc -D_ALL_SOURCE=1 \
+        -Xcc -D__USE_FORTIFY_LEVEL=0 \
+        ${SWIFT_BUILD_FLAGS} \
+    "
+fi
+    
+if [ "${HOST_OS}" != "mingw32" ]; then
     FPIC_CFLAG="-fPIC"
     TARGET=${TARGET:-${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}}
 else
@@ -41,6 +55,8 @@ echo -e "{ \n\
     \"extra-cc-flags\": [ \n\
         \"-march=${HOST_ARCH}\", \n\
         \"-mtune=${HOST_CPU}\", \n\
+        \"-pipe\", \n\
+        \"-I${PACKAGE_PREFIX}/include\", \n\
         \"-I${PACKAGE_PREFIX}/lib/swift\", \n\
         \"-I${PACKAGE_PREFIX}/lib/swift/Block\", \n\
         \"-O${OPTIMIZATION_LEVEL}\", \n\
@@ -49,12 +65,12 @@ echo -e "{ \n\
         ${POLLY_CFLAG} \n\
     ], \n\
     \"extra-cpp-flags\": [ \n\
-        \"-I${PACKAGE_PREFIX}/lib/swift\", \n\
-        \"-I${PACKAGE_PREFIX}/lib/swift/Block\", \n\
-        \"${FLTO_CFLAG}\", \n\
+        \"-stdlib++-isystem\", \"${PACKAGE_PREFIX}/include/c++/v1\", \n\
     ], \n\
     \"extra-linker-flags\": [ \n\
         \"-disable-verify\", \n\
+        \"-L${PACKAGE_PREFIX}/lib\", \n\
+        \"-L${PACKAGE_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}\", \n\
         \"-O${LINKER_OPTIMIZATION_LEVEL}\", \n\
         \"${FLTO_CFLAG}\", \n\
         \"${STRIP_LDFLAG}\", \n\
@@ -70,7 +86,6 @@ echo -e "{ \n\
 } \n\
 " > ${TEMP_FILE}
 
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH} \
 ${BINDIR}/swift \
     build \
     --build-path ${STAGE_ROOT} \

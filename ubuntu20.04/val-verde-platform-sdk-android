@@ -7,36 +7,7 @@ source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source
 
 # android environment
 export HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}
-export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr
-export SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot
 export SYSTEM_NAME=Linux
-
-# android compiler flags
-export CFLAGS="\
-    -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
-    -D__USE_FORTIFY_LEVEL=0 \
-"
-export CPPFLAGS="\
-    -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
-    -D__USE_FORTIFY_LEVEL=0 \
-"
-export CXXFLAGS="\
-    -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
-    -D__USE_FORTIFY_LEVEL=0 \
-"
-export LDFLAGS="\
-    -L${PACKAGE_PREFIX}/lib \
-"
-export SWIFT_BUILD_FLAGS="\
-    -Xcc -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
-    -Xcc -I${PACKAGE_PREFIX}/include \
-    -Xcxx -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
-    -Xcxx -I${PACKAGE_PREFIX}/include \
-    -Xlinker -L${PACKAGE_PREFIX}/lib \
-"
-export SWIFTCFLAGS="\
-    -sdk ${SYSROOT} \
-"
 
 # android ndk headers build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk-headers

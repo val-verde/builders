@@ -2,26 +2,21 @@
 
 set -e
 
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=linux
+export SOURCE_PACKAGE_VERSION=5.9.12
+export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
+
 # Source package build helper functions
 source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
-# Set all environment vars
-export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
-export SOURCE_PACKAGE_NAME=linux
-export SOURCE_PACKAGE_VERSION=5.9.11
-export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${QUALIFIED_PACKAGE_NAME}
-
-export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export-compiler-environment
 
 # Configure the build components
-rm -rf ${STAGE_ROOT}
 wget -c https://cdn.kernel.org/pub/${SOURCE_PACKAGE_NAME}/kernel/v5.x/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz
 tar -xf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz
 
-mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}${PACKAGE_PREFIX}
+mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}
 
 MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILD_PACKAGE_PREFIX}/bin/make}
 
@@ -35,8 +30,7 @@ cd ${STAGE_ROOT}
 ${MAKE_PROGRAM} \
     -C ${SOURCE_ROOT} \
     ARCH=${ARCH} \
-    CC=${CC:-${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang} \
-    CFLAGS="`echo ${CFLAGS} | xargs`" \
+    HOSTCC=${CC} \
     INSTALL_HDR_PATH=${INSTALL_ROOT}${PACKAGE_PREFIX} \
     defconfig \
     headers_install

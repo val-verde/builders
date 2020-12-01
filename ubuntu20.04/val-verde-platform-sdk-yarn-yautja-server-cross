@@ -2,26 +2,19 @@
 
 set -e
 
-# Source package build helper functions
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
-
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=yautja-server
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export INSTALL_ROOT=${TEMPDIR}/org.${PACKAGE_BASE_NAME}/${QUALIFIED_PACKAGE_NAME}
-export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/web/${SOURCE_PACKAGE_NAME}
 
-export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export PKG_CONFIG_PATH=${PACKAGE_PREFIX}/lib/pkgconfig:/usr/lib/${BUILD_TRIPLE}/pkgconfig:/usr/share/pkgconfig
+# Source package build helper functions
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export-compiler-environment
 
 # Configure & build the package
-rm -rf ${STAGE_ROOT}
 GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git" \
 git-clone val-verde-mainline
-
-mkdir -p ${INSTALL_PREFIX} ${STAGE_ROOT}
 
 rsync -aPx ${SOURCE_ROOT}/ \
            ${STAGE_ROOT}
