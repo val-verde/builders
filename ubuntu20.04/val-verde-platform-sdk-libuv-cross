@@ -5,7 +5,6 @@ set -e
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=libuv
 export SOURCE_PACKAGE_VERSION=1.40.0
-export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 
 # Source package build helper functions
 source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
@@ -14,9 +13,7 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-zlib-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-GIT_URL=https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git \
-git-clone val-verde-mainline
-
+# Configure the build components
 cd ${STAGE_ROOT}
 
 if [ "${HOST_OS}" = "android" ]; then

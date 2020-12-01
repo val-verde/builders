@@ -5,7 +5,6 @@ set -e
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=bzip2
 export SOURCE_PACKAGE_VERSION=1.0.8
-export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 
 # Source package build helper functions
 source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
@@ -15,15 +14,12 @@ generate-compiler-tools
 
 # Determine source branch
 if [ "${HOST_OS}" = "mingw32" ]; then
-    BRANCH="val-verde-windows-mainline"
+    SOURCE_ROOT=${SOURCE_ROOT}-windows
 else
-    BRANCH=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
+    SOURCE_ROOT=${SOURCE_ROOT}
 fi
 
 # Configure the build components
-GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git" \
-git-clone ${BRANCH}
-
 rsync -aPx ${SOURCE_ROOT}/ \
            ${STAGE_ROOT}/
 

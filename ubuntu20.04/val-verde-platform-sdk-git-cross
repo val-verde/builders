@@ -3,9 +3,9 @@
 set -e
 
 # Set all environment vars
+export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
 export SOURCE_PACKAGE_NAME=git
 export SOURCE_PACKAGE_VERSION=9999-git
-export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 
 # Source package build helper functions
 source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
@@ -22,16 +22,14 @@ if [ "${HOST_OS}" != "android" ]; then
 fi
 
 # Configure the build components
-GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git" \
-git-clone val-verde-mainline
 rsync -aPx ${SOURCE_ROOT}/ \
            ${STAGE_ROOT}
-           
+
 cd ${STAGE_ROOT}
 autoreconf -i
 package-configure \
     ${STAGE_ROOT}/configure \
-    --prefix=${INSTALL_PREFIX} \
+    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
     --with-curl=${PACKAGE_PREFIX} \
     --with-expat=${PACKAGE_PREFIX} \
     --with-openssl=${PACKAGE_PREFIX} \

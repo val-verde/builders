@@ -6,16 +6,11 @@ set -e
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=zlib
 export SOURCE_PACKAGE_VERSION=1.2.11
-export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 
 # Source package build helper functions
 source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # Configure the build components
-cd /sources
-GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git" \
-git-clone val-verde-mainline
-
 cd ${STAGE_ROOT}
 package-cmake \
     ${SOURCE_ROOT}

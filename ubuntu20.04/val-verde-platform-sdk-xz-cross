@@ -5,17 +5,11 @@ set -e
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=xz
 export SOURCE_PACKAGE_VERSION=5.2.5
-export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 
 # Source package build helper functions
 source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # Configure the build components
-rm -rf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
-       ${SOURCE_ROOT}
-cd /sources
-wget -c http://download.openpkg.org/components/cache/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
-tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
 sed -i "s/'auto-import'/'ld'/g" ${SOURCE_ROOT}/configure
 
 cd ${STAGE_ROOT}
