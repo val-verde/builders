@@ -1,0 +1,51 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+# Set all environment vars
+export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
+export SOURCE_PACKAGE_NAME=openjdk
+export SOURCE_PACKAGE_VERSION=16
+export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${QUALIFIED_PACKAGE_NAME}
+
+export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+JDK_NATIVE_STAGE_ROOT=${JDK_NATIVE_STAGE_ROOT:-${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/${BUILD_PACKAGE_PREFIX}}
+
+# Configure the build components
+rm -rf ${STAGE_ROOT}
+GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git" \
+git-clone val-verde-mainline
+chmod +x ${SOURCE_ROOT}/configure
+
+mkdir -p ${STAGE_ROOT}/build ${INSTALL_ROOT}
+cd ${STAGE_ROOT}/build
+
+${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-configure \
+    ${SOURCE_ROOT}/configure \
+    --disable-jvm-feature-static-build \
+    --disable-static-build \
+    --disable-warnings-as-errors \
+    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+    --with-boot-jdk=${JDK_NATIVE_STAGE_ROOT} \
+    --with-extra-cflags="-O${OPTIMIZATION_LEVEL}" \
+    --with-extra-cxxflags="-O${OPTIMIZATION_LEVEL}" \
+    --with-extra-ldflags="-O${LINKER_OPTIMIZATION_LEVEL}" \
+    --with-stdc++lib=dynamic \
+    --with-toolchain-type=clang
+
+# Build the components
+${BUILD_PACKAGE_PREFIX}/bin/make \
+    JOBS=${NUM_PROCESSORS} \
+    install
+
+# Build the package
+deb-package-build
+
+# Build the package
+deb-package-install
