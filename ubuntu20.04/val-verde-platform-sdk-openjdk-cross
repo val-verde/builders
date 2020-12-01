@@ -5,14 +5,11 @@ set -e
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=openjdk
 export SOURCE_PACKAGE_VERSION=16
-export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 
 # Source package build helper functions
 source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # Configure the build components
-GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git" \
-git-clone val-verde-mainline
 chmod +x ${SOURCE_ROOT}/configure
 
 mkdir -p ${STAGE_ROOT}/build ${INSTALL_ROOT}
