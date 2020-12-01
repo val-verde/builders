@@ -17,7 +17,7 @@ chmod +x ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang \
          ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc
 
 # upstream source packages build
-bash ${BUILD_PACKAGE_PREFIX}/share/${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-sources
+fetch-sources
 
 # java bootstrap build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openjdk-bootstrap
