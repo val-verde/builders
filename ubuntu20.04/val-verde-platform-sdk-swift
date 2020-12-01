@@ -5,7 +5,6 @@ set -e
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=swift
 export SOURCE_PACKAGE_VERSION=9999-git
-export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 
 # Source package build helper functions
 source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
@@ -20,17 +19,11 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-python-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-util-linux-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
-export LLVM_SOURCE_ROOT=/sources/llvm-project
+export LLVM_SOURCE_ROOT=${PACKAGE_SOURCES_ROOT}/llvm-project-${SOURCE_PACKAGE_VERSION}
 export LLVM_STAGE_ROOT=/sources/build-staging/llvm-project-${HOST_OS}${HOST_OS_API_LEVEL}-${BUILD_ARCH}
 USE_NEWPM=${USE_NEWPM:-TRUE}
 
 # Configure the build components
-GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/swift-corelibs-libdispatch.git" \
-TARGET_ROOT="/sources/swift-corelibs-libdispatch" \
-git-clone val-verde-mainline
-GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git" \
-git-clone val-verde-mainline-next
-
 cd ${STAGE_ROOT}
 
 CXX_STANDARD=17 \
@@ -76,8 +69,8 @@ package-cmake-invocation \
     -DSWIFT_NATIVE_CLANG_TOOLS_PATH=${BUILD_PACKAGE_PREFIX}/bin \
     -DSWIFT_NATIVE_LLVM_TOOLS_PATH=${BUILD_PACKAGE_PREFIX}/bin \
     -DSWIFT_PATH_TO_CMARK_BUILD=/sources/build-staging/swift-cmark-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} \
-    -DSWIFT_PATH_TO_CMARK_SOURCE=/sources/swift-cmark \
-    -DSWIFT_PATH_TO_LIBDISPATCH_SOURCE=/sources/swift-corelibs-libdispatch \
+    -DSWIFT_PATH_TO_CMARK_SOURCE=${PACKAGE_SOURCES_ROOT}/swift-cmark-${SOURCE_PACKAGE_VERSION} \
+    -DSWIFT_PATH_TO_LIBDISPATCH_SOURCE=${PACKAGE_SOURCES_ROOT}/swift-corelibs-libdispatch-${SOURCE_PACKAGE_VERSION} \
     -DSWIFT_STDLIB_ASSERTIONS=FALSE \
     -DSWIFT_TOOL_COMPLETE_TEST_BUILD=FALSE \
     -DSWIFT_TOOL_LLDB_MODULEIMPORT_TEST_BUILD=FALSE \
