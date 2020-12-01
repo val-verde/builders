@@ -5,7 +5,6 @@ set -e
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=acl
 export SOURCE_PACKAGE_VERSION=2.2.52
-export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 
 # Source package build helper functions
 source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
@@ -13,9 +12,6 @@ source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 export DEPENDS="${PACKAGE_BASE_NAME}-attr-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 
 # Configure the build components
-cd /sources
-wget -c http://download.savannah.gnu.org/releases/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.src.tar.gz
-tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.src.tar.gz
 sed -i \
     "s/'auto-import'/'ld'/g" \
     ${SOURCE_ROOT}/configure

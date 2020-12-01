@@ -5,7 +5,6 @@ set -e
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=libcap
 export SOURCE_PACKAGE_VERSION=2.45
-export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 
 # Source package build helper functions
 source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
@@ -14,9 +13,6 @@ export-compiler-environment
 generate-compiler-tools
 
 # Configure the build components
-cd /sources
-wget -c https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz
-tar -xf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz
 rsync -aPx ${SOURCE_ROOT}/ \
            ${STAGE_ROOT}
 

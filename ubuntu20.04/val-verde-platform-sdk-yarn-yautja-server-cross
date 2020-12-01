@@ -22,6 +22,7 @@ cd ${STAGE_ROOT}
 
 yarn-build
 
+mkdir -p ${INSTALL_PREFIX}
 rsync -aPx ${STAGE_ROOT}/ \
            ${INSTALL_PREFIX}/
 

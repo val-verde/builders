@@ -5,7 +5,6 @@ set -e
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=xorg-libxtrans
 export SOURCE_PACKAGE_VERSION=9999-git
-export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 
 # Source package build helper functions
 source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
@@ -13,9 +12,6 @@ source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 export-compiler-environment
 
 # Configure the build components
-GIT_URL="https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git" \
-git-clone master
-
 rsync -aPx ${SOURCE_ROOT}/* \
            ${STAGE_ROOT}/
 

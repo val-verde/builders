@@ -5,7 +5,6 @@ set -e
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=vim
 export SOURCE_PACKAGE_VERSION=8.2.2057
-export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 
 # Source package build helper functions
 source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
@@ -13,11 +12,6 @@ source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 export DEPENDS="${PACKAGE_BASE_NAME}-ncurses-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 
 # Configure the build components
-cd /sources
-wget -c https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}/archive/v${SOURCE_PACKAGE_VERSION}.tar.gz \
-     -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
-tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
-
 cd ${STAGE_ROOT}
 rsync -aPx ${SOURCE_ROOT}/ \
            ${STAGE_ROOT}

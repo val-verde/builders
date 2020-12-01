@@ -5,15 +5,11 @@ set -e
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=z3
 export SOURCE_PACKAGE_VERSION=4.8.9
-export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 
 # Source package build helper functions
 source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # Configure the build components
-GIT_URL="https://github.com/Z3Prover/${SOURCE_PACKAGE_NAME}.git" \
-git-clone "${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}"
-
 cd ${STAGE_ROOT}
 package-cmake \
     -DPYTHON_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/python3 \
