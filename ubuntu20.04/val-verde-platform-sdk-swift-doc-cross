@@ -4,7 +4,6 @@ set -e
 
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=swift-doc
-export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 export SOURCE_PACKAGE_VERSION=9999-git
 
 # Source package build helper functions
@@ -17,13 +16,10 @@ export DEPENDS="\
 
 # Configure the build components
 if [ "${HOST_OS}" = "android" ]; then
-   GIT_BRANCH="val-verde-android-mainline"
+   SOURCE_ROOT=${SOURCE_ROOT}-android
 else
-   GIT_BRANCH="val-verde-mainline"
+   SOURCE_ROOT=${SOURCE_ROOT}
 fi
-
-GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git" \
-git-clone ${GIT_BRANCH}
 
 # Build the components
 cd ${SOURCE_ROOT}
