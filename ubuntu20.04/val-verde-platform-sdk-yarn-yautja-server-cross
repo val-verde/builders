@@ -4,18 +4,16 @@ set -e
 
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=yautja-server
-export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export SOURCE_PACKAGE_VERSION=9999-git
 
 # Source package build helper functions
 source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
+export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/web/${SOURCE_PACKAGE_NAME}
+
 export-compiler-environment
 
 # Configure & build the package
-GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git" \
-git-clone val-verde-mainline
-
 rsync -aPx ${SOURCE_ROOT}/ \
            ${STAGE_ROOT}
 cd ${STAGE_ROOT}
