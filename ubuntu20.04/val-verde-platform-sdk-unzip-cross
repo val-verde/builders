@@ -1,0 +1,51 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=unzip
+export SOURCE_PACKAGE_VERSION=60
+export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
+
+# Source package build helper functions
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export-compiler-environment
+generate-compiler-tools
+
+# Configure the build components
+rm -rf ${SOURCE_ROOT}
+cd /sources
+wget -c ftp://ftp.info-zip.org/pub/infozip/src/${SOURCE_PACKAGE_NAME}${SOURCE_PACKAGE_VERSION}.tgz \
+     -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tgz
+tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tgz
+mv ${SOURCE_PACKAGE_NAME}${SOURCE_PACKAGE_VERSION} \
+   ${SOURCE_ROOT}
+
+if [ "${HOST_OS}" = "android" ] ||
+   [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    PLATFORM=unix
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    PLATFORM=win32
+fi
+
+# Build the components
+rsync -aPx ${SOURCE_ROOT}/ \
+           ${STAGE_ROOT}
+
+cd ${STAGE_ROOT}
+MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILD_PACKAGE_PREFIX}/bin/make}
+
+${MAKE_PROGRAM} \
+    -f ${STAGE_ROOT}/${PLATFORM}/Makefile \
+    prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+    CC=${CC} \
+    generic \
+    install
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

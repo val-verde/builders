@@ -11,6 +11,14 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zlib-cross
 MAKE_PROGRAM=/usr/bin/make \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bzip2-cross
 
+# zip build
+MAKE_PROGRAM=/usr/bin/make \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zip-cross
+
+# unzip build
+MAKE_PROGRAM=/usr/bin/make \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-unzip-cross
+
 # autoconf build
 MAKE_PROGRAM=/usr/bin/make \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-autoconf-cross

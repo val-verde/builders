@@ -207,6 +207,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swig-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-systemd \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-tar-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-unzip-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-util-linux-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-vim-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-vulkan-headers-cross \
@@ -218,6 +219,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-yams \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-yarn-yautja-server-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-z3-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-zip-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-zlib-cross \
      /sources/
 
