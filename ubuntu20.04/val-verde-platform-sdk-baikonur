@@ -32,7 +32,7 @@ SWIFT_BUILD_FLAGS="\
     -Xlinker -lunwind \
     ${SWIFT_BUILD_FLAGS} \
 " \
-${VAL_VERDE_GH_TEAM}-platform-sdk-swift-build
+package-swift-build
 
 cd ${STAGE_ROOT}
 mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin

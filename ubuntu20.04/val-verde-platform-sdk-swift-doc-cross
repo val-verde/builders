@@ -27,7 +27,7 @@ git-clone ${GIT_BRANCH}
 
 # Build the components
 cd ${SOURCE_ROOT}
-${VAL_VERDE_GH_TEAM}-platform-sdk-swift-build
+package-swift-build
 
 cd ${STAGE_ROOT}
 mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin

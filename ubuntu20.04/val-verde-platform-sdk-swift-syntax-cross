@@ -21,7 +21,7 @@ git-clone val-verde-mainline
 
 # Build the components
 cd ${SOURCE_ROOT}
-${VAL_VERDE_GH_TEAM}-platform-sdk-swift-build
+package-swift-build
 
 SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
 

@@ -135,7 +135,7 @@ function export-compiler-environment() {
         "
     else
         COMMON_CFLAGS="\
-            -I${PACKAGE_PREFIX}/include \
+            -isystem ${PACKAGE_PREFIX}/include \
             ${COMMON_CFLAGS} \
         "
         SWIFTCFLAGS="\
@@ -454,6 +454,97 @@ function package-configure() {
     export-compiler-environment
     generate-compiler-tools
     package-configure-invocation ${@}
+}
+
+function package-swift-build() {
+    export-compiler-environment
+
+    SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
+    SWIFT_BUILD_TYPE=${SWIFT_BUILD_TYPE:-release}
+    TEMP_FILE=`mktemp`
+
+    if [ -z "${DISABLE_POLLY}" ]; then
+        POLLY_CFLAG="\"-mllvm\", \"-polly\""
+        POLLY_SWIFTCFLAG="\"-Xllvm\", \"-polly\""
+    fi
+
+    if [ -z "${DISABLE_STRIP}" ]; then
+        STRIP_LDFLAG="-s"
+    fi
+
+    if [ -n "${ENABLE_FLTO}" ]; then
+        FLTO_OPTION=`echo ${ENABLE_FLTO} | tr '[:upper:]' '[:lower:]'`
+        FLTO_CFLAG="-flto=${FLTO_OPTION}"
+        FLTO_SWIFTCFLAG="-whole-module-optimization"
+    fi
+
+    if [ "${HOST_OS}" = "android" ]; then
+        SWIFT_BUILD_FLAGS="\
+            -Xcc -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
+            -Xcc -D__USE_FORTIFY_LEVEL=0 \
+            ${SWIFT_BUILD_FLAGS} \
+        "
+    elif [ "${HOST_OS}" = "musl" ]; then
+        SWIFT_BUILD_FLAGS="\
+            -Xcc -D_ALL_SOURCE=1 \
+            -Xcc -D__USE_FORTIFY_LEVEL=0 \
+            ${SWIFT_BUILD_FLAGS} \
+        "
+    fi
+
+    if [ "${HOST_OS}" != "mingw32" ]; then
+        FPIC_CFLAG="-fPIC"
+        TARGET=${TARGET:-${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}}
+    else
+        TARGET=${TARGET:-${HOST_PROCESSOR}-unknown-windows-gnu}
+    fi
+
+    echo -e "{ \n\
+        \"version\": 1, \n\
+        \"sdk\": \"${SYSROOT}\", \n\
+        \"toolchain-bin-dir\": \"${BINDIR}\", \n\
+        \"target\": \"${TARGET}\", \n\
+        \"extra-cc-flags\": [ \n\
+            \"-isystem\", \"${PACKAGE_PREFIX}/include\", \n\
+            \"-isystem\", \"${PACKAGE_PREFIX}/lib/swift\", \n\
+            \"-isystem\", \"${PACKAGE_PREFIX}/lib/swift/Block\", \n\
+            \"-march=${HOST_ARCH}\", \n\
+            \"-mtune=${HOST_CPU}\", \n\
+            \"-pipe\", \n\
+            \"-O${OPTIMIZATION_LEVEL}\", \n\
+            \"${FLTO_CFLAG}\", \n\
+            \"${FPIC_CFLAG}\", \n\
+            ${POLLY_CFLAG} \n\
+        ], \n\
+        \"extra-cpp-flags\": [ \n\
+            \"-Xcc\", \"-stdlib++-isystem\", \"-Xcc\", \"${PACKAGE_PREFIX}/include/c++/v1\", \n\
+        ], \n\
+        \"extra-linker-flags\": [ \n\
+            \"-disable-verify\", \n\
+            \"-L${PACKAGE_PREFIX}/lib\", \n\
+            \"-L${PACKAGE_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}\", \n\
+            \"-O${LINKER_OPTIMIZATION_LEVEL}\", \n\
+            \"${FLTO_CFLAG}\", \n\
+            \"${STRIP_LDFLAG}\", \n\
+        ], \n\
+        \"extra-swiftc-flags\": [ \n\
+            \"-target-cpu\", \"${HOST_CPU}\", \n\
+            \"-L${PACKAGE_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}\", \n\
+            \"-O${SWIFT_OPTIMIZATION_LEVEL}\", \n\
+            \"-Xfrontend\", \"-disable-llvm-verify\", \n\
+            \"${FLTO_SWIFTCFLAG}\", \n\
+            ${POLLY_SWIFTCFLAG} \n\
+        ] \n\
+    } \n\
+    " > ${TEMP_FILE}
+
+    ${BINDIR}/swift \
+        build \
+        --build-path ${STAGE_ROOT} \
+        --configuration ${SWIFT_BUILD_TYPE} \
+        --destination ${TEMP_FILE} \
+        --enable-test-discovery \
+        ${SWIFT_BUILD_FLAGS}
 }
 
 function rpath-fixup() {
