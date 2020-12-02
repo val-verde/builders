@@ -161,6 +161,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lua-cross
 # swig build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swig-cross
 
+# java build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openjdk-cross
+
 # z3 build
 CMAKE_BINDIR=/usr/bin \
 MAKE_PROGRAM=/usr/bin/ninja \

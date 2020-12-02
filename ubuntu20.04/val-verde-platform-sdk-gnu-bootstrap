@@ -9,6 +9,9 @@ source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source
 export HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}
 export SYSTEM_NAME=Linux
 
+# java bootstrap build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openjdk-bootstrap
+
 # libunwind bootstrap build
 BINDIR=/usr/bin \
 LLVM_NATIVE_STAGE_ROOT=/usr \

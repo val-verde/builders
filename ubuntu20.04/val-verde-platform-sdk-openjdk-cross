@@ -10,8 +10,6 @@ export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 # Source package build helper functions
 source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
-JDK_NATIVE_STAGE_ROOT=${JDK_NATIVE_STAGE_ROOT:-${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/${BUILD_PACKAGE_PREFIX}}
-
 # Configure the build components
 GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git" \
 git-clone val-verde-mainline
@@ -26,7 +24,7 @@ package-configure \
     --disable-static-build \
     --disable-warnings-as-errors \
     --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
-    --with-boot-jdk=${JDK_NATIVE_STAGE_ROOT} \
+    --with-boot-jdk=${BUILD_PACKAGE_PREFIX} \
     --with-extra-cflags="-O${OPTIMIZATION_LEVEL}" \
     --with-extra-cxxflags="-O${OPTIMIZATION_LEVEL}" \
     --with-extra-ldflags="-O${LINKER_OPTIMIZATION_LEVEL}" \

@@ -101,6 +101,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libunwind-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project-bootstrap \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-openjdk-bootstrap \
      /sources/
 
 # LTO configuration: [OFF | Full | Thin]
@@ -172,6 +173,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-node-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-npm-yarn-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-openjdk-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-openssl-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-opengl-headers-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-opengl-es-headers-cross \
