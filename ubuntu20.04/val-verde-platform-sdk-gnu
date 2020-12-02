@@ -68,15 +68,6 @@ PACKAGES_TO_MANAGE=( 'swift-argument-parser'         'BUILD' \
 
 PACKAGE_ACTION=INSTALL \
 deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
-dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-argument-parser-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-xctest-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-driver-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-llbuild-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-package-manager-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-tools-support-core-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-yams-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb
 
 # swift-syntax build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-syntax-cross
