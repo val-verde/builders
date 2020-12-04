@@ -5,13 +5,13 @@ set -e
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=libcxx
 export SOURCE_PACKAGE_VERSION=9999-wasm32
-export SOURCE_ROOT=/sources/llvm-project/${SOURCE_PACKAGE_NAME}
 
 # Source package build helper functions
 source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 export DEPENDS="${PACKAGE_BASE_NAME}-libcxxabi-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-/sources/build-staging/llvm-project-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
+export SOURCE_ROOT=${PACKAGE_SOURCES_ROOT}/llvm-project-9999-git/${SOURCE_PACKAGE_NAME}
 
 # Configure the build components
 cd ${STAGE_ROOT}
