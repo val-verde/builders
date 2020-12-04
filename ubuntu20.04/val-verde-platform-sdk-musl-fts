@@ -4,8 +4,7 @@ set -e
 
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=musl-fts
-export SOURCE_PACKAGE_VERSION=git-9999
-export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
+export SOURCE_PACKAGE_VERSION=9999-git
 
 # Source package build helper functions
 source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
@@ -13,9 +12,6 @@ source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 export-compiler-environment
 
 # Configure the build components
-GIT_URL="https://github.com/void-linux/${SOURCE_PACKAGE_NAME}.git" \
-git-clone master
-
 cd ${SOURCE_ROOT}
 ./bootstrap.sh
 
