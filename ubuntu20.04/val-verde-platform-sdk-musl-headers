@@ -5,15 +5,12 @@ set -e
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=musl-headers
 export SOURCE_PACKAGE_VERSION=9999-git
-export SOURCE_ROOT=/sources/musl-libc-${SOURCE_PACKAGE_VERSION}
+export SOURCE_ROOT=${PACKAGE_SOURCES_ROOT}/musl-libc-${SOURCE_PACKAGE_VERSION}
 
 # Source package build helper functions
 source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # Configure the build components
-GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/musl-libc.git" \
-git-clone val-verde-mainline
-
 cd ${STAGE_ROOT}
 CFLAGS_AUTO="-pipe" \
 LIBCC=`${BUILD_PACKAGE_PREFIX}/bin/clang -target ${HOST_TRIPLE} \
