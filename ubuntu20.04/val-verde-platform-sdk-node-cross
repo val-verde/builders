@@ -43,7 +43,8 @@ if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
     CROSS_COMPILING_CMD="--cross-compiling"
 fi
 
-if [ "${BUILD_OS}" = "gnu" ]; then
+if [ "${BUILD_OS}" = "gnu" ] ||
+   [ "${BUILD_OS}" = "gnu" ]; then
     CONFIGURE_BUILD_OS=linux
 fi
 
@@ -68,7 +69,8 @@ if [ "${HOST_OS}" = "android" ]; then
         v8_target_arch=${CONFIGURE_HOST_PROCESSOR} \
         OS=${CONFIGURE_HOST_OS} \
     "
-elif [ "${HOST_OS}" = "gnu" ]; then
+elif [ "${HOST_OS}" = "gnu" ] ||
+     [ "${HOST_OS}" = "musl" ] ; then
     CONFIGURE_HOST_OS=linux
 elif [ "${HOST_OS}" = "mingw32" ]; then
     COMMON_CFLAGS="\
