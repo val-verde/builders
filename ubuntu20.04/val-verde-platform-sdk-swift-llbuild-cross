@@ -11,8 +11,8 @@ export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # Configure the build components
-cd ${SOURCE_ROOT}
-git checkout val-verde-mainline
+GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git" \
+git-clone val-verde-mainline
 
 cd ${STAGE_ROOT}
 package-cmake \

@@ -16,6 +16,11 @@ cd ${STAGE_ROOT}
 LIBCC=`${BUILD_PACKAGE_PREFIX}/bin/clang -target ${HOST_TRIPLE} \
                                          --sysroot ${SYSROOT} \
                                          -print-libgcc-file-name` \
+
+CFLAGS="\
+     -U_ALL_SOURCE \
+     ${CFLAGS} \
+" \
 package-configure \
     ${SOURCE_ROOT}/configure \
     --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
