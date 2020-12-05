@@ -19,10 +19,8 @@ export DEPENDS="\
 GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git" \
 git-clone val-verde-mainline
 
-mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
-cd ${SOURCE_ROOT}
-
 # Build the components
+cd ${SOURCE_ROOT}
 SWIFT_BUILD_FLAGS="\
     -Xcc -DLLVM_ON_WIN32=1 \
     -Xcc -I${STAGE_ROOT}/checkouts/swift-llbuild/lib/llvm/Support \
@@ -32,9 +30,9 @@ SWIFT_BUILD_FLAGS="\
 package-swift-build
 
 cd ${STAGE_ROOT}
-mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin
+mkdir -p ${INSTALL_PREFIX}/bin
 cp `find -type f -name sourcekit-lsp\*` \
-   ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin
+   ${INSTALL_PREFIX}/bin
 
 # Build the package
 deb-package-build

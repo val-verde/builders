@@ -106,19 +106,19 @@ package-cmake-invocation \
 ninja-build
 
 sed -i 's/\/usr/\.\.\/\.\.\/\.\.\/\.\./g' \
-       ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/swift/${HOST_OS}/${HOST_PROCESSOR}/glibc.modulemap
+       ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/${HOST_PROCESSOR}/glibc.modulemap
 
-mv ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/swift/${HOST_OS}/*.swift* \
-   ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/swift/${HOST_OS}/${HOST_PROCESSOR}/
+mv ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/*.swift* \
+   ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/${HOST_PROCESSOR}/
 
 # RPATH fixups
 COMPONENTS="\
-    ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin/swift \
+    ${INSTALL_PREFIX}/bin/swift \
 " \
 rpath-fixup
 
 COMPONENTS="\
-    ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/swift/${HOST_OS}/lib*.so \
+    ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/lib*.so \
 " \
 COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
 rpath-fixup

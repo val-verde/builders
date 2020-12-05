@@ -32,7 +32,7 @@ ninja-build
 
 # RPATH fixups
 COMPONENTS="\
-    ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/swift/${HOST_KERNEL}/lib*.so \
+    ${INSTALL_PREFIX}/lib/swift/${HOST_KERNEL}/lib*.so \
 " \
 COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
 rpath-fixup

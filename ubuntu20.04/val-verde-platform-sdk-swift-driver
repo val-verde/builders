@@ -27,10 +27,6 @@ GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git" \
 git-clone val-verde-mainline
 
 cd ${STAGE_ROOT}
-SWIFTCFLAGS="\
-    -L/sources/build-staging/swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/Sources/FoundationNetworking \
-    ${SWIFTCFLAGS} \
-" \
 package-cmake \
     -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DArgumentParser_DIR=/sources/build-staging/swift-argument-parser-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
@@ -41,9 +37,12 @@ package-cmake \
     ${SOURCE_ROOT}
 
 # Build the components
-ninja -j${NUM_PROCESSORS}
-mkdir -p ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}
-rsync -aPx bin lib ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}
+TARGETS=" " \
+ninja-build
+
+rsync -aPx ${STAGE_ROOT}/bin \
+           ${STAGE_ROOT}/lib \
+	   ${INSTALL_PREFIX}
 
 # Build the package
 deb-package-build

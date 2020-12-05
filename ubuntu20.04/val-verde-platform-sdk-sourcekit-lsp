@@ -29,9 +29,9 @@ SWIFT_BUILD_FLAGS="\
 package-swift-build
 
 cd ${STAGE_ROOT}
-mkdir -p ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/bin
+mkdir -p ${INSTALL_PREFIX}/bin
 cp `find -type f -name sourcekit-lsp\*` \
-   ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/bin
+   ${INSTALL_PREFIX}/bin
 
 # Build the package
 deb-package-build

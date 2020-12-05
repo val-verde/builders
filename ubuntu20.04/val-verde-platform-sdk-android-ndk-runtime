@@ -14,18 +14,17 @@ export ANDROID_NDK_STAGE_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${SOURCE_PACKA
 export TOOLCHAIN_ROOT=${ANDROID_NDK_STAGE_ROOT}/${BUILD_PACKAGE_PREFIX}/android-ndk-${ANDROID_NDK_VERSION}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}
 
 # Configure the build components
-mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}/include
+mkdir -p ${INSTALL_PREFIX}/include
+rsync -aPx ${TOOLCHAIN_ROOT}/sysroot/usr/lib/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/*.so \
+           ${TOOLCHAIN_ROOT}/sysroot/usr/lib/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/${HOST_OS_API_LEVEL}/* \
+           ${TOOLCHAIN_ROOT}/lib/gcc/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/4.9.x/*.o \
+           ${TOOLCHAIN_ROOT}/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/lib64/*.a \
+           ${INSTALL_PREFIX}/lib
 
-rsync -aPx ${TOOLCHAIN_ROOT}/sysroot/usr/lib/${HOST_TRIPLE}/*.so \
-           ${TOOLCHAIN_ROOT}/sysroot/usr/lib/${HOST_TRIPLE}/${HOST_OS_API_LEVEL}/* \
-           ${TOOLCHAIN_ROOT}/lib/gcc/${HOST_TRIPLE}/4.9.x/*.o \
-           ${TOOLCHAIN_ROOT}/${HOST_TRIPLE}/lib64/*.a \
-           ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib
-
-rm -f ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/libc++* \
-      ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/libintl* \
-      ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/libvulkan* \
-      ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/libz.*
+rm -f ${INSTALL_PREFIX}/lib/libc++* \
+      ${INSTALL_PREFIX}/lib/libintl* \
+      ${INSTALL_PREFIX}/lib/libvulkan* \
+      ${INSTALL_PREFIX}/lib/libz.*
 
 # Build the package
 deb-package-build

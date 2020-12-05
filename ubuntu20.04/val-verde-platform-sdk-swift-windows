@@ -116,18 +116,18 @@ package-cmake-invocation \
 ninja-build
 
 rsync -aPx ${STAGE_ROOT}/lib/*.a \
-           ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/*.a \
-           ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
-mv ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/swift/windows/*.dll \
-   ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
-mv ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/swift/windows/*.swift* \
-   ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}/
-rm -f ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin/*libdispatch* \
-      ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin/*BlocksRuntime* \
-      ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/*libdispatch* \
-      ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/*BlocksRuntime* \
-      ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}/*libdispatch* \
-      ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}/*BlocksRuntime*
+           ${INSTALL_PREFIX}/lib/*.a \
+           ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
+mv ${INSTALL_PREFIX}/lib/swift/windows/*.dll \
+   ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
+mv ${INSTALL_PREFIX}/lib/swift/windows/*.swift* \
+   ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}/
+rm -f ${INSTALL_PREFIX}/bin/*libdispatch* \
+      ${INSTALL_PREFIX}/bin/*BlocksRuntime* \
+      ${INSTALL_PREFIX}/lib/*libdispatch* \
+      ${INSTALL_PREFIX}/lib/*BlocksRuntime* \
+      ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}/*libdispatch* \
+      ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}/*BlocksRuntime*
 
 # Build the package
 deb-package-build

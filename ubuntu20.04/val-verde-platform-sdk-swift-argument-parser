@@ -32,9 +32,11 @@ package-cmake \
     ${SOURCE_ROOT}
 
 # Build the components
-ninja -j${NUM_PROCESSORS}
-mkdir -p ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}
-rsync -aPx lib ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}
+TARGETS=" " \
+ninja-build
+
+rsync -aPx ${STAGE_ROOT}/lib \
+           ${INSTALL_PREFIX}
 
 # Build the package
 deb-package-build

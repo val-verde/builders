@@ -41,7 +41,7 @@ ninja-build
 
 rsync -aPx ${STAGE_ROOT}/bin \
            ${STAGE_ROOT}/lib \
-           ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}
+           ${INSTALL_PREFIX}
 
 # Build the package
 deb-package-build

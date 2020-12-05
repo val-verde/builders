@@ -30,13 +30,13 @@ if [ "${HOST_OS}" = "android" ]; then
 fi
 
 cd ${STAGE_ROOT}
-mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
+mkdir -p ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
 rsync -aPx release/Swift*.swiftdoc \
-           ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
+           ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
 rsync -aPx release/Swift*.swiftmodule \
-           ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
+           ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
 rsync -aPx release/libSwift*.a \
-           ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/
+           ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/
 
 # Build the package
 deb-package-build

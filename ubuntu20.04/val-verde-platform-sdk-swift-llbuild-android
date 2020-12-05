@@ -37,7 +37,7 @@ package-cmake \
 ninja-build
 
 rsync -aPx ${STAGE_ROOT}/lib/*.so* \
-           ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib
+           ${INSTALL_PREFIX}/lib
 
 # Build the package
 deb-package-build

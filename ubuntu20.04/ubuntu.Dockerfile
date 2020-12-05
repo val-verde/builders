@@ -196,7 +196,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-doc-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-driver \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-format-cross \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-lldb \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-package-manager \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-syntax-cross \
@@ -246,7 +246,6 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-gnulib-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-libdispatch-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-xctest-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-driver-cross \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-package-manager-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-support-core-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-yams-cross \
@@ -263,7 +262,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt-musl \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-musl-headers \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-musl-libc \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-musl \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-lldb \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-lldb-musl \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-sdk-musl \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-musl \
      /sources/

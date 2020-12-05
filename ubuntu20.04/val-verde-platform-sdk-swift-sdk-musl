@@ -5,9 +5,6 @@ set -e
 # Source package build helper functions
 source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
-export COMPILER_TARGET=${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-gnu
-export TARGET=${COMPILER_TARGET}
-
 # remove host foundation and libdispatch to avoid module collisions
 PACKAGE_ACTION=UNINSTALL
 PACKAGES_TO_MANAGE=( 'swift-corelibs-foundation'     'BUILD' \
@@ -86,12 +83,14 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-format-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-doc-cross
 
 # musl sourcekit-lsp build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sourcekit-lsp-cross
+# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sourcekit-lsp-cross
 
 # musl baikonur build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-baikonur
-
-unset TARGET
+SWIFT_BUILD_FLAGS="\
+    -licuucswift \
+    ${SWIFT_BUILD_FLAGS} \
+" \
+# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-baikonur
 
 # musl pythonkit build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pythonkit-cross

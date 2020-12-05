@@ -14,12 +14,9 @@ export ANDROID_NDK_STAGE_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${SOURCE_PACKA
 export TOOLCHAIN_ROOT=${ANDROID_NDK_STAGE_ROOT}/${BUILD_PACKAGE_PREFIX}/android-ndk-${ANDROID_NDK_VERSION}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}
 export INCLUDES_PATH=${TOOLCHAIN_ROOT}/sysroot/usr/include
 
-export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-
 # Configure the build components
-mkdir -p /sources/ndk-headers
-mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}/include
-rsync -aPx ${INCLUDES_PATH}/${HOST_TRIPLE}/asm \
+mkdir -p ${INSTALL_PREFIX}/include
+rsync -ax ${INCLUDES_PATH}/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/asm \
            ${INCLUDES_PATH}/*.h \
            ${INCLUDES_PATH}/android \
            ${INCLUDES_PATH}/arpa \
@@ -30,13 +27,13 @@ rsync -aPx ${INCLUDES_PATH}/${HOST_TRIPLE}/asm \
            ${INCLUDES_PATH}/netinet \
            ${INCLUDES_PATH}/netpacket \
            ${INCLUDES_PATH}/sys \
-           ${INSTALL_ROOT}${PACKAGE_PREFIX}/include
+           ${INSTALL_PREFIX}/include
 
-# Remove zlib components as they are rebuilt.
-rm -f ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/iconv.h \
-      ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/zconf.h \
-      ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/zlib.h \
-      ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/sys/capability.h
+# Remove iconv and zlib components as they are rebuilt.
+rm -f ${INSTALL_PREFIX}/include/iconv.h \
+      ${INSTALL_PREFIX}/include/zconf.h \
+      ${INSTALL_PREFIX}/include/zlib.h \
+      ${INSTALL_PREFIX}/include/sys/capability.h
 
 # Build the package
 deb-package-build

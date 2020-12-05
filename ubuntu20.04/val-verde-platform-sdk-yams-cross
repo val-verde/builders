@@ -34,9 +34,9 @@ SDK=${HOST_OS}
 if [ "${HOST_OS}" = "android" ]; then
     mv ${INSTALL_PREFIX}/lib/swift/linux \
        ${INSTALL_PREFIX}/lib/swift/android
-elif [ "${HOST_OS}" = "gnu" ] ||
-     [ "${HOST_OS}" = "musl" ]; then
-    SDK=${HOST_KERNEL}
+elif [ "${HOST_OS}" = "musl" ]; then
+    mv ${INSTALL_PREFIX}/lib/swift/linux \
+       ${INSTALL_PREFIX}/lib/swift/musl
 fi
 
 # RPATH fixups

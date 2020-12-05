@@ -85,9 +85,9 @@ ninja-build
 
 # RPATH fixups
 COMPONENTS="\
-    ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin/lldb \
-    ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin/repl_swift \
-    ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/liblldb.so \
+    ${INSTALL_PREFIX}/bin/lldb \
+    ${INSTALL_PREFIX}/bin/repl_swift \
+    ${INSTALL_PREFIX}/lib/liblldb.so \
 " \
 rpath-fixup
 
