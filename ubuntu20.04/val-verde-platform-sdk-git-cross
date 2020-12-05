@@ -31,7 +31,7 @@ cd ${STAGE_ROOT}
 autoreconf -i
 package-configure \
     ${STAGE_ROOT}/configure \
-    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_PREFIX} \
     --with-curl=${PACKAGE_PREFIX} \
     --with-expat=${PACKAGE_PREFIX} \
     --with-openssl=${PACKAGE_PREFIX} \

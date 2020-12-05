@@ -16,7 +16,7 @@ package-configure \
     ${SOURCE_ROOT}/configure \
     --enable-crt \
     --enable-sdk=all \
-    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_PREFIX} \
     --with-default-msvcrt=ucrt \
     --with-default-win32-winnt=0x0A00
 

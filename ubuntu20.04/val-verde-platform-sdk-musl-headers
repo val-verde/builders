@@ -21,7 +21,7 @@ LIBCC=`${BUILD_PACKAGE_PREFIX}/bin/clang -target ${HOST_TRIPLE} \
                                          -print-libgcc-file-name` \
 package-configure \
     ${SOURCE_ROOT}/configure \
-    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_PREFIX} \
     --syslibdir=${INSTALL_ROOT}${PACKAGE_PREFIX}/../lib
 
 # Build the components

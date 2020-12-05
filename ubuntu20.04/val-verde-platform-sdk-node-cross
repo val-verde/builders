@@ -145,7 +145,7 @@ export RANLIB_target=${RANLIB}
 ${STAGE_ROOT}/configure \
     --dest-cpu=${CONFIGURE_HOST_PROCESSOR} \
     --dest-os=${CONFIGURE_HOST_OS} \
-    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_PREFIX} \
     --shared-openssl \
     --shared-libuv \
     --shared-zlib \

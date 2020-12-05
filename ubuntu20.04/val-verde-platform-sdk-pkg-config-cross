@@ -23,7 +23,7 @@ package-configure \
     ac_cv_func_posix_getpwuid_r=yes \
     glib_cv_stack_grows=no \
     glib_cv_uscore=no \
-    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_PREFIX} \
     --with-internal-glib \
     --with-libiconv=gnu
 

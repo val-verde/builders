@@ -36,7 +36,7 @@ package-configure \
     --disable-debuginfod \
     --disable-static \
     --enable-shared \
-    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_PREFIX} \
     --with-zlib=yes
 
 # Build the components

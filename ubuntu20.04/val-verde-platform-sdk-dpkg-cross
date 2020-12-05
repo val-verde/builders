@@ -50,7 +50,7 @@ package-configure \
     ${SOURCE_ROOT}/configure \
     cross_compiling=${CROSS_COMPILING} \
     --disable-dselect \
-    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_PREFIX} \
     --with-admindir=${ADMIN_DIR}
 
 # Build the components

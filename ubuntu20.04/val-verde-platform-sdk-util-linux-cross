@@ -33,7 +33,7 @@ package-configure \
     --enable-libmount \
     --enable-libuuid \
     --enable-shared \
-    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX}
+    --prefix=${INSTALL_PREFIX}
 
 # Build the package
 make-build

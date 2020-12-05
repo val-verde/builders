@@ -49,7 +49,7 @@ if [ "${HOST_OS}" = "mingw32" ]; then
 fi
 
 ${SOURCE_ROOT}/Configure \
-    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_PREFIX} \
     --openssldir=${OPENSSL_DIR} \
     "${OPENSSL_DEFINES}" \
     ${OPENSSL_TARGET}

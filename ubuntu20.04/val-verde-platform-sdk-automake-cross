@@ -19,7 +19,7 @@ cd ${STAGE_ROOT}
 
 package-configure \
     ${SOURCE_ROOT}/configure \
-    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX}
+    --prefix=${INSTALL_PREFIX}
 
 # Build the components
 make-build

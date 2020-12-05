@@ -23,7 +23,7 @@ package-configure \
     --disable-jvm-feature-static-build \
     --disable-static-build \
     --disable-warnings-as-errors \
-    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_PREFIX} \
     --with-boot-jdk=${BUILD_PACKAGE_PREFIX} \
     --with-extra-cflags="-O${OPTIMIZATION_LEVEL}" \
     --with-extra-cxxflags="-O${OPTIMIZATION_LEVEL}" \

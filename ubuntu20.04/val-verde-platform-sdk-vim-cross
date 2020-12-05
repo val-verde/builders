@@ -30,7 +30,7 @@ package-configure \
     vim_cv_terminfo=yes \
     vim_cv_tgetent=yes \
     vim_cv_toupper_broken=no \
-    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_PREFIX} \
     --with-tlib=ncurses
 
 # Build the components

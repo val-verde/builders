@@ -33,7 +33,7 @@ CFLAGS="\
 " \
 package-configure \
     ${SOURCE_ROOT}/configure \
-    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_PREFIX} \
     "${MAKE_FS_CMD}"
 
 # Build the components

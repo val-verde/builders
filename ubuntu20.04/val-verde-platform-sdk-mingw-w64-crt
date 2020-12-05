@@ -17,7 +17,7 @@ package-configure \
     --disable-lib32 \
     --enable-experimental=registeredprintf,softmath \
     --enable-warnings=0 \
-    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_PREFIX} \
     --with-default-msvcrt=ucrt
 
 # Build the components

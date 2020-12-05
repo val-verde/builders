@@ -34,7 +34,7 @@ package-configure \
     lt_cv_deplibs_check_method=pass_all \
     --disable-static \
     --enable-shared \
-    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_PREFIX} \
     --with-icu \
     --without-python
 

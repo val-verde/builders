@@ -23,7 +23,7 @@ package-configure \
     ${SOURCE_ROOT}/configure \
     --disable-static \
     --enable-shared \
-    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_PREFIX} \
     --without-docbook \
     --without-examples \
     --without-tests

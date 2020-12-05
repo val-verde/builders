@@ -28,7 +28,7 @@ package-configure \
     --disable-static \
     --enable-shared \
     --includedir=${PACKAGE_PREFIX}/include \
-    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX}
+    --prefix=${INSTALL_PREFIX}
 
 # Build the components
 TARGETS=" " \
