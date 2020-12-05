@@ -10,6 +10,14 @@ export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 # Source package build helper functions
 source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
+export DEPENDS="\
+    ${PACKAGE_BASE_NAME}-llvm-project-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-sqlite-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-swift-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
+"
+
 # Configure the build components
 GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git" \
 git-clone val-verde-mainline
@@ -27,7 +35,7 @@ package-cmake \
 ninja-build
 
 rsync -aPx ${STAGE_ROOT}/lib/*.so* \
-           ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib
+           ${INSTALL_PREFIX}/lib
 
 # Build the package
 deb-package-build

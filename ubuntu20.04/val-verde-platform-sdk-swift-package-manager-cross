@@ -24,10 +24,6 @@ export DEPENDS="\
 
 # Configure the build components
 cd ${STAGE_ROOT}
-SWIFTCFLAGS="\
-    -sdk ${SYSROOT} \
-    ${SWIFTCFLAGS} \
-" \
 package-cmake \
     -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DArgumentParser_DIR=/sources/build-staging/swift-argument-parser-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \

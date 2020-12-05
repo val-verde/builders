@@ -29,16 +29,19 @@ package-cmake \
 # Build the components
 ninja-build
 
-SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
+SDK=${HOST_OS}
 
-if [ "${SDK_PLATFORM_DIR}" != "${HOST_OS}" ]; then
-    mv ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/swift/${SDK_PLATFORM_DIR} \
-       ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/swift/${HOST_OS}
+if [ "${HOST_OS}" = "android" ]; then
+    mv ${INSTALL_PREFIX}/lib/swift/linux \
+       ${INSTALL_PREFIX}/lib/swift/android
+elif [ "${HOST_OS}" = "gnu" ] ||
+     [ "${HOST_OS}" = "musl" ]; then
+    SDK=${HOST_KERNEL}
 fi
 
 # RPATH fixups
 COMPONENTS="\
-    ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/swift/${HOST_OS}/lib*.so \
+    ${INSTALL_PREFIX}/lib/swift/${SDK}/lib*.so \
 " \
 COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
 rpath-fixup

@@ -6,6 +6,7 @@ set -e
 source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 export COMPILER_TARGET=${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-gnu
+export TARGET=${COMPILER_TARGET}
 
 # remove host foundation and libdispatch to avoid module collisions
 PACKAGE_ACTION=UNINSTALL
@@ -13,31 +14,44 @@ PACKAGES_TO_MANAGE=( 'swift-corelibs-foundation'     'BUILD' \
                      'swift-corelibs-libdispatch'    'BUILD' )
 deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 
-# libdispatch build
+# musl libdispatch build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-libdispatch-cross
 
-# foundation build
+# musl foundation build
+SWIFTCFLAGS="\
+    -lfts \
+    -DNO_BACKTRACE \
+    ${SWIFTCFLAGS} \
+" \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-foundation-cross
 
-# xctest build
+# musl xctest build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-xctest-cross
 
-# llbuild build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild-musl
+# musl llbuild build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild-cross
 
-# swift tools support core build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-support-core-musl
+# musl swift tools support core build
+SWIFTCFLAGS="\
+    -DUSE_MUSL_LIBC \
+    ${SWIFTCFLAGS} \
+" \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-support-core-cross
 
-# yams build
+# musl yams build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-yams-cross
 
-# swift argument parser build
+# musl swift argument parser build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-argument-parser-cross
 
-# swift driver build
+# musl swift driver build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-driver-cross
 
-# swift package manager build
+# musl swift package manager build
+SWIFTCFLAGS="\
+    -DUSE_MUSL_LIBC \
+    ${SWIFTCFLAGS} \
+" \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-package-manager-cross
 
 # reinstall swiftpm for build and host
@@ -50,7 +64,7 @@ PACKAGES_TO_MANAGE=( 'swift-argument-parser'         'BUILD' \
                      'swift-llbuild'                 'BUILD' \
                      'swift-package-manager'         'BUILD' \
                      'swift-tools-support-core'      'BUILD' \
-                     'yams'                          'BUILD' \
+		     'yams'                          'BUILD' \
                      'swift-argument-parser'         'HOST' \
                      'swift-corelibs-foundation'     'HOST' \
                      'swift-corelibs-libdispatch'    'HOST' \
@@ -62,23 +76,25 @@ PACKAGES_TO_MANAGE=( 'swift-argument-parser'         'BUILD' \
                      'yams'                          'HOST' )
 deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 
-# swift-syntax build
+# musl swift-syntax build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-syntax-cross
 
-# swift-format build
+# musl swift-format build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-format-cross
 
-# swift-doc build
+# musl swift-doc build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-doc-cross
 
-# sourcekit-lsp build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sourcekit-lsp-musl
+# musl sourcekit-lsp build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sourcekit-lsp-cross
 
-# baikonur build
+# musl baikonur build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-baikonur
 
-# pythonkit build
+unset TARGET
+
+# musl pythonkit build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pythonkit-cross
 
-# swift tensorflows apis build
+# musl swift tensorflows apis build
 # bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tensorflow-apis

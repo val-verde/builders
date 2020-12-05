@@ -239,6 +239,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-gnulib-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-icu4c-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-pythonkit-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-rust-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-sourcekit-lsp-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-argument-parser-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-cmark-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-foundation-cross \
@@ -247,6 +248,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-gnulib-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-driver-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-package-manager-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-support-core-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-yams-cross \
      /sources/
 
@@ -257,8 +259,11 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt-musl \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-dependencies-musl \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project-musl \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-musl \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-musl-fts \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-musl-headers \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-musl-libc \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-musl \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-lldb \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-sdk-musl \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-musl \
      /sources/

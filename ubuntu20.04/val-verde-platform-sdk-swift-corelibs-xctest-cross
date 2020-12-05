@@ -19,10 +19,6 @@ export DEPENDS="\
 
 # Configure the build components
 cd ${STAGE_ROOT}
-SWIFTCFLAGS="\
-    -sdk ${SYSROOT} \
-    ${SWIFTCFLAGS} \
-" \
 package-cmake \
     -Ddispatch_DIR=/sources/build-staging/swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DFoundation_DIR=/sources/build-staging/swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
@@ -31,14 +27,21 @@ package-cmake \
 # Build the components
 ninja-build
 
-mv ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/swift/linux \
-   ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/swift/${HOST_OS}
+SDK=${HOST_OS}
+
+if [ "${HOST_OS}" = "android" ]; then
+    mv ${INSTALL_PREFIX}/lib/swift/linux \
+    ${INSTALL_PREFIX}/lib/swift/android
+elif [ "${HOST_OS}" = "gnu" ] ||
+     [ "${HOST_OS}" = "musl" ]; then
+    SDK=${HOST_KERNEL}
+fi
 
 # RPATH fixups
-COMPONENTS="\
-    ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/swift/${HOST_OS}/lib*.so \
-" \
 COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
+COMPONENTS="\
+    ${INSTALL_PREFIX}/lib/swift/${SDK}/lib*.so \
+" \
 rpath-fixup
 
 # Build the package

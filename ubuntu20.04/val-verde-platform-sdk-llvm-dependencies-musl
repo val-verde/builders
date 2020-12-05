@@ -31,6 +31,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross
 # pkg-config build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pkg-config-cross
 
+# musl fts build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-musl-fts
+
 # gnulib build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnulib-cross
 

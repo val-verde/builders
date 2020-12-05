@@ -1,0 +1,36 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=musl-fts
+export SOURCE_PACKAGE_VERSION=git-9999
+export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
+
+# Source package build helper functions
+source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export-compiler-environment
+
+# Configure the build components
+GIT_URL="https://github.com/void-linux/${SOURCE_PACKAGE_NAME}.git" \
+git-clone master
+
+cd ${SOURCE_ROOT}
+./bootstrap.sh
+
+cd ${STAGE_ROOT}
+package-configure \
+    ${SOURCE_ROOT}/configure \
+    --disable-static \
+    --enable-shared \
+    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX}
+
+# Build the components
+make-build
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

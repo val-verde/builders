@@ -38,7 +38,7 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-foundation
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-xctest
 
 # llbuild build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild-cross
 
 # swift tools support core build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-support-core
