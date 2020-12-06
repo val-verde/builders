@@ -15,16 +15,15 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wasi-libc
 # webassembly compiler-rt (bootstrap)
 CFLAGS="\
     -nostdlib \
+    -Wl,--allow-undefined \
+    -Wl,--no-entry \
     ${CFLAGS} \
 " \
 CXXFLAGS="\
     -nostdlib \
-    ${CXXFLAGS} \
-" \
-LDFLAGS="\
     -Wl,--allow-undefined \
     -Wl,--no-entry \
-    ${LDFLAGS} \
+    ${CXXFLAGS} \
 " \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt-wasi
 
