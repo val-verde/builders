@@ -8,7 +8,7 @@ export SOURCE_PACKAGE_VERSION=9999
 export SOURCE_ROOT=/sources/llvm-project/${SOURCE_PACKAGE_NAME}
 
 # Source package build helper functions
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 export CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a
 export DEPENDS="${PACKAGE_BASE_NAME}-llvm-project-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH} (>=1.0.0)"
@@ -16,8 +16,6 @@ export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-/sources/build-staging/l
 
 # Configure the build components
 cd ${STAGE_ROOT}
-
-export SYSTEM_NAME=Fuchsia
 
 INSTALL_PREFIX=${STAGE_ROOT}/install-staging${BUILD_PACKAGE_PREFIX} \
 package-cmake \

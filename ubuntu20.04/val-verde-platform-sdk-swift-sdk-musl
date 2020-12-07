@@ -3,7 +3,7 @@
 set -e
 
 # Source package build helper functions
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # remove host foundation and libdispatch to avoid module collisions
 PACKAGE_ACTION=UNINSTALL
@@ -87,10 +87,10 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-doc-cross
 
 # musl baikonur build
 SWIFT_BUILD_FLAGS="\
-    -licuucswift \
+    -Xlinker -licuucswift \
     ${SWIFT_BUILD_FLAGS} \
 " \
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-baikonur
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-baikonur
 
 # musl pythonkit build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pythonkit-cross

@@ -3,11 +3,7 @@
 set -e
 
 # Source package build helper functions
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
-
-# android environment
-export HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}
-export SYSTEM_NAME=Linux
+source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # android ndk headers build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk-headers

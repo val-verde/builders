@@ -10,8 +10,19 @@ TARGETS=${TARGETS:-install}
 VERSION=${VERSION:='1.0.0'}
 
 # global path variables
+export BUILD_PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/sysroot/usr
+export BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}
+export HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}
 export PACKAGE_PREFIX=${PACKAGE_PREFIX:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr}
 export SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot}
+
+export DPKG_ADMINDIR=/var/lib/dpkg
+export LD_LIBRARY_PATH=${BUILD_PACKAGE_PREFIX}/lib
+export PACKAGE_ARCH=all
+export PACKAGE_CLASS=deb
+export PATH=${BUILD_PACKAGE_PREFIX}/bin:${PATH}
+export NODE_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/web
+export TEMPDIR=${TEMPDIR:-/tmp}
 
 # package specific variables
 PACKAGE_NAME=${PACKAGE_NAME:-${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}}
@@ -118,6 +129,7 @@ function export-compiler-environment() {
     export STRINGS=${STRINGS:-${BINTOOLS_PATH_PREFIX}strings}
     export STRIP=${STRIP:-${BINTOOLS_PATH_PREFIX}strip}
     export SWIFTC=${SWIFTC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc}
+    export WINDRES=${RC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-rc}
 
     if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
         COMMON_CFLAGS="\
@@ -150,17 +162,22 @@ function export-compiler-environment() {
 
     if [ "${HOST_OS}" = "android" ]; then
         COMMON_CFLAGS="\
-            -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
+            -fPIC \
             -D__USE_FORTIFY_LEVEL=0 \
             ${COMMON_CFLAGS} \
         "
         SWIFTCFLAGS="\
-            -Xcc -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
             -Xcc -D__USE_FORTIFY_LEVEL=0 \
             ${SWIFTCFLAGS} \
         "
+    elif [ "${HOST_OS}" = "gnu" ]; then
+        COMMON_CFLAGS="\
+            -fPIC \
+            ${COMMON_CFLAGS} \
+        "
     elif [ "${HOST_OS}" = "musl" ]; then
         COMMON_CFLAGS="\
+            -fPIC \
             -D_ALL_SOURCE=1 \
             -D__USE_FORTIFY_LEVEL=0 \
             ${COMMON_CFLAGS} \
@@ -170,11 +187,9 @@ function export-compiler-environment() {
             -Xcc -D__USE_FORTIFY_LEVEL=0 \
             ${SWIFTCFLAGS} \
         "
-    fi
-
-    if [ "${HOST_OS}" != "mingw32" ]; then
+    elif [ "${HOST_OS}" = "mingw32" ]; then
         COMMON_CFLAGS="\
-            -fPIC \
+            -fno-builtin-stpcpy \
             ${COMMON_CFLAGS} \
         "
     fi
@@ -194,9 +209,9 @@ function export-compiler-environment() {
     fi
 
     if [ -z "${DISABLE_STRIP}" ]; then
-        LDFLAGS="\
+        COMMON_LDFLAGS="\
             -s \
-            ${LDFLAGS} \
+            ${COMMON_LDFLAGS} \
         "
     fi
 
@@ -213,9 +228,9 @@ function export-compiler-environment() {
     fi
 
     if [ -z "${ENABLE_LLVM_VERIFIER}" ]; then
-        LDFLAGS="\
+        COMMON_LDFLAGS="\
             -disable-verify \
-            ${LDFLAGS} \
+            ${COMMON_LDFLAGS} \
         "
     fi
 
@@ -249,7 +264,7 @@ function export-compiler-environment() {
         -pipe \
         -rtlib=compiler-rt \
         ${COMMON_CFLAGS} \
-        ${LDFLAGS} \
+        ${COMMON_LDFLAGS} \
         ${CCLDFLAGS} \
     " | xargs`
     export CPPFLAGS=`echo "\
@@ -306,6 +321,10 @@ function generate-compiler-tools() {
     export LDFLAGS="-O${LINKER_OPTIMIZATION_LEVEL}"
 
     if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
+        export CCLDFLAGS=`echo "\
+            -L${PACKAGE_PREFIX}/lib \
+            ${CCLDFLAGS} \
+        " | xargs`
         export LDFLAGS=`echo "\
             -L${PACKAGE_PREFIX}/lib \
             ${LDFLAGS} \
@@ -480,7 +499,6 @@ function package-swift-build() {
 
     if [ "${HOST_OS}" = "android" ]; then
         SWIFT_BUILD_FLAGS="\
-            -Xcc -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
             -Xcc -D__USE_FORTIFY_LEVEL=0 \
             ${SWIFT_BUILD_FLAGS} \
         "
@@ -505,31 +523,30 @@ function package-swift-build() {
         \"toolchain-bin-dir\": \"${BINDIR}\", \n\
         \"target\": \"${TARGET}\", \n\
         \"extra-cc-flags\": [ \n\
-            \"-isystem\", \"${PACKAGE_PREFIX}/include\", \n\
-            \"-isystem\", \"${PACKAGE_PREFIX}/lib/swift\", \n\
-            \"-isystem\", \"${PACKAGE_PREFIX}/lib/swift/Block\", \n\
             \"-march=${HOST_ARCH}\", \n\
             \"-mtune=${HOST_CPU}\", \n\
             \"-pipe\", \n\
+            \"-resource-dir=${PACKAGE_PREFIX}/lib/clang/12.0.0\", \n\
+            \"-target\", \"${TARGET}\", \n\
+            \"-I${PACKAGE_PREFIX}/lib/swift\", \n\
+            \"-I${PACKAGE_PREFIX}/lib/swift/Block\", \n\
             \"-O${OPTIMIZATION_LEVEL}\", \n\
+            \"--sysroot=${SYSROOT}\", \n\
             \"${FLTO_CFLAG}\", \n\
             \"${FPIC_CFLAG}\", \n\
             ${POLLY_CFLAG} \n\
         ], \n\
         \"extra-cpp-flags\": [ \n\
-            \"-Xcc\", \"-stdlib++-isystem\", \"-Xcc\", \"${PACKAGE_PREFIX}/include/c++/v1\", \n\
         ], \n\
         \"extra-linker-flags\": [ \n\
             \"-disable-verify\", \n\
-            \"-L${PACKAGE_PREFIX}/lib\", \n\
-            \"-L${PACKAGE_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}\", \n\
             \"-O${LINKER_OPTIMIZATION_LEVEL}\", \n\
             \"${FLTO_CFLAG}\", \n\
             \"${STRIP_LDFLAG}\", \n\
         ], \n\
         \"extra-swiftc-flags\": [ \n\
             \"-target-cpu\", \"${HOST_CPU}\", \n\
-            \"-L${PACKAGE_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}\", \n\
+            \"-L${PACKAGE_PREFIX}/lib\", \n\
             \"-O${SWIFT_OPTIMIZATION_LEVEL}\", \n\
             \"-Xfrontend\", \"-disable-llvm-verify\", \n\
             \"${FLTO_SWIFTCFLAG}\", \n\

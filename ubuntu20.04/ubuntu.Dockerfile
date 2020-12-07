@@ -14,48 +14,33 @@ ARG PACKAGE_ROOT
 
 WORKDIR /sources
 
-ENV BOOTSTRAP_SCRIPT=bootstrap-${HOST_OS}-toolchain
+ENV BUILD_ARCH=skylake \
+    BUILD_CPU=skylake \
+    BUILD_KERNEL=linux \
+    BUILD_OS=gnu \
+    BUILD_OS_API_LEVEL= \
+    BUILD_PROCESSOR=x86_64
 
-COPY ${BOOTSTRAP_SCRIPT} .
-RUN bash ${BOOTSTRAP_SCRIPT}
+COPY bootstrap-${BUILD_OS}-toolchain \
+     /sources
+RUN bash bootstrap-${BUILD_OS}-toolchain
 
-ARG BUILD_KERNEL
-ARG BUILD_OS
-ARG BUILD_PROCESSOR
 ARG DEB_PATH
-ARG HOST_KERNEL
-ARG HOST_OS
-ARG HOST_PROCESSOR
 ARG PACKAGE_BASE_NAME
 ARG PACKAGE_ROOT
 ARG VAL_VERDE_GH_TEAM
 
-ENV BUILD_ARCH=haswell \
-    BUILD_CPU=skylake \
-    BUILD_KERNEL=${BUILD_KERNEL} \
-    BUILD_OS=${BUILD_OS} \
-    BUILD_OS_API_LEVEL= \
-    BUILD_PROCESSOR=${BUILD_PROCESSOR} \
-    DEB_PATH=${DEB_PATH} \
-    DPKG_ADMINDIR=/var/lib/dpkg \
-    PACKAGE_ARCH=all \
+ENV DEB_PATH=${DEB_PATH} \
     PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME} \
-    PACKAGE_CLASS=deb \
     PACKAGE_ROOT=${PACKAGE_ROOT} \
-    NODE_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/web \
-    TEMPDIR=${TEMPDIR:-/tmp} \
     VAL_VERDE_GH_TEAM=${VAL_VERDE_GH_TEAM}
 
-ENV BUILD_PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/sysroot/usr \
-    BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}
-
-ENV PATH=${BUILD_PACKAGE_PREFIX}/bin:${PATH} \
-    LD_LIBRARY_PATH=${BUILD_PACKAGE_PREFIX}/lib
-
-RUN mkdir -p ${BUILD_PACKAGE_PREFIX} \
-             ${NODE_PATH}
+RUN mkdir -p /sources/scripts-staging/bin \
+             /sources/scripts-staging/share
 
 # platform sdk tool wrapper scripts
+COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts \
+     /sources/
 COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-clang \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-clang++ \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-gcc-mingw32 \
@@ -63,27 +48,18 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-clang \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-rc \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc \
-     ${BUILD_PACKAGE_PREFIX}/bin/
+     /sources/scripts-staging/bin/
 
-RUN chmod +x ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang \
-             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang++ \
-             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-gcc-mingw32 \
-             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-ml64 \
-             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
-             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-rc \
-             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc
-
-COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-gen-deb-files \
+COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-gen-deb-files \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-make-build \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-build \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-package-${PACKAGE_CLASS}-build \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-package-deb-build \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-package-install \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-rpath-fixup \
-     ${BUILD_PACKAGE_PREFIX}/bin/
+     /sources/scripts-staging/bin/
 
 COPY ${VAL_VERDE_GH_TEAM}-deb-templates \
-     ${BUILD_PACKAGE_PREFIX}/share
+     /sources/scripts-staging/share/
 
 # linux sources
 FROM BASE AS SOURCES_BUILDER

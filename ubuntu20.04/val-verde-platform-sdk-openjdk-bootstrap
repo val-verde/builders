@@ -8,7 +8,7 @@ export SOURCE_PACKAGE_VERSION=16
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 
 # Source package build helper functions
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # Configure the build components
 wget -c https://download.java.net/java/early_access/jdk${SOURCE_PACKAGE_VERSION}/26/GPL/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-ea+26_${HOST_KERNEL}-x64_bin.tar.gz \
