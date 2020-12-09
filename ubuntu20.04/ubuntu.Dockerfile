@@ -190,6 +190,12 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-vulkan-tools-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-vulkan-validation-layers-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-wget-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-libxcb-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-proto-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-pthread-stubs-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxau-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-macros-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-xorgproto-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-xz-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-yams \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-yarn-yautja-server-cross \

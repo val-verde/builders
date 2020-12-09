@@ -85,6 +85,24 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcap-cross
 # libexpat build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-expat-cross
 
+# xorg-macros build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-macros-cross
+
+# xorgproto build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-xorgproto-cross
+
+# xcb-proto build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-proto-cross
+
+# xcb-pthread-stubs build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-pthread-stubs-cross
+
+# libxau build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxau-cross
+
+# libxcb build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-libxcb-cross
+
 # cups build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cups-cross
 
