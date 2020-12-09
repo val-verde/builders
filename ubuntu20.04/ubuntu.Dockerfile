@@ -109,6 +109,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-cmake-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-coreutils-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-cups-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-curl-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-dpkg-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-egl-headers-cross \

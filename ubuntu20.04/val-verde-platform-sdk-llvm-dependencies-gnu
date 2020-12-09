@@ -85,6 +85,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcap-cross
 # libexpat build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-expat-cross
 
+# cups build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cups-cross
+
 # libuv build
 CMAKE_BINDIR=/usr/bin \
 MAKE_PROGRAM=/usr/bin/ninja \
