@@ -19,7 +19,6 @@ cd ${SOURCE_ROOT}
 
 if [ "${HOST_OS}" = "android" ]; then
     export MAINLINE_BRANCH=val-verde-android-mainline
-    SOURCE_ROOT=${SOURCE_ROOT}-android
 fi
 
 SWIFT_BUILD_FLAGS="\

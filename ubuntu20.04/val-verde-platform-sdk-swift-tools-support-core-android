@@ -5,7 +5,6 @@ set -e
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=swift-tools-support-core
 export SOURCE_PACKAGE_VERSION=9999-git
-export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 
 # Source package build helper functions
 source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
@@ -17,13 +16,9 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
+export SOURCE_ROOT=${PACKAGE_SOURCES_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-android
 
 # Configure the build components
-cd ${SOURCE_ROOT}
-git remote set-branches --add origin val-verde-android-mainline
-git fetch origin val-verde-android-mainline
-git checkout val-verde-android-mainline
-
 cd ${STAGE_ROOT}
 SWIFTCFLAGS="\
     -sdk ${SYSROOT} \
