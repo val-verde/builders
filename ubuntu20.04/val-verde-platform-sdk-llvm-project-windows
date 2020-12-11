@@ -5,7 +5,6 @@ set -e
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=llvm-project
 export SOURCE_PACKAGE_VERSION=9999-git
-export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 
 # Source package build helper functions
 source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
@@ -23,9 +22,6 @@ CUDA_GPU_SECONDARY_ARCH=35
 EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;clang-tools-extra;libclc;mlir;openmp;parallel-libs;polly;pstl"}
 
 # Configure the build components
-cd ${SOURCE_ROOT}
-git checkout val-verde-mainline-next
-
 export PATH=${PATH}:${LLVM_NATIVE_STAGE_ROOT}/bin
 
 cd ${STAGE_ROOT}
