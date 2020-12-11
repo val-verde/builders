@@ -8,7 +8,7 @@ export SOURCE_PACKAGE_NAME=git
 export SOURCE_PACKAGE_VERSION=9999-git
 
 # Source package build helper functions
-source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 export DEPENDS="\
     ${PACKAGE_BASE_NAME}-curl-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \

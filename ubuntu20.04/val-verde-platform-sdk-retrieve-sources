@@ -39,7 +39,6 @@ function fetch-sources() {
             SOURCE_BRANCH=val-verde-mainline-next
         elif [[ ${SOURCE_BRANCH_IND} == "default-next-testing" ]]; then
             SOURCE_BRANCH=val-verde-mainline-next-testing
-            PACKAGE_NAME=${PACKAGE_NAME}-testing
         elif [[ ${SOURCE_BRANCH_IND} == "android" ]]; then
             SOURCE_BRANCH=val-verde-android-mainline
             PACKAGE_NAME=${PACKAGE_NAME}-android
@@ -47,8 +46,8 @@ function fetch-sources() {
             SOURCE_BRANCH=val-verde-android-mainline-next
             PACKAGE_NAME=${PACKAGE_NAME}-android
         elif [[ ${SOURCE_BRANCH_IND} == "android-next-testing" ]]; then
-            SOURCE_BRANCH=val-verde-android-mainline-next-testing
-            PACKAGE_NAME=${PACKAGE_NAME}-android-testing
+            SOURCE_BRANCH=val-verde-android-mainline-next
+            PACKAGE_NAME=${PACKAGE_NAME}-android
         elif [[ ${SOURCE_BRANCH_IND} == "windows" ]]; then
             SOURCE_BRANCH=val-verde-windows-mainline
             PACKAGE_NAME=${PACKAGE_NAME}-windows

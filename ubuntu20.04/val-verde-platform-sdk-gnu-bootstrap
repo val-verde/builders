@@ -3,7 +3,7 @@
 set -e
 
 # Source package build helper functions
-source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 mkdir -p ${BUILD_PACKAGE_PREFIX}
 rsync -aPx /sources/scripts-staging/* \
@@ -15,9 +15,6 @@ chmod +x ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang \
          ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
          ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-rc \
          ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc
-
-# upstream source packages build
-fetch-sources
 
 # java bootstrap build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openjdk-bootstrap

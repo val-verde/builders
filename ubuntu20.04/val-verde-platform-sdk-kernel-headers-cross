@@ -7,7 +7,7 @@ export SOURCE_PACKAGE_NAME=linux
 export SOURCE_PACKAGE_VERSION=5.10.1
 
 # Source package build helper functions
-source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 export-compiler-environment
 

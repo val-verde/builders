@@ -7,7 +7,7 @@ export SOURCE_PACKAGE_NAME=xorg-libxau
 export SOURCE_PACKAGE_VERSION=9999-git
 
 # Source package build helper functions
-source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 export-compiler-environment
 

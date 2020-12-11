@@ -5,10 +5,11 @@ set -e
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=strace
 export SOURCE_PACKAGE_VERSION=5.9
-export SOURCE_ROOT=${PACKAGE_SOURCES_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 
 # Source package build helper functions
-source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export SOURCE_ROOT=${PACKAGE_SOURCES_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 
 # Configure the build components
 cd ${STAGE_ROOT}

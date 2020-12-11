@@ -50,7 +50,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-clang \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc \
      /sources/scripts-staging/bin/
 
-COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-gen-deb-files \
+COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-packages \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-make-build \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-build \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-rpath-fixup \

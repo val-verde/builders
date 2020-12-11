@@ -7,7 +7,7 @@ export SOURCE_PACKAGE_NAME=libcxxabi
 export SOURCE_PACKAGE_VERSION=9999-wasm32
 
 # Source package build helper functions
-source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-/sources/build-staging/llvm-project-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
 export SOURCE_ROOT=${PACKAGE_SOURCES_ROOT}/llvm-project-9999-git/${SOURCE_PACKAGE_NAME}

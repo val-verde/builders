@@ -7,7 +7,7 @@ export SOURCE_PACKAGE_NAME=acl
 export SOURCE_PACKAGE_VERSION=2.2.52
 
 # Source package build helper functions
-source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 export DEPENDS="${PACKAGE_BASE_NAME}-attr-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 

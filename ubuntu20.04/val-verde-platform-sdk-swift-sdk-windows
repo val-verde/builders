@@ -3,7 +3,7 @@
 set -e
 
 # Source package build helper functions
-source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 export COMPILER_TARGET=${HOST_PROCESSOR}-unknown-windows-gnu
 

@@ -7,7 +7,7 @@ export SOURCE_PACKAGE_NAME=automake
 export SOURCE_PACKAGE_VERSION=1.16.3
 
 # Source package build helper functions
-source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # Configure the build components
 cd ${STAGE_ROOT}

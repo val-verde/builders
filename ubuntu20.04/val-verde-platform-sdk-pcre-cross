@@ -7,7 +7,7 @@ export SOURCE_PACKAGE_NAME=pcre
 export SOURCE_PACKAGE_VERSION=8.44
 
 # Source package build helper functions
-source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # Configure the build components
 sed -i \

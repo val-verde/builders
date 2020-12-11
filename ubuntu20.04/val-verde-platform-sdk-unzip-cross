@@ -7,7 +7,7 @@ export SOURCE_PACKAGE_NAME=unzip
 export SOURCE_PACKAGE_VERSION=60
 
 # Source package build helper functions
-source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 export-compiler-environment
 generate-compiler-tools

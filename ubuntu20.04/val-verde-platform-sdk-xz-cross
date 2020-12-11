@@ -7,7 +7,7 @@ export SOURCE_PACKAGE_NAME=xz
 export SOURCE_PACKAGE_VERSION=5.2.5
 
 # Source package build helper functions
-source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # Configure the build components
 sed -i "s/'auto-import'/'ld'/g" ${SOURCE_ROOT}/configure
