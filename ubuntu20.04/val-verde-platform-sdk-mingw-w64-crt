@@ -5,10 +5,11 @@ set -e
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=mingw-w64-crt
 export SOURCE_PACKAGE_VERSION=9999-git
-export SOURCE_ROOT=/sources/mingw-w64/${SOURCE_PACKAGE_NAME}
 
 # Source package build helper functions
 source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export SOURCE_ROOT=${PACKAGE_SOURCES_ROOT}/mingw-w64-${SOURCE_PACKAGE_VERSION}/${SOURCE_PACKAGE_NAME}
 
 # Configure the build components
 cd ${STAGE_ROOT}
