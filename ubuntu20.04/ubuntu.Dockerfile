@@ -53,12 +53,13 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-clang \
 COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-gen-deb-files \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-make-build \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-build \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-package-deb-build \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-package-install \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-rpath-fixup \
      /sources/scripts-staging/bin/
 
 COPY ${VAL_VERDE_GH_TEAM}-deb-templates \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-deb-packaging-scripts \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-retrieve-sources \
      ${VAL_VERDE_GH_TEAM}-sources.json \
      /sources/scripts-staging/share/
 
@@ -77,8 +78,16 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap \
 # Optimization level speed: [0-3] or size: [s, z]
 ENV OPTIMIZATION_LEVEL=3
 
+# upstream source package build
+FROM BASE AS SOURCES_BUILDER
+
+COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-bootstrap-builders \
+     /sources/
+
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bootstrap-builders
+
 # gnu bootstrap build
-FROM BASE AS GNU_BOOTSTRAP_BUILDER
+FROM SOURCES_BUILDER AS GNU_BOOTSTRAP_BUILDER
 
 RUN HOST_ARCH=${BUILD_ARCH} \
     HOST_CPU=${BUILD_CPU} \
@@ -348,14 +357,6 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-windows \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-winpthreads-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-yams-windows \
      /sources/
-
-# mingw-w64 source
-RUN export SOURCE_PACKAGE_NAME=mingw-w64 \
-    && export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME} \
-    && git clone https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git \
-                 --branch val-verde-mainline \
-                 --single-branch \
-                 ${SOURCE_ROOT}
 
 # windows build
 FROM WINDOWS_SOURCES_BUILDER AS WINDOWS_BUILDER
