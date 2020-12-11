@@ -7,7 +7,7 @@ export SOURCE_PACKAGE_NAME=llvm-project
 export SOURCE_PACKAGE_VERSION=9999-git
 
 # Source package build helper functions
-source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 export DEPENDS="libz3-4 (>= 4.8.7-4build1), libffi7 (>= 3.3-4), libelf1 (>= 0.176-1.1build1)"
 
