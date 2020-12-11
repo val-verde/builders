@@ -22,6 +22,9 @@ cd /sources
 wget -c http://ftp.debian.org/debian/pool/main/d/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}_${SOURCE_PACKAGE_VERSION}.tar.xz \
      -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz
 tar -xf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz
+sed -i \
+    "s/'auto-import'/'ld'/g" \
+    ${SOURCE_ROOT}/configure
 
 if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
     CROSS_COMPILING=yes

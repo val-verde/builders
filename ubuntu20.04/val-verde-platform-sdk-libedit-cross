@@ -16,6 +16,9 @@ export DEPENDS="${PACKAGE_BASE_NAME}-ncurses-${HOST_OS}${HOST_OS_API_LEVEL}-${HO
 cd /sources
 wget -c https://www.thrysoee.dk/editline/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
 tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
+sed -i \
+    "s/'auto-import'/'ld'/g" \
+    ${SOURCE_ROOT}/configure
 
 cd ${STAGE_ROOT}
 CFLAGS="\

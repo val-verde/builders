@@ -14,9 +14,11 @@ source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 cd /sources
 wget -c https://pkgconfig.freedesktop.org/releases/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
 tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
+sed -i \
+    "s/'auto-import'/'ld'/g" \
+    ${SOURCE_ROOT}/configure
 
 cd ${STAGE_ROOT}
-
 package-configure \
     ${SOURCE_ROOT}/configure \
     ac_cv_func_posix_getgrgid_r=yes \
@@ -26,7 +28,6 @@ package-configure \
     --prefix=${INSTALL_PREFIX} \
     --with-internal-glib \
     --with-libiconv=gnu
-
 
 # Build the components
 make-build
