@@ -20,10 +20,7 @@ cd ${STAGE_ROOT}
 
 BINDIR=${BINDIR:-"/usr/bin"} \
 CXX_INCLUDE_DIR=${SOURCE_ROOT}/libcxx/include \
-LIBS="\
-    -lunwind \
-    ${LIBS} \
-" \
+CXX_STANDARD=17 \
 package-cmake \
     -DBUILD_SHARED_LIBS=FALSE \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \

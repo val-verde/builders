@@ -25,6 +25,7 @@ USE_NEWPM=${USE_NEWPM:-TRUE}
 
 # Configure the build components
 cd ${STAGE_ROOT}
+
 CFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
@@ -35,10 +36,7 @@ CXXFLAGS="\
     -fms-extensions \
     ${CXXFLAGS} \
 " \
-LIBS="\
-    -lole32 \
-    ${LIBS} \
-" \
+CXX_STANDARD=17 \
 UniversalCRTSdkDir=${SYSROOT} \
 UCRTVersion=git \
 VCToolsInstallDir=${SYSROOT} \

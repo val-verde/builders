@@ -27,6 +27,8 @@ EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;libclc;mlir;openmp;parallel-
 export PATH=${PATH}:${LLVM_NATIVE_STAGE_ROOT}/bin
 
 cd ${STAGE_ROOT}
+
+CXX_STANDARD=17 \
 package-cmake \
     -DBUILD_SHARED_LIBS=FALSE \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \

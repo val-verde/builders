@@ -32,6 +32,8 @@ GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git" \
 git-clone val-verde-mainline-next
 
 cd ${STAGE_ROOT}
+
+CXX_STANDARD=17 \
 package-cmake-invocation \
     -DClang_DIR=${LLVM_STAGE_ROOT}/lib/cmake/clang \
     -DICU_I18N_INCLUDE_DIRS=${BUILD_PACKAGE_PREFIX}/include \

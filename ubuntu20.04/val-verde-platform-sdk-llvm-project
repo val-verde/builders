@@ -29,6 +29,7 @@ if [ -n "${ENABLE_MUSL_LIBC}" ]; then
     LIBC_CMD="-DLIBCXX_HAS_MUSL_LIBC=TRUE"
 fi
 
+CXX_STANDARD=17 \
 package-cmake \
     -DBUILD_SHARED_LIBS=FALSE \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \

@@ -29,6 +29,7 @@ export SWIFT_STAGE_ROOT=/sources/build-staging/swift-${HOST_OS}${HOST_OS_API_LEV
 
 # Configure the build components
 cd ${STAGE_ROOT}
+
 CFLAGS="\
     -Wno-register \
     ${CFLAGS} \
@@ -37,6 +38,7 @@ CXXFLAGS="\
     -Wno-register \
     ${CXXFLAGS} \
 " \
+CXX_STANDARD=17 \
 package-cmake \
     -DClang_DIR=${LLVM_STAGE_ROOT}/lib/cmake/clang \
     -DCLANG_LINK_CLANG_DYLIB=TRUE \

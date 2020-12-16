@@ -306,7 +306,7 @@ function generate-compiler-tools() {
     create-host-tool ${CCLD} CCLDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang-ld
     create-host-tool ${CPP} CPPFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang-cpp
     create-host-tool ${CXX} CXXFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang++
-    create-host-tool ${CXXLD} CXXLDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang++-ld
+    create-host-tool ${CXXLD} CCLDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang++-ld
     create-host-tool ${LD} LDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld
 
     export AS=${GENERATED_BINDIR}/${TOOL_PREFIX}-clang-as
@@ -328,10 +328,6 @@ function generate-compiler-tools() {
         export CCLDFLAGS=`echo "\
             -L${PACKAGE_PREFIX}/lib \
             ${CCLDFLAGS} \
-        " | xargs`
-        export CXXLDFLAGS=`echo "\
-            -L${PACKAGE_PREFIX}/lib \
-            ${CXXLDFLAGS} \
         " | xargs`
         export LDFLAGS=`echo "\
             -L${PACKAGE_PREFIX}/lib \
@@ -414,6 +410,7 @@ function package-cmake-invocation() {
     fi
 
     AS_COMPILER_ID=${AS_COMPILER_ID:-Clang}
+    CXX_STANDARD=${CXX_STANDARD:-20}
     MAKE_PROGRAM=${MAKE_PROGRAM:-${BINDIR}/ninja}
 
     ${CMAKE_BINDIR}/cmake \
@@ -438,7 +435,7 @@ function package-cmake-invocation() {
         -DCMAKE_CXX_FLAGS_MINSIZEREL="${CXXFLAGS}" \
         -DCMAKE_CXX_FLAGS_RELEASE="${CXXFLAGS}" \
         -DCMAKE_CXX_LINK_EXECUTABLE=${CXXLD} \
-        -DCMAKE_CXX_STANDARD=20 \
+        -DCMAKE_CXX_STANDARD=${CXX_STANDARD} \
         -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS}" \
         -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
         -DCMAKE_LINKER=${LD} \

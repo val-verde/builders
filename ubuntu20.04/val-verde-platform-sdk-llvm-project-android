@@ -32,6 +32,7 @@ cd ${STAGE_ROOT}
 
 export PATH=${PATH}:${LLVM_NATIVE_STAGE_ROOT}/bin
 
+CXX_STANDARD=17 \
 package-cmake \
     -DBUILD_SHARED_LIBS=FALSE \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \

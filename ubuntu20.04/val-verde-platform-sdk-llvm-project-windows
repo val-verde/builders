@@ -40,11 +40,7 @@ CXXFLAGS="\
     -D_Unwind_Personality_Fn=__personality_routine \
     ${CXXFLAGS} \
 " \
-LIBS="\
-    -lole32 \
-    -luuid \
-    ${LIBS} \
-" \
+CXX_STANDARD=17 \
 package-cmake \
     -DBUILD_SHARED_LIBS=TRUE \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
