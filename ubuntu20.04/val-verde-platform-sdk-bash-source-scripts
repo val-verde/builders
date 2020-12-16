@@ -111,9 +111,10 @@ function export-compiler-environment() {
     export AS=${CC:-${BINDIR}/clang}
     export BUILD_CC=${CC:-${BINDIR}/clang}
     export CC=${CC:-${BINDIR}/clang}
-    export CCLD=${CCLD:-${BINDIR}/clang}
-    export CPP=${CPP:-${BINDIR}/clang-cpp}
-    export CXX=${CXX:-${BINDIR}/clang++}
+    export CCLD=${CCLD:-${CC}}
+    export CPP=${CPP:-${CC}-cpp}
+    export CXX=${CXX:-${CC}++}
+    export CXXLD=${CXXLD:-${CXX}}
     export DLLTOOL=${DLLTOOL:-${BINTOOLS_PATH_PREFIX}dlltool}
     export LD=${LD:-${BINDIR}/ld.lld}
     export MANIFEST_TOOL=${MANIFEST_TOOL:-${BINTOOLS_PATH_PREFIX}mt}
@@ -298,32 +299,39 @@ function generate-compiler-tools() {
     GENERATED_BINDIR=${GENERATED_BINDIR:-${STAGE_ROOT}}
     LINKER_OPTIMIZATION_LEVEL=${LINKER_OPTIMIZATION_LEVEL:-2}
     OPTIMIZATION_LEVEL=${OPTIMIZATION_LEVEL:-z}
-    TOOL_PREFIX=${TOOL_PREFIX:-host-}
+    TOOL_PREFIX=${TOOL_PREFIX:-host}
 
-    create-host-tool ${AS} ASFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}clang-as
-    create-host-tool ${CC} CFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}clang
-    create-host-tool ${CCLD} CCLDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}clang-ld
-    create-host-tool ${CPP} CPPFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}clang-cpp
-    create-host-tool ${CXX} CXXFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}clang++
-    create-host-tool ${LD} LDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}ld
+    create-host-tool ${AS} ASFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang-as
+    create-host-tool ${CC} CFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang
+    create-host-tool ${CCLD} CCLDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang-ld
+    create-host-tool ${CPP} CPPFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang-cpp
+    create-host-tool ${CXX} CXXFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang++
+    create-host-tool ${CXXLD} CXXLDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang++-ld
+    create-host-tool ${LD} LDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld
 
-    export AS=${GENERATED_BINDIR}/${TOOL_PREFIX}clang-as
+    export AS=${GENERATED_BINDIR}/${TOOL_PREFIX}-clang-as
     export ASFLAGS="-O${OPTIMIZATION_LEVEL}"
-    export CC=${GENERATED_BINDIR}/${TOOL_PREFIX}clang
+    export CC=${GENERATED_BINDIR}/${TOOL_PREFIX}-clang
     export CFLAGS="-O${OPTIMIZATION_LEVEL}"
-    export CCLD=${GENERATED_BINDIR}/${TOOL_PREFIX}clang-ld
+    export CCLD=${CC}-ld
     export CCLDFLAGS="-O${LINKER_OPTIMIZATION_LEVEL}"
-    export CPP=${GENERATED_BINDIR}/${TOOL_PREFIX}clang-cpp
+    export CPP=${CC}-cpp
     export CPPFLAGS="-O${OPTIMIZATION_LEVEL}"
-    export CXX=${GENERATED_BINDIR}/${TOOL_PREFIX}clang++
+    export CXX=${CC}++
     export CXXFLAGS="-O${OPTIMIZATION_LEVEL}"
-    export LD=${GENERATED_BINDIR}/${TOOL_PREFIX}ld
+    export CXXLD=${CXX}-ld
+    export CXXLDFLAGS="-O${OPTIMIZATION_LEVEL}"
+    export LD=${GENERATED_BINDIR}/${TOOL_PREFIX}-ld
     export LDFLAGS="-O${LINKER_OPTIMIZATION_LEVEL}"
 
     if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
         export CCLDFLAGS=`echo "\
             -L${PACKAGE_PREFIX}/lib \
             ${CCLDFLAGS} \
+        " | xargs`
+        export CXXLDFLAGS=`echo "\
+            -L${PACKAGE_PREFIX}/lib \
+            ${CXXLDFLAGS} \
         " | xargs`
         export LDFLAGS=`echo "\
             -L${PACKAGE_PREFIX}/lib \
@@ -423,12 +431,14 @@ function package-cmake-invocation() {
         -DCMAKE_C_FLAGS_DEBUG="${CFLAGS}" \
         -DCMAKE_C_FLAGS_MINSIZEREL="${CFLAGS}" \
         -DCMAKE_C_FLAGS_RELEASE="${CFLAGS}" \
+        -DCMAKE_C_LINK_EXECUTABLE=${CCLD} \
         -DCMAKE_CXX_COMPILER=${CXX} \
         -DCMAKE_CXX_COMPILER_TARGET=${HOST_TRIPLE} \
         -DCMAKE_CXX_FLAGS_DEBUG="${CXXFLAGS}" \
         -DCMAKE_CXX_FLAGS_MINSIZEREL="${CXXFLAGS}" \
         -DCMAKE_CXX_FLAGS_RELEASE="${CXXFLAGS}" \
-        -DCMAKE_CXX_STANDARD=17 \
+        -DCMAKE_CXX_LINK_EXECUTABLE=${CXXLD} \
+        -DCMAKE_CXX_STANDARD=20 \
         -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS}" \
         -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
         -DCMAKE_LINKER=${LD} \
