@@ -11,7 +11,7 @@ export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # Configure the build components
-wget -c https://download.java.net/java/early_access/jdk${SOURCE_PACKAGE_VERSION}/26/GPL/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-ea+26_${HOST_KERNEL}-x64_bin.tar.gz \
+wget -c https://download.java.net/java/early_access/jdk${SOURCE_PACKAGE_VERSION}/28/GPL/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-ea+28_${HOST_KERNEL}-x64_bin.tar.gz \
      -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.tar.gz
 tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.tar.gz
 mv jdk-${SOURCE_PACKAGE_VERSION} \
