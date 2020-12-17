@@ -4,7 +4,7 @@ set -e
 
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=linux
-export SOURCE_PACKAGE_VERSION=5.9.12
+export SOURCE_PACKAGE_VERSION=5.10.1
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 
 # Source package build helper functions
