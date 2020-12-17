@@ -4,7 +4,7 @@ set -e
 
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=openssl
-export SOURCE_PACKAGE_VERSION=1.1.1h
+export SOURCE_PACKAGE_VERSION=1.1.1i
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 
 # Source package build helper functions
