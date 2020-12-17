@@ -17,10 +17,6 @@ tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
 sed -i "s/'auto-import'/'ld'/g" ${SOURCE_ROOT}/configure
 
 cd ${STAGE_ROOT}
-LDFLAGS=" \
-    ${LDFLAGS} \
-    ${LIBS} \
-" \
 OPTIMIZATION_LEVEL=3 \
 package-configure \
     ${SOURCE_ROOT}/configure \

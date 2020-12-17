@@ -42,9 +42,9 @@ CXX_STANDARD=17 \
 package-cmake \
     -DClang_DIR=${LLVM_STAGE_ROOT}/lib/cmake/clang \
     -DCLANG_LINK_CLANG_DYLIB=TRUE \
-    -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS} ${LIBS} -O2" \
+    -DCMAKE_EXE_LINKER_FLAGS="-O2" \
     -DCURSES_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/ncurses \
-    -DCURSES_LIBRARIES="${PACKAGE_PREFIX}/lib/libncurses.so" \
+    -DCURSES_LIBRARIES=${PACKAGE_PREFIX}/lib/libncurses.so \
     -DLibEdit_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
     -DLibEdit_LIBRARIES=${PACKAGE_PREFIX}/lib/libedit.so \
     -DLIBLZMA_INCLUDE_DIR=${PACKAGE_PREFIX}/include \

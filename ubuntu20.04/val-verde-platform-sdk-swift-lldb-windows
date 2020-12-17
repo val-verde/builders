@@ -25,12 +25,6 @@ export SWIFT_NATIVE_STAGE_ROOT=${SWIFT_NATIVE_STAGE_ROOT:-/sources/build-staging
 export SWIFT_STAGE_ROOT=/sources/build-staging/swift-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
 # Configure the build components
-LIBS="\
-    -lole32 \
-    -lpsapi \
-    -luuid \
-    ${LIBS} \
-"
 
 cd ${STAGE_ROOT}
 CFLAGS="\
@@ -42,11 +36,16 @@ CXXFLAGS="\
     ${CXXFLAGS} \
 " \
 CXX_STANDARD=17 \
-LIBS="${LIBS}" \
+LDFLAGS="\
+    -lole32 \
+    -lpsapi \
+    -luuid \
+    ${LDFLAGS} \
+"
 package-cmake \
     -DClang_DIR=${LLVM_STAGE_ROOT}/lib/cmake/clang \
     -DCLANG_LINK_CLANG_DYLIB=FALSE \
-    -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS} ${LIBS} -O2" \
+    -DCMAKE_EXE_LINKER_FLAGS="-O2" \
     -DCURSES_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/ncurses \
     -DCURSES_LIBRARIES=${PACKAGE_PREFIX}/lib/libncurses.dll.a \
     -DLibEdit_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \

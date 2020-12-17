@@ -21,9 +21,9 @@ sed -i \
 
 cd ${STAGE_ROOT}
 
-LDFLAGS="\
+COMMON_LDFLAGS="\
     -Wl,-allow-multiple-definition \
-    ${LDFLAGS} \
+    ${COMMON_LDFLAGS} \
 " \
 package-configure \
     ${SOURCE_ROOT}/configure \
