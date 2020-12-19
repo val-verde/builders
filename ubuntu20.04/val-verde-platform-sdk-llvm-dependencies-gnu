@@ -11,6 +11,14 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zlib-cross
 MAKE_PROGRAM=/usr/bin/make \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bzip2-cross
 
+# zip build
+MAKE_PROGRAM=/usr/bin/make \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zip-cross
+
+# unzip build
+MAKE_PROGRAM=/usr/bin/make \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-unzip-cross
+
 # autoconf build
 MAKE_PROGRAM=/usr/bin/make \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-autoconf-cross
@@ -18,6 +26,14 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-autoconf-cross
 # automake build
 MAKE_PROGRAM=/usr/bin/make \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-automake-cross
+
+# libtool build
+MAKE_PROGRAM=/usr/bin/make \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libtool-cross
+
+# m4 build
+MAKE_PROGRAM=/usr/bin/make \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-m4-cross
 
 # make build
 MAKE_PROGRAM=/usr/bin/make \
@@ -63,14 +79,32 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sqlite-cross
 # openssl build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openssl-cross
 
-# libsecret build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libsecret-cross
-
 # libcap build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcap-cross
 
 # libexpat build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-expat-cross
+
+# xorg-macros build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-macros-cross
+
+# xorgproto build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-xorgproto-cross
+
+# xcb-proto build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-proto-cross
+
+# xcb-pthread-stubs build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-pthread-stubs-cross
+
+# libxau build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxau-cross
+
+# libxcb build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-libxcb-cross
+
+# cups build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cups-cross
 
 # libuv build
 CMAKE_BINDIR=/usr/bin \
@@ -95,6 +129,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-attr-cross
 
 # acl build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-acl-cross
+
+# libsecret build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libsecret-cross
 
 # bash build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bash-cross
@@ -152,6 +189,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lua-cross
 
 # swig build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swig-cross
+
+# java build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openjdk-cross
 
 # z3 build
 CMAKE_BINDIR=/usr/bin \

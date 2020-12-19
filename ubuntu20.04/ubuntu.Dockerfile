@@ -14,84 +14,52 @@ ARG PACKAGE_ROOT
 
 WORKDIR /sources
 
-ENV BOOTSTRAP_SCRIPT=bootstrap-${HOST_OS}-toolchain
+ENV BUILD_ARCH=skylake \
+    BUILD_CPU=skylake \
+    BUILD_KERNEL=linux \
+    BUILD_OS=gnu \
+    BUILD_OS_API_LEVEL= \
+    BUILD_PROCESSOR=x86_64
 
-COPY ${BOOTSTRAP_SCRIPT} .
-RUN bash ${BOOTSTRAP_SCRIPT}
+COPY bootstrap-${BUILD_OS}-toolchain \
+     /sources
+RUN bash bootstrap-${BUILD_OS}-toolchain
 
-ARG BUILD_KERNEL
-ARG BUILD_OS
-ARG BUILD_PROCESSOR
 ARG DEB_PATH
-ARG HOST_KERNEL
-ARG HOST_OS
-ARG HOST_PROCESSOR
 ARG PACKAGE_BASE_NAME
 ARG PACKAGE_ROOT
 ARG VAL_VERDE_GH_TEAM
 
-ENV BUILD_ARCH=haswell \
-    BUILD_CPU=skylake \
-    BUILD_KERNEL=${BUILD_KERNEL} \
-    BUILD_OS=${BUILD_OS} \
-    BUILD_OS_API_LEVEL= \
-    BUILD_PROCESSOR=${BUILD_PROCESSOR} \
-    DEB_PATH=${DEB_PATH} \
-    DPKG_ADMINDIR=/var/lib/dpkg \
-    PACKAGE_ARCH=all \
+ENV DEB_PATH=${DEB_PATH} \
     PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME} \
-    PACKAGE_CLASS=deb \
     PACKAGE_ROOT=${PACKAGE_ROOT} \
-    NODE_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/web \
-    TEMPDIR=${TEMPDIR:-/tmp} \
     VAL_VERDE_GH_TEAM=${VAL_VERDE_GH_TEAM}
 
-ENV BUILD_PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/sysroot/usr \
-    BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}
-
-ENV PATH=${BUILD_PACKAGE_PREFIX}/bin:${PATH} \
-    LD_LIBRARY_PATH=${BUILD_PACKAGE_PREFIX}/lib
-
-RUN mkdir -p ${BUILD_PACKAGE_PREFIX} \
-             ${NODE_PATH}
+RUN mkdir -p /sources/scripts-staging/bin \
+             /sources/scripts-staging/share
 
 # platform sdk tool wrapper scripts
+COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts \
+     /sources/
 COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-clang \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-clang++ \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-cmake \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-configure \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-gcc-mingw32 \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-ml64 \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-nvcc \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-rc \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-build \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc \
-     ${BUILD_PACKAGE_PREFIX}/bin/
-
-RUN chmod +x ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-configure \
-             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-cmake \
-             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang \
-             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang++ \
-             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-gcc-mingw32 \
-             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-ml64 \
-             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
-             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-nvcc \
-             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-rc \
-             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-swift-build \
-             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc
+     /sources/scripts-staging/bin/
 
 COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-gen-deb-files \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-make-build \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-build \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-package-${PACKAGE_CLASS}-build \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-package-deb-build \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-package-install \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-rpath-fixup \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts \
-     ${BUILD_PACKAGE_PREFIX}/bin/
+     /sources/scripts-staging/bin/
 
 COPY ${VAL_VERDE_GH_TEAM}-deb-templates \
-     ${BUILD_PACKAGE_PREFIX}/share
+     /sources/scripts-staging/share/
 
 # linux sources
 FROM BASE AS SOURCES_BUILDER
@@ -107,6 +75,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libunwind-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project-bootstrap \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-openjdk-bootstrap \
      /sources/
 
 # LTO configuration: [OFF | Full | Thin]
@@ -140,6 +109,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-cmake-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-coreutils-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-cups-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-curl-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-dpkg-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-egl-headers-cross \
@@ -166,16 +136,19 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libmicrohttpd-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libsecret-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libssh2-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-libtool-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libuv-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-libxml2-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-dependencies-gnu \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-lua-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-m4-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-make-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-ncurses-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-node-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-npm-yarn-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-openjdk-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-openssl-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-opengl-headers-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-opengl-es-headers-cross \
@@ -200,7 +173,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-doc-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-driver \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-format-cross \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-lldb \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-package-manager \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-syntax-cross \
@@ -209,6 +182,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swig-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-systemd \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-tar-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-unzip-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-util-linux-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-vim-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-vulkan-headers-cross \
@@ -216,10 +190,17 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-vulkan-tools-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-vulkan-validation-layers-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-wget-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-libxcb-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-proto-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-pthread-stubs-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxau-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-macros-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-xorgproto-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-xz-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-yams \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-yarn-yautja-server-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-z3-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-zip-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-zlib-cross \
      /sources/
 
@@ -241,14 +222,15 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-gnulib-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-icu4c-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-pythonkit-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-rust-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-sourcekit-lsp-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-argument-parser-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-cmark-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-foundation-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-libdispatch-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-xctest-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-driver-cross \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-package-manager-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-support-core-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-yams-cross \
      /sources/
 
@@ -259,8 +241,11 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt-musl \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-dependencies-musl \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project-musl \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-musl \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-musl-fts \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-musl-headers \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-musl-libc \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-musl \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-lldb-musl \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-sdk-musl \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-musl \
      /sources/

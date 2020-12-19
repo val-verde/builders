@@ -2,30 +2,22 @@
 
 set -e
 
-# Source package build helper functions
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
-
 # Set all environment vars
-export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
 export SOURCE_PACKAGE_NAME=swift-corelibs-libdispatch
 export SOURCE_PACKAGE_VERSION=9999-git
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${QUALIFIED_PACKAGE_NAME}
 
-export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+# Source package build helper functions
+source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
 export DEPENDS="\
     ${PACKAGE_BASE_NAME}-llvm-project-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-swift-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
 # Configure the build components
-rm -rf ${STAGE_ROOT}
-mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
-
-${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-cmake \
+package-cmake \
     -DENABLE_SWIFT=TRUE \
     ${SOURCE_ROOT}
 
@@ -34,7 +26,7 @@ ninja-build
 
 # RPATH fixups
 COMPONENTS="\
-    ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/swift/${HOST_KERNEL}/lib*.so \
+    ${INSTALL_PREFIX}/lib/swift/${HOST_KERNEL}/lib*.so \
 " \
 COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
 rpath-fixup

@@ -2,60 +2,98 @@
 
 set -e
 
-# libdispatch build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-libdispatch
+# Source package build helper functions
+source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
-# foundation build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-foundation
+# remove host foundation and libdispatch to avoid module collisions
+PACKAGE_ACTION=UNINSTALL
+PACKAGES_TO_MANAGE=( 'swift-corelibs-foundation'     'BUILD' \
+                     'swift-corelibs-libdispatch'    'BUILD' )
+deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 
-# xctest build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-xctest
+# musl libdispatch build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-libdispatch-cross
 
-# llbuild build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild
+# musl foundation build
+SWIFTCFLAGS="\
+    -lfts \
+    -DNO_BACKTRACE \
+    ${SWIFTCFLAGS} \
+" \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-foundation-cross
 
-# swift tools support core build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-support-core
+# musl xctest build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-xctest-cross
 
-# yams build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-yams
+# musl llbuild build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild-cross
 
-# swift argument parser build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-argument-parser
+# musl swift tools support core build
+SWIFTCFLAGS="\
+    -DUSE_MUSL_LIBC \
+    ${SWIFTCFLAGS} \
+" \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-support-core-cross
 
-# swift driver build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-driver
+# musl yams build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-yams-cross
 
-# swift package manager build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-package-manager
+# musl swift argument parser build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-argument-parser-cross
 
-dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-argument-parser-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-xctest-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-driver-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-llbuild-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-package-manager-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-tools-support-core-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-yams-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb
+# musl swift driver build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-driver-cross
 
-# swift-syntax build
+# musl swift package manager build
+SWIFTCFLAGS="\
+    -DUSE_MUSL_LIBC \
+    ${SWIFTCFLAGS} \
+" \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-package-manager-cross
+
+# reinstall swiftpm for build and host
+PACKAGE_ACTION=INSTALL
+PACKAGES_TO_MANAGE=( 'swift-argument-parser'         'BUILD' \
+                     'swift-corelibs-foundation'     'BUILD' \
+                     'swift-corelibs-libdispatch'    'BUILD' \
+                     'swift-corelibs-xctest'         'BUILD' \
+                     'swift-driver'                  'BUILD' \
+                     'swift-llbuild'                 'BUILD' \
+                     'swift-package-manager'         'BUILD' \
+                     'swift-tools-support-core'      'BUILD' \
+		     'yams'                          'BUILD' \
+                     'swift-argument-parser'         'HOST' \
+                     'swift-corelibs-foundation'     'HOST' \
+                     'swift-corelibs-libdispatch'    'HOST' \
+                     'swift-corelibs-xctest'         'HOST' \
+                     'swift-driver'                  'HOST' \
+                     'swift-llbuild'                 'HOST' \
+                     'swift-package-manager'         'HOST' \
+                     'swift-tools-support-core'      'HOST' \
+                     'yams'                          'HOST' )
+deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
+
+# musl swift-syntax build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-syntax-cross
 
-# swift-format build
+# musl swift-format build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-format-cross
 
-# swift-doc build
+# musl swift-doc build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-doc-cross
 
-# sourcekit-lsp build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sourcekit-lsp
+# musl sourcekit-lsp build
+# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sourcekit-lsp-cross
 
-# baikonur build
+# musl baikonur build
+SWIFT_BUILD_FLAGS="\
+    -Xlinker -licuucswift \
+    ${SWIFT_BUILD_FLAGS} \
+" \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-baikonur
 
-# pythonkit build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pythonkit
+# musl pythonkit build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pythonkit-cross
 
-# swift tensorflows apis build
+# musl swift tensorflows apis build
 # bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tensorflow-apis

@@ -3,34 +3,7 @@
 set -e
 
 # Source package build helper functions
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
-
-# gnu environment
-export HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}
-export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr
-export SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot}
-export SYSTEM_NAME=Linux
-
-export CFLAGS=`echo "\
-    -fPIC \
-    -D__USE_FORTIFY_LEVEL=0 \
-" | xargs`
-export CPPFLAGS=`echo "\
-    -fPIC \
-    -D__USE_FORTIFY_LEVEL=0 \
-" | xargs`
-export CXXFLAGS=`echo "\
-    -fPIC \
-    -stdlib++-isystem ${PACKAGE_PREFIX}/include/c++/v1 \
-    -D__USE_FORTIFY_LEVEL=0 \
-" | xargs`
-export SWIFT_BUILD_FLAGS=`echo "\
-    -Xcc D__USE_FORTIFY_LEVEL=0 \
-    -Xcxx -stdlib++-isystem -Xcxx ${PACKAGE_PREFIX}/include/c++/v1 \
-" | xargs`
-export SWIFTCFLAGS=`echo "\
-    -sdk ${PACKAGE_PREFIX} \
-" | xargs`
+source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # kernel headers builds
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-kernel-headers-cross
@@ -64,18 +37,18 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-cross
 # llvm dependencies
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-dependencies-musl
 
-# windows swift tools build
+# swift tools build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-musl
 
-# windows swift sdk build
+# swift sdk build
 # bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-sdk-musl
 
 # graphics sdk build
 # bash ${VAL_VERDE_GH_TEAM}-platform-sdk-graphics-sdk-cross
 
 # node + sdk build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-node-cross
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-npm-yarn-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-node-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-npm-yarn-cross
 
 # rust build
 # bash ${VAL_VERDE_GH_TEAM}-platform-sdk-rust

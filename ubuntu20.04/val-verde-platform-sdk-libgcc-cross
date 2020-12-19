@@ -2,25 +2,19 @@
 
 set -e
 
-# Source package build helper functions
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
-
 # Set all environment vars
-export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
 export SOURCE_PACKAGE_NAME=libgcc
 export SOURCE_PACKAGE_VERSION=10.1.0
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${TARGET_OS}${TARGET_OS_API_LEVEL}-${TARGET_PROCESSOR}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
-export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${TARGET_OS}${TARGET_OS_API_LEVEL}-${TARGET_PROCESSOR}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+# Source package build helper functions
+source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # Configure the build components
-rm -rf ${STAGE_ROOT}
 cd /sources
 wget -c https://ftp.gnu.org/gnu/gcc/gcc-${SOURCE_PACKAGE_VERSION}/gcc-${SOURCE_PACKAGE_VERSION}.tar.gz
 tar -zxf gcc-${SOURCE_PACKAGE_VERSION}.tar.gz
 
-mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
 
 BINDIR=${BUILD_PACKAGE_PREFIX}/bin
@@ -73,7 +67,7 @@ CPPFLAGS="\
 CXXFLAGS="\
    ${CXXFLAGS} \
    ${WARNING_CFLAGS}" \
-${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-configure \
+package-configure \
     /sources/gcc-${SOURCE_PACKAGE_VERSION}/configure \
     --disable-bootstrap \
     --disable-gomp \

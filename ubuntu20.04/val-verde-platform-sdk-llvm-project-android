@@ -2,20 +2,14 @@
 
 set -e
 
-# Source package build helper functions
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
-
 # Set all environment vars
-export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) / 2))"
 export SOURCE_PACKAGE_NAME=llvm-project
 export SOURCE_PACKAGE_VERSION=9999-git
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
-export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${QUALIFIED_PACKAGE_NAME}
-export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-/sources/build-staging/llvm-project-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
 
-export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+# Source package build helper functions
+source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
 export DEPENDS="\
     ${PACKAGE_BASE_NAME}-elfutils-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-libffi-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
@@ -23,20 +17,23 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-z3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-zlib-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
+export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-/sources/build-staging/llvm-project-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
+
+CUDA_GPU_PRIMARY_ARCH=61
+CUDA_GPU_SECONDARY_ARCH=35
 EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;libclc;mlir;openmp;parallel-libs;polly;pstl"}
 
 # Configure the build components
-rm -rf ${STAGE_ROOT}
 cd ${SOURCE_ROOT}
 git remote set-branches --add origin val-verde-android-mainline-next
 git fetch origin val-verde-android-mainline-next
 git checkout val-verde-android-mainline-next
-mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${STAGE_ROOT}
 
 export PATH=${PATH}:${LLVM_NATIVE_STAGE_ROOT}/bin
 
-${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-cmake \
+CXX_STANDARD=17 \
+package-cmake \
     -DBUILD_SHARED_LIBS=FALSE \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
     -DCLANG_DEFAULT_RTLIB=compiler-rt \
@@ -48,6 +45,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-cmake \
     -DCLANG_INCLUDE_DOCS=FALSE \
     -DCLANG_INCLUDE_TESTS=FALSE \
     -DCLANG_LINK_CLANG_DYLIB=TRUE \
+    -DCLANG_OPENMP_NVPTX_DEFAULT_ARCH=sm_${CUDA_GPU_PRIMARY_ARCH} \
     -DCLANG_TABLEGEN=${LLVM_NATIVE_STAGE_ROOT}/bin/clang-tblgen \
     -DCLANG_TOOL_ARCMT_TEST_BUILD=FALSE \
     -DCLANG_TOOL_CLANG_IMPORT_TEST_BUILD=FALSE \
@@ -112,11 +110,10 @@ ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-cmake \
     -DLIBOMP_USE_VERSION_SYMBOLS=FALSE \
     -DLIBOMPTARGET_DEP_LIBELF_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
     -DLIBOMPTARGET_DEP_LIBELF_LIBRARIES=${PACKAGE_PREFIX}/lib/libelf.so \
-    -DLIBOMPTARGET_DEP_LIBUNWIND_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
-    -DLIBOMPTARGET_DEP_LIBUNWIND_LIBRARIES=${PACKAGE_PREFIX}/lib/libunwind.so \
+    -DLIBOMPTARGET_NVPTX_ALTERNATE_HOST_COMPILER=gcc-8 \
+    -DLIBOMPTARGET_NVPTX_COMPUTE_CAPABILITIES="${CUDA_GPU_PRIMARY_ARCH},${CUDA_GPU_SECONDARY_ARCH}" \
     -DLIBOMPTARGET_SEARCH_LIBFFI_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
     -DLIBOMPTARGET_SEARCH_LIBFFI_LIBRARY_DIRS=${PACKAGE_PREFIX}/lib \
-    -DLIBOMPTARGET_NVPTX_ALTERNATE_HOST_COMPILER=gcc-8 \
     -DLIBUNWIND_ENABLE_ASSERTIONS=FALSE \
     -DLIBUNWIND_ENABLE_PEDANTIC=FALSE \
     -DLIBUNWIND_ENABLE_SHARED=TRUE \
@@ -188,6 +185,13 @@ ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-cmake \
     ${SOURCE_ROOT}/llvm
 
 # Build the components
+TARGETS="tools/clang/install projects/compiler-rt/install tools/lld/install tools/mlir/install" \
+ninja-build
+
+NUM_PROCESSORS=`awk '/MemTotal/ { printf "%d", $2/(1024*1024*5) }' /proc/meminfo` \
+TARGETS="tools/flang/install" \
+ninja-build
+
 ninja-build
 
 rsync -aPx ${STAGE_ROOT}/bin/llvm-as* \

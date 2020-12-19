@@ -2,22 +2,18 @@
 
 set -e
 
-# Source package build helper functions
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
-
 # Set all environment vars
-export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
 export SOURCE_PACKAGE_NAME=bzip2
 export SOURCE_PACKAGE_VERSION=1.0.8
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${QUALIFIED_PACKAGE_NAME}
 
-export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+# Source package build helper functions
+source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export-compiler-environment
+generate-compiler-tools
 
 # Determine source branch
-
 if [ "${HOST_OS}" = "mingw32" ]; then
     BRANCH="val-verde-windows-mainline"
 else
@@ -25,29 +21,17 @@ else
 fi
 
 # Configure the build components
-rm -rf ${STAGE_ROOT}
 GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git" \
 git-clone ${BRANCH}
 
-rsync -aPx ${SOURCE_ROOT}/* \
+rsync -aPx ${SOURCE_ROOT}/ \
            ${STAGE_ROOT}/
 
 # Build the components
-if [ "${HOST_OS}" != "mingw32" ]; then
-    CFLAGS="\
-        -fPIC \
-        ${CFLAGS} \
-    "
-fi
-
 mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}
 cd ${STAGE_ROOT}
 
-AR=${AR:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar}
-CC=${CC:-${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang}
-CFLAGS=`echo ${CFLAGS} | xargs`
 MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILD_PACKAGE_PREFIX}/bin/make}
-RANLIB=${RANLIB:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib}
 
 ${MAKE_PROGRAM} \
     AR=${AR} \

@@ -3,26 +3,9 @@
 set -e
 
 # Source package build helper functions
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
-
-# windows environment
-export HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}
-export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot
-export SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot
+export PACKAGE_PREFIX=${PACKAGE_PREFIX:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot}
 export SYSTEM_NAME=Windows
-
-export CFLAGS=
-export CPPFLAGS=
-export CXXFLAGS=
-export LDFLAGS=
-export SWIFT_BUILD_FLAGS=`echo "\
-    -Xcc -I${PACKAGE_PREFIX}/include \
-    -Xcxx -I${PACKAGE_PREFIX}/include \
-    -Xlinker -L${PACKAGE_PREFIX}/lib \
-" | xargs`
-export SWIFTCFLAGS=`echo "\
-    -sdk ${SYSROOT} \
-" | xargs`
+source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # windows mingw-headers build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-mingw-w64-headers
@@ -33,7 +16,10 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-mingw-w64-crt
 # windows compiler-rt build (for host)
 CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a \
 DST_CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a \
-LDFLAGS="-Wl,/force:unresolved" \
+CXXFLAGS="\
+    -Wl,/force:unresolved \
+    ${CXXFLAGS} \
+" \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt
 
 # windows libunwind build

@@ -17,9 +17,12 @@ apt install -y \
     flex \
     icu-devtools \
     intltool \
+    libasound2-dev \
+    libcups2-dev \
     libedit-dev \
     libelf-dev \
     libffi-dev \
+    libfontconfig1-dev \
     libmpc-dev \
     libmpfr-dev \
     libncurses-dev \
@@ -29,11 +32,16 @@ apt install -y \
     libsecret-1-dev \
     libssl-dev \
     libsqlite3-dev \
-    libxkbfile-dev \
+    libx11-dev \
     libxext-dev \
     libxi-dev \
-    libxxf86vm-dev \
+    libxkbfile-dev \
     libxml2-dev \
+    libxrandr-dev \
+    libxrender-dev \
+    libxt-dev \
+    libxtst-dev \
+    libxxf86vm-dev \
     libz3-dev \
     lld \
     llvm \

@@ -3,46 +3,24 @@
 set -e
 
 # Source package build helper functions
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
-# gnu environment
-export HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}
-export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr
-export SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot}
-export SYSTEM_NAME=Linux
+mkdir -p ${BUILD_PACKAGE_PREFIX}
+rsync -aPx /sources/scripts-staging/* \
+           ${BUILD_PACKAGE_PREFIX}/
+chmod +x ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang \
+         ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang++ \
+         ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-gcc-mingw32 \
+         ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-ml64 \
+         ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
+         ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-rc \
+         ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc
 
-export CFLAGS=`echo "\
-    -I${PACKAGE_PREFIX}/include \
-" | xargs`
-export CPPFLAGS=`echo "\
-    -I${PACKAGE_PREFIX}/include \
-" | xargs`
-export CXXFLAGS=`echo "\
-    -I${PACKAGE_PREFIX}/include \
-" | xargs`
-export LDFLAGS=`echo "\
-    -L${PACKAGE_PREFIX}/lib \
-" | xargs`
-export SWIFT_BUILD_FLAGS=`echo "\
-    -Xcc -I${PACKAGE_PREFIX}/include \
-    -Xcxx -I${PACKAGE_PREFIX}/include \
-    -Xlinker -L${PACKAGE_PREFIX}/lib \
-" | xargs`
-export SWIFTCFLAGS=`echo "\
-    -I${PACKAGE_PREFIX}/include \
-    -L${PACKAGE_PREFIX}/lib \
-" | xargs`
+# java bootstrap build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openjdk-bootstrap
 
 # libunwind bootstrap build
 BINDIR=/usr/bin \
-CFLAGS="\
-    -rtlib=compiler-rt \
-    ${CFLAGS} \
-" \
-CXXFLAGS="\
-    -rtlib=compiler-rt \
-    ${CXXFLAGS} \
-" \
 LLVM_NATIVE_STAGE_ROOT=/usr \
 MAKE_PROGRAM=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libunwind-cross
@@ -55,14 +33,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-cross
 
 # libcxx bootstrap build
 BINDIR=/usr/bin \
-CFLAGS="\
-    -rtlib=compiler-rt \
-    ${CFLAGS} \
-" \
-CXXFLAGS="\
-    -rtlib=compiler-rt \
-    ${CXXFLAGS} \
-" \
 LLVM_NATIVE_STAGE_ROOT=/usr \
 MAKE_PROGRAM=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-cross

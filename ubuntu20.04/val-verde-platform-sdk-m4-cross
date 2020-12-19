@@ -1,0 +1,43 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=m4
+export SOURCE_PACKAGE_VERSION=1.4.18
+export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
+
+# Source package build helper functions
+source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+# Configure the build components
+cd /sources
+wget -c https://ftp.gnu.org/pub/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
+tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
+
+cd ${STAGE_ROOT}
+
+if [ "${HOST_OS}" = "gnu" ]; then
+    export CFLAGS=`echo "\
+        -D_IO_ftrylockfile=1 \
+        -D_IO_IN_BACKUP=0x100 \
+        ${CFLAGS} \
+    " | xargs`
+fi
+
+package-configure \
+    ${SOURCE_ROOT}/configure \
+    --prefix=${INSTALL_PREFIX}
+
+sed -i \
+    "s|define _FORTIFY_SOURCE 2|define _FORTIFY_SOURCE 0|g" \
+    ${STAGE_ROOT}/lib/config.h
+
+# Build the components
+make-build
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

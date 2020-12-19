@@ -3,7 +3,7 @@
 set -e
 
 # Source package build helper functions
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 export COMPILER_TARGET=${HOST_PROCESSOR}-unknown-windows-gnu
 
@@ -45,7 +45,6 @@ CXXFLAGS="\
 " \
 SWIFTCFLAGS="\
     -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
-    -L${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR} \
     ${SWIFTCFLAGS} \
 " \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-argument-parser-cross
@@ -63,7 +62,6 @@ CXXFLAGS="\
 " \
 SWIFTCFLAGS="\
     -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
-    -L${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR} \
     ${SWIFTCFLAGS} \
 " \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-driver-cross
@@ -81,7 +79,6 @@ CXXFLAGS="\
 " \
 SWIFTCFLAGS="\
     -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
-    -L${PACKAGE_PREFIX}/lib/swift/windows/${HOST_PROCESSOR} \
     ${SWIFTCFLAGS} \
 " \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-package-manager-cross

@@ -2,26 +2,20 @@
 
 set -e
 
-# Source package build helper functions
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
-
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=swift-doc
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
 export SOURCE_PACKAGE_VERSION=9999-git
-export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${QUALIFIED_PACKAGE_NAME}
 
-export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+# Source package build helper functions
+source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
 export DEPENDS="\
     ${PACKAGE_BASE_NAME}-swift-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
 # Configure the build components
-rm -rf ${STAGE_ROOT}
-
 if [ "${HOST_OS}" = "android" ]; then
    GIT_BRANCH="val-verde-android-mainline"
 else
@@ -32,15 +26,14 @@ GIT_URL="https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git" \
 git-clone ${GIT_BRANCH}
 
 # Build the components
-mkdir -p ${STAGE_ROOT} ${INSTALL_ROOT}
 cd ${SOURCE_ROOT}
-${VAL_VERDE_GH_TEAM}-platform-sdk-swift-build
+package-swift-build
 
 cd ${STAGE_ROOT}
-mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin
+mkdir -p ${INSTALL_PREFIX}/bin
 pushd release
 cp `find -type f -name swift-doc\*` \
-   ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin
+   ${INSTALL_PREFIX}/bin
 popd
 
 # Build the package

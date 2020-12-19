@@ -17,6 +17,12 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-automake-cross
 # android make build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-make-cross
 
+# android libtool build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libtool-cross
+
+# android m4 build
+# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-m4-cross
+
 # android libiconv build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross
 
@@ -149,28 +155,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wget-cross
 
 # android python build
 _PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
-CFLAGS="\
-    -fPIC \
-    -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
-    --sysroot=${SYSROOT} \
-    ${CFLAGS} \
-" \
-CPPFLAGS="\
-    -fPIC \
-    -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
-    --sysroot=${SYSROOT} \
-    ${CPPFLAGS} \
-" \
-CXXFLAGS="\
-    -fPIC \
-    -D__ANDROID_API__=${HOST_OS_API_LEVEL} \
-    --sysroot=${SYSROOT} \
-    ${CXXFLAGS} \
-" \
-LDFLAGS="\
-    --sysroot=${SYSROOT} \
-    ${LDFLAGS} \
-" \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-python-cross
 
 # android lua build

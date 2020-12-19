@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=libtool
+export SOURCE_PACKAGE_VERSION=2.4.6
+export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
+
+# Source package build helper functions
+source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+# Configure the build components
+cd /sources
+wget -c https://ftp.gnu.org/pub/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
+tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
+sed -i \
+    "s/'auto-import'/'ld'/g" \
+    ${SOURCE_ROOT}/configure
+
+cd ${STAGE_ROOT}
+package-configure \
+    ${SOURCE_ROOT}/configure \
+    --prefix=${INSTALL_PREFIX}
+
+# Build the components
+make-build
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

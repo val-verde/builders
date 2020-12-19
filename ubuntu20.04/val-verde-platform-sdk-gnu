@@ -3,35 +3,7 @@
 set -e
 
 # Source package build helper functions
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
-
-# gnu environment
-export HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}
-export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr
-export SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot}
-export SYSTEM_NAME=Linux
-
-export CFLAGS=`echo "\
-    -I${PACKAGE_PREFIX}/include \
-" | xargs`
-export CPPFLAGS=`echo "\
-    -I${PACKAGE_PREFIX}/include \
-" | xargs`
-export CXXFLAGS=`echo "\
-    -I${PACKAGE_PREFIX}/include \
-" | xargs`
-export LDFLAGS=`echo "\
-    -L${PACKAGE_PREFIX}/lib \
-" | xargs`
-export SWIFT_BUILD_FLAGS=`echo "\
-    -Xcc -I${PACKAGE_PREFIX}/include \
-    -Xcxx -I${PACKAGE_PREFIX}/include \
-    -Xlinker -L${PACKAGE_PREFIX}/lib \
-" | xargs`
-export SWIFTCFLAGS=`echo "\
-    -I${PACKAGE_PREFIX}/include \
-    -L${PACKAGE_PREFIX}/lib \
-" | xargs`
+source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # kernel headers builds
 MAKE_PROGRAM=/usr/bin/make \
@@ -62,7 +34,7 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-foundation
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-xctest
 
 # llbuild build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild-cross
 
 # swift tools support core build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-support-core
@@ -79,15 +51,19 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-driver
 # swift package manager build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-package-manager
 
-dpkg -i ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-argument-parser-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-corelibs-xctest-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-driver-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-llbuild-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-package-manager-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-swift-tools-support-core-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb \
-        ${DEB_PATH}/${PACKAGE_BASE_NAME}-yams-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.deb
+# reinstall swiftpm for build and host
+PACKAGES_TO_MANAGE=( 'swift-argument-parser'         'BUILD' \
+                     'swift-corelibs-foundation'     'BUILD' \
+                     'swift-corelibs-libdispatch'    'BUILD' \
+                     'swift-corelibs-xctest'         'BUILD' \
+                     'swift-driver'                  'BUILD' \
+                     'swift-llbuild'                 'BUILD' \
+                     'swift-package-manager'         'BUILD' \
+                     'swift-tools-support-core'      'BUILD' \
+                     'yams'                          'BUILD')
+
+PACKAGE_ACTION=INSTALL \
+deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 
 # swift-syntax build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-syntax-cross

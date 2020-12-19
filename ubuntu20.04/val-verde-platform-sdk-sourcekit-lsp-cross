@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=sourcekit-lsp
+export SOURCE_PACKAGE_VERSION=9999-git
+export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+
+# Source package build helper functions
+source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export DEPENDS="\
+    ${PACKAGE_BASE_NAME}-swift-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
+"
+
+# Configure the build components
+cd ${SOURCE_ROOT}
+
+# Build the components
+SWIFT_BUILD_FLAGS="\
+    -Xlinker -lc++ \
+    ${SWIFT_BUILD_FLAGS} \
+" \
+package-swift-build
+
+cd ${STAGE_ROOT}
+
+mkdir -p ${INSTALL_PREFIX}/bin
+cp `find -type f -name sourcekit-lsp\*` \
+   ${INSTALL_PREFIX}/bin
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

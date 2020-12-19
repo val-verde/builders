@@ -2,37 +2,23 @@
 
 set -e
 
-# Source package build helper functions
-source ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
-
 # Set all environment vars
-export NUM_PROCESSORS="$(($(getconf _NPROCESSORS_ONLN) + 1))"
 export SOURCE_PACKAGE_NAME=ncurses
 export SOURCE_PACKAGE_VERSION=6.2
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-export STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-export INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${QUALIFIED_PACKAGE_NAME}
 
-export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+# Source package build helper functions
+source /sources/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # Configure the build components
-rm -rf ${STAGE_ROOT}
 cd /sources
 wget -c https://ftp.gnu.org/gnu/ncurses/ncurses-6.2.tar.gz
-rm -rf ${STAGE_ROOT}/*
 tar -zxf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
 sed -i "s/'auto-import'/'ld'/g" ${SOURCE_ROOT}/configure
 
-mkdir -p ${STAGE_ROOT}
 cd ${STAGE_ROOT}
-
-LDFLAGS=" \
-    ${LDFLAGS} \
-    ${LIBS} \
-" \
 OPTIMIZATION_LEVEL=3 \
-${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-configure \
+package-configure \
     ${SOURCE_ROOT}/configure \
     --enable-ext-colors \
     --enable-mixed-case \
