@@ -169,13 +169,6 @@ function export-compiler-environment() {
         "
     fi
 
-    if [ -z "${DISABLE_STRIP}" ]; then
-        COMMON_LDFLAGS="\
-            -s \
-            ${COMMON_LDFLAGS} \
-        "
-    fi
-
     if [ -n "${ENABLE_FLTO}" ]; then
         FLTO_OPTION=`echo ${ENABLE_FLTO} | tr '[:upper:]' '[:lower:]'`
         COMMON_CFLAGS="\
@@ -291,6 +284,13 @@ function generate-compiler-tools() {
         " | xargs`
         export LDFLAGS=`echo "\
             -L${PACKAGE_PREFIX}/lib \
+            ${LDFLAGS} \
+        " | xargs`
+    fi
+
+    if [ -z "${DISABLE_STRIP}" ]; then
+        export LDFLAGS=`echo "\
+            -s \
             ${LDFLAGS} \
         " | xargs`
     fi
