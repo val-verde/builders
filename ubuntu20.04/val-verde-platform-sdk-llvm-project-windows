@@ -148,7 +148,7 @@ package-cmake \
     -DLLVM_ENABLE_LLD=TRUE \
     -DLLVM_ENABLE_LTO=${ENABLE_FLTO} \
     -DLLVM_ENABLE_PIC=FALSE \
-    -DLLVM_ENABLE_PROJECTS="clang;compiler-rt;libcxx;libcxxabi;libunwind;lld;${EXTRA_PROJECTS}" \
+    -DLLVM_ENABLE_PROJECTS="clang;compiler-rt;flang;libcxx;libcxxabi;libunwind;lld;${EXTRA_PROJECTS}" \
     -DLLVM_ENABLE_RTTI=TRUE \
     -DLLVM_ENABLE_TERMINFO=FALSE \
     -DLLVM_ENABLE_THREADS=TRUE \
@@ -190,6 +190,13 @@ package-cmake \
     ${SOURCE_ROOT}/llvm
 
 # Build the components
+TARGETS="tools/clang/install projects/compiler-rt/install tools/lld/install tools/mlir/install" \
+ninja-build
+
+NUM_PROCESSORS=`awk '/MemTotal/ { printf "%d", $2/(1024*1024*5) }' /proc/meminfo` \
+TARGETS="tools/flang/install" \
+ninja-build
+
 ninja-build
 
 rsync -aPx ${STAGE_ROOT}/bin/llvm-as* \
