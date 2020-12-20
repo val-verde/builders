@@ -30,7 +30,8 @@ ARG PACKAGE_BASE_NAME
 ARG PACKAGE_ROOT
 ARG VAL_VERDE_GH_TEAM
 
-ENV DEB_PATH=${DEB_PATH} \
+ENV ANDROID_NDK_VERSION=r22 \
+    DEB_PATH=${DEB_PATH} \
     PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME} \
     PACKAGE_ROOT=${PACKAGE_ROOT} \
     VAL_VERDE_GH_TEAM=${VAL_VERDE_GH_TEAM}
@@ -270,8 +271,7 @@ RUN HOST_ARCH=armv8-a \
 # android-ndk package
 FROM MUSL_BUILDER AS ANDROID_NDK_BUILDER
 
-RUN ANDROID_NDK_VERSION=r21d \
-    HOST_ARCH=${BUILD_ARCH} \
+RUN HOST_ARCH=${BUILD_ARCH} \
     HOST_CPU=${BUILD_CPU} \
     HOST_KERNEL=${BUILD_KERNEL} \
     HOST_OS=${BUILD_OS} \
@@ -314,8 +314,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android \
      /sources/
 
 # android-aarch64 environment
-RUN ANDROID_NDK_VERSION=r21d \
-    HOST_ARCH=armv8-a \
+RUN HOST_ARCH=armv8-a \
     HOST_CPU=cortex-a57 \
     HOST_KERNEL=linux \
     HOST_OS=android \
@@ -324,8 +323,7 @@ RUN ANDROID_NDK_VERSION=r21d \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android
 
 # android-x86_64 environment
-RUN ANDROID_NDK_VERSION=r21d \
-    HOST_ARCH=westmere \
+RUN HOST_ARCH=westmere \
     HOST_CPU=westmere \
     HOST_KERNEL=linux \
     HOST_OS=android \
