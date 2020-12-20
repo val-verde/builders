@@ -41,7 +41,7 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-dependencies-musl
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-musl
 
 # swift sdk build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-sdk-musl
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-sdk-musl
 
 # graphics sdk build
 # bash ${VAL_VERDE_GH_TEAM}-platform-sdk-graphics-sdk-cross
