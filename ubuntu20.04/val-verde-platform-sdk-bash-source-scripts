@@ -18,10 +18,10 @@ export SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HO
 
 export DPKG_ADMINDIR=/var/lib/dpkg
 export LD_LIBRARY_PATH=${BUILD_PACKAGE_PREFIX}/lib
+export NODE_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/web
 export PACKAGE_ARCH=all
 export PACKAGE_CLASS=deb
 export PATH=${BUILD_PACKAGE_PREFIX}/bin:${PATH}
-export NODE_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/web
 export TEMPDIR=${TEMPDIR:-/tmp}
 
 # package specific variables
@@ -67,7 +67,7 @@ function export-compiler-environment() {
     OPTIMIZATION_FLAGS=${OPTIMIZATION_FLAGS:-"-DNDEBUG"}
 
     export ACLOCAL_PATH=${PACKAGE_PREFIX}/share/aclocal
-    export AR=${OBJCOPY:-${BINTOOLS_PATH_PREFIX}ar}
+    export AR=${AR:-${BINTOOLS_PATH_PREFIX}ar}
     export AS=${CC:-${BINDIR}/clang}
     export BUILD_CC=${CC:-${BINDIR}/clang}
     export CC=${CC:-${BINDIR}/clang}
@@ -81,10 +81,10 @@ function export-compiler-environment() {
     export NM=${NM:-${BINTOOLS_PATH_PREFIX}nm}
     export OBJCOPY=${OBJCOPY:-${BINTOOLS_PATH_PREFIX}objcopy}
     export OBJDUMP=${OBJDUMP:-${BINTOOLS_PATH_PREFIX}objdump}
-    export RANLIB=${RANLIB:-${BINTOOLS_PATH_PREFIX}ranlib}
-    export RC=${RC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-rc}
     export PKG_CONFIG=${PKG_CONFIG:-${BUILD_PACKAGE_PREFIX}/bin/pkg-config}
     export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-${PACKAGE_PREFIX}/lib/pkgconfig}
+    export RANLIB=${RANLIB:-${BINTOOLS_PATH_PREFIX}ranlib}
+    export RC=${RC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-rc}
     export READELF=${READELF:-${BINTOOLS_PATH_PREFIX}readelf}
     export SIZE=${SIZE:-${BINTOOLS_PATH_PREFIX}size}
     export STRINGS=${STRINGS:-${BINTOOLS_PATH_PREFIX}strings}
