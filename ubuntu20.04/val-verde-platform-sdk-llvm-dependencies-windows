@@ -63,6 +63,18 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openssl-cross
 # windows libexpat build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-expat-cross
 
+# windows xorg-macros build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-macros-cross
+
+# windows xorgproto build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-xorgproto-cross
+
+# windows xcb-proto build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-proto-cross
+
+# windows xcb-pthread-stubs build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-pthread-stubs-cross
+
 # windows libuv build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libuv-cross
 
@@ -80,6 +92,12 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libarchive-cross
 
 # windows libmicrohttpd build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libmicrohttpd-cross
+
+# windows grep build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-grep-cross
+
+# windows sed build
+# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sed-cross
 
 # windows bison build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bison-cross

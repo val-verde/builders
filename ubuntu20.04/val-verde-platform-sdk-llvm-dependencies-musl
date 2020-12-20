@@ -77,6 +77,18 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcap-cross
 # libexpat build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-expat-cross
 
+# xorg-macros build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-macros-cross
+
+# xorgproto build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-xorgproto-cross
+
+# xcb-proto build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-proto-cross
+
+# xcb-pthread-stubs build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-pthread-stubs-cross
+
 # libuv build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libuv-cross
 
@@ -128,7 +140,10 @@ CFLAGS="\
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-elfutils-cross
 
 # strace build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-strace-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-strace-cross
+
+# grep build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-grep-cross
 
 # sed build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sed-cross

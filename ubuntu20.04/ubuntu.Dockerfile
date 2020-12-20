@@ -128,6 +128,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-gperf-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-graphics-sdk-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-grep-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-icu4c \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-jwasm \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-kernel-headers-cross \

@@ -150,6 +150,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libmicrohttpd-cross
 # elfutils build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-elfutils-cross
 
+# grep build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-grep-cross
+
 # sed build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sed-cross
 

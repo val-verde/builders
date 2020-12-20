@@ -69,6 +69,18 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openssl-cross
 # android libexpat build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-expat-cross
 
+# android xorg-macros build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-macros-cross
+
+# android xorgproto build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-xorgproto-cross
+
+# android xcb-proto build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-proto-cross
+
+# android xcb-pthread-stubs build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-pthread-stubs-cross
+
 # android libuv build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libuv-cross
 
@@ -115,6 +127,9 @@ CFLAGS="\
     ${CFLAGS} \
 " \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-elfutils-cross
+
+# android grep build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-grep-cross
 
 # android sed build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sed-cross
