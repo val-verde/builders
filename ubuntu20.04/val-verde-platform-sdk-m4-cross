@@ -21,8 +21,7 @@ if [ "${HOST_OS}" = "gnu" ]; then
 fi
 
 package-configure \
-    ${SOURCE_ROOT}/configure \
-    --prefix=${INSTALL_PREFIX}
+    ${SOURCE_ROOT}/configure
 
 sed -i \
     "s|define _FORTIFY_SOURCE 2|define _FORTIFY_SOURCE 0|g" \

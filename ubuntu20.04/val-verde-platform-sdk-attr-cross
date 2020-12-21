@@ -19,8 +19,7 @@ cd ${STAGE_ROOT}
 package-configure \
     ${STAGE_ROOT}/configure \
     --disable-static \
-    --enable-shared \
-    --prefix=${INSTALL_PREFIX}
+    --enable-shared
 
 # Build the components
 TARGETS=" " \

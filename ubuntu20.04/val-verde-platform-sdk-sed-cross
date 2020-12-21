@@ -15,8 +15,7 @@ export DEPENDS="${PACKAGE_BASE_NAME}-acl-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_A
 cd ${STAGE_ROOT}
 
 package-configure \
-    ${SOURCE_ROOT}/configure \
-    --prefix=${INSTALL_PREFIX}
+    ${SOURCE_ROOT}/configure
 
 # Build the components
 make-build

@@ -19,7 +19,6 @@ export DEPENDS="\
 cd ${STAGE_ROOT}
 package-configure \
     ${SOURCE_ROOT}/configure \
-    --prefix=${INSTALL_PREFIX} \
     --with-linux-crypto \
     --with-openssl \
     --with-ssl=openssl

@@ -43,13 +43,14 @@ if [ "${HOST_OS}" = "mingw32" ]; then
 fi
 
 ${SOURCE_ROOT}/Configure \
-    --prefix=${INSTALL_PREFIX} \
     --openssldir=${OPENSSL_DIR} \
+    --prefix=${INSTALL_PREFIX} \
     "${OPENSSL_DEFINES}" \
     ${OPENSSL_TARGET}
 
 # Build the components
-make -j${NUM_PROCESSORS}
+TARGETS=" " \
+make-build
 
 TARGETS="install_sw install_ssldirs" \
 make-build

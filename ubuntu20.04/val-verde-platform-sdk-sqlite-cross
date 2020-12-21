@@ -21,8 +21,7 @@ package-configure \
     ${SOURCE_ROOT}/configure \
     lt_cv_deplibs_check_method=pass_all \
     --disable-static \
-    --enable-shared \
-    --prefix=${INSTALL_PREFIX}
+    --enable-shared
 
 # Build the components
 make-build

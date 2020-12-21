@@ -20,7 +20,6 @@ package-configure \
     --disable-tests \
     --disable-tools \
     --enable-shared \
-    --prefix=${INSTALL_PREFIX} \
     --with-cross-build=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH} \
     --with-library-suffix=swift
 

@@ -33,7 +33,6 @@ package-configure \
     --disable-debuginfod \
     --disable-static \
     --enable-shared \
-    --prefix=${INSTALL_PREFIX} \
     --with-zlib=yes
 
 # Build the components

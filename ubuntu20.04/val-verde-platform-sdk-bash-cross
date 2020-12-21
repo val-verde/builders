@@ -24,7 +24,6 @@ fi
 
 package-configure \
     ${SOURCE_ROOT}/configure \
-    --prefix=${INSTALL_PREFIX} \
     ${MALLOC_CMD}
 
 # Build the components

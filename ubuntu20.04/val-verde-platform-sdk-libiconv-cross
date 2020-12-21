@@ -18,8 +18,7 @@ cd ${STAGE_ROOT}
 package-configure \
     ${SOURCE_ROOT}/configure \
     --disable-shared \
-    --enable-shared \
-    --prefix=${INSTALL_PREFIX}
+    --enable-shared
 
 # Build the components
 make-build

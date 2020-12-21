@@ -12,7 +12,10 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 export SOURCE_ROOT=${PACKAGE_SOURCES_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 
 # Configure the build components
+copy-source-to-staging
+
 cd ${STAGE_ROOT}
+./bootstrap
 
 CFLAGS="\
     -Wno-macro-redefined \
@@ -20,9 +23,8 @@ CFLAGS="\
     ${CFLAGS} \
 " \
 package-configure \
-    ${SOURCE_ROOT}/configure \
-    --enable-mpers=no \
-    --prefix=${INSTALL_PREFIX}
+    ${STAGE_ROOT}/configure \
+    --enable-mpers=no
 
 # Build the components
 make-build

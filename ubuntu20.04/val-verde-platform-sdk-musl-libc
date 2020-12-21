@@ -22,7 +22,6 @@ CFLAGS="\
 " \
 package-configure \
     ${SOURCE_ROOT}/configure \
-    --prefix=${INSTALL_PREFIX} \
     --syslibdir=${INSTALL_PREFIX}/../lib
 
 # Build the components

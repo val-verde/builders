@@ -16,8 +16,7 @@ cd ${STAGE_ROOT}
 ./bootstrap
 
 package-configure \
-    ${STAGE_ROOT}/configure \
-    --prefix=${INSTALL_PREFIX}
+    ${STAGE_ROOT}/configure
 
 # Build the components
 make-build

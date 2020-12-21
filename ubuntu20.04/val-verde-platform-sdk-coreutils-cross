@@ -30,8 +30,7 @@ CFLAGS="\
 " \
 package-configure \
     ${SOURCE_ROOT}/configure \
-    --with-openssl \
-    --prefix=${INSTALL_PREFIX}
+    --with-openssl
 
 # Build the components
 make-build

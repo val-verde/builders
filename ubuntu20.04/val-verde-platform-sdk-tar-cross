@@ -19,8 +19,7 @@ export DEPENDS="\
 cd ${STAGE_ROOT}
 FORCE_UNSAFE_CONFIGURE=1 \
 package-configure \
-    ${SOURCE_ROOT}/configure \
-    --prefix=${INSTALL_PREFIX}
+    ${SOURCE_ROOT}/configure
 
 # Build the components
 make-build

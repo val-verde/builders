@@ -27,8 +27,7 @@ package-configure \
     --enable-libblkid \
     --enable-libmount \
     --enable-libuuid \
-    --enable-shared \
-    --prefix=${INSTALL_PREFIX}
+    --enable-shared
 
 # Build the package
 make-build

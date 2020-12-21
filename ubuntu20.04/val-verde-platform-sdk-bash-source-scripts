@@ -425,6 +425,7 @@ function package-configure-invocation() {
     "${@}" \
         --build=${BUILD_TRIPLE} \
         --host=${CONFIGURE_HOST_TRIPLE} \
+	--prefix=${INSTALL_PREFIX} \
         ${CONFIGURE_FLAGS}
 }
 

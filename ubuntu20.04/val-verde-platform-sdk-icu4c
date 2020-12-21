@@ -18,7 +18,6 @@ package-configure \
     --disable-static \
     --disable-tests \
     --enable-shared \
-    --prefix=${INSTALL_PREFIX} \
     --with-library-suffix=swift
 
 # Build the components

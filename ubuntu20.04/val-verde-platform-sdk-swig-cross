@@ -16,9 +16,10 @@ export DEPENDS="\
 "
 
 # Configure the build components
+copy-source-to-staging
 sed -i \
     "s/'auto-import'/'ld'/g" \
-    ${SOURCE_ROOT}/configure
+    ${STAGE_ROOT}/configure
 
 cd ${STAGE_ROOT}
 PCRE_CFLAGS=`echo "\
@@ -27,10 +28,9 @@ PCRE_CFLAGS=`echo "\
 " | xargs` \
 PCRE_LIBS="-lpcre" \
 package-configure \
-    ${SOURCE_ROOT}/configure \
+    ${STAGE_ROOT}/configure \
     --disable-static \
-    --enable-shared \
-    --prefix=${INSTALL_PREFIX}
+    --enable-shared
 
 # Build the components
 TARGETS="swig" \

@@ -22,8 +22,7 @@ unset ASFLAGS CFLAGS CPPFLAGS CXXFLAGS LDFLAGS
 package-configure \
     ${STAGE_ROOT}/configure \
     --disable-static \
-    --enable-shared \
-    --prefix=${INSTALL_PREFIX}
+    --enable-shared
 
 # Build the components
 make-build

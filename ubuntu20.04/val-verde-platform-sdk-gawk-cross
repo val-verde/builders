@@ -14,8 +14,7 @@ export DEPENDS="${PACKAGE_BASE_NAME}-ncurses-${HOST_OS}${HOST_OS_API_LEVEL}-${HO
 # Configure the build components
 cd ${STAGE_ROOT}
 package-configure \
-    ${SOURCE_ROOT}/configure \
-    --prefix=${INSTALL_PREFIX}
+    ${SOURCE_ROOT}/configure
 
 # Build the components
 make-build

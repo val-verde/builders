@@ -20,8 +20,7 @@ sed -i \
     "s/'auto-import'/'ld'/g" \
     ${SOURCE_ROOT}/configure
 package-configure \
-    ${SOURCE_ROOT}/configure \
-    --prefix=${INSTALL_PREFIX} \
+    ${SOURCE_ROOT}/configure
 
 # Build the components
 make-build
