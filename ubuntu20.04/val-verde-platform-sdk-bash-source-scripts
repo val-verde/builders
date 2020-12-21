@@ -77,6 +77,7 @@ function export-compiler-environment() {
     export CXXLD=${CXXLD:-${CXX}}
     export DLLTOOL=${DLLTOOL:-${BINTOOLS_PATH_PREFIX}dlltool}
     export LD=${LD:-${BINDIR}/ld.lld}
+    export MAKEINFO=${MAKEINFO:-${BINDIR}/true}
     export MANIFEST_TOOL=${MANIFEST_TOOL:-${BINTOOLS_PATH_PREFIX}mt}
     export NM=${NM:-${BINTOOLS_PATH_PREFIX}nm}
     export OBJCOPY=${OBJCOPY:-${BINTOOLS_PATH_PREFIX}objcopy}
