@@ -118,6 +118,7 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-elfutils-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-expat-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-filament-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-findutils-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-gawk-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-gdbm-cross \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-gettext-cross \

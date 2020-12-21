@@ -87,6 +87,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bison-cross
 # windows gperf build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gperf-cross
 
+# windows findutils build
+# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-findutils-cross
+
 # windows wget build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wget-cross
 

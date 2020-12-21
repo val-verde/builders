@@ -139,6 +139,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bison-cross
 # gawk build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gawk-cross
 
+# strace build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-strace-cross
+
 # gperf build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gperf-cross
 
@@ -147,6 +150,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-tar-cross
 
 # coreutils build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-coreutils-cross
+
+# findutils build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-findutils-cross
 
 # dpkg build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-dpkg-cross

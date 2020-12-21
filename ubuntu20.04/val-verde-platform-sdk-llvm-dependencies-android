@@ -147,6 +147,9 @@ fi
 # android coreutils build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-coreutils-cross
 
+# android findutils build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-findutils-cross
+
 # android dpkg build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-dpkg-cross
 
