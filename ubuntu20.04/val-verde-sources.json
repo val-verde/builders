@@ -564,12 +564,6 @@
                 "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
             },
             {
-                "sourcePackageName": "binutils",
-                "sourceBranchIndicator": "wget",
-                "sourcePackageVersion": "2.34",
-                "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
-            },
-            {
                 "sourcePackageName": "bison",
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "3.7.4",
@@ -598,12 +592,6 @@
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "5.1.0",
                 "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
-            },
-            {
-                "sourcePackageName": "gcc",
-                "sourceBranchIndicator": "wget",
-                "sourcePackageVersion": "10.1.0",
-                "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
             },
             {
                 "sourcePackageName": "gdbm",
@@ -640,12 +628,6 @@
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "3.3",
                 "sourcePackageUrl": "https://gcc.gnu.org/pub/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
-            },
-            {
-                "sourcePackageName": "libgcc",
-                "sourceBranchIndicator": "wget",
-                "sourcePackageVersion": "10.1.0",
-                "sourcePackageUrl": "https://ftp.gnu.org/gnu/gcc/gcc-${SOURCE_PACKAGE_VERSION}/gcc-${SOURCE_PACKAGE_VERSION}.tar.gz"
             },
             {
                 "sourcePackageName": "libiconv",
