@@ -10,8 +10,7 @@ export SOURCE_PACKAGE_VERSION=9999-git
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # Configure the build components
-rsync -aPx ${SOURCE_ROOT}/* \
-           ${STAGE_ROOT}/
+copy-source-to-staging
 
 cd ${STAGE_ROOT}
 package-configure \

@@ -22,23 +22,23 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openjdk-bootstrap
 # libunwind bootstrap build
 BINDIR=/usr/bin \
 LLVM_NATIVE_STAGE_ROOT=/usr \
-MAKE_PROGRAM=/usr/bin/ninja \
+NINJA=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libunwind-cross
 
 # libcxxabi bootstrap build
 BINDIR=/usr/bin \
 LLVM_NATIVE_STAGE_ROOT=/usr \
-MAKE_PROGRAM=/usr/bin/ninja \
+NINJA=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-cross
 
 # libcxx bootstrap build
 BINDIR=/usr/bin \
 LLVM_NATIVE_STAGE_ROOT=/usr \
-MAKE_PROGRAM=/usr/bin/ninja \
+NINJA=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-cross
 
 # llvm bootstrap build
-MAKE_PROGRAM=/usr/bin/ninja \
+NINJA=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project-bootstrap
 
 # remove host compiler and libraries as it is superceded by bootstrapped clang

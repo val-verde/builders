@@ -1,9 +1,0 @@
-#!/bin/bash
-
-set -e
-
-MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILD_PACKAGE_PREFIX}/bin/make}
-TARGETS=${TARGETS:-install}
-
-${MAKE_PROGRAM} -j${NUM_PROCESSORS} \
-                ${TARGETS}

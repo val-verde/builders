@@ -18,9 +18,7 @@ export DEPENDS="\
 BUILD_TYPE=${BUILD_TYPE:-MinSizeRel}
 
 # Configure the build components
-cd ${STAGE_ROOT}
-rsync -aPx ${SOURCE_ROOT}/ \
-           ${STAGE_ROOT}
+copy-source-to-staging
 
 if [ "${BUILD_TRIPLE}" != ${HOST_TRIPLE} ]; then
     rsync -aPx ${BUILD_PACKAGE_PREFIX}/lib/cmake/${SOURCE_PACKAGE_NAME}.cmake \
@@ -42,6 +40,8 @@ elif [ "${HOST_OS}" = "mingw32" ]; then
     CMAKE_ASM_COMPILER_ID_CMD="-DCMAKE_ASM_COMPILER_ID=MSVC"
     CMAKE_ASM_FLAGS_CMD="-DCMAKE_ASM_FLAGS_MINSIZEREL="
 fi
+
+cd ${STAGE_ROOT}
 
 CFLAGS="\
     -fno-builtin \
@@ -75,11 +75,11 @@ package-cmake \
 # Build the components
 ninja-build
 
-mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/cmake
+mkdir -p ${INSTALL_PREFIX}/lib/cmake
 
 if [ "${BUILD_TRIPLE}" == ${HOST_TRIPLE} ]; then
     rsync -aPx ${STAGE_ROOT}/ImportExecutables-${BUILD_TYPE}.cmake \
-               ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/cmake/${SOURCE_PACKAGE_NAME}.cmake
+               ${INSTALL_PREFIX}/lib/cmake/${SOURCE_PACKAGE_NAME}.cmake
 fi
 
 # Build the package

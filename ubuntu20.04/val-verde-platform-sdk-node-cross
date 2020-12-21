@@ -22,10 +22,9 @@ export DEPENDS="\
 export NODE_NATIVE_STAGE_ROOT=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}
 
 # Configure the build components
-cd ${STAGE_ROOT}
+copy-source-to-staging
 
-rsync -aPx ${SOURCE_ROOT}/ \
-           ${STAGE_ROOT}
+cd ${STAGE_ROOT}
 
 CONFIGURE_BUILD_OS=${BUILD_OS}
 CONFIGURE_HOST_OS=${HOST_OS}
@@ -153,12 +152,12 @@ ${STAGE_ROOT}/configure \
 make-build
 
 rsync -aPx ${STAGE_ROOT}/out/Release/node \
-           ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin
+           ${INSTALL_PREFIX}/bin
 
 if [ "${HOST_OS}" = "android" ]; then
     sed -i \
         's|/usr/bin/env|/system/bin/env|g' \
-        `grep -rl "/usr/bin/env" ${INSTALL_ROOT}${PACKAGE_PREFIX}`
+        `grep -rl "/usr/bin/env" ${INSTALL_PREFIX}`
 fi
 
 # Build the package

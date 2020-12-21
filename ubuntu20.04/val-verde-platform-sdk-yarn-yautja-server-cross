@@ -14,10 +14,8 @@ export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platfo
 export-compiler-environment
 
 # Configure & build the package
-rsync -aPx ${SOURCE_ROOT}/ \
-           ${STAGE_ROOT}
+copy-source-to-staging
 cd ${STAGE_ROOT}
-
 yarn-build
 
 mkdir -p ${INSTALL_PREFIX}

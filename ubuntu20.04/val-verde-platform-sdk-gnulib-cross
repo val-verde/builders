@@ -28,8 +28,8 @@ package-configure \
 # Build the components
 make-build
 
-mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/gnulib/config \
-         ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib
+mkdir -p ${INSTALL_PREFIX}/include/gnulib/config \
+         ${INSTALL_PREFIX}/lib
 sed -i \
     "s/#define PACKAGE/#define GNULIB_PACKAGE/g" \
     ${STAGE_ROOT}/config.h
@@ -37,11 +37,11 @@ sed -i \
     "s/#define VERSION/#define GNULIB_VERSION/g" \
     ${STAGE_ROOT}/config.h
 rsync -aPx ${STAGE_ROOT}/config.h \
-           ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/gnulib/config/
+           ${INSTALL_PREFIX}/include/gnulib/config/
 rsync -aPx ${STAGE_ROOT}/gllib/*.h \
-           ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/gnulib/
+           ${INSTALL_PREFIX}/include/gnulib/
 rsync -aPx ${STAGE_ROOT}/gllib/*.a \
-           ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/
+           ${INSTALL_PREFIX}/lib/
 
 # Build the package
 deb-package-build

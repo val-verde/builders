@@ -22,14 +22,13 @@ if [ "${HOST_OS}" != "android" ]; then
 fi
 
 # Configure the build components
-rsync -aPx ${SOURCE_ROOT}/ \
-           ${STAGE_ROOT}
+copy-source-to-staging
 
 cd ${STAGE_ROOT}
 autoreconf -i
 package-configure \
     ${STAGE_ROOT}/configure \
-    --prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+    --prefix=${INSTALL_PREFIX} \
     --with-curl=${PACKAGE_PREFIX} \
     --with-expat=${PACKAGE_PREFIX} \
     --with-openssl=${PACKAGE_PREFIX} \

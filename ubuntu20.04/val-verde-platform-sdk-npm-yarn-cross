@@ -23,7 +23,7 @@ rm ${INSTALL_PREFIX}/lib/node_modules/.package-lock.json
 if [ "${HOST_OS}" = "android" ]; then
     sed -i \
         's|/usr/bin/env|/system/bin/env|g' \
-        `grep -rl "/usr/bin/env" ${INSTALL_ROOT}${PACKAGE_PREFIX}`
+        `grep -rl "/usr/bin/env" ${INSTALL_PREFIX}`
 fi
 
 # Build the package

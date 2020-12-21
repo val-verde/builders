@@ -15,8 +15,7 @@ generate-compiler-tools
 export DEPENDS="${PACKAGE_BASE_NAME}-zlib-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 
 # Configure the build components
-rsync -aPx ${SOURCE_ROOT}/ \
-           ${STAGE_ROOT}
+copy-source-to-staging
 
 # Build the components
 if [ "${HOST_OS}" != "mingw32" ]; then
@@ -28,20 +27,17 @@ if [ "${HOST_OS}" != "mingw32" ]; then
     "
 fi
 
-mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}
-cd ${STAGE_ROOT}
-
 ARFLAGS="rc"
 MYLIBS="\
     -lm \
 "
 
-MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILD_PACKAGE_PREFIX}/bin/make}
 MYCFLAGS=`echo ${MYCFLAGS} | xargs`
 MYLDFLAGS=`echo ${MYLDFLAGS} | xargs`
 MYLIBS=`echo ${MYLIBS} | xargs`
 
-${MAKE_PROGRAM} \
+cd ${STAGE_ROOT}
+${MAKE} \
     AR="${AR} ${ARFLAGS}" \
     CC="${CC}" \
     CFLAGS="${CFLAGS}" \
@@ -50,8 +46,8 @@ ${MAKE_PROGRAM} \
     MYLIBS="${MYLIBS}" \
     RANLIB="${RANLIB}"
 
-rsync -aPx *.h \
-           ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/
+rsync -aPx ${STAGE_ROOT}/*.h \
+           ${INSTALL_PREFIX}/include/
 echo "
 #pragma once
 
@@ -60,12 +56,12 @@ extern \"C\" {
     #include \"lualib.h\"
     #include \"lauxlib.h\"
 }
-" > ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/lua.hpp
+" > ${INSTALL_PREFIX}/include/lua.hpp
 
 rsync -aPx liblua.a \
-           ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/
+           ${INSTALL_PREFIX}/lib/
 
-mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/pkgconfig/
+mkdir -p ${INSTALL_PREFIX}/lib/pkgconfig
 echo "
 V=git
 R=git
@@ -83,7 +79,7 @@ Version: \${R}
 Requires:
 Libs: -L\${libdir} -llua -lm -ldl
 Cflags: -I\${includedir}
-" > ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/pkgconfig/lua.pc
+" > ${INSTALL_PREFIX}/lib/pkgconfig/lua.pc
 
 # Build the package
 deb-package-build

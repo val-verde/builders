@@ -6,7 +6,7 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # kernel headers builds
-MAKE_PROGRAM=/usr/bin/make \
+MAKE=/usr/bin/make \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-kernel-headers-cross
 
 # llvm dependencies

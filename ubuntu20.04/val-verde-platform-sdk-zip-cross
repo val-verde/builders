@@ -22,15 +22,12 @@ elif [ "${HOST_OS}" = "mingw32" ]; then
 fi
 
 # Build the components
-rsync -aPx ${SOURCE_ROOT}/ \
-           ${STAGE_ROOT}
+copy-source-to-staging
 
 cd ${STAGE_ROOT}
-MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILD_PACKAGE_PREFIX}/bin/make}
-
-${MAKE_PROGRAM} \
+${MAKE} \
     -f ${STAGE_ROOT}/${PLATFORM}/Makefile \
-    prefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+    prefix=${INSTALL_PREFIX} \
     CC=${CC} \
     install
 

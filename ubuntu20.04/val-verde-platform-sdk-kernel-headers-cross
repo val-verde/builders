@@ -12,8 +12,6 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 export-compiler-environment
 
 # Configure the build components
-MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILD_PACKAGE_PREFIX}/bin/make}
-
 ARCH=${HOST_PROCESSOR}
 
 if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
@@ -21,11 +19,11 @@ if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
 fi
 
 cd ${STAGE_ROOT}
-${MAKE_PROGRAM} \
+${MAKE} \
     -C ${SOURCE_ROOT} \
     ARCH=${ARCH} \
     HOSTCC=${CC} \
-    INSTALL_HDR_PATH=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+    INSTALL_HDR_PATH=${INSTALL_PREFIX} \
     defconfig \
     headers_install
 

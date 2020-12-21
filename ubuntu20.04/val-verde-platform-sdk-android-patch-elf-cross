@@ -15,18 +15,14 @@ generate-compiler-tools
 export DEPENDS="${PACKAGE_BASE_NAME}-cmake-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 
 # Configure the build components
-rsync -aPx ${SOURCE_ROOT}/* \
-           ${STAGE_ROOT}/
+copy-source-to-staging
 
 # Build the components
-cd ${SOURCE_ROOT}
-mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}
-MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILD_PACKAGE_PREFIX}/bin/make}
-
-${MAKE_PROGRAM} \
+cd ${STAGE_ROOT}
+${MAKE} \
     CC=${CC} \
     CFLAGS="${CFLAGS}" \
-    DSTROOT=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+    DSTROOT=${INSTALL_PREFIX} \
     OUTDIR=${STAGE_ROOT} \
     install
 

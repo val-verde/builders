@@ -20,13 +20,13 @@ LIBCC=`${BUILD_PACKAGE_PREFIX}/bin/clang -target ${HOST_TRIPLE} \
 package-configure \
     ${SOURCE_ROOT}/configure \
     --prefix=${INSTALL_PREFIX} \
-    --syslibdir=${INSTALL_ROOT}${PACKAGE_PREFIX}/../lib
+    --syslibdir=${INSTALL_PREFIX}/../lib
 
 # Build the components
 TARGETS="install-headers" \
 make-build
 
-rm -rf ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/iconv.h
+rm -rf ${INSTALL_PREFIX}/include/iconv.h
 
 # Build the package
 deb-package-build

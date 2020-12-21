@@ -45,7 +45,7 @@ make-build
 
 # RPATH fixups
 COMPONENTS="\
-    ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/libelf.so \
+    ${INSTALL_PREFIX}/lib/libelf.so \
 " \
 rpath-fixup
 

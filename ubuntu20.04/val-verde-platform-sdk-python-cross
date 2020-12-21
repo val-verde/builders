@@ -61,7 +61,9 @@ package-configure \
 # Build the components
 make-build
 
-ln -sf python3 ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin/python
+ln -sf \
+   python3 \
+   ${INSTALL_PREFIX}/bin/python
 
 # Build the package
 deb-package-build

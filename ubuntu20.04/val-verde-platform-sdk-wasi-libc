@@ -10,10 +10,7 @@ export SOURCE_PACKAGE_VERSION=9999-wasm32
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # Configure the build components
-rsync -aPx ${SOURCE_ROOT}/ \
-           ${STAGE_ROOT}/
-cd ${STAGE_ROOT}
-mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}
+copy-source-to-staging
 
 # Build the components
 CFLAGS=`echo "\
@@ -21,7 +18,9 @@ CFLAGS=`echo "\
     -D_WASI_EMULATED_SIGNAL \
 " | xargs`
 
-INSTALL_DIR=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+cd ${STAGE_ROOT}
+
+INSTALL_DIR=${INSTALL_PREFIX} \
 OBJDIR=${STAGE_ROOT} \
 THREAD_MODEL=local-exec \
 WASM_AR=${BUILD_PACKAGE_PREFIX}/bin/llvm-ar \

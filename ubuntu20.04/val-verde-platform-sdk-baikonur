@@ -31,14 +31,14 @@ SWIFT_BUILD_FLAGS="\
 package-swift-build
 
 cd ${STAGE_ROOT}
-mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin
+mkdir -p ${INSTALL_PREFIX}/bin
 
 rsync -aPx `find release/baikonur* -executable -type f` \
-           ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin
+           ${INSTALL_PREFIX}/bin
 
 # RPATH fixups
 COMPONENTS="\
-    ${INSTALL_ROOT}${PACKAGE_PREFIX}/bin/baikonur \
+    ${INSTALL_PREFIX}/bin/baikonur \
 " \
 rpath-fixup
 

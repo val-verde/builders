@@ -29,10 +29,10 @@ make-build
 
 # RPATH fixups
 COMPONENTS="\
-    ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/libicudataswift.so \
-    ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/libicui18nswift.so \
-    ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/libicuioswift.so \
-    ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/libicuucswift.so \
+    ${INSTALL_PREFIX}/lib/libicudataswift.so \
+    ${INSTALL_PREFIX}/lib/libicui18nswift.so \
+    ${INSTALL_PREFIX}/lib/libicuioswift.so \
+    ${INSTALL_PREFIX}/lib/libicuucswift.so \
 " \
 rpath-fixup
 

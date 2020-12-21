@@ -12,11 +12,10 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 export DEPENDS="${PACKAGE_BASE_NAME}-attr-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 
 # Configure the build components
+copy-source-to-staging
 sed -i \
     "s/'auto-import'/'ld'/g" \
-    ${SOURCE_ROOT}/configure
-rsync -aPx ${SOURCE_ROOT}/ \
-           ${STAGE_ROOT}
+    ${STAGE_ROOT}/configure
 
 cd ${STAGE_ROOT}
 package-configure \

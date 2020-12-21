@@ -34,7 +34,7 @@ make-build
 
 # RPATH fixups
 COMPONENTS="\
-    ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/libedit.so \
+    ${INSTALL_PREFIX}/lib/libedit.so \
 " \
 rpath-fixup
 

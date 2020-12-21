@@ -39,7 +39,7 @@ make-build
 
 # RPATH fixups
 COMPONENTS="\
-    ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/libxml2.so \
+    ${INSTALL_PREFIX}/lib/libxml2.so \
 " \
 rpath-fixup
 

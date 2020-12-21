@@ -27,7 +27,7 @@ ninja-build
 mv ${SOURCE_ROOT}/src/bin \
    ${SOURCE_ROOT}/src/include \
    ${SOURCE_ROOT}/src/lib \
-   ${INSTALL_ROOT}${PACKAGE_PREFIX}
+   ${INSTALL_PREFIX}/
 
 # Build the package
 deb-package-build

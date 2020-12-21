@@ -26,9 +26,9 @@ package-configure \
 # Build the components
 make-build
 
-rm -rf ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/pthread_signal.h \
-       ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/pthread_time.h \
-       ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/pthread_unistd.h
+rm -rf ${INSTALL_PREFIX}/include/pthread_signal.h \
+       ${INSTALL_PREFIX}/include/pthread_time.h \
+       ${INSTALL_PREFIX}/include/pthread_unistd.h
 
 # Build the package
 deb-package-build

@@ -4,39 +4,39 @@ set -e
 
 # zlib build
 CMAKE_BINDIR=/usr/bin \
-MAKE_PROGRAM=/usr/bin/ninja \
+NINJA=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zlib-cross
 
 # bzip2 build
-MAKE_PROGRAM=/usr/bin/make \
+MAKE=/usr/bin/make \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bzip2-cross
 
 # zip build
-MAKE_PROGRAM=/usr/bin/make \
+MAKE=/usr/bin/make \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zip-cross
 
 # unzip build
-MAKE_PROGRAM=/usr/bin/make \
+MAKE=/usr/bin/make \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-unzip-cross
 
 # autoconf build
-MAKE_PROGRAM=/usr/bin/make \
+MAKE=/usr/bin/make \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-autoconf-cross
 
 # automake build
-MAKE_PROGRAM=/usr/bin/make \
+MAKE=/usr/bin/make \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-automake-cross
 
 # libtool build
-MAKE_PROGRAM=/usr/bin/make \
+MAKE=/usr/bin/make \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libtool-cross
 
 # m4 build
-MAKE_PROGRAM=/usr/bin/make \
+MAKE=/usr/bin/make \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-m4-cross
 
 # make build
-MAKE_PROGRAM=/usr/bin/make \
+MAKE=/usr/bin/make \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-make-cross
 
 # libiconv build
@@ -108,17 +108,17 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cups-cross
 
 # libuv build
 CMAKE_BINDIR=/usr/bin \
-MAKE_PROGRAM=/usr/bin/ninja \
+NINJA=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libuv-cross
 
 # libssh2 build
 CMAKE_BINDIR=/usr/bin \
-MAKE_PROGRAM=/usr/bin/ninja \
+NINJA=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libssh2-cross
 
 # curl build
 CMAKE_BINDIR=/usr/bin \
-MAKE_PROGRAM=/usr/bin/ninja \
+NINJA=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-curl-cross
 
 # gettext build
@@ -141,7 +141,7 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-util-linux-cross
 
 # libarchive build
 CMAKE_BINDIR=/usr/bin \
-MAKE_PROGRAM=/usr/bin/ninja \
+NINJA=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libarchive-cross
 
 # libmicrohttpd build
@@ -181,7 +181,7 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-findutils-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-dpkg-cross
 
 # systemd build
-MAKE_PROGRAM=/usr/bin/ninja \
+NINJA=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-systemd
 
 # wget build
@@ -201,7 +201,7 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openjdk-cross
 
 # z3 build
 CMAKE_BINDIR=/usr/bin \
-MAKE_PROGRAM=/usr/bin/ninja \
+NINJA=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-z3-cross
 
 # git build
@@ -212,7 +212,7 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-vim-cross
 
 # ninja build
 CMAKE_BINDIR=/usr/bin \
-MAKE_PROGRAM=/usr/bin/ninja \
+NINJA=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross
 
 # cmake build

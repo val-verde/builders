@@ -26,7 +26,7 @@ cd ${SOURCE_ROOT}
 meson \
     -Dbuildtype=release \
     -Doptimization=${OPTIMIZATION_LEVEL} \
-    -Dprefix=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+    -Dprefix=${INSTALL_PREFIX} \
     ${STAGE_ROOT}
 
 cd ${STAGE_ROOT}

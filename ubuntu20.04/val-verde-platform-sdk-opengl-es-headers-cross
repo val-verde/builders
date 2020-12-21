@@ -11,11 +11,11 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # Configure the build components
 cd ${STAGE_ROOT}
-mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}/include
+mkdir -p ${INSTALL_PREFIX}/include
 rsync -aPx ${SOURCE_ROOT}/api/GLES \
            ${SOURCE_ROOT}/api/GLES2 \
            ${SOURCE_ROOT}/api/GLES3 \
-           ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/
+           ${INSTALL_PREFIX}/include/
 
 # Build the package
 deb-package-build

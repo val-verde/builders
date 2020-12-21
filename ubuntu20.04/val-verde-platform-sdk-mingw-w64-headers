@@ -25,11 +25,11 @@ package-configure \
 make-build
 
 cp ${SOURCE_ROOT}/include/module.modulemap \
-   ${INSTALL_ROOT}${PACKAGE_PREFIX}/include/
+   ${INSTALL_PREFIX}/include/
 ln -sf . \
-       ${INSTALL_ROOT}${PACKAGE_PREFIX}/mingw
+       ${INSTALL_PREFIX}/mingw
 ln -sf . \
-       ${INSTALL_ROOT}${PACKAGE_PREFIX}/usr
+       ${INSTALL_PREFIX}/usr
 
 # Build the package
 deb-package-build

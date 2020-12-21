@@ -57,22 +57,23 @@ function fetch-sources() {
         
         export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources/${PACKAGE_NAME}
         export INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-sources
+	export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX}
         
         # Prepare install directory for source package
-        mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}
+        mkdir -p ${INSTALL_PREFIX}
         if [[ ${SOURCE_PACKAGE_NAME} = 'rust' ]]; then
             GIT_URL=${PACKAGE_URL} \
-            TARGET_ROOT=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+            TARGET_ROOT=${INSTALL_PREFIX} \
             ENABLE_SUBMODULES=true \
             git-clone ${SOURCE_BRANCH}
         else
             GIT_URL=${PACKAGE_URL} \
-            TARGET_ROOT=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+            TARGET_ROOT=${INSTALL_PREFIX} \
             git-clone ${SOURCE_BRANCH}
         fi
 
         # Prepare source root
-        pushd ${INSTALL_ROOT}${PACKAGE_PREFIX}
+        pushd ${INSTALL_PREFIX}
         rm -rf .git*
         rm -rf "^.git*"
         git init
@@ -108,25 +109,27 @@ function fetch-sources() {
 
         export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources/${PACKAGE_NAME}
         export INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-sources
+	export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX}
+
         # Prepare install directory for source package
-        mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}
+        mkdir -p ${INSTALL_PREFIX}
 
         if [[ ${SOURCE_BRANCH_IND} == "wget" ]]; then
             wget -c ${PACKAGE_URL} -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
             tar -xzvf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
-                -C ${INSTALL_ROOT}${PACKAGE_PREFIX} --strip 1
+                -C ${INSTALL_PREFIX} --strip 1
             rm ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
         elif [[ ${SOURCE_BRANCH_IND} == "wget-xz" ]]; then
             wget -c ${PACKAGE_URL} -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz
             tar -xvf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz \
-                -C ${INSTALL_ROOT}${PACKAGE_PREFIX} --strip 1
+                -C ${INSTALL_PREFIX} --strip 1
             rm ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz
         elif [[ ${SOURCE_BRANCH_IND} == "wget-unzip" ]]; then
             ANDROID_NDK_URL=https://dl.google.com/android/repository
             wget -c ${ANDROID_NDK_URL}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.zip \
                  -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.zip
             unzip ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.zip \
-                 -d ${INSTALL_ROOT}${PACKAGE_PREFIX}
+                 -d ${INSTALL_PREFIX}
             rm ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.zip
         fi
         

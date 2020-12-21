@@ -55,7 +55,7 @@ package-configure \
 make-build
 
 # Remove unnecessary dpkg var template folder.
-rm -rf ${INSTALL_ROOT}${PACKAGE_PREFIX}/var
+rm -rf ${INSTALL_PREFIX}/var
 
 # Build the package
 deb-package-build

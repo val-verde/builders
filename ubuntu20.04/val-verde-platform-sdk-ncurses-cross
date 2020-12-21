@@ -13,7 +13,8 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 sed -i "s/'auto-import'/'ld'/g" ${SOURCE_ROOT}/configure
 
 cd ${STAGE_ROOT}
-OPTIMIZATION_LEVEL=3 \
+
+INSTALL_PREFIX=${PACKAGE_PREFIX} \
 package-configure \
     ${SOURCE_ROOT}/configure \
     --enable-ext-colors \
@@ -22,7 +23,6 @@ package-configure \
     --enable-rpath \
     --enable-sp-funcs \
     --enable-term-driver \
-    --prefix=${PACKAGE_PREFIX} \
     --with-curses-h \
     --with-cxx \
     --with-cxx-shared \

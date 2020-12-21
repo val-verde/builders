@@ -10,11 +10,10 @@ export SOURCE_PACKAGE_VERSION=2.4.47
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # Configure the build components
+copy-source-to-staging
 sed -i \
     "s/'auto-import'/'ld'/g" \
-    ${SOURCE_ROOT}/configure
-rsync -aPx ${SOURCE_ROOT}/ \
-           ${STAGE_ROOT}
+    ${STAGE_ROOT}/configure
 
 cd ${STAGE_ROOT}
 package-configure \

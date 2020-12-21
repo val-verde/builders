@@ -42,6 +42,11 @@ mkdir -p ${INSTALL_PREFIX} \
 # source deb packaging scripts
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-deb-packaging-scripts
 
+function copy-source-to-staging() {
+    rsync -aPx ${SOURCE_ROOT}/ \
+               ${STAGE_ROOT}
+}
+
 # create-host-tool <host_tool> <host_tool_flags> <wrapper_name>
 function create-host-tool() {
     host_tool=${1}
@@ -77,8 +82,10 @@ function export-compiler-environment() {
     export CXXLD=${CXXLD:-${CXX}}
     export DLLTOOL=${DLLTOOL:-${BINTOOLS_PATH_PREFIX}dlltool}
     export LD=${LD:-${BINDIR}/ld.lld}
+    export MAKE=${MAKE:-${BINDIR}/make}
     export MAKEINFO=${MAKEINFO:-${BINDIR}/true}
     export MANIFEST_TOOL=${MANIFEST_TOOL:-${BINTOOLS_PATH_PREFIX}mt}
+    export NINJA=${NINJA:-${BINDIR}/ninja}
     export NM=${NM:-${BINTOOLS_PATH_PREFIX}nm}
     export OBJCOPY=${OBJCOPY:-${BINTOOLS_PATH_PREFIX}objcopy}
     export OBJDUMP=${OBJDUMP:-${BINTOOLS_PATH_PREFIX}objdump}
@@ -325,22 +332,20 @@ function git-clone() {
 }
 
 function make-build() {
-    MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILD_PACKAGE_PREFIX}/bin/make}
     TARGETS=${TARGETS:-install}
 
     pushd ${STAGE_ROOT}
-    ${MAKE_PROGRAM} -j${NUM_PROCESSORS} \
-                    ${TARGETS}
+    ${MAKE} -j${NUM_PROCESSORS} \
+              ${TARGETS}
     popd
 }
 
 function ninja-build() {
-    MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILD_PACKAGE_PREFIX}/bin/ninja}
     TARGETS=${TARGETS:-install}
 
     pushd ${STAGE_ROOT}
-    ${MAKE_PROGRAM} -j${NUM_PROCESSORS} \
-                    ${TARGETS}
+    ${NINJA} -j${NUM_PROCESSORS} \
+               ${TARGETS}
     popd
 }
 
@@ -357,7 +362,6 @@ function package-cmake-invocation() {
 
     AS_COMPILER_ID=${AS_COMPILER_ID:-Clang}
     CXX_STANDARD=${CXX_STANDARD:-20}
-    MAKE_PROGRAM=${MAKE_PROGRAM:-${BINDIR}/ninja}
 
     ${CMAKE_BINDIR}/cmake \
         -G Ninja \
@@ -387,7 +391,7 @@ function package-cmake-invocation() {
         -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS}" \
         -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
         -DCMAKE_LINKER=${LD} \
-        -DCMAKE_MAKE_PROGRAM=${MAKE_PROGRAM} \
+        -DCMAKE_MAKE_PROGRAM=${NINJA} \
         -DCMAKE_MODULE_LINKER_FLAGS="${LDFLAGS}" \
         -DCMAKE_NM=${NM} \
         -DCMAKE_OBJCOPY=${OBJCOPY} \

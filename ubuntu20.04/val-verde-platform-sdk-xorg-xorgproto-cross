@@ -12,8 +12,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 export-compiler-environment
 
 # Configure the build components
-rsync -aPx ${SOURCE_ROOT}/* \
-           ${STAGE_ROOT}/
+copy-source-to-staging
 
 cd ${STAGE_ROOT}
 

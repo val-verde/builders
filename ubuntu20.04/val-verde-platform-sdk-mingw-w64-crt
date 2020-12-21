@@ -25,7 +25,7 @@ package-configure \
 make-build
 
 ln -sf libuuid.a \
-       ${INSTALL_ROOT}${PACKAGE_PREFIX}/lib/libwinuuid.a
+       ${INSTALL_PREFIX}/lib/libwinuuid.a
 
 # Build the package
 deb-package-build

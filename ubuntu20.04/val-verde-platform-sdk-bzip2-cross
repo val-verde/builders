@@ -20,20 +20,15 @@ else
 fi
 
 # Configure the build components
-rsync -aPx ${SOURCE_ROOT}/ \
-           ${STAGE_ROOT}/
+copy-source-to-staging
 
 # Build the components
-mkdir -p ${INSTALL_ROOT}${PACKAGE_PREFIX}
 cd ${STAGE_ROOT}
-
-MAKE_PROGRAM=${MAKE_PROGRAM:-${BUILD_PACKAGE_PREFIX}/bin/make}
-
-${MAKE_PROGRAM} \
+${MAKE} \
     AR=${AR} \
     CC=${CC} \
     CFLAGS="${CFLAGS}" \
-    PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX} \
+    PREFIX=${INSTALL_PREFIX} \
     RANLIB=${RANLIB} \
     install
 
