@@ -33,6 +33,7 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libtool-cross
 
 # m4 build
 MAKE=/usr/bin/make \
+MAKEINFO=/usr/bin/true \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-m4-cross
 
 # make build
@@ -172,6 +173,7 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gperf-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-tar-cross
 
 # coreutils build
+MAKEINFO=/usr/bin/true \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-coreutils-cross
 
 # findutils build

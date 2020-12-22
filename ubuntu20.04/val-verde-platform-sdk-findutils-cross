@@ -14,7 +14,6 @@ copy-source-to-staging
 
 cd ${STAGE_ROOT}
 ./bootstrap
-
 package-configure \
     ${STAGE_ROOT}/configure
 

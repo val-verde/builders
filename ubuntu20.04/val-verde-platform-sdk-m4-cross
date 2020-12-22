@@ -10,7 +10,7 @@ export SOURCE_PACKAGE_VERSION=1.4.18
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # Configure the build components
-cd ${STAGE_ROOT}
+copy-source-to-staging
 
 if [ "${HOST_OS}" = "gnu" ]; then
     export CFLAGS=`echo "\
@@ -20,8 +20,10 @@ if [ "${HOST_OS}" = "gnu" ]; then
     " | xargs`
 fi
 
+cd ${STAGE_ROOT}
+autoreconf -fi
 package-configure \
-    ${SOURCE_ROOT}/configure
+    ${STAGE_ROOT}/configure
 
 sed -i \
     "s|define _FORTIFY_SOURCE 2|define _FORTIFY_SOURCE 0|g" \
