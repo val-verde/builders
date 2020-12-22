@@ -4,13 +4,13 @@ set -e
 
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=libcxxabi
-export SOURCE_PACKAGE_VERSION=9999-wasm32
+export SOURCE_PACKAGE_VERSION=12.0.0
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/llvm-project-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
-export SOURCE_ROOT=${SOURCE_ROOT_BASE}/llvm-project-9999-git/${SOURCE_PACKAGE_NAME}
+export SOURCE_ROOT=${SOURCE_ROOT_BASE}/llvm-project-${SOURCE_PACKAGE_VERSION}/${SOURCE_PACKAGE_NAME}
 
 # Configure the build components
 cd ${STAGE_ROOT}
@@ -33,7 +33,7 @@ package-cmake \
     -DLIBCXXABI_ENABLE_STATIC=TRUE \
     -DLIBCXXABI_ENABLE_THREADS=TRUE \
     -DLIBCXXABI_HAS_PTHREAD_API=TRUE \
-    -DLIBCXXABI_LIBCXX_INCLUDES=${SOURCE_ROOT_BASE}/llvm-project-9999-git/libcxx/include \
+    -DLIBCXXABI_LIBCXX_INCLUDES=${SOURCE_ROOT_BASE}/llvm-project-${SOURCE_PACKAGE_VERSION}/libcxx/include \
     -DLIBCXXABI_STATICALLY_LINK_UNWINDER_IN_SHARED_LIBRARY=FALSE \
     -DLIBCXXABI_SUPPORTS_FUNWIND_TABLES_FLAG=FALSE \
     -DLIBCXXABI_USE_COMPILER_RT=TRUE \
