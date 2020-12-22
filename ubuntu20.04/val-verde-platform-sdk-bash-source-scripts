@@ -85,6 +85,7 @@ function export-compiler-environment() {
     export MAKE=${MAKE:-${BINDIR}/make}
     export MAKEINFO=${MAKEINFO:-${BINDIR}/true}
     export MANIFEST_TOOL=${MANIFEST_TOOL:-${BINTOOLS_PATH_PREFIX}mt}
+    export MESON=${MESON:-${BINDIR}/meson}
     export NINJA=${NINJA:-${BINDIR}/ninja}
     export NM=${NM:-${BINTOOLS_PATH_PREFIX}nm}
     export OBJCOPY=${OBJCOPY:-${BINTOOLS_PATH_PREFIX}objcopy}
@@ -432,7 +433,21 @@ function package-configure-invocation() {
 function package-configure() {
     export-compiler-environment
     generate-compiler-tools
-    package-configure-invocation ${@}
+    package-configure-invocation \
+        ${@}
+}
+
+function package-meson-build() {
+    BUILD_TYPE=${BUILD_TYPE:-release}
+    export-compiler-environment
+    generate-compiler-tools
+
+    ${MESON} \
+        -Dbuildtype=${BUILD_TYPE} \
+        -Doptimization=${OPTIMIZATION_LEVEL} \
+        -Dprefix=${INSTALL_PREFIX} \
+        ${STAGE_ROOT} \
+        ${@}
 }
 
 function package-swift-build() {

@@ -181,6 +181,7 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-findutils-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-dpkg-cross
 
 # systemd build
+MESON=/usr/bin/meson \
 NINJA=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-systemd
 
