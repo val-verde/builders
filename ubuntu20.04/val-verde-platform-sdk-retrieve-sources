@@ -24,6 +24,8 @@ function fetch-sources() {
         SOURCE_BRANCH_IND=$(jq -r ".[0] | .gitSources | .[$index].sourceBranchIndicator" ${SOURCE_FILE})
         SOURCE_PACKAGE_VERSION=$(jq -r ".[0] | .gitSources | .[$index].sourcePackageVersion" ${SOURCE_FILE})
         SOURCE_URL=$(jq -r ".[0] | .gitSources | .[$index].sourcePackageUrl" ${SOURCE_FILE})
+        SUBMODULES_FLAG=$(jq -r ".[0] | .gitSources | .[$index].enableSubmodules" ${SOURCE_FILE})
+
         PACKAGE_BASE_URL=${SOURCE_URL/'${VAL_VERDE_GH_TEAM}'/${VAL_VERDE_GH_TEAM}}
         export PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}        
         
@@ -46,7 +48,7 @@ function fetch-sources() {
             SOURCE_BRANCH=val-verde-android-mainline-next
             PACKAGE_NAME=${PACKAGE_NAME}-android
         elif [[ ${SOURCE_BRANCH_IND} == "android-next-testing" ]]; then
-            SOURCE_BRANCH=val-verde-android-mainline-next
+            SOURCE_BRANCH=val-verde-android-mainline-next-testing
             PACKAGE_NAME=${PACKAGE_NAME}-android
         elif [[ ${SOURCE_BRANCH_IND} == "windows" ]]; then
             SOURCE_BRANCH=val-verde-windows-mainline
@@ -57,11 +59,11 @@ function fetch-sources() {
         
         export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources/${PACKAGE_NAME}
         export INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-sources
-	export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX}
+        export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX}
         
         # Prepare install directory for source package
         mkdir -p ${INSTALL_PREFIX}
-        if [[ ${SOURCE_PACKAGE_NAME} = 'rust' ]]; then
+        if [[ ${SUBMODULES_FLAG} = 'true' ]]; then
             GIT_URL=${PACKAGE_URL} \
             TARGET_ROOT=${INSTALL_PREFIX} \
             ENABLE_SUBMODULES=true \
@@ -97,6 +99,8 @@ function fetch-sources() {
         SOURCE_BRANCH_IND=$(jq -r ".[1] | .otherSources | .[$index].sourceBranchIndicator" ${SOURCE_FILE})
         SOURCE_PACKAGE_VERSION=$(jq -r ".[1] | .otherSources | .[$index].sourcePackageVersion" ${SOURCE_FILE})
         SOURCE_URL=$(jq -r ".[1] | .otherSources | .[$index].sourcePackageUrl" ${SOURCE_FILE})
+        SUBMODULES_FLAG=$(jq -r ".[0] | .otherSources | .[$index].enableSubmodules" ${SOURCE_FILE})
+
         PACKAGE_BASE_URL=${SOURCE_URL/'${VAL_VERDE_GH_TEAM}'/${VAL_VERDE_GH_TEAM}}
         export PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 
@@ -109,7 +113,7 @@ function fetch-sources() {
 
         export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources/${PACKAGE_NAME}
         export INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-sources
-	export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX}
+        export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX}
 
         # Prepare install directory for source package
         mkdir -p ${INSTALL_PREFIX}
@@ -131,6 +135,13 @@ function fetch-sources() {
             unzip ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.zip \
                  -d ${INSTALL_PREFIX}
             rm ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.zip
+        fi
+
+        if [[ ${SUBMODULES_FLAG} = 'true' ]]; then
+            pushd ${INSTALL_PREFIX}
+            git submodule init
+            git submodule update
+            popd
         fi
         
         # Build the source deb package
