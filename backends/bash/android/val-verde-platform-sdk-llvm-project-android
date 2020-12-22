@@ -4,10 +4,12 @@ set -e
 
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=llvm-project
-export SOURCE_PACKAGE_VERSION=9999-git-android
+export SOURCE_PACKAGE_VERSION=12.0.0
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export SOURCE_ROOT=${SOURCE_ROOT}-android
 
 export DEPENDS="\
     ${PACKAGE_BASE_NAME}-elfutils-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \

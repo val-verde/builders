@@ -4,7 +4,7 @@ set -e
 
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=xorg-libxxf86vm
-export SOURCE_PACKAGE_VERSION=9999-git
+export SOURCE_PACKAGE_VERSION=1.1.4
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
