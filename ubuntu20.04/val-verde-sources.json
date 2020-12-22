@@ -55,14 +55,14 @@
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "8.32",
                 "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "cups",
                 "sourceBranchIndicator": "master",
                 "sourcePackageVersion": "9999-git",
                 "sourcePackageUrl": "https://github.com/apple/${SOURCE_PACKAGE_NAME}.git",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "egl-headers",
@@ -76,7 +76,7 @@
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "0.181",
                 "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "filament",
@@ -97,7 +97,7 @@
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
                 "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "glslang",
@@ -111,7 +111,7 @@
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "3.6",
                 "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "gnulib",
@@ -146,35 +146,35 @@
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "3.4.3",
                 "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "libsecret",
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "0.20.4",
                 "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "libssh2",
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
                 "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "libuv",
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "1.40.0",
                 "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "libx11",
                 "sourceBranchIndicator": "master",
                 "sourcePackageVersion": "9999-git",
                 "sourcePackageUrl": "https://github.com/mirror/${SOURCE_PACKAGE_NAME}.git",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "llvm-project",
@@ -216,14 +216,14 @@
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
                 "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "musl-fts",
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
                 "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "musl-libc",
@@ -279,14 +279,14 @@
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
                 "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "python",
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
                 "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/c${SOURCE_PACKAGE_NAME}.git",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "pythonkit",
@@ -314,7 +314,7 @@
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "3.2.3",
                 "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "rust",
@@ -531,7 +531,7 @@
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
                 "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "wineditline",
@@ -545,48 +545,49 @@
                 "sourceBranchIndicator": "master",
                 "sourcePackageVersion": "9999-git",
                 "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
-                "enableSubmodules": "false"
-            },
-            {
-                "sourcePackageName": "xcbproto",
-                "sourceBranchIndicator": "master",
-                "sourcePackageVersion": "9999-git",
-                "sourcePackageUrl": "https://gitlab.freedesktop.org/xorg/proto/${SOURCE_PACKAGE_NAME}"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "xcb-pthread-stubs",
                 "sourceBranchIndicator": "master",
                 "sourcePackageVersion": "9999-git",
                 "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
+            },
+            {
+                "sourcePackageName": "xcbproto",
+                "sourceBranchIndicator": "master",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://gitlab.freedesktop.org/xorg/proto/${SOURCE_PACKAGE_NAME}",
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "xorg-libxau",
                 "sourceBranchIndicator": "master",
                 "sourcePackageVersion": "9999-git",
                 "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "xorg-libxtrans",
                 "sourceBranchIndicator": "master",
                 "sourcePackageVersion": "9999-git",
                 "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "xorg-macros",
                 "sourceBranchIndicator": "master",
                 "sourcePackageVersion": "9999-git",
                 "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "xorg-xorgproto",
                 "sourceBranchIndicator": "master",
                 "sourcePackageVersion": "9999-git",
                 "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "yams",
@@ -639,82 +640,82 @@
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "2.69",
                 "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "automake",
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "1.16.3",
                 "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "bash",
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "5.1-rc3",
                 "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "bison",
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "3.7.4",
                 "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "curl",
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "7.73.0",
                 "sourcePackageUrl": "https://curl.haxx.se/download/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "dpkg",
                 "sourceBranchIndicator": "wget-xz",
                 "sourcePackageVersion": "1.20.5",
                 "sourcePackageUrl": "http://ftp.debian.org/debian/pool/main/d/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}_${SOURCE_PACKAGE_VERSION}.tar.xz",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "expat",
                 "sourceBranchIndicator": "wget-xz",
                 "sourcePackageVersion": "2.2.10",
                 "sourcePackageUrl": "https://fossies.org/linux/www/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "gawk",
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "5.1.0",
                 "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "gdbm",
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "1.18.1",
                 "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "gettext",
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "0.21",
                 "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
-                "enableSubmodules": "false"
-            },
-            {
-                "sourcePackageName": "grep",
-                "sourceBranchIndicator": "wget",
-                "sourcePackageVersion": "3.6",
-                "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "gperf",
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "3.1",
+                "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
+                "enableSubmodules": "true"
+            },
+            {
+                "sourcePackageName": "grep",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "3.6",
                 "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
                 "enableSubmodules": "false"
             },
@@ -730,42 +731,42 @@
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "20191231-3.1",
                 "sourcePackageUrl": "https://www.thrysoee.dk/editline/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "libffi",
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "3.3",
                 "sourcePackageUrl": "https://gcc.gnu.org/pub/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "libiconv",
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "1.16",
                 "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "libmicrohttpd",
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "0.9.71",
                 "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "libtool",
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "2.4.6",
                 "sourcePackageUrl": "https://ftp.gnu.org/pub/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "libxml2",
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "2.9.10",
                 "sourcePackageUrl": "http://xmlsoft.org/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "linux",
@@ -779,7 +780,7 @@
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "4.3",
                 "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "ncurses",
@@ -800,42 +801,42 @@
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "8.44",
                 "sourcePackageUrl": "https://ftp.pcre.org/pub/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "pkg-config",
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "0.29.2",
                 "sourcePackageUrl": "https://pkgconfig.freedesktop.org/releases/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "sdl",
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "2.0.12",
                 "sourcePackageUrl": "https://www.libsdl.org/release/SDL2-${SOURCE_PACKAGE_VERSION}.tar.gz",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "sed",
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "4.8",
                 "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "sqlite",
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "autoconf-3330000",
                 "sourcePackageUrl": "https://sqlite.org/2020/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "swig",
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "4.0.2",
                 "sourcePackageUrl": "https://ftp.osuosl.org/pub/blfs/conglomeration/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "systemd",
@@ -849,7 +850,7 @@
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "1.32",
                 "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "unzip",
@@ -863,7 +864,7 @@
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "2.36.1",
                 "sourcePackageUrl": "https://cdn.kernel.org/pub/linux/utils/${SOURCE_PACKAGE_NAME}/v2.36/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "vim",
@@ -877,14 +878,14 @@
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "1.20.3",
                 "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "xz",
                 "sourceBranchIndicator": "wget",
                 "sourcePackageVersion": "5.2.5",
                 "sourcePackageUrl": "http://download.openpkg.org/components/cache/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
-                "enableSubmodules": "false"
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "zip",
