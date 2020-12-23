@@ -20,7 +20,7 @@ package-configure \
     --disable-tests \
     --disable-tools \
     --enable-shared \
-    --with-cross-build=/sources/build-staging/${SOURCE_PACKAGE_NAME}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH} \
+    --with-cross-build=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH} \
     --with-library-suffix=swift
 
 # Build the components

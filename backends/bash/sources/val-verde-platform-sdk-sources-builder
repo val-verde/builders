@@ -2,7 +2,7 @@
 
 set -e
 
-source /sources/scripts-staging/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-deb-packaging-scripts
+source /sources/compiler-tools/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-deb-packaging-scripts
 
 export SOURCE_PACKAGE_NAME=sources-builder
 export SOURCE_PACKAGE_VERSION=9999
@@ -15,7 +15,7 @@ mkdir -p ${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM}
 # Install builder sources
 rsync -aPx \
       /sources/compiler-tools/* \
-      ${INSTALL_ROOT}/usr/bin/
+      ${INSTALL_ROOT}/usr/
 rsync -aPx \
       /sources/deb-templates/* \
       ${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM}/

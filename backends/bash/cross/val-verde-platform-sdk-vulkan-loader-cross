@@ -29,7 +29,7 @@ package-cmake \
     ${SOURCE_ROOT}
 
 # Build the components
-PATH=/sources/build-staging/vulkan-loader-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/loader:${PATH} \
+PATH=${STAGE_ROOT_BASE}/vulkan-loader-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/loader:${PATH} \
 ninja-build
 
 # Build the package

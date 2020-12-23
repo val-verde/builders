@@ -11,5 +11,6 @@ services:
                 - DEB_PATH=/debs
                 - PACKAGE_BASE_NAME=val-verde
                 - PACKAGE_ROOT=/opt
+                - STAGE_ROOT_BASE=/tmp/staging
                 - VAL_VERDE_GH_TEAM=val-verde
         privileged: true

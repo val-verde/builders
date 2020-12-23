@@ -2,16 +2,6 @@ FROM ubuntu:20.04 AS BASE
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-ARG BUILD_KERNEL
-ARG BUILD_OS
-ARG BUILD_PROCESSOR
-ARG DEB_PATH
-ARG HOST_KERNEL
-ARG HOST_OS
-ARG HOST_PROCESSOR
-ARG PACKAGE_BASE_NAME
-ARG PACKAGE_ROOT
-
 WORKDIR /sources
 
 ENV OS_VER=20.04
@@ -23,6 +13,7 @@ RUN bash install-host-packages
 ARG DEB_PATH
 ARG PACKAGE_BASE_NAME
 ARG PACKAGE_ROOT
+ARG STAGE_ROOT_BASE
 ARG VAL_VERDE_GH_TEAM
 
 ENV BUILD_ARCH=skylake \
@@ -36,20 +27,24 @@ ENV ANDROID_NDK_VERSION=r22 \
     DEB_PATH=${DEB_PATH} \
     PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME} \
     PACKAGE_ROOT=${PACKAGE_ROOT} \
+    STAGE_ROOT_BASE=${STAGE_ROOT_BASE} \
     VAL_VERDE_GH_TEAM=${VAL_VERDE_GH_TEAM}
+
+RUN mkdir -p ${DEB_PATH}
 
 # platform sdk tool wrapper scripts and templates
 COPY backends/bash/compiler-tools \
-     backends/bash/deb-templates \
-     /sources/
+     /sources/compiler-tools/
+COPY backends/bash/deb-templates \
+     /sources/deb-templates/
 
 # upstream source package build
 FROM BASE AS SOURCES_BUILDER
 
-COPY backends/bash/sources/* \
+COPY backends/bash/sources \
      /sources/
 
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sources-builders
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sources-builder
 
 # gnu bootstrap build
 FROM SOURCES_BUILDER AS GNU_BOOTSTRAP_BUILDER
@@ -61,7 +56,7 @@ FROM SOURCES_BUILDER AS GNU_BOOTSTRAP_BUILDER
 ENV OPTIMIZATION_LEVEL=3
 
 # platform sdk bootstrap package build scripts
-COPY backends/bash/bootstrap/* \
+COPY backends/bash/bootstrap \
      /sources/
 
 RUN HOST_ARCH=${BUILD_ARCH} \
@@ -94,7 +89,7 @@ RUN HOST_ARCH=${BUILD_ARCH} \
 # musl build
 FROM GNU_BUILDER AS MUSL_BUILDER
 
-COPY backends/bash/musl/* \
+COPY backends/bash/musl \
      /sources/
 
 RUN HOST_ARCH=${BUILD_ARCH} \
@@ -125,7 +120,7 @@ RUN HOST_ARCH=${BUILD_ARCH} \
 # webassembly build
 FROM ANDROID_NDK_BUILDER AS WEBASSEMBLY_BUILDER
 
-COPY backends/bash/webassembly/* \
+COPY backends/bash/webassembly \
      /sources/
 
 RUN HOST_ARCH=wasm32 \
@@ -140,7 +135,7 @@ RUN HOST_ARCH=wasm32 \
 FROM WEBASSEMBLY_BUILDER AS ANDROID_BUILDER
 
 # android package builders
-COPY backends/bash/android/* \
+COPY backends/bash/android \
      /sources/
 
 # android-aarch64 environment
@@ -164,7 +159,7 @@ RUN HOST_ARCH=westmere \
 # windows environment
 FROM ANDROID_BUILDER AS WINDOWS_SOURCES_BUILDER
 
-COPY backends/bash/windows/* \
+COPY backends/bash/windows \
      /sources/
 
 # windows build

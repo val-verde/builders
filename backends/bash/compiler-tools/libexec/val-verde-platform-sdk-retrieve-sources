@@ -9,7 +9,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 function fetch-sources() {
     GIT_INDEX_OVERRIDE=${GIT_INDEX_OVERRIDE:-0}
     OTHER_INDEX_OVERRIDE=${OTHER_INDEX_OVERRIDE:-0}
-    SOURCE_FILE=${SOURCE_FILE:-/usr/share/${VAL_VERDE_GH_TEAM}/${VAL_VERDE_GH_TEAM}-sources.json}
+    SOURCE_FILE=${SOURCE_FILE:-/usr/share/${VAL_VERDE_GH_TEAM}-sources.json}
 
     pushd /sources
     

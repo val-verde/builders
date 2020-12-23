@@ -21,9 +21,9 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-xz-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 export LLVM_SOURCE_ROOT=${PACKAGE_SOURCES_ROOT}/llvm-project-${SOURCE_PACKAGE_VERSION}
-export LLVM_STAGE_ROOT=/sources/build-staging/llvm-project-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export LLVM_STAGE_ROOT=${STAGE_ROOT_BASE}/llvm-project-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 export SOURCE_ROOT=${PACKAGE_SOURCES_ROOT}/llvm-project-${SOURCE_PACKAGE_VERSION}/lldb
-export SWIFT_STAGE_ROOT=/sources/build-staging/swift-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+export SWIFT_STAGE_ROOT=${STAGE_ROOT_BASE}/swift-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
 # Configure the build components
 cd ${STAGE_ROOT}
