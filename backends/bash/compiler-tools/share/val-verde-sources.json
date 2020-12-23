@@ -23,6 +23,13 @@
                 "enableSubmodules": "false"
             },
             {
+                "sourcePackageName": "bazel",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+                "enableSubmodules": "false"
+            },
+            {
                 "sourcePackageName": "bzip2",
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "1.0.8",
@@ -208,6 +215,20 @@
                 "sourcePackageName": "m4",
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "1.4.18",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+                "enableSubmodules": "true"
+            },
+            {
+                "sourcePackageName": "mesa",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+                "enableSubmodules": "true"
+            },
+            {
+                "sourcePackageName": "meson",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
                 "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
                 "enableSubmodules": "true"
             },

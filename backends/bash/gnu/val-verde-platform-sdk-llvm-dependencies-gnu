@@ -44,12 +44,14 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-make-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross
 
 # pkg-config build
+PYTHON=/usr/bin/python3 \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pkg-config-cross
 
 # pcre build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pcre-cross
 
 # icu build
+PYTHON=/usr/bin/python3 \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-icu4c
 
 # xz build
@@ -87,12 +89,15 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcap-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-expat-cross
 
 # xorg-macros build
+PYTHON=/usr/bin/python3 \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-macros-cross
 
 # xorgproto build
+PYTHON=/usr/bin/python3 \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-xorgproto-cross
 
 # xcb-proto build
+PYTHON=/usr/bin/python3 \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-proto-cross
 
 # xcb-pthread-stubs build
@@ -102,6 +107,7 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-pthread-stubs-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxau-cross
 
 # libxcb build
+PYTHON=/usr/bin/python3 \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-libxcb-cross
 
 # cups build
@@ -140,6 +146,7 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libsecret-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bash-cross
 
 # util-linux build
+PYTHON=/usr/bin/python3 \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-util-linux-cross
 
 # libarchive build
@@ -190,10 +197,14 @@ NINJA=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-systemd
 
 # wget build
+PYTHON=/usr/bin/python3 \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wget-cross
 
 # python build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-python-cross
+
+# meson build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-meson-cross
 
 # lua build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lua-cross
