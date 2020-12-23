@@ -2,7 +2,7 @@
 
 set -e
 
-source /sources/scripts-staging/share/${VAL_VERDE_GH_TEAM}-platform-sdk-deb-packaging-scripts
+source /sources/scripts-staging/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-deb-packaging-scripts
 
 export SOURCE_PACKAGE_NAME=bootstrap-builders
 export SOURCE_PACKAGE_VERSION=9999
@@ -14,19 +14,13 @@ mkdir -p ${INSTALL_ROOT}/usr/libexec \
          ${INSTALL_ROOT}/usr/bin \
          ${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM}
 
-# Move files
-mv /sources/scripts-staging/share/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts \
-    ${INSTALL_ROOT}/usr/libexec
-mv /sources/scripts-staging/share/${VAL_VERDE_GH_TEAM}-platform-sdk-deb-packaging-scripts \
-    ${INSTALL_ROOT}/usr/libexec
-mv /sources/scripts-staging/share/${VAL_VERDE_GH_TEAM}-platform-sdk-retrieve-sources \
-    ${INSTALL_ROOT}/usr/libexec
-mv /sources/scripts-staging/share/${VAL_VERDE_GH_TEAM}-sources.json \
-    ${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM}
-mv /sources/scripts-staging/share/*.in \
-    ${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM}
-mv /sources/scripts-staging/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-packages \
-    ${INSTALL_ROOT}/usr/bin
+# Install builder sources
+rsync -aPx \
+       /sources/scripts-staging/libexec/* \
+       ${INSTALL_ROOT}/usr/libexec
+rsync -aPx \
+      /sources/scripts-staging/share/* \
+      ${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM}
 
 # Package debs
 BASE_DIRECTORY=${INSTALL_ROOT}/usr \
@@ -35,4 +29,4 @@ deb-package-build
 deb-package-install
 
 # Fetch sources
-bash /usr/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-packages
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-packages

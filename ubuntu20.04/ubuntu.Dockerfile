@@ -37,11 +37,10 @@ ENV ANDROID_NDK_VERSION=r22 \
     VAL_VERDE_GH_TEAM=${VAL_VERDE_GH_TEAM}
 
 RUN mkdir -p /sources/scripts-staging/bin \
+             /sources/scripts-staging/libexec \
              /sources/scripts-staging/share
 
 # platform sdk tool wrapper scripts
-COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts \
-     /sources/
 COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-clang \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-clang++ \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-gcc-mingw32 \
@@ -51,30 +50,15 @@ COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-clang \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc \
      /sources/scripts-staging/bin/
 
-COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-packages \
-     /sources/scripts-staging/bin/
-
 COPY ${VAL_VERDE_GH_TEAM}-deb-templates \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-deb-packaging-scripts \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-packages \
      ${VAL_VERDE_GH_TEAM}-platform-sdk-retrieve-sources \
-     ${VAL_VERDE_GH_TEAM}-sources.json \
+     /sources/scripts-staging/libexec/
+
+COPY ${VAL_VERDE_GH_TEAM}-sources.json \
      /sources/scripts-staging/share/
-
-# platform sdk bootstrap package build scripts
-COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-cross \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-cross \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-libunwind-cross \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project-bootstrap \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-openjdk-bootstrap \
-     /sources/
-
-# LTO configuration: [OFF | Full | Thin]
-# ENV ENABLE_FLTO=Thin
-
-# Optimization level speed: [0-3] or size: [s, z]
-ENV OPTIMIZATION_LEVEL=3
 
 # upstream source package build
 FROM BASE AS SOURCES_BUILDER
@@ -86,6 +70,21 @@ RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bootstrap-builders
 
 # gnu bootstrap build
 FROM SOURCES_BUILDER AS GNU_BOOTSTRAP_BUILDER
+
+# LTO configuration: [OFF | Full | Thin]
+# ENV ENABLE_FLTO=Thin
+
+# Optimization level speed: [0-3] or size: [s, z]
+ENV OPTIMIZATION_LEVEL=3
+
+# platform sdk bootstrap package build scripts
+COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-libunwind-cross \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project-bootstrap \
+     ${VAL_VERDE_GH_TEAM}-platform-sdk-openjdk-bootstrap \
+     /sources/
 
 RUN HOST_ARCH=${BUILD_ARCH} \
     HOST_CPU=${BUILD_CPU} \
