@@ -6,8 +6,9 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 mkdir -p ${BUILD_PACKAGE_PREFIX}
-rsync -aPx /sources/scripts-staging/* \
-           ${BUILD_PACKAGE_PREFIX}/
+rsync -aPx \
+      /usr/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-* \
+      ${BUILD_PACKAGE_PREFIX}/bin/
 chmod +x ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang \
          ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang++ \
          ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-gcc-mingw32 \
