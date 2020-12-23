@@ -22,7 +22,7 @@ ENV BUILD_ARCH=skylake \
     BUILD_PROCESSOR=x86_64
 
 COPY bootstrap-${BUILD_OS}-toolchain \
-     /sources
+     /sources/
 RUN bash bootstrap-${BUILD_OS}-toolchain
 
 ARG DEB_PATH
@@ -36,29 +36,10 @@ ENV ANDROID_NDK_VERSION=r22 \
     PACKAGE_ROOT=${PACKAGE_ROOT} \
     VAL_VERDE_GH_TEAM=${VAL_VERDE_GH_TEAM}
 
-RUN mkdir -p /sources/scripts-staging/bin \
-             /sources/scripts-staging/libexec \
-             /sources/scripts-staging/share
-
-# platform sdk tool wrapper scripts
-COPY ${VAL_VERDE_GH_TEAM}-platform-sdk-clang \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-clang++ \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-gcc-mingw32 \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-ml64 \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-rc \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc \
-     /sources/scripts-staging/bin/
-
-COPY ${VAL_VERDE_GH_TEAM}-deb-templates \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-deb-packaging-scripts \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-packages \
-     ${VAL_VERDE_GH_TEAM}-platform-sdk-retrieve-sources \
-     /sources/scripts-staging/libexec/
-
-COPY ${VAL_VERDE_GH_TEAM}-sources.json \
-     /sources/scripts-staging/share/
+# platform sdk tool wrapper scripts and templates
+COPY ${VAL_VERDE_GH_TEAM}-builders \
+     ${VAL_VERDE_GH_TEAM}-deb-templates \
+     /sources/
 
 # upstream source package build
 FROM BASE AS SOURCES_BUILDER

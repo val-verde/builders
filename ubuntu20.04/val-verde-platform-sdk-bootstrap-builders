@@ -10,17 +10,15 @@ export INSTALL_ROOT=/tmp/org.${VAL_VERDE_GH_TEAM}/scripts
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}
 export PACKAGE_ARCH=all
 
-mkdir -p ${INSTALL_ROOT}/usr/libexec \
-         ${INSTALL_ROOT}/usr/bin \
-         ${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM}
+mkdir -p ${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM}
 
 # Install builder sources
 rsync -aPx \
-       /sources/scripts-staging/libexec/* \
-       ${INSTALL_ROOT}/usr/libexec
+      /sources/${VAL_VERDE_GH_TEAM}-builders/* \
+      ${INSTALL_ROOT}/usr/
 rsync -aPx \
-      /sources/scripts-staging/share/* \
-      ${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM}
+      /sources/${VAL_VERDE_GH_TEAM}-deb-templates/* \
+      ${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM}/
 
 # Package debs
 BASE_DIRECTORY=${INSTALL_ROOT}/usr \
