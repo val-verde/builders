@@ -132,6 +132,8 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-attr-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-acl-cross
 
 # libsecret build
+MESON=/usr/bin/meson \
+NINJA=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libsecret-cross
 
 # bash build
