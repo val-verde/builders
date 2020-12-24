@@ -206,6 +206,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-python-cross
 # meson build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-meson-cross
 
+# tensorflow build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-tensorflow-cross
+
 # lua build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lua-cross
 

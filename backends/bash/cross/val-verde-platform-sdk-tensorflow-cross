@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=tensorflow
+export SOURCE_PACKAGE_VERSION=9999-git
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+# Build the components
+cd ${SOURCE_ROOT}
+SETUP_PY=${SOURCE_ROOT}/tensorflow/tools/pip_package/setup.py \
+package-python-build
+
+# Remove duplicated copies of easy_install script
+rm -rf ${INSTALL_PREFIX}/bin/easy_install*
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install
