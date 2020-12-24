@@ -652,7 +652,7 @@
             {
                 "sourcePackageName": "bash",
                 "sourceBranchIndicator": "wget",
-                "sourcePackageVersion": "5.1-rc3",
+                "sourcePackageVersion": "5.1",
                 "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
                 "enableSubmodules": "true"
             },
