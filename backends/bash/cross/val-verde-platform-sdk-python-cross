@@ -22,26 +22,30 @@ export DEPENDS="\
 # Configure the build components
 cd ${STAGE_ROOT}
 
-export _PYTHON_PROJECT_BASE=${STAGE_ROOT} \
-CFLAGS="\
+export _PYTHON_PROJECT_BASE=${STAGE_ROOT}
+export CFLAGS="\
     -I${PACKAGE_PREFIX}/include/ncurses \
     -I${PACKAGE_PREFIX}/include/uuid \
     ${CFLAGS} \
-" \
-CPPFLAGS="\
+"
+export CPPFLAGS="\
     -I${PACKAGE_PREFIX}/include/ncurses \
     -I${PACKAGE_PREFIX}/include/uuid \
     ${CPPFLAGS} \
-" \
-CXXFLAGS="\
+"
+export CXXFLAGS="\
     -I${PACKAGE_PREFIX}/include/ncurses \
     -I${PACKAGE_PREFIX}/include/uuid \
     ${CXXFLAGS} \
-" \
-LIBS="\
+"
+export LIBS="\
     -lexpat \
     ${LIBS} \
 "
+export OPENSSL_LIBS=`echo "\
+    -lcrypto \
+    -lssl \
+" | xargs`
 
 package-configure \
     ${SOURCE_ROOT}/configure \
@@ -50,12 +54,9 @@ package-configure \
     ac_cv_file__dev_ptmx=yes \
     --enable-shared \
     --with-ensurepip=yes \
-    --with-openssl=${PACKAGE_PREFIX}/include \
+    --with-openssl=${PACKAGE_PREFIX} \
     --with-system-expat \
-    --with-system-ffi \
-    OPENSSL_CFLAGS="-I${PACKAGE_PREFIX}/include" \
-    OPENSSL_LDFLAGS="-L${PACKAGE_PREFIX}/lib" \
-    OPENSSL_LIBS="-Wl,-lcrypto,-lssl"
+    --with-system-ffi
 
 # Build the components
 make-build
