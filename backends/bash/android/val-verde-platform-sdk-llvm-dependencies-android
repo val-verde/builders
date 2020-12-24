@@ -168,6 +168,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-findutils-cross
 # android dpkg build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-dpkg-cross
 
+# android rsync build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-rsync-cross
+
 # android wget build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wget-cross
 

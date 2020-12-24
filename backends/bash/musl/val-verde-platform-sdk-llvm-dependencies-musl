@@ -172,6 +172,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-findutils-cross
 # dpkg build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-dpkg-cross
 
+# rsync build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-rsync-cross
+
 # systemd build
 # MESON=/usr/bin/meson \
 # bash ${VAL_VERDE_GH_TEAM}-platform-sdk-systemd
