@@ -8,9 +8,10 @@ services:
             context: ./
             dockerfile: ubuntu20.04.Dockerfile
             args:
-                - DEB_PATH=/debs
                 - PACKAGE_BASE_NAME=val-verde
                 - PACKAGE_ROOT=/opt
-                - STAGE_ROOT_BASE=/tmp/staging
+                - DEB_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/debs \
+                - SOURCE_ROOT_BASE=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources \
+                - STAGE_ROOT_BASE=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/staging \
                 - VAL_VERDE_GH_TEAM=val-verde
         privileged: true
