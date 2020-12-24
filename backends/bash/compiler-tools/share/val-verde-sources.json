@@ -226,6 +226,13 @@
                 "enableSubmodules": "true"
             },
             {
+                "sourcePackageName": "mesa-drm",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+                "enableSubmodules": "true"
+            },
+            {
                 "sourcePackageName": "meson",
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
