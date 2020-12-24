@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=openssh-portable
+export SOURCE_PACKAGE_VERSION=9999-git
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export-compiler-environment
+
+# Configure the build components
+copy-source-to-staging
+
+cd ${STAGE_ROOT}
+autoreconf -fi
+package-configure \
+    ${STAGE_ROOT}/configure \
+    --disable-static \
+    --enable-shared
+
+# Build the components
+TARGETS=" " \
+make-build
+
+make-build
+
+# Build the package
+deb-package-build
+
+# Build the package
+deb-package-install

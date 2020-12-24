@@ -296,6 +296,13 @@
                 "enableSubmodules": "false"
             },
             {
+                "sourcePackageName": "openssh-portable",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+                "enableSubmodules": "false"
+            },
+            {
                 "sourcePackageName": "perl",
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "5.32.0",
