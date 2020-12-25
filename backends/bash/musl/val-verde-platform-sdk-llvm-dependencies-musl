@@ -157,9 +157,6 @@ CFLAGS="\
 " \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-elfutils-cross
 
-# strace build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-strace-cross
-
 # grep build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-grep-cross
 
