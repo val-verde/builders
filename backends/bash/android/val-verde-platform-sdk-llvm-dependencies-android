@@ -93,6 +93,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libuv-cross
 # android libssh2 build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libssh2-cross
 
+# android openssh-portable build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openssh-portable-cross
+
 # android curl build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-curl-cross
 
