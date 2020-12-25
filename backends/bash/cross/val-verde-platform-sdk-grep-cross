@@ -10,6 +10,13 @@ export SOURCE_PACKAGE_VERSION=3.6
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # Configure the build components
+if [ ${HOST_OS} = "mingw32" ]; then
+    export CFLAGS="\
+        -pthread \
+        ${CFLAGS} \
+    "
+fi
+
 cd ${STAGE_ROOT}
 package-configure \
     ${SOURCE_ROOT}/configure
