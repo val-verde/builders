@@ -18,4 +18,4 @@ buildArgs=`echo "\
     --build-arg VAL_VERDE_GH_TEAM=val-verde \
 " | xargs`
 
-docker build -f ../ubuntu${OS_VER}.Dockerfile -t $prefix/$target-$packageType:$tag-$version $buildArgs .
+docker build -f ubuntu${OS_VER}.Dockerfile -t $prefix/$target-$packageType:$tag-$version $buildArgs .
