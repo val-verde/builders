@@ -107,7 +107,28 @@
                 "enableSubmodules": "true"
             },
             {
+                "sourcePackageName": "glib",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+                "enableSubmodules": "false"
+            },
+            {
                 "sourcePackageName": "glslang",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+                "enableSubmodules": "false"
+            },
+            {
+                "sourcePackageName": "gnulib",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+                "enableSubmodules": "false"
+            },
+            {
+                "sourcePackageName": "gobject-introspection",
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
                 "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
@@ -119,13 +140,6 @@
                 "sourcePackageVersion": "3.6",
                 "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
                 "enableSubmodules": "true"
-            },
-            {
-                "sourcePackageName": "gnulib",
-                "sourceBranchIndicator": "default",
-                "sourcePackageVersion": "9999-git",
-                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
-                "enableSubmodules": "false"
             },
             {
                 "sourcePackageName": "icu4c",
@@ -147,6 +161,13 @@
                 "sourcePackageVersion": "9999-git",
                 "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/egl-registry.git",
                 "enableSubmodules": "false"
+            },
+            {
+                "sourcePackageName": "ldns",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+                "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "libarchive",
@@ -569,6 +590,13 @@
                 "enableSubmodules": "false"
             },
             {
+                "sourcePackageName": "wayland",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+                "enableSubmodules": "false"
+            },
+            {
                 "sourcePackageName": "wine",
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
@@ -601,6 +629,13 @@
                 "sourceBranchIndicator": "master",
                 "sourcePackageVersion": "9999-git",
                 "sourcePackageUrl": "https://gitlab.freedesktop.org/xorg/proto/${SOURCE_PACKAGE_NAME}",
+                "enableSubmodules": "true"
+            },
+            {
+                "sourcePackageName": "xorg-libpciaccess",
+                "sourceBranchIndicator": "master",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
                 "enableSubmodules": "true"
             },
             {

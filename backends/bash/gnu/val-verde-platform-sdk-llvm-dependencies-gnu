@@ -133,6 +133,9 @@ CMAKE_BINDIR=/usr/bin \
 NINJA=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libssh2-cross
 
+# ldns build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ldns-cross
+
 # openssh-portable build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openssh-portable-cross
 
