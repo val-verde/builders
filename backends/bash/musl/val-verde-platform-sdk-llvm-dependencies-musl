@@ -194,7 +194,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-dpkg-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-rsync-cross
 
 # systemd build
-# MESON=/usr/bin/meson \
 # bash ${VAL_VERDE_GH_TEAM}-platform-sdk-systemd
 
 # wget build
@@ -218,11 +217,11 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swig-cross
 # z3 build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-z3-cross
 
-# vim build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-vim-cross
-
 # git build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-git-cross
+
+# vim build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-vim-cross
 
 # ninja build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross
