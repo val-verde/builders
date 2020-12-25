@@ -8,6 +8,12 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zlib-cross
 # bzip2 build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bzip2-cross
 
+# zip build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zip-cross
+
+# unzip build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-unzip-cross
+
 # autoconf build
 CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-gnu" \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-autoconf-cross
