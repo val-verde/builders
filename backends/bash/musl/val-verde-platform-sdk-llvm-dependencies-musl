@@ -95,11 +95,23 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-proto-cross
 # xcb-pthread-stubs build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-pthread-stubs-cross
 
+# libxau build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxau-cross
+
+# libxcb build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-libxcb-cross
+
 # libuv build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libuv-cross
 
 # libssh2 build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libssh2-cross
+
+# ldns build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ldns-cross
+
+# openssh-portable build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openssh-portable-cross
 
 # curl build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-curl-cross
