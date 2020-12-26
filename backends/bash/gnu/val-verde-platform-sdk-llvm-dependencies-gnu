@@ -55,6 +55,18 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-make-cross
 # libiconv build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross
 
+# gobject-introspection build
+MESON=/usr/bin/meson \
+NINJA=/usr/bin/ninja \
+PKG_CONFIG=/usr/bin/pkg-config \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gobject-introspection-cross
+
+# glib build
+MESON=/usr/bin/meson \
+NINJA=/usr/bin/ninja \
+PKG_CONFIG=/usr/bin/pkg-config \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-glib-cross
+
 # pkg-config build
 PYTHON=/usr/bin/python3 \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pkg-config-cross
