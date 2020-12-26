@@ -134,6 +134,11 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxau-cross
 PYTHON=/usr/bin/python3 \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-libxcb-cross
 
+# pixman build
+MESON=/usr/bin/meson \
+NINJA=/usr/bin/ninja \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pixman-cross
+
 # xorg-libpciaccess build
 PYTHON=/usr/bin/python3 \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libpciaccess-cross
