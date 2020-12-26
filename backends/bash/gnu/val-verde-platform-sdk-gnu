@@ -96,6 +96,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-npm-yarn-cross
 # yautja server build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-yarn-yautja-server-cross
 
+# wine build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wine-cross
+
 # rust build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-rust
 
