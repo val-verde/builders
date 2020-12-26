@@ -604,6 +604,13 @@
                 "enableSubmodules": "false"
             },
             {
+                "sourcePackageName": "wayland-protocols",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+                "enableSubmodules": "false"
+            },
+            {
                 "sourcePackageName": "wine",
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
