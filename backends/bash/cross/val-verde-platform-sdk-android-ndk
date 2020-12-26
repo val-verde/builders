@@ -25,17 +25,7 @@ rsync -aPx ${PACKAGE_SOURCES_ROOT}/${SOURCE_PACKAGE_NAME}-patches-9999-git/* \
 
 patch -p1 \
       -i ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-dirent-versionsort.diff \
-         ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/sysroot/usr/include/dirent.h
-patch -i ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-linux-time-h.diff \
-         ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/sysroot/usr/include/linux/time.h
-patch -p1 \
-      -i ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-string-strverscmp.diff \
-         ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/sysroot/usr/include/string.h
-patch -p1 \
-      -i ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-dirent-versionsort.diff \
          ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}/sysroot/usr/include/dirent.h
-patch -i ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-linux-time-h.diff \
-         ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}/sysroot/usr/include/linux/time.h
 patch -p1 \
       -i ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-string-strverscmp.diff \
          ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}/sysroot/usr/include/string.h
