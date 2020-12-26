@@ -10,7 +10,8 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-spirv-headers-cross
 # spirv tools build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-spirv-tools-cross
 
-if [ "${SDK_PLATFORM_DIR}" != "windows" ]; then
+if [ "${SDK_PLATFORM_DIR}" != "gnu" ] ||
+   [ "${SDK_PLATFORM_DIR}" != "windows" ]; then
     # khr headers build
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-khr-headers-cross
 
@@ -18,11 +19,13 @@ if [ "${SDK_PLATFORM_DIR}" != "windows" ]; then
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-opengl-headers-cross
 fi
 
-# egl headers build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-egl-headers-cross
+if [ "${SDK_PLATFORM_DIR}" != "gnu" ]; then
+    # egl headers build
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-egl-headers-cross
 
-# opengl-es headers build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-opengl-es-headers-cross
+    # opengl-es headers build
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-opengl-es-headers-cross
+fi
 
 # glslang build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-glslang-cross
@@ -38,6 +41,12 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-vulkan-tools-cross
 
 # vulkan validation layers build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-vulkan-validation-layers-cross
+
+if [ "${HOST_OS}" = "gnu" ]; then
+    # mesa build
+    MESON=/usr/bin/meson \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-mesa-cross
+fi
 
 # sdl build
 DXSDK_DIR=${SYSROOT} \

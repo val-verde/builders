@@ -139,11 +139,6 @@ MESON=/usr/bin/meson \
 NINJA=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-mesa-drm-cross
 
-# mesa build
-# MESON=/usr/bin/meson \
-# NINJA=/usr/bin/ninja \
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-mesa-cross
-
 # cups build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cups-cross
 
