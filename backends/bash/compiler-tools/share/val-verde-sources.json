@@ -373,6 +373,13 @@
                 "enableSubmodules": "false"
             },
             {
+                "sourcePackageName": "qemu-dtc",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+                "enableSubmodules": "false"
+            },
+            {
                 "sourcePackageName": "rsync",
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "3.2.3",
