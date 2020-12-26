@@ -4,7 +4,7 @@ set -e
 
 # Source package build helper functions
 export BINDIR=/usr/bin
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 ${MKDIR} -p ${BUILD_PACKAGE_PREFIX}
 package-rsync -aPx \

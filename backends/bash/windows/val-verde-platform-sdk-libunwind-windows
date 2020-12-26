@@ -7,7 +7,7 @@ export SOURCE_PACKAGE_NAME=libunwind
 export SOURCE_PACKAGE_VERSION=12.0.0
 
 # Source package build helper functions
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export SOURCE_ROOT=${SOURCE_ROOT_BASE}/llvm-project-${SOURCE_PACKAGE_VERSION}/${SOURCE_PACKAGE_NAME}
 export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/llvm-project-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}

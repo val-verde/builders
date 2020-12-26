@@ -8,7 +8,7 @@ set -e
 export SOURCE_PACKAGE_NAME=rust
 export SOURCE_PACKAGE_VERSION=1.47.0
 
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export-compiler-environment
 generate-compiler-tools

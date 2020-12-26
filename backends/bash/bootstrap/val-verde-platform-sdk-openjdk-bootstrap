@@ -7,7 +7,7 @@ export SOURCE_PACKAGE_NAME=openjdk
 export SOURCE_PACKAGE_VERSION=16
 
 # Source package build helper functions
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
 if [ "${HOST_PROCESSOR}" = "x86_64" ]; then

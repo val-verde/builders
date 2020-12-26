@@ -7,7 +7,7 @@ export SOURCE_PACKAGE_NAME=yautja-server
 export SOURCE_PACKAGE_VERSION=1.0.0
 
 # Source package build helper functions
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/web/${SOURCE_PACKAGE_NAME}
 

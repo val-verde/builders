@@ -7,7 +7,7 @@ export SOURCE_PACKAGE_NAME=jwasm
 export SOURCE_PACKAGE_VERSION=2.13
 
 # Source package build helper functions
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
 cd ${STAGE_ROOT}
