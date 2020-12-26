@@ -460,7 +460,7 @@ function package-meson-build() {
 
     BACKEND=${BACKEND:-ninja}
     BUILD_TYPE=${BUILD_TYPE:-custom}
-    CROSS_FILE=${STAGE_ROOT}/build-config.txt
+    CONFIG_FILE=${STAGE_ROOT}/build-config.txt
     DEBUG=${DEBUG:-false}
     ENDIAN=${ENDIAN:-little}
     BUILD_SYSTEM=${BUILD_OS}
@@ -481,47 +481,50 @@ function package-meson-build() {
         HOST_SYSTEM="windows"
     fi
 
-    BUILD_CFLAGS="-I${BUILD_PACKAGE_PREFIX}/include"
-    BUILD_CMAKE_PREFIXES="${BUILD_PACKAGE_PREFIX}/lib/cmake:${BUILD_PACKAGE_PREFIX}/lib/pkgconfig"
-    BUILD_CXXFLAGS="-I${BUILD_PACKAGE_PREFIX}/include"
-    BUILD_LDFLAGS="-L${BUILD_PACKAGE_PREFIX}/include"
-    BUILD_PKG_CONFIG_PATH="${BUILD_PACKAGE_PREFIX}/lib/pkgconfig"
+    MESON_BUILD_CONFIG=native
     HOST_CMAKE_PREFIXES="${PACKAGE_PREFIX}/lib/cmake:${PKG_CONFIG_PATH}"
-
-    BUILD_C_ARGS=`echo [\'${BUILD_CFLAGS}\'] | sed "s/ /','/g"`
-    BUILD_C_LINK_ARGS=`echo [\'${BUILD_LDFLAGS}\'] | sed "s/ /','/g"`
-    BUILD_CMAKE_PREFIX_PATH=`echo [\'${BUILD_CMAKE_PREFIXES}\'] | sed "s/:/','/g"`
-    BUILD_CPP_ARGS=`echo [\'${BUILD_CXXFLAGS}\'] | sed "s/ /','/g"`
-    BUILD_CPP_LINK_ARGS=`echo [\'${BUILD_LDFLAGS}\'] | sed "s/ /','/g"`
-    BUILD_PKG_CONFIG_PATH=`echo [\'${BUILD_PKG_CONFIG_PATH}\'] | sed "s/:/','/g"`
     HOST_C_ARGS=`echo [\'${CFLAGS}\'] | sed "s/ /','/g"`
     HOST_C_LINK_ARGS=`echo [\'${LDFLAGS}\'] | sed "s/ /','/g"`
     HOST_CMAKE_PREFIX_PATH=`echo [\'${HOST_CMAKE_PREFIXES}\'] | sed "s/:/','/g"`
     HOST_CPP_ARGS=`echo [\'${CXXFLAGS}\'] | sed "s/ /','/g"`
     HOST_CPP_LINK_ARGS=`echo [\'${LDFLAGS}\'] | sed "s/ /','/g"`
 
-    echo "
-[binaries]
-${MESON_EXTRA_BINARIES}
-
-[built-in]
-libdir = '${INSTALL_PREFIX}/lib'
-
-[build_machine]
-" > ${CROSS_FILE}
-
-    export CC_FOR_BUILD=${BINDIR}/clang
-    export CXX_FOR_BUILD=${BINDIR}/clang++
-    export CMAKE_FOR_BUILD=${CMAKE}
     export CMAKE_PREFIX_PATH=`echo ${HOST_CMAKE_PREFIXES} | tr ':' ';'`
-    export CMAKE_PREFIX_PATH_FOR_BUILD=`echo ${BUILD_CMAKE_PREFIXES} | tr ":" ";"`
 
     if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+        MESON_BUILD_CONFIG=cross
+
+        BUILD_CFLAGS="-I${BUILD_PACKAGE_PREFIX}/include"
+        BUILD_CMAKE_PREFIXES="${BUILD_PACKAGE_PREFIX}/lib/cmake:${BUILD_PACKAGE_PREFIX}/lib/pkgconfig"
+        BUILD_CXXFLAGS="-I${BUILD_PACKAGE_PREFIX}/include"
+        BUILD_LDFLAGS="-L${BUILD_PACKAGE_PREFIX}/include"
+        BUILD_PKG_CONFIG_PATH="${BUILD_PACKAGE_PREFIX}/lib/pkgconfig"
+
+        BUILD_C_ARGS=`echo [\'${BUILD_CFLAGS}\'] | sed "s/ /','/g"`
+        BUILD_C_LINK_ARGS=`echo [\'${BUILD_LDFLAGS}\'] | sed "s/ /','/g"`
+        BUILD_CMAKE_PREFIX_PATH=`echo [\'${BUILD_CMAKE_PREFIXES}\'] | sed "s/:/','/g"`
+        BUILD_CPP_ARGS=`echo [\'${BUILD_CXXFLAGS}\'] | sed "s/ /','/g"`
+        BUILD_CPP_LINK_ARGS=`echo [\'${BUILD_LDFLAGS}\'] | sed "s/ /','/g"`
+        BUILD_PKG_CONFIG_PATH=`echo [\'${BUILD_PKG_CONFIG_PATH}\'] | sed "s/:/','/g"`
+
+        export CC_FOR_BUILD=${BINDIR}/clang
+        export CXX_FOR_BUILD=${BINDIR}/clang++
+        export CMAKE_FOR_BUILD=${CMAKE}
+        export CMAKE_PREFIX_PATH_FOR_BUILD=`echo ${BUILD_CMAKE_PREFIXES} | tr ":" ";"`
+
         create-indirect-pkg-config BUILD_PKG_CONFIG_PATH ${STAGE_ROOT}/build-pkgconfig
 
         export PKG_CONFIG_FOR_BUILD=${STAGE_ROOT}/build-pkgconfig
+    fi
 
-        echo "
+    echo "\
+[binaries]
+${MESON_EXTRA_BINARIES}
+" > ${CONFIG_FILE}
+
+    if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+        echo "\
+[build_machine]
 ar = '${AR}'
 backend = '${BACKEND}'
 buildtype = '${BUILD_TYPE}'
@@ -550,10 +553,10 @@ strings = '${STRINGS}'
 system = '${BUILD_SYSTEM}'
 
 [host_machine]
-" >> ${CROSS_FILE}
+        " >> ${CONFIG_FILE}
     fi
 
-    echo "
+    echo "\
 ar = '${AR}'
 backend = '${BACKEND}'
 buildtype = '${BUILD_TYPE}'
@@ -580,10 +583,11 @@ ranlib = '${RANLIB}'
 strip = '${STRIP}'
 strings = '${STRINGS}'
 system = '${HOST_SYSTEM}'
-" >> ${CROSS_FILE}
+    " >> ${CONFIG_FILE}
+
 
     if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
-        echo "
+        echo "\
 [target_machine]
 ar = '${AR}'
 backend = '${BACKEND}'
@@ -604,17 +608,15 @@ debug = '${DEBUG}'
 endian = '${ENDIAN}'
 optimization = '${OPTIMIZATION_LEVEL}'
 pkgconfig = '${PKG_CONFIG}'
-pkg_config_path = ${PKG_CONFIG_PATH}
+pkg_config_path = '${PKG_CONFIG_PATH}'
 python = '${PYTHON}'
 nm = '${NM}'
 ranlib = '${RANLIB}'
 strip = '${STRIP}'
 strings = '${STRINGS}'
 system = '${HOST_SYSTEM}'
-" >> ${CROSS_FILE}
-    fi
+" >> ${CONFIG_FILE}
 
-    if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
         create-indirect-pkg-config PKG_CONFIG_PATH ${STAGE_ROOT}/build-pkg-config
 
         export PKG_CONFIG_FOR_BUILD=${STAGE_ROOT}/build-pkg-config
@@ -623,19 +625,24 @@ system = '${HOST_SYSTEM}'
     ${MESON} \
          ${SOURCE_ROOT} \
          ${STAGE_ROOT} \
+         -Dlibdir=${INSTALL_PREFIX}/lib \
          -Dprefix=${INSTALL_PREFIX} \
-         --cross-file ${CROSS_FILE} \
+         --${MESON_BUILD_CONFIG}-file ${CONFIG_FILE} \
          ${@}
 }
 
 function package-python-build() {
     SETUP_PY=${SETUP_PY:-${SOURCE_ROOT}/setup.py}
+    INSTALLED_FILE_LIST=${INSTALLED_FILE_LIST:-${STAGE_ROOT}/installed-file-list.txt}
+
     export-compiler-environment
     generate-compiler-tools
 
     ${PYTHON} ${SETUP_PY} build -b ${STAGE_ROOT} \
                                 -j ${NUM_PROCESSORS}
-    ${PYTHON} ${SETUP_PY} install --prefix ${INSTALL_PREFIX}
+    ${PYTHON} ${SETUP_PY} install --prefix ${INSTALL_PREFIX} \
+                                  --record ${INSTALLED_FILE_LIST} \
+                                  --single-version-externally-managed
 }
 
 function package-swift-build() {
