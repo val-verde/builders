@@ -40,8 +40,17 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-m4-cross
 # make build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-make-cross
 
+# ninja build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross
+
 # libiconv build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross
+
+# gobject-introspection build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gobject-introspection-cross
+
+# glib build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-glib-cross
 
 # pkg-config build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pkg-config-cross
@@ -228,9 +237,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-git-cross
 
 # vim build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-vim-cross
-
-# ninja build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross
 
 # cmake build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cmake-cross

@@ -32,6 +32,11 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-automake-cross
 # android make build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-make-cross
 
+# android ninja build
+if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross
+fi
+
 # android libtool build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libtool-cross
 
@@ -40,6 +45,12 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libtool-cross
 
 # android libiconv build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross
+
+# android gobject-introspection build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gobject-introspection-cross
+
+# android glib build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-glib-cross
 
 # android pkg-config build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pkg-config-cross
@@ -213,11 +224,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-git-cross
 
 # android vim build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-vim-cross
-
-# android ninja build
-if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross
-fi
 
 # android cmake build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cmake-cross

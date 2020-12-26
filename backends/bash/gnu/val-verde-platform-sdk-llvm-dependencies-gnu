@@ -52,22 +52,28 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-m4-cross
 MAKE=/usr/bin/make \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-make-cross
 
+# ninja build
+CMAKE_BINDIR=/usr/bin \
+NINJA=/usr/bin/ninja \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross
+
 # libiconv build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross
 
 # gobject-introspection build
 MESON=/usr/bin/meson \
-NINJA=/usr/bin/ninja \
 PKG_CONFIG=/usr/bin/pkg-config \
+PYTHON=/usr/bin/python3 \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gobject-introspection-cross
 
 # glib build
 MESON=/usr/bin/meson \
-NINJA=/usr/bin/ninja \
 PKG_CONFIG=/usr/bin/pkg-config \
+PYTHON=/usr/bin/python3 \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-glib-cross
 
 # pkg-config build
+PKG_CONFIG=/usr/bin/pkg-config \
 PYTHON=/usr/bin/python3 \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pkg-config-cross
 
@@ -136,10 +142,10 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-libxcb-cross
 
 # pixman build
 MESON=/usr/bin/meson \
-NINJA=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pixman-cross
 
 # xorg-libpciaccess build
+MESON=/usr/bin/meson \
 PYTHON=/usr/bin/python3 \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libpciaccess-cross
 
@@ -153,7 +159,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wayland-cross
 
 # mesa-drm build
 MESON=/usr/bin/meson \
-NINJA=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-mesa-drm-cross
 
 # cups build
@@ -161,12 +166,10 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cups-cross
 
 # libuv build
 CMAKE_BINDIR=/usr/bin \
-NINJA=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libuv-cross
 
 # libssh2 build
 CMAKE_BINDIR=/usr/bin \
-NINJA=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libssh2-cross
 
 # ldns build
@@ -177,7 +180,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openssh-portable-cross
 
 # curl build
 CMAKE_BINDIR=/usr/bin \
-NINJA=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-curl-cross
 
 # gettext build
@@ -191,7 +193,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-acl-cross
 
 # libsecret build
 MESON=/usr/bin/meson \
-NINJA=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libsecret-cross
 
 # bash build
@@ -203,7 +204,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-util-linux-cross
 
 # libarchive build
 CMAKE_BINDIR=/usr/bin \
-NINJA=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libarchive-cross
 
 # libmicrohttpd build
@@ -250,7 +250,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-rsync-cross
 
 # systemd build
 MESON=/usr/bin/meson \
-NINJA=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-systemd
 
 # wget build
@@ -277,7 +276,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openjdk-cross
 
 # z3 build
 CMAKE_BINDIR=/usr/bin \
-NINJA=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-z3-cross
 
 # git build
@@ -285,11 +283,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-git-cross
 
 # vim build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-vim-cross
-
-# ninja build
-CMAKE_BINDIR=/usr/bin \
-NINJA=/usr/bin/ninja \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross
 
 # cmake build
 CMAKE_BINDIR=/usr/bin \
