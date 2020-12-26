@@ -8,8 +8,17 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zlib-cross
 # android bzip2 build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bzip2-cross
 
+# android lz4 build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lz4-cross
+
+# android xxhash build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xxhash-cross
+
 # android zip build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zip-cross
+
+# android zstd build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zstd-cross
 
 # android unzip build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-unzip-cross

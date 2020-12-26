@@ -8,8 +8,17 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zlib-cross
 # bzip2 build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bzip2-cross
 
+# lz4 build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lz4-cross
+
+# xxhash build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xxhash-cross
+
 # zip build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zip-cross
+
+# zstd build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zstd-cross
 
 # unzip build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-unzip-cross

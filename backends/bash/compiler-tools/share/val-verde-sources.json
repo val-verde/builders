@@ -233,6 +233,13 @@
                 "enableSubmodules": "false"
             },
             {
+                "sourcePackageName": "lz4",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+                "enableSubmodules": "false"
+            },
+            {
                 "sourcePackageName": "m4",
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "1.4.18",
@@ -667,6 +674,13 @@
                 "enableSubmodules": "true"
             },
             {
+                "sourcePackageName": "xxhash",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+                "enableSubmodules": "false"
+            },
+            {
                 "sourcePackageName": "yams",
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
@@ -691,6 +705,13 @@
                 "sourcePackageName": "zlib",
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "1.2.11",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+                "enableSubmodules": "false"
+            },
+            {
+                "sourcePackageName": "zstd",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
                 "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
                 "enableSubmodules": "false"
             }
