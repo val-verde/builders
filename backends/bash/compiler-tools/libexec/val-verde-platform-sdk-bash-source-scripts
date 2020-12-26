@@ -59,7 +59,21 @@ function create-host-tool() {
 set -e
 
 exec ${host_tool} ${!host_tool_flags} \"\${@}\"
-" > ${3}
+" > ${wrapper_name}
+    chmod +x ${wrapper_name}
+}
+
+function create-indirect-pkg-config() {
+    host_pkg_config_path=${1}
+    wrapper_name=${2}
+
+    echo "\
+#!/bin/bash
+
+set -e
+
+PKG_CONFIG_PATH=\"${!host_pkg_config_path}\" exec ${PKG_CONFIG} \"\${@}\"
+" > ${wrapper_name}
     chmod +x ${wrapper_name}
 }
 
@@ -77,6 +91,7 @@ function export-compiler-environment() {
     export BUILD_CC=${CC:-${BINDIR}/clang}
     export CC=${CC:-${BINDIR}/clang}
     export CCLD=${CCLD:-${CC}}
+    export CMAKE=${CMAKE:-${BINDIR}/cmake}
     export CPP=${CPP:-${CC}-cpp}
     export CXX=${CXX:-${CC}++}
     export CXXLD=${CXXLD:-${CXX}}
@@ -440,16 +455,177 @@ function package-configure() {
 }
 
 function package-meson-build() {
-    BUILD_TYPE=${BUILD_TYPE:-release}
     export-compiler-environment
     generate-compiler-tools
 
+    BACKEND=${BACKEND:-ninja}
+    BUILD_TYPE=${BUILD_TYPE:-custom}
+    CROSS_FILE=${STAGE_ROOT}/build-config.txt
+    DEBUG=${DEBUG:-false}
+    ENDIAN=${ENDIAN:-little}
+    BUILD_SYSTEM=${BUILD_OS}
+
+    if [ "${BUILD_OS}" = "gnu" ] ||
+       [ "${BUILD_OS}" = "musl" ]; then
+        HOST_SYSTEM="linux"
+    elif [ "${BUILD_OS}" = "mingw32" ]; then
+        BUILD_SYSTEM="windows"
+    fi
+
+    HOST_SYSTEM=${HOST_OS}
+
+    if [ "${HOST_OS}" = "gnu" ] ||
+       [ "${HOST_OS}" = "musl" ]; then
+        HOST_SYSTEM="linux"
+    elif [ "${HOST_OS}" = "mingw32" ]; then
+        HOST_SYSTEM="windows"
+    fi
+
+    BUILD_CFLAGS="-I${BUILD_PACKAGE_PREFIX}/include"
+    BUILD_CMAKE_PREFIXES="${BUILD_PACKAGE_PREFIX}/lib/cmake:${BUILD_PACKAGE_PREFIX}/lib/pkgconfig"
+    BUILD_CXXFLAGS="-I${BUILD_PACKAGE_PREFIX}/include"
+    BUILD_LDFLAGS="-L${BUILD_PACKAGE_PREFIX}/include"
+    BUILD_PKG_CONFIG_PATH="${BUILD_PACKAGE_PREFIX}/lib/pkgconfig"
+    HOST_CMAKE_PREFIXES="${PACKAGE_PREFIX}/lib/cmake:${PKG_CONFIG_PATH}"
+
+    BUILD_C_ARGS=`echo [\'${BUILD_CFLAGS}\'] | sed "s/ /','/g"`
+    BUILD_C_LINK_ARGS=`echo [\'${BUILD_LDFLAGS}\'] | sed "s/ /','/g"`
+    BUILD_CMAKE_PREFIX_PATH=`echo [\'${BUILD_CMAKE_PREFIXES}\'] | sed "s/:/','/g"`
+    BUILD_CPP_ARGS=`echo [\'${BUILD_CXXFLAGS}\'] | sed "s/ /','/g"`
+    BUILD_CPP_LINK_ARGS=`echo [\'${BUILD_LDFLAGS}\'] | sed "s/ /','/g"`
+    BUILD_PKG_CONFIG_PATH=`echo [\'${BUILD_PKG_CONFIG_PATH}\'] | sed "s/:/','/g"`
+    HOST_C_ARGS=`echo [\'${CFLAGS}\'] | sed "s/ /','/g"`
+    HOST_C_LINK_ARGS=`echo [\'${LDFLAGS}\'] | sed "s/ /','/g"`
+    HOST_CMAKE_PREFIX_PATH=`echo [\'${HOST_CMAKE_PREFIXES}\'] | sed "s/:/','/g"`
+    HOST_CPP_ARGS=`echo [\'${CXXFLAGS}\'] | sed "s/ /','/g"`
+    HOST_CPP_LINK_ARGS=`echo [\'${LDFLAGS}\'] | sed "s/ /','/g"`
+
+    echo "
+[binaries]
+${MESON_EXTRA_BINARIES}
+
+[built-in]
+libdir = '${INSTALL_PREFIX}/lib'
+
+[build_machine]
+" > ${CROSS_FILE}
+
+    export CC_FOR_BUILD=${BINDIR}/clang
+    export CXX_FOR_BUILD=${BINDIR}/clang++
+    export CMAKE_FOR_BUILD=${CMAKE}
+    export CMAKE_PREFIX_PATH=`echo ${HOST_CMAKE_PREFIXES} | tr ':' ';'`
+    export CMAKE_PREFIX_PATH_FOR_BUILD=`echo ${BUILD_CMAKE_PREFIXES} | tr ":" ";"`
+
+    if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+        create-indirect-pkg-config BUILD_PKG_CONFIG_PATH ${STAGE_ROOT}/build-pkgconfig
+
+        export PKG_CONFIG_FOR_BUILD=${STAGE_ROOT}/build-pkgconfig
+
+        echo "
+ar = '${AR}'
+backend = '${BACKEND}'
+buildtype = '${BUILD_TYPE}'
+c = '${CC_FOR_BUILD}'
+c_args = ${BUILD_C_ARGS}
+c_ld = '${BINDIR}/ld.lld'
+c_link_args = ${BUILD_C_LINK_ARGS}
+cmake='${CMAKE}'
+cmake_prefix_path=${BUILD_CMAKE_PREFIX_PATH}
+cpp = '${CXX_FOR_BUILD}'
+cpp_args = ${BUILD_CPP_ARGS}
+cpp_ld = '${BINDIR}/ld.lld'
+cpp_link_args = ${BUILD_CPP_LINK_ARGS}
+cpu = '${BUILD_ARCH}'
+cpu_family = '${BUILD_PROCESSOR}'
+debug = '${DEBUG}'
+endian = '${ENDIAN}'
+optimization = '${OPTIMIZATION_LEVEL}'
+pkgconfig = '${STAGE_ROOT}/build-pkg-config'
+pkgconfigpath = ${BUILD_PKG_CONFIG_PATH}
+python = '${PYTHON}'
+nm = '${NM}'
+ranlib = '${RANLIB}'
+strip = '${STRIP}'
+strings = '${STRINGS}'
+system = '${BUILD_SYSTEM}'
+
+[host_machine]
+" >> ${CROSS_FILE}
+    fi
+
+    echo "
+ar = '${AR}'
+backend = '${BACKEND}'
+buildtype = '${BUILD_TYPE}'
+c = '${CC}'
+c_args = ${HOST_C_ARGS}
+c_ld = '${LD}'
+c_link_args = ${HOST_C_LINK_ARGS}
+cmake='${CMAKE}'
+cmake_prefix_path=${HOST_CMAKE_PREFIX_PATH}
+cpp = '${CXX}'
+cpp_args = ${HOST_CPP_ARGS}
+cpp_ld = '${LD}'
+cpp_link_args = ${HOST_CPP_LINK_ARGS}
+cpu = '${HOST_ARCH}'
+cpu_family = '${HOST_PROCESSOR}'
+debug = '${DEBUG}'
+endian = '${ENDIAN}'
+optimization = '${OPTIMIZATION_LEVEL}'
+pkgconfig = '${PKG_CONFIG}'
+pkg_config_path = '${PKG_CONFIG_PATH}'
+python = '${PYTHON}'
+nm = '${NM}'
+ranlib = '${RANLIB}'
+strip = '${STRIP}'
+strings = '${STRINGS}'
+system = '${HOST_SYSTEM}'
+" >> ${CROSS_FILE}
+
+    if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+        echo "
+[target_machine]
+ar = '${AR}'
+backend = '${BACKEND}'
+buildtype = '${BUILD_TYPE}'
+c = '${CC}'
+c_args = ${HOST_C_ARGS}
+c_ld = '${LD}'
+c_link_args = ${HOST_C_LINK_ARGS}
+cmake='${CMAKE}'
+cmake_prefix_path=${HOST_CMAKE_PREFIX_PATH}
+cpp = '${CXX}'
+cpp_args = ${HOST_CPP_ARGS}
+cpp_ld = '${LD}'
+cpp_link_args = ${HOST_CPP_LINK_ARGS}
+cpu = '${HOST_ARCH}'
+cpu_family = '${HOST_PROCESSOR}'
+debug = '${DEBUG}'
+endian = '${ENDIAN}'
+optimization = '${OPTIMIZATION_LEVEL}'
+pkgconfig = '${PKG_CONFIG}'
+pkg_config_path = ${PKG_CONFIG_PATH}
+python = '${PYTHON}'
+nm = '${NM}'
+ranlib = '${RANLIB}'
+strip = '${STRIP}'
+strings = '${STRINGS}'
+system = '${HOST_SYSTEM}'
+" >> ${CROSS_FILE}
+    fi
+
+    if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
+        create-indirect-pkg-config PKG_CONFIG_PATH ${STAGE_ROOT}/build-pkg-config
+
+        export PKG_CONFIG_FOR_BUILD=${STAGE_ROOT}/build-pkg-config
+    fi
+
     ${MESON} \
-        -Dbuildtype=${BUILD_TYPE} \
-        -Doptimization=${OPTIMIZATION_LEVEL} \
-        -Dprefix=${INSTALL_PREFIX} \
-        ${STAGE_ROOT} \
-        ${@}
+         ${SOURCE_ROOT} \
+         ${STAGE_ROOT} \
+         -Dprefix=${INSTALL_PREFIX} \
+         --cross-file ${CROSS_FILE} \
+         ${@}
 }
 
 function package-python-build() {
