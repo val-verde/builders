@@ -8,7 +8,7 @@ export SOURCE_PACKAGE_NAME=${SOURCE_PACKAGE_BASE_NAME}-headers
 export SOURCE_PACKAGE_VERSION=${ANDROID_NDK_VERSION}
 
 # Source package build helper functions
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export ANDROID_NDK_STAGE_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_BASE_NAME}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}
 export TOOLCHAIN_ROOT=${ANDROID_NDK_STAGE_ROOT}/${BUILD_PACKAGE_PREFIX}/android-ndk-${ANDROID_NDK_VERSION}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}

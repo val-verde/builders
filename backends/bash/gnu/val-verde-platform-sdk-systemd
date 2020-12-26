@@ -7,7 +7,7 @@ export SOURCE_PACKAGE_NAME=systemd
 export SOURCE_PACKAGE_VERSION=247
 
 # Source package build helper functions
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export DEPENDS="\
     ${PACKAGE_BASE_NAME}-acl-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \

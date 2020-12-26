@@ -7,7 +7,7 @@ export SOURCE_PACKAGE_NAME=khr-headers
 export SOURCE_PACKAGE_VERSION=1.0.0
 
 # Source package build helper functions
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
 cd ${STAGE_ROOT}

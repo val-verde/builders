@@ -7,7 +7,7 @@ export SOURCE_PACKAGE_NAME=gnulib
 export SOURCE_PACKAGE_VERSION=0.1
 
 # Source package build helper functions
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
 ${SOURCE_ROOT}/gnulib-tool \
