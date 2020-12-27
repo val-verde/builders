@@ -24,7 +24,8 @@ MAKE=/usr/bin/make \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zip-cross
 
 # zstd build
-MAKE=/usr/bin/make \
+CMAKE_BINDIR=/usr/bin \
+NINJA=/usr/bin/ninja \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zstd-cross
 
 # unzip build
