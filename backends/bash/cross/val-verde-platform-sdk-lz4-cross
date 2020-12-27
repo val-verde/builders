@@ -16,6 +16,12 @@ generate-compiler-tools
 copy-source-to-staging
 
 # Build the components
+if [ "${HOST_OS}" = "mingw32" ]; then
+    TARGET_OS=Windows
+else
+    TARGET_OS=Linux
+fi
+
 cd ${STAGE_ROOT}
 ${MAKE} \
     AR=${AR} \
@@ -23,6 +29,8 @@ ${MAKE} \
     CFLAGS="${CFLAGS}" \
     PREFIX=${INSTALL_PREFIX} \
     RANLIB=${RANLIB} \
+    TARGET_OS=${TARGET_OS} \
+    WINDRES=${WINDRES} \
     install
 
 # Build the package
