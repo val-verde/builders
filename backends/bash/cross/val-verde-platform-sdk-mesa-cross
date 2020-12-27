@@ -15,6 +15,8 @@ export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/llvm-
 
 # Configure the build components
 cd ${SOURCE_ROOT}
+PYTHONHOME=${BUILD_PACKAGE_PREFIX} \
+${BINDIR}/pip3 install mako
 MESON_EXTRA_BINARIES="\
 llvm-config = '${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config'
 " \
