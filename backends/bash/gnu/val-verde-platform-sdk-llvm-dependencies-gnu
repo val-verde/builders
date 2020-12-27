@@ -149,13 +149,13 @@ MESON=/usr/bin/meson \
 PYTHON=/usr/bin/python3 \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libpciaccess-cross
 
-# wayland-protocols build
-PYTHON=/usr/bin/python3 \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wayland-protocols-cross
-
 # wayland build
 PYTHON=/usr/bin/python3 \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wayland-cross
+
+# wayland-protocols build
+PYTHON=/usr/bin/python3 \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wayland-protocols-cross
 
 # mesa-drm build
 MESON=/usr/bin/meson \
