@@ -21,14 +21,7 @@ OPENSSL_PROCESSOR=${HOST_PROCESSOR}
 
 if [ "${HOST_OS}" = "android" ]; then
     OPENSSL_DIR=/data/local/tmp${PACKAGE_PREFIX}/etc/ssl
-    OPENSSL_DEFINES="-D__ANDROID_API__=${HOST_OS_API_LEVEL}"
-
-    export ANDROID_NDK_HOME=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/android-ndk-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}${BUILD_PACKAGE_PREFIX}/android-ndk-${ANDROID_NDK_VERSION}
-    export PATH=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}/bin:${PATH}
-
-    if [ "${OPENSSL_PROCESSOR}" = "aarch64" ]; then
-        OPENSSL_PROCESSOR=arm64
-    fi
+    OPENSSL_OS=linux
 elif [ "${HOST_OS}" = "gnu" ] || \
      [ "${HOST_OS}" = "musl" ]; then
     OPENSSL_OS=linux
