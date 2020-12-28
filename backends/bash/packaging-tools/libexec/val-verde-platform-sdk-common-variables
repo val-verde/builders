@@ -153,18 +153,11 @@ function package-git-clone() {
             ${RM} -rf ${TARGET_ROOT}
         fi
 
-        if [[ ${ENABLE_SUBMODULES} = "false" ]]; then
-            package-git-tool clone ${GIT_URL} \
-                             --branch ${GIT_BRANCH} \
-                             --single-branch \
-                             ${TARGET_ROOT}
-        else
-            package-git-tool clone ${GIT_URL} \
+        package-git-tool clone ${GIT_URL} \
                              --branch ${GIT_BRANCH} \
                              --recurse-submodules \
                              --single-branch \
                              ${TARGET_ROOT}
-        fi
     package-pop-directory
 }
 
