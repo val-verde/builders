@@ -26,6 +26,8 @@ for ((i=0; i<"${#args[@]}"; ++i)); do
         OTHER_FLAGS="${OTHER_FLAGS} -I${INCLUDE}"
         i=$((i+1))
         ;;
+    --preprocessor-arg=*)
+        ;;
     --target*)
         ;;
     *.rc)

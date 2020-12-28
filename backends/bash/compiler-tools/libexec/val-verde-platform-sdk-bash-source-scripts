@@ -550,6 +550,7 @@ ranlib = '${RANLIB}'
 strip = '${STRIP}'
 strings = '${STRINGS}'
 system = '${BUILD_SYSTEM}'
+windres = '${WINDRES}'
 
 [host_machine]
         " >> ${CONFIG_FILE}
@@ -582,6 +583,7 @@ ranlib = '${RANLIB}'
 strip = '${STRIP}'
 strings = '${STRINGS}'
 system = '${HOST_SYSTEM}'
+windres = '${WINDRES}'
     " >> ${CONFIG_FILE}
 
 
@@ -614,6 +616,7 @@ ranlib = '${RANLIB}'
 strip = '${STRIP}'
 strings = '${STRINGS}'
 system = '${HOST_SYSTEM}'
+windres = '${WINDRES}'
 " >> ${CONFIG_FILE}
     fi
 
