@@ -61,12 +61,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross
 # libiconv build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross
 
-# gobject-introspection build
-MESON=/usr/bin/meson \
-PKG_CONFIG=/usr/bin/pkg-config \
-PYTHON=/usr/bin/python3 \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gobject-introspection-cross
-
 # glib build
 MESON=/usr/bin/meson \
 PKG_CONFIG=/usr/bin/pkg-config \
@@ -247,10 +241,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-attr-cross
 # acl build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-acl-cross
 
-# libsecret build
-MESON=/usr/bin/meson \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libsecret-cross
-
 # bash build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bash-cross
 
@@ -325,6 +315,12 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-mako-cross
 
 # meson build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-meson-cross
+
+# gobject-introspection build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gobject-introspection-cross
+
+# libsecret build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libsecret-cross
 
 # tensorflow build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-tensorflow-cross

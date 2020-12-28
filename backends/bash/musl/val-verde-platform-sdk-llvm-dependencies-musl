@@ -46,9 +46,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross
 # libiconv build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross
 
-# gobject-introspection build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gobject-introspection-cross
-
 # glib build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-glib-cross
 
@@ -223,9 +220,6 @@ CFLAGS="\
 CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-linux" \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-acl-cross
 
-# libsecret build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libsecret-cross
-
 # bash build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bash-cross
 
@@ -298,6 +292,12 @@ else
     _PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-python-cross
 fi
+
+# gobject-introspection build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gobject-introspection-cross
+
+# libsecret build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libsecret-cross
 
 # lua build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lua-cross

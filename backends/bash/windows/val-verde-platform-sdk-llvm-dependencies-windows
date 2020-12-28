@@ -44,9 +44,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross
 # windows libiconv build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross
 
-# windows gobject-introspection build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gobject-introspection-cross
-
 # windows glib build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-glib-cross
 
@@ -138,11 +135,17 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wget-cross
 # windows z3 build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-z3-cross
 
-# windows cmake build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cmake-cross
+# windows gobject-introspection build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gobject-introspection-cross
 
 # windows lua build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lua-cross
+
+# windows cmake build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cmake-cross
+
+# windows android patch elf build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android-patch-elf
 
 # windows jwasm build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-jwasm

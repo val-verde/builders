@@ -46,9 +46,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libtool-cross
 # android libiconv build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross
 
-# android gobject-introspection build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gobject-introspection-cross
-
 # android glib build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-glib-cross
 
@@ -209,6 +206,12 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wget-cross
 # android python build
 _PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-python-cross
+
+# android gobject-introspection build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gobject-introspection-cross
+
+# android libsecret build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gobject-libsecret-cross
 
 # android lua build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lua-cross
