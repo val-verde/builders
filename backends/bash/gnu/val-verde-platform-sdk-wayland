@@ -16,13 +16,18 @@ OPTIMIZATION_FLAGS="\
 export-compiler-environment
 
 # Configure the build components
-cd ${SOURCE_ROOT}
-package-meson-build \
-    -Ddocumentation=false
+copy-source-to-staging
+
+cd ${STAGE_ROOT}
+package-configure \
+    ${STAGE_ROOT}/autogen.sh \
+    --disable-documentation \
+    --disable-static \
+    --disable-tests \
+    --enable-shared
 
 # Build the components
-cd ${STAGE_ROOT}
-ninja-build
+make-build
 
 # Build the package
 deb-package-build
