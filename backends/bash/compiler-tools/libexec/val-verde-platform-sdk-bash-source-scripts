@@ -505,7 +505,6 @@ function package-meson-build() {
         BUILD_CMAKE_PREFIX_PATH=`echo [\'${BUILD_CMAKE_PREFIXES}\'] | sed "s/:/','/g"`
         BUILD_CPP_ARGS=`echo [\'${BUILD_CXXFLAGS}\'] | sed "s/ /','/g"`
         BUILD_CPP_LINK_ARGS=`echo [\'${BUILD_LDFLAGS}\'] | sed "s/ /','/g"`
-        BUILD_PKG_CONFIG_PATH=`echo [\'${BUILD_PKG_CONFIG_PATH}\'] | sed "s/:/','/g"`
 
         export CC_FOR_BUILD=${BINDIR}/clang
         export CXX_FOR_BUILD=${BINDIR}/clang++
@@ -544,7 +543,7 @@ debug = '${DEBUG}'
 endian = '${ENDIAN}'
 optimization = '${OPTIMIZATION_LEVEL}'
 pkgconfig = '${STAGE_ROOT}/build-pkg-config'
-pkgconfigpath = ${BUILD_PKG_CONFIG_PATH}
+pkgconfigpath = ''
 python = '${PYTHON}'
 nm = '${NM}'
 ranlib = '${RANLIB}'
@@ -616,10 +615,6 @@ strip = '${STRIP}'
 strings = '${STRINGS}'
 system = '${HOST_SYSTEM}'
 " >> ${CONFIG_FILE}
-
-        create-indirect-pkg-config PKG_CONFIG_PATH ${STAGE_ROOT}/build-pkg-config
-
-        export PKG_CONFIG_FOR_BUILD=${STAGE_ROOT}/build-pkg-config
     fi
 
     ${MESON} \
