@@ -24,6 +24,8 @@ package-configure \
     --with-extra-cflags="-O${OPTIMIZATION_LEVEL}" \
     --with-extra-cxxflags="-O${OPTIMIZATION_LEVEL}" \
     --with-extra-ldflags="-O${LINKER_OPTIMIZATION_LEVEL}" \
+    --with-freetype-include=${PACKAGE_PREFIX}/include \
+    --with-freetype-lib=${PACKAGE_PREFIX}/lib \
     --with-stdc++lib=dynamic \
     --with-toolchain-type=clang
 
