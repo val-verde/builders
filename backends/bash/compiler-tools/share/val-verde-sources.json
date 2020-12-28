@@ -73,9 +73,9 @@
             },
             {
                 "sourcePackageName": "cups",
-                "sourceBranchIndicator": "master",
+                "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
-                "sourcePackageUrl": "https://github.com/apple/${SOURCE_PACKAGE_NAME}.git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
                 "enableSubmodules": "true"
             },
             {
@@ -171,9 +171,9 @@
             },
             {
                 "sourcePackageName": "jwasm",
-                "sourceBranchIndicator": "master",
+                "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
-                "sourcePackageUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}.git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
                 "enableSubmodules": "false"
             },
             {
@@ -220,16 +220,16 @@
             },
             {
                 "sourcePackageName": "libx11",
-                "sourceBranchIndicator": "master",
+                "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
-                "sourcePackageUrl": "https://github.com/mirror/${SOURCE_PACKAGE_NAME}.git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
                 "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "libxext",
-                "sourceBranchIndicator": "master",
+                "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
-                "sourcePackageUrl": "https://github.com/mirror/${SOURCE_PACKAGE_NAME}.git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
                 "enableSubmodules": "true"
             },
             {
@@ -661,121 +661,121 @@
             },
             {
                 "sourcePackageName": "xcb-libxcb",
-                "sourceBranchIndicator": "master",
+                "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
-                "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
                 "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "xcb-pthread-stubs",
-                "sourceBranchIndicator": "master",
+                "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
-                "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
                 "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "xcbproto",
-                "sourceBranchIndicator": "master",
+                "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
-                "sourcePackageUrl": "https://gitlab.freedesktop.org/xorg/proto/${SOURCE_PACKAGE_NAME}",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
                 "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "xorg-libice",
-                "sourceBranchIndicator": "master",
+                "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
-                "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
                 "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "xorg-libpciaccess",
-                "sourceBranchIndicator": "master",
+                "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
-                "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
                 "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "xorg-libsm",
-                "sourceBranchIndicator": "master",
+                "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
-                "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
                 "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "xorg-libxau",
-                "sourceBranchIndicator": "master",
+                "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
-                "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
                 "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "xorg-libxfixes",
-                "sourceBranchIndicator": "master",
+                "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
-                "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
                 "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "xorg-libxi",
-                "sourceBranchIndicator": "master",
+                "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
-                "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
-                "enableSubmodules": "true"
-            },
-            {
-                "sourcePackageName": "xorg-libxinput",
-                "sourceBranchIndicator": "master",
-                "sourcePackageVersion": "9999-git",
-                "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
                 "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "xorg-libxrandr",
-                "sourceBranchIndicator": "master",
+                "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
-                "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
                 "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "xorg-libxrender",
-                "sourceBranchIndicator": "master",
+                "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
-                "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
                 "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "xorg-libxtrans",
-                "sourceBranchIndicator": "master",
+                "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
-                "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
                 "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "xorg-libxt",
-                "sourceBranchIndicator": "master",
+                "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
-                "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
                 "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "xorg-libxtst",
-                "sourceBranchIndicator": "master",
+                "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
-                "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
                 "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "xorg-macros",
-                "sourceBranchIndicator": "master",
+                "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
-                "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+                "enableSubmodules": "true"
+            },
+            {
+                "sourcePackageName": "xorg-xinput",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
                 "enableSubmodules": "true"
             },
             {
                 "sourcePackageName": "xorg-xorgproto",
-                "sourceBranchIndicator": "master",
+                "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
-                "sourcePackageUrl": "https://github.com/freedesktop/${SOURCE_PACKAGE_NAME}.git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
                 "enableSubmodules": "true"
             },
             {
