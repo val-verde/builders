@@ -260,6 +260,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wget-cross
 # python build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-python-cross
 
+# mako build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-mako-cross
+
 # meson build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-meson-cross
 
