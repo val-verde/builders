@@ -125,6 +125,58 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pixman-cross
 # xorg-libpciaccess build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libpciaccess-cross
 
+# xorg-libxtrans build
+PYTHON=/usr/bin/python3 \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxtrans-cross
+
+# libx11 build
+PYTHON=/usr/bin/python3 \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libx11-cross
+
+# libxext build
+PYTHON=/usr/bin/python3 \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libxext-cross
+
+# xorg-libxrender build
+PYTHON=/usr/bin/python3 \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxrender-cross
+
+# xorg-libxfixes build
+PYTHON=/usr/bin/python3 \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxfixes-cross
+
+# xorg-libxi build
+PYTHON=/usr/bin/python3 \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxi-cross
+
+# xorg-libice build
+PYTHON=/usr/bin/python3 \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libice-cross
+
+# xorg-libsm build
+PYTHON=/usr/bin/python3 \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libsm-cross
+
+# xorg-libxt build
+PYTHON=/usr/bin/python3 \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxt-cross
+
+# xorg-libxtst build
+PYTHON=/usr/bin/python3 \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxtst-cross
+
+# xorg-libxrandr build
+PYTHON=/usr/bin/python3 \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxrandr-cross
+
+# xorg-xinput build
+# PYTHON=/usr/bin/python3 \
+# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-xinput-cross
+
+# freetype2 build
+CMAKE_BINDIR=/usr/bin \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-freetype2-cross
+
 # wayland build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wayland-cross
 
@@ -133,6 +185,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wayland-protocols-cross
 
 # mesa-drm build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-mesa-drm-cross
+
+# alsa-lib build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-alsa-lib-cross
 
 # libuv build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libuv-cross
@@ -210,6 +265,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-strace-cross
 
 # gperf build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gperf-cross
+
+# fontconfig build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-fontconfig-cross
 
 # tar build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-tar-cross
