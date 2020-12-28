@@ -5,45 +5,23 @@ set -e
 apt update
 apt dist-upgrade -y
 apt install -y \
-    alien \
     bison \
     build-essential \
     ca-certificates \
     clang \
     cmake \
-    expat \
     git \
-    gobject-introspection \
-    gtk-doc-tools \
     flex \
-    icu-devtools \
     intltool \
-    libasound2-dev \
-    libcups2-dev \
     jq \
     libedit-dev \
     libelf-dev \
     libffi-dev \
-    libfontconfig1-dev \
     libmpc-dev \
     libmpfr-dev \
-    libncurses-dev \
     libnvidia-compute-440 \
-    libpython3.8 \
-    libpython3.8-dev \
-    libsecret-1-dev \
-    libssl-dev \
     libsqlite3-dev \
-    libx11-dev \
-    libxext-dev \
-    libxi-dev \
-    libxkbfile-dev \
     libxml2-dev \
-    libxrandr-dev \
-    libxrender-dev \
-    libxt-dev \
-    libxtst-dev \
-    libxxf86vm-dev \
     libz3-dev \
     lld \
     llvm \
