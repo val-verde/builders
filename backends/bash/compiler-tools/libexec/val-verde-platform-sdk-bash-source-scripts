@@ -523,6 +523,9 @@ ${MESON_EXTRA_BINARIES}
 
     if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
         echo "\
+[properties]
+needs_exe_wrapper = true
+
 [build_machine]
 ar = '${AR}'
 backend = '${BACKEND}'
