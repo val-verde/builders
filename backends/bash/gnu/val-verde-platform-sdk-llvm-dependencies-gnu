@@ -192,6 +192,10 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxrandr-cross
 # PYTHON=/usr/bin/python3 \
 # bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-xinput-cross
 
+# xorg-libxkbfile build
+PYTHON=/usr/bin/python3 \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxkbfile-cross
+
 # xorg-libxxf86vm build
 PYTHON=/usr/bin/python3 \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxxf86vm-cross
