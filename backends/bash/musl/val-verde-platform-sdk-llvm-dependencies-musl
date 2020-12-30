@@ -170,6 +170,10 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxrandr-cross
 # PYTHON=/usr/bin/python3 \
 # bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-xinput-cross
 
+# xorg-libxxf86vm build
+PYTHON=/usr/bin/python3 \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxxf86vm-cross
+
 # freetype2 build
 CMAKE_BINDIR=/usr/bin \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-freetype2-cross

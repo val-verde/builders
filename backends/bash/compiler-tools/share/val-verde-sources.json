@@ -758,6 +758,13 @@
                 "enableSubmodules": "true"
             },
             {
+                "sourcePackageName": "xorg-libxxf86vm",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+                "enableSubmodules": "true"
+            },
+            {
                 "sourcePackageName": "xorg-macros",
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
@@ -773,6 +780,13 @@
             },
             {
                 "sourcePackageName": "xorg-xorgproto",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+                "enableSubmodules": "true"
+            },
+            {
+                "sourcePackageName": "xorg-xserver",
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",
                 "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
