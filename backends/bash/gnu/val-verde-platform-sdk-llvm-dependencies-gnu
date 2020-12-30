@@ -76,6 +76,9 @@ PKG_CONFIG=/usr/bin/pkg-config \
 PYTHON=/usr/bin/python3 \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pkg-config-cross
 
+# perl build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-perl-cross
+
 # pcre build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pcre-cross
 
