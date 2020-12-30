@@ -46,6 +46,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross
 # libiconv build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross
 
+# libffi build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libffi-cross
+
 # glib build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-glib-cross
 
@@ -69,9 +72,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xz-cross
 
 # libxml2 build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libxml2-cross
-
-# libffi build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libffi-cross
 
 # gdbm build
 CFLAGS="\

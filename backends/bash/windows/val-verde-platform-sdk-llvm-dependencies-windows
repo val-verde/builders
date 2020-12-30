@@ -44,6 +44,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross
 # windows libiconv build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross
 
+# windows libffi build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libffi-cross
+
 # windows glib build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-glib-cross
 
@@ -65,9 +68,6 @@ CFLAGS="\
     ${CFLAGS} \
 " \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libxml2-cross
-
-# windows libffi build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libffi-cross
 
 # android ncurses build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ncurses-cross

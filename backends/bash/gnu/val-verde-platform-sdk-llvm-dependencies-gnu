@@ -67,6 +67,10 @@ PKG_CONFIG=/usr/bin/pkg-config \
 PYTHON=/usr/bin/python3 \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-glib-cross
 
+# libffi build
+PKG_CONFIG=/usr/bin/pkg-config \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libffi-cross
+
 # pkg-config build
 PKG_CONFIG=/usr/bin/pkg-config \
 PYTHON=/usr/bin/python3 \
@@ -84,9 +88,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xz-cross
 
 # libxml2 build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libxml2-cross
-
-# libffi build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libffi-cross
 
 # gdbm build
 CFLAGS="\

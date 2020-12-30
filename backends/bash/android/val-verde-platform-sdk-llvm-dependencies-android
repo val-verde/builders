@@ -46,6 +46,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libtool-cross
 # android libiconv build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross
 
+# android libffi build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libffi-cross
+
 # android glib build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-glib-cross
 
@@ -66,9 +69,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xz-cross
 
 # android libxml2 build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libxml2-cross
-
-# android libffi build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libffi-cross
 
 # android gdbm build
 CFLAGS="\
