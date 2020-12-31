@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -e
+
+function determine-git-source-package() {
+    if [[ ${SOURCE_BRANCH_IND} == "default" ]]; then
+        SOURCE_BRANCH=val-verde-mainline
+    elif [[ ${SOURCE_BRANCH_IND} == "default-next" ]]; then
+        SOURCE_BRANCH=val-verde-mainline-next
+    elif [[ ${SOURCE_BRANCH_IND} == "default-next-testing" ]]; then
+        SOURCE_BRANCH=val-verde-mainline-next-testing
+    elif [[ ${SOURCE_BRANCH_IND} == "android" ]]; then
+        SOURCE_BRANCH=val-verde-android-mainline
+        PACKAGE_NAME=${PACKAGE_NAME}-android
+    elif [[ ${SOURCE_BRANCH_IND} == "android-next" ]]; then
+        SOURCE_BRANCH=val-verde-android-mainline-next
+        PACKAGE_NAME=${PACKAGE_NAME}-android
+    elif [[ ${SOURCE_BRANCH_IND} == "android-next-testing" ]]; then
+        SOURCE_BRANCH=val-verde-android-mainline-next
+        PACKAGE_NAME=${PACKAGE_NAME}-android
+    elif [[ ${SOURCE_BRANCH_IND} == "windows" ]]; then
+        SOURCE_BRANCH=val-verde-windows-mainline
+        PACKAGE_NAME=${PACKAGE_NAME}-windows
+    else
+        SOURCE_BRANCH=${SOURCE_BRANCH_IND}
+    fi
+}
