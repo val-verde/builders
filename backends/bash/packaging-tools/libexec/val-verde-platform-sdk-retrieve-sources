@@ -136,26 +136,35 @@ function fetch-sources() {
         ${ECHO} -e "    Email: \e[4m${EMAIL_ID}\e[0m"
         ${ECHO} -e "    Sources File: \e[31m${SOURCE_FILE}\e[0m"
 
-        gitSourcesCount=( $(jq '.[0] | .gitSources | length' ${SOURCE_FILE}) )
-        otherSourcesCount=( $(jq '.[1] | .otherSources | length' ${SOURCE_FILE}) )
+        # Fetch git upstream sources
+        SOURCE_TYPE=git get-source-package-count
 
         ${GIT} config \
                --global user.email ${EMAIL_ID}
 
-        for index in `seq "${GIT_INDEX_OVERRIDE}" $(($gitSourcesCount - 1))`; do
-            SOURCE_PACKAGE_NAME=$(jq -r ".[0] | .gitSources | .[$index].sourcePackageName" ${SOURCE_FILE}) \
-            SOURCE_BRANCH_IND=$(jq -r ".[0] | .gitSources | .[$index].sourceBranchIndicator" ${SOURCE_FILE}) \
-            SOURCE_PACKAGE_VERSION=$(jq -r ".[0] | .gitSources | .[$index].sourcePackageVersion" ${SOURCE_FILE}) \
-            SOURCE_URL=$(jq -r ".[0] | .gitSources | .[$index].sourcePackageUrl" ${SOURCE_FILE}) \
+        for index in `seq "${GIT_INDEX_OVERRIDE}" $(($sourceCount - 1))`; do
+            index=$index \
+            SOURCE_TYPE=git \
+            get-source-package-metadata
+
+            PACKAGE_VERSION=$(package-major-version) \
+            derive-upstream-source-url
+
             build-install-git-source-package
         done
 
+        # Fetch other upstream sources
+        SOURCE_TYPE=other get-source-package-count
+
         for index in `seq "${OTHER_INDEX_OVERRIDE}" $(($otherSourcesCount - 1))`; do
-            SOURCE_PACKAGE_NAME=$(jq -r ".[1] | .otherSources | .[$index].sourcePackageName" ${SOURCE_FILE}) \
-            SOURCE_BRANCH_IND=$(jq -r ".[1] | .otherSources | .[$index].sourceBranchIndicator" ${SOURCE_FILE}) \
-            SOURCE_PACKAGE_VERSION=$(jq -r ".[1] | .otherSources | .[$index].sourcePackageVersion" ${SOURCE_FILE}) \
-            SOURCE_URL=$(jq -r ".[1] | .otherSources | .[$index].sourcePackageUrl" ${SOURCE_FILE}) \
-            build-install-other-source-package 
+            index=$index \
+            SOURCE_TYPE=other \
+            get-source-package-metadata
+
+            PACKAGE_VERSION=$(package-major-version) \
+            derive-upstream-source-url
+
+            build-install-other-source-package
         done
 
         ${ECHO} -e "Source Builder Invocation Completed"
