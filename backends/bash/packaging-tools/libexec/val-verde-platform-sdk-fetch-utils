@@ -25,3 +25,27 @@ function determine-git-source-package() {
         SOURCE_BRANCH=${SOURCE_BRANCH_IND}
     fi
 }
+
+function untar-tar-balls() {
+    if [[ ${SOURCE_BRANCH_IND} == "wget" ]]; then
+        package-wget -c ${PACKAGE_URL} \
+                        -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
+        package-tar -xzvf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
+                    -C ${INSTALL_PREFIX} --strip 1
+        ${RM} ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
+    elif [[ ${SOURCE_BRANCH_IND} == "wget-xz" ]]; then
+        package-wget -c ${PACKAGE_URL} \
+                        -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz
+        package-tar -xvf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz \
+                    -C ${INSTALL_PREFIX} --strip 1
+        ${RM} ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz
+    elif [[ ${SOURCE_BRANCH_IND} == "wget-unzip" ]]; then
+        ANDROID_NDK_URL=https://dl.google.com/android/repository
+
+        package-wget -c ${ANDROID_NDK_URL}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.zip \
+                        -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.zip
+        package-unzip ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.zip \
+                        -d ${INSTALL_PREFIX}
+        ${RM} ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.zip
+    fi
+}
