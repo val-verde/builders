@@ -10,30 +10,9 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-utils
 
 function build-install-git-source-package() {
-    # Establish package url
-    PACKAGE_VERSION=$(package-major-version) \
-    derive-upstream-source-url
-
-    # Set source package details
-    determine-git-source-package
-
-    export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources/${PACKAGE_NAME}
-    export INSTALL_ROOT=${TEMPDIR}/${INSTALL_ROOT_BASE}/${PACKAGE_NAME}-sources
-    export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX}
-    export STAGE_ROOT=${STAGE_ROOT_BASE}/${PACKAGE_NAME}
-
-    ${ECHO}
-    ${ECHO} -e "    Source Builder Started"
-    ${ECHO} -e "        Name: \e[1;35m${SOURCE_PACKAGE_NAME}\e[0m"
-    ${ECHO} -e "        Version: \e[32m${SOURCE_PACKAGE_VERSION}\e[0m"
-    ${ECHO} -e "        URL: \e[31m${PACKAGE_URL}\e[0m"
-    ${ECHO} -e "        Stage Root: \e[33m${STAGE_ROOT}\e[0m"
-    ${ECHO} -e "        Install Prefix: \e[33m${PACKAGE_PREFIX}\e[0m"
-
-    # Prepare stage root (for logs) and install directory for source package
-    ${MKDIR} -p \
-                ${INSTALL_PREFIX} \
-                ${STAGE_ROOT}
+    # Set up paths and dirs
+    SOURCE_TYPE=git \
+    prepare-source-base
 
     GIT_URL=${PACKAGE_URL} \
         TARGET_ROOT=${INSTALL_PREFIX} \
@@ -61,27 +40,8 @@ function build-install-git-source-package() {
 }
 
 function build-install-other-source-package() {
-    # Establish package url
-    PACKAGE_VERSION=$(package-major-version) \
-    derive-upstream-source-url
-
-    export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources/${PACKAGE_NAME}
-    export INSTALL_ROOT=${TEMPDIR}/${INSTALL_ROOT_BASE}/${PACKAGE_NAME}-sources
-    export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX}
-    export STAGE_ROOT=${STAGE_ROOT_BASE}/${PACKAGE_NAME}
-
-    ${ECHO}
-    ${ECHO} -e "    Source Builder Started"
-    ${ECHO} -e "        Name: \e[35m${SOURCE_PACKAGE_NAME}\e[0m"
-    ${ECHO} -e "        Version: \e[32m${SOURCE_PACKAGE_VERSION}\e[0m"
-    ${ECHO} -e "        URL: \e[31m${PACKAGE_URL}\e[0m"
-    ${ECHO} -e "        Stage Root: \e[33m${STAGE_ROOT}\e[0m"
-    ${ECHO} -e "        Install Prefix: \e[33m${PACKAGE_PREFIX}\e[0m"
-
-    # Prepare stage root (for logs) and install directory for source package
-    ${MKDIR} -p \
-                ${INSTALL_PREFIX} \
-                ${STAGE_ROOT}
+    # Set up paths and dirs
+    prepare-source-base
 
     # Extract source package from tar ball
     untar-tar-balls
