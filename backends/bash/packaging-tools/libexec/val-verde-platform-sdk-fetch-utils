@@ -40,6 +40,45 @@ function determine-git-source-package() {
     fi
 }
 
+function get-source-package-metadata() {
+    if [[  ${SOURCE_TYPE} = 'git' ]]; then
+        sourceArrayIndex=0
+    elif [[  ${SOURCE_TYPE} = 'other' ]]; then
+        sourceArrayIndex=1
+    fi
+
+    SOURCE_PACKAGE_NAME=$(jq -r --arg keyvar "${SOURCE_TYPE}Sources" \
+                                --argjson srcVar $sourceArrayIndex \
+                                --argjson id $index \
+                                '.[$srcVar] | .[$keyvar] | .[$id].sourcePackageName' \
+                                ${SOURCE_FILE})
+    SOURCE_BRANCH_IND=$(jq -r --arg keyvar "${SOURCE_TYPE}Sources" \
+                                --argjson srcVar $sourceArrayIndex \
+                                --argjson id $index \
+                                '.[$srcVar] | .[$keyvar] | .[$id].sourceBranchIndicator' \
+                                ${SOURCE_FILE})
+    SOURCE_PACKAGE_VERSION=$(jq -r --arg keyvar "${SOURCE_TYPE}Sources" \
+                                --argjson srcVar $sourceArrayIndex \
+                                --argjson id $index \
+                                '.[$srcVar] | .[$keyvar] | .[$id].sourcePackageVersion' \
+                                ${SOURCE_FILE})
+    SOURCE_URL=$(jq -r --arg keyvar "${SOURCE_TYPE}Sources" \
+                                --argjson srcVar $sourceArrayIndex \
+                                --argjson id $index \
+                                '.[$srcVar] | .[$keyvar] | .[$id].sourcePackageUrl' \
+                                ${SOURCE_FILE})
+    PACKAGE_BASE_URL=${SOURCE_URL/'${VAL_VERDE_GH_TEAM}'/${VAL_VERDE_GH_TEAM}}
+}
+
+function get-source-package-count() {
+    if [[  ${SOURCE_TYPE} = 'git' ]]; then
+        sourceArrayIndex=0
+    elif [[  ${SOURCE_TYPE} = 'other' ]]; then
+        sourceArrayIndex=1
+    fi
+    sourceCount=( $(jq -r --arg keyvar "${SOURCE_TYPE}Sources" --argjson srcVar $sourceArrayIndex '.[$srcVar] | .[$keyvar] | length' ${SOURCE_FILE}) )
+}
+
 function untar-tar-balls() {
     if [[ ${SOURCE_BRANCH_IND} == "wget" ]]; then
         package-wget -c ${PACKAGE_URL} \
