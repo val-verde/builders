@@ -10,14 +10,9 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-utils
 
 function build-install-git-source-package() {
-    PACKAGE_VERSION=$(package-major-version)
-    export PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${PACKAGE_VERSION}
-
-    if [[ ${PACKAGE_BASE_URL} == *'${SOURCE_PACKAGE_NAME}'* ]]; then
-        PACKAGE_URL=${PACKAGE_BASE_URL//'${SOURCE_PACKAGE_NAME}'/${SOURCE_PACKAGE_NAME}}
-    else
-        PACKAGE_URL=${PACKAGE_BASE_URL}
-    fi
+    # Establish package url
+    PACKAGE_VERSION=$(package-major-version) \
+    derive-upstream-source-url
 
     # Set source package details
     determine-git-source-package
@@ -66,15 +61,9 @@ function build-install-git-source-package() {
 }
 
 function build-install-other-source-package() {
-    PACKAGE_VERSION=$(package-major-version)
-    export PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${PACKAGE_VERSION}
-
-    if [[ ${PACKAGE_BASE_URL} == *'${SOURCE_PACKAGE_NAME}'* || ${PACKAGE_BASE_URL} == *'${SOURCE_PACKAGE_VERSION}'* ]]; then
-        PACKAGE_URL=${PACKAGE_BASE_URL//'${SOURCE_PACKAGE_NAME}'/${SOURCE_PACKAGE_NAME}}
-        PACKAGE_URL=${PACKAGE_URL//'${SOURCE_PACKAGE_VERSION}'/${SOURCE_PACKAGE_VERSION}}
-    else
-        PACKAGE_URL=${PACKAGE_BASE_URL}
-    fi
+    # Establish package url
+    PACKAGE_VERSION=$(package-major-version) \
+    derive-upstream-source-url
 
     export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources/${PACKAGE_NAME}
     export INSTALL_ROOT=${TEMPDIR}/${INSTALL_ROOT_BASE}/${PACKAGE_NAME}-sources
