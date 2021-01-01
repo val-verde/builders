@@ -18,13 +18,15 @@ function build-install-git-source-package() {
         package-git-clone ${SOURCE_BRANCH}
 
     # Prepare source root
-    package-push-directory ${INSTALL_PREFIX}
-        ${RM} -rf .git*
-        ${RM} -rf "^.git*"
-        package-git-init
-        package-git-add -A
-        package-git-commit -m "Val verde source base commit."
-    package-pop-directory
+    if [[ ${RETAIN_SOURCE} = 'false' ]]; then
+        package-push-directory ${INSTALL_PREFIX}
+            ${RM} -rf .git*
+            ${RM} -rf "^.git*"
+            package-git-init
+            package-git-add -A
+            package-git-commit -m "Val verde source base commit."
+        package-pop-directory
+    fi
 
     # Build the source deb package
     deb-package-build
