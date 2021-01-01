@@ -47,12 +47,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross
 # windows libffi build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libffi-cross
 
-# windows glib build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-glib-cross
-
-# windows pkg-config build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pkg-config-cross
-
 # windows pcre build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pcre-cross
 
@@ -69,7 +63,7 @@ CFLAGS="\
 " \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libxml2-cross
 
-# android ncurses build
+# windows ncurses build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ncurses-cross
 
 # windows editline build
@@ -81,8 +75,17 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sqlite-cross
 # windows openssl build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openssl-cross
 
-# windows libexpat build
+# windows expat build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-expat-cross
+
+# windows gettext build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gettext-cross
+
+# windows glib build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-glib-cross
+
+# windows pkg-config build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pkg-config-cross
 
 # windows xorg-macros build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-macros-cross
@@ -104,9 +107,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libssh2-cross
 
 # windows curl build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-curl-cross
-
-# windows gettext build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gettext-cross
 
 # windows libarchive build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libarchive-cross
@@ -136,7 +136,7 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wget-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-z3-cross
 
 # windows gobject-introspection build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gobject-introspection-cross
+# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gobject-introspection-cross
 
 # windows lua build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lua-cross
@@ -145,7 +145,7 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lua-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cmake-cross
 
 # windows android patch elf build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android-patch-elf
+# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android-patch-elf-cross
 
 # windows jwasm build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-jwasm
