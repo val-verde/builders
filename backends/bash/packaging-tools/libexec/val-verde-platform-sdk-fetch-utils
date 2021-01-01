@@ -2,6 +2,8 @@
 
 set -e
 
+SOURCE_FILE=${SOURCE_FILE:-/usr/share/${VAL_VERDE_GH_TEAM}-sources.json}
+
 # Source common variables and functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
 
@@ -41,42 +43,26 @@ function determine-git-source-package() {
 }
 
 function get-source-package-metadata() {
-    if [[  ${SOURCE_TYPE} = 'git' ]]; then
-        sourceArrayIndex=0
-    elif [[  ${SOURCE_TYPE} = 'other' ]]; then
-        sourceArrayIndex=1
-    fi
-
-    SOURCE_PACKAGE_NAME=$(jq -r --arg keyvar "${SOURCE_TYPE}Sources" \
-                                --argjson srcVar $sourceArrayIndex \
-                                --argjson id $index \
-                                '.[$srcVar] | .[$keyvar] | .[$id].sourcePackageName' \
+    SOURCE_PACKAGE_NAME=$(jq -r --argjson id $index \
+                                '.[$id].sourcePackageName' \
                                 ${SOURCE_FILE})
-    SOURCE_BRANCH_IND=$(jq -r --arg keyvar "${SOURCE_TYPE}Sources" \
-                                --argjson srcVar $sourceArrayIndex \
-                                --argjson id $index \
-                                '.[$srcVar] | .[$keyvar] | .[$id].sourceBranchIndicator' \
+    SOURCE_BRANCH_IND=$(jq -r --argjson id $index \
+                              '.[$id].sourceBranchIndicator' \
+                              ${SOURCE_FILE})
+    SOURCE_PACKAGE_VERSION=$(jq -r --argjson id $index \
+                                '.[$id].sourcePackageVersion' \
                                 ${SOURCE_FILE})
-    SOURCE_PACKAGE_VERSION=$(jq -r --arg keyvar "${SOURCE_TYPE}Sources" \
-                                --argjson srcVar $sourceArrayIndex \
-                                --argjson id $index \
-                                '.[$srcVar] | .[$keyvar] | .[$id].sourcePackageVersion' \
-                                ${SOURCE_FILE})
-    SOURCE_URL=$(jq -r --arg keyvar "${SOURCE_TYPE}Sources" \
-                                --argjson srcVar $sourceArrayIndex \
-                                --argjson id $index \
-                                '.[$srcVar] | .[$keyvar] | .[$id].sourcePackageUrl' \
-                                ${SOURCE_FILE})
+    SOURCE_TYPE=$(jq -r --argjson id $index \
+                        '.[$id].sourceType' \
+                        ${SOURCE_FILE})
+    SOURCE_URL=$(jq -r --argjson id $index \
+                        '.[$id].sourcePackageUrl' \
+                        ${SOURCE_FILE})
     PACKAGE_BASE_URL=${SOURCE_URL/'${VAL_VERDE_GH_TEAM}'/${VAL_VERDE_GH_TEAM}}
 }
 
 function get-source-package-count() {
-    if [[  ${SOURCE_TYPE} = 'git' ]]; then
-        sourceArrayIndex=0
-    elif [[  ${SOURCE_TYPE} = 'other' ]]; then
-        sourceArrayIndex=1
-    fi
-    sourceCount=( $(jq -r --arg keyvar "${SOURCE_TYPE}Sources" --argjson srcVar $sourceArrayIndex '.[$srcVar] | .[$keyvar] | length' ${SOURCE_FILE}) )
+    sourceCount=$(jq -r length ${SOURCE_FILE})
 }
 
 function prepare-source-base() {
