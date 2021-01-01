@@ -49,12 +49,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross
 # android libffi build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libffi-cross
 
-# android glib build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-glib-cross
-
-# android pkg-config build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pkg-config-cross
-
 # android gnulib build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnulib-cross
 
@@ -89,8 +83,17 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sqlite-cross
 # android openssl build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openssl-cross
 
-# android libexpat build
+# android expat build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-expat-cross
+
+# android gettext build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gettext-cross
+
+# android glib build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-glib-cross
+
+# android pkg-config build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pkg-config-cross
 
 # android xorg-macros build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-macros-cross
@@ -118,9 +121,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openssh-portable-cross
 
 # android curl build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-curl-cross
-
-# android gettext build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gettext-cross
 
 # android attr build
 CFLAGS="\
@@ -208,10 +208,10 @@ _PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-python-cross
 
 # android gobject-introspection build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gobject-introspection-cross
+# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gobject-introspection-cross
 
 # android libsecret build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gobject-libsecret-cross
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libsecret-cross
 
 # android lua build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lua-cross
