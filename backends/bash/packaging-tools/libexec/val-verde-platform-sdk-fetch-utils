@@ -58,6 +58,13 @@ function get-source-package-metadata() {
     SOURCE_URL=$(jq -r --argjson id $index \
                         '.[$id].sourcePackageUrl' \
                         ${SOURCE_FILE})
+
+    if [[ ${SOURCE_TYPE} = 'git' ]]; then
+        RETAIN_SOURCE=$(jq -r --argjson id $index \
+                            '.[$id].retainSource' \
+                            ${SOURCE_FILE})
+    fi
+
     PACKAGE_BASE_URL=${SOURCE_URL/'${VAL_VERDE_GH_TEAM}'/${VAL_VERDE_GH_TEAM}}
 }
 
@@ -104,6 +111,15 @@ function query-single-source() {
     SOURCE_PACKAGE_VERSION=$(jq --arg v ${SOURCE_PACKAGE_NAME} \
                             '.[0] | .${SOURCE_TYPE}Sources | .[] | select(.sourcePackageName | test($v)) | .sourcePackageVersion' \
                             ${SOURCE_FILE})
+    SOURCE_TYPE=$(jq --arg v ${SOURCE_PACKAGE_NAME} \
+                            '.[] | select(.sourcePackageName | test($v)) | .sourceType' \
+                            ${SOURCE_FILE})
+
+    if [[ ${SOURCE_TYPE} = 'git' ]]; then
+        RETAIN_SOURCE=$(jq --arg v ${SOURCE_PACKAGE_NAME} \
+                            '.[] | select(.sourcePackageName | test($v)) | .retainSource' \
+                            ${SOURCE_FILE})
+    fi
 }
 
 function untar-tar-balls() {
