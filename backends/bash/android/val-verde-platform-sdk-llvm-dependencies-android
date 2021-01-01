@@ -107,6 +107,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-proto-cross
 # android xcb-pthread-stubs build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-pthread-stubs-cross
 
+# android cups build
+# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cups-cross
+
 # android libuv build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libuv-cross
 
@@ -218,6 +221,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lua-cross
 
 # android swig build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swig-cross
+
+# android openjdk build
+# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openjdk-cross
 
 # android z3 build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-z3-cross

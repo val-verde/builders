@@ -99,6 +99,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-proto-cross
 # windows xcb-pthread-stubs build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-pthread-stubs-cross
 
+# cups build
+# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cups-cross
+
 # windows libuv build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libuv-cross
 
@@ -131,6 +134,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gperf-cross
 
 # windows wget build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wget-cross
+
+# windows openjdk build
+# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openjdk-cross
 
 # windows z3 build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-z3-cross

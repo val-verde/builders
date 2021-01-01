@@ -343,7 +343,7 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lua-cross
 # swig build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swig-cross
 
-# java build
+# openjdk build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openjdk-cross
 
 # z3 build
