@@ -8,6 +8,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zlib-cross
 # android bzip2 build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bzip2-cross
 
+# android gzip build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gzip-cross
+
 # android lz4 build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lz4-cross
 

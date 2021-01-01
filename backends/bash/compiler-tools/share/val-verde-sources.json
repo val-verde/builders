@@ -944,6 +944,13 @@
                 "enableSubmodules": "false"
             },
             {
+                "sourcePackageName": "gzip",
+                "sourceBranchIndicator": "wget",
+                "sourcePackageVersion": "1.10",
+                "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz",
+                "enableSubmodules": "false"
+            },
+            {
                 "sourcePackageName": "libcap",
                 "sourceBranchIndicator": "wget-xz",
                 "sourcePackageVersion": "2.45",
