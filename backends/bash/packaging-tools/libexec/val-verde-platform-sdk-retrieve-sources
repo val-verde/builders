@@ -11,7 +11,6 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-utils
 
 function build-install-git-source-package() {
     # Set up paths and dirs
-    SOURCE_TYPE=git \
     prepare-source-base
 
     GIT_URL=${PACKAGE_URL} \
@@ -58,7 +57,6 @@ function build-install-other-source-package() {
 }
 
 function fetch-single-source() {
-    SOURCE_FILE=${SOURCE_FILE:-/usr/share/${VAL_VERDE_GH_TEAM}-sources.json}
     EMAIL_ID="openvalverde@gmail.com"
 
     package-push-directory /sources
@@ -77,9 +75,7 @@ function fetch-single-source() {
 }
 
 function fetch-sources() {
-    GIT_INDEX_OVERRIDE=${GIT_INDEX_OVERRIDE:-0}
-    OTHER_INDEX_OVERRIDE=${OTHER_INDEX_OVERRIDE:-0}
-    SOURCE_FILE=${SOURCE_FILE:-/usr/share/${VAL_VERDE_GH_TEAM}-sources.json}
+    SOURCE_INDEX_OVERRIDE=${SOURCE_INDEX_OVERRIDE:-0}
     EMAIL_ID="openvalverde@gmail.com"
 
     package-push-directory /sources
@@ -89,35 +85,26 @@ function fetch-sources() {
         ${ECHO} -e "    Sources File: \e[31m${SOURCE_FILE}\e[0m"
 
         # Fetch git upstream sources
-        SOURCE_TYPE=git get-source-package-count
-
         ${GIT} config \
                --global user.email ${EMAIL_ID}
 
-        for index in `seq "${GIT_INDEX_OVERRIDE}" $(($sourceCount - 1))`; do
+        get-source-package-count
+
+        for index in `seq "${SOURCE_INDEX_OVERRIDE}" $(($sourceCount - 1))`; do
             index=$index \
-            SOURCE_TYPE=git \
             get-source-package-metadata
 
             PACKAGE_VERSION=$(package-major-version) \
             derive-upstream-source-url
 
-            build-install-git-source-package
-        done
+            if [[ ${SOURCE_TYPE} = 'git' ]]; then
+                build-install-git-source-package
+            elif [[ ${SOURCE_TYPE} = 'other' ]]; then
+                build-install-other-source-package
+            fi
 
-        # Fetch other upstream sources
-        SOURCE_TYPE=other get-source-package-count
-
-        for index in `seq "${OTHER_INDEX_OVERRIDE}" $(($otherSourcesCount - 1))`; do
-            index=$index \
-            SOURCE_TYPE=other \
-            get-source-package-metadata
-
-            PACKAGE_VERSION=$(package-major-version) \
-            derive-upstream-source-url
-
-            build-install-other-source-package
-        done
+            echo "Retrieved and packaged..."${PACKAGE_NAME}
+            done
 
         ${ECHO} -e "Source Builder Invocation Completed"
         ${ECHO}
