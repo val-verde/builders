@@ -61,20 +61,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross
 # libiconv build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross
 
-# glib build
-MESON=/usr/bin/meson \
-PKG_CONFIG=/usr/bin/pkg-config \
-PYTHON=/usr/bin/python3 \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-glib-cross
-
 # libffi build
 PKG_CONFIG=/usr/bin/pkg-config \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libffi-cross
-
-# pkg-config build
-PKG_CONFIG=/usr/bin/pkg-config \
-PYTHON=/usr/bin/python3 \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pkg-config-cross
 
 # perl build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-perl-cross
@@ -116,6 +105,20 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcap-cross
 
 # libexpat build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-expat-cross
+
+# gettext build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gettext-cross
+
+# glib build
+MESON=/usr/bin/meson \
+PKG_CONFIG=/usr/bin/pkg-config \
+PYTHON=/usr/bin/python3 \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-glib-cross
+
+# pkg-config build
+PKG_CONFIG=/usr/bin/pkg-config \
+PYTHON=/usr/bin/python3 \
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pkg-config-cross
 
 # xorg-macros build
 PYTHON=/usr/bin/python3 \
@@ -243,9 +246,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openssh-portable-cross
 # curl build
 CMAKE_BINDIR=/usr/bin \
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-curl-cross
-
-# gettext build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gettext-cross
 
 # attr build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-attr-cross
