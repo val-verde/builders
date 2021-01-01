@@ -32,6 +32,26 @@ ${MAKE} \
     RANLIB=${RANLIB} \
     install
 
+mkdir -p ${INSTALL_PREFIX}/lib/pkgconfig
+echo "
+V=${SOURCE_PACKAGE_VERSION}
+R=${SOURCE_PACKAGE_VERSION}
+
+prefix=${PACKAGE_PREFIX}
+INSTALL_INC=\${prefix}/include
+INSTALL_LIB=\${prefix}/lib
+exec_prefix=\${prefix}
+libdir=\${exec_prefix}/lib
+includedir=\${prefix}/include
+
+Name: bzip2
+Description: bzip2 is a freely available, patent free (see below), high-quality data compressor.
+Version: \${R}
+Requires:
+Libs: -L\${libdir} -lbz2
+Cflags: -I\${includedir}
+" > ${INSTALL_PREFIX}/lib/pkgconfig/bzip2.pc
+
 # Build the package
 deb-package-build
 
