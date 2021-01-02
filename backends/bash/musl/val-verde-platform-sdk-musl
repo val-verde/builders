@@ -51,4 +51,4 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-node-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-npm-yarn-cross
 
 # rust build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-rust
+# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-rust-cross

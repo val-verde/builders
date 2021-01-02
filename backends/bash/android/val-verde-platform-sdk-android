@@ -119,3 +119,6 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-graphics-sdk-cross
 # android node + sdk build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-node-cross
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-npm-yarn-cross
+
+# android rust build
+# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-rust-cross
