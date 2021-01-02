@@ -2,6 +2,15 @@
     {
         "retainSource": "false",
         "sourceType": "git",
+        "sourcePackageName": "alive2",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.0.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
         "sourcePackageName": "alsa-lib",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1.2.4",
@@ -178,6 +187,15 @@
     {
         "retainSource": "false",
         "sourceType": "git",
+        "sourcePackageName": "hiredis",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.0.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
         "sourcePackageName": "icu4c",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "68.1",
@@ -198,6 +216,15 @@
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1.0.0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/egl-registry.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "klee",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2.2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
     },
     {
         "retainSource": "false",
@@ -470,6 +497,15 @@
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1.47.0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "souper",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.0.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
     },
     {
         "retainSource": "false",
@@ -838,6 +874,15 @@
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "0.9.10",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "xorg-libxshmfence",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "true"
     },
     {
         "retainSource": "false",

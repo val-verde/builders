@@ -4,12 +4,12 @@ set -e
 
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=souper
-export SOURCE_PACKAGE_VERSION=9999-git
+export SOURCE_PACKAGE_VERSION=1.0.0
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-export KLEE_SRC_DIR=${SOURCE_ROOT_BASE}/klee-9999-git
+export KLEE_SRC_DIR=${PACKAGE_SOURCES_ROOT}/klee-2.0.0
 export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/llvm-project-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
 
 # Configure the build components
