@@ -280,25 +280,25 @@ function generate-compiler-tools() {
     OPTIMIZATION_LEVEL=${OPTIMIZATION_LEVEL:-z}
     TOOL_PREFIX=${TOOL_PREFIX:-host}
 
-    create-host-tool ${AS} ASFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang-as
+    create-host-tool ${AS} ASFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-as-clang
     create-host-tool ${CC} CFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang
-    create-host-tool ${CCLD} CCLDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang-ld
+    create-host-tool ${CCLD} CCLDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang
     create-host-tool ${CPP} CPPFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang-cpp
     create-host-tool ${CXX} CXXFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang++
-    create-host-tool ${CXXLD} CCLDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang++-ld
+    create-host-tool ${CXXLD} CCLDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang++
     create-host-tool ${LD} LDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld
 
-    export AS=${GENERATED_BINDIR}/${TOOL_PREFIX}-clang-as
+    export AS=${GENERATED_BINDIR}/${TOOL_PREFIX}-as-clang
     export ASFLAGS="-O${OPTIMIZATION_LEVEL}"
     export CC=${GENERATED_BINDIR}/${TOOL_PREFIX}-clang
     export CFLAGS="-O${OPTIMIZATION_LEVEL}"
-    export CCLD=${CC}-ld
+    export CCLD=${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang
     export CCLDFLAGS="-O${LINKER_OPTIMIZATION_LEVEL}"
     export CPP=${CC}-cpp
     export CPPFLAGS="-O${OPTIMIZATION_LEVEL}"
     export CXX=${CC}++
     export CXXFLAGS="-O${OPTIMIZATION_LEVEL}"
-    export CXXLD=${CXX}-ld
+    export CXXLD=${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang++
     export CXXLDFLAGS="-O${OPTIMIZATION_LEVEL}"
     export LD=${GENERATED_BINDIR}/${TOOL_PREFIX}-ld
     export LDFLAGS="-O${LINKER_OPTIMIZATION_LEVEL}"
