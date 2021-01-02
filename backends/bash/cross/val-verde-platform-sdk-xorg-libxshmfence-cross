@@ -1,0 +1,35 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=xorg-libxshmfence
+export SOURCE_PACKAGE_VERSION=9999-git
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+# Configure the build components
+copy-source-to-staging
+
+if [ "${HOST_OS}" = "musl" ]; then
+    MEMFD_CREATE_AVAILABLE=yes
+else
+    MEMFD_CREATE_AVAILABLE=no
+fi
+
+cd ${STAGE_ROOT}
+package-configure \
+    ${STAGE_ROOT}/autogen.sh \
+    ac_cv_func_memfd_create=${MEMFD_CREATE_AVAILABLE} \
+    --disable-static \
+    --enable-shared
+
+# Build the components
+make-build
+
+# Build the package
+deb-package-build
+
+# Build the package
+deb-package-install

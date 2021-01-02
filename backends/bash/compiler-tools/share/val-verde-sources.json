@@ -744,6 +744,13 @@
                 "enableSubmodules": "true"
             },
             {
+                "sourcePackageName": "xorg-libxshmfence",
+                "sourceBranchIndicator": "default",
+                "sourcePackageVersion": "9999-git",
+                "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+                "enableSubmodules": "true"
+            },
+            {
                 "sourcePackageName": "xorg-libxtrans",
                 "sourceBranchIndicator": "default",
                 "sourcePackageVersion": "9999-git",

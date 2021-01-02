@@ -167,6 +167,9 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxrandr-cross
 # xorg-libxkbfile build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxkbfile-cross
 
+# xorg-libxshmfence build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxshmfence-cross
+
 # xorg-libxxf86vm build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxxf86vm-cross
 
