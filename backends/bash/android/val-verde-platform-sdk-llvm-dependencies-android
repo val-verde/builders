@@ -110,6 +110,66 @@ bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-proto-cross
 # android xcb-pthread-stubs build
 bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-pthread-stubs-cross
 
+# android libxau build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxau-cross
+
+# android libxcb build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-libxcb-cross
+
+# android pixman build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pixman-cross
+
+# android xorg-libpciaccess build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libpciaccess-cross
+
+# android xorg-libxtrans build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxtrans-cross
+
+# android libx11 build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libx11-cross
+
+# android libxext build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libxext-cross
+
+# android xorg-libxrender build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxrender-cross
+
+# android xorg-libxfixes build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxfixes-cross
+
+# android xorg-libxi build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxi-cross
+
+# android xorg-libice build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libice-cross
+
+# android xorg-libsm build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libsm-cross
+
+# android xorg-libxt build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxt-cross
+
+# android xorg-libxtst build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxtst-cross
+
+# android xorg-libxrandr build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxrandr-cross
+
+# android xorg-xinput build
+# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-xinput-cross
+
+# android xorg-libxkbfile build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxkbfile-cross
+
+# android xorg-libxshmfence build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxshmfence-cross
+
+# android xorg-libxxf86vm build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxxf86vm-cross
+
+# android freetype2 build
+bash ${VAL_VERDE_GH_TEAM}-platform-sdk-freetype2-cross
+
 # android cups build
 # bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cups-cross
 
