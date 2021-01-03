@@ -24,7 +24,7 @@ package-configure \
     --with-libiconv=gnu
 
 # Build the components
-make-build
+make-install
 
 # Build the package
 deb-package-build

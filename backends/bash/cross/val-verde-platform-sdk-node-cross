@@ -149,7 +149,7 @@ ${STAGE_ROOT}/configure \
     ${LIBNODE_SHARED_CMD}
 
 # Build the components
-make-build
+make-install
 
 rsync -aPx ${STAGE_ROOT}/out/Release/node \
            ${INSTALL_PREFIX}/bin

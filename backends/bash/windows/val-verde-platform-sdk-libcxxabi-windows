@@ -45,7 +45,7 @@ package-cmake \
     ${SOURCE_ROOT}
 
 # Build the components
-ninja-build
+ninja-install
 
 mkdir -p ${INSTALL_PREFIX}/include
 cp ${SOURCE_ROOT}/include/* \

@@ -45,7 +45,7 @@ package-cmake \
     ${SOURCE_ROOT}
 
 # Build the components
-ninja-build
+ninja-install
 
 SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
 DST_SDK_PLATFORM_DIR=${DST_SDK_PLATFORM_DIR:-${SDK_PLATFORM_DIR}}

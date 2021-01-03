@@ -350,22 +350,35 @@ function git-clone() {
     popd
 }
 
-function make-build() {
-    TARGETS=${TARGETS:-install}
+function tool-build() {
+    ${TOOL} -j${NUM_PROCESSORS} \
+            ${@}
+}
 
-    pushd ${STAGE_ROOT}
-    ${MAKE} -j${NUM_PROCESSORS} \
-              ${TARGETS}
-    popd
+function tool-install() {
+    ${TOOL} ${INSTALL_TARGET:-install} \
+            DESTDIR=${DESTDIR:-${INSTALL_ROOT}} \
+            ${@}
+}
+
+function make-build() {
+    TOOL=${MAKE} \
+    tool-build ${@}
+}
+
+function make-install() {
+    TOOL=${MAKE} \
+    tool-install ${@}
 }
 
 function ninja-build() {
-    TARGETS=${TARGETS:-install}
+    TOOL=${NINJA} \
+    tool-build ${@}
+}
 
-    pushd ${STAGE_ROOT}
-    ${NINJA} -j${NUM_PROCESSORS} \
-               ${TARGETS}
-    popd
+function ninja-install() {
+    TOOL=${NINJA} \
+    tool-install ${@}
 }
 
 function package-cmake-invocation() {
@@ -408,7 +421,7 @@ function package-cmake-invocation() {
         -DCMAKE_CXX_LINK_EXECUTABLE="${CXXLD} <FLAGS> <CMAKE_CXX_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>" \
         -DCMAKE_CXX_STANDARD=${CXX_STANDARD} \
         -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS}" \
-        -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
+        -DCMAKE_INSTALL_PREFIX=${PACKAGE_PREFIX} \
         -DCMAKE_LINKER=${LD} \
         -DCMAKE_MAKE_PROGRAM=${NINJA} \
         -DCMAKE_MODULE_LINKER_FLAGS="${LDFLAGS}" \
@@ -444,7 +457,7 @@ function package-configure-invocation() {
     "${@}" \
         --build=${BUILD_TRIPLE} \
         --host=${CONFIGURE_HOST_TRIPLE} \
-        --prefix=${INSTALL_PREFIX} \
+        --prefix=${PACKAGE_PREFIX} \
         ${CONFIGURE_FLAGS}
 }
 

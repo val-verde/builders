@@ -35,7 +35,7 @@ package-cmake \
     ${SOURCE_ROOT}
 
 # Build the components
-ninja-build
+ninja-install
 
 mkdir -p ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/12.0.0/lib/wasi
 mv install-staging${BUILD_PACKAGE_PREFIX}/lib/fuchsia/${CLANG_RT_LIB} \

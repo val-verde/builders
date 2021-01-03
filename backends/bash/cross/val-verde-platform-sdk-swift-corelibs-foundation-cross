@@ -35,7 +35,7 @@ package-cmake \
     ${SOURCE_ROOT}
 
 # Build the components
-ninja-build
+ninja-install
 
 SDK=${HOST_OS}
 

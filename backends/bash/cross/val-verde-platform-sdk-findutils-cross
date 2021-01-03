@@ -18,7 +18,7 @@ package-configure \
     ${STAGE_ROOT}/configure
 
 # Build the components
-make-build
+make-install
 
 # Build the package
 deb-package-build

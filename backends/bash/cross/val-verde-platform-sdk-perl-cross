@@ -33,7 +33,7 @@ ${SOURCE_ROOT}/Configure \
     -Dranlib=${RANLIB}
 
 # Build the components
-make-build
+make-install
 
 # Build the package
 deb-package-build

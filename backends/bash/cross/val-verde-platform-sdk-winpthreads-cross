@@ -23,7 +23,7 @@ package-configure \
     ${SOURCE_ROOT}/configure
 
 # Build the components
-make-build
+make-install
 
 rm -rf ${INSTALL_PREFIX}/include/pthread_signal.h \
        ${INSTALL_PREFIX}/include/pthread_time.h \

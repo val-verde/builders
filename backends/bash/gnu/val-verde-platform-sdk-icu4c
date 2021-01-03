@@ -21,10 +21,8 @@ package-configure \
     --with-library-suffix=swift
 
 # Build the components
-TARGETS=" " \
 make-build
-
-make-build
+make-install
 
 # RPATH fixups
 COMPONENTS="\

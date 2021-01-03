@@ -51,7 +51,7 @@ package-cmake \
     ${SOURCE_ROOT}
 
 # Build the components
-ninja-build
+ninja-install
 
 rsync -aPx ${STAGE_ROOT}/lib/*.dll* \
            ${INSTALL_PREFIX}/lib

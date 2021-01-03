@@ -16,7 +16,6 @@ package-cmake \
     ${SOURCE_ROOT}
 
 # Build the components
-TARGETS=" " \
 ninja-build
 
 mkdir -p ${INSTALL_PREFIX}/bin

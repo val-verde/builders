@@ -30,7 +30,7 @@ package-cmake \
 
 # Build the components
 PATH=${STAGE_ROOT_BASE}/vulkan-loader-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/loader:${PATH} \
-ninja-build
+ninja-install
 
 # Build the package
 deb-package-build

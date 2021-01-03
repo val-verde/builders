@@ -28,7 +28,7 @@ package-configure \
     "${SYMVER_CMD}"
 
 # Build the components
-make-build
+make-install
 
 # Build the package
 deb-package-build

@@ -29,7 +29,7 @@ package-cmake \
     ${SOURCE_ROOT}
 
 # Build the components
-ninja-build
+ninja-install
 
 rsync -aPx ${STAGE_ROOT}/lib/*.so* \
            ${INSTALL_PREFIX}/lib

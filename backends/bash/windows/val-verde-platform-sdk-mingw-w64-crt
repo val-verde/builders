@@ -21,7 +21,7 @@ package-configure \
     --with-default-msvcrt=ucrt
 
 # Build the components
-make-build
+make-install
 
 ln -sf libuuid.a \
        ${INSTALL_PREFIX}/lib/libwinuuid.a

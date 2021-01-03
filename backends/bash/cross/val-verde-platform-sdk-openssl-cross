@@ -42,11 +42,10 @@ ${SOURCE_ROOT}/Configure \
     ${OPENSSL_TARGET}
 
 # Build the components
-TARGETS=" " \
 make-build
 
-TARGETS="install_sw install_ssldirs" \
-make-build
+INSTALL_TARGET="install_sw install_ssldirs" \
+make-install
 
 # Build the package
 deb-package-build

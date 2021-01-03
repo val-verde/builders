@@ -21,7 +21,7 @@ package-configure \
     --with-default-win32-winnt=0x0A00
 
 # Build the components
-make-build
+make-install
 
 cp ${SOURCE_ROOT}/include/module.modulemap \
    ${INSTALL_PREFIX}/include/

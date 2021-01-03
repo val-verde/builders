@@ -22,7 +22,7 @@ package-configure \
     --without-tests
 
 # Build the components
-make-build
+make-install
 
 # Build the package
 deb-package-build

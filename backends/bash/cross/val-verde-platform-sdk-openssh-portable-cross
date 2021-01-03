@@ -40,11 +40,10 @@ package-configure \
     --with-maildir=${MAIL_DIR}
 
 # Build the components
-TARGETS=" " \
 make-build
 
-TARGETS="install-nokeys" \
-make-build
+INSTALL_TARGET=install-nokeys \
+make-install
 
 # Build the package
 deb-package-build

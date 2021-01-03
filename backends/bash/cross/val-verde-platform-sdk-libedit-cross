@@ -29,7 +29,7 @@ package-configure \
     --enable-shared
 
 # Build the components
-make-build
+make-install
 
 # RPATH fixups
 COMPONENTS="\

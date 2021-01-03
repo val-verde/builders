@@ -51,10 +51,11 @@ package-configure \
     --with-admindir=${ADMIN_DIR}
 
 # Build the components
-make-build
+make-install
 
-# Remove unnecessary dpkg var template folder.
-rm -rf ${INSTALL_PREFIX}/var
+# Move var template folder one level up from /usr.
+mv ${INSTALL_PREFIX}/var \
+   ${INSTALL_PREFIX}/../
 
 # Build the package
 deb-package-build

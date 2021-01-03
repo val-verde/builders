@@ -18,21 +18,18 @@ copy-source-to-staging
 cd ${STAGE_ROOT}
 
 # Build the components
+DESTDIR=${INSTALL_PREFIX}
 TARGETS=`echo "\
     lib=lib \
     prefix=/ \
     AR=${AR} \
     BUILD_CC=${BUILD_CC} \
     CC=${CC} \
-    DESTDIR=${INSTALL_PREFIX} \
     install \
 " | xargs`
 
-TARGETS="${TARGETS} -C ${STAGE_ROOT}/libcap" \
-make-build
-
-TARGETS="${TARGETS} -C ${STAGE_ROOT}/progs" \
-make-build
+make-install -C ${STAGE_ROOT}/libcap ${TARGETS}
+make-install -C ${STAGE_ROOT}/progs ${TARGETS}
 
 # Build the package
 deb-package-build

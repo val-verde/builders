@@ -36,7 +36,7 @@ package-cmake \
     ${SOURCE_ROOT}
 
 # Build the components
-ninja-build
+ninja-install
 
 mv ${INSTALL_PREFIX}/lib/swift/windows/*.a \
    ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}

@@ -35,7 +35,6 @@ package-cmake \
     -DLLVM_CONFIG_EXECUTABLE=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config
 
 # Build the components
-TARGETS=" " \
 ninja-build
 
 # Build the package

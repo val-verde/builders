@@ -73,7 +73,7 @@ package-cmake \
     ${STAGE_ROOT}
 
 # Build the components
-ninja-build
+ninja-install
 
 mkdir -p ${INSTALL_PREFIX}/lib/cmake
 
