@@ -3,7 +3,7 @@
 set -e
 
 # Source package build helper functions
-export PACKAGE_PREFIX=${PACKAGE_PREFIX:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot}
+export PACKAGE_USR_PREFIX=/
 export SYSTEM_NAME=Windows
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 

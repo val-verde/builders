@@ -13,8 +13,9 @@ VERSION=${VERSION:='1.0.0'}
 export BUILD_PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/sysroot/usr
 export BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}
 export HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}
-export PACKAGE_PREFIX=${PACKAGE_PREFIX:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot/usr}
+export PACKAGE_USR_PREFIX=${PACKAGE_USR_PREFIX:-/usr}
 export SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot}
+export PACKAGE_PREFIX=${PACKAGE_PREFIX:-${SYSROOT}${PACKAGE_USR_PREFIX}}
 
 export DPKG_ADMINDIR=/var/lib/dpkg
 export LD_LIBRARY_PATH=${BUILD_PACKAGE_PREFIX}/lib
@@ -443,7 +444,7 @@ function package-configure-invocation() {
     "${@}" \
         --build=${BUILD_TRIPLE} \
         --host=${CONFIGURE_HOST_TRIPLE} \
-	--prefix=${INSTALL_PREFIX} \
+        --prefix=${INSTALL_PREFIX} \
         ${CONFIGURE_FLAGS}
 }
 
