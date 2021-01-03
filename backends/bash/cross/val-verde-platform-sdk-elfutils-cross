@@ -35,12 +35,9 @@ package-configure \
     --enable-shared \
     --with-zlib=yes
 
-# Build the components
-TARGETS="-C lib install" \
-make-build
-
-TARGETS="-C libelf install" \
-make-build
+# Build the components]
+make-install -C lib
+make-install -C libelf
 
 # RPATH fixups
 COMPONENTS="\

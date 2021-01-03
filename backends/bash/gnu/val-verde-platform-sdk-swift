@@ -87,7 +87,7 @@ package-cmake-invocation \
     ${SOURCE_ROOT}
 
 # Build the components
-ninja-build
+ninja-install
 
 # RPATH fixups
 COMPONENTS="\

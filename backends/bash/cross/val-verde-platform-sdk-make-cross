@@ -32,7 +32,7 @@ package-configure \
     "${MAKE_FS_CMD}"
 
 # Build the components
-make-build
+make-install
 
 # Build the package
 deb-package-build

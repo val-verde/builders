@@ -28,16 +28,15 @@ cd ${STAGE_ROOT}
 autoreconf -i
 package-configure \
     ${STAGE_ROOT}/configure \
-    --with-curl=${PACKAGE_PREFIX} \
-    --with-expat=${PACKAGE_PREFIX} \
-    --with-openssl=${PACKAGE_PREFIX} \
     ac_cv_fread_reads_directories=true \
     ac_cv_iconv_omits_bom=true \
-    ac_cv_snprintf_returns_bogus=false
+    ac_cv_snprintf_returns_bogus=false \
+    --with-curl=${PACKAGE_PREFIX} \
+    --with-expat=${PACKAGE_PREFIX} \
+    --with-openssl=${PACKAGE_PREFIX}
 
 # Build the components
-TARGETS="NEEDS_LIBRT=${NEEDS_LIBRT} install" \
-make-build
+make-install NEEDS_LIBRT=${NEEDS_LIBRT}
 
 # Build the package
 deb-package-build

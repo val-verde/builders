@@ -27,7 +27,7 @@ package-configure \
     --with-tlib=ncurses
 
 # Build the components
-make-build
+make-install
 
 # Build the package
 deb-package-build

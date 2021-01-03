@@ -190,14 +190,14 @@ package-cmake \
     ${SOURCE_ROOT}/llvm
 
 # Build the components
-TARGETS="tools/clang/install projects/compiler-rt/install tools/lld/install tools/mlir/install" \
-ninja-build
+INSTALL_TARGET="tools/clang/install projects/compiler-rt/install tools/lld/install tools/mlir/install" \
+ninja-install
 
 NUM_PROCESSORS=`awk '/MemTotal/ { printf "%d", $2/(1024*1024*5) }' /proc/meminfo` \
-TARGETS="tools/flang/install" \
-ninja-build
+INSTALL_TARGET="tools/flang/install" \
+ninja-install
 
-ninja-build
+ninja-install
 
 rsync -aPx ${STAGE_ROOT}/bin/llvm-as* \
            ${STAGE_ROOT}/bin/llvm-dlltool* \

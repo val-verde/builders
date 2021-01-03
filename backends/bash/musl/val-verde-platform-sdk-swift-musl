@@ -100,7 +100,7 @@ package-cmake-invocation \
     ${SOURCE_ROOT}
 
 # Package the components
-ninja-build
+ninja-install
 
 sed -i 's/\/usr/\.\.\/\.\.\/\.\.\/\.\./g' \
        ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/${HOST_PROCESSOR}/glibc.modulemap

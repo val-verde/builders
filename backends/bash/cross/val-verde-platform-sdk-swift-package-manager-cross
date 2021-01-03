@@ -33,7 +33,7 @@ package-cmake \
     ${SOURCE_ROOT}
 
 # Build the components
-ninja-build
+ninja-install
 
 rsync -aPx ${STAGE_ROOT}/bin \
            ${STAGE_ROOT}/lib \

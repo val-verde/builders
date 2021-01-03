@@ -22,7 +22,7 @@ package-cmake \
     ${SOURCE_ROOT}/src
 
 # Build the components
-ninja-build
+ninja-install
 
 mv ${SOURCE_ROOT}/src/bin \
    ${SOURCE_ROOT}/src/include \

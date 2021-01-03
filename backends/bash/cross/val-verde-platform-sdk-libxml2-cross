@@ -34,7 +34,7 @@ package-configure \
     --without-python
 
 # Build the components
-make-build
+make-install
 
 # RPATH fixups
 COMPONENTS="\

@@ -25,11 +25,9 @@ package-configure \
     --includedir=${PACKAGE_PREFIX}/include
 
 # Build the components
-TARGETS=" " \
 make-build
-
-TARGETS="install install-dev install-lib" \
-make-build
+make-install install-dev \
+             install-lib
 
 # Build the package
 deb-package-build

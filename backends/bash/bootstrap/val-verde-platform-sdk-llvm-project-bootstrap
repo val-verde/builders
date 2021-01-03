@@ -171,7 +171,7 @@ package-cmake \
     ${SOURCE_ROOT}/llvm
 
 # Build the components
-ninja-build
+ninja-install
 
 rsync -aPx ${STAGE_ROOT}/bin/llvm-as* \
            ${STAGE_ROOT}/bin/llvm-dlltool* \

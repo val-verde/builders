@@ -111,7 +111,7 @@ package-cmake-invocation \
     ${SOURCE_ROOT}
 
 # Build the components
-ninja-build
+ninja-install
 
 rsync -aPx ${STAGE_ROOT}/lib/*.a \
            ${INSTALL_PREFIX}/lib/*.a \

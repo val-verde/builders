@@ -22,8 +22,8 @@ package-configure \
     --syslibdir=${INSTALL_PREFIX}/../lib
 
 # Build the components
-TARGETS="install-headers" \
-make-build
+INSTALL_TARGET=install-headers \
+make-install
 
 rm -rf ${INSTALL_PREFIX}/include/iconv.h
 

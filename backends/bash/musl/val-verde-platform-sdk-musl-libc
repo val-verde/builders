@@ -25,8 +25,8 @@ package-configure \
     --syslibdir=${INSTALL_PREFIX}/../lib
 
 # Build the components
-TARGETS="install-libs install-tools" \
-make-build
+INSTALL_TARGET="install-libs install-tools" \
+make-install
 
 mkdir -p ${INSTALL_PREFIX}/bin
 ln -sf \

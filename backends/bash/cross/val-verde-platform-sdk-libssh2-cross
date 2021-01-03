@@ -25,7 +25,7 @@ package-cmake \
     ${SOURCE_ROOT}
 
 # Build the package
-ninja-build
+ninja-install
 
 # Build the package
 deb-package-build

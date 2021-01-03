@@ -33,7 +33,6 @@ package-cmake \
     ${SOURCE_ROOT}
 
 # Build the components
-TARGETS=" " \
 ninja-build
 
 rsync -aPx ${STAGE_ROOT}/bin \

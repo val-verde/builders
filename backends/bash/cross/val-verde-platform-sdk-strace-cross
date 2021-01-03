@@ -35,7 +35,7 @@ package-configure \
     --enable-mpers=no
 
 # Build the components
-make-build
+make-install
 
 # Build the package
 deb-package-build

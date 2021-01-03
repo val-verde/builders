@@ -16,7 +16,6 @@ package-cmake \
     -DGIT_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/git
 
 # Build the components
-TARGETS=" " \
 ninja-build
 
 mkdir -p \
