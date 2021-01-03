@@ -34,6 +34,15 @@ STAGE_ROOT=${STAGE_ROOT:-${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${HOST_OS}${H
 PACKAGE_SOURCES_ROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources \
 SOURCE_ROOT=${SOURCE_ROOT:-${PACKAGE_SOURCES_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}}
 
+if [ -n ${PACKAGE_NAME} ]; then
+    echo "Builder Invocation"
+    echo "    Package Name: ${PACKAGE_NAME}"
+    echo "    Package Version: ${SOURCE_PACKAGE_VERSION}"
+    echo "    Source Root: ${SOURCE_ROOT}"
+    echo "    Stage Root: ${STAGE_ROOT}"
+    echo "    Install Prefix: ${INSTALL_PREFIX}"
+fi
+
 # pre-build cleanup
 rm -rf ${INSTALL_PREFIX}/* \
        ${STAGE_ROOT}/*
@@ -351,14 +360,28 @@ function git-clone() {
 }
 
 function tool-build() {
+    echo "Tool Invocation"
+    echo "    Tool Name: ${TOOL}"
+    echo "    Parallel Invocations: ${NUM_PROCESSORS}"
+    echo "    Log File: ${STAGE_ROOT}/builder-compile.log"
+
     ${TOOL} -j${NUM_PROCESSORS} \
-            ${@}
+            ${@} \
+            > ${STAGE_ROOT}/builder-compile.log
 }
 
 function tool-install() {
+    DESTDIR=${DESTDIR:-${INSTALL_ROOT}}
+
+    echo "Installation Invocation"
+    echo "    Tool Name: ${TOOL}"
+    echo "    Destination Directory: ${DESTDIR}"
+    echo "    Log File: ${STAGE_ROOT}/builder-installation.log"
+
     ${TOOL} ${INSTALL_TARGET:-install} \
-            DESTDIR=${DESTDIR:-${INSTALL_ROOT}} \
-            ${@}
+            DESTDIR=${DESTDIR} \
+            ${@} \
+            > ${STAGE_ROOT}/builder-installation.log
 }
 
 function make-build() {
@@ -442,7 +465,8 @@ function package-cmake-invocation() {
         -DCMAKE_SYSTEM_PROCESSOR=${HOST_PROCESSOR} \
         "${CROSSCOMPILING_CMD}" \
         "${SYSTEM_NAME_CMD}" \
-        "${@}"
+        "${@}" \
+        > ${STAGE_ROOT}/builder-invocation.log
 }
 
 function package-cmake() {
@@ -458,7 +482,8 @@ function package-configure-invocation() {
         --build=${BUILD_TRIPLE} \
         --host=${CONFIGURE_HOST_TRIPLE} \
         --prefix=${PACKAGE_PREFIX} \
-        ${CONFIGURE_FLAGS}
+        ${CONFIGURE_FLAGS} \
+        > ${STAGE_ROOT}/builder-invocation.log
 }
 
 function package-configure() {
@@ -643,7 +668,8 @@ windres = '${WINDRES}'
          -Dlibdir=${INSTALL_PREFIX}/lib \
          -Dprefix=${INSTALL_PREFIX} \
          --${MESON_BUILD_CONFIG}-file ${CONFIG_FILE} \
-         ${@}
+         ${@} \
+         > ${STAGE_ROOT}/builder-invocation.log
 }
 
 function package-python-build() {
@@ -746,7 +772,8 @@ function package-swift-build() {
         --configuration ${SWIFT_BUILD_TYPE} \
         --destination ${TEMP_FILE} \
         --enable-test-discovery \
-        ${SWIFT_BUILD_FLAGS}
+        ${SWIFT_BUILD_FLAGS} \
+        > ${STAGE_ROOT}/builder-invocation.log
 }
 
 function rpath-fixup() {
@@ -767,6 +794,6 @@ function rpath-fixup() {
 }
 
 function yarn-build() {
-    yarn
-    yarn compile
+    yarn > ${STAGE_ROOT}/builder-invocation.log
+    yarn compile > ${STAGE_ROOT}/builder-compile.log
 }
