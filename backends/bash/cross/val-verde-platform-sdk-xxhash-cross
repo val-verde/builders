@@ -17,13 +17,12 @@ copy-source-to-staging
 
 # Build the components
 cd ${STAGE_ROOT}
-${MAKE} \
+make-install \
     AR=${AR} \
     CC=${CC} \
     CFLAGS="${CFLAGS}" \
-    PREFIX=${INSTALL_PREFIX} \
-    RANLIB=${RANLIB} \
-    install
+    PREFIX=${PACKAGE_PREFIX} \
+    RANLIB=${RANLIB}
 
 # Build the package
 deb-package-build

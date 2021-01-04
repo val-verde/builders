@@ -18,10 +18,9 @@ copy-source-to-staging
 cd ${STAGE_ROOT}
 
 # Build the components
-DESTDIR=${INSTALL_PREFIX}
 TARGETS=`echo "\
     lib=lib \
-    prefix=/ \
+    prefix=${PACKAGE_PREFIX} \
     AR=${AR} \
     BUILD_CC=${BUILD_CC} \
     CC=${CC} \

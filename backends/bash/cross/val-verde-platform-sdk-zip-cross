@@ -25,11 +25,15 @@ fi
 copy-source-to-staging
 
 cd ${STAGE_ROOT}
-${MAKE} \
+make-build \
     -f ${STAGE_ROOT}/${PLATFORM}/Makefile \
-    prefix=${INSTALL_PREFIX} \
+    prefix=${PACKAGE_PREFIX} \
     CC=${CC} \
-    install
+    generic
+make-install \
+    -f ${STAGE_ROOT}/${PLATFORM}/Makefile \
+    prefix=${PACKAGE_PREFIX} \
+    CC=${CC}
 
 # Build the package
 deb-package-build

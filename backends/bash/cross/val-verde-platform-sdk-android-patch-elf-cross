@@ -19,12 +19,11 @@ copy-source-to-staging
 
 # Build the components
 cd ${STAGE_ROOT}
-${MAKE} \
+make-install \
     CC=${CC} \
     CFLAGS="${CFLAGS}" \
     DSTROOT=${INSTALL_PREFIX} \
-    OUTDIR=${STAGE_ROOT} \
-    install
+    OUTDIR=${STAGE_ROOT}
 
 # Build the package
 cd ${STAGE_ROOT}

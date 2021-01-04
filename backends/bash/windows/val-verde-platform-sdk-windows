@@ -8,10 +8,10 @@ export SYSTEM_NAME=Windows
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # windows mingw-headers build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-mingw-w64-headers
+package-invoke-builder mingw-w64-headers
 
 # windows mingw-crt build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-mingw-w64-crt
+package-invoke-builder mingw-w64-crt
 
 # windows compiler-rt build (for host)
 CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a \
@@ -20,29 +20,29 @@ CXXFLAGS="\
     -Wl,/force:unresolved \
     ${CXXFLAGS} \
 " \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt
+package-invoke-builder compiler-rt
 
 # windows libunwind build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libunwind-windows
+package-invoke-builder libunwind-windows
 
 # windows mingw-winpthreads build
 LD=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-winpthreads-cross
+package-invoke-builder winpthreads-cross
 
 # windows libcxxabi build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-windows
+package-invoke-builder libcxxabi-windows
 
 # windows libcxx build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-windows
+package-invoke-builder libcxx-windows
 
 # windows llvm dependencies
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-dependencies-windows
+package-invoke-builder llvm-dependencies-windows
 
 # windows swift tools build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-windows
+package-invoke-builder swift-tools-windows
 
 # windows swift sdk build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-sdk-windows
+package-invoke-builder swift-sdk-windows
 
 # windows graphics sdk build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-graphics-sdk-cross
+package-invoke-builder graphics-sdk-cross

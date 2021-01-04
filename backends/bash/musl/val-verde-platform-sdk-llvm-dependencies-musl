@@ -2,210 +2,212 @@
 
 set -e
 
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
 # zlib build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zlib-cross
+package-invoke-builder zlib-cross
 
 # bzip2 build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bzip2-cross
+package-invoke-builder bzip2-cross
 
 # gzip build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gzip-cross
+package-invoke-builder gzip-cross
 
 # lz4 build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lz4-cross
+package-invoke-builder lz4-cross
 
 # xxhash build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xxhash-cross
+package-invoke-builder xxhash-cross
 
 # zip build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zip-cross
+package-invoke-builder zip-cross
 
 # zstd build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zstd-cross
+package-invoke-builder zstd-cross
 
 # unzip build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-unzip-cross
+package-invoke-builder unzip-cross
 
 # autoconf build
 CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-gnu" \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-autoconf-cross
+package-invoke-builder autoconf-cross
 
 # automake build
 CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-gnu" \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-automake-cross
+package-invoke-builder automake-cross
 
 # libtool build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libtool-cross
+package-invoke-builder libtool-cross
 
 # m4 build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-m4-cross
+package-invoke-builder m4-cross
 
 # make build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-make-cross
+package-invoke-builder make-cross
 
 # ninja build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross
+package-invoke-builder ninja-cross
 
 # libiconv build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross
+package-invoke-builder libiconv-cross
 
 # libffi build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libffi-cross
+package-invoke-builder libffi-cross
 
 # gnulib build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnulib-cross
+package-invoke-builder gnulib-cross
 
 # pcre build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pcre-cross
+package-invoke-builder pcre-cross
 
 # icu build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-icu4c-cross
+package-invoke-builder icu4c-cross
 
 # xz build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xz-cross
+package-invoke-builder xz-cross
 
 # libxml2 build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libxml2-cross
+package-invoke-builder libxml2-cross
 
 # gdbm build
 CFLAGS="\
     -fcommon \
     ${CFLAGS} \
 " \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gdbm-cross
+package-invoke-builder gdbm-cross
 
 # ncurses build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ncurses-cross
+package-invoke-builder ncurses-cross
 
 # libedit build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libedit-cross
+package-invoke-builder libedit-cross
 
 # sqlite3 build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sqlite-cross
+package-invoke-builder sqlite-cross
 
 # openssl build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openssl-cross
+package-invoke-builder openssl-cross
 
 # libcap build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcap-cross
+package-invoke-builder libcap-cross
 
 # libexpat build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-expat-cross
+package-invoke-builder expat-cross
 
 # gettext build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gettext-cross
+package-invoke-builder gettext-cross
 
 # glib build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-glib-cross
+package-invoke-builder glib-cross
 
 # pkg-config build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pkg-config-cross
+package-invoke-builder pkg-config-cross
 
 # musl fts build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-musl-fts
+package-invoke-builder musl-fts
 
 # xorg-macros build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-macros-cross
+package-invoke-builder xorg-macros-cross
 
 # xorgproto build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-xorgproto-cross
+package-invoke-builder xorg-xorgproto-cross
 
 # xcb-proto build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-proto-cross
+package-invoke-builder xcb-proto-cross
 
 # xcb-pthread-stubs build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-pthread-stubs-cross
+package-invoke-builder xcb-pthread-stubs-cross
 
 # libxau build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxau-cross
+package-invoke-builder xorg-libxau-cross
 
 # libxcb build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-libxcb-cross
+package-invoke-builder xcb-libxcb-cross
 
 # pixman build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pixman-cross
+package-invoke-builder pixman-cross
 
 # xorg-libpciaccess build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libpciaccess-cross
+package-invoke-builder xorg-libpciaccess-cross
 
 # xorg-libxtrans build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxtrans-cross
+package-invoke-builder xorg-libxtrans-cross
 
 # libx11 build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libx11-cross
+package-invoke-builder libx11-cross
 
 # libxext build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libxext-cross
+package-invoke-builder libxext-cross
 
 # xorg-libxrender build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxrender-cross
+package-invoke-builder xorg-libxrender-cross
 
 # xorg-libxfixes build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxfixes-cross
+package-invoke-builder xorg-libxfixes-cross
 
 # xorg-libxi build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxi-cross
+package-invoke-builder xorg-libxi-cross
 
 # xorg-libice build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libice-cross
+package-invoke-builder xorg-libice-cross
 
 # xorg-libsm build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libsm-cross
+package-invoke-builder xorg-libsm-cross
 
 # xorg-libxt build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxt-cross
+package-invoke-builder xorg-libxt-cross
 
 # xorg-libxtst build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxtst-cross
+package-invoke-builder xorg-libxtst-cross
 
 # xorg-libxrandr build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxrandr-cross
+package-invoke-builder xorg-libxrandr-cross
 
 # xorg-xinput build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-xinput-cross
+# package-invoke-builder xorg-xinput-cross
 
 # xorg-libxkbfile build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxkbfile-cross
+package-invoke-builder xorg-libxkbfile-cross
 
 # xorg-libxshmfence build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxshmfence-cross
+package-invoke-builder xorg-libxshmfence-cross
 
 # xorg-libxxf86vm build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxxf86vm-cross
+package-invoke-builder xorg-libxxf86vm-cross
 
 # freetype2 build
-CMAKE_BINDIR=/usr/bin \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-freetype2-cross
+package-invoke-builder freetype2-cross
 
 # wayland build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wayland-cross
+package-invoke-builder wayland-cross
 
 # wayland-protocols build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wayland-protocols-cross
+package-invoke-builder wayland-protocols-cross
 
 # mesa-drm build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-mesa-drm-cross
+package-invoke-builder mesa-drm-cross
 
 # alsa-lib build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-alsa-lib-cross
+package-invoke-builder alsa-lib-cross
 
 # cups build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cups-cross
+package-invoke-builder cups-cross
 
 # libuv build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libuv-cross
+package-invoke-builder libuv-cross
 
 # libssh2 build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libssh2-cross
+package-invoke-builder libssh2-cross
 
 # ldns build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ldns-cross
+package-invoke-builder ldns-cross
 
 # openssh-portable build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openssh-portable-cross
+package-invoke-builder openssh-portable-cross
 
 # curl build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-curl-cross
+package-invoke-builder curl-cross
 
 # attr build
 CFLAGS="\
@@ -213,7 +215,7 @@ CFLAGS="\
     ${CFLAGS} \
 " \
 CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-linux" \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-attr-cross
+package-invoke-builder attr-cross
 
 # acl build
 CFLAGS="\
@@ -221,19 +223,19 @@ CFLAGS="\
     ${CFLAGS} \
 " \
 CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-linux" \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-acl-cross
+package-invoke-builder acl-cross
 
 # bash build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bash-cross
+package-invoke-builder bash-cross
 
 # util-linux build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-util-linux-cross
+package-invoke-builder util-linux-cross
 
 # libarchive build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libarchive-cross
+package-invoke-builder libarchive-cross
 
 # libmicrohttpd build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libmicrohttpd-cross
+package-invoke-builder libmicrohttpd-cross
 
 # elfutils build
 CFLAGS="\
@@ -243,88 +245,88 @@ CFLAGS="\
     -I${PACKAGE_PREFIX}/include/gnulib \
     ${CFLAGS} \
 " \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-elfutils-cross
+package-invoke-builder elfutils-cross
 
 # grep build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-grep-cross
+package-invoke-builder grep-cross
 
 # sed build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sed-cross
+package-invoke-builder sed-cross
 
 # bison build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bison-cross
+package-invoke-builder bison-cross
 
 # gawk build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gawk-cross
+package-invoke-builder gawk-cross
 
 # strace build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-strace-cross
+package-invoke-builder strace-cross
 
 # gperf build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gperf-cross
+package-invoke-builder gperf-cross
 
 # fontconfig build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-fontconfig-cross
+package-invoke-builder fontconfig-cross
 
 # tar build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-tar-cross
+package-invoke-builder tar-cross
 
 # coreutils build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-coreutils-cross
+package-invoke-builder coreutils-cross
 
 # findutils build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-findutils-cross
+package-invoke-builder findutils-cross
 
 # dpkg build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-dpkg-cross
+package-invoke-builder dpkg-cross
 
 # rsync build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-rsync-cross
+package-invoke-builder rsync-cross
 
 # systemd build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-systemd
+# package-invoke-builder systemd
 
 # wget build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wget-cross
+package-invoke-builder wget-cross
 
 # python build
 if [ "${BUILD_PROCESSOR}" = "${HOST_PROCESSOR}" ]; then
     PYTHON_FOR_BUILD=${BUILD_PACKAGE_PREFIX}/bin/python3 \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-python-cross
+    package-invoke-builder python-cross
 else
     _PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-python-cross
+    package-invoke-builder python-cross
 fi
 
 # gobject-introspection build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gobject-introspection-cross
+# package-invoke-builder gobject-introspection-cross
 
 # libsecret build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libsecret-cross
+package-invoke-builder libsecret-cross
 
 # lua build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lua-cross
+package-invoke-builder lua-cross
 
 # swig build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swig-cross
+package-invoke-builder swig-cross
 
 # openjdk build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openjdk-cross
+package-invoke-builder openjdk-cross
 
 # z3 build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-z3-cross
+package-invoke-builder z3-cross
 
 # git build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-git-cross
+package-invoke-builder git-cross
 
 # vim build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-vim-cross
+package-invoke-builder vim-cross
 
 # cmake build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cmake-cross
+package-invoke-builder cmake-cross
 
 # android patch elf
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android-patch-elf-cross
+package-invoke-builder android-patch-elf-cross
 
 # jwasm (ml64) cross compiler build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-jwasm
+package-invoke-builder jwasm

@@ -2,59 +2,38 @@
 
 set -e
 
-# builder configuration defaults
-BASE_DIRECTORY=$(echo "${PACKAGE_ROOT}" | cut -d "/" -f2)
-DEPENDS=${DEPENDS:=''}
-NUM_PROCESSORS=${NUM_PROCESSORS:-"$(($(getconf _NPROCESSORS_ONLN) + 1))"}
-TARGETS=${TARGETS:-install}
-VERSION=${VERSION:='1.0.0'}
-
-# global path variables
-export BUILD_PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/sysroot/usr
-export BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}
-export HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}
-export PACKAGE_USR_PREFIX=${PACKAGE_USR_PREFIX:-/usr}
-export SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot}
-export PACKAGE_PREFIX=${PACKAGE_PREFIX:-${SYSROOT}${PACKAGE_USR_PREFIX}}
-
-export DPKG_ADMINDIR=/var/lib/dpkg
-export LD_LIBRARY_PATH=${BUILD_PACKAGE_PREFIX}/lib
-export NODE_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/web
-export PACKAGE_ARCH=all
-export PACKAGE_CLASS=deb
-export PATH=${BUILD_PACKAGE_PREFIX}/bin:${PATH}
-export TEMPDIR=${TEMPDIR:-/tmp}
-
-# package specific variables
-PACKAGE_NAME=${PACKAGE_NAME:-${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}}
-QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-INSTALL_ROOT=${INSTALL_ROOT:-${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${QUALIFIED_PACKAGE_NAME}}
-INSTALL_PREFIX=${INSTALL_PREFIX:-${INSTALL_ROOT}${PACKAGE_PREFIX}}
-STAGE_ROOT=${STAGE_ROOT:-${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}}
-PACKAGE_SOURCES_ROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources \
-SOURCE_ROOT=${SOURCE_ROOT:-${PACKAGE_SOURCES_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}}
-
-if [ -n ${PACKAGE_NAME} ]; then
-    echo "Builder Invocation"
-    echo "    Package Name: ${PACKAGE_NAME}"
-    echo "    Package Version: ${SOURCE_PACKAGE_VERSION}"
-    echo "    Source Root: ${SOURCE_ROOT}"
-    echo "    Stage Root: ${STAGE_ROOT}"
-    echo "    Install Prefix: ${INSTALL_PREFIX}"
-fi
-
-# pre-build cleanup
-rm -rf ${INSTALL_PREFIX}/* \
-       ${STAGE_ROOT}/*
-mkdir -p ${INSTALL_PREFIX} \
-         ${STAGE_ROOT}
-
 # source deb packaging scripts
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-deb-packaging-scripts
 
+if [ "${SOURCE_PACKAGE_NAME}" != "" ]; then
+    # package specific variables
+    export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+    export PACKAGE_NAME=${PACKAGE_NAME:-${PACKAGE_BASE_NAME}-${QUALIFIED_PACKAGE_NAME}}
+    export INSTALL_ROOT=${INSTALL_ROOT:-${INSTALL_ROOT_BASE}/${QUALIFIED_PACKAGE_NAME}}
+    export INSTALL_PREFIX=${INSTALL_PREFIX:-${INSTALL_ROOT}${PACKAGE_PREFIX}}
+    export STAGE_ROOT=${STAGE_ROOT:-${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}}
+    export SOURCE_ROOT=${SOURCE_ROOT:-${PACKAGE_SOURCES_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}}
+
+    # pre-build cleanup
+    ${RM} -rf ${INSTALL_PREFIX}/* \
+              ${STAGE_ROOT}/*
+    ${MKDIR} -p ${INSTALL_PREFIX} \
+                ${STAGE_ROOT}
+
+    echo -e "    Package Configuration"
+    echo -e "        Name: \e[1;35m${SOURCE_PACKAGE_NAME}\e[0m"
+    echo -e "        Version: \e[1m${SOURCE_PACKAGE_VERSION}\e[0m"
+    echo -e "        Platform: \e[1m${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}\e[0m"
+    echo -e "        Vendor: \e[1m${PACKAGE_BASE_NAME}\e[0m"
+    echo -e "        Source Root: \e[33m${SOURCE_ROOT}\e[0m"
+    echo -e "        Stage Root: \e[33m${STAGE_ROOT}\e[0m"
+    echo -e "        Install Prefix: \e[33m${INSTALL_PREFIX}\e[0m"
+fi
+
 function copy-source-to-staging() {
-    rsync -aPx ${SOURCE_ROOT}/ \
-               ${STAGE_ROOT}
+    package-rsync -aPx ${SOURCE_ROOT}/ \
+                       ${STAGE_ROOT}
 }
 
 # create-host-tool <host_tool> <host_tool_flags> <wrapper_name>
@@ -70,7 +49,7 @@ set -e
 
 exec ${host_tool} ${!host_tool_flags} \"\${@}\"
 " > ${wrapper_name}
-    chmod +x ${wrapper_name}
+    ${CHMOD} +x ${wrapper_name}
 }
 
 function create-indirect-pkg-config() {
@@ -84,12 +63,10 @@ set -e
 
 PKG_CONFIG_PATH=\"${!host_pkg_config_path}\" exec ${PKG_CONFIG} \"\${@}\"
 " > ${wrapper_name}
-    chmod +x ${wrapper_name}
+    ${CHMOD} +x ${wrapper_name}
 }
 
 function export-compiler-environment() {
-    export BINDIR=${BINDIR:-${BUILD_PACKAGE_PREFIX}/bin}
-
     BINTOOLS_PREFIX=${BINTOOLS_PREFIX:-llvm-}
     BINTOOLS_PATH_PREFIX=${BINDIR}/${BINTOOLS_PREFIX}
     CXX_INCLUDE_DIR=${CXX_INCLUDE_DIR:-${PACKAGE_PREFIX}/include/c++/v1}
@@ -332,56 +309,45 @@ function generate-compiler-tools() {
     fi
 }
 
-function git-clone() {
-    GIT_BRANCH=$1
-    TARGET_ROOT=${TARGET_ROOT:-${SOURCE_ROOT}}
-    ENABLE_SUBMODULES=${ENABLE_SUBMODULES:-"false"}
-    
-    pushd /sources
-    
-    if [ -d "${TARGET_ROOT}" ]; then
-        rm -rf ${TARGET_ROOT}
-    fi
-
-    if [[ ${ENABLE_SUBMODULES} = "false" ]]; then
-        git clone ${GIT_URL} \
-          --branch ${GIT_BRANCH} \
-          --single-branch \
-          ${TARGET_ROOT}
-    else
-        git clone ${GIT_URL} \
-          --branch ${GIT_BRANCH} \
-          --single-branch \
-          --recurse-submodules \
-          ${TARGET_ROOT}
-    fi
-
-    popd
-}
-
 function tool-build() {
-    echo "Tool Invocation"
-    echo "    Tool Name: ${TOOL}"
-    echo "    Parallel Invocations: ${NUM_PROCESSORS}"
-    echo "    Log File: ${STAGE_ROOT}/builder-compile.log"
+    echo -e "    Tool Invocation"
+    echo -e "        Tool Name: \e[1m${TOOL}\e[0m"
+    echo -e "        Parallel Invocations: ${NUM_PROCESSORS}"
+    echo -e "        Log Files: \e[31m${STAGE_ROOT}/builder-compile.log\e[0m"
+    echo -e "                   \e[31m${STAGE_ROOT}/builder-compile-stderr.log\e[0m"
+    echo -e "        Time Started: \e[4m$(date)\e[0m"
 
     ${TOOL} -j${NUM_PROCESSORS} \
             ${@} \
-            > ${STAGE_ROOT}/builder-compile.log
+            > ${STAGE_ROOT}/builder-compile.log \
+            2> ${STAGE_ROOT}/builder-compile-stderr.log
+
+    echo -e "        Time Completed: \e[4m$(date)\e[0m"
 }
 
 function tool-install() {
     DESTDIR=${DESTDIR:-${INSTALL_ROOT}}
 
-    echo "Installation Invocation"
-    echo "    Tool Name: ${TOOL}"
-    echo "    Destination Directory: ${DESTDIR}"
-    echo "    Log File: ${STAGE_ROOT}/builder-installation.log"
+    echo -e "    Installation Invocation"
+    echo -e "        Tool Name: \e[1m${TOOL}\e[0m"
+    echo -e "        Destination Directory: ${DESTDIR}"
+    echo -e "        Log Files: \e[31m${STAGE_ROOT}/builder-installation.log\e[0m"
+    echo -e "                   \e[31m${STAGE_ROOT}/builder-installation-stderr.log\e[0m"
+    echo -e "        Time Started: \e[4m$(date)\e[0m"
+
+    if [ "${TOOL}" = "${MAKE}" ]; then
+        DESTDIR_CMD="DESTDIR=${DESTDIR}"
+    else
+        export DESTDIR=${DESTDIR}
+    fi
 
     ${TOOL} ${INSTALL_TARGET:-install} \
-            DESTDIR=${DESTDIR} \
+            ${DESTDIR_CMD} \
             ${@} \
-            > ${STAGE_ROOT}/builder-installation.log
+            > ${STAGE_ROOT}/builder-installation.log \
+            2> ${STAGE_ROOT}/builder-installation-stderr.log
+
+    echo -e "        Time Completed: \e[4m$(date)\e[0m"
 }
 
 function make-build() {
@@ -406,7 +372,6 @@ function ninja-install() {
 
 function package-cmake-invocation() {
     BUILD_TYPE=${BUILD_TYPE:-MinSizeRel}
-    CMAKE_BINDIR=${CMAKE_BINDIR:-${BINDIR}}
     COMPILER_TARGET=${COMPILER_TARGET:-${HOST_TRIPLE}}
     SYSTEM_NAME=${SYSTEM_NAME:-Linux}
 
@@ -418,7 +383,7 @@ function package-cmake-invocation() {
     AS_COMPILER_ID=${AS_COMPILER_ID:-Clang}
     CXX_STANDARD=${CXX_STANDARD:-20}
 
-    ${CMAKE_BINDIR}/cmake \
+    ${CMAKE} \
         -G Ninja \
         -DCMAKE_AR=${AR} \
         -DCMAKE_ASM_COMPILER=${AS} \
@@ -466,7 +431,8 @@ function package-cmake-invocation() {
         "${CROSSCOMPILING_CMD}" \
         "${SYSTEM_NAME_CMD}" \
         "${@}" \
-        > ${STAGE_ROOT}/builder-invocation.log
+        > ${STAGE_ROOT}/builder-invocation.log \
+        2> ${STAGE_ROOT}/builder-invocation-stderr.log
 }
 
 function package-cmake() {
@@ -483,7 +449,8 @@ function package-configure-invocation() {
         --host=${CONFIGURE_HOST_TRIPLE} \
         --prefix=${PACKAGE_PREFIX} \
         ${CONFIGURE_FLAGS} \
-        > ${STAGE_ROOT}/builder-invocation.log
+        > ${STAGE_ROOT}/builder-invocation.log \
+        2> ${STAGE_ROOT}/builder-invocation-stderr.log
 }
 
 function package-configure() {
@@ -522,11 +489,11 @@ function package-meson-build() {
 
     MESON_BUILD_CONFIG=native
     HOST_CMAKE_PREFIXES="${PACKAGE_PREFIX}/lib/cmake:${PKG_CONFIG_PATH}"
-    HOST_C_ARGS=`echo [\'${CFLAGS}\'] | sed "s/ /','/g"`
-    HOST_C_LINK_ARGS=`echo [\'${LDFLAGS}\'] | sed "s/ /','/g"`
-    HOST_CMAKE_PREFIX_PATH=`echo [\'${HOST_CMAKE_PREFIXES}\'] | sed "s/:/','/g"`
-    HOST_CPP_ARGS=`echo [\'${CXXFLAGS}\'] | sed "s/ /','/g"`
-    HOST_CPP_LINK_ARGS=`echo [\'${LDFLAGS}\'] | sed "s/ /','/g"`
+    HOST_C_ARGS=`echo [\'${CFLAGS}\'] | ${SED} "s/ /','/g"`
+    HOST_C_LINK_ARGS=`echo [\'${LDFLAGS}\'] | ${SED} "s/ /','/g"`
+    HOST_CMAKE_PREFIX_PATH=`echo [\'${HOST_CMAKE_PREFIXES}\'] | ${SED} "s/:/','/g"`
+    HOST_CPP_ARGS=`echo [\'${CXXFLAGS}\'] | ${SED} "s/ /','/g"`
+    HOST_CPP_LINK_ARGS=`echo [\'${LDFLAGS}\'] | ${SED} "s/ /','/g"`
 
     export CMAKE_PREFIX_PATH=`echo ${HOST_CMAKE_PREFIXES} | tr ':' ';'`
 
@@ -539,11 +506,11 @@ function package-meson-build() {
         BUILD_LDFLAGS="-L${BUILD_PACKAGE_PREFIX}/include"
         BUILD_PKG_CONFIG_PATH="${BUILD_PACKAGE_PREFIX}/lib/pkgconfig"
 
-        BUILD_C_ARGS=`echo [\'${BUILD_CFLAGS}\'] | sed "s/ /','/g"`
-        BUILD_C_LINK_ARGS=`echo [\'${BUILD_LDFLAGS}\'] | sed "s/ /','/g"`
-        BUILD_CMAKE_PREFIX_PATH=`echo [\'${BUILD_CMAKE_PREFIXES}\'] | sed "s/:/','/g"`
-        BUILD_CPP_ARGS=`echo [\'${BUILD_CXXFLAGS}\'] | sed "s/ /','/g"`
-        BUILD_CPP_LINK_ARGS=`echo [\'${BUILD_LDFLAGS}\'] | sed "s/ /','/g"`
+        BUILD_C_ARGS=`echo [\'${BUILD_CFLAGS}\'] | ${SED} "s/ /','/g"`
+        BUILD_C_LINK_ARGS=`echo [\'${BUILD_LDFLAGS}\'] | ${SED} "s/ /','/g"`
+        BUILD_CMAKE_PREFIX_PATH=`echo [\'${BUILD_CMAKE_PREFIXES}\'] | ${SED} "s/:/','/g"`
+        BUILD_CPP_ARGS=`echo [\'${BUILD_CXXFLAGS}\'] | ${SED} "s/ /','/g"`
+        BUILD_CPP_LINK_ARGS=`echo [\'${BUILD_LDFLAGS}\'] | ${SED} "s/ /','/g"`
 
         export CC_FOR_BUILD=${BINDIR}/clang
         export CXX_FOR_BUILD=${BINDIR}/clang++
@@ -665,11 +632,12 @@ windres = '${WINDRES}'
     ${MESON} \
          ${SOURCE_ROOT} \
          ${STAGE_ROOT} \
-         -Dlibdir=${INSTALL_PREFIX}/lib \
-         -Dprefix=${INSTALL_PREFIX} \
+         -Dlibdir=${PACKAGE_PREFIX}/lib \
+         -Dprefix=${PACKAGE_PREFIX} \
          --${MESON_BUILD_CONFIG}-file ${CONFIG_FILE} \
          ${@} \
-         > ${STAGE_ROOT}/builder-invocation.log
+         > ${STAGE_ROOT}/builder-invocation.log \
+         2> ${STAGE_ROOT}/builder-invocation-stderr.log
 }
 
 function package-python-build() {
@@ -680,10 +648,14 @@ function package-python-build() {
     generate-compiler-tools
 
     ${PYTHON} ${SETUP_PY} build -b ${STAGE_ROOT} \
-                                -j ${NUM_PROCESSORS}
+                                -j ${NUM_PROCESSORS} \
+              > ${STAGE_ROOT}/builder-invocation.log \
+              2> ${STAGE_ROOT}/builder-invocation-stderr.log
     ${PYTHON} ${SETUP_PY} install --prefix ${INSTALL_PREFIX} \
                                   --record ${INSTALLED_FILE_LIST} \
-                                  --single-version-externally-managed
+                                  --single-version-externally-managed \
+              > ${STAGE_ROOT}/builder-installation.log \
+              2> ${STAGE_ROOT}/builder-installation-stderr.log
 }
 
 function package-swift-build() {
@@ -773,7 +745,15 @@ function package-swift-build() {
         --destination ${TEMP_FILE} \
         --enable-test-discovery \
         ${SWIFT_BUILD_FLAGS} \
-        > ${STAGE_ROOT}/builder-invocation.log
+        > ${STAGE_ROOT}/builder-invocation.log \
+        2> ${STAGE_ROOT}/builder-invocation-stderr.log
+}
+
+function package-invoke-builder() {
+    echo -e "Builder Invocation Started"
+    ${BASH} ${VAL_VERDE_GH_TEAM}-platform-sdk-${@}
+    echo -e "Builder Invocation Complete"
+    echo
 }
 
 function rpath-fixup() {
@@ -794,6 +774,8 @@ function rpath-fixup() {
 }
 
 function yarn-build() {
-    yarn > ${STAGE_ROOT}/builder-invocation.log
-    yarn compile > ${STAGE_ROOT}/builder-compile.log
+    yarn > ${STAGE_ROOT}/builder-invocation.log \
+         2> ${STAGE_ROOT}/builder-invocation-stderr.log
+    yarn compile > ${STAGE_ROOT}/builder-compile.log \
+                 2> ${STAGE_ROOT}/builder-compile-stderror.log
 }

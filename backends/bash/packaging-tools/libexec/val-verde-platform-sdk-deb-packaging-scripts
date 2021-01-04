@@ -1,0 +1,81 @@
+#!/bin/bash
+
+set -e
+
+# builder configuration defaults
+BASE_DIRECTORY=${BASE_DIRECTORY:-$(echo "${PACKAGE_ROOT}" | cut -d "/" -f2)}
+DEPENDS=${DEPENDS:=''}
+TARGETS=${TARGETS:-install}
+VERSION=${VERSION:='1.0.0'}
+
+function deb-package-build() {
+    package-push-directory ${INSTALL_ROOT}
+        ${MKDIR} -p /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+        package-rsync -aPx ${BASE_DIRECTORY} /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+
+        TEMPLATE_ROOT=${TEMPLATE_ROOT} \
+        generate-control-file "${PACKAGE_NAME}"
+	package-dpkg-build /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+
+	${MV} /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}.deb ${DEB_PATH}/${PACKAGE_NAME}.deb
+        ${RM} -r /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}
+    package-pop-directory
+}
+
+function deb-package-install() {
+    package-push-directory /sources
+        package-dpkg-install ${DEB_PATH}/${PACKAGE_NAME}.deb
+    package-pop-directory
+}
+
+function deb-package-mgmt() {
+    package-push-directory /sources
+        PACKAGE_INPUT=($@)
+        PACKAGE_COUNT=$((${#PACKAGE_INPUT[@]} / 2))
+
+        for i in `seq 0 $(($PACKAGE_COUNT - 1))`; do
+            PACKAGE_NAME_INDEX=$((i * 2))
+            SYSTEM_TYPE_INDEX=$((i * 2 + 1))
+            PKG_NAME=${PACKAGE_INPUT[$PACKAGE_NAME_INDEX]}
+            SYSTEM_TYPE=${PACKAGE_INPUT[$SYSTEM_TYPE_INDEX]}
+            SYSTEM_OS=${SYSTEM_TYPE}_OS
+            SYSTEM_OS_API=${SYSTEM_TYPE}_OS_API_LEVEL
+            SYSTEM_ARCH=${SYSTEM_TYPE}_ARCH
+            PKG_SUFFIX=${!SYSTEM_OS}${!SYSTEM_OS_API}-${!SYSTEM_ARCH}
+            PKG_PREFIX=${PACKAGE_BASE_NAME}-${PKG_NAME}
+            PACKAGE_FILE_NAME=${PKG_PREFIX}-${PKG_SUFFIX}
+            DEB_NAME=${DEB_PATH}/${PACKAGE_FILE_NAME}.deb
+            QUALIFIED_FILE_NAME="${QUALIFIED_FILE_NAME} ${PACKAGE_FILE_NAME}"
+            QUALIFIED_DEB="${QUALIFIED_DEB} ${DEB_NAME}"
+        done
+
+        if [[ ${PACKAGE_ACTION} = 'UNINSTALL' ]]; then
+            package-dpkg-remove --force-depends ${QUALIFIED_FILE_NAME}
+        elif [[ ${PACKAGE_ACTION} = 'INSTALL' ]]; then
+            package-dpkg-install ${QUALIFIED_DEB}
+        fi
+    package-pop-directory
+}
+
+function generate-control-file() {
+    TEMPLATE_ROOT=${TEMPLATE_ROOT:-/usr/share/${VAL_VERDE_GH_TEAM}}
+
+    # Template definition
+    package-push-directory /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+        ${MKDIR} DEBIAN
+        echo 10 > DEBIAN/compat
+        ${SED} "s|DEPENDS|${DEPENDS}|g; \
+                s|PACKAGE_NAME|${PACKAGE_NAME}|g; \
+                s|PACKAGE_BASE_NAME|${PACKAGE_BASE_NAME}|g; \
+                s|SOURCE_PACKAGE_VERSION|${SOURCE_PACKAGE_VERSION}|g; \
+                s|SYSTEM_ARCH|${PACKAGE_ARCH}|g; \
+                s|VERSION|${VERSION}|g" \
+                ${TEMPLATE_ROOT}/control.in > DEBIAN/control
+        ${SED} "s|PACKAGE_NAME|${PACKAGE_NAME}|g" \
+                ${TEMPLATE_ROOT}/copyright.in > DEBIAN/copyright
+        ${SED} "s|CURRENT_DATE|`date`|g; \
+                s|PACKAGE_NAME|${PACKAGE_NAME}|g; \
+                s|SOURCE_PACKAGE_VERSION|${SOURCE_PACKAGE_VERSION}|g" \
+                ${TEMPLATE_ROOT}/changelog.in > DEBIAN/changelog
+    package-pop-directory
+}

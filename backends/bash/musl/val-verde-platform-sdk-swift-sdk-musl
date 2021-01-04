@@ -12,7 +12,7 @@ PACKAGES_TO_MANAGE=( 'swift-corelibs-foundation'     'BUILD' \
 deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 
 # musl libdispatch build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-libdispatch-cross
+package-invoke-builder swift-corelibs-libdispatch-cross
 
 # musl foundation build
 SWIFTCFLAGS="\
@@ -20,36 +20,36 @@ SWIFTCFLAGS="\
     -DNO_BACKTRACE \
     ${SWIFTCFLAGS} \
 " \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-foundation-cross
+package-invoke-builder swift-corelibs-foundation-cross
 
 # musl xctest build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-xctest-cross
+package-invoke-builder swift-corelibs-xctest-cross
 
 # musl llbuild build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild-cross
+package-invoke-builder swift-llbuild-cross
 
 # musl swift tools support core build
 SWIFTCFLAGS="\
     -DUSE_MUSL_LIBC \
     ${SWIFTCFLAGS} \
 " \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-support-core-cross
+package-invoke-builder swift-tools-support-core-cross
 
 # musl yams build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-yams-cross
+package-invoke-builder yams-cross
 
 # musl swift argument parser build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-argument-parser-cross
+package-invoke-builder swift-argument-parser-cross
 
 # musl swift driver build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-driver-cross
+package-invoke-builder swift-driver-cross
 
 # musl swift package manager build
 SWIFTCFLAGS="\
     -DUSE_MUSL_LIBC \
     ${SWIFTCFLAGS} \
 " \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-package-manager-cross
+package-invoke-builder swift-package-manager-cross
 
 # reinstall swiftpm for build and host
 PACKAGE_ACTION=INSTALL
@@ -74,26 +74,26 @@ PACKAGES_TO_MANAGE=( 'swift-argument-parser'         'BUILD' \
 deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 
 # musl swift-syntax build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-syntax-cross
+package-invoke-builder swift-syntax-cross
 
 # musl swift-format build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-format-cross
+package-invoke-builder swift-format-cross
 
 # musl swift-doc build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-doc-cross
+package-invoke-builder swift-doc-cross
 
 # musl sourcekit-lsp build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sourcekit-lsp-cross
+# package-invoke-builder sourcekit-lsp-cross
 
 # musl baikonur build
 SWIFT_BUILD_FLAGS="\
     -Xlinker -licuucswift \
     ${SWIFT_BUILD_FLAGS} \
 " \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-baikonur
+package-invoke-builder baikonur
 
 # musl pythonkit build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pythonkit-cross
+package-invoke-builder pythonkit-cross
 
 # musl swift tensorflows apis build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tensorflow-apis
+# package-invoke-builder swift-tensorflow-apis
