@@ -2,23 +2,27 @@
 
 set -e
 
-source /sources/compiler-tools/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-deb-packaging-scripts
+export BINDIR=/usr/bin
+source /sources/packaging-tools/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
+source /sources/packaging-tools/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-deb-packaging-scripts
 
 export SOURCE_PACKAGE_NAME=sources-builder
 export SOURCE_PACKAGE_VERSION=9999
 export INSTALL_ROOT=/tmp/org.${VAL_VERDE_GH_TEAM}/scripts
+export STAGE_ROOT=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}
-export PACKAGE_ARCH=all
 
-mkdir -p ${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM}
+${MKDIR} -p \
+         ${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM} \
+	 ${STAGE_ROOT}
 
 # Install builder sources
-rsync -aPx \
-      /sources/compiler-tools/* \
-      ${INSTALL_ROOT}/usr/
-rsync -aPx \
-      /sources/deb-templates/* \
-      ${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM}/
+package-rsync -aPx \
+              /sources/packaging-tools/* \
+              ${INSTALL_ROOT}/usr/
+package-rsync -aPx \
+              /sources/deb-templates/* \
+              ${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM}/
 
 # Package debs
 BASE_DIRECTORY=${INSTALL_ROOT}/usr \

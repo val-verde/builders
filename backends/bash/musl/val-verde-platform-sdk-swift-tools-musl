@@ -3,14 +3,14 @@
 set -e
 
 # llvm build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project-musl
+package-invoke-builder llvm-project-musl
 
 # cmark build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-cmark
+package-invoke-builder swift-cmark
 
 # swift build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-musl
+package-invoke-builder swift-musl
 
 # lldb build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-lldb-musl
+package-invoke-builder swift-lldb-musl
 

@@ -1,0 +1,164 @@
+#!/bin/bash
+
+set -e
+
+# builder configuration defaults
+BASE_DIRECTORY=$(echo "${PACKAGE_ROOT}" | cut -d "/" -f2)
+DEPENDS=${DEPENDS:=''}
+NUM_PROCESSORS=${NUM_PROCESSORS:-"$(($(getconf _NPROCESSORS_ONLN) + 1))"}
+TARGETS=${TARGETS:-install}
+VERSION=${VERSION:='1.0.0'}
+
+# global path variables
+export PACKAGE_PLATFORM_SDKROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk
+export PACKAGE_SOURCES_ROOT=${PACKAGE_PLATFORM_SDKROOT}/sources
+export PACKAGE_USR_PREFIX=${PACKAGE_USR_PREFIX:-/usr}
+
+# global package configuration variables
+export PACKAGE_ARCH=all
+export PACKAGE_CLASS=deb
+
+# 'build' configuration
+export BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}
+export BUILD_4_TRIPLE=${BUILD_PROCESSOR}-${BUILD_ENV:-unknown}-${BUILD_KERNEL}-${BUILD_OS}
+export BUILD_PACKAGE_PREFIX=${PACKAGE_PLATFORM_SDKROOT}/${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/sysroot/usr
+
+# 'build' tools
+export BINDIR=${BINDIR:-${BUILD_PACKAGE_PREFIX}/bin}
+export COREUTILS_BINDIR=${COREUTILS_BINDIR:-${BINDIR}}
+export APT=${APT:-/usr/bin/apt}
+export BASH=${BASH:-${BINDIR}/bash}
+export CHMOD=${CHMOD:-${COREUTILS_BINDIR}/chmod}
+export CP=${CP:-${COREUTILS_BINDIR}/cp}
+export DPKG=${DPKG:-${BINDIR}/dpkg}
+export ECHO=${ECHO:-${COREUTILS_BINDIR}/echo}
+export GIT=${GIT:-${BINDIR}/git}
+export INSTALL=${INSTALL:-${COREUTILS_BINDIR}/install}
+export LN=${LN:-${COREUTILS_BINDIR}/ln}
+export LS=${LS:-${COREUTILS_BINDIR}/ls}
+export MKDIR=${MKDIR:-${COREUTILS_BINDIR}/mkdir}
+export MKTEMP=${MKTEMP:-${COREUTILS_BINDIR}/mktemp}
+export MV=${MV:-${COREUTILS_BINDIR}/mv}
+export RM=${RM:-"${COREUTILS_BINDIR}/rm -f"}
+export RMDIR=${RMDIR:-${COREUTILS_BINDIR}/rmdir}
+export RSYNC=${RSYNC:-${BINDIR}/rsync}
+export SED=${SED:-${BINDIR}/sed}
+export TAR=${TAR:-${BINDIR}/tar}
+export TEE=${TEE:-${COREUTILS_BINDIR}/tee}
+export TR=${TR:-${COREUTILS_BINDIR}/tr}
+export UNAME=${UNAME:-${BINDIR}/uname}
+export UNZIP=${UNZIP:-${BINDIR}/unzip}
+export WGET=${WGET:-${BINDIR}/wget}
+export ZIP=${ZIP:-${BINDIR}/zip}
+
+# 'build' paths
+export DPKG_ADMINDIR=/var/lib/dpkg
+export LD_LIBRARY_PATH=${BUILD_PACKAGE_PREFIX}/lib
+export NODE_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/web
+export PATH=${BUILD_PACKAGE_PREFIX}/bin:${PATH}
+export TEMPDIR=${TEMPDIR:-/tmp}
+
+# 'host' configuration
+export HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}
+export HOST_4_TRIPLE=${HOST_PROCESSOR}-${HOST_ENV:-unknown}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}
+export INSTALL_ROOT_BASE=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}
+export PACKAGE_PLATFORM_SYSROOT=${PACKAGE_PLATFORM_SDKROOT}/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot
+export PACKAGE_PREFIX=${PACKAGE_PREFIX:-${PACKAGE_PLATFORM_SYSROOT}${PACKAGE_USR_PREFIX}}
+export SYSROOT=${SYSROOT:-${PACKAGE_PLATFORM_SYSROOT}}
+
+function package-apt-install() {
+    package-apt-tool install -y "${@}"
+}
+
+function package-apt-remove() {
+    package-apt-tool remove -y "${@}"
+    package-apt-tool autoremove -y
+    package-apt-tool autoclean -y
+}
+
+function package-apt-tool() {
+    ${APT} ${@} > /dev/null
+}
+
+function package-dpkg-build() {
+    package-dpkg-tool build "${@}"
+}
+
+function package-dpkg-install() {
+    package-dpkg-tool install "${@}"
+}
+
+function package-dpkg-remove() {
+    package-dpkg-tool remove "${@}"
+}
+
+function package-dpkg-tool() {
+    ${DPKG} --${@}  > ${STAGE_ROOT}/builder-dpkg-${1}.log
+}
+
+function package-git-add() {
+    package-git-tool add "${@}"
+}
+
+function package-git-clone() {
+    GIT_BRANCH=$1
+    TARGET_ROOT=${TARGET_ROOT:-${SOURCE_ROOT}}
+    ENABLE_SUBMODULES=${ENABLE_SUBMODULES:-"false"}
+
+    package-push-directory /sources
+        if [ -d "${TARGET_ROOT}" ]; then
+            ${RM} -rf ${TARGET_ROOT}
+        fi
+
+        if [[ ${ENABLE_SUBMODULES} = "false" ]]; then
+            package-git-tool clone ${GIT_URL} \
+                             --branch ${GIT_BRANCH} \
+                             --single-branch \
+                             ${TARGET_ROOT}
+        else
+            package-git-tool clone ${GIT_URL} \
+                             --branch ${GIT_BRANCH} \
+                             --recurse-submodules \
+                             --single-branch \
+                             ${TARGET_ROOT}
+        fi
+    package-pop-directory
+}
+
+function package-git-commit() {
+    package-git-tool commit "${@}"
+}
+
+function package-git-init() {
+    package-git-tool init "${@}"
+}
+
+function package-git-submodule() {
+    package-git-tool init "${@}"
+}
+
+function package-git-tool() {
+    ${GIT} "${@}" \
+           > ${STAGE_ROOT}/builder-git-${1}.log \
+           2> ${STAGE_ROOT}/builder-git-${1}-stderr.log
+}
+
+function package-push-directory() {
+    pushd ${@} > /dev/null
+}
+
+function package-pop-directory() {
+    popd ${@} > /dev/null
+}
+
+function package-rsync() {
+    ${RSYNC} ${@} > ${STAGE_ROOT}/builder-rsync.log
+}
+
+function package-tar() {
+    ${TAR} ${@} > ${STAGE_ROOT}/builder-untar.log
+}
+
+function package-wget() {
+    ${WGET} ${@} 2> ${STAGE_ROOT}/builder-wget.log
+}

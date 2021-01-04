@@ -19,7 +19,7 @@ if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
 fi
 
 cd ${STAGE_ROOT}
-${MAKE} \
+make-build \
     -C ${SOURCE_ROOT} \
     ARCH=${ARCH} \
     HOSTCC=${CC} \

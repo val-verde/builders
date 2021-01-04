@@ -2,191 +2,194 @@
 
 set -e
 
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
 # android zlib build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zlib-cross
+package-invoke-builder zlib-cross
 
 # android bzip2 build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bzip2-cross
+package-invoke-builder bzip2-cross
 
 # android gzip build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gzip-cross
+package-invoke-builder gzip-cross
 
 # android lz4 build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lz4-cross
+package-invoke-builder lz4-cross
 
 # android xxhash build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xxhash-cross
+package-invoke-builder xxhash-cross
 
 # android zip build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zip-cross
+package-invoke-builder zip-cross
 
 # android zstd build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zstd-cross
+package-invoke-builder zstd-cross
 
 # android unzip build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-unzip-cross
+package-invoke-builder unzip-cross
 
 # android autoconf build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-autoconf-cross
+package-invoke-builder autoconf-cross
 
 # android automake build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-automake-cross
+package-invoke-builder automake-cross
 
 # android make build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-make-cross
+package-invoke-builder make-cross
 
 # android ninja build
 if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross
+    package-invoke-builder ninja-cross
 fi
 
 # android libtool build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libtool-cross
+package-invoke-builder libtool-cross
 
 # android m4 build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-m4-cross
+# package-invoke-builder m4-cross
 
 # android libiconv build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross
+package-invoke-builder libiconv-cross
 
 # android libffi build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libffi-cross
+package-invoke-builder libffi-cross
 
 # android gnulib build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnulib-cross
+package-invoke-builder gnulib-cross
 
 # android pcre build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pcre-cross
+package-invoke-builder pcre-cross
 
 # android icu build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-icu4c-cross
+package-invoke-builder icu4c-cross
 
 # android xz build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xz-cross
+package-invoke-builder xz-cross
 
 # android libxml2 build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libxml2-cross
+package-invoke-builder libxml2-cross
 
 # android gdbm build
 CFLAGS="\
     -fcommon \
     ${CFLAGS} \
 " \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gdbm-cross
+package-invoke-builder gdbm-cross
 
 # android ncurses build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ncurses-cross
+package-invoke-builder ncurses-cross
 
 # android libedit build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libedit-cross
+package-invoke-builder libedit-cross
 
 # android sqlite3 build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sqlite-cross
+package-invoke-builder sqlite-cross
 
 # android openssl build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openssl-cross
+package-invoke-builder openssl-cross
 
 # android expat build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-expat-cross
+package-invoke-builder expat-cross
 
 # android gettext build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gettext-cross
+package-invoke-builder gettext-cross
 
 # android glib build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-glib-cross
+package-invoke-builder glib-cross
 
 # android pkg-config build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pkg-config-cross
+package-invoke-builder pkg-config-cross
 
 # android xorg-macros build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-macros-cross
+package-invoke-builder xorg-macros-cross
 
 # android xorgproto build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-xorgproto-cross
+package-invoke-builder xorg-xorgproto-cross
 
 # android xcb-proto build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-proto-cross
+package-invoke-builder xcb-proto-cross
 
 # android xcb-pthread-stubs build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-pthread-stubs-cross
+package-invoke-builder xcb-pthread-stubs-cross
 
 # android libxau build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxau-cross
+package-invoke-builder xorg-libxau-cross
 
 # android libxcb build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-libxcb-cross
+package-invoke-builder xcb-libxcb-cross
 
 # android pixman build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pixman-cross
+package-invoke-builder pixman-cross
 
 # android xorg-libpciaccess build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libpciaccess-cross
+package-invoke-builder xorg-libpciaccess-cross
 
 # android xorg-libxtrans build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxtrans-cross
+package-invoke-builder xorg-libxtrans-cross
 
 # android libx11 build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libx11-cross
+package-invoke-builder libx11-cross
 
 # android libxext build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libxext-cross
+package-invoke-builder libxext-cross
 
 # android xorg-libxrender build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxrender-cross
+package-invoke-builder xorg-libxrender-cross
 
 # android xorg-libxfixes build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxfixes-cross
+package-invoke-builder xorg-libxfixes-cross
 
 # android xorg-libxi build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxi-cross
+package-invoke-builder xorg-libxi-cross
 
 # android xorg-libice build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libice-cross
+package-invoke-builder xorg-libice-cross
 
 # android xorg-libsm build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libsm-cross
+package-invoke-builder xorg-libsm-cross
 
 # android xorg-libxt build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxt-cross
+package-invoke-builder xorg-libxt-cross
 
 # android xorg-libxtst build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxtst-cross
+package-invoke-builder xorg-libxtst-cross
 
 # android xorg-libxrandr build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxrandr-cross
+package-invoke-builder xorg-libxrandr-cross
 
 # android xorg-xinput build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-xinput-cross
+# package-invoke-builder xorg-xinput-cross
 
 # android xorg-libxkbfile build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxkbfile-cross
+package-invoke-builder xorg-libxkbfile-cross
 
 # android xorg-libxshmfence build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxshmfence-cross
+package-invoke-builder xorg-libxshmfence-cross
 
 # android xorg-libxxf86vm build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-libxxf86vm-cross
+package-invoke-builder xorg-libxxf86vm-cross
 
 # android freetype2 build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-freetype2-cross
+package-invoke-builder freetype2-cross
 
 # android cups build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cups-cross
+# package-invoke-builder cups-cross
 
 # android libuv build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libuv-cross
+package-invoke-builder libuv-cross
 
 # android libssh2 build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libssh2-cross
+package-invoke-builder libssh2-cross
 
 # android ldns build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ldns-cross
+package-invoke-builder ldns-cross
 
 # android openssh-portable build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openssh-portable-cross
+package-invoke-builder openssh-portable-cross
 
 # android curl build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-curl-cross
+package-invoke-builder curl-cross
 
 # android attr build
 CFLAGS="\
@@ -194,7 +197,7 @@ CFLAGS="\
     -D__THROW= \
     ${CFLAGS} \
 " \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-attr-cross
+package-invoke-builder attr-cross
 
 # android acl build
 CFLAGS="\
@@ -202,106 +205,106 @@ CFLAGS="\
     -D__THROW= \
     ${CFLAGS} \
 " \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-acl-cross
+package-invoke-builder acl-cross
 
 # android bash build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bash-cross
+package-invoke-builder bash-cross
 
 # android util-linux build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-util-linux-cross
+package-invoke-builder util-linux-cross
 
 # android libarchive build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libarchive-cross
+package-invoke-builder libarchive-cross
 
 # android libmicrohttpd build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libmicrohttpd-cross
+package-invoke-builder libmicrohttpd-cross
 
 # android elfutils build
 CFLAGS="\
     -lintl \
     ${CFLAGS} \
 " \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-elfutils-cross
+package-invoke-builder elfutils-cross
 
 # android grep build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-grep-cross
+package-invoke-builder grep-cross
 
 # android sed build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sed-cross
+package-invoke-builder sed-cross
 
 # android bison build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bison-cross
+package-invoke-builder bison-cross
 
 # android gawk build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gawk-cross
+package-invoke-builder gawk-cross
 
 # android strace build
 if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-strace-cross
+    package-invoke-builder strace-cross
 else
     CFLAGS="\
         -Dfputs_unlocked=fputs \
         ${CFLAGS} \
     " \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-strace-cross
+    package-invoke-builder strace-cross
 fi
 
 # android gperf build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gperf-cross
+package-invoke-builder gperf-cross
 
 # android tar build
 if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-tar-cross
+    package-invoke-builder tar-cross
 fi
 
 # android coreutils build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-coreutils-cross
+package-invoke-builder coreutils-cross
 
 # android findutils build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-findutils-cross
+package-invoke-builder findutils-cross
 
 # android dpkg build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-dpkg-cross
+package-invoke-builder dpkg-cross
 
 # android rsync build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-rsync-cross
+package-invoke-builder rsync-cross
 
 # android wget build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wget-cross
+package-invoke-builder wget-cross
 
 # android python build
 _PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-python-cross
+package-invoke-builder python-cross
 
 # android gobject-introspection build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gobject-introspection-cross
+# package-invoke-builder gobject-introspection-cross
 
 # android libsecret build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libsecret-cross
+package-invoke-builder libsecret-cross
 
 # android lua build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lua-cross
+package-invoke-builder lua-cross
 
 # android swig build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swig-cross
+package-invoke-builder swig-cross
 
 # android openjdk build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openjdk-cross
+# package-invoke-builder openjdk-cross
 
 # android z3 build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-z3-cross
+package-invoke-builder z3-cross
 
 # android git build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-git-cross
+package-invoke-builder git-cross
 
 # android vim build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-vim-cross
+package-invoke-builder vim-cross
 
 # android cmake build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cmake-cross
+package-invoke-builder cmake-cross
 
 # android patch elf
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android-patch-elf-cross
+package-invoke-builder android-patch-elf-cross
 
 # android jwasm (ml64) cross compiler build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-jwasm
+package-invoke-builder jwasm

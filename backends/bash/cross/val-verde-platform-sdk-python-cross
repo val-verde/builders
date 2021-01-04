@@ -59,7 +59,7 @@ ${SOURCE_ROOT}/configure \
     --build=${BUILD_TRIPLE} \
     --host=${CONFIGURE_HOST_TRIPLE:-${HOST_TRIPLE}} \
     --enable-shared \
-    --prefix=${INSTALL_PREFIX} \
+    --prefix=${PACKAGE_PREFIX} \
     --with-ensurepip=yes \
     --with-openssl=${PACKAGE_PREFIX} \
     --with-system-expat \

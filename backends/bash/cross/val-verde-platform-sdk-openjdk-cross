@@ -44,7 +44,7 @@ ${SOURCE_ROOT}/configure \
     --disable-static-build \
     --disable-warnings-as-errors \
     --openjdk-target=${HOST_TRIPLE} \
-    --prefix=${INSTALL_PREFIX} \
+    --prefix=${PACKAGE_PREFIX} \
     --with-boot-jdk=${BUILD_PACKAGE_PREFIX} \
     --with-extra-cflags="-O${OPTIMIZATION_LEVEL}" \
     --with-extra-cxxflags="-O${OPTIMIZATION_LEVEL}" \
@@ -55,9 +55,12 @@ ${SOURCE_ROOT}/configure \
     --with-toolchain-type=clang
 
 # Build the components
+DESTDIR=${INSTALL_ROOT} \
 ${BUILD_PACKAGE_PREFIX}/bin/make \
     JOBS=${NUM_PROCESSORS} \
-    install
+    install \
+    > ${STAGE_ROOT}/builder-compile.log \
+    2> ${STAGE_ROOT}/builder-compile-stderr.log
 
 # Build the package
 deb-package-build

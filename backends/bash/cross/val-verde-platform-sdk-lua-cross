@@ -37,7 +37,7 @@ MYLDFLAGS=`echo ${MYLDFLAGS} | xargs`
 MYLIBS=`echo ${MYLIBS} | xargs`
 
 cd ${STAGE_ROOT}
-${MAKE} \
+make-build \
     AR="${AR} ${ARFLAGS}" \
     CC="${CC}" \
     CFLAGS="${CFLAGS}" \

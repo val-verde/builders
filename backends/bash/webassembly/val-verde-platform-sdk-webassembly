@@ -8,7 +8,7 @@ export SYSTEM_NAME=Fuchsia
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # webassembly libc
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wasi-libc
+package-invoke-builder wasi-libc
 
 # webassembly compiler-rt (bootstrap)
 CFLAGS="\
@@ -23,13 +23,13 @@ CXXFLAGS="\
     -Wl,--no-entry \
     ${CXXFLAGS} \
 " \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt-wasi
+package-invoke-builder compiler-rt-wasi
 
 # webassembly libcxxabi
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-wasi
+package-invoke-builder libcxxabi-wasi
 
 # webassembly libcxx
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-wasi
+package-invoke-builder libcxx-wasi
 
 # webassembly compiler-rt (rebuild with c++)
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt-wasi
+package-invoke-builder compiler-rt-wasi

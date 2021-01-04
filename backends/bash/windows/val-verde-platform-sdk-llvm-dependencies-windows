@@ -2,156 +2,159 @@
 
 set -e
 
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
 # windows zlib build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zlib-cross
+package-invoke-builder zlib-cross
 
 # windows bzip2 build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bzip2-cross
+package-invoke-builder bzip2-cross
 
 # windows lz4 build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lz4-cross
+package-invoke-builder lz4-cross
 
 # windows xxhash build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xxhash-cross
+# package-invoke-builder xxhash-cross
 
 # windows zip build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zip-cross
+# package-invoke-builder zip-cross
 
 # windows zstd build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-zstd-cross
+package-invoke-builder zstd-cross
 
 # windows unzip build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-unzip-cross
+# package-invoke-builder unzip-cross
 
 # windows autoconf build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-autoconf-cross
+package-invoke-builder autoconf-cross
 
 # windows automake build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-automake-cross
+package-invoke-builder automake-cross
 
 # windows libtool build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libtool-cross
+package-invoke-builder libtool-cross
 
 # windows m4 build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-m4-cross
+package-invoke-builder m4-cross
 
 # windows make build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-make-cross
+package-invoke-builder make-cross
 
 # windows ninja build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ninja-cross
+package-invoke-builder ninja-cross
 
 # windows libiconv build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libiconv-cross
+package-invoke-builder libiconv-cross
 
 # windows libffi build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libffi-cross
+package-invoke-builder libffi-cross
 
 # windows pcre build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pcre-cross
+package-invoke-builder pcre-cross
 
 # windows icu build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-icu4c-cross
+package-invoke-builder icu4c-cross
 
 # windows xz build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xz-cross
+package-invoke-builder xz-cross
 
 # windows libxml2 build
 CFLAGS="\
     -fuse-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
     ${CFLAGS} \
 " \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libxml2-cross
+package-invoke-builder libxml2-cross
 
 # windows ncurses build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-ncurses-cross
+package-invoke-builder ncurses-cross
 
 # windows editline build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wineditline-cross
+package-invoke-builder wineditline-cross
 
 # windows sqlite3 build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sqlite-cross
+package-invoke-builder sqlite-cross
 
 # windows openssl build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openssl-cross
+package-invoke-builder openssl-cross
 
 # windows expat build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-expat-cross
+package-invoke-builder expat-cross
 
 # windows gettext build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gettext-cross
+package-invoke-builder gettext-cross
 
 # windows glib build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-glib-cross
+package-invoke-builder glib-cross
 
 # windows pkg-config build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-pkg-config-cross
+package-invoke-builder pkg-config-cross
 
 # windows xorg-macros build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-macros-cross
+package-invoke-builder xorg-macros-cross
 
 # windows xorgproto build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xorg-xorgproto-cross
+package-invoke-builder xorg-xorgproto-cross
 
 # windows xcb-proto build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-proto-cross
+package-invoke-builder xcb-proto-cross
 
 # windows xcb-pthread-stubs build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-xcb-pthread-stubs-cross
+package-invoke-builder xcb-pthread-stubs-cross
 
 # cups build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cups-cross
+# package-invoke-builder cups-cross
 
 # windows libuv build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libuv-cross
+package-invoke-builder libuv-cross
 
 # windows libssh2 build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libssh2-cross
+package-invoke-builder libssh2-cross
 
 # windows curl build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-curl-cross
+package-invoke-builder curl-cross
 
 # windows libarchive build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libarchive-cross
+package-invoke-builder libarchive-cross
 
 # windows libmicrohttpd build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libmicrohttpd-cross
+package-invoke-builder libmicrohttpd-cross
 
 # windows grep build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-grep-cross
+package-invoke-builder grep-cross
 
 # windows sed build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sed-cross
+# package-invoke-builder sed-cross
 
 # windows bison build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-bison-cross
+package-invoke-builder bison-cross
 
 # windows gperf build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gperf-cross
+package-invoke-builder gperf-cross
 
 # windows findutils build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-findutils-cross
+# package-invoke-builder findutils-cross
 
 # windows wget build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-wget-cross
+package-invoke-builder wget-cross
 
 # windows openjdk build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openjdk-cross
+# package-invoke-builder openjdk-cross
 
 # windows z3 build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-z3-cross
+package-invoke-builder z3-cross
 
 # windows gobject-introspection build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gobject-introspection-cross
+# package-invoke-builder gobject-introspection-cross
 
 # windows lua build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-lua-cross
+package-invoke-builder lua-cross
 
 # windows cmake build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-cmake-cross
+package-invoke-builder cmake-cross
 
 # windows android patch elf build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android-patch-elf-cross
+# package-invoke-builder android-patch-elf-cross
 
 # windows jwasm build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-jwasm
+package-invoke-builder jwasm

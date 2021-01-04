@@ -37,7 +37,7 @@ fi
 
 ${SOURCE_ROOT}/Configure \
     --openssldir=${OPENSSL_DIR} \
-    --prefix=${INSTALL_PREFIX} \
+    --prefix=${PACKAGE_PREFIX} \
     "${OPENSSL_DEFINES}" \
     ${OPENSSL_TARGET}
 

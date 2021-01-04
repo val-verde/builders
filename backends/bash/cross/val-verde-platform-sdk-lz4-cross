@@ -23,15 +23,14 @@ else
 fi
 
 cd ${STAGE_ROOT}
-${MAKE} \
+make-install \
     AR=${AR} \
     CC=${CC} \
     CFLAGS="${CFLAGS}" \
-    PREFIX=${INSTALL_PREFIX} \
+    PREFIX=${PACKAGE_PREFIX} \
     RANLIB=${RANLIB} \
     TARGET_OS=${TARGET_OS} \
-    WINDRES=${WINDRES} \
-    install
+    WINDRES=${WINDRES}
 
 # Build the package
 deb-package-build

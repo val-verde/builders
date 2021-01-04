@@ -29,7 +29,7 @@ package-meson-build \
     -Dllvm=enabled \
     -Dopencl-native=false \
     -Dplatforms="wayland" \
-    -Dprefix=${INSTALL_PREFIX} \
+    -Dprefix=${PACKAGE_PREFIX} \
     -Dosmesa=true \
     -Dshared-llvm=enabled \
     -Dshared-swr=true \

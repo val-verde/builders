@@ -6,10 +6,10 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # kernel headers builds
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-kernel-headers-cross
+package-invoke-builder kernel-headers-cross
 
 # musl headers build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-musl-headers
+package-invoke-builder musl-headers
 
 # compiler-rt build
 if [ "${BUILD_PROCESSOR}" != ${HOST_PROCESSOR} ]; then
@@ -18,37 +18,37 @@ if [ "${BUILD_PROCESSOR}" != ${HOST_PROCESSOR} ]; then
         -Dprintf\\\(...\\\)= \
         ${CXXFLAGS} \
     " \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt-musl
+    package-invoke-builder compiler-rt-musl
 fi
 
 # musl libc build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-musl-libc
+package-invoke-builder musl-libc
 
 # libunwind build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libunwind-cross
+package-invoke-builder libunwind-cross
 
 # libcxxabi build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-cross
+package-invoke-builder libcxxabi-cross
 
 # libcxx build
 ENABLE_MUSL_LIBC=TRUE \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-cross
+package-invoke-builder libcxx-cross
 
 # llvm dependencies
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-dependencies-musl
+package-invoke-builder llvm-dependencies-musl
 
 # swift tools build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-musl
+package-invoke-builder swift-tools-musl
 
 # swift sdk build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-sdk-musl
+package-invoke-builder swift-sdk-musl
 
 # graphics sdk build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-graphics-sdk-cross
+# package-invoke-builder graphics-sdk-cross
 
 # node + sdk build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-node-cross
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-npm-yarn-cross
+package-invoke-builder node-cross
+package-invoke-builder npm-yarn-cross
 
 # rust build
-# bash ${VAL_VERDE_GH_TEAM}-platform-sdk-rust-cross
+# package-invoke-builder rust-cross

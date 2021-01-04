@@ -3,53 +3,44 @@
 set -e
 
 # Source package build helper functions
+export BINDIR=/usr/bin
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
-mkdir -p ${BUILD_PACKAGE_PREFIX}
-rsync -aPx \
-      /usr/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-* \
-      ${BUILD_PACKAGE_PREFIX}/bin/
-chmod +x ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang \
-         ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang++ \
-         ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-gcc-mingw32 \
-         ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-ml64 \
-         ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
-         ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-rc \
-         ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc
+${MKDIR} -p ${BUILD_PACKAGE_PREFIX}
+package-rsync -aPx \
+              /usr/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-* \
+              ${BUILD_PACKAGE_PREFIX}/bin/
+${CHMOD} +x ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang \
+            ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang++ \
+            ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-gcc-mingw32 \
+            ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-ml64 \
+            ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
+            ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-rc \
+            ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc
 
-# java bootstrap build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-openjdk-bootstrap
+# openjdk bootstrap build
+package-invoke-builder openjdk-bootstrap
 
 # libunwind bootstrap build
-BINDIR=/usr/bin \
 LLVM_NATIVE_STAGE_ROOT=/usr \
-NINJA=/usr/bin/ninja \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libunwind-cross
+package-invoke-builder libunwind-cross
 
 # libcxxabi bootstrap build
-BINDIR=/usr/bin \
 LLVM_NATIVE_STAGE_ROOT=/usr \
-NINJA=/usr/bin/ninja \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxxabi-cross
+package-invoke-builder libcxxabi-cross
 
 # libcxx bootstrap build
-BINDIR=/usr/bin \
 LLVM_NATIVE_STAGE_ROOT=/usr \
-NINJA=/usr/bin/ninja \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-libcxx-cross
+package-invoke-builder libcxx-cross
 
 # llvm bootstrap build
-NINJA=/usr/bin/ninja \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project-bootstrap
+package-invoke-builder llvm-project-bootstrap
 
 # remove host compiler and libraries as it is superceded by bootstrapped clang
-apt remove -y clang \
-              clang-10 \
-              libc++-dev \
-              libc++1 \
-              libunwind-dev \
-              lld \
-              lld-10 \
-              llvm \
-              llvm-10
-apt autoremove -y
+package-apt-remove \
+    clang \
+    libc++-dev \
+    libc++1 \
+    libunwind-dev \
+    lld \
+    llvm

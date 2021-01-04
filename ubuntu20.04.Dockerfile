@@ -33,10 +33,10 @@ ENV ANDROID_NDK_VERSION=r22 \
 RUN mkdir -p ${DEB_PATH}
 
 # platform sdk tool wrapper scripts and templates
-COPY backends/bash/compiler-tools \
-     /sources/compiler-tools/
 COPY backends/bash/deb-templates \
      /sources/deb-templates/
+COPY backends/bash/packaging-tools \
+     /sources/packaging-tools/
 
 # upstream source package build
 FROM BASE AS SOURCES_BUILDER
@@ -56,6 +56,10 @@ FROM SOURCES_BUILDER AS GNU_BOOTSTRAP_BUILDER
 ENV OPTIMIZATION_LEVEL=3
 
 # platform sdk bootstrap package build scripts
+COPY backends/bash/compiler-tools/bin/* \
+     /usr/bin/
+COPY backends/bash/compiler-tools/libexec/* \
+     /usr/libexec/
 COPY backends/bash/bootstrap \
      /sources/
 

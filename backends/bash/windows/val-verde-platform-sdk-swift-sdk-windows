@@ -15,22 +15,22 @@ PACKAGE_ACTION=UNINSTALL \
 deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 
 # windows libdispatch build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-libdispatch-windows
+package-invoke-builder swift-corelibs-libdispatch-windows
 
 # windows foundation build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-foundation-windows
+package-invoke-builder swift-corelibs-foundation-windows
 
 # windows xctest build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-corelibs-xctest-windows
+package-invoke-builder swift-corelibs-xctest-windows
 
 # windows llbuild build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-llbuild-windows
+package-invoke-builder swift-llbuild-windows
 
 # windows swift-tools-support-core build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-tools-support-core-windows
+package-invoke-builder swift-tools-support-core-windows
 
 # windows yams build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-yams-windows
+package-invoke-builder yams-windows
 
 # windows swift-argument-parser build
 CFLAGS="\
@@ -47,7 +47,7 @@ SWIFTCFLAGS="\
     -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
     ${SWIFTCFLAGS} \
 " \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-argument-parser-cross
+package-invoke-builder swift-argument-parser-cross
 
 # windows swift-driver build
 CFLAGS="\
@@ -64,7 +64,7 @@ SWIFTCFLAGS="\
     -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
     ${SWIFTCFLAGS} \
 " \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-driver-cross
+package-invoke-builder swift-driver-cross
 
 # windows swiftpm build
 CFLAGS="\
@@ -81,7 +81,7 @@ SWIFTCFLAGS="\
     -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
     ${SWIFTCFLAGS} \
 " \
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-package-manager-cross
+package-invoke-builder swift-package-manager-cross
 
 # reinstall swiftpm for build and host
 PACKAGES_TO_MANAGE=( 'swift-argument-parser'         'BUILD' \
@@ -107,13 +107,13 @@ PACKAGE_ACTION=INSTALL \
 deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 
 # windows swift-syntax build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-syntax-cross
+package-invoke-builder swift-syntax-cross
 
 # windows swift-format build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-format-cross
+package-invoke-builder swift-format-cross
 
 # windows swift-doc build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-doc-cross
+package-invoke-builder swift-doc-cross
 
 # windows sourcekit-lsp build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sourcekit-lsp-windows
+package-invoke-builder sourcekit-lsp-windows

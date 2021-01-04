@@ -3,13 +3,13 @@
 set -e
 
 # windows llvm build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-llvm-project-windows
+package-invoke-builder llvm-project-windows
 
 # windows cmark build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-cmark-cross
+package-invoke-builder swift-cmark-cross
 
 # windows swift build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-windows
+package-invoke-builder swift-windows
 
 # windows lldb build
-bash ${VAL_VERDE_GH_TEAM}-platform-sdk-swift-lldb-windows
+package-invoke-builder swift-lldb-windows
