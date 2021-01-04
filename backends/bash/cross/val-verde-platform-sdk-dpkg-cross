@@ -53,10 +53,6 @@ package-configure \
 # Build the components
 make-install
 
-# Move var template folder one level up from /usr.
-${MV} ${INSTALL_PREFIX}/var \
-      ${INSTALL_PREFIX}/../
-
 # Build the package
 deb-package-build
 
