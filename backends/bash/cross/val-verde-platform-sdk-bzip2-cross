@@ -31,8 +31,8 @@ make-install \
     PREFIX=${PACKAGE_PREFIX} \
     RANLIB=${RANLIB}
 
-mkdir -p ${INSTALL_PREFIX}/lib/pkgconfig
-echo "
+${MKDIR} -p ${INSTALL_PREFIX}/lib/pkgconfig
+${ECHO} "
 V=${SOURCE_PACKAGE_VERSION}
 R=${SOURCE_PACKAGE_VERSION}
 

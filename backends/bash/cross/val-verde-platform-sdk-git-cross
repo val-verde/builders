@@ -25,7 +25,7 @@ fi
 copy-source-to-staging
 
 cd ${STAGE_ROOT}
-autoreconf -i
+package-autoreconf -fi
 package-configure \
     ${STAGE_ROOT}/configure \
     ac_cv_fread_reads_directories=true \

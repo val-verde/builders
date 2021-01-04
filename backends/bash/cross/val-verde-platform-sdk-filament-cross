@@ -21,8 +21,9 @@ BUILD_TYPE=${BUILD_TYPE:-MinSizeRel}
 copy-source-to-staging
 
 if [ "${BUILD_TRIPLE}" != ${HOST_TRIPLE} ]; then
-    rsync -aPx ${BUILD_PACKAGE_PREFIX}/lib/cmake/${SOURCE_PACKAGE_NAME}.cmake \
-               ${STAGE_ROOT}/ImportExecutables-${BUILD_TYPE}.cmake
+    ${RSYNC} -aPx \
+             ${BUILD_PACKAGE_PREFIX}/lib/cmake/${SOURCE_PACKAGE_NAME}.cmake \
+             ${STAGE_ROOT}/ImportExecutables-${BUILD_TYPE}.cmake
 fi
 
 if [ "${HOST_OS}" = "android" ]; then
@@ -75,11 +76,12 @@ package-cmake \
 # Build the components
 ninja-install
 
-mkdir -p ${INSTALL_PREFIX}/lib/cmake
+${MKDIR} -p ${INSTALL_PREFIX}/lib/cmake
 
 if [ "${BUILD_TRIPLE}" == ${HOST_TRIPLE} ]; then
-    rsync -aPx ${STAGE_ROOT}/ImportExecutables-${BUILD_TYPE}.cmake \
-               ${INSTALL_PREFIX}/lib/cmake/${SOURCE_PACKAGE_NAME}.cmake
+    ${RSYNC} -aPx \
+             ${STAGE_ROOT}/ImportExecutables-${BUILD_TYPE}.cmake \
+             ${INSTALL_PREFIX}/lib/cmake/${SOURCE_PACKAGE_NAME}.cmake
 fi
 
 # Build the package

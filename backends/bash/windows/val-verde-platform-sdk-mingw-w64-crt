@@ -23,8 +23,9 @@ package-configure \
 # Build the components
 make-install
 
-ln -sf libuuid.a \
-       ${INSTALL_PREFIX}/lib/libwinuuid.a
+${LN} -sf \
+      libuuid.a \
+      ${INSTALL_PREFIX}/lib/libwinuuid.a
 
 # Build the package
 deb-package-build

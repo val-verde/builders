@@ -32,9 +32,9 @@ MYLIBS="\
     -lm \
 "
 
-MYCFLAGS=`echo ${MYCFLAGS} | xargs`
-MYLDFLAGS=`echo ${MYLDFLAGS} | xargs`
-MYLIBS=`echo ${MYLIBS} | xargs`
+MYCFLAGS=`${ECHO} ${MYCFLAGS} | ${XARGS}`
+MYLDFLAGS=`${ECHO} ${MYLDFLAGS} | ${XARGS}`
+MYLIBS=`${ECHO} ${MYLIBS} | ${XARGS}`
 
 cd ${STAGE_ROOT}
 make-build \
@@ -46,9 +46,10 @@ make-build \
     MYLIBS="${MYLIBS}" \
     RANLIB="${RANLIB}"
 
-rsync -aPx ${STAGE_ROOT}/*.h \
-           ${INSTALL_PREFIX}/include/
-echo "
+${RSYNC} -aPx \
+         ${STAGE_ROOT}/*.h \
+         ${INSTALL_PREFIX}/include/
+${ECHO} "
 #pragma once
 
 extern \"C\" {
@@ -58,11 +59,12 @@ extern \"C\" {
 }
 " > ${INSTALL_PREFIX}/include/lua.hpp
 
-rsync -aPx liblua.a \
-           ${INSTALL_PREFIX}/lib/
+${RSYNC} -aPx \
+         liblua.a \
+         ${INSTALL_PREFIX}/lib/
 
-mkdir -p ${INSTALL_PREFIX}/lib/pkgconfig
-echo "
+${MKDIR} -p ${INSTALL_PREFIX}/lib/pkgconfig
+${ECHO} "
 V=git
 R=git
 

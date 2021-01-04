@@ -13,10 +13,10 @@ function fetch-sources() {
     EMAIL_ID="openvalverde@gmail.com"
 
     package-push-directory /sources
-        echo -e "Source Builder Invocation Started"
-        echo -e "    Vendor: \e[1m${PACKAGE_BASE_NAME}\e[0m"
-        echo -e "    Email: \e[4m${EMAIL_ID}\e[0m"
-        echo -e "    Sources File: \e[31m${SOURCE_FILE}\e[0m"
+        ${ECHO} -e "Source Builder Invocation Started"
+        ${ECHO} -e "    Vendor: \e[1m${PACKAGE_BASE_NAME}\e[0m"
+        ${ECHO} -e "    Email: \e[4m${EMAIL_ID}\e[0m"
+        ${ECHO} -e "    Sources File: \e[31m${SOURCE_FILE}\e[0m"
 
         gitSourcesCount=( $(jq '.[0] | .gitSources | length' ${SOURCE_FILE}) )
         otherSourcesCount=( $(jq '.[1] | .otherSources | length' ${SOURCE_FILE}) )
@@ -67,13 +67,13 @@ function fetch-sources() {
             export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX}
             export STAGE_ROOT=${STAGE_ROOT_BASE}/${PACKAGE_NAME}
 
-            echo
-            echo -e "    Source Builder Started"
-            echo -e "        Name: \e[1;35m${SOURCE_PACKAGE_NAME}\e[0m"
-            echo -e "        Version: \e[32m${SOURCE_PACKAGE_VERSION}\e[0m"
-            echo -e "        URL: \e[31m${PACKAGE_URL}\e[0m"
-            echo -e "        Stage Root: \e[33m${STAGE_ROOT}\e[0m"
-            echo -e "        Install Prefix: \e[33m${PACKAGE_PREFIX}\e[0m"
+            ${ECHO}
+            ${ECHO} -e "    Source Builder Started"
+            ${ECHO} -e "        Name: \e[1;35m${SOURCE_PACKAGE_NAME}\e[0m"
+            ${ECHO} -e "        Version: \e[32m${SOURCE_PACKAGE_VERSION}\e[0m"
+            ${ECHO} -e "        URL: \e[31m${PACKAGE_URL}\e[0m"
+            ${ECHO} -e "        Stage Root: \e[33m${STAGE_ROOT}\e[0m"
+            ${ECHO} -e "        Install Prefix: \e[33m${PACKAGE_PREFIX}\e[0m"
 
             # Prepare stage root (for logs) and install directory for source package
             ${MKDIR} -p \
@@ -108,7 +108,7 @@ function fetch-sources() {
 
             # Clean up
             ${RM} -rf ${INSTALL_ROOT}
-            echo -e "    Source Builder Completed"
+            ${ECHO} -e "    Source Builder Completed"
         done
 
         for index in `seq "${OTHER_INDEX_OVERRIDE}" $(($otherSourcesCount - 1))`; do
@@ -133,13 +133,13 @@ function fetch-sources() {
             export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX}
             export STAGE_ROOT=${STAGE_ROOT_BASE}/${PACKAGE_NAME}
 
-            echo
-            echo -e "    Source Builder Started"
-            echo -e "        Name: \e[35m${SOURCE_PACKAGE_NAME}\e[0m"
-            echo -e "        Version: \e[32m${SOURCE_PACKAGE_VERSION}\e[0m"
-            echo -e "        URL: \e[31m${PACKAGE_URL}\e[0m"
-            echo -e "        Stage Root: \e[33m${STAGE_ROOT}\e[0m"
-            echo -e "        Install Prefix: \e[33m${PACKAGE_PREFIX}\e[0m"
+            ${ECHO}
+            ${ECHO} -e "    Source Builder Started"
+            ${ECHO} -e "        Name: \e[35m${SOURCE_PACKAGE_NAME}\e[0m"
+            ${ECHO} -e "        Version: \e[32m${SOURCE_PACKAGE_VERSION}\e[0m"
+            ${ECHO} -e "        URL: \e[31m${PACKAGE_URL}\e[0m"
+            ${ECHO} -e "        Stage Root: \e[33m${STAGE_ROOT}\e[0m"
+            ${ECHO} -e "        Install Prefix: \e[33m${PACKAGE_PREFIX}\e[0m"
 
             # Prepare stage root (for logs) and install directory for source package
             ${MKDIR} -p \
@@ -183,10 +183,10 @@ function fetch-sources() {
 
             # Clean up
             ${RM} -rf ${INSTALL_ROOT}
-            echo -e "    Source Builder Completed"
+            ${ECHO} -e "    Source Builder Completed"
         done
 
-        echo -e "Source Builder Invocation Completed"
-	echo
+        ${ECHO} -e "Source Builder Invocation Completed"
+        ${ECHO}
     package-pop-directory
 }

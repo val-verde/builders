@@ -27,7 +27,7 @@ USE_NEWPM=${USE_NEWPM:-TRUE}
 # Configure the build components
 cd ${STAGE_ROOT}
 
-SWIFT_SDK_ARCH=`echo ${HOST_PROCESSOR} | tr - _`
+SWIFT_SDK_ARCH=`${ECHO} ${HOST_PROCESSOR} | ${TR} - _`
 
 CXX_STANDARD=17 \
 package-cmake-invocation \
@@ -102,11 +102,11 @@ package-cmake-invocation \
 # Package the components
 ninja-install
 
-sed -i 's/\/usr/\.\.\/\.\.\/\.\.\/\.\./g' \
+${SED} -i 's/\/usr/\.\.\/\.\.\/\.\.\/\.\./g' \
        ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/${HOST_PROCESSOR}/glibc.modulemap
 
-mv ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/*.swift* \
-   ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/${HOST_PROCESSOR}/
+${MV} ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/*.swift* \
+      ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/${HOST_PROCESSOR}/
 
 # RPATH fixups
 COMPONENTS="\

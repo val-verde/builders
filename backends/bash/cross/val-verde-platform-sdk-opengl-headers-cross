@@ -11,9 +11,10 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # Configure the build components
 cd ${STAGE_ROOT}
-mkdir -p ${INSTALL_PREFIX}/include
-rsync -aPx ${SOURCE_ROOT}/api/GL \
-           ${INSTALL_PREFIX}/include/
+${MKDIR} -p ${INSTALL_PREFIX}/include
+${RSYNC} -aPx \
+         ${SOURCE_ROOT}/api/GL \
+         ${INSTALL_PREFIX}/include/
 
 # Build the package
 deb-package-build

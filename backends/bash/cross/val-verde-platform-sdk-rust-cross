@@ -26,8 +26,9 @@ export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/llvm-
 # Configure the build components
 cd ${STAGE_ROOT}
 
-rsync -aPx ${SOURCE_ROOT}/${VAL_VERDE_GH_TEAM}-config-cross.toml.in \
-           ${STAGE_ROOT}/config.toml
+${RSYNC} -aPx \
+         ${SOURCE_ROOT}/${VAL_VERDE_GH_TEAM}-config-cross.toml.in \
+         ${STAGE_ROOT}/config.toml
 
 BINDIR=${BUILD_PACKAGE_PREFIX}/bin
 
@@ -44,20 +45,20 @@ else
 fi
 
 BUILD_CC=${BINDIR}/clang
-BUILD_CFLAGS=`echo "\
+BUILD_CFLAGS=`${ECHO} "\
     -I${BUILD_PACKAGE_PREFIX}/include \
     ${BUILD_CFLAGS} \
-" | xargs`
+" | ${XARGS}`
 BUILD_CXX=${BINDIR}/clang++
-BUILD_CXXFLAGS=`echo "\
+BUILD_CXXFLAGS=`${ECHO} "\
     -I${BUILD_PACKAGE_PREFIX}/include \
     ${BUILD_CXXFLAGS} \
-" | xargs`
+" | ${XARGS}`
 BUILD_LD=${SOURCE_ROOT}/host-ld-clang \
-BUILD_LDFLAGS=`echo "\
+BUILD_LDFLAGS=`${ECHO} "\
     -L${BUILD_PACKAGE_PREFIX}/lib \
     ${BUILD_LDFLAGS} \
-" | xargs`
+" | ${XARGS}`
 CARGO=${BINDIR}/cargo
 FILECHECK=${LLVM_NATIVE_STAGE_ROOT}/bin/FileCheck
 LD=${CCLD}

@@ -18,8 +18,8 @@ package-cmake \
 # Build the components
 ninja-install
 
-mv ${INSTALL_PREFIX}/share/pkgconfig \
-   ${INSTALL_PREFIX}/lib/pkgconfig
+${MV} ${INSTALL_PREFIX}/share/pkgconfig \
+      ${INSTALL_PREFIX}/lib/pkgconfig
 
 # Build the package
 deb-package-build

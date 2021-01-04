@@ -30,26 +30,26 @@ COMMON_CFLAGS="\
 "
 
 export _PYTHON_PROJECT_BASE=${STAGE_ROOT}
-export CFLAGS=`echo "\
+export CFLAGS=`${ECHO} "\
     ${COMMON_CFLAGS} \
     ${CFLAGS} \
-" | xargs`
-export CPPFLAGS=`echo "\
+" | ${XARGS}`
+export CPPFLAGS=`${ECHO} "\
     ${COMMON_CFLAGS} \
     ${CPPFLAGS} \
-" | xargs`
-export CXXFLAGS=`echo "\
+" | ${XARGS}`
+export CXXFLAGS=`${ECHO} "\
     ${COMMON_CFLAGS} \
     ${CXXFLAGS} \
-" | xargs`
-export LDFLAGS=`echo "\
+" | ${XARGS}`
+export LDFLAGS=`${ECHO} "\
     --sysroot=${SYSROOT} \
     ${LDFLAGS} \
-" | xargs`
-export OPENSSL_LIBS=`echo "\
+" | ${XARGS}`
+export OPENSSL_LIBS=`${ECHO} "\
     -lcrypto \
     -lssl \
-" | xargs`
+" | ${XARGS}`
 
 cd ${STAGE_ROOT}
 ${SOURCE_ROOT}/configure \
@@ -68,12 +68,12 @@ ${SOURCE_ROOT}/configure \
 # Build the components
 make-install
 
-ln -sf \
-   pip3 \
-   ${INSTALL_PREFIX}/bin/pip
-ln -sf \
-   python3 \
-   ${INSTALL_PREFIX}/bin/python
+${LN} -sf \
+      pip3 \
+      ${INSTALL_PREFIX}/bin/pip
+${LN} -sf \
+      python3 \
+      ${INSTALL_PREFIX}/bin/python
 
 # Build the package
 deb-package-build

@@ -54,11 +54,11 @@ package-cmake \
 # Build the components
 ninja-install
 
-mv ${INSTALL_PREFIX}/lib \
-   ${INSTALL_PREFIX}/${HOST_PROCESSOR}-${HOST_OS}
-mkdir -p ${INSTALL_PREFIX}/lib
-mv ${INSTALL_PREFIX}/${HOST_PROCESSOR}-${HOST_OS} \
-   ${INSTALL_PREFIX}/lib
+${MV} ${INSTALL_PREFIX}/lib \
+      ${INSTALL_PREFIX}/${HOST_PROCESSOR}-${HOST_OS}
+${MKDIR} -p ${INSTALL_PREFIX}/lib
+${MV} ${INSTALL_PREFIX}/${HOST_PROCESSOR}-${HOST_OS} \
+      ${INSTALL_PREFIX}/lib
 
 # Build the package
 deb-package-build

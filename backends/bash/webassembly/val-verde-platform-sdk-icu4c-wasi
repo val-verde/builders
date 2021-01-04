@@ -12,18 +12,18 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # Configure the build components
 cd ${STAGE_ROOT}
-CFLAGS=`echo "\
+CFLAGS=`${ECHO} "\
     -D_WASI_EMULATED_SIGNAL \
     ${CFLAGS} \
-" | xargs` \
-CXXFLAGS=`echo "\
+" | ${XARGS}` \
+CXXFLAGS=`${ECHO} "\
     -D_WASI_EMULATED_SIGNAL \
     ${CXXFLAGS} \
-" | xargs` \
-LDFLAGS=`echo "\
+" | ${XARGS}` \
+LDFLAGS=`${ECHO} "\
     -lwasi-emulated-signal \
     ${LDFLAGS} \
-" | xargs` \
+" | ${XARGS}` \
 CONFIGURE_HOST_TRIPLE=i686-unknown-gnu \
 ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     ${SOURCE_ROOT}/source/configure \

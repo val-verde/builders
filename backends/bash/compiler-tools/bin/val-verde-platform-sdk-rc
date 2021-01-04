@@ -17,12 +17,12 @@ for ((i=0; i<"${#args[@]}"; ++i)); do
         i=$((i+1))
         ;;
     -D)
-        DEFINE=`echo ${args[i+1]} | xargs`
+        DEFINE=`${ECHO} ${args[i+1]} | ${XARGS}`
         OTHER_FLAGS="${OTHER_FLAGS} -D${DEFINE}"
         i=$((i+1))
         ;;
     -I)
-        INCLUDE=`echo ${args[i+1]} | xargs`
+        INCLUDE=`${ECHO} ${args[i+1]} | ${XARGS}`
         OTHER_FLAGS="${OTHER_FLAGS} -I${INCLUDE}"
         i=$((i+1))
         ;;
@@ -34,7 +34,7 @@ for ((i=0; i<"${#args[@]}"; ++i)); do
         IN_FILE=${args[i]}
         ;;
     -*)
-        OTHER=`echo ${args[i]} | xargs`
+        OTHER=`${ECHO} ${args[i]} | ${XARGS}`
         OTHER_FLAGS="${OTHER_FLAGS} ${OTHER}"
         ;;
     *)
@@ -50,17 +50,17 @@ ${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-gcc-mingw32 \
     ${OTHER_FLAGS} \
     ${IN_FILE} \
     -o ${TEMP_FILE}
- tr -cd '\11\12\15\40-\176' \
-    < ${TEMP_FILE} \
-    > ${TEMP_FILE}.rc
+ ${TR} -cd '\11\12\15\40-\176' \
+       < ${TEMP_FILE} \
+       > ${TEMP_FILE}.rc
 
 WORKING_DIR=`dirname ${IN_FILE}`
-pushd ${WORKING_DIR}
+package-push-directory ${WORKING_DIR}
 ${BINDIR}/llvm-rc \
     ${TEMP_FILE}.rc \
     -fo ${TEMP_FILE}.res
-popd
+package-pop-directory
 
-rm ${TEMP_FILE}.rc
-mv ${TEMP_FILE}.res \
-   ${OUT_FILE}
+${RM} ${TEMP_FILE}.rc
+${MV} ${TEMP_FILE}.res \
+      ${OUT_FILE}

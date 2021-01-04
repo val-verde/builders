@@ -24,10 +24,10 @@ package-cmake \
 # Build the components
 ninja-install
 
-mv ${SOURCE_ROOT}/src/bin \
-   ${SOURCE_ROOT}/src/include \
-   ${SOURCE_ROOT}/src/lib \
-   ${INSTALL_PREFIX}/
+${MV} ${SOURCE_ROOT}/src/bin \
+      ${SOURCE_ROOT}/src/include \
+      ${SOURCE_ROOT}/src/lib \
+      ${INSTALL_PREFIX}/
 
 # Build the package
 deb-package-build

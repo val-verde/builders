@@ -91,13 +91,13 @@ if [ -z "${DISABLE_LIBNODE_SHARED}" ]; then
     LIBNODE_SHARED_CMD="--shared"
 fi
 
-DISABLED_WARNING_CFLAGS=`echo "\
+DISABLED_WARNING_CFLAGS=`${ECHO} "\
     -Wno-deprecated-enum-enum-conversion \
     -Wno-deprecated-volatile \
     -Wno-ignored-attributes \
     -Wno-implicit-const-int-float-conversion \
     -Wno-macro-redefined \
-" | xargs`
+" | ${XARGS}`
 
 export AR_host=${AR_host:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar}
 export AR_target=${AR}
@@ -105,33 +105,33 @@ export AS_host=${AS_host:-${BUILD_PACKAGE_PREFIX}/bin/clang}
 export AS_target=${AS}
 export CC_host=${CC_host:-${BUILD_PACKAGE_PREFIX}/bin/clang}
 export CC_target=${CC}
-export CFLAGS_host=`echo "\
+export CFLAGS_host=`${ECHO} "\
     -I${BUILD_PACKAGE_PREFIX}/include \
     ${DISABLED_WARNING_CFLAGS} \
-" | xargs`
-export CFLAGS=`echo ${CFLAGS} | xargs`
+" | ${XARGS}`
+export CFLAGS=`${ECHO} ${CFLAGS} | ${XARGS}`
 export CPP_host=${CPP_host:-"${BUILD_PACKAGE_PREFIX}/bin/clang -E"}
 export CPP_target=${CPP}
-export CPPFLAGS_host=`echo "\
+export CPPFLAGS_host=`${ECHO} "\
     -I${BUILD_PACKAGE_PREFIX}/include \
     ${DISABLED_WARNING_CFLAGS} \
-" | xargs`
-export CPPFLAGS=`echo ${CPPFLAGS} | xargs`
+" | ${XARGS}`
+export CPPFLAGS=`${ECHO} ${CPPFLAGS} | ${XARGS}`
 export CXX_host=${CXX_host:-"${BUILD_PACKAGE_PREFIX}/bin/clang++ -stdlib++-isystem ${BUILD_PACKAGE_PREFIX}/include/c++/v1"}
 export CXX_target=${CXX}
-export CXXFLAGS_host=`echo "\
+export CXXFLAGS_host=`${ECHO} "\
     -stdlib++-isystem ${BUILD_PACKAGE_PREFIX}/include/c++/v1 \
     -I${BUILD_PACKAGE_PREFIX}/include \
     ${DISABLED_WARNING_CFLAGS} \
-" | xargs`
-export CXXFLAGS=`echo "\
+" | ${XARGS}`
+export CXXFLAGS=`${ECHO} "\
     ${DISABLED_WARNING_CFLAGS} \
     ${CXXFLAGS} \
-" | xargs`
-LDFLAGS_host=`echo "\
+" | ${XARGS}`
+LDFLAGS_host=`${ECHO} "\
     -L${BUILD_PACKAGE_PREFIX}/lib \
-" | xargs`
-export LDFLAGS=`echo ${LDFLAGS} | xargs`
+" | ${XARGS}`
+export LDFLAGS=`${ECHO} ${LDFLAGS} | ${XARGS}`
 export LINK="${LD_host:-${BUILD_PACKAGE_PREFIX}/bin/clang++} ${LDFLAGS_host}"
 export LINK_target=${CXX}
 export RANLIB_host=${RANLIB_host:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib}
@@ -151,13 +151,14 @@ ${STAGE_ROOT}/configure \
 # Build the components
 make-install
 
-rsync -aPx ${STAGE_ROOT}/out/Release/node \
-           ${INSTALL_PREFIX}/bin
+${RSYNC} -aPx \
+         ${STAGE_ROOT}/out/Release/node \
+         ${INSTALL_PREFIX}/bin
 
 if [ "${HOST_OS}" = "android" ]; then
     sed -i \
         's|/usr/bin/env|/system/bin/env|g' \
-        `grep -rl "/usr/bin/env" ${INSTALL_PREFIX}`
+        `${GREP} -rl "/usr/bin/env" ${INSTALL_PREFIX}`
 fi
 
 # Build the package

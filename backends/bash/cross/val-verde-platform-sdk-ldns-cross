@@ -15,8 +15,8 @@ export DEPENDS="${PACKAGE_BASE_NAME}-ncurses-${HOST_OS}${HOST_OS_API_LEVEL}-${HO
 copy-source-to-staging
 
 cd ${STAGE_ROOT}
-libtoolize -ci
-autoreconf -fi
+package-libtoolize -ci
+package-autoreconf -fi
 
 LDFLAGS="\
     -lssl \

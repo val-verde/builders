@@ -21,14 +21,14 @@ if [ "${SOURCE_PACKAGE_NAME}" != "" ]; then
     ${MKDIR} -p ${INSTALL_PREFIX} \
                 ${STAGE_ROOT}
 
-    echo -e "    Package Configuration"
-    echo -e "        Name: \e[1;35m${SOURCE_PACKAGE_NAME}\e[0m"
-    echo -e "        Version: \e[1m${SOURCE_PACKAGE_VERSION}\e[0m"
-    echo -e "        Platform: \e[1m${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}\e[0m"
-    echo -e "        Vendor: \e[1m${PACKAGE_BASE_NAME}\e[0m"
-    echo -e "        Source Root: \e[33m${SOURCE_ROOT}\e[0m"
-    echo -e "        Stage Root: \e[33m${STAGE_ROOT}\e[0m"
-    echo -e "        Install Prefix: \e[33m${INSTALL_PREFIX}\e[0m"
+    ${ECHO} -e "    Package Configuration"
+    ${ECHO} -e "        Name: \e[1;35m${SOURCE_PACKAGE_NAME}\e[0m"
+    ${ECHO} -e "        Version: \e[1m${SOURCE_PACKAGE_VERSION}\e[0m"
+    ${ECHO} -e "        Platform: \e[1m${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}\e[0m"
+    ${ECHO} -e "        Vendor: \e[1m${PACKAGE_BASE_NAME}\e[0m"
+    ${ECHO} -e "        Source Root: \e[33m${SOURCE_ROOT}\e[0m"
+    ${ECHO} -e "        Stage Root: \e[33m${STAGE_ROOT}\e[0m"
+    ${ECHO} -e "        Install Prefix: \e[33m${INSTALL_PREFIX}\e[0m"
 fi
 
 function copy-source-to-staging() {
@@ -42,7 +42,7 @@ function create-host-tool() {
     host_tool_flags=${2}
     wrapper_name=${3}
 
-    echo "\
+    ${ECHO} "\
 #!/bin/bash
 
 set -e
@@ -56,7 +56,7 @@ function create-indirect-pkg-config() {
     host_pkg_config_path=${1}
     wrapper_name=${2}
 
-    echo "\
+    ${ECHO} "\
 #!/bin/bash
 
 set -e
@@ -183,7 +183,7 @@ function export-compiler-environment() {
     fi
 
     if [ -n "${ENABLE_FLTO}" ]; then
-        FLTO_OPTION=`echo ${ENABLE_FLTO} | tr '[:upper:]' '[:lower:]'`
+        FLTO_OPTION=`${ECHO} ${ENABLE_FLTO} | ${TR} '[:upper:]' '[:lower:]'`
         COMMON_CFLAGS="\
             -flto=${FLTO_OPTION} \
             ${COMMON_CFLAGS} \
@@ -215,50 +215,50 @@ function export-compiler-environment() {
         "
     fi
 
-    export ASFLAGS=`echo "\
+    export ASFLAGS=`${ECHO} "\
         -pipe \
         ${COMMON_CFLAGS} \
         ${OPTIMIZATION_FLAGS} \
         ${ASMFLAGS} \
-    " | xargs`
-    export CFLAGS=`echo "\
+    " | ${XARGS}`
+    export CFLAGS=`${ECHO} "\
         -pipe \
         ${COMMON_CFLAGS} \
         ${OPTIMIZATION_FLAGS} \
         ${CFLAGS} \
-    " | xargs`
-    export CCLDFLAGS=`echo "\
+    " | ${XARGS}`
+    export CCLDFLAGS=`${ECHO} "\
         -pipe \
         -rtlib=compiler-rt \
         ${COMMON_CFLAGS} \
         ${COMMON_LDFLAGS} \
         ${CCLDFLAGS} \
-    " | xargs`
-    export CPPFLAGS=`echo "\
+    " | ${XARGS}`
+    export CPPFLAGS=`${ECHO} "\
         ${COMMON_CFLAGS} \
         ${OPTIMIZATION_FLAGS} \
         ${CPPFLAGS} \
-    " | xargs`
-    export CXXFLAGS=`echo "\
+    " | ${XARGS}`
+    export CXXFLAGS=`${ECHO} "\
         -pipe \
         ${COMMON_CFLAGS} \
         ${OPTIMIZATION_FLAGS} \
         ${CXXFLAGS} \
-    " | xargs`
-    export LDFLAGS=`echo "\
+    " | ${XARGS}`
+    export LDFLAGS=`${ECHO} "\
         ${LDFLAGS} \
-    " | xargs`
-    export LIBS=`echo "\
+    " | ${XARGS}`
+    export LIBS=`${ECHO} "\
         ${LIBS} \
-    " | xargs`
-    export LIBTOOLFLAGS=`echo "\
+    " | ${XARGS}`
+    export LIBTOOLFLAGS=`${ECHO} "\
         ${LIBTOOLFLAGS} \
-    " | xargs`
-    export SWIFTCFLAGS=`echo "\
+    " | ${XARGS}`
+    export SWIFTCFLAGS=`${ECHO} "\
         -Xcc -pipe \
         -Xcc -stdlib++-isystem -Xcc ${CXX_INCLUDE_DIR} \
         ${SWIFTCFLAGS} \
-    " | xargs`
+    " | ${XARGS}`
 }
 
 function generate-compiler-tools() {
@@ -291,49 +291,49 @@ function generate-compiler-tools() {
     export LDFLAGS="-O${LINKER_OPTIMIZATION_LEVEL}"
 
     if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
-        export CCLDFLAGS=`echo "\
+        export CCLDFLAGS=`${ECHO} "\
             -L${PACKAGE_PREFIX}/lib \
             ${CCLDFLAGS} \
-        " | xargs`
-        export LDFLAGS=`echo "\
+        " | ${XARGS}`
+        export LDFLAGS=`${ECHO} "\
             -L${PACKAGE_PREFIX}/lib \
             ${LDFLAGS} \
-        " | xargs`
+        " | ${XARGS}`
     fi
 
     if [ -z "${DISABLE_STRIP}" ]; then
-        export LDFLAGS=`echo "\
+        export LDFLAGS=`${ECHO} "\
             -s \
             ${LDFLAGS} \
-        " | xargs`
+        " | ${XARGS}`
     fi
 }
 
 function tool-build() {
-    echo -e "    Tool Invocation"
-    echo -e "        Tool Name: \e[1m${TOOL}\e[0m"
-    echo -e "        Parallel Invocations: ${NUM_PROCESSORS}"
-    echo -e "        Log Files: \e[31m${STAGE_ROOT}/builder-compile.log\e[0m"
-    echo -e "                   \e[31m${STAGE_ROOT}/builder-compile-stderr.log\e[0m"
-    echo -e "        Time Started: \e[4m$(date)\e[0m"
+    ${ECHO} -e "    Tool Invocation"
+    ${ECHO} -e "        Tool Name: \e[1m${TOOL}\e[0m"
+    ${ECHO} -e "        Parallel Invocations: ${NUM_PROCESSORS}"
+    ${ECHO} -e "        Log Files: \e[31m${STAGE_ROOT}/builder-compile.log\e[0m"
+    ${ECHO} -e "                   \e[31m${STAGE_ROOT}/builder-compile-stderr.log\e[0m"
+    ${ECHO} -e "        Time Started: \e[4m$(date)\e[0m"
 
     ${TOOL} -j${NUM_PROCESSORS} \
             ${@} \
             > ${STAGE_ROOT}/builder-compile.log \
             2> ${STAGE_ROOT}/builder-compile-stderr.log
 
-    echo -e "        Time Completed: \e[4m$(date)\e[0m"
+    ${ECHO} -e "        Time Completed: \e[4m$(date)\e[0m"
 }
 
 function tool-install() {
     DESTDIR=${DESTDIR:-${INSTALL_ROOT}}
 
-    echo -e "    Installation Invocation"
-    echo -e "        Tool Name: \e[1m${TOOL}\e[0m"
-    echo -e "        Destination Directory: ${DESTDIR}"
-    echo -e "        Log Files: \e[31m${STAGE_ROOT}/builder-installation.log\e[0m"
-    echo -e "                   \e[31m${STAGE_ROOT}/builder-installation-stderr.log\e[0m"
-    echo -e "        Time Started: \e[4m$(date)\e[0m"
+    ${ECHO} -e "    Installation Invocation"
+    ${ECHO} -e "        Tool Name: \e[1m${TOOL}\e[0m"
+    ${ECHO} -e "        Destination Directory: ${DESTDIR}"
+    ${ECHO} -e "        Log Files: \e[31m${STAGE_ROOT}/builder-installation.log\e[0m"
+    ${ECHO} -e "                   \e[31m${STAGE_ROOT}/builder-installation-stderr.log\e[0m"
+    ${ECHO} -e "        Time Started: \e[4m$(date)\e[0m"
 
     if [ "${TOOL}" = "${MAKE}" ]; then
         DESTDIR_CMD="DESTDIR=${DESTDIR}"
@@ -347,7 +347,7 @@ function tool-install() {
             > ${STAGE_ROOT}/builder-installation.log \
             2> ${STAGE_ROOT}/builder-installation-stderr.log
 
-    echo -e "        Time Completed: \e[4m$(date)\e[0m"
+    ${ECHO} -e "        Time Completed: \e[4m$(date)\e[0m"
 }
 
 function make-build() {
@@ -368,6 +368,12 @@ function ninja-build() {
 function ninja-install() {
     TOOL=${NINJA} \
     tool-install ${@}
+}
+
+function package-autoreconf() {
+    ${BINDIR}/autoreconf ${@} \
+        > ${STAGE_ROOT}/builder-autoreconf.log \
+        2> ${STAGE_ROOT}/builder-autoreconf-stderr.log
 }
 
 function package-cmake-invocation() {
@@ -460,6 +466,12 @@ function package-configure() {
         ${@}
 }
 
+function package-libtoolize() {
+    ${BINDIR}/libtoolize ${@} \
+        > ${STAGE_ROOT}/builder-libtoolize.log \
+        2> ${STAGE_ROOT}/builder-libtoolize-stderr.log
+}
+
 function package-meson-build() {
     export-compiler-environment
     generate-compiler-tools
@@ -489,13 +501,13 @@ function package-meson-build() {
 
     MESON_BUILD_CONFIG=native
     HOST_CMAKE_PREFIXES="${PACKAGE_PREFIX}/lib/cmake:${PKG_CONFIG_PATH}"
-    HOST_C_ARGS=`echo [\'${CFLAGS}\'] | ${SED} "s/ /','/g"`
-    HOST_C_LINK_ARGS=`echo [\'${LDFLAGS}\'] | ${SED} "s/ /','/g"`
-    HOST_CMAKE_PREFIX_PATH=`echo [\'${HOST_CMAKE_PREFIXES}\'] | ${SED} "s/:/','/g"`
-    HOST_CPP_ARGS=`echo [\'${CXXFLAGS}\'] | ${SED} "s/ /','/g"`
-    HOST_CPP_LINK_ARGS=`echo [\'${LDFLAGS}\'] | ${SED} "s/ /','/g"`
+    HOST_C_ARGS=`${ECHO} [\'${CFLAGS}\'] | ${SED} "s/ /','/g"`
+    HOST_C_LINK_ARGS=`${ECHO} [\'${LDFLAGS}\'] | ${SED} "s/ /','/g"`
+    HOST_CMAKE_PREFIX_PATH=`${ECHO} [\'${HOST_CMAKE_PREFIXES}\'] | ${SED} "s/:/','/g"`
+    HOST_CPP_ARGS=`${ECHO} [\'${CXXFLAGS}\'] | ${SED} "s/ /','/g"`
+    HOST_CPP_LINK_ARGS=`${ECHO} [\'${LDFLAGS}\'] | ${SED} "s/ /','/g"`
 
-    export CMAKE_PREFIX_PATH=`echo ${HOST_CMAKE_PREFIXES} | tr ':' ';'`
+    export CMAKE_PREFIX_PATH=`${ECHO} ${HOST_CMAKE_PREFIXES} | ${TR} ':' ';'`
 
     if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
         MESON_BUILD_CONFIG=cross
@@ -506,29 +518,29 @@ function package-meson-build() {
         BUILD_LDFLAGS="-L${BUILD_PACKAGE_PREFIX}/include"
         BUILD_PKG_CONFIG_PATH="${BUILD_PACKAGE_PREFIX}/lib/pkgconfig"
 
-        BUILD_C_ARGS=`echo [\'${BUILD_CFLAGS}\'] | ${SED} "s/ /','/g"`
-        BUILD_C_LINK_ARGS=`echo [\'${BUILD_LDFLAGS}\'] | ${SED} "s/ /','/g"`
-        BUILD_CMAKE_PREFIX_PATH=`echo [\'${BUILD_CMAKE_PREFIXES}\'] | ${SED} "s/:/','/g"`
-        BUILD_CPP_ARGS=`echo [\'${BUILD_CXXFLAGS}\'] | ${SED} "s/ /','/g"`
-        BUILD_CPP_LINK_ARGS=`echo [\'${BUILD_LDFLAGS}\'] | ${SED} "s/ /','/g"`
+        BUILD_C_ARGS=`${ECHO} [\'${BUILD_CFLAGS}\'] | ${SED} "s/ /','/g"`
+        BUILD_C_LINK_ARGS=`${ECHO} [\'${BUILD_LDFLAGS}\'] | ${SED} "s/ /','/g"`
+        BUILD_CMAKE_PREFIX_PATH=`${ECHO} [\'${BUILD_CMAKE_PREFIXES}\'] | ${SED} "s/:/','/g"`
+        BUILD_CPP_ARGS=`${ECHO} [\'${BUILD_CXXFLAGS}\'] | ${SED} "s/ /','/g"`
+        BUILD_CPP_LINK_ARGS=`${ECHO} [\'${BUILD_LDFLAGS}\'] | ${SED} "s/ /','/g"`
 
         export CC_FOR_BUILD=${BINDIR}/clang
         export CXX_FOR_BUILD=${BINDIR}/clang++
         export CMAKE_FOR_BUILD=${CMAKE}
-        export CMAKE_PREFIX_PATH_FOR_BUILD=`echo ${BUILD_CMAKE_PREFIXES} | tr ":" ";"`
+        export CMAKE_PREFIX_PATH_FOR_BUILD=`${ECHO} ${BUILD_CMAKE_PREFIXES} | ${TR} ":" ";"`
 
         create-indirect-pkg-config BUILD_PKG_CONFIG_PATH ${STAGE_ROOT}/build-pkgconfig
 
         export PKG_CONFIG_FOR_BUILD=${STAGE_ROOT}/build-pkgconfig
     fi
 
-    echo "\
+    ${ECHO} "\
 [binaries]
 ${MESON_EXTRA_BINARIES}
 " > ${CONFIG_FILE}
 
     if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
-        echo "\
+        ${ECHO} "\
 [properties]
 needs_exe_wrapper = true
 
@@ -565,7 +577,7 @@ windres = '${WINDRES}'
         " >> ${CONFIG_FILE}
     fi
 
-    echo "\
+    ${ECHO} "\
 ar = '${AR}'
 backend = '${BACKEND}'
 buildtype = '${BUILD_TYPE}'
@@ -597,7 +609,7 @@ windres = '${WINDRES}'
 
 
     if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
-        echo "\
+        ${ECHO} "\
 [target_machine]
 ar = '${AR}'
 backend = '${BACKEND}'
@@ -661,7 +673,7 @@ function package-python-build() {
 function package-swift-build() {
     export-compiler-environment
 
-    SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
+    SDK_PLATFORM_DIR=`${ECHO} ${SYSTEM_NAME} | ${TR} '[:upper:]' '[:lower:]'`
     SWIFT_BUILD_TYPE=${SWIFT_BUILD_TYPE:-release}
     TEMP_FILE=`mktemp`
 
@@ -675,7 +687,7 @@ function package-swift-build() {
     fi
 
     if [ -n "${ENABLE_FLTO}" ]; then
-        FLTO_OPTION=`echo ${ENABLE_FLTO} | tr '[:upper:]' '[:lower:]'`
+        FLTO_OPTION=`${ECHO} ${ENABLE_FLTO} | ${TR} '[:upper:]' '[:lower:]'`
         FLTO_CFLAG="-flto=${FLTO_OPTION}"
         FLTO_SWIFTCFLAG="-whole-module-optimization"
     fi
@@ -700,7 +712,7 @@ function package-swift-build() {
         TARGET=${TARGET:-${HOST_PROCESSOR}-unknown-windows-gnu}
     fi
 
-    echo -e "{ \n\
+    ${ECHO} -e "{ \n\
         \"version\": 1, \n\
         \"sdk\": \"${SYSROOT}\", \n\
         \"toolchain-bin-dir\": \"${BINDIR}\", \n\
@@ -750,14 +762,14 @@ function package-swift-build() {
 }
 
 function package-invoke-builder() {
-    echo -e "Builder Invocation Started"
+    ${ECHO} -e "Builder Invocation Started"
     ${BASH} ${VAL_VERDE_GH_TEAM}-platform-sdk-${@}
-    echo -e "Builder Invocation Complete"
-    echo
+    ${ECHO} -e "Builder Invocation Complete"
+    ${ECHO}
 }
 
 function rpath-fixup() {
-    SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
+    SDK_PLATFORM_DIR=`${ECHO} ${SYSTEM_NAME} | ${TR} '[:upper:]' '[:lower:]'`
 
     if [ "${SDK_PLATFORM_DIR}" != "windows" ]; then
         if [ "${SDK_PLATFORM_DIR}" != "${HOST_OS}" ]; then

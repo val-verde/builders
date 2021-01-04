@@ -25,7 +25,7 @@ package-configure \
 INSTALL_TARGET=install-headers \
 make-install
 
-rm -rf ${INSTALL_PREFIX}/include/iconv.h
+${RM} -rf ${INSTALL_PREFIX}/include/iconv.h
 
 # Build the package
 deb-package-build

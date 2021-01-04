@@ -15,25 +15,26 @@ export TOOLCHAIN_ROOT=${ANDROID_NDK_STAGE_ROOT}/${BUILD_PACKAGE_PREFIX}/android-
 export INCLUDES_PATH=${TOOLCHAIN_ROOT}/sysroot/usr/include
 
 # Configure the build components
-mkdir -p ${INSTALL_PREFIX}/include
-rsync -ax ${INCLUDES_PATH}/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/asm \
-           ${INCLUDES_PATH}/*.h \
-           ${INCLUDES_PATH}/android \
-           ${INCLUDES_PATH}/arpa \
-           ${INCLUDES_PATH}/asm-generic \
-           ${INCLUDES_PATH}/bits \
-           ${INCLUDES_PATH}/linux \
-           ${INCLUDES_PATH}/net \
-           ${INCLUDES_PATH}/netinet \
-           ${INCLUDES_PATH}/netpacket \
-           ${INCLUDES_PATH}/sys \
-           ${INSTALL_PREFIX}/include
+${MKDIR} -p ${INSTALL_PREFIX}/include
+${RSYNC} -ax \
+         ${INCLUDES_PATH}/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/asm \
+         ${INCLUDES_PATH}/*.h \
+         ${INCLUDES_PATH}/android \
+         ${INCLUDES_PATH}/arpa \
+         ${INCLUDES_PATH}/asm-generic \
+         ${INCLUDES_PATH}/bits \
+         ${INCLUDES_PATH}/linux \
+         ${INCLUDES_PATH}/net \
+         ${INCLUDES_PATH}/netinet \
+         ${INCLUDES_PATH}/netpacket \
+         ${INCLUDES_PATH}/sys \
+         ${INSTALL_PREFIX}/include
 
 # Remove iconv and zlib components as they are rebuilt.
-rm -f ${INSTALL_PREFIX}/include/iconv.h \
-      ${INSTALL_PREFIX}/include/zconf.h \
-      ${INSTALL_PREFIX}/include/zlib.h \
-      ${INSTALL_PREFIX}/include/sys/capability.h
+${RM} -f ${INSTALL_PREFIX}/include/iconv.h \
+         ${INSTALL_PREFIX}/include/zconf.h \
+         ${INSTALL_PREFIX}/include/zlib.h \
+         ${INSTALL_PREFIX}/include/sys/capability.h
 
 # Build the package
 deb-package-build

@@ -18,9 +18,10 @@ copy-source-to-staging
 cd ${STAGE_ROOT}
 yarn-build
 
-mkdir -p ${INSTALL_PREFIX}
-rsync -aPx ${STAGE_ROOT}/ \
-           ${INSTALL_PREFIX}/
+${MKDIR} -p ${INSTALL_PREFIX}
+${RSYNC} -aPx \
+         ${STAGE_ROOT}/ \
+         ${INSTALL_PREFIX}/
 
 # Build the package
 deb-package-build

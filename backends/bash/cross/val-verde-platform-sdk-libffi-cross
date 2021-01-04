@@ -14,7 +14,7 @@ sed -i \
     "s/'auto-import'/'ld'/g" \
     ${SOURCE_ROOT}/configure
 
-SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
+SDK_PLATFORM_DIR=`${ECHO} ${SYSTEM_NAME} | ${TR} '[:upper:]' '[:lower:]'`
 
 if [ "${SDK_PLATFORM_DIR}" = "windows" ]; then
     SYMVER_CMD="--disable-symvers"

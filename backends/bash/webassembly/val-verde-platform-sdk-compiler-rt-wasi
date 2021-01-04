@@ -37,9 +37,9 @@ package-cmake \
 # Build the components
 ninja-install
 
-mkdir -p ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/12.0.0/lib/wasi
-mv install-staging${BUILD_PACKAGE_PREFIX}/lib/fuchsia/${CLANG_RT_LIB} \
-   ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/12.0.0/lib/wasi/${DST_CLANG_RT_LIB}
+${MKDIR} -p ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/12.0.0/lib/wasi
+${MV} install-staging${BUILD_PACKAGE_PREFIX}/lib/fuchsia/${CLANG_RT_LIB} \
+      ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/12.0.0/lib/wasi/${DST_CLANG_RT_LIB}
 
 # Build the package
 deb-package-build

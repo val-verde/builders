@@ -31,7 +31,7 @@ ${SOURCE_ROOT}/Configure \
     -Dnm=${NM} \
     -Dprefix=${PACKAGE_PREFIX} \
     -Dranlib=${RANLIB} \
-    -DDsiteprefix=${PACKAGE_PREFIX}/local \
+    -Dsiteprefix=${PACKAGE_PREFIX}/local \
     -Dvendorprefix=${PACKAGE_PREFIX} \
     > ${STAGE_ROOT}/builder-invocation.log \
     2> ${STAGE_ROOT}/builder-invocation-stderr.log

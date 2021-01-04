@@ -26,11 +26,11 @@ else
 fi
 
 cd ${STAGE_ROOT}
-sed -i \
-    's/AC_RUN_IFELSE/AC_COMPILE_IFELSE/g' \
-    `grep -rl AC_RUN_IFELSE ${STAGE_ROOT}`
+${SED} -i \
+       's/AC_RUN_IFELSE/AC_COMPILE_IFELSE/g' \
+       `${GREP} -rl AC_RUN_IFELSE ${STAGE_ROOT}`
 
-autoreconf -fi
+package-autoreconf -fi
 package-configure \
     ${SOURCE_ROOT}/configure \
     rsync_cv_HAVE_BROKEN_READDIR=no \

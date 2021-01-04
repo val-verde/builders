@@ -40,11 +40,11 @@ ninja-install
 SDK=${HOST_OS}
 
 if [ "${HOST_OS}" = "android" ]; then
-    mv ${INSTALL_PREFIX}/lib/swift/linux \
-       ${INSTALL_PREFIX}/lib/swift/android
+    ${MV} ${INSTALL_PREFIX}/lib/swift/linux \
+          ${INSTALL_PREFIX}/lib/swift/android
 elif [ "${HOST_OS}" = "musl" ]; then
-    mv ${INSTALL_PREFIX}/lib/swift/linux \
-       ${INSTALL_PREFIX}/lib/swift/musl
+    ${MV} ${INSTALL_PREFIX}/lib/swift/linux \
+          ${INSTALL_PREFIX}/lib/swift/musl
 fi
 
 # RPATH fixups

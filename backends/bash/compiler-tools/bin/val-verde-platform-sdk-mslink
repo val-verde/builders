@@ -3,8 +3,8 @@
 set -e
 
 args=$@
-args=`echo "${args}" | sed -r 's/-implib:/\/implib:/g'`
-args=`echo "${args}" | sed -r 's/-Bsymbolic//g'`
-args=`echo "${args}" | sed -r 's/--version-script=[^[:space:]]+//g'`
+args=`${ECHO} "${args}" | ${SED} -r 's/-implib:/\/implib:/g'`
+args=`${ECHO} "${args}" | ${SED} -r 's/-Bsymbolic//g'`
+args=`${ECHO} "${args}" | ${SED} -r 's/--version-script=[^[:space:]]+//g'`
 
 ${BUILD_PACKAGE_PREFIX}/bin/ld.lld ${args}

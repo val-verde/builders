@@ -18,9 +18,9 @@ package-cmake \
 # Build the components
 ninja-build
 
-mkdir -p ${INSTALL_PREFIX}/bin
-cp ${STAGE_ROOT}/jwasm* \
-   ${INSTALL_PREFIX}/bin/
+${MKDIR} -p ${INSTALL_PREFIX}/bin
+${CP} ${STAGE_ROOT}/jwasm* \
+      ${INSTALL_PREFIX}/bin/
 
 # Build the package
 deb-package-build

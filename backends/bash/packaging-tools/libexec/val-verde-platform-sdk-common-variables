@@ -19,37 +19,51 @@ export PACKAGE_ARCH=all
 export PACKAGE_CLASS=deb
 
 # 'build' configuration
+export BINDIR=${BINDIR:-${BUILD_PACKAGE_PREFIX}/bin}
 export BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}
 export BUILD_4_TRIPLE=${BUILD_PROCESSOR}-${BUILD_ENV:-unknown}-${BUILD_KERNEL}-${BUILD_OS}
 export BUILD_PACKAGE_PREFIX=${PACKAGE_PLATFORM_SDKROOT}/${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/sysroot/usr
 
 # 'build' tools
-export BINDIR=${BINDIR:-${BUILD_PACKAGE_PREFIX}/bin}
-export COREUTILS_BINDIR=${COREUTILS_BINDIR:-${BINDIR}}
 export APT=${APT:-/usr/bin/apt}
 export BASH=${BASH:-${BINDIR}/bash}
-export CHMOD=${CHMOD:-${COREUTILS_BINDIR}/chmod}
-export CP=${CP:-${COREUTILS_BINDIR}/cp}
+export BISON=${BISON:-${BINDIR}/bison}
+export CHMOD=${CHMOD:-${BINDIR}/chmod}
+export CP=${CP:-${BINDIR}/cp}
+export CURL=${CURL:-${BINDIR}/curl}
+export CUT=${CUT:-${BINDIR}/cut}
 export DPKG=${DPKG:-${BINDIR}/dpkg}
-export ECHO=${ECHO:-${COREUTILS_BINDIR}/echo}
+export ECHO=${ECHO:-${BINDIR}/echo}
+export FIND=${XARGS:-${BINDIR}/find}
+export GAWK=${GAWK:-${BINDIR}/gawk}
+export GETTEXT=${GIT:-${BINDIR}/gettext}
 export GIT=${GIT:-${BINDIR}/git}
-export INSTALL=${INSTALL:-${COREUTILS_BINDIR}/install}
-export LN=${LN:-${COREUTILS_BINDIR}/ln}
-export LS=${LS:-${COREUTILS_BINDIR}/ls}
-export MKDIR=${MKDIR:-${COREUTILS_BINDIR}/mkdir}
-export MKTEMP=${MKTEMP:-${COREUTILS_BINDIR}/mktemp}
-export MV=${MV:-${COREUTILS_BINDIR}/mv}
-export RM=${RM:-"${COREUTILS_BINDIR}/rm -f"}
-export RMDIR=${RMDIR:-${COREUTILS_BINDIR}/rmdir}
+export GPERF=${GPERF:-${BINDIR}/gperf}
+export INSTALL=${INSTALL:-${BINDIR}/install}
+export LN=${LN:-${BINDIR}/ln}
+export LS=${LS:-${BINDIR}/ls}
+export M4=${M4:-${BINDIR}/m4}
+export MAKEINFO=${MAKEINFO:-${BINDIR}/true}
+export MKDIR=${MKDIR:-${BINDIR}/mkdir}
+export MKTEMP=${MKTEMP:-${BINDIR}/mktemp}
+export MV=${MV:-${BINDIR}/mv}
+export PATCH=${PATCH:-/usr/bin/patch}
+export PERL=${PERL:-${BINDIR}/perl}
+export PYTHON=${PYTHON:-${BINDIR}/python3}
+export RM=${RM:-"${BINDIR}/rm -f"}
+export RMDIR=${RMDIR:-${BINDIR}/rmdir}
 export RSYNC=${RSYNC:-${BINDIR}/rsync}
 export SED=${SED:-${BINDIR}/sed}
+export SSH=${SSH:-${BINDIR}/ssh}
 export TAR=${TAR:-${BINDIR}/tar}
-export TEE=${TEE:-${COREUTILS_BINDIR}/tee}
-export TR=${TR:-${COREUTILS_BINDIR}/tr}
+export TEE=${TEE:-${BINDIR}/tee}
+export TR=${TR:-${BINDIR}/tr}
 export UNAME=${UNAME:-${BINDIR}/uname}
-export UNZIP=${UNZIP:-${BINDIR}/unzip}
+export UNZIP=${UNZIP:-${BINDIR}/gunzip}
 export WGET=${WGET:-${BINDIR}/wget}
-export ZIP=${ZIP:-${BINDIR}/zip}
+export XARGS=${XARGS:-${BINDIR}/xargs}
+export XZ=${XZ:-${BINDIR}/xz}
+export ZIP=${ZIP:-${BINDIR}/gzip}
 
 # 'build' paths
 export DPKG_ADMINDIR=/var/lib/dpkg
@@ -159,6 +173,14 @@ function package-tar() {
     ${TAR} ${@} > ${STAGE_ROOT}/builder-untar.log
 }
 
+function package-unzip() {
+    ${UNZIP} ${@} > ${STAGE_ROOT}/builder-unzip.log
+}
+
 function package-wget() {
     ${WGET} ${@} 2> ${STAGE_ROOT}/builder-wget.log
+}
+
+function package-zip() {
+    ${ZIP} ${@} > ${STAGE_ROOT}/builder-zip.log
 }

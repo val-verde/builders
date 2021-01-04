@@ -26,11 +26,11 @@ cd ${SOURCE_ROOT}
 package-swift-build
 
 cd ${STAGE_ROOT}
-mkdir -p ${INSTALL_PREFIX}/bin
-pushd release
-cp `find -type f -name swift-doc\*` \
-   ${INSTALL_PREFIX}/bin
-popd
+${MKDIR} -p ${INSTALL_PREFIX}/bin
+package-push-directory release
+${CP} `${FIND} -type f -name swift-doc\*` \
+      ${INSTALL_PREFIX}/bin
+package-pop-directory
 
 # Build the package
 deb-package-build
