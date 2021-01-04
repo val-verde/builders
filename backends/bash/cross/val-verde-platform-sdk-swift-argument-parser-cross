@@ -29,12 +29,14 @@ package-cmake \
 # Build the components
 ninja-build
 
-rsync -aPx ${STAGE_ROOT}/lib \
-           ${INSTALL_PREFIX}
+${RSYNC} -aPx \
+         ${STAGE_ROOT}/lib \
+         ${INSTALL_PREFIX}
 
 if [ "${HOST_OS}" = "mingw32" ]; then
-    rsync -aPx ${STAGE_ROOT}/bin \
-	       ${INSTALL_PREFIX}
+    ${RSYNC} -aPx \
+             ${STAGE_ROOT}/bin \
+             ${INSTALL_PREFIX}
 fi
 
 # Build the package

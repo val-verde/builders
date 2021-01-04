@@ -54,8 +54,8 @@ package-configure \
 make-install
 
 # Move var template folder one level up from /usr.
-mv ${INSTALL_PREFIX}/var \
-   ${INSTALL_PREFIX}/../
+${MV} ${INSTALL_PREFIX}/var \
+      ${INSTALL_PREFIX}/../
 
 # Build the package
 deb-package-build

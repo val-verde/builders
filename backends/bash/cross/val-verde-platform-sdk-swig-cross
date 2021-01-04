@@ -22,10 +22,10 @@ sed -i \
     ${STAGE_ROOT}/configure
 
 cd ${STAGE_ROOT}
-PCRE_CFLAGS=`echo "\
+PCRE_CFLAGS=`${ECHO} "\
     -I${PACKAGE_PREFIX}/include \
     -L${PACKAGE_PREFIX}/lib \
-" | xargs` \
+" | ${XARGS}` \
 PCRE_LIBS="-lpcre" \
 package-configure \
     ${STAGE_ROOT}/configure \

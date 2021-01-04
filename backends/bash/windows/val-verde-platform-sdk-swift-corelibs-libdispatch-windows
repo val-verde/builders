@@ -38,8 +38,8 @@ package-cmake \
 # Build the components
 ninja-install
 
-mv ${INSTALL_PREFIX}/lib/swift/windows/*.a \
-   ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
+${MV} ${INSTALL_PREFIX}/lib/swift/windows/*.a \
+      ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
 
 # Build the package
 deb-package-build

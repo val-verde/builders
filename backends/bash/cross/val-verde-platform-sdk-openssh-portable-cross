@@ -15,7 +15,7 @@ export-compiler-environment
 copy-source-to-staging
 
 cd ${STAGE_ROOT}
-autoreconf -fi
+package-autoreconf -fi
 
 MAIL_DIR=/var/mail
 

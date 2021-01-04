@@ -31,10 +31,11 @@ SWIFT_BUILD_FLAGS="\
 package-swift-build
 
 cd ${STAGE_ROOT}
-mkdir -p ${INSTALL_PREFIX}/bin
+${MKDIR} -p ${INSTALL_PREFIX}/bin
 
-rsync -aPx `find release/baikonur* -executable -type f` \
-           ${INSTALL_PREFIX}/bin
+${RSYNC} -aPx \
+         `${FIND} release/baikonur* -executable -type f` \
+         ${INSTALL_PREFIX}/bin
 
 # RPATH fixups
 COMPONENTS="\

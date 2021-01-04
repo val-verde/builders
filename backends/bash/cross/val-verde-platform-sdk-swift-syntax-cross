@@ -18,20 +18,23 @@ export DEPENDS="\
 cd ${SOURCE_ROOT}
 package-swift-build
 
-SDK_PLATFORM_DIR=`echo ${SYSTEM_NAME} | tr '[:upper:]' '[:lower:]'`
+SDK_PLATFORM_DIR=`${ECHO} ${SYSTEM_NAME} | ${TR} '[:upper:]' '[:lower:]'`
 
 if [ "${HOST_OS}" = "android" ]; then
     SDK_PLATFORM_DIR="android"
 fi
 
 cd ${STAGE_ROOT}
-mkdir -p ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
-rsync -aPx release/Swift*.swiftdoc \
-           ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
-rsync -aPx release/Swift*.swiftmodule \
-           ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
-rsync -aPx release/libSwift*.a \
-           ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/
+${MKDIR} -p ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
+${RSYNC} -aPx \
+         release/Swift*.swiftdoc \
+         ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
+${RSYNC} -aPx \
+         release/Swift*.swiftmodule \
+         ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
+${RSYNC} -aPx \
+         release/libSwift*.a \
+         ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/
 
 # Build the package
 deb-package-build

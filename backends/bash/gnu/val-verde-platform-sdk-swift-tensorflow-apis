@@ -11,12 +11,12 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 # Configure the build components
 cd ${STAGE_ROOT}
-curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor > bazel.gpg
-mv bazel.gpg /etc/apt/trusted.gpg.d/
-echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | tee /etc/apt/sources.list.d/bazel.list
-apt update
-apt install -y bazel-3.1.0
-ln -sf `which bazel-3.1.0` /usr/local/bin/bazel
+${CURL} -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor > bazel.gpg
+${MV} bazel.gpg /etc/apt/trusted.gpg.d/
+${ECHO} "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | tee /etc/apt/sources.list.d/bazel.list
+${APT} update
+${APT} install -y bazel-3.1.0
+${LN} -sf `which bazel-3.1.0` /usr/local/bin/bazel
 
 ${BUILD_PACKAGE_PREFIX}/bin/pip3 install --upgrade pip
 ${BUILD_PACKAGE_PREFIX}/bin/pip3 install wheel

@@ -27,20 +27,23 @@ package-configure \
 # Build the components
 make-install
 
-mkdir -p ${INSTALL_PREFIX}/include/gnulib/config \
-         ${INSTALL_PREFIX}/lib
-sed -i \
-    "s/#define PACKAGE/#define GNULIB_PACKAGE/g" \
-    ${STAGE_ROOT}/config.h
-sed -i \
-    "s/#define VERSION/#define GNULIB_VERSION/g" \
-    ${STAGE_ROOT}/config.h
-rsync -aPx ${STAGE_ROOT}/config.h \
-           ${INSTALL_PREFIX}/include/gnulib/config/
-rsync -aPx ${STAGE_ROOT}/gllib/*.h \
-           ${INSTALL_PREFIX}/include/gnulib/
-rsync -aPx ${STAGE_ROOT}/gllib/*.a \
-           ${INSTALL_PREFIX}/lib/
+${MKDIR} -p ${INSTALL_PREFIX}/include/gnulib/config \
+            ${INSTALL_PREFIX}/lib
+${SED} -i \
+       "s/#define PACKAGE/#define GNULIB_PACKAGE/g" \
+       ${STAGE_ROOT}/config.h
+${SED} -i \
+       "s/#define VERSION/#define GNULIB_VERSION/g" \
+       ${STAGE_ROOT}/config.h
+${RSYNC} -aPx \
+         ${STAGE_ROOT}/config.h \
+         ${INSTALL_PREFIX}/include/gnulib/config/
+${RSYNC} -aPx \
+         ${STAGE_ROOT}/gllib/*.h \
+         ${INSTALL_PREFIX}/include/gnulib/
+${RSYNC} -aPx \
+         ${STAGE_ROOT}/gllib/*.a \
+         ${INSTALL_PREFIX}/lib/
 
 # Build the package
 deb-package-build

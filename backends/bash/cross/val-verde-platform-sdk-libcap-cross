@@ -18,14 +18,14 @@ copy-source-to-staging
 cd ${STAGE_ROOT}
 
 # Build the components
-TARGETS=`echo "\
+TARGETS=`${ECHO} "\
     lib=lib \
     prefix=${PACKAGE_PREFIX} \
     AR=${AR} \
     BUILD_CC=${BUILD_CC} \
     CC=${CC} \
     install \
-" | xargs`
+" | ${XARGS}`
 
 make-install -C ${STAGE_ROOT}/libcap ${TARGETS}
 make-install -C ${STAGE_ROOT}/progs ${TARGETS}

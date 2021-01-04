@@ -13,15 +13,15 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 copy-source-to-staging
 
 if [ "${HOST_OS}" = "gnu" ]; then
-    export CFLAGS=`echo "\
+    export CFLAGS=`${ECHO} "\
         -D_IO_ftrylockfile=1 \
         -D_IO_IN_BACKUP=0x100 \
         ${CFLAGS} \
-    " | xargs`
+    " | ${XARGS}`
 fi
 
 cd ${STAGE_ROOT}
-autoreconf -fi
+package-autoreconf -fi
 package-configure \
     ${STAGE_ROOT}/configure
 

@@ -173,19 +173,20 @@ package-cmake \
 # Build the components
 ninja-install
 
-rsync -aPx ${STAGE_ROOT}/bin/llvm-as* \
-           ${STAGE_ROOT}/bin/llvm-dlltool* \
-           ${STAGE_ROOT}/bin/llvm-mt* \
-           ${STAGE_ROOT}/bin/llvm-pdbutil* \
-           ${STAGE_ROOT}/bin/llvm-readelf* \
-           ${STAGE_ROOT}/bin/llvm-readobj* \
-           ${INSTALL_PREFIX}/bin
+${RSYNC} -aPx \
+         ${STAGE_ROOT}/bin/llvm-as* \
+         ${STAGE_ROOT}/bin/llvm-dlltool* \
+         ${STAGE_ROOT}/bin/llvm-mt* \
+         ${STAGE_ROOT}/bin/llvm-pdbutil* \
+         ${STAGE_ROOT}/bin/llvm-readelf* \
+         ${STAGE_ROOT}/bin/llvm-readobj* \
+         ${INSTALL_PREFIX}/bin
 
 # Build the package
 deb-package-build
 
 # remove libcxx, libcxxabi and libunwind as they are superceded by llvm-project.
-HOST_PROCESSOR=`echo ${HOST_PROCESSOR} | tr _ -`
+HOST_PROCESSOR=`${ECHO} ${HOST_PROCESSOR} | ${TR} _ -`
 PACKAGES_TO_MANAGE=( 'libcxx'    'HOST' \
                      'libcxxabi' 'HOST' \
                      'libunwind' 'HOST' )

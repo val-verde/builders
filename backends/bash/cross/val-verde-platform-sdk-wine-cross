@@ -13,7 +13,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 copy-source-to-staging
 
 cd ${STAGE_ROOT}
-autoreconf -fi
+package-autoreconf -fi
 package-configure \
     ${STAGE_ROOT}/configure \
     --disable-static \

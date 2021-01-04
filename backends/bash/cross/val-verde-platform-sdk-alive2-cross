@@ -18,7 +18,7 @@ package-cmake \
 # Build the components
 ninja-build
 
-mkdir -p \
+${MKDIR} -p \
       ${INSTALL_PREFIX}/bin \
       ${INSTALL_PREFIX}/include/alive2/ir \
       ${INSTALL_PREFIX}/include/alive2/smt \
@@ -26,26 +26,26 @@ mkdir -p \
       ${INSTALL_PREFIX}/include/alive2/utils \
       ${INSTALL_PREFIX}/lib/pkgconfig
 
-rsync -aPx \
+${SSYNC} -aPx \
       ${STAGE_ROOT}/alive \
       ${INSTALL_PREFIX}/bin/
-rsync -aPx \
-      ${SOURCE_ROOT}/ir/*.h \
-      ${INSTALL_PREFIX}/include/alive2/ir/
-rsync -aPx \
-      ${SOURCE_ROOT}/smt/*.h \
-      ${INSTALL_PREFIX}/include/alive2/smt/
-rsync -aPx \
-      ${SOURCE_ROOT}/tools/*.h \
-      ${INSTALL_PREFIX}/include/alive2/tools/
-rsync -aPx \
-      ${SOURCE_ROOT}/util/*.h \
-      ${INSTALL_PREFIX}/include/alive2/util/
-rsync -aPx \
-      ${STAGE_ROOT}/libalive2.* \
-      ${INSTALL_PREFIX}/lib/
+${SSYNC} -aPx \
+         ${SOURCE_ROOT}/ir/*.h \
+         ${INSTALL_PREFIX}/include/alive2/ir/
+${SSYNC} -aPx \
+         ${SOURCE_ROOT}/smt/*.h \
+         ${INSTALL_PREFIX}/include/alive2/smt/
+${SSYNC} -aPx \
+         ${SOURCE_ROOT}/tools/*.h \
+         ${INSTALL_PREFIX}/include/alive2/tools/
+${SSYNC} -aPx \
+         ${SOURCE_ROOT}/util/*.h \
+         ${INSTALL_PREFIX}/include/alive2/util/
+${SSYNC} -aPx \
+         ${STAGE_ROOT}/libalive2.* \
+         ${INSTALL_PREFIX}/lib/
 
-echo "
+${ECHO} "
 V=${SOURCE_PACKAGE_VERSION}
 R=${SOURCE_PACKAGE_VERSION}
 

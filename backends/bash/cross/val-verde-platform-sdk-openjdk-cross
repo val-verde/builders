@@ -13,18 +13,18 @@ export-compiler-environment
 generate-compiler-tools
 
 # Configure the build components
-chmod +x ${SOURCE_ROOT}/configure
-mkdir -p ${STAGE_ROOT}/build
+${CHMOD} +x ${SOURCE_ROOT}/configure
+${MKDIR} -p ${STAGE_ROOT}/build
 
 cd ${STAGE_ROOT}/build
-BUILD_CFLAGS=`echo "\
+BUILD_CFLAGS=`${ECHO} "\
     -I${BUILD_PACKAGE_PREFIX}/include \
     -L${BUILD_PACKAGE_PREFIX}/lib \
-" | xargs`
-BUILD_CXXFLAGS=`echo "\
+" | ${XARGS}`
+BUILD_CXXFLAGS=`${ECHO} "\
     ${BUILD_CFLAGS} \
     -stdlib++-isystem ${BUILD_PACKAGE_PREFIX}/include/c++/v1 \
-" | xargs`
+" | ${XARGS}`
 
 create-host-tool ${BUILD_CC} BUILD_CFLAGS ${STAGE_ROOT}/build-clang
 create-host-tool ${BUILD_CC}++ BUILD_CXXFLAGS ${STAGE_ROOT}/build-clang++

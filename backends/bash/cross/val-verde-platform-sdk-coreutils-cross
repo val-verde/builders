@@ -17,8 +17,8 @@ export DEPENDS="\
 # Configure the build components
 cd ${STAGE_ROOT}
 
-mkdir -p ${STAGE_ROOT}/bin
-ln -sf /usr/bin/true \
+${MKDIR} -p ${STAGE_ROOT}/bin
+${LN} -sf /usr/bin/true \
        ${STAGE_ROOT}/bin/makeinfo
 
 export FORCE_UNSAFE_CONFIGURE=1

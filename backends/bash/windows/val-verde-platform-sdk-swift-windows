@@ -113,14 +113,16 @@ package-cmake-invocation \
 # Build the components
 ninja-install
 
-rsync -aPx ${STAGE_ROOT}/lib/*.a \
-           ${INSTALL_PREFIX}/lib/*.a \
-           ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
-mv ${INSTALL_PREFIX}/lib/swift/windows/*.dll \
-   ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
-mv ${INSTALL_PREFIX}/lib/swift/windows/*.swift* \
-   ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}/
-rm -f ${INSTALL_PREFIX}/bin/*libdispatch* \
+${RSYNC} -aPx \
+         ${STAGE_ROOT}/lib/*.a \
+         ${INSTALL_PREFIX}/lib/*.a \
+         ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
+${MV} ${INSTALL_PREFIX}/lib/swift/windows/*.dll \
+      ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
+${MV} ${INSTALL_PREFIX}/lib/swift/windows/*.swift* \
+      ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}/
+${RM} -f \
+      ${INSTALL_PREFIX}/bin/*libdispatch* \
       ${INSTALL_PREFIX}/bin/*BlocksRuntime* \
       ${INSTALL_PREFIX}/lib/*libdispatch* \
       ${INSTALL_PREFIX}/lib/*BlocksRuntime* \

@@ -23,12 +23,12 @@ package-configure \
 # Build the components
 make-install
 
-cp ${SOURCE_ROOT}/include/module.modulemap \
-   ${INSTALL_PREFIX}/include/
-ln -sf . \
-       ${INSTALL_PREFIX}/mingw
-ln -sf . \
-       ${INSTALL_PREFIX}/usr
+${CP} ${SOURCE_ROOT}/include/module.modulemap \
+      ${INSTALL_PREFIX}/include/
+${LN} -sf . \
+      ${INSTALL_PREFIX}/mingw
+${LN} -sf . \
+      ${INSTALL_PREFIX}/usr
 
 # Build the package
 deb-package-build

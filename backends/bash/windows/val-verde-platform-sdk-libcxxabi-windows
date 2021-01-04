@@ -47,9 +47,9 @@ package-cmake \
 # Build the components
 ninja-install
 
-mkdir -p ${INSTALL_PREFIX}/include
-cp ${SOURCE_ROOT}/include/* \
-   ${INSTALL_PREFIX}/include
+${MKDIR} -p ${INSTALL_PREFIX}/include
+${CP} ${SOURCE_ROOT}/include/* \
+      ${INSTALL_PREFIX}/include
 
 # Build the package
 deb-package-build

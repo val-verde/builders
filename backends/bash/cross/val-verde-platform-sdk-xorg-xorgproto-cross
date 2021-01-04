@@ -27,10 +27,10 @@ package-configure \
 # Build the components
 make-install
 
-mkdir -p ${INSTALL_PREFIX}/lib
-mv ${INSTALL_PREFIX}/share/pkgconfig \
-   ${INSTALL_PREFIX}/lib/pkgconfig
-rm -rf ${INSTALL_PREFIX}/share
+${MKDIR} -p ${INSTALL_PREFIX}/lib
+${MV} ${INSTALL_PREFIX}/share/pkgconfig \
+      ${INSTALL_PREFIX}/lib/pkgconfig
+${RM} -rf ${INSTALL_PREFIX}/share
 
 # Build the package
 deb-package-build

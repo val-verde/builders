@@ -3,17 +3,20 @@
 set -e
 
 export \
+    AUTORECONF=/usr/bin/autoreconf \
     BASH=/usr/bin/bash \
     BISON=/usr/bin/bison \
     CHMOD=/usr/bin/chmod \
     CMAKE=/usr/bin/cmake \
     CP=/usr/bin/cp \
     CURL=/usr/bin/curl \
+    CUT=/usr/bin/cut \
     DPKG=/usr/bin/dpkg \
-    ECHO=/usr/bin/echo \
     FIND=/usr/bin/find \
     GAWK=/usr/bin/gawk \
+    GETTEXT=/usr/bin/gettext \
     GIT=/usr/bin/git \
+    GPERF=/usr/bin/gperf \
     INSTALL=/usr/bin/install \
     LN=/usr/bin/ln \
     LS=/usr/bin/ls \
@@ -33,11 +36,13 @@ export \
     SED=/usr/bin/sed \
     SSH=/usr/bin/ssh \
     TAR=/usr/bin/tar \
-    UNZIP=/usr/bin/unzip \
+    TEE=/usr/bin/tee \
+    TR=/usr/bin/tr \
+    UNZIP=/usr/bin/gunzip \
     WGET=/usr/bin/wget \
     XARGS=/usr/bin/xargs \
     XZ=/usr/bin/xz \
-    ZIP=/usr/bin/zip
+    ZIP=/usr/bin/gzip
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
@@ -50,6 +55,8 @@ package-invoke-builder bzip2-cross
 
 # gzip build
 package-invoke-builder gzip-cross
+export UNZIP=${BINDIR}/gunzip
+export ZIP=${BINDIR}/gzip
 
 # lz4 build
 package-invoke-builder lz4-cross
@@ -59,17 +66,16 @@ package-invoke-builder xxhash-cross
 
 # zip build
 package-invoke-builder zip-cross
-export ZIP=${BINDIR}/gzip
 
 # zstd build
 package-invoke-builder zstd-cross
 
 # unzip build
 package-invoke-builder unzip-cross
-export UNZIP=${BINDIR}/gunzip
 
 # autoconf build
 package-invoke-builder autoconf-cross
+export AUTORECONF=${BINDIR}/autoreconf
 
 # automake build
 package-invoke-builder automake-cross
@@ -139,6 +145,7 @@ package-invoke-builder expat-cross
 
 # gettext build
 package-invoke-builder gettext-cross
+export GETTEXT=${BINDIR}/gettext
 
 # glib build
 package-invoke-builder glib-cross
@@ -308,6 +315,7 @@ package-invoke-builder coreutils-cross
 export \
     CHMOD=${BINDIR}/chmod \
     CP=${BINDIR}/cp \
+    CUT=${BINDIR}/cut \
     ECHO=${BINDIR}/echo \
     INSTALL=${BINDIR}/install \
     LS=${BINDIR}/ls \
@@ -316,7 +324,9 @@ export \
     MKDIR=${BINDIR}/mkdir \
     MV=${BINDIR}/mv \
     RM=${BINDIR}/rm \
-    RMDIR=${BINDIR}/rmdir
+    RMDIR=${BINDIR}/rmdir \
+    TEE=${BINDIR}/tee \
+    TR=${BINDIR}/tr
 
 # findutils build
 package-invoke-builder findutils-cross

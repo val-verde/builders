@@ -13,10 +13,10 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 copy-source-to-staging
 
 # Build the components
-CFLAGS=`echo "\
+CFLAGS=`${ECHO} "\
     -D_WASI_EMULATED_MMAN \
     -D_WASI_EMULATED_SIGNAL \
-" | xargs`
+" | ${XARGS}`
 
 cd ${STAGE_ROOT}
 

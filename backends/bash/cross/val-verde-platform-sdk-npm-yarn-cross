@@ -9,21 +9,21 @@ export SOURCE_PACKAGE_VERSION=9999-git
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
-mkdir -p ${INSTALL_PREFIX}/bin \
-         ${INSTALL_PREFIX}/lib
+${MKDIR} -p ${INSTALL_PREFIX}/bin \
+            ${INSTALL_PREFIX}/lib
 
 # Build the components
 cd ${INSTALL_PREFIX}/lib
 ${BUILD_PACKAGE_PREFIX}/bin/npm install --no-save yarn
-ln -sf ../lib/node_modules/.bin/yarn \
-       ../lib/node_modules/.bin/yarnpkg \
-       ${INSTALL_PREFIX}/bin/
-rm ${INSTALL_PREFIX}/lib/node_modules/.package-lock.json
+${LN} -sf ../lib/node_modules/.bin/yarn \
+          ../lib/node_modules/.bin/yarnpkg \
+          ${INSTALL_PREFIX}/bin/
+${RM} ${INSTALL_PREFIX}/lib/node_modules/.package-lock.json
 
 if [ "${HOST_OS}" = "android" ]; then
-    sed -i \
-        's|/usr/bin/env|/system/bin/env|g' \
-        `grep -rl "/usr/bin/env" ${INSTALL_PREFIX}`
+    ${SED} -i \
+           's|/usr/bin/env|/system/bin/env|g' \
+           `${GREP} -rl "/usr/bin/env" ${INSTALL_PREFIX}`
 fi
 
 # Build the package

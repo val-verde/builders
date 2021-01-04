@@ -15,7 +15,7 @@ SETUP_PY=${SOURCE_ROOT}/tensorflow/tools/pip_package/setup.py \
 package-python-build
 
 # Remove duplicated copies of easy_install script
-rm -rf ${INSTALL_PREFIX}/bin/easy_install*
+${RM} -rf ${INSTALL_PREFIX}/bin/easy_install*
 
 # Build the package
 deb-package-build

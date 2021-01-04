@@ -30,8 +30,9 @@ package-cmake \
 # Build the components
 ninja-build
 
-rsync -aPx ${STAGE_ROOT}/lib \
-           ${INSTALL_PREFIX}
+${RSYNC} -aPx \
+         ${STAGE_ROOT}/lib \
+         ${INSTALL_PREFIX}
 
 # Build the package
 deb-package-build
