@@ -50,6 +50,7 @@ export MV=${MV:-${BINDIR}/mv}
 export PATCH=${PATCH:-/usr/bin/patch}
 export PERL=${PERL:-${BINDIR}/perl}
 export PYTHON=${PYTHON:-${BINDIR}/python3}
+export PYTHON_VERSION=${PYTHON_VERSION:-3.9}
 export RM=${RM:-"${BINDIR}/rm -f"}
 export RMDIR=${RMDIR:-${BINDIR}/rmdir}
 export RSYNC=${RSYNC:-${BINDIR}/rsync}
