@@ -53,7 +53,7 @@ package-cmake \
     -DLLDB_ENABLE_SWIFT_SUPPORT=TRUE \
     -DLLDB_ENABLE_WERROR=FALSE \
     -DLLDB_INCLUDE_TESTS=FALSE \
-    -DLLDB_PYTHON_DEFAULT_RELATIVE_PATH=lib/python3.8 \
+    -DLLDB_PYTHON_DEFAULT_RELATIVE_PATH=lib/python${PYTHON_VERSION} \
     -DLLVM_BUILD_LIBRARY_DIR=${LLVM_STAGE_ROOT}/lib \
     -DLLVM_BUILD_MAIN_SRC_DIR=${LLVM_SOURCE_ROOT}/llvm \
     -DLLVM_DIR=${LLVM_STAGE_ROOT}/lib/cmake/llvm \
@@ -69,8 +69,8 @@ package-cmake \
     -DLLVM_MAIN_INCLUDE_DIR=${LLVM_SOURCE_ROOT}/llvm/include \
     -DLLVM_TABLEGEN=${LLVM_STAGE_ROOT}/bin/llvm-tblgen \
     -DPython3_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/python3 \
-    -DPython3_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/python3.8 \
-    -DPython3_LIBRARIES=${PACKAGE_PREFIX}/lib/libpython3.8.so \
+    -DPython3_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/python${PYTHON_VERSION} \
+    -DPython3_LIBRARIES=${PACKAGE_PREFIX}/lib/libpython${PYTHON_VERSION}.so \
     -DPANEL_LIBRARIES=${PACKAGE_PREFIX}/lib/libpanel.so \
     -DSwift_DIR=${SWIFT_STAGE_ROOT}/lib/cmake/swift \
     -DSWIG_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/swig \
