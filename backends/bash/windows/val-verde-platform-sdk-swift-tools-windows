@@ -2,6 +2,9 @@
 
 set -e
 
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
 # windows llvm build
 package-invoke-builder llvm-project-windows
 

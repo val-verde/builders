@@ -81,6 +81,7 @@ function export-compiler-environment() {
     export CMAKE=${CMAKE:-${BINDIR}/cmake}
     export CPP=${CPP:-${CC}-cpp}
     export CXX=${CXX:-${CC}++}
+    export CXXFILT=${CXXFILT:-${BINTOOLS_PATH_PREFIX}cxxfilt}
     export CXXLD=${CXXLD:-${CXX}}
     export DLLTOOL=${DLLTOOL:-${BINTOOLS_PATH_PREFIX}dlltool}
     export LD=${LD:-${BINDIR}/ld.lld}
@@ -310,6 +311,7 @@ function generate-compiler-tools() {
 }
 
 function tool-build() {
+    ${ECHO}
     ${ECHO} -e "    Tool Invocation"
     ${ECHO} -e "        Tool Name: \e[1m${TOOL}\e[0m"
     ${ECHO} -e "        Parallel Invocations: ${NUM_PROCESSORS}"
@@ -317,10 +319,9 @@ function tool-build() {
     ${ECHO} -e "                   \e[31m${STAGE_ROOT}/builder-compile-stderr.log\e[0m"
     ${ECHO} -e "        Time Started: \e[4m$(date)\e[0m"
 
-    ${TOOL} -j${NUM_PROCESSORS} \
-            ${@} \
-            > ${STAGE_ROOT}/builder-compile.log \
-            2> ${STAGE_ROOT}/builder-compile-stderr.log
+    TOOL_LOG=${STAGE_ROOT}/builder-compile \
+    tool-log ${TOOL} -j${NUM_PROCESSORS} \
+                     "${@}"
 
     ${ECHO} -e "        Time Completed: \e[4m$(date)\e[0m"
 }
@@ -328,6 +329,7 @@ function tool-build() {
 function tool-install() {
     DESTDIR=${DESTDIR:-${INSTALL_ROOT}}
 
+    ${ECHO}
     ${ECHO} -e "    Installation Invocation"
     ${ECHO} -e "        Tool Name: \e[1m${TOOL}\e[0m"
     ${ECHO} -e "        Destination Directory: ${DESTDIR}"
@@ -341,39 +343,43 @@ function tool-install() {
         export DESTDIR=${DESTDIR}
     fi
 
-    ${TOOL} ${INSTALL_TARGET:-install} \
-            ${DESTDIR_CMD} \
-            ${@} \
-            > ${STAGE_ROOT}/builder-installation.log \
-            2> ${STAGE_ROOT}/builder-installation-stderr.log
-
+    TOOL_LOG=${STAGE_ROOT}/builder-installation \
+    tool-log ${TOOL} -j${NUM_PROCESSORS} \
+                     ${INSTALL_TARGET:-install} \
+                     ${DESTDIR_CMD} \
+                     "${@}"
     ${ECHO} -e "        Time Completed: \e[4m$(date)\e[0m"
+}
+
+function tool-log() {
+    "${@}" \
+        > ${TOOL_LOG}.log \
+        2> ${TOOL_LOG}-stderr.log
 }
 
 function make-build() {
     TOOL=${MAKE} \
-    tool-build ${@}
+    tool-build "${@}"
 }
 
 function make-install() {
     TOOL=${MAKE} \
-    tool-install ${@}
+    tool-install "${@}"
 }
 
 function ninja-build() {
     TOOL=${NINJA} \
-    tool-build ${@}
+    tool-build "${@}"
 }
 
 function ninja-install() {
     TOOL=${NINJA} \
-    tool-install ${@}
+    tool-install "${@}"
 }
 
 function package-autoreconf() {
-    ${BINDIR}/autoreconf ${@} \
-        > ${STAGE_ROOT}/builder-autoreconf.log \
-        2> ${STAGE_ROOT}/builder-autoreconf-stderr.log
+    TOOL_LOG=${STAGE_ROOT}/builder-compile \
+    tool-log ${AUTORECONF} "${@}"
 }
 
 function package-cmake-invocation() {
@@ -389,7 +395,8 @@ function package-cmake-invocation() {
     AS_COMPILER_ID=${AS_COMPILER_ID:-Clang}
     CXX_STANDARD=${CXX_STANDARD:-20}
 
-    ${CMAKE} \
+    TOOL_LOG=${STAGE_ROOT}/builder-invocation \
+    tool-log ${CMAKE} \
         -G Ninja \
         -DCMAKE_AR=${AR} \
         -DCMAKE_ASM_COMPILER=${AS} \
@@ -436,9 +443,7 @@ function package-cmake-invocation() {
         -DCMAKE_SYSTEM_PROCESSOR=${HOST_PROCESSOR} \
         "${CROSSCOMPILING_CMD}" \
         "${SYSTEM_NAME_CMD}" \
-        "${@}" \
-        > ${STAGE_ROOT}/builder-invocation.log \
-        2> ${STAGE_ROOT}/builder-invocation-stderr.log
+        "${@}"
 }
 
 function package-cmake() {
@@ -450,13 +455,12 @@ function package-cmake() {
 function package-configure-invocation() {
     CONFIGURE_HOST_TRIPLE=${CONFIGURE_HOST_TRIPLE:-${HOST_TRIPLE}}
 
-    "${@}" \
+    TOOL_LOG=${STAGE_ROOT}/builder-invocation \
+    tool-log "${@}" \
         --build=${BUILD_TRIPLE} \
         --host=${CONFIGURE_HOST_TRIPLE} \
         --prefix=${PACKAGE_PREFIX} \
-        ${CONFIGURE_FLAGS} \
-        > ${STAGE_ROOT}/builder-invocation.log \
-        2> ${STAGE_ROOT}/builder-invocation-stderr.log
+        ${CONFIGURE_FLAGS}
 }
 
 function package-configure() {
@@ -467,9 +471,8 @@ function package-configure() {
 }
 
 function package-libtoolize() {
-    ${BINDIR}/libtoolize ${@} \
-        > ${STAGE_ROOT}/builder-libtoolize.log \
-        2> ${STAGE_ROOT}/builder-libtoolize-stderr.log
+    TOOL_LOG=${STAGE_ROOT}/builder-libtoolize \
+    tool-log ${BINDIR}/libtoolize "${@}"
 }
 
 function package-meson-build() {
@@ -641,15 +644,14 @@ windres = '${WINDRES}'
 " >> ${CONFIG_FILE}
     fi
 
-    ${MESON} \
+    TOOL_LOG=${STAGE_ROOT}/builder-invocation \
+    tool-log ${MESON} \
          ${SOURCE_ROOT} \
          ${STAGE_ROOT} \
          -Dlibdir=${PACKAGE_PREFIX}/lib \
          -Dprefix=${PACKAGE_PREFIX} \
          --${MESON_BUILD_CONFIG}-file ${CONFIG_FILE} \
-         ${@} \
-         > ${STAGE_ROOT}/builder-invocation.log \
-         2> ${STAGE_ROOT}/builder-invocation-stderr.log
+         "${@}"
 }
 
 function package-python-build() {
@@ -659,15 +661,14 @@ function package-python-build() {
     export-compiler-environment
     generate-compiler-tools
 
-    ${PYTHON} ${SETUP_PY} build -b ${STAGE_ROOT} \
-                                -j ${NUM_PROCESSORS} \
-              > ${STAGE_ROOT}/builder-invocation.log \
-              2> ${STAGE_ROOT}/builder-invocation-stderr.log
-    ${PYTHON} ${SETUP_PY} install --prefix ${INSTALL_PREFIX} \
-                                  --record ${INSTALLED_FILE_LIST} \
-                                  --single-version-externally-managed \
-              > ${STAGE_ROOT}/builder-installation.log \
-              2> ${STAGE_ROOT}/builder-installation-stderr.log
+    TOOL_LOG=${STAGE_ROOT}/builder-invocation \
+    tool-log ${PYTHON} ${SETUP_PY} build -b ${STAGE_ROOT} \
+                                         -j ${NUM_PROCESSORS}
+
+    TOOL_LOG=${STAGE_ROOT}/builder-installation \
+    tool-log ${PYTHON} ${SETUP_PY} install --prefix ${INSTALL_PREFIX} \
+                                           --record ${INSTALLED_FILE_LIST} \
+                                           --single-version-externally-managed
 }
 
 function package-swift-build() {
@@ -750,15 +751,14 @@ function package-swift-build() {
     } \n\
     " > ${TEMP_FILE}
 
-    ${BINDIR}/swift \
+    TOOL_LOG=${STAGE_ROOT}/builder-invocation \
+    tool-log ${BINDIR}/swift \
         build \
         --build-path ${STAGE_ROOT} \
         --configuration ${SWIFT_BUILD_TYPE} \
         --destination ${TEMP_FILE} \
         --enable-test-discovery \
-        ${SWIFT_BUILD_FLAGS} \
-        > ${STAGE_ROOT}/builder-invocation.log \
-        2> ${STAGE_ROOT}/builder-invocation-stderr.log
+        ${SWIFT_BUILD_FLAGS}
 }
 
 function package-invoke-builder() {
@@ -786,8 +786,9 @@ function rpath-fixup() {
 }
 
 function yarn-build() {
-    yarn > ${STAGE_ROOT}/builder-invocation.log \
-         2> ${STAGE_ROOT}/builder-invocation-stderr.log
-    yarn compile > ${STAGE_ROOT}/builder-compile.log \
-                 2> ${STAGE_ROOT}/builder-compile-stderror.log
+    TOOL_LOG=${STAGE_ROOT}/builder-invocation \
+    tool-log ${BINDIR}/yarn
+
+    TOOL_LOG=${STAGE_ROOT}/builder-compile \
+    tool-log ${BINDIR}/yarn compile
 }

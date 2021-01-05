@@ -30,7 +30,8 @@ sed -i \
     ${STAGE_ROOT}/lib/config.h
 
 # Build the components
-make-install
+make-install \
+    HELP2MAN=${HELP2MAN}
 
 # Build the package
 deb-package-build

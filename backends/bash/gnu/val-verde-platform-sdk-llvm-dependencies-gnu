@@ -17,6 +17,8 @@ export \
     GETTEXT=/usr/bin/gettext \
     GIT=/usr/bin/git \
     GPERF=/usr/bin/gperf \
+    GREP=/usr/bin/grep \
+    HELP2MAN=/usr/bin/true \
     INSTALL=/usr/bin/install \
     LN=/usr/bin/ln \
     LS=/usr/bin/ls \
@@ -317,13 +319,14 @@ export \
     CP=${BINDIR}/cp \
     CUT=${BINDIR}/cut \
     ECHO=${BINDIR}/echo \
+    HELP2MAN=${BINDIR}/true \
     INSTALL=${BINDIR}/install \
     LS=${BINDIR}/ls \
     LN=${BINDIR}/ln \
     MAKEINFO=${BINDIR}/true \
     MKDIR=${BINDIR}/mkdir \
     MV=${BINDIR}/mv \
-    RM=${BINDIR}/rm \
+    RM="${BINDIR}/rm -f" \
     RMDIR=${BINDIR}/rmdir \
     TEE=${BINDIR}/tee \
     TR=${BINDIR}/tr

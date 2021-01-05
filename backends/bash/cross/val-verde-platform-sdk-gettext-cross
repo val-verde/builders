@@ -16,7 +16,7 @@ export DEPENDS="\
 
 # Configure the build components
 cd ${STAGE_ROOT}
-
+RM="${RM} -r" \
 package-configure \
     ${SOURCE_ROOT}/configure
 
