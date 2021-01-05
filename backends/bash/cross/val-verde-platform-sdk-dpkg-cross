@@ -44,6 +44,7 @@ CXXFLAGS="\
     -std=c++14 \
     ${CXXFLAGS} \
 " \
+TAR=tar \
 package-configure \
     ${SOURCE_ROOT}/configure \
     cross_compiling=${CROSS_COMPILING} \
