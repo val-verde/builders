@@ -19,12 +19,13 @@ export PACKAGE_ARCH=all
 export PACKAGE_CLASS=deb
 
 # 'build' configuration
-export BINDIR=${BINDIR:-${BUILD_PACKAGE_PREFIX}/bin}
 export BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}
 export BUILD_4_TRIPLE=${BUILD_PROCESSOR}-${BUILD_ENV:-unknown}-${BUILD_KERNEL}-${BUILD_OS}
 export BUILD_PACKAGE_PREFIX=${PACKAGE_PLATFORM_SDKROOT}/${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/sysroot/usr
+export BINDIR=${BINDIR:-${BUILD_PACKAGE_PREFIX}/bin}
 
 # 'build' tools
+export AUTORECONF=${AUTORECONF:-/usr/bin/autoreconf}
 export APT=${APT:-/usr/bin/apt}
 export BASH=${BASH:-${BINDIR}/bash}
 export BISON=${BISON:-${BINDIR}/bison}
@@ -39,6 +40,7 @@ export GAWK=${GAWK:-${BINDIR}/gawk}
 export GETTEXT=${GIT:-${BINDIR}/gettext}
 export GIT=${GIT:-${BINDIR}/git}
 export GPERF=${GPERF:-${BINDIR}/gperf}
+export GREP=${GREP:-${BINDIR}/grep}
 export INSTALL=${INSTALL:-${BINDIR}/install}
 export LN=${LN:-${BINDIR}/ln}
 export LS=${LS:-${BINDIR}/ls}

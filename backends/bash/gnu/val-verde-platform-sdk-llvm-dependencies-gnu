@@ -17,6 +17,7 @@ export \
     GETTEXT=/usr/bin/gettext \
     GIT=/usr/bin/git \
     GPERF=/usr/bin/gperf \
+    GREP=/usr/bin/grep \
     INSTALL=/usr/bin/install \
     LN=/usr/bin/ln \
     LS=/usr/bin/ls \
@@ -323,7 +324,7 @@ export \
     MAKEINFO=${BINDIR}/true \
     MKDIR=${BINDIR}/mkdir \
     MV=${BINDIR}/mv \
-    RM=${BINDIR}/rm \
+    RM="${BINDIR}/rm -f" \
     RMDIR=${BINDIR}/rmdir \
     TEE=${BINDIR}/tee \
     TR=${BINDIR}/tr
