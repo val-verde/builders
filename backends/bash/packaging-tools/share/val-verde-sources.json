@@ -35,6 +35,15 @@
     {
         "retainSource": "false",
         "sourceType": "git",
+        "sourcePackageName": "apt",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2.1.15",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
+        "enableSubmodules": "false"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
         "sourcePackageName": "baikonur",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1.0.0",
