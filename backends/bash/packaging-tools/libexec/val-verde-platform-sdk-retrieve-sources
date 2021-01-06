@@ -7,7 +7,8 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
 
 function build-install-git-source-package() {
-    export PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}        
+    PACKAGE_VERSION=$(package-major-version)
+    export PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${PACKAGE_VERSION}
 
     if [[ ${PACKAGE_BASE_URL} == *'${SOURCE_PACKAGE_NAME}'* ]]; then
         PACKAGE_URL=${PACKAGE_BASE_URL//'${SOURCE_PACKAGE_NAME}'/${SOURCE_PACKAGE_NAME}}
@@ -81,7 +82,8 @@ function build-install-git-source-package() {
 }
 
 function build-install-other-source-package() {
-    export PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}        
+    PACKAGE_VERSION=$(package-major-version)
+    export PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${PACKAGE_VERSION}
 
     if [[ ${PACKAGE_BASE_URL} == *'${SOURCE_PACKAGE_NAME}'* || ${PACKAGE_BASE_URL} == *'${SOURCE_PACKAGE_VERSION}'* ]]; then
         PACKAGE_URL=${PACKAGE_BASE_URL//'${SOURCE_PACKAGE_NAME}'/${SOURCE_PACKAGE_NAME}}
