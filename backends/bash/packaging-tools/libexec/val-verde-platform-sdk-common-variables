@@ -179,6 +179,11 @@ function package-git-tool() {
            2> ${STAGE_ROOT}/builder-git-${1}-stderr.log
 }
 
+function package-major-version() {
+    MAJOR_VERSION=`echo "${SOURCE_PACKAGE_VERSION}" | cut -d "." -f1`
+    echo ${MAJOR_VERSION}.0.0
+}
+
 function package-push-directory() {
     pushd ${@} > /dev/null
 }
