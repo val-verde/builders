@@ -146,33 +146,6 @@ package-invoke-builder xorg-libxi-cross
 # android xorg-libice build
 package-invoke-builder xorg-libice-cross
 
-# android xorg-libsm build
-package-invoke-builder xorg-libsm-cross
-
-# android xorg-libxt build
-package-invoke-builder xorg-libxt-cross
-
-# android xorg-libxtst build
-package-invoke-builder xorg-libxtst-cross
-
-# android xorg-libxrandr build
-package-invoke-builder xorg-libxrandr-cross
-
-# android xorg-xinput build
-# package-invoke-builder xorg-xinput-cross
-
-# android xorg-libxkbfile build
-package-invoke-builder xorg-libxkbfile-cross
-
-# android xorg-libxshmfence build
-package-invoke-builder xorg-libxshmfence-cross
-
-# android xorg-libxxf86vm build
-package-invoke-builder xorg-libxxf86vm-cross
-
-# android freetype2 build
-package-invoke-builder freetype2-cross
-
 # android cups build
 # package-invoke-builder cups-cross
 
@@ -212,6 +185,33 @@ package-invoke-builder bash-cross
 
 # android util-linux build
 package-invoke-builder util-linux-cross
+
+# android xorg-libsm build
+package-invoke-builder xorg-libsm-cross
+
+# android xorg-libxt build
+package-invoke-builder xorg-libxt-cross
+
+# android xorg-libxtst build
+package-invoke-builder xorg-libxtst-cross
+
+# android xorg-libxrandr build
+package-invoke-builder xorg-libxrandr-cross
+
+# android xorg-xinput build
+# package-invoke-builder xorg-xinput-cross
+
+# android xorg-libxkbfile build
+package-invoke-builder xorg-libxkbfile-cross
+
+# android xorg-libxshmfence build
+package-invoke-builder xorg-libxshmfence-cross
+
+# android xorg-libxxf86vm build
+package-invoke-builder xorg-libxxf86vm-cross
+
+# android freetype2 build
+package-invoke-builder freetype2-cross
 
 # android libarchive build
 package-invoke-builder libarchive-cross

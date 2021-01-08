@@ -201,42 +201,6 @@ package-invoke-builder xorg-libxi-cross
 # xorg-libice build
 package-invoke-builder xorg-libice-cross
 
-# xorg-libsm build
-package-invoke-builder xorg-libsm-cross
-
-# xorg-libxt build
-package-invoke-builder xorg-libxt-cross
-
-# xorg-libxtst build
-package-invoke-builder xorg-libxtst-cross
-
-# xorg-libxrandr build
-package-invoke-builder xorg-libxrandr-cross
-
-# xorg-xinput build
-# package-invoke-builder xorg-xinput-cross
-
-# xorg-libxkbfile build
-package-invoke-builder xorg-libxkbfile-cross
-
-# xorg-libxshmfence build
-package-invoke-builder xorg-libxshmfence-cross
-
-# xorg-libxxf86vm build
-package-invoke-builder xorg-libxxf86vm-cross
-
-# freetype2 build
-package-invoke-builder freetype2-cross
-
-# wayland build
-package-invoke-builder wayland
-
-# wayland-protocols build
-package-invoke-builder wayland-protocols-cross
-
-# mesa-drm build
-package-invoke-builder mesa-drm-cross
-
 # alsa-lib build
 package-invoke-builder alsa-lib-cross
 
@@ -272,6 +236,42 @@ export BASH=${BINDIR}/bash
 
 # util-linux build
 package-invoke-builder util-linux-cross
+
+# xorg-libsm build
+package-invoke-builder xorg-libsm-cross
+
+# xorg-libxt build
+package-invoke-builder xorg-libxt-cross
+
+# xorg-libxtst build
+package-invoke-builder xorg-libxtst-cross
+
+# xorg-libxrandr build
+package-invoke-builder xorg-libxrandr-cross
+
+# xorg-xinput build
+# package-invoke-builder xorg-xinput-cross
+
+# xorg-libxkbfile build
+package-invoke-builder xorg-libxkbfile-cross
+
+# xorg-libxshmfence build
+package-invoke-builder xorg-libxshmfence-cross
+
+# xorg-libxxf86vm build
+package-invoke-builder xorg-libxxf86vm-cross
+
+# freetype2 build
+package-invoke-builder freetype2-cross
+
+# wayland build
+package-invoke-builder wayland
+
+# wayland-protocols build
+package-invoke-builder wayland-protocols-cross
+
+# mesa-drm build
+package-invoke-builder mesa-drm-cross
 
 # libarchive build
 package-invoke-builder libarchive-cross
