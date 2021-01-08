@@ -26,18 +26,15 @@ else
 fi
 
 cd ${STAGE_ROOT}
-${SED} -i \
-       's/AC_RUN_IFELSE/AC_COMPILE_IFELSE/g' \
-       `${GREP} -rl AC_RUN_IFELSE ${STAGE_ROOT}`
-
-package-autoreconf -fi
+package-autoreconf -i
 package-configure \
-    ${SOURCE_ROOT}/configure \
+    ${STAGE_ROOT}/configure \
     rsync_cv_HAVE_BROKEN_READDIR=no \
     --disable-md2man \
     ${CONFIGURE_SIMD_CMD}
 
 # Build the components
+make-build reconfigure
 make-install
 
 # Build the package
