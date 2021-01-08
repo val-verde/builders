@@ -13,10 +13,17 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 copy-source-to-staging
 
 cd ${STAGE_ROOT}
+if [ "${HOST_OS}" = "gnu" ]; then
+    ENABLE_OR_DISABLE_SYSTEMD=enable
+else
+    ENABLE_OR_DISABLE_SYSTEMD=disable
+fi
+
 package-configure \
-    ${SOURCE_ROOT}/configure \
+    ${STAGE_ROOT}/configure \
     --disable-static \
-    --enable-shared
+    --enable-shared \
+    --${ENABLE_OR_DISABLE_SYSTEMD}-systemd
 
 # Build the components
 make-install
