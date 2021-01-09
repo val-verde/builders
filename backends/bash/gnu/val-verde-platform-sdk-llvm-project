@@ -28,6 +28,9 @@ if [ -n "${ENABLE_MUSL_LIBC}" ]; then
     LIBC_CMD="-DLIBCXX_HAS_MUSL_LIBC=TRUE"
 fi
 
+# libLLVM.so is referenced by interim build tools
+export LD_LIBRARY_PATH=${STAGE_ROOT}/lib:${LD_LIBRARY_PATH}
+
 CXX_STANDARD=17 \
 package-cmake \
     -DBUILD_SHARED_LIBS=FALSE \
