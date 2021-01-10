@@ -149,6 +149,9 @@ package-invoke-builder expat-cross
 package-invoke-builder gettext-cross
 export GETTEXT=${BINDIR}/gettext
 
+# util-linux build
+package-invoke-builder util-linux-cross
+
 # glib build
 package-invoke-builder glib-cross
 
@@ -233,9 +236,6 @@ package-invoke-builder acl-cross
 # bash build
 package-invoke-builder bash-cross
 export BASH=${BINDIR}/bash
-
-# util-linux build
-package-invoke-builder util-linux-cross
 
 # xorg-libsm build
 package-invoke-builder xorg-libsm-cross

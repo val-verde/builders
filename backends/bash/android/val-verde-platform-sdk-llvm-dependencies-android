@@ -95,6 +95,9 @@ package-invoke-builder expat-cross
 # android gettext build
 package-invoke-builder gettext-cross
 
+# android util-linux build
+package-invoke-builder util-linux-cross
+
 # android glib build
 package-invoke-builder glib-cross
 
@@ -182,9 +185,6 @@ package-invoke-builder acl-cross
 
 # android bash build
 package-invoke-builder bash-cross
-
-# android util-linux build
-package-invoke-builder util-linux-cross
 
 # android xorg-libsm build
 package-invoke-builder xorg-libsm-cross
