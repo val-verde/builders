@@ -17,7 +17,7 @@ export SOURCE_ROOT=${PACKAGE_SOURCES_ROOT}/llvm-project-${SOURCE_PACKAGE_VERSION
 # Configure the build components
 cd ${STAGE_ROOT}
 
-BINDIR=${BINDIR:-${BUILD_PACKAGE_PREFIX}/bin}
+PACKAGE_PREFIX=${BUILD_PACKAGE_PREFIX}
 
 CFLAGS="\
     -nostdlib \
@@ -27,7 +27,6 @@ CXXFLAGS="\
     -nostdlib \
     ${CXXFLAGS} \
 " \
-INSTALL_PREFIX=${STAGE_ROOT}/install-staging${BUILD_PACKAGE_PREFIX} \
 package-cmake \
     -DCMAKE_C_COMPILER_WORKS=TRUE \
     -DCMAKE_CXX_COMPILER_WORKS=TRUE \
@@ -50,11 +49,11 @@ ninja-install
 SDK_PLATFORM_DIR=`${ECHO} ${SYSTEM_NAME} | ${TR} '[:upper:]' '[:lower:]'`
 DST_SDK_PLATFORM_DIR=${DST_SDK_PLATFORM_DIR:-${SDK_PLATFORM_DIR}}
 ${MKDIR} -p ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/12.0.0/lib/${SDK_PLATFORM_DIR}
-${MV} install-staging${BUILD_PACKAGE_PREFIX}/lib/${SDK_PLATFORM_DIR}/${CLANG_RT_LIB} \
+${MV} ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/${SDK_PLATFORM_DIR}/${CLANG_RT_LIB} \
       ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/12.0.0/lib/${DST_SDK_PLATFORM_DIR}/${DST_CLANG_RT_LIB}
-${MV} install-staging${BUILD_PACKAGE_PREFIX}/lib/${SDK_PLATFORM_DIR}/clang_rt.crtbegin-${HOST_PROCESSOR}.o \
+${MV} ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/${SDK_PLATFORM_DIR}/clang_rt.crtbegin-${HOST_PROCESSOR}.o \
       ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/12.0.0/lib/${DST_SDK_PLATFORM_DIR}/crtbeginS.o
-${MV} install-staging${BUILD_PACKAGE_PREFIX}/lib/${SDK_PLATFORM_DIR}/clang_rt.crtend-${HOST_PROCESSOR}.o \
+${MV} ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/${SDK_PLATFORM_DIR}/clang_rt.crtend-${HOST_PROCESSOR}.o \
       ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/12.0.0/lib/${DST_SDK_PLATFORM_DIR}/crtendS.o
 
 # Build the package
