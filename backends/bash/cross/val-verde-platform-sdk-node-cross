@@ -133,17 +133,24 @@ LDFLAGS_host=`${ECHO} "\
 " | ${XARGS}`
 export LDFLAGS=`${ECHO} ${LDFLAGS} | ${XARGS}`
 export LINK="${LD_host:-${BUILD_PACKAGE_PREFIX}/bin/clang++} ${LDFLAGS_host}"
-export LINK_target=${CXX}
+export LINK_target="${CXX} -L${PACKAGE_PREFIX}/lib"
 export RANLIB_host=${RANLIB_host:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib}
 export RANLIB_target=${RANLIB}
 
+unset PKG_CONFIG_PATH
 ${STAGE_ROOT}/configure \
     --dest-cpu=${CONFIGURE_HOST_PROCESSOR} \
     --dest-os=${CONFIGURE_HOST_OS} \
     --prefix=${PACKAGE_PREFIX} \
     --shared-openssl \
+    --shared-openssl-includes=${BUILD_PACKAGE_PREFIX}/include \
+    --shared-openssl-libpath=${BUILD_PACKAGE_PREFIX}/lib \
     --shared-libuv \
+    --shared-libuv-includes=${BUILD_PACKAGE_PREFIX}/include \
+    --shared-libuv-libpath=${BUILD_PACKAGE_PREFIX}/lib \
     --shared-zlib \
+    --shared-zlib-includes=${BUILD_PACKAGE_PREFIX}/include \
+    --shared-zlib-libpath=${BUILD_PACKAGE_PREFIX}/lib \
     --with-intl=system-icu \
     ${CROSS_COMPILING_CMD} \
     ${LIBNODE_SHARED_CMD}
