@@ -40,11 +40,14 @@ export \
     TAR=/usr/bin/tar \
     TEE=/usr/bin/tee \
     TR=/usr/bin/tr \
-    UNZIP=/usr/bin/gunzip \
     WGET=/usr/bin/wget \
     XARGS=/usr/bin/xargs \
-    XZ=/usr/bin/xz \
-    ZIP=/usr/bin/gzip
+    XZ=/usr/bin/xz
+
+GUNZIP=/usr/bin/gunzip
+GZIP=/usr/bin/gzip
+UNZIP=/usr/bin/unzip
+ZIP=/usr/bin/zip
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
@@ -57,8 +60,8 @@ package-invoke-builder bzip2-cross
 
 # gzip build
 package-invoke-builder gzip-cross
-export UNZIP=${BINDIR}/gunzip
-export ZIP=${BINDIR}/gzip
+GUNZIP=${BINDIR}/gunzip
+GZIP=${BINDIR}/gzip
 
 # lz4 build
 package-invoke-builder lz4-cross
@@ -68,12 +71,14 @@ package-invoke-builder xxhash-cross
 
 # zip build
 package-invoke-builder zip-cross
+ZIP=${BINDIR}/zip
 
 # zstd build
 package-invoke-builder zstd-cross
 
 # unzip build
 package-invoke-builder unzip-cross
+UNZIP=${BINDIR}/unzip
 
 # autoconf build
 package-invoke-builder autoconf-cross

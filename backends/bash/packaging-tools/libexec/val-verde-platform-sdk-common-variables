@@ -81,12 +81,17 @@ export TOUCH=${TOUCH:-${BINDIR}/touch}
 export TR=${TR:-${BINDIR}/tr}
 export UNAME=${UNAME:-${BINDIR}/uname}
 export UNIQ=${UNIQ:-${BINDIR}/uniq}
-export UNZIP=${UNZIP:-${BINDIR}/gunzip}
 export WC=${WC:-${BINDIR}/wc}
 export WGET=${WGET:-${BINDIR}/wget}
 export XARGS=${XARGS:-${BINDIR}/xargs}
 export XZ=${XZ:-${BINDIR}/xz}
-export ZIP=${ZIP:-${BINDIR}/gzip}
+
+# [G]UNZIP and [G]ZIP environment variables are used as options to the tools
+# and should not be exported
+GUNZIP=${GUNZIP:-${BINDIR}/gunzip}
+GZIP=${GZIP:-${BINDIR}/gzip}
+UNZIP=${UNZIP:-${BINDIR}/unzip}
+ZIP=${ZIP:-${BINDIR}/zip}
 
 # 'build' paths
 export DPKG_ADMINDIR=/var/lib/dpkg
