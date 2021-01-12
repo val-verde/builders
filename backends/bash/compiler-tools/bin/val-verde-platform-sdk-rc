@@ -55,11 +55,11 @@ ${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-gcc-mingw32 \
        > ${TEMP_FILE}.rc
 
 WORKING_DIR=`dirname ${IN_FILE}`
-package-push-directory ${WORKING_DIR}
+pushd ${WORKING_DIR}
 ${BINDIR}/llvm-rc \
     ${TEMP_FILE}.rc \
     -fo ${TEMP_FILE}.res
-package-pop-directory
+popd
 
 ${RM} ${TEMP_FILE}.rc
 ${MV} ${TEMP_FILE}.res \
