@@ -117,10 +117,6 @@ ${RSYNC} -aPx \
          ${STAGE_ROOT}/lib/*.a \
          ${INSTALL_PREFIX}/lib/*.a \
          ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
-${MV} ${INSTALL_PREFIX}/lib/swift/windows/*.dll \
-      ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
-${MV} ${INSTALL_PREFIX}/lib/swift/windows/*.swift* \
-      ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}/
 ${RM} -f \
       ${INSTALL_PREFIX}/bin/*libdispatch* \
       ${INSTALL_PREFIX}/bin/*BlocksRuntime* \
