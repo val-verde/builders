@@ -256,6 +256,7 @@ function export-compiler-environment() {
         ${LIBTOOLFLAGS} \
     " | ${XARGS}`
     export SWIFTCFLAGS=`${ECHO} "\
+        -resource-dir ${PACKAGE_PREFIX}/lib/swift \
         -Xcc -pipe \
         -Xcc -stdlib++-isystem -Xcc ${CXX_INCLUDE_DIR} \
         ${SWIFTCFLAGS} \
@@ -741,6 +742,7 @@ function package-swift-build() {
             \"${STRIP_LDFLAG}\", \n\
         ], \n\
         \"extra-swiftc-flags\": [ \n\
+            \"-resource-dir\", \"${PACKAGE_PREFIX}/lib/swift\", \n\
             \"-target-cpu\", \"${HOST_CPU}\", \n\
             \"-L${PACKAGE_PREFIX}/lib\", \n\
             \"-O${SWIFT_OPTIMIZATION_LEVEL}\", \n\
