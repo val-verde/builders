@@ -19,15 +19,17 @@ CFLAGS="\
      ${CFLAGS} \
 " \
 package-cmake \
+    -DCMAKE_POSITION_INDEPENDENT_CODE=FALSE \
     ${SOURCE_ROOT}/src
 
 # Build the components
 ninja-install
 
-${MV} ${SOURCE_ROOT}/src/bin \
-      ${SOURCE_ROOT}/src/include \
-      ${SOURCE_ROOT}/src/lib \
+${MV} ${INSTALL_ROOT}${SOURCE_ROOT}/src/bin \
+      ${INSTALL_ROOT}${SOURCE_ROOT}/src/include \
+      ${INSTALL_ROOT}${SOURCE_ROOT}/src/lib \
       ${INSTALL_PREFIX}/
+${RM} -rf ${INSTALL_ROOT}${PACKAGE_SOURCES_ROOT}
 
 # Build the package
 deb-package-build
