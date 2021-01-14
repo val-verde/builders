@@ -4,7 +4,7 @@ set -e
 
 # source deb packaging scripts
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-deb-packaging-scripts
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
 
 if [ "${SOURCE_PACKAGE_NAME}" != "" ]; then
     # package specific variables

@@ -4,7 +4,7 @@ set -e
 
 # Source deb packaging helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-deb-packaging-scripts
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
 
 function fetch-sources() {
     GIT_INDEX_OVERRIDE=${GIT_INDEX_OVERRIDE:-0}
