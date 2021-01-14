@@ -1,0 +1,35 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_BASE_NAME=android-ndk
+export SOURCE_PACKAGE_NAME=${SOURCE_PACKAGE_BASE_NAME}-runtime
+export SOURCE_PACKAGE_VERSION=${ANDROID_NDK_VERSION}
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export ANDROID_NDK_STAGE_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_BASE_NAME}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}
+export TOOLCHAIN_ROOT=${ANDROID_NDK_STAGE_ROOT}/${BUILD_PACKAGE_PREFIX}/android-ndk-${ANDROID_NDK_VERSION}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}
+
+# Configure the build components
+${MKDIR} -p ${INSTALL_PREFIX}/include
+${RSYNC} -aPx \
+         ${TOOLCHAIN_ROOT}/sysroot/usr/lib/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/*.so \
+         ${TOOLCHAIN_ROOT}/sysroot/usr/lib/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/${HOST_OS_API_LEVEL}/* \
+         ${TOOLCHAIN_ROOT}/lib/gcc/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/4.9.x/*.o \
+         ${TOOLCHAIN_ROOT}/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/lib64/*.a \
+         ${INSTALL_PREFIX}/lib
+
+${RM} -f \
+      ${INSTALL_PREFIX}/lib/libc++* \
+      ${INSTALL_PREFIX}/lib/libintl* \
+      ${INSTALL_PREFIX}/lib/libvulkan* \
+      ${INSTALL_PREFIX}/lib/libz.*
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=linux
+export SOURCE_PACKAGE_VERSION=5.10.7
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export-compiler-environment
+
+# Configure the build components
+ARCH=${HOST_PROCESSOR}
+
+if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+    ARCH=arm64
+fi
+
+cd ${STAGE_ROOT}
+make-build \
+    -C ${SOURCE_ROOT} \
+    ARCH=${ARCH} \
+    HOSTCC=${CC} \
+    INSTALL_HDR_PATH=${INSTALL_PREFIX} \
+    defconfig \
+    headers_install
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

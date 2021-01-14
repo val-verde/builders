@@ -1,0 +1,54 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+# kernel headers builds
+package-invoke-builder kernel-headers-cross
+
+# musl headers build
+package-invoke-builder musl-headers
+
+# compiler-rt build
+if [ "${BUILD_PROCESSOR}" != ${HOST_PROCESSOR} ]; then
+    CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a \
+    CXXFLAGS="\
+        -Dprintf\\\(...\\\)= \
+        ${CXXFLAGS} \
+    " \
+    package-invoke-builder compiler-rt-musl
+fi
+
+# musl libc build
+package-invoke-builder musl-libc
+
+# libunwind build
+package-invoke-builder libunwind-cross
+
+# libcxxabi build
+package-invoke-builder libcxxabi-cross
+
+# libcxx build
+ENABLE_MUSL_LIBC=TRUE \
+package-invoke-builder libcxx-cross
+
+# llvm dependencies
+package-invoke-builder llvm-dependencies-musl
+
+# swift tools build
+package-invoke-builder swift-tools-musl
+
+# swift sdk build
+package-invoke-builder swift-sdk-musl
+
+# graphics sdk build
+# package-invoke-builder graphics-sdk-cross
+
+# node + sdk build
+package-invoke-builder node-cross
+package-invoke-builder npm-yarn-cross
+
+# rust build
+# package-invoke-builder rust-cross

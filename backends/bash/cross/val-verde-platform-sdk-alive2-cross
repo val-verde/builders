@@ -1,0 +1,71 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=alive2
+export SOURCE_PACKAGE_VERSION=9999-git
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+# Configure the build components
+cd ${STAGE_ROOT}
+package-cmake \
+    ${SOURCE_ROOT} \
+    -DGIT_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/git
+
+# Build the components
+ninja-build
+
+${MKDIR} -p \
+      ${INSTALL_PREFIX}/bin \
+      ${INSTALL_PREFIX}/include/alive2/ir \
+      ${INSTALL_PREFIX}/include/alive2/smt \
+      ${INSTALL_PREFIX}/include/alive2/tools \
+      ${INSTALL_PREFIX}/include/alive2/utils \
+      ${INSTALL_PREFIX}/lib/pkgconfig
+
+${SSYNC} -aPx \
+      ${STAGE_ROOT}/alive \
+      ${INSTALL_PREFIX}/bin/
+${SSYNC} -aPx \
+         ${SOURCE_ROOT}/ir/*.h \
+         ${INSTALL_PREFIX}/include/alive2/ir/
+${SSYNC} -aPx \
+         ${SOURCE_ROOT}/smt/*.h \
+         ${INSTALL_PREFIX}/include/alive2/smt/
+${SSYNC} -aPx \
+         ${SOURCE_ROOT}/tools/*.h \
+         ${INSTALL_PREFIX}/include/alive2/tools/
+${SSYNC} -aPx \
+         ${SOURCE_ROOT}/util/*.h \
+         ${INSTALL_PREFIX}/include/alive2/util/
+${SSYNC} -aPx \
+         ${STAGE_ROOT}/libalive2.* \
+         ${INSTALL_PREFIX}/lib/
+
+${ECHO} "
+V=${SOURCE_PACKAGE_VERSION}
+R=${SOURCE_PACKAGE_VERSION}
+
+prefix=${PACKAGE_PREFIX}
+INSTALL_INC=\${prefix}/include
+INSTALL_LIB=\${prefix}/lib
+exec_prefix=\${prefix}
+libdir=\${exec_prefix}/lib
+includedir=\${prefix}/include
+
+Name: Lua
+Description: An Extensible Extension Language
+Version: \${R}
+Requires:
+Libs: -L\${libdir} -lalive2
+Cflags: -I\${includedir}
+" > ${INSTALL_PREFIX}/lib/pkgconfig/alive2.pc
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

@@ -1,0 +1,52 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=gnulib
+export SOURCE_PACKAGE_VERSION=9999-git
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+# Configure the build components
+${SOURCE_ROOT}/gnulib-tool \
+    --dir ${STAGE_ROOT} \
+    --create-testdir \
+    --without-tests \
+    argp \
+    error
+
+cd ${STAGE_ROOT}
+
+package-configure \
+    ${STAGE_ROOT}/configure \
+    --disable-static \
+    --enable-shared
+
+# Build the components
+make-install
+
+${MKDIR} -p ${INSTALL_PREFIX}/include/gnulib/config \
+            ${INSTALL_PREFIX}/lib
+${SED} -i \
+       "s/#define PACKAGE/#define GNULIB_PACKAGE/g" \
+       ${STAGE_ROOT}/config.h
+${SED} -i \
+       "s/#define VERSION/#define GNULIB_VERSION/g" \
+       ${STAGE_ROOT}/config.h
+${RSYNC} -aPx \
+         ${STAGE_ROOT}/config.h \
+         ${INSTALL_PREFIX}/include/gnulib/config/
+${RSYNC} -aPx \
+         ${STAGE_ROOT}/gllib/*.h \
+         ${INSTALL_PREFIX}/include/gnulib/
+${RSYNC} -aPx \
+         ${STAGE_ROOT}/gllib/*.a \
+         ${INSTALL_PREFIX}/lib/
+
+# Build the package
+deb-package-build
+
+# Build the package
+deb-package-install

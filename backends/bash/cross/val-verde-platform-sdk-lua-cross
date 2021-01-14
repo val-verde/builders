@@ -1,0 +1,90 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=lua
+export SOURCE_PACKAGE_VERSION=5.4.1
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export-compiler-environment
+generate-compiler-tools
+
+export DEPENDS="${PACKAGE_BASE_NAME}-zlib-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
+
+# Configure the build components
+copy-source-to-staging
+
+# Build the components
+if [ "${HOST_OS}" != "mingw32" ]; then
+    MYCFLAGS="\
+        -DDLUA_USE_LINUX \
+    "
+    MYLDFLAGS="\
+        -Wl,-E \
+    "
+fi
+
+ARFLAGS="rc"
+MYLIBS="\
+    -lm \
+"
+
+MYCFLAGS=`${ECHO} ${MYCFLAGS} | ${XARGS}`
+MYLDFLAGS=`${ECHO} ${MYLDFLAGS} | ${XARGS}`
+MYLIBS=`${ECHO} ${MYLIBS} | ${XARGS}`
+
+cd ${STAGE_ROOT}
+make-build \
+    AR="${AR} ${ARFLAGS}" \
+    CC="${CC}" \
+    CFLAGS="${CFLAGS}" \
+    MYCFLAGS="${MYCFLAGS}" \
+    MYLDFLAGS="${MYLDFLAGS}" \
+    MYLIBS="${MYLIBS}" \
+    RANLIB="${RANLIB}"
+
+${RSYNC} -aPx \
+         ${STAGE_ROOT}/*.h \
+         ${INSTALL_PREFIX}/include/
+${ECHO} "
+#pragma once
+
+extern \"C\" {
+    #include \"lua.h\"
+    #include \"lualib.h\"
+    #include \"lauxlib.h\"
+}
+" > ${INSTALL_PREFIX}/include/lua.hpp
+
+${RSYNC} -aPx \
+         liblua.a \
+         ${INSTALL_PREFIX}/lib/
+
+${MKDIR} -p ${INSTALL_PREFIX}/lib/pkgconfig
+${ECHO} "
+V=git
+R=git
+
+prefix=${PACKAGE_PREFIX}
+INSTALL_INC=\${prefix}/include
+INSTALL_LIB=\${prefix}/lib
+exec_prefix=\${prefix}
+libdir=\${exec_prefix}/lib
+includedir=\${prefix}/include
+
+Name: Lua
+Description: An Extensible Extension Language
+Version: \${R}
+Requires:
+Libs: -L\${libdir} -llua -lm -ldl
+Cflags: -I\${includedir}
+" > ${INSTALL_PREFIX}/lib/pkgconfig/lua.pc
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

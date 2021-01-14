@@ -1,0 +1,35 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+export PACKAGE_USR_PREFIX=/
+export SYSTEM_NAME=Fuchsia
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+# webassembly libc
+package-invoke-builder wasi-libc
+
+# webassembly compiler-rt (bootstrap)
+CFLAGS="\
+    -nostdlib \
+    -Wl,--allow-undefined \
+    -Wl,--no-entry \
+    ${CFLAGS} \
+" \
+CXXFLAGS="\
+    -nostdlib \
+    -Wl,--allow-undefined \
+    -Wl,--no-entry \
+    ${CXXFLAGS} \
+" \
+package-invoke-builder compiler-rt-wasi
+
+# webassembly libcxxabi
+package-invoke-builder libcxxabi-wasi
+
+# webassembly libcxx
+package-invoke-builder libcxx-wasi
+
+# webassembly compiler-rt (rebuild with c++)
+package-invoke-builder compiler-rt-wasi

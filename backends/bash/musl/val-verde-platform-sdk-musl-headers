@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=musl-headers
+export SOURCE_PACKAGE_VERSION=9999-git
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export SOURCE_ROOT=${PACKAGE_SOURCES_ROOT}/musl-libc-${SOURCE_PACKAGE_VERSION}
+
+# Configure the build components
+cd ${STAGE_ROOT}
+CFLAGS_AUTO="-pipe" \
+LIBCC=`${BUILD_PACKAGE_PREFIX}/bin/clang -target ${HOST_TRIPLE} \
+                                         --sysroot ${SYSROOT} \
+                                         -print-libgcc-file-name` \
+package-configure \
+    ${SOURCE_ROOT}/configure \
+    --syslibdir=${SYSROOT}/lib
+
+# Build the components
+INSTALL_TARGET=install-headers \
+make-install
+
+${RM} -rf ${INSTALL_PREFIX}/include/iconv.h
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

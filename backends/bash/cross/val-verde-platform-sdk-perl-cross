@@ -1,0 +1,46 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=perl
+export SOURCE_PACKAGE_VERSION=5.32.0
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export-compiler-environment
+generate-compiler-tools
+
+# Configure the build components
+copy-source-to-staging
+
+cd ${STAGE_ROOT}
+${SOURCE_ROOT}/Configure \
+    -d \
+    -e \
+    -s \
+    -Dar=${AR} \
+    -Das=${AS} \
+    -Dcc=${CC} \
+    -Dcflags="${CFLAGS}" \
+    -Dcxx=${CXX} \
+    -Dcxxflags="${CXXFLAGS}" \
+    -Dld=${CCLD} \
+    -Dldflags="${CCLDFLAGS}" \
+    -Dnm=${NM} \
+    -Dprefix=${PACKAGE_PREFIX} \
+    -Dranlib=${RANLIB} \
+    -Dsiteprefix=${PACKAGE_PREFIX}/local \
+    -Dvendorprefix=${PACKAGE_PREFIX} \
+    > ${STAGE_ROOT}/builder-invocation.log \
+    2> ${STAGE_ROOT}/builder-invocation-stderr.log
+
+# Build the components
+make-install
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

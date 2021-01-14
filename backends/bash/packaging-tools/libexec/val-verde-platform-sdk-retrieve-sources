@@ -1,0 +1,192 @@
+#!/bin/bash
+
+set -e
+
+# Source deb packaging helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-deb-packaging-scripts
+
+function fetch-sources() {
+    GIT_INDEX_OVERRIDE=${GIT_INDEX_OVERRIDE:-0}
+    OTHER_INDEX_OVERRIDE=${OTHER_INDEX_OVERRIDE:-0}
+    SOURCE_FILE=${SOURCE_FILE:-/usr/share/${VAL_VERDE_GH_TEAM}-sources.json}
+    EMAIL_ID="openvalverde@gmail.com"
+
+    package-push-directory /sources
+        ${ECHO} -e "Source Builder Invocation Started"
+        ${ECHO} -e "    Vendor: \e[1m${PACKAGE_BASE_NAME}\e[0m"
+        ${ECHO} -e "    Email: \e[4m${EMAIL_ID}\e[0m"
+        ${ECHO} -e "    Sources File: \e[31m${SOURCE_FILE}\e[0m"
+
+        gitSourcesCount=( $(jq '.[0] | .gitSources | length' ${SOURCE_FILE}) )
+        otherSourcesCount=( $(jq '.[1] | .otherSources | length' ${SOURCE_FILE}) )
+
+        ${GIT} config \
+               --global user.email ${EMAIL_ID}
+
+        for index in `seq "${GIT_INDEX_OVERRIDE}" $(($gitSourcesCount - 1))`; do
+            SOURCE_PACKAGE_NAME=$(jq -r ".[0] | .gitSources | .[$index].sourcePackageName" ${SOURCE_FILE})
+            SOURCE_BRANCH_IND=$(jq -r ".[0] | .gitSources | .[$index].sourceBranchIndicator" ${SOURCE_FILE})
+            SOURCE_PACKAGE_VERSION=$(jq -r ".[0] | .gitSources | .[$index].sourcePackageVersion" ${SOURCE_FILE})
+            SOURCE_URL=$(jq -r ".[0] | .gitSources | .[$index].sourcePackageUrl" ${SOURCE_FILE})
+            SUBMODULES_FLAG=$(jq -r ".[0] | .gitSources | .[$index].enableSubmodules" ${SOURCE_FILE})
+
+            PACKAGE_BASE_URL=${SOURCE_URL/'${VAL_VERDE_GH_TEAM}'/${VAL_VERDE_GH_TEAM}}
+            export PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
+
+            if [[ ${PACKAGE_BASE_URL} == *'${SOURCE_PACKAGE_NAME}'* ]]; then
+                PACKAGE_URL=${PACKAGE_BASE_URL//'${SOURCE_PACKAGE_NAME}'/${SOURCE_PACKAGE_NAME}}
+            else
+                PACKAGE_URL=${PACKAGE_BASE_URL}
+            fi
+
+            if [[ ${SOURCE_BRANCH_IND} == "default" ]]; then
+                SOURCE_BRANCH=val-verde-mainline
+            elif [[ ${SOURCE_BRANCH_IND} == "default-next" ]]; then
+                SOURCE_BRANCH=val-verde-mainline-next
+            elif [[ ${SOURCE_BRANCH_IND} == "default-next-testing" ]]; then
+                SOURCE_BRANCH=val-verde-mainline-next-testing
+            elif [[ ${SOURCE_BRANCH_IND} == "android" ]]; then
+                SOURCE_BRANCH=val-verde-android-mainline
+                PACKAGE_NAME=${PACKAGE_NAME}-android
+            elif [[ ${SOURCE_BRANCH_IND} == "android-next" ]]; then
+                SOURCE_BRANCH=val-verde-android-mainline-next
+                PACKAGE_NAME=${PACKAGE_NAME}-android
+            elif [[ ${SOURCE_BRANCH_IND} == "android-next-testing" ]]; then
+                SOURCE_BRANCH=val-verde-android-mainline-next-testing
+                PACKAGE_NAME=${PACKAGE_NAME}-android
+            elif [[ ${SOURCE_BRANCH_IND} == "windows" ]]; then
+                SOURCE_BRANCH=val-verde-windows-mainline
+                PACKAGE_NAME=${PACKAGE_NAME}-windows
+            else
+                SOURCE_BRANCH=${SOURCE_BRANCH_IND}
+            fi
+
+            export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources/${PACKAGE_NAME}
+            export INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-sources
+            export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX}
+            export STAGE_ROOT=${STAGE_ROOT_BASE}/${PACKAGE_NAME}
+
+            ${ECHO}
+            ${ECHO} -e "    Source Builder Started"
+            ${ECHO} -e "        Name: \e[1;35m${SOURCE_PACKAGE_NAME}\e[0m"
+            ${ECHO} -e "        Version: \e[32m${SOURCE_PACKAGE_VERSION}\e[0m"
+            ${ECHO} -e "        URL: \e[31m${PACKAGE_URL}\e[0m"
+            ${ECHO} -e "        Stage Root: \e[33m${STAGE_ROOT}\e[0m"
+            ${ECHO} -e "        Install Prefix: \e[33m${PACKAGE_PREFIX}\e[0m"
+
+            # Prepare stage root (for logs) and install directory for source package
+            ${MKDIR} -p \
+                     ${INSTALL_PREFIX} \
+                     ${STAGE_ROOT}
+
+            if [[ ${SUBMODULES_FLAG} = 'true' ]]; then
+                GIT_URL=${PACKAGE_URL} \
+                TARGET_ROOT=${INSTALL_PREFIX} \
+                ENABLE_SUBMODULES=true \
+                package-git-clone ${SOURCE_BRANCH}
+            else
+                GIT_URL=${PACKAGE_URL} \
+                TARGET_ROOT=${INSTALL_PREFIX} \
+                package-git-clone ${SOURCE_BRANCH}
+            fi
+
+            # Prepare source root
+            package-push-directory ${INSTALL_PREFIX}
+                ${RM} -rf .git*
+                ${RM} -rf "^.git*"
+                package-git-init
+                package-git-add -A
+                package-git-commit -m "Val verde source base commit."
+            package-pop-directory
+
+            # Build the source deb package
+            deb-package-build
+
+            # Install the source deb package
+            deb-package-install
+
+            # Clean up
+            ${RM} -rf ${INSTALL_ROOT}
+            ${ECHO} -e "    Source Builder Completed"
+        done
+
+        for index in `seq "${OTHER_INDEX_OVERRIDE}" $(($otherSourcesCount - 1))`; do
+            SOURCE_PACKAGE_NAME=$(jq -r ".[1] | .otherSources | .[$index].sourcePackageName" ${SOURCE_FILE})
+            SOURCE_BRANCH_IND=$(jq -r ".[1] | .otherSources | .[$index].sourceBranchIndicator" ${SOURCE_FILE})
+            SOURCE_PACKAGE_VERSION=$(jq -r ".[1] | .otherSources | .[$index].sourcePackageVersion" ${SOURCE_FILE})
+            SOURCE_URL=$(jq -r ".[1] | .otherSources | .[$index].sourcePackageUrl" ${SOURCE_FILE})
+            SUBMODULES_FLAG=$(jq -r ".[0] | .otherSources | .[$index].enableSubmodules" ${SOURCE_FILE})
+
+            PACKAGE_BASE_URL=${SOURCE_URL/'${VAL_VERDE_GH_TEAM}'/${VAL_VERDE_GH_TEAM}}
+            export PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
+
+            if [[ ${PACKAGE_BASE_URL} == *'${SOURCE_PACKAGE_NAME}'* || ${PACKAGE_BASE_URL} == *'${SOURCE_PACKAGE_VERSION}'* ]]; then
+                PACKAGE_URL=${PACKAGE_BASE_URL//'${SOURCE_PACKAGE_NAME}'/${SOURCE_PACKAGE_NAME}}
+                PACKAGE_URL=${PACKAGE_URL//'${SOURCE_PACKAGE_VERSION}'/${SOURCE_PACKAGE_VERSION}}
+            else
+                PACKAGE_URL=${PACKAGE_BASE_URL}
+            fi
+
+            export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources/${PACKAGE_NAME}
+            export INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-sources
+            export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX}
+            export STAGE_ROOT=${STAGE_ROOT_BASE}/${PACKAGE_NAME}
+
+            ${ECHO}
+            ${ECHO} -e "    Source Builder Started"
+            ${ECHO} -e "        Name: \e[35m${SOURCE_PACKAGE_NAME}\e[0m"
+            ${ECHO} -e "        Version: \e[32m${SOURCE_PACKAGE_VERSION}\e[0m"
+            ${ECHO} -e "        URL: \e[31m${PACKAGE_URL}\e[0m"
+            ${ECHO} -e "        Stage Root: \e[33m${STAGE_ROOT}\e[0m"
+            ${ECHO} -e "        Install Prefix: \e[33m${PACKAGE_PREFIX}\e[0m"
+
+            # Prepare stage root (for logs) and install directory for source package
+            ${MKDIR} -p \
+                     ${INSTALL_PREFIX} \
+                     ${STAGE_ROOT}
+
+            if [[ ${SOURCE_BRANCH_IND} == "wget" ]]; then
+                package-wget -c ${PACKAGE_URL} \
+                             -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
+                package-tar -xzvf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
+                            -C ${INSTALL_PREFIX} --strip 1
+                ${RM} ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
+            elif [[ ${SOURCE_BRANCH_IND} == "wget-xz" ]]; then
+                package-wget -c ${PACKAGE_URL} \
+                             -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz
+                package-tar -xvf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz \
+                            -C ${INSTALL_PREFIX} --strip 1
+                ${RM} ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz
+            elif [[ ${SOURCE_BRANCH_IND} == "wget-unzip" ]]; then
+                ANDROID_NDK_URL=https://dl.google.com/android/repository
+
+                package-wget -c ${ANDROID_NDK_URL}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.zip \
+                             -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.zip
+                package-unzip ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.zip \
+                              -d ${INSTALL_PREFIX}
+                ${RM} ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.zip
+            fi
+
+            if [[ ${SUBMODULES_FLAG} = 'true' ]]; then
+                package-push-directory ${INSTALL_PREFIX}
+                    package-git-submodule init
+                    package-git-submodule update
+                package-pop-directory
+            fi
+
+            # Build the source deb package
+            deb-package-build
+
+            # Install the source deb package
+            deb-package-install
+
+            # Clean up
+            ${RM} -rf ${INSTALL_ROOT}
+            ${ECHO} -e "    Source Builder Completed"
+        done
+
+        ${ECHO} -e "Source Builder Invocation Completed"
+        ${ECHO}
+    package-pop-directory
+}

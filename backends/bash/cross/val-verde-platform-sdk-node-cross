@@ -1,0 +1,168 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=node
+export SOURCE_PACKAGE_VERSION=9999-git
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export-compiler-environment
+generate-compiler-tools
+
+export DEPENDS="\
+    ${PACKAGE_BASE_NAME}-icu4c-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-libuv-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-openssl-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-python-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-zlib-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
+"
+export NODE_NATIVE_STAGE_ROOT=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}
+
+# Configure the build components
+copy-source-to-staging
+
+cd ${STAGE_ROOT}
+
+CONFIGURE_BUILD_OS=${BUILD_OS}
+CONFIGURE_HOST_OS=${HOST_OS}
+CONFIGURE_HOST_PROCESSOR=${HOST_PROCESSOR}
+
+if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+    CROSS_COMPILING_CMD="--cross-compiling"
+fi
+
+if [ "${BUILD_OS}" = "gnu" ] ||
+   [ "${BUILD_OS}" = "gnu" ]; then
+    CONFIGURE_BUILD_OS=linux
+fi
+
+if [ "${BUILD_PROCESSOR}" = "aarch64" ]; then
+    CONFIGURE_BUILD_PROCESSOR=arm64
+elif [ "${BUILD_PROCESSOR}" = "x86_64" ]; then
+    CONFIGURE_BUILD_PROCESSOR=x64
+fi
+
+if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+    CONFIGURE_HOST_PROCESSOR=arm64
+elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    CONFIGURE_HOST_PROCESSOR=x64
+fi
+
+if [ "${HOST_OS}" = "android" ]; then
+    export GYP_DEFINES="\
+        android_target_arch=${CONFIGURE_HOST_PROCESSOR} \
+        host_arch=${CONFIGURE_BUILD_PROCESSOR} \
+        host_os=${CONFIGURE_BUILD_OS} \
+        target_arch=${CONFIGURE_HOST_PROCESSOR} \
+        v8_target_arch=${CONFIGURE_HOST_PROCESSOR} \
+        OS=${CONFIGURE_HOST_OS} \
+    "
+elif [ "${HOST_OS}" = "gnu" ] ||
+     [ "${HOST_OS}" = "musl" ] ; then
+    CONFIGURE_HOST_OS=linux
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    COMMON_CFLAGS="\
+        -fms-compatibility-version=19.2 \
+        -fms-extensions \
+        -municode \
+        -DUNICODE \
+    "
+    CFLAGS="\
+        ${COMMON_CFLAGS} \
+        ${CFLAGS} \
+    "
+    CXXFLAGS="\
+        ${COMMON_CFLAGS} \
+        ${CXXFLAGS} \
+    "
+    LDFLAGS="\
+        -municode \
+        ${LDFLAGS} \
+    "
+    export GYP_DEFINES="\
+        OS=${CONFIGURE_HOST_OS} \
+    "
+fi
+
+if [ -z "${DISABLE_LIBNODE_SHARED}" ]; then
+    LIBNODE_SHARED_CMD="--shared"
+fi
+
+DISABLED_WARNING_CFLAGS=`${ECHO} "\
+    -Wno-deprecated-enum-enum-conversion \
+    -Wno-deprecated-volatile \
+    -Wno-ignored-attributes \
+    -Wno-implicit-const-int-float-conversion \
+    -Wno-macro-redefined \
+" | ${XARGS}`
+
+export AR_host=${AR_host:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar}
+export AR_target=${AR}
+export AS_host=${AS_host:-${BUILD_PACKAGE_PREFIX}/bin/clang}
+export AS_target=${AS}
+export CC_host=${CC_host:-${BUILD_PACKAGE_PREFIX}/bin/clang}
+export CC_target=${CC}
+export CFLAGS_host=`${ECHO} "\
+    -I${BUILD_PACKAGE_PREFIX}/include \
+    ${DISABLED_WARNING_CFLAGS} \
+" | ${XARGS}`
+export CFLAGS=`${ECHO} ${CFLAGS} | ${XARGS}`
+export CPP_host=${CPP_host:-"${BUILD_PACKAGE_PREFIX}/bin/clang -E"}
+export CPP_target=${CPP}
+export CPPFLAGS_host=`${ECHO} "\
+    -I${BUILD_PACKAGE_PREFIX}/include \
+    ${DISABLED_WARNING_CFLAGS} \
+" | ${XARGS}`
+export CPPFLAGS=`${ECHO} ${CPPFLAGS} | ${XARGS}`
+export CXX_host=${CXX_host:-"${BUILD_PACKAGE_PREFIX}/bin/clang++ -stdlib++-isystem ${BUILD_PACKAGE_PREFIX}/include/c++/v1"}
+export CXX_target=${CXX}
+export CXXFLAGS_host=`${ECHO} "\
+    -stdlib++-isystem ${BUILD_PACKAGE_PREFIX}/include/c++/v1 \
+    -I${BUILD_PACKAGE_PREFIX}/include \
+    ${DISABLED_WARNING_CFLAGS} \
+" | ${XARGS}`
+export CXXFLAGS=`${ECHO} "\
+    ${DISABLED_WARNING_CFLAGS} \
+    ${CXXFLAGS} \
+" | ${XARGS}`
+LDFLAGS_host=`${ECHO} "\
+    -L${BUILD_PACKAGE_PREFIX}/lib \
+" | ${XARGS}`
+export LDFLAGS=`${ECHO} ${LDFLAGS} | ${XARGS}`
+export LINK="${LD_host:-${BUILD_PACKAGE_PREFIX}/bin/clang++} ${LDFLAGS_host}"
+export LINK_target="${CXXLD}"
+export RANLIB_host=${RANLIB_host:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib}
+export RANLIB_target=${RANLIB}
+
+${STAGE_ROOT}/configure \
+    --dest-cpu=${CONFIGURE_HOST_PROCESSOR} \
+    --dest-os=${CONFIGURE_HOST_OS} \
+    --prefix=${PACKAGE_PREFIX} \
+    --shared-openssl \
+    --shared-libuv \
+    --shared-zlib \
+    --with-intl=system-icu \
+    ${CROSS_COMPILING_CMD} \
+    ${LIBNODE_SHARED_CMD}
+
+# Build the components
+make-install
+
+${RSYNC} -aPx \
+         ${STAGE_ROOT}/out/Release/node \
+         ${INSTALL_PREFIX}/bin
+
+if [ "${HOST_OS}" = "android" ]; then
+    sed -i \
+        's|/usr/bin/env|/system/bin/env|g' \
+        `${GREP} -rl "/usr/bin/env" ${INSTALL_PREFIX}`
+fi
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

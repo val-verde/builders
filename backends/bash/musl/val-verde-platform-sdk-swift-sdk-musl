@@ -1,0 +1,99 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+# remove host foundation and libdispatch to avoid module collisions
+PACKAGE_ACTION=UNINSTALL
+PACKAGES_TO_MANAGE=( 'swift-corelibs-foundation'     'BUILD' \
+                     'swift-corelibs-libdispatch'    'BUILD' )
+deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
+
+# musl libdispatch build
+package-invoke-builder swift-corelibs-libdispatch-cross
+
+# musl foundation build
+SWIFTCFLAGS="\
+    -lfts \
+    -DNO_BACKTRACE \
+    ${SWIFTCFLAGS} \
+" \
+package-invoke-builder swift-corelibs-foundation-cross
+
+# musl xctest build
+package-invoke-builder swift-corelibs-xctest-cross
+
+# musl llbuild build
+package-invoke-builder swift-llbuild-cross
+
+# musl swift tools support core build
+SWIFTCFLAGS="\
+    -DUSE_MUSL_LIBC \
+    ${SWIFTCFLAGS} \
+" \
+package-invoke-builder swift-tools-support-core-cross
+
+# musl yams build
+package-invoke-builder yams-cross
+
+# musl swift argument parser build
+package-invoke-builder swift-argument-parser-cross
+
+# musl swift driver build
+package-invoke-builder swift-driver-cross
+
+# musl swift package manager build
+SWIFTCFLAGS="\
+    -DUSE_MUSL_LIBC \
+    ${SWIFTCFLAGS} \
+" \
+package-invoke-builder swift-package-manager-cross
+
+# reinstall swiftpm for build and host
+PACKAGE_ACTION=INSTALL
+PACKAGES_TO_MANAGE=( 'swift-argument-parser'         'BUILD' \
+                     'swift-corelibs-foundation'     'BUILD' \
+                     'swift-corelibs-libdispatch'    'BUILD' \
+                     'swift-corelibs-xctest'         'BUILD' \
+                     'swift-driver'                  'BUILD' \
+                     'swift-llbuild'                 'BUILD' \
+                     'swift-package-manager'         'BUILD' \
+                     'swift-tools-support-core'      'BUILD' \
+		     'yams'                          'BUILD' \
+                     'swift-argument-parser'         'HOST' \
+                     'swift-corelibs-foundation'     'HOST' \
+                     'swift-corelibs-libdispatch'    'HOST' \
+                     'swift-corelibs-xctest'         'HOST' \
+                     'swift-driver'                  'HOST' \
+                     'swift-llbuild'                 'HOST' \
+                     'swift-package-manager'         'HOST' \
+                     'swift-tools-support-core'      'HOST' \
+                     'yams'                          'HOST' )
+deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
+
+# musl swift-syntax build
+package-invoke-builder swift-syntax-cross
+
+# musl swift-format build
+package-invoke-builder swift-format-cross
+
+# musl swift-doc build
+package-invoke-builder swift-doc-cross
+
+# musl sourcekit-lsp build
+# package-invoke-builder sourcekit-lsp-cross
+
+# musl baikonur build
+SWIFT_BUILD_FLAGS="\
+    -Xlinker -licuucswift \
+    ${SWIFT_BUILD_FLAGS} \
+" \
+package-invoke-builder baikonur
+
+# musl pythonkit build
+package-invoke-builder pythonkit-cross
+
+# musl swift tensorflows apis build
+# package-invoke-builder swift-tensorflow-apis

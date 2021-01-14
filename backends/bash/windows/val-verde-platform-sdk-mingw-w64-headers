@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=mingw-w64-headers
+export SOURCE_PACKAGE_VERSION=9999-git
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export SOURCE_ROOT=${PACKAGE_SOURCES_ROOT}/mingw-w64-${SOURCE_PACKAGE_VERSION}/${SOURCE_PACKAGE_NAME}
+
+# Configure the build components
+cd ${STAGE_ROOT}
+package-configure \
+    ${SOURCE_ROOT}/configure \
+    --enable-crt \
+    --enable-sdk=all \
+    --with-default-msvcrt=ucrt \
+    --with-default-win32-winnt=0x0A00
+
+# Build the components
+make-install
+
+${CP} ${SOURCE_ROOT}/include/module.modulemap \
+      ${INSTALL_PREFIX}/include/
+${LN} -sf . \
+      ${INSTALL_PREFIX}/mingw
+${LN} -sf . \
+      ${INSTALL_PREFIX}/usr
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

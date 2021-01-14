@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+args=${@}
+args=`${ECHO} "${args}" | ${SED} -r 's/\/c/-c/g'`
+args=`${ECHO} "${args}" | ${SED} -r 's/\/Fo/-Fo/g'`
+args=`${ECHO} "${args}" | ${SED} -r 's/-o/-Fo/g'`
+
+${BUILD_PACKAGE_PREFIX}/bin/jwasm -win64 \
+                                  ${args}

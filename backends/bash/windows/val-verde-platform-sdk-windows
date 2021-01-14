@@ -1,0 +1,48 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+export PACKAGE_USR_PREFIX=/
+export SYSTEM_NAME=Windows
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+# windows mingw-headers build
+package-invoke-builder mingw-w64-headers
+
+# windows mingw-crt build
+package-invoke-builder mingw-w64-crt
+
+# windows compiler-rt build (for host)
+CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a \
+DST_CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a \
+CXXFLAGS="\
+    -Wl,/force:unresolved \
+    ${CXXFLAGS} \
+" \
+package-invoke-builder compiler-rt
+
+# windows libunwind build
+package-invoke-builder libunwind-windows
+
+# windows mingw-winpthreads build
+LD=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
+package-invoke-builder winpthreads-cross
+
+# windows libcxxabi build
+package-invoke-builder libcxxabi-windows
+
+# windows libcxx build
+package-invoke-builder libcxx-windows
+
+# windows llvm dependencies
+package-invoke-builder llvm-dependencies-windows
+
+# windows swift tools build
+package-invoke-builder swift-tools-windows
+
+# windows swift sdk build
+package-invoke-builder swift-sdk-windows
+
+# windows graphics sdk build
+package-invoke-builder graphics-sdk-cross

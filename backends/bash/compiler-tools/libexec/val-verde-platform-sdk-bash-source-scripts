@@ -1,0 +1,796 @@
+#!/bin/bash
+
+set -e
+
+# source deb packaging scripts
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-deb-packaging-scripts
+
+if [ "${SOURCE_PACKAGE_NAME}" != "" ]; then
+    # package specific variables
+    export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+    export PACKAGE_NAME=${PACKAGE_NAME:-${PACKAGE_BASE_NAME}-${QUALIFIED_PACKAGE_NAME}}
+    export INSTALL_ROOT=${INSTALL_ROOT:-${INSTALL_ROOT_BASE}/${QUALIFIED_PACKAGE_NAME}}
+    export INSTALL_PREFIX=${INSTALL_PREFIX:-${INSTALL_ROOT}${PACKAGE_PREFIX}}
+    export STAGE_ROOT=${STAGE_ROOT:-${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}}
+    export SOURCE_ROOT=${SOURCE_ROOT:-${PACKAGE_SOURCES_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}}
+
+    # pre-build cleanup
+    ${RM} -rf ${INSTALL_PREFIX}/* \
+              ${STAGE_ROOT}/*
+    ${MKDIR} -p ${INSTALL_PREFIX} \
+                ${STAGE_ROOT}
+
+    ${ECHO} -e "    Package Configuration"
+    ${ECHO} -e "        Name: \e[1;35m${SOURCE_PACKAGE_NAME}\e[0m"
+    ${ECHO} -e "        Version: \e[1m${SOURCE_PACKAGE_VERSION}\e[0m"
+    ${ECHO} -e "        Platform: \e[1m${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}\e[0m"
+    ${ECHO} -e "        Vendor: \e[1m${PACKAGE_BASE_NAME}\e[0m"
+    ${ECHO} -e "        Source Root: \e[33m${SOURCE_ROOT}\e[0m"
+    ${ECHO} -e "        Stage Root: \e[33m${STAGE_ROOT}\e[0m"
+    ${ECHO} -e "        Install Prefix: \e[33m${INSTALL_PREFIX}\e[0m"
+fi
+
+function copy-source-to-staging() {
+    package-rsync -aPx ${SOURCE_ROOT}/ \
+                       ${STAGE_ROOT}
+}
+
+# create-host-tool <host_tool> <host_tool_flags> <wrapper_name>
+function create-host-tool() {
+    host_tool=${1}
+    host_tool_flags=${2}
+    wrapper_name=${3}
+
+    ${ECHO} "\
+#!/bin/bash
+
+set -e
+
+exec ${host_tool} ${!host_tool_flags} \"\${@}\"
+" > ${wrapper_name}
+    ${CHMOD} +x ${wrapper_name}
+}
+
+function create-indirect-pkg-config() {
+    host_pkg_config_path=${1}
+    wrapper_name=${2}
+
+    ${ECHO} "\
+#!/bin/bash
+
+set -e
+
+PKG_CONFIG_PATH=\"${!host_pkg_config_path}\" exec ${PKG_CONFIG} \"\${@}\"
+" > ${wrapper_name}
+    ${CHMOD} +x ${wrapper_name}
+}
+
+function export-compiler-environment() {
+    BINTOOLS_PREFIX=${BINTOOLS_PREFIX:-llvm-}
+    BINTOOLS_PATH_PREFIX=${BINDIR}/${BINTOOLS_PREFIX}
+    CXX_INCLUDE_DIR=${CXX_INCLUDE_DIR:-${PACKAGE_PREFIX}/include/c++/v1}
+    OPTIMIZATION_FLAGS=${OPTIMIZATION_FLAGS:-"-DNDEBUG"}
+
+    export ACLOCAL_PATH=${PACKAGE_PREFIX}/share/aclocal
+    export AR=${AR:-${BINTOOLS_PATH_PREFIX}ar}
+    export AS=${CC:-${BINDIR}/clang}
+    export BUILD_CC=${CC:-${BINDIR}/clang}
+    export CC=${CC:-${BINDIR}/clang}
+    export CCLD=${CCLD:-${CC}}
+    export CMAKE=${CMAKE:-${BINDIR}/cmake}
+    export CPP=${CPP:-${CC}-cpp}
+    export CXX=${CXX:-${CC}++}
+    export CXXFILT=${CXXFILT:-${BINTOOLS_PATH_PREFIX}cxxfilt}
+    export CXXLD=${CXXLD:-${CXX}}
+    export DLLTOOL=${DLLTOOL:-${BINTOOLS_PATH_PREFIX}dlltool}
+    export LD=${LD:-${BINDIR}/ld.lld}
+    export MAKE=${MAKE:-${BINDIR}/make}
+    export MAKEINFO=${MAKEINFO:-${BINDIR}/true}
+    export MANIFEST_TOOL=${MANIFEST_TOOL:-${BINTOOLS_PATH_PREFIX}mt}
+    export MESON=${MESON:-${BINDIR}/meson}
+    export NINJA=${NINJA:-${BINDIR}/ninja}
+    export NM=${NM:-${BINTOOLS_PATH_PREFIX}nm}
+    export NODE=${NODE:-${BINDIR}/node}
+    export OBJCOPY=${OBJCOPY:-${BINTOOLS_PATH_PREFIX}objcopy}
+    export OBJDUMP=${OBJDUMP:-${BINTOOLS_PATH_PREFIX}objdump}
+    export PKG_CONFIG=${PKG_CONFIG:-${BUILD_PACKAGE_PREFIX}/bin/pkg-config}
+    export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-${PACKAGE_PREFIX}/lib/pkgconfig}
+    export PYTHON=${PYTHON:-${BINDIR}/python}
+    export RANLIB=${RANLIB:-${BINTOOLS_PATH_PREFIX}ranlib}
+    export RC=${RC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-rc}
+    export READELF=${READELF:-${BINTOOLS_PATH_PREFIX}readelf}
+    export SIZE=${SIZE:-${BINTOOLS_PATH_PREFIX}size}
+    export STRINGS=${STRINGS:-${BINTOOLS_PATH_PREFIX}strings}
+    export STRIP=${STRIP:-${BINTOOLS_PATH_PREFIX}strip}
+    export SWIFTC=${SWIFTC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc}
+    export WINDRES=${RC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-rc}
+
+    if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+        COMMON_CFLAGS="\
+            --sysroot=${SYSROOT} \
+            --target=${HOST_TRIPLE} \
+            ${COMMON_CFLAGS} \
+        "
+        LDFLAGS="\
+            --sysroot=${SYSROOT} \
+            ${LDFLAGS} \
+        "
+        SWIFTCFLAGS="\
+            -sdk ${SYSROOT} \
+            ${SWIFTCFLAGS} \
+        "
+    else
+        COMMON_CFLAGS="\
+            -isystem ${PACKAGE_PREFIX}/include \
+            ${COMMON_CFLAGS} \
+        "
+        SWIFTCFLAGS="\
+            -I${PACKAGE_PREFIX}/include \
+            -L${PACKAGE_PREFIX}/lib \
+            ${SWIFTCFLAGS} \
+        "
+
+        export ACLOCAL_PATH=${ACLOCAL_PATH}:/usr/share/aclocal
+        export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:/usr/lib/${BUILD_TRIPLE}/pkgconfig:/usr/share/pkgconfig
+    fi
+
+    if [ "${HOST_OS}" = "android" ]; then
+        COMMON_CFLAGS="\
+            -fPIC \
+            -D__USE_FORTIFY_LEVEL=0 \
+            ${COMMON_CFLAGS} \
+        "
+        SWIFTCFLAGS="\
+            -Xcc -D__USE_FORTIFY_LEVEL=0 \
+            ${SWIFTCFLAGS} \
+        "
+    elif [ "${HOST_OS}" = "gnu" ]; then
+        COMMON_CFLAGS="\
+            -fPIC \
+            ${COMMON_CFLAGS} \
+        "
+    elif [ "${HOST_OS}" = "musl" ]; then
+        COMMON_CFLAGS="\
+            -fPIC \
+            -D_ALL_SOURCE=1 \
+            -D__USE_FORTIFY_LEVEL=0 \
+            ${COMMON_CFLAGS} \
+        "
+        SWIFTCFLAGS="\
+            -Xcc -D_ALL_SOURCE=1 \
+            -Xcc -D__USE_FORTIFY_LEVEL=0 \
+            ${SWIFTCFLAGS} \
+        "
+    elif [ "${HOST_OS}" = "mingw32" ]; then
+        COMMON_CFLAGS="\
+            -fno-builtin-stpcpy \
+            ${COMMON_CFLAGS} \
+        "
+    fi
+
+    if [ -z "${DISABLE_CXX_INCLUDE}" ]; then
+        CXXFLAGS="\
+            -stdlib++-isystem ${CXX_INCLUDE_DIR} \
+            ${CXXFLAGS} \
+        "
+    fi
+
+    if [ -z "${DISABLE_POLLY}" ]; then
+        COMMON_CFLAGS="\
+            -mllvm -polly \
+            ${COMMON_CFLAGS} \
+        "
+    fi
+
+    if [ -n "${ENABLE_FLTO}" ]; then
+        FLTO_OPTION=`${ECHO} ${ENABLE_FLTO} | ${TR} '[:upper:]' '[:lower:]'`
+        COMMON_CFLAGS="\
+            -flto=${FLTO_OPTION} \
+            ${COMMON_CFLAGS} \
+        "
+        LDFLAGS="\
+            ${FLTO_CFLAG} \
+            ${LDFLAGS} \
+        "
+    fi
+
+    if [ -z "${ENABLE_LLVM_VERIFIER}" ]; then
+        COMMON_LDFLAGS="\
+            -disable-verify \
+            ${COMMON_LDFLAGS} \
+        "
+    fi
+
+    if [ -n "${HOST_ARCH}" ]; then
+        COMMON_CFLAGS="\
+            -march=${HOST_ARCH} \
+            ${COMMON_CFLAGS} \
+        "
+    fi
+
+    if [ -n "${HOST_CPU}" ]; then
+        COMMON_CFLAGS="\
+            -mtune=${HOST_CPU} \
+            ${COMMON_CFLAGS} \
+        "
+    fi
+
+    export ASFLAGS=`${ECHO} "\
+        -pipe \
+        ${COMMON_CFLAGS} \
+        ${OPTIMIZATION_FLAGS} \
+        ${ASMFLAGS} \
+    " | ${XARGS}`
+    export CFLAGS=`${ECHO} "\
+        -pipe \
+        ${COMMON_CFLAGS} \
+        ${OPTIMIZATION_FLAGS} \
+        ${CFLAGS} \
+    " | ${XARGS}`
+    export CCLDFLAGS=`${ECHO} "\
+        -pipe \
+        -rtlib=compiler-rt \
+        ${COMMON_CFLAGS} \
+        ${COMMON_LDFLAGS} \
+        ${CCLDFLAGS} \
+    " | ${XARGS}`
+    export CPPFLAGS=`${ECHO} "\
+        ${COMMON_CFLAGS} \
+        ${OPTIMIZATION_FLAGS} \
+        ${CPPFLAGS} \
+    " | ${XARGS}`
+    export CXXFLAGS=`${ECHO} "\
+        -pipe \
+        ${COMMON_CFLAGS} \
+        ${OPTIMIZATION_FLAGS} \
+        ${CXXFLAGS} \
+    " | ${XARGS}`
+    export LDFLAGS=`${ECHO} "\
+        ${LDFLAGS} \
+    " | ${XARGS}`
+    export LIBS=`${ECHO} "\
+        ${LIBS} \
+    " | ${XARGS}`
+    export LIBTOOLFLAGS=`${ECHO} "\
+        ${LIBTOOLFLAGS} \
+    " | ${XARGS}`
+    export SWIFTCFLAGS=`${ECHO} "\
+        -resource-dir ${PACKAGE_PREFIX}/lib/swift \
+        -Xcc -pipe \
+        -Xcc -stdlib++-isystem -Xcc ${CXX_INCLUDE_DIR} \
+        ${SWIFTCFLAGS} \
+    " | ${XARGS}`
+}
+
+function generate-compiler-tools() {
+    GENERATED_BINDIR=${GENERATED_BINDIR:-${STAGE_ROOT}}
+    LINKER_OPTIMIZATION_LEVEL=${LINKER_OPTIMIZATION_LEVEL:-2}
+    OPTIMIZATION_LEVEL=${OPTIMIZATION_LEVEL:-z}
+    TOOL_PREFIX=${TOOL_PREFIX:-host}
+
+    create-host-tool ${AS} ASFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-as-clang
+    create-host-tool ${CC} CFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang
+    create-host-tool ${CCLD} CCLDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang
+    create-host-tool ${CPP} CPPFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang-cpp
+    create-host-tool ${CXX} CXXFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang++
+    create-host-tool ${CXXLD} CCLDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang++
+    create-host-tool ${LD} LDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld
+
+    export AS=${GENERATED_BINDIR}/${TOOL_PREFIX}-as-clang
+    export ASFLAGS="-O${OPTIMIZATION_LEVEL}"
+    export CC=${GENERATED_BINDIR}/${TOOL_PREFIX}-clang
+    export CFLAGS="-O${OPTIMIZATION_LEVEL}"
+    export CCLD=${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang
+    export CCLDFLAGS="-O${LINKER_OPTIMIZATION_LEVEL}"
+    export CPP=${CC}-cpp
+    export CPPFLAGS="-O${OPTIMIZATION_LEVEL}"
+    export CXX=${CC}++
+    export CXXFLAGS="-O${OPTIMIZATION_LEVEL}"
+    export CXXLD=${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang++
+    export CXXLDFLAGS="-O${OPTIMIZATION_LEVEL}"
+    export LD=${GENERATED_BINDIR}/${TOOL_PREFIX}-ld
+    export LDFLAGS="-O${LINKER_OPTIMIZATION_LEVEL}"
+
+    if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
+        export CCLDFLAGS=`${ECHO} "\
+            -L${PACKAGE_PREFIX}/lib \
+            ${CCLDFLAGS} \
+        " | ${XARGS}`
+        export LDFLAGS=`${ECHO} "\
+            -L${PACKAGE_PREFIX}/lib \
+            ${LDFLAGS} \
+        " | ${XARGS}`
+    fi
+
+    if [ -z "${DISABLE_STRIP}" ]; then
+        export LDFLAGS=`${ECHO} "\
+            -s \
+            ${LDFLAGS} \
+        " | ${XARGS}`
+    fi
+}
+
+function tool-build() {
+    ${ECHO}
+    ${ECHO} -e "    Tool Invocation"
+    ${ECHO} -e "        Tool Name: \e[1m${TOOL}\e[0m"
+    ${ECHO} -e "        Parallel Invocations: ${NUM_PROCESSORS}"
+    ${ECHO} -e "        Log Files: \e[31m${STAGE_ROOT}/builder-compile.log\e[0m"
+    ${ECHO} -e "                   \e[31m${STAGE_ROOT}/builder-compile-stderr.log\e[0m"
+    ${ECHO} -e "        Time Started: \e[4m$(date)\e[0m"
+
+    TOOL_LOG=${STAGE_ROOT}/builder-compile \
+    tool-log ${TOOL} -j${NUM_PROCESSORS} \
+                     "${@}"
+
+    ${ECHO} -e "        Time Completed: \e[4m$(date)\e[0m"
+}
+
+function tool-install() {
+    DESTDIR=${DESTDIR:-${INSTALL_ROOT}}
+
+    ${ECHO}
+    ${ECHO} -e "    Installation Invocation"
+    ${ECHO} -e "        Tool Name: \e[1m${TOOL}\e[0m"
+    ${ECHO} -e "        Destination Directory: ${DESTDIR}"
+    ${ECHO} -e "        Log Files: \e[31m${STAGE_ROOT}/builder-installation.log\e[0m"
+    ${ECHO} -e "                   \e[31m${STAGE_ROOT}/builder-installation-stderr.log\e[0m"
+    ${ECHO} -e "        Time Started: \e[4m$(date)\e[0m"
+
+    if [ "${TOOL}" = "${MAKE}" ]; then
+        DESTDIR_CMD="DESTDIR=${DESTDIR}"
+    else
+        export DESTDIR=${DESTDIR}
+    fi
+
+    TOOL_LOG=${STAGE_ROOT}/builder-installation \
+    tool-log ${TOOL} -j${NUM_PROCESSORS} \
+                     ${INSTALL_TARGET:-install} \
+                     ${DESTDIR_CMD} \
+                     "${@}"
+    ${ECHO} -e "        Time Completed: \e[4m$(date)\e[0m"
+}
+
+function tool-log() {
+    "${@}" \
+        > ${TOOL_LOG}.log \
+        2> ${TOOL_LOG}-stderr.log
+}
+
+function make-build() {
+    TOOL=${MAKE} \
+    tool-build "${@}"
+}
+
+function make-install() {
+    TOOL=${MAKE} \
+    tool-install "${@}"
+}
+
+function ninja-build() {
+    TOOL=${NINJA} \
+    tool-build "${@}"
+}
+
+function ninja-install() {
+    TOOL=${NINJA} \
+    tool-install "${@}"
+}
+
+function package-autoreconf() {
+    TOOL_LOG=${STAGE_ROOT}/builder-compile \
+    tool-log ${AUTORECONF} "${@}"
+}
+
+function package-cmake-invocation() {
+    BUILD_TYPE=${BUILD_TYPE:-MinSizeRel}
+    COMPILER_TARGET=${COMPILER_TARGET:-${HOST_TRIPLE}}
+    SYSTEM_NAME=${SYSTEM_NAME:-Linux}
+
+    if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+        CROSSCOMPILING_CMD="-DCMAKE_CROSSCOMPILING=TRUE"
+        SYSTEM_NAME_CMD="-DCMAKE_SYSTEM_NAME=${SYSTEM_NAME}"
+    fi
+
+    AS_COMPILER_ID=${AS_COMPILER_ID:-Clang}
+    CXX_STANDARD=${CXX_STANDARD:-20}
+
+    TOOL_LOG=${STAGE_ROOT}/builder-invocation \
+    tool-log ${CMAKE} \
+        -G Ninja \
+        -DCMAKE_AR=${AR} \
+        -DCMAKE_ASM_COMPILER=${AS} \
+        -DCMAKE_ASM_COMPILER_TARGET=${COMPILER_TARGET} \
+        -DCMAKE_ASM_COMPILER_ID=${AS_COMPILER_ID} \
+        -DCMAKE_ASM_FLAGS_DEBUG="${ASMFLAGS}" \
+        -DCMAKE_ASM_FLAGS_MINSIZEREL="${ASMFLAGS}" \
+        -DCMAKE_ASM_FLAGS_RELEASE="${ASMFLAGS}" \
+        -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
+        -DCMAKE_C_COMPILER=${CC} \
+        -DCMAKE_C_COMPILER_TARGET=${COMPILER_TARGET} \
+        -DCMAKE_C_CREATE_SHARED_LIBRARY="${CCLD} <CMAKE_SHARED_LIBRARY_C_FLAGS> <LANGUAGE_COMPILE_FLAGS> <LINK_FLAGS> <CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS> <SONAME_FLAG><TARGET_SONAME> -o <TARGET> <OBJECTS> <LINK_LIBRARIES>" \
+        -DCMAKE_C_FLAGS_DEBUG="${CFLAGS}" \
+        -DCMAKE_C_FLAGS_MINSIZEREL="${CFLAGS}" \
+        -DCMAKE_C_FLAGS_RELEASE="${CFLAGS}" \
+        -DCMAKE_C_LINK_EXECUTABLE="${CCLD} <FLAGS> <CMAKE_C_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>" \
+        -DCMAKE_CXX_COMPILER=${CXX} \
+        -DCMAKE_CXX_COMPILER_TARGET=${HOST_TRIPLE} \
+        -DCMAKE_CXX_CREATE_SHARED_LIBRARY="${CXXLD} <CMAKE_SHARED_LIBRARY_CXX_FLAGS> <LANGUAGE_COMPILE_FLAGS> <LINK_FLAGS> <CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS> <SONAME_FLAG><TARGET_SONAME> -o <TARGET> <OBJECTS> <LINK_LIBRARIES>" \
+        -DCMAKE_CXX_FLAGS_DEBUG="${CXXFLAGS}" \
+        -DCMAKE_CXX_FLAGS_MINSIZEREL="${CXXFLAGS}" \
+        -DCMAKE_CXX_FLAGS_RELEASE="${CXXFLAGS}" \
+        -DCMAKE_CXX_LINK_EXECUTABLE="${CXXLD} <FLAGS> <CMAKE_CXX_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>" \
+        -DCMAKE_CXX_STANDARD=${CXX_STANDARD} \
+        -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS}" \
+        -DCMAKE_INSTALL_PREFIX=${PACKAGE_PREFIX} \
+        -DCMAKE_LINKER=${LD} \
+        -DCMAKE_MAKE_PROGRAM=${NINJA} \
+        -DCMAKE_MODULE_LINKER_FLAGS="${LDFLAGS}" \
+        -DCMAKE_NM=${NM} \
+        -DCMAKE_OBJCOPY=${OBJCOPY} \
+        -DCMAKE_OBJDUMP=${OBJDUMP} \
+        -DCMAKE_PREFIX_PATH=${PKG_CONFIG_PATH} \
+        -DCMAKE_RANLIB=${RANLIB} \
+        -DCMAKE_RC_COMPILER=${RC} \
+        -DCMAKE_READELF=${READELF} \
+        -DCMAKE_Swift_COMPILER=${SWIFTC} \
+        -DCMAKE_Swift_COMPILER_TARGET=${COMPILER_TARGET} \
+        -DCMAKE_Swift_FLAGS="${SWIFTCFLAGS}" \
+        -DCMAKE_STRINGS=${STRINGS} \
+        -DCMAKE_STRIP=${STRIP} \
+        -DCMAKE_SHARED_LINKER_FLAGS="${LDFLAGS}" \
+        -DCMAKE_SYSROOT=${SYSROOT} \
+        -DCMAKE_SYSTEM_PROCESSOR=${HOST_PROCESSOR} \
+        "${CROSSCOMPILING_CMD}" \
+        "${SYSTEM_NAME_CMD}" \
+        "${@}"
+}
+
+function package-cmake() {
+    export-compiler-environment
+    generate-compiler-tools
+    package-cmake-invocation ${@}
+}
+
+function package-configure-invocation() {
+    CONFIGURE_HOST_TRIPLE=${CONFIGURE_HOST_TRIPLE:-${HOST_TRIPLE}}
+
+    TOOL_LOG=${STAGE_ROOT}/builder-invocation \
+    tool-log "${@}" \
+        --build=${BUILD_TRIPLE} \
+        --host=${CONFIGURE_HOST_TRIPLE} \
+        --prefix=${PACKAGE_PREFIX} \
+        ${CONFIGURE_FLAGS}
+}
+
+function package-configure() {
+    export-compiler-environment
+    generate-compiler-tools
+    package-configure-invocation \
+        ${@}
+}
+
+function package-libtoolize() {
+    TOOL_LOG=${STAGE_ROOT}/builder-libtoolize \
+    tool-log ${BINDIR}/libtoolize "${@}"
+}
+
+function package-meson-build() {
+    export-compiler-environment
+    generate-compiler-tools
+
+    BACKEND=${BACKEND:-ninja}
+    BUILD_TYPE=${BUILD_TYPE:-custom}
+    CONFIG_FILE=${STAGE_ROOT}/build-config.txt
+    DEBUG=${DEBUG:-false}
+    ENDIAN=${ENDIAN:-little}
+    BUILD_SYSTEM=${BUILD_OS}
+
+    if [ "${BUILD_OS}" = "gnu" ] ||
+       [ "${BUILD_OS}" = "musl" ]; then
+        HOST_SYSTEM="linux"
+    elif [ "${BUILD_OS}" = "mingw32" ]; then
+        BUILD_SYSTEM="windows"
+    fi
+
+    HOST_SYSTEM=${HOST_OS}
+
+    if [ "${HOST_OS}" = "gnu" ] ||
+       [ "${HOST_OS}" = "musl" ]; then
+        HOST_SYSTEM="linux"
+    elif [ "${HOST_OS}" = "mingw32" ]; then
+        HOST_SYSTEM="windows"
+    fi
+
+    MESON_BUILD_CONFIG=native
+    HOST_CMAKE_PREFIXES="${PACKAGE_PREFIX}/lib/cmake:${PKG_CONFIG_PATH}"
+    HOST_C_ARGS=`${ECHO} [\'${CFLAGS}\'] | ${SED} "s/ /','/g"`
+    HOST_C_LINK_ARGS=`${ECHO} [\'${LDFLAGS}\'] | ${SED} "s/ /','/g"`
+    HOST_CMAKE_PREFIX_PATH=`${ECHO} [\'${HOST_CMAKE_PREFIXES}\'] | ${SED} "s/:/','/g"`
+    HOST_CPP_ARGS=`${ECHO} [\'${CXXFLAGS}\'] | ${SED} "s/ /','/g"`
+    HOST_CPP_LINK_ARGS=`${ECHO} [\'${LDFLAGS}\'] | ${SED} "s/ /','/g"`
+
+    export CMAKE_PREFIX_PATH=`${ECHO} ${HOST_CMAKE_PREFIXES} | ${TR} ':' ';'`
+
+    if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+        MESON_BUILD_CONFIG=cross
+
+        BUILD_CFLAGS="-I${BUILD_PACKAGE_PREFIX}/include"
+        BUILD_CMAKE_PREFIXES="${BUILD_PACKAGE_PREFIX}/lib/cmake:${BUILD_PACKAGE_PREFIX}/lib/pkgconfig"
+        BUILD_CXXFLAGS="-I${BUILD_PACKAGE_PREFIX}/include"
+        BUILD_LDFLAGS="-L${BUILD_PACKAGE_PREFIX}/include"
+        BUILD_PKG_CONFIG_PATH="${BUILD_PACKAGE_PREFIX}/lib/pkgconfig"
+
+        BUILD_C_ARGS=`${ECHO} [\'${BUILD_CFLAGS}\'] | ${SED} "s/ /','/g"`
+        BUILD_C_LINK_ARGS=`${ECHO} [\'${BUILD_LDFLAGS}\'] | ${SED} "s/ /','/g"`
+        BUILD_CMAKE_PREFIX_PATH=`${ECHO} [\'${BUILD_CMAKE_PREFIXES}\'] | ${SED} "s/:/','/g"`
+        BUILD_CPP_ARGS=`${ECHO} [\'${BUILD_CXXFLAGS}\'] | ${SED} "s/ /','/g"`
+        BUILD_CPP_LINK_ARGS=`${ECHO} [\'${BUILD_LDFLAGS}\'] | ${SED} "s/ /','/g"`
+
+        export CC_FOR_BUILD=${BINDIR}/clang
+        export CXX_FOR_BUILD=${BINDIR}/clang++
+        export CMAKE_FOR_BUILD=${CMAKE}
+        export CMAKE_PREFIX_PATH_FOR_BUILD=`${ECHO} ${BUILD_CMAKE_PREFIXES} | ${TR} ":" ";"`
+
+        create-indirect-pkg-config BUILD_PKG_CONFIG_PATH ${STAGE_ROOT}/build-pkgconfig
+
+        export PKG_CONFIG_FOR_BUILD=${STAGE_ROOT}/build-pkgconfig
+    fi
+
+    ${ECHO} "\
+[binaries]
+${MESON_EXTRA_BINARIES}
+" > ${CONFIG_FILE}
+
+    if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+        ${ECHO} "\
+[properties]
+needs_exe_wrapper = true
+
+[build_machine]
+ar = '${AR}'
+backend = '${BACKEND}'
+buildtype = '${BUILD_TYPE}'
+c = '${CC_FOR_BUILD}'
+c_args = ${BUILD_C_ARGS}
+c_ld = '${BINDIR}/ld.lld'
+c_link_args = ${BUILD_C_LINK_ARGS}
+cmake='${CMAKE}'
+cmake_prefix_path=${BUILD_CMAKE_PREFIX_PATH}
+cpp = '${CXX_FOR_BUILD}'
+cpp_args = ${BUILD_CPP_ARGS}
+cpp_ld = '${BINDIR}/ld.lld'
+cpp_link_args = ${BUILD_CPP_LINK_ARGS}
+cpu = '${BUILD_ARCH}'
+cpu_family = '${BUILD_PROCESSOR}'
+debug = '${DEBUG}'
+endian = '${ENDIAN}'
+optimization = '${OPTIMIZATION_LEVEL}'
+pkgconfig = '${STAGE_ROOT}/build-pkg-config'
+pkgconfigpath = ''
+python = '${PYTHON}'
+nm = '${NM}'
+ranlib = '${RANLIB}'
+strip = '${STRIP}'
+strings = '${STRINGS}'
+system = '${BUILD_SYSTEM}'
+windres = '${WINDRES}'
+
+[host_machine]
+        " >> ${CONFIG_FILE}
+    fi
+
+    ${ECHO} "\
+ar = '${AR}'
+backend = '${BACKEND}'
+buildtype = '${BUILD_TYPE}'
+c = '${CC}'
+c_args = ${HOST_C_ARGS}
+c_ld = '${LD}'
+c_link_args = ${HOST_C_LINK_ARGS}
+cmake='${CMAKE}'
+cmake_prefix_path=${HOST_CMAKE_PREFIX_PATH}
+cpp = '${CXX}'
+cpp_args = ${HOST_CPP_ARGS}
+cpp_ld = '${LD}'
+cpp_link_args = ${HOST_CPP_LINK_ARGS}
+cpu = '${HOST_ARCH}'
+cpu_family = '${HOST_PROCESSOR}'
+debug = '${DEBUG}'
+endian = '${ENDIAN}'
+optimization = '${OPTIMIZATION_LEVEL}'
+pkgconfig = '${PKG_CONFIG}'
+pkg_config_path = '${PKG_CONFIG_PATH}'
+python = '${PYTHON}'
+nm = '${NM}'
+ranlib = '${RANLIB}'
+strip = '${STRIP}'
+strings = '${STRINGS}'
+system = '${HOST_SYSTEM}'
+windres = '${WINDRES}'
+    " >> ${CONFIG_FILE}
+
+
+    if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+        ${ECHO} "\
+[target_machine]
+ar = '${AR}'
+backend = '${BACKEND}'
+buildtype = '${BUILD_TYPE}'
+c = '${CC}'
+c_args = ${HOST_C_ARGS}
+c_ld = '${LD}'
+c_link_args = ${HOST_C_LINK_ARGS}
+cmake='${CMAKE}'
+cmake_prefix_path=${HOST_CMAKE_PREFIX_PATH}
+cpp = '${CXX}'
+cpp_args = ${HOST_CPP_ARGS}
+cpp_ld = '${LD}'
+cpp_link_args = ${HOST_CPP_LINK_ARGS}
+cpu = '${HOST_ARCH}'
+cpu_family = '${HOST_PROCESSOR}'
+debug = '${DEBUG}'
+endian = '${ENDIAN}'
+optimization = '${OPTIMIZATION_LEVEL}'
+pkgconfig = '${PKG_CONFIG}'
+pkg_config_path = '${PKG_CONFIG_PATH}'
+python = '${PYTHON}'
+nm = '${NM}'
+ranlib = '${RANLIB}'
+strip = '${STRIP}'
+strings = '${STRINGS}'
+system = '${HOST_SYSTEM}'
+windres = '${WINDRES}'
+" >> ${CONFIG_FILE}
+    fi
+
+    TOOL_LOG=${STAGE_ROOT}/builder-invocation \
+    tool-log ${MESON} \
+         ${SOURCE_ROOT} \
+         ${STAGE_ROOT} \
+         -Dlibdir=${PACKAGE_PREFIX}/lib \
+         -Dprefix=${PACKAGE_PREFIX} \
+         --${MESON_BUILD_CONFIG}-file ${CONFIG_FILE} \
+         "${@}"
+}
+
+function package-python-build() {
+    SETUP_PY=${SETUP_PY:-${SOURCE_ROOT}/setup.py}
+    INSTALLED_FILE_LIST=${INSTALLED_FILE_LIST:-${STAGE_ROOT}/installed-file-list.txt}
+
+    export-compiler-environment
+    generate-compiler-tools
+
+    TOOL_LOG=${STAGE_ROOT}/builder-invocation \
+    tool-log ${PYTHON} ${SETUP_PY} build -b ${STAGE_ROOT} \
+                                         -j ${NUM_PROCESSORS}
+
+    TOOL_LOG=${STAGE_ROOT}/builder-installation \
+    tool-log ${PYTHON} ${SETUP_PY} install --prefix ${INSTALL_PREFIX} \
+                                           --record ${INSTALLED_FILE_LIST} \
+                                           --single-version-externally-managed
+}
+
+function package-swift-build() {
+    export-compiler-environment
+
+    SDK_PLATFORM_DIR=`${ECHO} ${SYSTEM_NAME} | ${TR} '[:upper:]' '[:lower:]'`
+    SWIFT_BUILD_TYPE=${SWIFT_BUILD_TYPE:-release}
+    TEMP_FILE=`mktemp`
+
+    if [ -z "${DISABLE_POLLY}" ]; then
+        POLLY_CFLAG="\"-mllvm\", \"-polly\""
+        POLLY_SWIFTCFLAG="\"-Xllvm\", \"-polly\""
+    fi
+
+    if [ -z "${DISABLE_STRIP}" ]; then
+        STRIP_LDFLAG="-s"
+    fi
+
+    if [ -n "${ENABLE_FLTO}" ]; then
+        FLTO_OPTION=`${ECHO} ${ENABLE_FLTO} | ${TR} '[:upper:]' '[:lower:]'`
+        FLTO_CFLAG="-flto=${FLTO_OPTION}"
+        FLTO_SWIFTCFLAG="-whole-module-optimization"
+    fi
+
+    if [ "${HOST_OS}" = "android" ]; then
+        SWIFT_BUILD_FLAGS="\
+            -Xcc -D__USE_FORTIFY_LEVEL=0 \
+            ${SWIFT_BUILD_FLAGS} \
+        "
+    elif [ "${HOST_OS}" = "musl" ]; then
+        SWIFT_BUILD_FLAGS="\
+            -Xcc -D_ALL_SOURCE=1 \
+            -Xcc -D__USE_FORTIFY_LEVEL=0 \
+            ${SWIFT_BUILD_FLAGS} \
+        "
+    fi
+
+    if [ "${HOST_OS}" != "mingw32" ]; then
+        FPIC_CFLAG="-fPIC"
+        TARGET=${TARGET:-${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}}
+    else
+        TARGET=${TARGET:-${HOST_PROCESSOR}-unknown-windows-gnu}
+    fi
+
+    ${ECHO} -e "{ \n\
+        \"version\": 1, \n\
+        \"sdk\": \"${SYSROOT}\", \n\
+        \"toolchain-bin-dir\": \"${BINDIR}\", \n\
+        \"target\": \"${TARGET}\", \n\
+        \"extra-cc-flags\": [ \n\
+            \"-march=${HOST_ARCH}\", \n\
+            \"-mtune=${HOST_CPU}\", \n\
+            \"-pipe\", \n\
+            \"-resource-dir=${PACKAGE_PREFIX}/lib/clang/12.0.0\", \n\
+            \"-target\", \"${TARGET}\", \n\
+            \"-I${PACKAGE_PREFIX}/lib/swift\", \n\
+            \"-I${PACKAGE_PREFIX}/lib/swift/Block\", \n\
+            \"-O${OPTIMIZATION_LEVEL}\", \n\
+            \"--sysroot=${SYSROOT}\", \n\
+            \"${FLTO_CFLAG}\", \n\
+            \"${FPIC_CFLAG}\", \n\
+            ${POLLY_CFLAG} \n\
+        ], \n\
+        \"extra-cpp-flags\": [ \n\
+        ], \n\
+        \"extra-linker-flags\": [ \n\
+            \"-disable-verify\", \n\
+            \"-O${LINKER_OPTIMIZATION_LEVEL}\", \n\
+            \"${FLTO_CFLAG}\", \n\
+            \"${STRIP_LDFLAG}\", \n\
+        ], \n\
+        \"extra-swiftc-flags\": [ \n\
+            \"-resource-dir\", \"${PACKAGE_PREFIX}/lib/swift\", \n\
+            \"-target-cpu\", \"${HOST_CPU}\", \n\
+            \"-L${PACKAGE_PREFIX}/lib\", \n\
+            \"-O${SWIFT_OPTIMIZATION_LEVEL}\", \n\
+            \"-Xfrontend\", \"-disable-llvm-verify\", \n\
+            \"${FLTO_SWIFTCFLAG}\", \n\
+            ${POLLY_SWIFTCFLAG} \n\
+        ] \n\
+    } \n\
+    " > ${TEMP_FILE}
+
+    TOOL_LOG=${STAGE_ROOT}/builder-invocation \
+    tool-log ${BINDIR}/swift \
+        build \
+        --build-path ${STAGE_ROOT} \
+        --configuration ${SWIFT_BUILD_TYPE} \
+        --destination ${TEMP_FILE} \
+        --enable-test-discovery \
+        ${SWIFT_BUILD_FLAGS}
+}
+
+function package-invoke-builder() {
+    ${ECHO} -e "Builder Invocation Started"
+    ${BASH} ${VAL_VERDE_GH_TEAM}-platform-sdk-${@}
+    ${ECHO} -e "Builder Invocation Complete"
+    ${ECHO}
+}
+
+function rpath-fixup() {
+    SDK_PLATFORM_DIR=`${ECHO} ${SYSTEM_NAME} | ${TR} '[:upper:]' '[:lower:]'`
+
+    if [ "${SDK_PLATFORM_DIR}" != "windows" ]; then
+        if [ "${SDK_PLATFORM_DIR}" != "${HOST_OS}" ]; then
+            SDK_PLATFORM_DIR=${HOST_OS}
+        fi
+
+        COMPONENT_RPATH=${COMPONENT_RPATH:-"\$ORIGIN/../lib:\$ORIGIN/../lib/swift/${SDK_PLATFORM_DIR}"}
+
+        for COMPONENT in ${COMPONENTS}; do
+            patchelf --set-rpath ${COMPONENT_RPATH} \
+                                 ${COMPONENT}
+        done
+    fi
+}
+
+function yarn-build() {
+    TOOL_LOG=${STAGE_ROOT}/builder-invocation \
+    tool-log ${BINDIR}/yarn
+
+    TOOL_LOG=${STAGE_ROOT}/builder-compile \
+    tool-log ${BINDIR}/yarn compile
+}

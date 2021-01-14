@@ -1,0 +1,58 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=libcxxabi
+export SOURCE_PACKAGE_VERSION=9999-git
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export DEPENDS="${PACKAGE_BASE_NAME}-libunwind-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
+export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/llvm-project-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
+export SOURCE_ROOT=${PACKAGE_SOURCES_ROOT}/llvm-project-${SOURCE_PACKAGE_VERSION}/${SOURCE_PACKAGE_NAME}
+
+# Configure the build components
+cd ${STAGE_ROOT}
+
+BINDIR=${BINDIR:-${BUILD_PACKAGE_PREFIX}/bin}
+
+CXXFLAGS="\
+    -D_Unwind_Personality_Fn=__personality_routine \
+    ${CXXFLAGS} \
+" \
+package-cmake \
+    -DCMAKE_C_COMPILER_WORKS=TRUE \
+    -DCMAKE_CXX_COMPILER_WORKS=TRUE \
+    -DLIBCXX_ENABLE_SHARED=TRUE \
+    -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=TRUE \
+    -DLIBCXX_INCLUDE_TESTS=FALSE \
+    -DLIBCXXABI_ENABLE_ASSERTIONS=FALSE \
+    -DLIBCXXABI_ENABLE_EXCEPTIONS=TRUE \
+    -DLIBCXXABI_ENABLE_SHARED=FALSE \
+    -DLIBCXXABI_ENABLE_STATIC=TRUE \
+    -DLIBCXXABI_ENABLE_THREADS=TRUE \
+    -DLIBCXXABI_HAS_NOSTDINCXX_FLAG=TRUE \
+    -DLIBCXXABI_HAS_WIN32_THREADS_API=TRUE \
+    -DLIBCXXABI_INSTALL_LIBRARY=TRUE \
+    -DLIBCXXABI_LIBCXX_INCLUDES=${PACKAGE_SOURCES_ROOT}/llvm-project-${SOURCE_PACKAGE_VERSION}/libcxx/include \
+    -DLIBCXXABI_STATICALLY_LINK_UNWINDER_IN_SHARED_LIBRARY=FALSE \
+    -DLIBCXXABI_USE_COMPILER_RT=TRUE \
+    -DLIBCXXABI_USE_LLVM_UNWINDER=TRUE \
+    -DLIBCXXABI_USE_SJLJ_EXCEPTIONS=FALSE \
+    -DPython3_EXECUTABLE=${BINDIR}/python3 \
+    ${SOURCE_ROOT}
+
+# Build the components
+ninja-install
+
+${MKDIR} -p ${INSTALL_PREFIX}/include
+${CP} ${SOURCE_ROOT}/include/* \
+      ${INSTALL_PREFIX}/include
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

@@ -1,8 +1,0 @@
-#!/bin/bash
-
-set -e
-
-args=$@
-args=`echo "${args}" | sed -r 's/--output-format=[^[:space:]]+//g'`
-
-${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang ${args}

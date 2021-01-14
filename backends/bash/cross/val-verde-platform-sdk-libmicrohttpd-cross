@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=libmicrohttpd
+export SOURCE_PACKAGE_VERSION=0.9.72
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export DEPENDS="\
+    ${PACKAGE_BASE_NAME}-zlib-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
+"
+
+# Configure the build components
+cd ${STAGE_ROOT}
+package-configure \
+    ${SOURCE_ROOT}/configure \
+    --disable-static \
+    --enable-shared
+
+# Build the components
+make-install
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

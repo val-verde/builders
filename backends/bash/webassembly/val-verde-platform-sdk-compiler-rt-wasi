@@ -1,0 +1,50 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=compiler-rt
+export SOURCE_PACKAGE_VERSION=9999-git
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a
+export DEPENDS="${PACKAGE_BASE_NAME}-llvm-project-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH} (>=1.0.0)"
+export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/llvm-project-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
+export SOURCE_ROOT=${PACKAGE_SOURCES_ROOT}/llvm-project-${SOURCE_PACKAGE_VERSION}/${SOURCE_PACKAGE_NAME}
+
+# Configure the build components
+cd ${STAGE_ROOT}
+
+export PACKAGE_PREFIX=${BUILD_PACKAGE_PREFIX}
+
+package-cmake \
+    -DCMAKE_C_COMPILER_WORKS=TRUE \
+    -DCMAKE_CXX_COMPILER_WORKS=TRUE \
+    -DCMAKE_SIZEOF_VOID_P=4 \
+    -DCOMPILER_RT_BUILD_LIBFUZZER=FALSE \
+    -DCOMPILER_RT_BUILD_MEMPROF=FALSE \
+    -DCOMPILER_RT_BUILD_PROFILE=FALSE \
+    -DCOMPILER_RT_BUILD_SANITIZERS=FALSE \
+    -DCOMPILER_RT_BUILD_XRAY=FALSE \
+    -DCOMPILER_RT_CAN_EXECUTE_TESTS=FALSE \
+    -DCOMPILER_RT_DEFAULT_TARGET_TRIPLE=${HOST_TRIPLE} \
+    -DCOMPILER_RT_EXCLUDE_ATOMIC_BUILTIN=FALSE \
+    -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
+    -DLLVM_CONFIG_PATH=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config \
+    ${SOURCE_ROOT}
+
+# Build the components
+ninja-install
+
+${MKDIR} -p ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/12.0.0/lib/wasi
+${MV} ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/fuchsia/${CLANG_RT_LIB} \
+      ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/12.0.0/lib/wasi/${DST_CLANG_RT_LIB}
+${RM} -rf ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/fuchsia
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

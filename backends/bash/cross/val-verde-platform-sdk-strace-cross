@@ -1,0 +1,44 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=strace
+export SOURCE_PACKAGE_VERSION=5.9
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export SOURCE_ROOT=${PACKAGE_SOURCES_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
+
+# Configure the build components
+copy-source-to-staging
+
+cd ${STAGE_ROOT}
+
+if [ "${HOST_OS}" = "musl" ]; then
+    # IPPROTO_MAX is 263 in musl vs 256 in glibc
+    ${SED} -i \
+           "s/256/263/g" \
+           `${GREP} -l IPPROTO_MAX ${STAGE_ROOT}/xlat/inet_protocols.in`
+fi
+
+./bootstrap
+
+CFLAGS="\
+    -Wno-macro-redefined \
+    -Wno-unused-command-line-argument \
+    ${CFLAGS} \
+" \
+package-configure \
+    ${STAGE_ROOT}/configure \
+    --enable-mpers=no
+
+# Build the components
+make-install
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

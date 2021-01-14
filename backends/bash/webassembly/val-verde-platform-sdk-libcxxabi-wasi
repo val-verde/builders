@@ -1,0 +1,62 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=libcxxabi
+export SOURCE_PACKAGE_VERSION=9999-wasm32
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/llvm-project-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
+export SOURCE_ROOT=${PACKAGE_SOURCES_ROOT}/llvm-project-9999-git/${SOURCE_PACKAGE_NAME}
+
+# Configure the build components
+cd ${STAGE_ROOT}
+
+BINDIR=${BINDIR:-${BUILD_PACKAGE_PREFIX}/bin}
+
+CXXFLAGS="\
+    -nostdlib++ \
+    -D_LIBCPP_BUILDING_LIBRARY \
+    -D_LIBCPP_HAS_THREAD_API_PTHREAD=1 \
+    -D_REENTRANT \
+    ${CXXFLAGS} \
+" \
+package-cmake \
+    -DCMAKE_C_COMPILER_WORKS=TRUE \
+    -DCMAKE_CXX_COMPILER_WORKS=TRUE \
+    -DLIBCXXABI_ENABLE_ASSERTIONS=FALSE \
+    -DLIBCXXABI_ENABLE_EXCEPTIONS=TRUE \
+    -DLIBCXXABI_ENABLE_SHARED=FALSE \
+    -DLIBCXXABI_ENABLE_STATIC=TRUE \
+    -DLIBCXXABI_ENABLE_THREADS=TRUE \
+    -DLIBCXXABI_HAS_PTHREAD_API=TRUE \
+    -DLIBCXXABI_LIBCXX_INCLUDES=${PACKAGE_SOURCES_ROOT}/llvm-project-9999-git/libcxx/include \
+    -DLIBCXXABI_STATICALLY_LINK_UNWINDER_IN_SHARED_LIBRARY=FALSE \
+    -DLIBCXXABI_SUPPORTS_FUNWIND_TABLES_FLAG=FALSE \
+    -DLIBCXXABI_USE_COMPILER_RT=TRUE \
+    -DLIBCXXABI_USE_LLVM_UNWINDER=FALSE \
+    -DLIBCXXABI_USE_SJLJ_EXCEPTIONS=FALSE \
+    -DPython3_EXECUTABLE=${BINDIR}/python3 \
+    ${SOURCE_ROOT}
+
+# Build the components
+ninja-install
+
+${MKDIR} -p ${INSTALL_PREFIX}/include
+${CP} ${SOURCE_ROOT}/include/* \
+      ${INSTALL_PREFIX}/include
+
+${MV} ${INSTALL_PREFIX}/lib \
+      ${INSTALL_PREFIX}/${HOST_PROCESSOR}-${HOST_OS}
+${MKDIR} -p ${INSTALL_PREFIX}/lib
+${MV} ${INSTALL_PREFIX}/${HOST_PROCESSOR}-${HOST_OS} \
+      ${INSTALL_PREFIX}/lib
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

@@ -1,0 +1,92 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=cmake
+export SOURCE_PACKAGE_VERSION=9999-git
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export DEPENDS="\
+    ${PACKAGE_BASE_NAME}-bzip2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-curl-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-expat-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-libuv-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-xz-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-zlib-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
+"
+
+# Configure the build components
+cd ${STAGE_ROOT}
+
+if [ "${HOST_OS}" = "mingw32" ]; then
+    CMake_HAVE_CXX_FILESYSTEM=FALSE
+    CURSES_CURSES_LIBRARY=${PACKAGE_PREFIX}/lib/libncurses.dll.a
+    CURL_LIBRARY=${PACKAGE_PREFIX}/lib/libcurl_imp.lib
+    EXPAT_LIBRARY=${PACKAGE_PREFIX}/lib/libexpat.dll.a
+    LibArchive_LIBRARY=${PACKAGE_PREFIX}/lib/libarchive.dll.a
+    LibUV_LIBRARY=${PACKAGE_PREFIX}/lib/libuv.dll.a
+    ZLIB_LIBRARY=${PACKAGE_PREFIX}/lib/libz.dll.a
+else
+    CMake_HAVE_CXX_FILESYSTEM=TRUE
+    CURSES_CURSES_LIBRARY=${PACKAGE_PREFIX}/lib/libncurses.so
+    CURL_LIBRARY=${PACKAGE_PREFIX}/lib/libcurl.so
+    EXPAT_LIBRARY=${PACKAGE_PREFIX}/lib/libexpat.so
+    LibArchive_LIBRARY=${PACKAGE_PREFIX}/lib/libarchive.so
+    LibUV_LIBRARY=${PACKAGE_PREFIX}/lib/libuv.so
+    ZLIB_LIBRARY=${PACKAGE_PREFIX}/lib/libz.so
+fi
+
+CFLAGS="\
+    -target ${HOST_TRIPLE} \
+    --sysroot ${SYSROOT} \
+    -Wno-unused-command-line-argument \
+    ${CFLAGS} \
+" \
+CXXFLAGS="\
+    -target ${HOST_TRIPLE} \
+    --sysroot ${SYSROOT} \
+    -Wno-unused-command-line-argument \
+    ${CXXFLAGS} \
+" \
+package-cmake \
+    -DBUILD_TESTING=FALSE \
+    -DCMake_HAVE_CXX_FILESYSTEM=${CMake_HAVE_CXX_FILESYSTEM} \
+    -DCMake_HAVE_CXX_UNIQUE_PTR=TRUE \
+    -DCMake_RUN_CXX_FILESYSTEM=0 \
+    -DCMake_RUN_CXX_FILESYSTEM__TRYRUN_OUTPUT=1 \
+    -DCMakeCheckCurses_COMPILED=TRUE \
+    -DCURL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DCURL_LIBRARIES=${CURL_LIBRARY} \
+    -DCURL_LIBRARY=${CURL_LIBRARY} \
+    -DCMAKE_USE_SYSTEM_CURL=TRUE \
+    -DCMAKE_USE_SYSTEM_EXPAT=TRUE \
+    -DCMAKE_USE_SYSTEM_LIBARCHIVE=TRUE \
+    -DCMAKE_USE_SYSTEM_LIBLZMA=TRUE \
+    -DCMAKE_USE_SYSTEM_LIBUV=TRUE \
+    -DCMAKE_USE_SYSTEM_ZLIB=TRUE \
+    -DCURSES_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DCURSES_CURSES_LIBRARY=${CURSES_CURSES_LIBRARY} \
+    -DEXPAT_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DEXPAT_LIBRARY=${EXPAT_LIBRARY} \
+    -DHAVE_POLL_FINE_EXITCODE=0 \
+    -DHAVE_POLL_FINE_EXITCODE__TRYRUN_OUTPUT=1 \
+    -DLibArchive_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DLibArchive_LIBRARY=${LibArchive_LIBRARY} \
+    -DLibUV_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DLibUV_LIBRARY=${LibUV_LIBRARY} \
+    -DPython3_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/python3 \
+    -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZLIB_LIBRARY=${ZLIB_LIBRARY} \
+    ${SOURCE_ROOT}
+
+# Build the components
+ninja-install
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

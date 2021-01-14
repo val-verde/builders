@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=libssh2
+export SOURCE_PACKAGE_VERSION=9999-git
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export DEPENDS="\
+    ${PACKAGE_BASE_NAME}-openssl-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-zlib-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
+"
+
+# Configure the build components
+cd ${STAGE_ROOT}
+
+package-cmake \
+    -DBUILD_EXAMPLES=FALSE \
+    -DBUILD_SHARED_LIBS=TRUE \
+    -DBUILD_TESTING=FALSE \
+    -DOPENSSL_ROOT_DIR=${PACKAGE_PREFIX} \
+    ${SOURCE_ROOT}
+
+# Build the package
+ninja-install
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

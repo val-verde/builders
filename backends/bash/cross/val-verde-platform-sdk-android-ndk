@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export ANDROID_NDK_URL=https://dl.google.com/android/repository
+export SOURCE_PACKAGE_NAME=android-ndk
+export SOURCE_PACKAGE_VERSION=${ANDROID_NDK_VERSION}
+export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+# Configure the build components
+${MKDIR} -p ${SOURCE_ROOT}
+cd ${SOURCE_ROOT}
+package-wget -c ${ANDROID_NDK_URL}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.zip
+package-unzip ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.zip
+
+cd ${STAGE_ROOT}
+${MKDIR} -p ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}
+${MV} ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}
+${RSYNC} -aPx ${PACKAGE_SOURCES_ROOT}/${SOURCE_PACKAGE_NAME}-patches-9999-git/* \
+           ${SOURCE_ROOT}
+
+${PATCH} -p1 \
+         -i ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-dirent-versionsort.diff \
+            ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}/sysroot/usr/include/dirent.h
+${PATCH} -p1 \
+         -i ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-string-strverscmp.diff \
+            ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${BUILD_PROCESSOR}/sysroot/usr/include/string.h

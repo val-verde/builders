@@ -1,0 +1,39 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=swift-doc
+export SOURCE_PACKAGE_VERSION=9999-git
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export DEPENDS="\
+    ${PACKAGE_BASE_NAME}-swift-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
+"
+
+# Configure the build components
+if [ "${HOST_OS}" = "android" ]; then
+   SOURCE_ROOT=${SOURCE_ROOT}-android
+else
+   SOURCE_ROOT=${SOURCE_ROOT}
+fi
+
+# Build the components
+cd ${SOURCE_ROOT}
+package-swift-build
+
+cd ${STAGE_ROOT}
+${MKDIR} -p ${INSTALL_PREFIX}/bin
+package-push-directory release
+${CP} `${FIND} -type f -name swift-doc\*` \
+      ${INSTALL_PREFIX}/bin
+package-pop-directory
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

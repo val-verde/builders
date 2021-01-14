@@ -1,0 +1,114 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+# kernel headers builds
+DPKG=/usr/bin/dpkg \
+ECHO=/usr/bin/echo \
+M4=/usr/bin/m4 \
+MAKE=/usr/bin/make \
+MKDIR=/usr/bin/mkdir \
+MV=/usr/bin/mv \
+RM="/usr/bin/rm -f" \
+RSYNC=/usr/bin/rsync \
+SED=/usr/bin/sed \
+XARGS=/usr/bin/xargs \
+package-invoke-builder kernel-headers-cross
+
+# llvm dependencies
+ECHO=/usr/bin/echo \
+package-invoke-builder llvm-dependencies-gnu
+
+# llvm build
+package-invoke-builder llvm-project
+
+# cmark build
+package-invoke-builder swift-cmark
+
+# swift build
+package-invoke-builder swift
+
+# lldb build
+package-invoke-builder swift-lldb
+
+# libdispatch build
+package-invoke-builder swift-corelibs-libdispatch
+
+# foundation build
+package-invoke-builder swift-corelibs-foundation
+
+# xctest build
+package-invoke-builder swift-corelibs-xctest
+
+# llbuild build
+package-invoke-builder swift-llbuild-cross
+
+# swift tools support core build
+package-invoke-builder swift-tools-support-core
+
+# yams build
+package-invoke-builder yams
+
+# swift argument parser build
+package-invoke-builder swift-argument-parser
+
+# swift driver build
+package-invoke-builder swift-driver
+
+# swift package manager build
+package-invoke-builder swift-package-manager
+
+# reinstall swiftpm for build and host
+PACKAGES_TO_MANAGE=( 'swift-argument-parser'         'BUILD' \
+                     'swift-corelibs-foundation'     'BUILD' \
+                     'swift-corelibs-libdispatch'    'BUILD' \
+                     'swift-corelibs-xctest'         'BUILD' \
+                     'swift-driver'                  'BUILD' \
+                     'swift-llbuild'                 'BUILD' \
+                     'swift-package-manager'         'BUILD' \
+                     'swift-tools-support-core'      'BUILD' \
+                     'yams'                          'BUILD')
+
+PACKAGE_ACTION=INSTALL \
+deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
+
+# swift-syntax build
+package-invoke-builder swift-syntax-cross
+
+# swift-format build
+package-invoke-builder swift-format-cross
+
+# swift-doc build
+package-invoke-builder swift-doc-cross
+
+# sourcekit-lsp build
+package-invoke-builder sourcekit-lsp
+
+# baikonur build
+package-invoke-builder baikonur
+
+# pythonkit build
+package-invoke-builder pythonkit
+
+# swift tensorflows apis build
+# package-invoke-builder swift-tensorflow-apis
+
+# graphics sdk build
+package-invoke-builder graphics-sdk-cross
+
+# node + sdk build
+package-invoke-builder node-cross
+package-invoke-builder npm-yarn-cross
+
+# yautja server build
+package-invoke-builder yarn-yautja-server-cross
+
+# wine build
+package-invoke-builder wine-cross
+
+# rust build
+package-invoke-builder rust
+

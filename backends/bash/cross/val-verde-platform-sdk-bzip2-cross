@@ -1,0 +1,58 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=bzip2
+export SOURCE_PACKAGE_VERSION=1.0.8
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export-compiler-environment
+generate-compiler-tools
+
+# Determine source branch
+if [ "${HOST_OS}" = "mingw32" ]; then
+    SOURCE_ROOT=${SOURCE_ROOT}-windows
+else
+    SOURCE_ROOT=${SOURCE_ROOT}
+fi
+
+# Configure the build components
+copy-source-to-staging
+
+# Build the components
+cd ${STAGE_ROOT}
+make-install \
+    AR=${AR} \
+    CC=${CC} \
+    CFLAGS="${CFLAGS}" \
+    PREFIX=${PACKAGE_PREFIX} \
+    RANLIB=${RANLIB}
+
+${MKDIR} -p ${INSTALL_PREFIX}/lib/pkgconfig
+${ECHO} "
+V=${SOURCE_PACKAGE_VERSION}
+R=${SOURCE_PACKAGE_VERSION}
+
+prefix=${PACKAGE_PREFIX}
+INSTALL_INC=\${prefix}/include
+INSTALL_LIB=\${prefix}/lib
+exec_prefix=\${prefix}
+libdir=\${exec_prefix}/lib
+includedir=\${prefix}/include
+
+Name: bzip2
+Description: bzip2 is a freely available, patent free (see below), high-quality data compressor.
+Version: \${R}
+Requires:
+Libs: -L\${libdir} -lbz2
+Cflags: -I\${includedir}
+" > ${INSTALL_PREFIX}/lib/pkgconfig/bzip2.pc
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

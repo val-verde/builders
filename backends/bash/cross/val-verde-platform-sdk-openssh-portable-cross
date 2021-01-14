@@ -1,0 +1,52 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=openssh-portable
+export SOURCE_PACKAGE_VERSION=9999-git
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export-compiler-environment
+
+# Configure the build components
+copy-source-to-staging
+
+cd ${STAGE_ROOT}
+package-autoreconf -fi
+
+MAIL_DIR=/var/mail
+
+if [ "${HOST_OS}" = "android" ]; then
+    export CFLAGS="\
+        -DHAVE_ATTRIBUTE__SENTINEL__=1 \
+        -DHAVE_BZERO=1 \
+        -DHAVE_MEMSET_S=1 \
+        -Dmemset_s\\\(d,ds,c,s\\\)=bzero\\\(d,s\\\) \
+        ${CFLAGS} \
+    "
+    MAIL_DIR=/data/local/tmp/mail
+fi
+
+package-configure \
+    ${STAGE_ROOT}/configure \
+    --disable-static \
+    --disable-strip \
+    --disable-utmpx \
+    --enable-shared \
+    --with-ldns=${PACKAGE_PREFIX} \
+    --with-maildir=${MAIL_DIR}
+
+# Build the components
+make-build
+
+INSTALL_TARGET=install-nokeys \
+make-install
+
+# Build the package
+deb-package-build
+
+# Build the package
+deb-package-install

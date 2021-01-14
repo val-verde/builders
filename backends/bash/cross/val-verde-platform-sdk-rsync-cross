@@ -1,0 +1,44 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=rsync
+export SOURCE_PACKAGE_VERSION=3.2.3
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export-compiler-environment
+
+export DEPENDS="\
+    ${PACKAGE_BASE_NAME}-openssl-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-zlib-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
+"
+
+# Configure the build components
+copy-source-to-staging
+
+if [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    CONFIGURE_SIMD_CMD="--enable-simd"
+else
+    CONFIGURE_SIMD_CMD="--disable-simd"
+fi
+
+cd ${STAGE_ROOT}
+package-autoreconf -i
+package-configure \
+    ${STAGE_ROOT}/configure \
+    rsync_cv_HAVE_BROKEN_READDIR=no \
+    --disable-md2man \
+    ${CONFIGURE_SIMD_CMD}
+
+# Build the components
+make-build reconfigure
+make-install
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

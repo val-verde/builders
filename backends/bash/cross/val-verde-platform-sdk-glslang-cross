@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=glslang
+export SOURCE_PACKAGE_VERSION=9999-git
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export DEPENDS="${PACKAGE_BASE_NAME}-spirv-tools-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
+
+# Configure the build components
+cd ${STAGE_ROOT}
+
+if [ "${HOST_OS}" = "android" ]; then
+    CMAKE_ANDROID_DEFINE_CMD="-DANDROID=1"
+fi
+
+package-cmake \
+    -DPYTHON_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/python3 \
+    "${CMAKE_ANDROID_DEFINE_CMD}" \
+    ${SOURCE_ROOT}
+
+# Build the components
+ninja-install
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

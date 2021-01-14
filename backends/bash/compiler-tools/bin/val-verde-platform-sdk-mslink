@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+
+args=$@
+args=`${ECHO} "${args}" | ${SED} -r 's/-implib:/\/implib:/g'`
+args=`${ECHO} "${args}" | ${SED} -r 's/-Bsymbolic//g'`
+args=`${ECHO} "${args}" | ${SED} -r 's/--version-script=[^[:space:]]+//g'`
+
+${BUILD_PACKAGE_PREFIX}/bin/ld.lld ${args}

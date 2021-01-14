@@ -1,0 +1,48 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=ncurses
+export SOURCE_PACKAGE_VERSION=6.2
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+# Configure the build components
+sed -i "s/'auto-import'/'ld'/g" ${SOURCE_ROOT}/configure
+
+cd ${STAGE_ROOT}
+
+INSTALL_PREFIX=${PACKAGE_PREFIX} \
+package-configure \
+    ${SOURCE_ROOT}/configure \
+    --enable-ext-colors \
+    --enable-mixed-case \
+    --enable-pc-files \
+    --enable-rpath \
+    --enable-sp-funcs \
+    --enable-term-driver \
+    --with-curses-h \
+    --with-cxx \
+    --with-cxx-shared \
+    --with-install-prefix=${INSTALL_ROOT}/ \
+    --with-pkg-config=/usr/bin/pkg-config \
+    --with-pkg-config-libdir=${PACKAGE_PREFIX}/lib/pkgconfig \
+    --with-shared \
+    --with-ticlib \
+    --with-tic-path=/usr/bin/tic \
+    --without-debug \
+    --without-manpages \
+    --without-progs \
+    --without-tack \
+    --without-tests
+
+# Build the components
+make-install
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

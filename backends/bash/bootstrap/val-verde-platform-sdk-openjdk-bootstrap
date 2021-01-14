@@ -1,0 +1,32 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=openjdk
+export SOURCE_PACKAGE_VERSION=16
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+# Configure the build components
+if [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    OPENJDK_ARCH=x64
+else
+    OPENJDK_ARCH=${HOST_PROCESSOR}
+fi
+
+SUB_VERSION=28
+package-wget -c https://download.java.net/java/early_access/jdk${SOURCE_PACKAGE_VERSION}/${SUB_VERSION}/GPL/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-ea+${SUB_VERSION}_${HOST_KERNEL}-${OPENJDK_ARCH}_bin.tar.gz \
+     -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.tar.gz
+package-tar -zxf \
+            ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.tar.gz
+package-rsync -ax \
+              jdk-${SOURCE_PACKAGE_VERSION}/* \
+              ${INSTALL_PREFIX}/
+
+# Build the package
+deb-package-build
+
+# Build the package
+deb-package-install

@@ -1,0 +1,407 @@
+#!/bin/bash
+
+set -e
+
+export \
+    AUTORECONF=/usr/bin/autoreconf \
+    BASH=/usr/bin/bash \
+    BISON=/usr/bin/bison \
+    CHMOD=/usr/bin/chmod \
+    CMAKE=/usr/bin/cmake \
+    CP=/usr/bin/cp \
+    CURL=/usr/bin/curl \
+    CUT=/usr/bin/cut \
+    DPKG=/usr/bin/dpkg \
+    FIND=/usr/bin/find \
+    GAWK=/usr/bin/gawk \
+    GETTEXT=/usr/bin/gettext \
+    GIT=/usr/bin/git \
+    GPERF=/usr/bin/gperf \
+    GREP=/usr/bin/grep \
+    HELP2MAN=/usr/bin/true \
+    INSTALL=/usr/bin/install \
+    LN=/usr/bin/ln \
+    LS=/usr/bin/ls \
+    M4=/usr/bin/m4 \
+    MAKE=/usr/bin/make \
+    MAKEINFO=/usr/bin/true \
+    MESON=/usr/bin/meson \
+    MKDIR=/usr/bin/mkdir \
+    MV=/usr/bin/mv \
+    NINJA=/usr/bin/ninja \
+    PERL=/usr/bin/perl \
+    PKG_CONFIG=/usr/bin/pkg-config \
+    PYTHON=/usr/bin/python3 \
+    RM="/usr/bin/rm -f" \
+    RMDIR=/usr/bin/rmdir \
+    RSYNC=/usr/bin/rsync \
+    SED=/usr/bin/sed \
+    SSH=/usr/bin/ssh \
+    TAR=/usr/bin/tar \
+    TEE=/usr/bin/tee \
+    TR=/usr/bin/tr \
+    WGET=/usr/bin/wget \
+    XARGS=/usr/bin/xargs \
+    XZ=/usr/bin/xz
+
+GUNZIP=/usr/bin/gunzip
+GZIP=/usr/bin/gzip
+UNZIP=/usr/bin/unzip
+ZIP=/usr/bin/zip
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+# zlib build
+package-invoke-builder zlib-cross
+
+# bzip2 build
+package-invoke-builder bzip2-cross
+
+# gzip build
+package-invoke-builder gzip-cross
+GUNZIP=${BINDIR}/gunzip
+GZIP=${BINDIR}/gzip
+
+# lz4 build
+package-invoke-builder lz4-cross
+
+# xxhash build
+package-invoke-builder xxhash-cross
+
+# zip build
+package-invoke-builder zip-cross
+ZIP=${BINDIR}/zip
+
+# zstd build
+package-invoke-builder zstd-cross
+
+# unzip build
+package-invoke-builder unzip-cross
+UNZIP=${BINDIR}/unzip
+
+# autoconf build
+package-invoke-builder autoconf-cross
+export AUTORECONF=${BINDIR}/autoreconf
+
+# automake build
+package-invoke-builder automake-cross
+
+# libtool build
+package-invoke-builder libtool-cross
+
+# m4 build
+package-invoke-builder m4-cross
+export M4=${BINDIR}/m4
+
+# make build
+package-invoke-builder make-cross
+export MAKE=${BINDIR}/make
+
+# ninja build
+package-invoke-builder ninja-cross
+export NINJA=${BINDIR}/ninja
+
+# libiconv build
+package-invoke-builder libiconv-cross
+
+# libffi build
+package-invoke-builder libffi-cross
+
+# perl build
+package-invoke-builder perl-cross
+export PERL=${BINDIR}/perl
+
+# pcre build
+package-invoke-builder pcre-cross
+
+# icu build
+package-invoke-builder icu4c
+
+# xz build
+package-invoke-builder xz-cross
+export XZ=${BINDIR}/xz
+
+# libxml2 build
+package-invoke-builder libxml2-cross
+
+# gdbm build
+CFLAGS="\
+    -fcommon \
+    ${CFLAGS} \
+" \
+package-invoke-builder gdbm-cross
+
+# ncurses build
+package-invoke-builder ncurses-cross
+
+# libedit build
+package-invoke-builder libedit-cross
+
+# sqlite3 build
+package-invoke-builder sqlite-cross
+
+# openssl build
+package-invoke-builder openssl-cross
+
+# libcap build
+package-invoke-builder libcap-cross
+
+# expat build
+package-invoke-builder expat-cross
+
+# gettext build
+package-invoke-builder gettext-cross
+export GETTEXT=${BINDIR}/gettext
+
+# util-linux build
+package-invoke-builder util-linux-cross
+
+# glib build
+package-invoke-builder glib-cross
+
+# pkg-config build
+package-invoke-builder pkg-config-cross
+export PKG_CONFIG=${BINDIR}/pkg-config
+
+# xorg-macros build
+package-invoke-builder xorg-macros-cross
+
+# xorgproto build
+package-invoke-builder xorg-xorgproto-cross
+
+# xcb-proto build
+package-invoke-builder xcb-proto-cross
+
+# xcb-pthread-stubs build
+package-invoke-builder xcb-pthread-stubs-cross
+
+# libxau build
+package-invoke-builder xorg-libxau-cross
+
+# libxcb build
+package-invoke-builder xcb-libxcb-cross
+
+# pixman build
+package-invoke-builder pixman-cross
+
+# xorg-libpciaccess build
+package-invoke-builder xorg-libpciaccess-cross
+
+# xorg-libxtrans build
+package-invoke-builder xorg-libxtrans-cross
+
+# libx11 build
+package-invoke-builder libx11-cross
+
+# libxext build
+package-invoke-builder libxext-cross
+
+# xorg-libxrender build
+package-invoke-builder xorg-libxrender-cross
+
+# xorg-libxfixes build
+package-invoke-builder xorg-libxfixes-cross
+
+# xorg-libxi build
+package-invoke-builder xorg-libxi-cross
+
+# xorg-libice build
+package-invoke-builder xorg-libice-cross
+
+# alsa-lib build
+package-invoke-builder alsa-lib-cross
+
+# cups build
+package-invoke-builder cups-cross
+
+# libuv build
+package-invoke-builder libuv-cross
+
+# libssh2 build
+package-invoke-builder libssh2-cross
+
+# ldns build
+package-invoke-builder ldns-cross
+
+# openssh-portable build
+package-invoke-builder openssh-portable-cross
+export SSH=${BINDIR}/ssh
+
+# curl build
+package-invoke-builder curl-cross
+export CURL=${BINDIR}/curl
+
+# attr build
+package-invoke-builder attr-cross
+
+# acl build
+package-invoke-builder acl-cross
+
+# bash build
+package-invoke-builder bash-cross
+export BASH=${BINDIR}/bash
+
+# xorg-libsm build
+package-invoke-builder xorg-libsm-cross
+
+# xorg-libxt build
+package-invoke-builder xorg-libxt-cross
+
+# xorg-libxtst build
+package-invoke-builder xorg-libxtst-cross
+
+# xorg-libxrandr build
+package-invoke-builder xorg-libxrandr-cross
+
+# xorg-xinput build
+# package-invoke-builder xorg-xinput-cross
+
+# xorg-libxkbfile build
+package-invoke-builder xorg-libxkbfile-cross
+
+# xorg-libxshmfence build
+package-invoke-builder xorg-libxshmfence-cross
+
+# xorg-libxxf86vm build
+package-invoke-builder xorg-libxxf86vm-cross
+
+# freetype2 build
+package-invoke-builder freetype2-cross
+
+# wayland build
+package-invoke-builder wayland
+
+# wayland-protocols build
+package-invoke-builder wayland-protocols-cross
+
+# mesa-drm build
+package-invoke-builder mesa-drm-cross
+
+# libarchive build
+package-invoke-builder libarchive-cross
+
+# libmicrohttpd build
+package-invoke-builder libmicrohttpd-cross
+
+# elfutils build
+package-invoke-builder elfutils-cross
+
+# grep build
+package-invoke-builder grep-cross
+export GREP=${BINDIR}/grep
+
+# sed build
+package-invoke-builder sed-cross
+export SED=${BINDIR}/sed
+
+# bison build
+package-invoke-builder bison-cross
+export BISON=${BINDIR}/bison
+
+# gawk build
+package-invoke-builder gawk-cross
+export GAWK=${BINDIR}/gawk
+
+# strace build
+package-invoke-builder strace-cross
+
+# gperf build
+package-invoke-builder gperf-cross
+export GPERF=${BINDIR}/gperf
+
+# fontconfig build
+package-invoke-builder fontconfig-cross
+
+# tar build
+package-invoke-builder tar-cross
+export TAR=${BINDIR}/tar
+
+# coreutils build
+package-invoke-builder coreutils-cross
+export \
+    CHMOD=${BINDIR}/chmod \
+    CP=${BINDIR}/cp \
+    CUT=${BINDIR}/cut \
+    ECHO=${BINDIR}/echo \
+    HELP2MAN=${BINDIR}/true \
+    INSTALL=${BINDIR}/install \
+    LS=${BINDIR}/ls \
+    LN=${BINDIR}/ln \
+    MAKEINFO=${BINDIR}/true \
+    MKDIR=${BINDIR}/mkdir \
+    MV=${BINDIR}/mv \
+    RM="${BINDIR}/rm -f" \
+    RMDIR=${BINDIR}/rmdir \
+    TEE=${BINDIR}/tee \
+    TR=${BINDIR}/tr
+
+# findutils build
+package-invoke-builder findutils-cross
+export \
+    FIND=${BINDIR}/find \
+    XARGS=${BINDIR}/xargs
+
+# dpkg build
+package-invoke-builder dpkg-cross
+export DPKG=${BINDIR}/dpkg
+
+# rsync build
+package-invoke-builder rsync-cross
+export RSYNC=${BINDIR}/rsync
+
+# systemd build
+package-invoke-builder systemd
+
+# wget build
+package-invoke-builder wget-cross
+export WGET=${BINDIR}/wget
+
+# python build
+package-invoke-builder python-cross
+export PYTHON=${BINDIR}/python3
+
+# mako build
+package-invoke-builder mako-cross
+
+# meson build
+package-invoke-builder meson-cross
+export MESON=${BINDIR}/meson
+
+# gobject-introspection build
+package-invoke-builder gobject-introspection-cross
+
+# libsecret build
+package-invoke-builder libsecret-cross
+
+# tensorflow build
+package-invoke-builder tensorflow-cross
+
+# lua build
+package-invoke-builder lua-cross
+
+# swig build
+package-invoke-builder swig-cross
+
+# openjdk build
+package-invoke-builder openjdk-cross
+
+# z3 build
+package-invoke-builder z3-cross
+
+# git build
+package-invoke-builder git-cross
+export GIT=${BINDIR}/git
+
+# vim build
+package-invoke-builder vim-cross
+
+# cmake build
+package-invoke-builder cmake-cross
+export CMAKE=${BINDIR}/cmake
+
+# android patch elf
+package-invoke-builder android-patch-elf-cross
+
+# jwasm (ml64) cross compiler build
+package-invoke-builder jwasm

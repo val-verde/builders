@@ -5,11 +5,12 @@ services:
         container_name: ubuntu-builder
         image: openvalverde/ubuntu20.04-deb-images:val-verde-compilers-1.0.0
         build: 
-            context: ./ubuntu20.04
-            dockerfile: ubuntu.Dockerfile
+            context: ./
+            dockerfile: ubuntu20.04.Dockerfile
             args:
-                - DEB_PATH=/sources
+                - DEB_PATH=/debs
                 - PACKAGE_BASE_NAME=val-verde
                 - PACKAGE_ROOT=/opt
+                - STAGE_ROOT_BASE=/tmp/staging
                 - VAL_VERDE_GH_TEAM=val-verde
         privileged: true

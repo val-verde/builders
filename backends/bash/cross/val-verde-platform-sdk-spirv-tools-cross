@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=spirv-tools
+export SOURCE_PACKAGE_VERSION=9999-git
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+# Configure the build components
+cd ${STAGE_ROOT}
+package-cmake \
+    -DPYTHON_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/python3 \
+    -DSPIRV-Headers_SOURCE_DIR=${PACKAGE_PREFIX} \
+    ${SOURCE_ROOT}
+
+# Build the components
+ninja-install
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

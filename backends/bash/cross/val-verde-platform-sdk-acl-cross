@@ -1,0 +1,36 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=acl
+export SOURCE_PACKAGE_VERSION=2.2.52
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export DEPENDS="${PACKAGE_BASE_NAME}-attr-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
+
+# Configure the build components
+copy-source-to-staging
+sed -i \
+    "s/'auto-import'/'ld'/g" \
+    ${STAGE_ROOT}/configure
+
+cd ${STAGE_ROOT}
+package-configure \
+    ${STAGE_ROOT}/configure \
+    --disable-static \
+    --enable-shared \
+    --includedir=${PACKAGE_PREFIX}/include
+
+# Build the components
+make-build
+make-install install-dev \
+             install-lib
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

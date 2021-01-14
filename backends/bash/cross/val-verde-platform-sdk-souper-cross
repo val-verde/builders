@@ -1,0 +1,44 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=souper
+export SOURCE_PACKAGE_VERSION=9999-git
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+export KLEE_SRC_DIR=${PACKAGE_SOURCES_ROOT}/klee-9999-git
+export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/llvm-project-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
+
+# Configure the build components
+cd ${STAGE_ROOT}
+CFLAGS="\
+    -I${PACKAGE_PREFIX}/include/alive2 \
+    -I${KLEE_SOURCE_ROOT}/include \
+    ${CFLAGS} \
+" \
+CXXFLAGS="\
+    -I${PACKAGE_PREFIX}/include/alive2 \
+    -I${KLEE_SOURCE_ROOT}/include \
+    ${CXXFLAGS} \
+" \
+COMMON_LDFLAGS="\
+    -L${PACKAGE_PREFIX}/lib \
+    ${COMMON_LDFLAGS} \
+" \
+package-cmake \
+    ${SOURCE_ROOT} \
+    -DHIREDIS_INCLUDE_DIR=${PACKAGE_PREFIX}/include/hiredis \
+    -DKLEE_SRC_DIR=${KLEE_SRC_DIR} \
+    -DLLVM_CONFIG_EXECUTABLE=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config
+
+# Build the components
+ninja-build
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

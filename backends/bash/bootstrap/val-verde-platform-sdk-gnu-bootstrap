@@ -1,0 +1,46 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+export BINDIR=/usr/bin
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+${MKDIR} -p ${BUILD_PACKAGE_PREFIX}
+package-rsync -aPx \
+              /usr/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-* \
+              ${BUILD_PACKAGE_PREFIX}/bin/
+${CHMOD} +x ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang \
+            ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang++ \
+            ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-gcc-mingw32 \
+            ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-ml64 \
+            ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
+            ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-rc \
+            ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc
+
+# openjdk bootstrap build
+package-invoke-builder openjdk-bootstrap
+
+# libunwind bootstrap build
+LLVM_NATIVE_STAGE_ROOT=/usr \
+package-invoke-builder libunwind-cross
+
+# libcxxabi bootstrap build
+LLVM_NATIVE_STAGE_ROOT=/usr \
+package-invoke-builder libcxxabi-cross
+
+# libcxx bootstrap build
+LLVM_NATIVE_STAGE_ROOT=/usr \
+package-invoke-builder libcxx-cross
+
+# llvm bootstrap build
+package-invoke-builder llvm-project-bootstrap
+
+# remove host compiler and libraries as it is superceded by bootstrapped clang
+package-apt-remove \
+    clang \
+    libc++-dev \
+    libc++1 \
+    libunwind-dev \
+    lld \
+    llvm

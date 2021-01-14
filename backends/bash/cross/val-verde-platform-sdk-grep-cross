@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=grep
+export SOURCE_PACKAGE_VERSION=3.6
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+copy-source-to-staging
+
+# Configure the build components
+if [ ${HOST_OS} = "mingw32" ]; then
+    export CFLAGS="\
+        -pthread \
+        ${CFLAGS} \
+    "
+fi
+
+cd ${STAGE_ROOT}
+package-autoreconf -fi
+${SED} -i \
+       's/$GREP/$GREP_DISABLED/g' \
+       ${STAGE_ROOT}/configure
+
+package-configure \
+    ${STAGE_ROOT}/configure
+
+# Build the components
+make-install
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install

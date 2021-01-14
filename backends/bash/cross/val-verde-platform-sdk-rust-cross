@@ -1,0 +1,112 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=rust
+export SOURCE_PACKAGE_VERSION=9999-git
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
+
+CCLDFLAGS="\
+    -lunwind \
+    -L${PACKAGE_PREFIX}/lib \
+    ${CCLDFLAGS} \
+" \
+export-compiler-environment
+generate-compiler-tools
+
+export DEPENDS="\
+    ${PACKAGE_BASE_NAME}-llvm-project-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-z3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
+"
+export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/llvm-project-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
+
+# Configure the build components
+cd ${STAGE_ROOT}
+
+${RSYNC} -aPx \
+         ${SOURCE_ROOT}/${VAL_VERDE_GH_TEAM}-config-cross.toml.in \
+         ${STAGE_ROOT}/config.toml
+
+BINDIR=${BUILD_PACKAGE_PREFIX}/bin
+
+if [ "${BUILD_OS}" = "android" ]; then
+    BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}
+else
+    BUILD_TRIPLE=${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}
+fi
+
+if [ "${HOST_OS}" = "android" ]; then
+    HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}
+else
+    HOST_TRIPLE=${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS}
+fi
+
+BUILD_CC=${BINDIR}/clang
+BUILD_CFLAGS=`${ECHO} "\
+    -I${BUILD_PACKAGE_PREFIX}/include \
+    ${BUILD_CFLAGS} \
+" | ${XARGS}`
+BUILD_CXX=${BINDIR}/clang++
+BUILD_CXXFLAGS=`${ECHO} "\
+    -I${BUILD_PACKAGE_PREFIX}/include \
+    ${BUILD_CXXFLAGS} \
+" | ${XARGS}`
+BUILD_LD=${SOURCE_ROOT}/host-ld-clang \
+BUILD_LDFLAGS=`${ECHO} "\
+    -L${BUILD_PACKAGE_PREFIX}/lib \
+    ${BUILD_LDFLAGS} \
+" | ${XARGS}`
+CARGO=${BINDIR}/cargo
+FILECHECK=${LLVM_NATIVE_STAGE_ROOT}/bin/FileCheck
+LD=${CCLD}
+LDFLAGS=
+LLVMCONFIG=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config
+NODE=${BINDIR}/node
+PYTHON=${BINDIR}/python3
+RUSTC=${BINDIR}/rustc
+RUSTFMT=${BINDIR}/rustfmt
+
+sed -i "s|@@AR@@|${AR}|g" ${STAGE_ROOT}/config.toml
+sed -i "s|@@BUILD_CC@@|${BUILD_CC}|g" ${STAGE_ROOT}/config.toml
+sed -i "s|@@BUILD_CXX@@|${BUILD_CXX}|g" ${STAGE_ROOT}/config.toml
+sed -i "s|@@BUILD_LD@@|${BUILD_LD}|g" ${STAGE_ROOT}/config.toml
+sed -i "s|@@BUILD_LLVMCONFIG@@|${LLVMCONFIG}|g" ${STAGE_ROOT}/config.toml
+sed -i "s|@@BUILD_TRIPLE@@|${BUILD_TRIPLE}|g" ${STAGE_ROOT}/config.toml
+sed -i "s|@@CARGO@@|${CARGO}|g" ${STAGE_ROOT}/config.toml
+sed -i "s|@@CC@@|${CC}|g" ${STAGE_ROOT}/config.toml
+sed -i "s|@@CFLAGS@@|${CFLAGS}|g" ${STAGE_ROOT}/config.toml
+sed -i "s|@@CXX@@|${CXX}|g" ${STAGE_ROOT}/config.toml
+sed -i "s|@@CXXFLAGS@@|${CXXFLAGS}|g" ${STAGE_ROOT}/config.toml
+sed -i "s|@@FILECHECK@@|${FILECHECK}|g" ${STAGE_ROOT}/config.toml
+sed -i "s|@@HOST_TRIPLE@@|${BUILD_TRIPLE}\", \"${HOST_TRIPLE}|g" ${STAGE_ROOT}/config.toml
+sed -i "s|@@INSTALL_PREFIX@@|${INSTALL_PREFIX}|g" ${STAGE_ROOT}/config.toml
+sed -i "s|@@LD@@|${LD}|g" ${STAGE_ROOT}/config.toml
+sed -i "s|@@LDFLAGS@@|${LDFLAGS}|g" ${STAGE_ROOT}/config.toml
+sed -i "s|@@LLVMCONFIG@@|${LLVMCONFIG}|g" ${STAGE_ROOT}/config.toml
+sed -i "s|@@MUSLROOT@@|${PACKAGE_PREFIX}|g" ${STAGE_ROOT}/config.toml
+sed -i "s|@@NODE@@|${NODE}|g" ${STAGE_ROOT}/config.toml
+sed -i "s|@@PYTHON@@|${PYTHON}|g" ${STAGE_ROOT}/config.toml
+sed -i "s|@@RANLIB@@|${RANLIB}|g" ${STAGE_ROOT}/config.toml
+sed -i "s|@@RUSTC@@|${RUSTC}|g" ${STAGE_ROOT}/config.toml
+sed -i "s|@@RUSTFMT@@|${RUSTFMT}|g" ${STAGE_ROOT}/config.toml
+sed -i "s|@@STAGE_ROOT@@|${STAGE_ROOT}|g" ${STAGE_ROOT}/config.toml
+sed -i "s|@@TARGET_TRIPLE@@|${HOST_TRIPLE}|g" ${STAGE_ROOT}/config.toml
+
+export HOST_CFLAGS="${BUILD_CFLAGS}"
+export HOST_CXXFLAGS="${BUILD_CXXFLAGS}"
+export TARGET_CFLAGS="${CFLAGS}"
+export TARGET_CXXFLAGS="${CXXFLAGS}"
+unset CFLAGS CXXFLAGS
+
+# Build the components
+${BUILD_PACKAGE_PREFIX}/bin/python3 ${SOURCE_ROOT}/x.py build --config ${STAGE_ROOT}/config.toml
+${BUILD_PACKAGE_PREFIX}/bin/python3 ${SOURCE_ROOT}/x.py install --config ${STAGE_ROOT}/config.toml
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install
