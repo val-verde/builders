@@ -12,7 +12,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 export DEPENDS="\
     ${PACKAGE_BASE_NAME}-mingw-w64-crt-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
-export SOURCE_ROOT=${PACKAGE_SOURCES_ROOT}/mingw-w64-${SOURCE_PACKAGE_VERSION}/mingw-w64-libraries/${SOURCE_PACKAGE_NAME}
+export SOURCE_ROOT=${SOURCE_ROOT_BASE}/mingw-w64-${SOURCE_PACKAGE_VERSION}/mingw-w64-libraries/${SOURCE_PACKAGE_NAME}
 
 # Configure the build components
 cd ${STAGE_ROOT}

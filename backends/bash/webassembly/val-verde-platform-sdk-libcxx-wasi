@@ -11,7 +11,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-bash-source-scripts
 
 export DEPENDS="${PACKAGE_BASE_NAME}-libcxxabi-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/llvm-project-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
-export SOURCE_ROOT=${PACKAGE_SOURCES_ROOT}/llvm-project-9999-git/${SOURCE_PACKAGE_NAME}
+export SOURCE_ROOT=${SOURCE_ROOT_BASE}/llvm-project-9999-git/${SOURCE_PACKAGE_NAME}
 
 # Configure the build components
 cd ${STAGE_ROOT}
