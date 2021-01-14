@@ -27,7 +27,7 @@ CFLAGS="\
 CXXFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
-    -I${PACKAGE_SOURCES_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/lib/llvm/Support \
+    -I${SOURCE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/lib/llvm/Support \
     -Wno-documentation \
     -Wno-macro-redefined \
     -Wno-unused-function \
