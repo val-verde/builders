@@ -86,6 +86,7 @@ function prepare-source-base() {
     export INSTALL_ROOT=${TEMPDIR}/${INSTALL_ROOT_BASE}/${PACKAGE_NAME}-sources
     export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX}
     export STAGE_ROOT=${STAGE_ROOT_BASE}/${PACKAGE_NAME}
+    export DEB_PATH=${SOURCE_DEB_PATH}
 
     # Prepare stage root (for logs) and install directory for source package
     ${MKDIR} -p \

@@ -28,11 +28,14 @@ ENV ANDROID_NDK_VERSION=r22 \
     DEB_PATH=${DEB_PATH} \
     PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME} \
     PACKAGE_ROOT=${PACKAGE_ROOT} \
+    PACKAGE_PATH_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk \
+    BUILD_DEB_PATH=${PACKAGE_PATH_PREFIX}/build-debs \
+    SOURCE_DEB_PATH=${PACKAGE_PATH_PREFIX}/source-debs \
     SOURCE_ROOT_BASE=${SOURCE_ROOT_BASE} \
     STAGE_ROOT_BASE=${STAGE_ROOT_BASE} \
     VAL_VERDE_GH_TEAM=${VAL_VERDE_GH_TEAM}
 
-RUN mkdir -p ${DEB_PATH}
+RUN mkdir -p ${BUILD_DEB_PATH} ${SOURCE_DEB_PATH}
 
 # platform sdk tool wrapper scripts and templates
 COPY backends/bash/deb-templates \
