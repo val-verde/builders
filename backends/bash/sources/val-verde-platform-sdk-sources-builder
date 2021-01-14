@@ -4,7 +4,7 @@ set -e
 
 export BINDIR=/usr/bin
 source /sources/packaging-tools/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
-source /sources/packaging-tools/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-deb-packaging-scripts
+source /sources/packaging-tools/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
 
 export SOURCE_PACKAGE_NAME=sources-builder
 export SOURCE_PACKAGE_VERSION=9999
