@@ -2,6 +2,8 @@
 
 set -e
 
+DEB_PATH=${SOURCE_DEB_PATH}
+
 # Source deb packaging helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api

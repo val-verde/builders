@@ -15,9 +15,9 @@ function deb-package-build() {
 
         TEMPLATE_ROOT=${TEMPLATE_ROOT} \
         generate-control-file "${PACKAGE_NAME}"
-	package-dpkg-build /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+        package-dpkg-build /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
 
-	${MV} /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}.deb ${DEB_PATH}/${PACKAGE_NAME}.deb
+        ${MV} /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}.deb ${DEB_PATH}/${PACKAGE_NAME}.deb
         ${RM} -r /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}
     package-pop-directory
 }
