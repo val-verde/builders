@@ -5,6 +5,7 @@ set -e
 # builder configuration defaults
 BASE_DIRECTORY=${BASE_DIRECTORY:-$(${ECHO} "${PACKAGE_ROOT}" | ${CUT} -d "/" -f2)}
 DEPENDS=${DEPENDS:=''}
+ENV_SETUP_PATH=${ENV_SETUP_PATH:-/usr/libexec}
 TARGETS=${TARGETS:-install}
 VERSION=${VERSION:='1.0.0'}
 

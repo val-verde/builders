@@ -1,5 +1,7 @@
 FROM ubuntu:20.04 AS BASE
 
+FROM BASE AS ENV_BOOTSTRAP
+
 ENV DEBIAN_FRONTEND=noninteractive
 
 WORKDIR /sources
@@ -10,6 +12,15 @@ COPY ubuntu${OS_VER} \
      /sources/
 RUN bash install-host-packages
 
+# platform sdk tool wrapper scripts and templates
+COPY backends/bash/deb-templates \
+     /sources/deb-templates/
+COPY backends/bash/packaging-tools \
+     /sources/packaging-tools/
+COPY backends/bash/sources \
+     /sources/
+
+ARG DEB_PATH
 ARG PACKAGE_BASE_NAME
 ARG PACKAGE_ROOT
 ARG VAL_VERDE_GH_TEAM
@@ -42,10 +53,7 @@ COPY /source-debs/ \
      ${SOURCE_DEB_PATH}
 
 # upstream source package build
-FROM BASE AS SOURCES_BUILDER
-
-COPY backends/bash/sources \
-     /sources/
+FROM ENV_BOOTSTRAP AS SOURCES_BUILDER
 
 RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sources-builder
 

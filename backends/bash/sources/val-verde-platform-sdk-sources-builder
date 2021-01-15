@@ -28,6 +28,8 @@ package-rsync -aPx \
 BASE_DIRECTORY=${INSTALL_ROOT}/usr \
 TEMPLATE_ROOT=${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM} \
 deb-package-build
+
+# Install source builder deb
 deb-package-install
 
 # Fetch sources
