@@ -15,6 +15,7 @@ buildArgs=`echo "\
     --build-arg DEB_PATH=/debs \
     --build-arg PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME} \
     --build-arg PACKAGE_ROOT=/opt \
+    --build-arg STAGE_ROOT_BASE=/tmp/staging \
     --build-arg VAL_VERDE_GH_TEAM=val-verde \
 " | xargs`
 
