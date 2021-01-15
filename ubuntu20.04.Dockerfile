@@ -12,14 +12,6 @@ COPY ubuntu${OS_VER} \
      /sources/
 RUN bash install-host-packages
 
-# platform sdk tool wrapper scripts and templates
-COPY backends/bash/deb-templates \
-     /sources/deb-templates/
-COPY backends/bash/packaging-tools \
-     /sources/packaging-tools/
-COPY backends/bash/sources \
-     /sources/
-
 ARG DEB_PATH
 ARG PACKAGE_BASE_NAME
 ARG PACKAGE_ROOT
@@ -55,11 +47,13 @@ COPY /source-debs/ \
 # upstream source package build
 FROM ENV_BOOTSTRAP AS SOURCES_BUILDER
 
+COPY backends/bash/sources \
+     /sources/
+
 RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sources-builder
 
 # gnu bootstrap build
 FROM SOURCES_BUILDER AS GNU_BOOTSTRAP_BUILDER
-
 # LTO configuration: [OFF | Full | Thin]
 # ENV ENABLE_FLTO=Thin
 

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -e
+
+function set-build-base-env-variables() {
+    export BUILD_ARCH=skylake
+    export BUILD_CPU=skylake
+    export BUILD_KERNEL=linux
+    export BUILD_OS=gnu
+    export BUILD_OS_API_LEVEL=
+    export BUILD_PROCESSOR=x86_64
+    export ANDROID_NDK_VERSION=r22
+    export DEB_PATH=${DEB_PATH}
+    export PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME}
+    export PACKAGE_ROOT=${PACKAGE_ROOT}
+    export STAGE_ROOT_BASE=${STAGE_ROOT_BASE}
+    export VAL_VERDE_GH_TEAM=${VAL_VERDE_GH_TEAM}
+}
+
+set-build-base-env-variables

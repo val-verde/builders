@@ -13,6 +13,8 @@ export STAGE_ROOT=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}
 
 ${MKDIR} -p \
+         ${INSTALL_ROOT}/usr/libexec \
+         ${INSTALL_ROOT}/usr/local/bin \
          ${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM} \
          ${STAGE_ROOT}
 
