@@ -79,3 +79,25 @@ function generate-control-file() {
                 ${TEMPLATE_ROOT}/changelog.in > DEBIAN/changelog
     package-pop-directory
 }
+
+function tar-package-build() {
+    SOURCE_PACKAGE_NAME=$1
+    SOURCE_PACKAGE_VERSION=${2:-'1.0.0'}
+    PACKAGE_URL=$3
+
+    PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
+    INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${PACKAGE_NAME}-tar-archives
+    INSTALL_PREFIX=${INSTALL_ROOT}/${PACKAGE_NAME}
+    ${MKDIR} -p ${INSTALL_PREFIX}
+    package-push-directory ${INSTALL_ROOT}
+        package-wget -c ${PACKAGE_URL} \
+                             -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
+        package-tar -xzvf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
+                    -C ${INSTALL_PREFIX} --strip 1
+        package-tar -cvf ${PACKAGE_NAME}.tar ${INSTALL_PREFIX}
+        ${MV} ${PACKAGE_NAME}.tar ${TAR_ROOT_BASE}
+        ${RM} ${PACKAGE_NAME}.tar.gz
+    package-pop-directory
+
+    ${RM} -r ${INSTALL_ROOT}
+}

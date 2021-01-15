@@ -12,6 +12,7 @@ VERSION=${VERSION:='1.0.0'}
 # global path variables
 PACKAGE_PLATFORM_SDKROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk
 SOURCE_ROOT_BASE=${PACKAGE_PLATFORM_SDKROOT}/sources
+TAR_ROOT_BASE=${PACKAGE_PLATFORM_SDKROOT}/tar-archives
 PACKAGE_USR_PREFIX=${PACKAGE_USR_PREFIX:-/usr}
 
 # global package configuration variables

@@ -62,7 +62,7 @@ function fetch-sources() {
                 SOURCE_BRANCH=${SOURCE_BRANCH_IND}
             fi
 
-            export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources/${PACKAGE_NAME}
+            export PACKAGE_PREFIX=${SOURCE_ROOT_BASE}/${PACKAGE_NAME}
             export INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-sources
             export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX}
             export STAGE_ROOT=${STAGE_ROOT_BASE}/${PACKAGE_NAME}
@@ -128,7 +128,7 @@ function fetch-sources() {
                 PACKAGE_URL=${PACKAGE_BASE_URL}
             fi
 
-            export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources/${PACKAGE_NAME}
+            export PACKAGE_PREFIX=${SOURCE_ROOT_BASE}/${PACKAGE_NAME}
             export INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-sources
             export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX}
             export STAGE_ROOT=${STAGE_ROOT_BASE}/${PACKAGE_NAME}
