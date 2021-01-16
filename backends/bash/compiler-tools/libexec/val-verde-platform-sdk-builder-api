@@ -2,7 +2,7 @@
 
 set -e
 
-function set-build-base-env-variables() {
+function set-build-base-environment() {
     export BUILD_ARCH=skylake
     export BUILD_CPU=skylake
     export BUILD_KERNEL=linux
@@ -10,11 +10,67 @@ function set-build-base-env-variables() {
     export BUILD_OS_API_LEVEL=
     export BUILD_PROCESSOR=x86_64
     export ANDROID_NDK_VERSION=r22
-    export DEB_PATH=${DEB_PATH}
-    export PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME}
-    export PACKAGE_ROOT=${PACKAGE_ROOT}
-    export STAGE_ROOT_BASE=${STAGE_ROOT_BASE}
-    export VAL_VERDE_GH_TEAM=${VAL_VERDE_GH_TEAM}
 }
 
-set-build-base-env-variables
+# invoke platform builder
+function platform-invoke-builder() {
+    set-build-base-environment
+    OS_ARG="$(cut -d'-' -f1 <<<$1)"
+    CPU_ARG="$(cut -d'-' -f2 <<<$1)"
+
+    if [ ${OS_ARG} = 'gnu' ]; then
+        export HOST_ARCH=${BUILD_ARCH}
+        export HOST_CPU=${BUILD_CPU}
+        export HOST_KERNEL=${BUILD_KERNEL}
+        export HOST_OS=${BUILD_OS}
+        export HOST_PROCESSOR=${BUILD_PROCESSOR}
+        export SYSROOT=/
+        BINDIR=/usr/bin
+    elif [ ${OS_ARG} = 'musl' && ${CPU_ARG} = 'skylake']; then
+        export HOST_ARCH=${BUILD_ARCH}
+        export HOST_CPU=${BUILD_CPU}
+        export HOST_KERNEL=${BUILD_KERNEL}
+        export HOST_OS=musl
+        export HOST_PROCESSOR=${BUILD_PROCESSOR}
+    elif [ ${OS_ARG} = 'musl' && ${CPU_ARG} = 'armv8a']; then
+        export HOST_ARCH=armv8-a
+        export HOST_CPU=cortex-a57
+        export HOST_KERNEL=${BUILD_KERNEL}
+        export HOST_OS=musl
+        export HOST_PROCESSOR=aarch64
+    elif [ ${OS_ARG} = 'wasm32' ]; then
+        export HOST_ARCH=wasm32
+        export HOST_CPU=wasm32
+        export HOST_KERNEL=unknown
+        export HOST_OS=wasi
+        export HOST_OS_API_LEVEL=
+        export HOST_PROCESSOR=wasm32
+    elif [ ${OS_ARG} = 'android' && ${CPU_ARG} = 'armv8a']; then
+        export HOST_ARCH=armv8-a
+        export HOST_CPU=cortex-a57
+        export HOST_KERNEL=linux
+        export HOST_OS=android
+        export HOST_OS_API_LEVEL=29
+        export HOST_PROCESSOR=aarch64
+    elif [ ${OS_ARG} = 'android' && ${CPU_ARG} = 'westmere']; then
+        export HOST_ARCH=westmere
+        export HOST_CPU=westmere
+        export HOST_KERNEL=linux
+        export HOST_OS=android
+        export HOST_OS_API_LEVEL=29
+        export HOST_PROCESSOR=x86_64
+     elif [ ${OS_ARG} = 'windows' ]; then
+        export HOST_ARCH=haswell
+        export HOST_CPU=skylake
+        export HOST_KERNEL=w64
+        export HOST_OS=mingw32
+        export HOST_OS_API_LEVEL=
+        export HOST_PROCESSOR=x86_64
+    fi
+
+    ECHO=/usr/bin/echo
+    ${ECHO} -e "Platform Builder for $1-$2 Invocation Started"
+    package-invoke-builder $2
+    ${ECHO} -e "Platform Builder for $1-$2 Invocation Complete"
+    ${ECHO}
+}
