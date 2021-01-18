@@ -52,6 +52,14 @@
     {
         "retainSource": "false",
         "sourceType": "git",
+        "sourcePackageName": "bazel",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "3.7.2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
         "sourcePackageName": "bzip2",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1.0.8",
@@ -70,14 +78,6 @@
         "sourceType": "git",
         "sourcePackageName": "cmake",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "3.18.1",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
-    },
-    {
-        "retainSource": "false",
-        "sourceType": "git",
-        "sourcePackageName": "cmake",
-        "sourceBranchIndicator": "android",
         "sourcePackageVersion": "3.18.1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
@@ -172,9 +172,9 @@
     {
         "retainSource": "false",
         "sourceType": "git",
-        "sourcePackageName": "grep",
+        "sourcePackageName": "gnulib",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "3.6",
+        "sourcePackageVersion": "0.1.0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -183,6 +183,14 @@
         "sourcePackageName": "gobject-introspection",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1.45.2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "grep",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "3.6",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
