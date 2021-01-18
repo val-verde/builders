@@ -10,7 +10,7 @@ COPY ubuntu${OS_VER} \
      /sources/
 RUN bash install-host-packages
 
-ARG DEB_PATH
+ARG DEB_PATH_BASE
 ARG PACKAGE_BASE_NAME
 ARG PACKAGE_ROOT
 ARG SOURCE_ROOT_BASE
