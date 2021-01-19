@@ -10,8 +10,5 @@ services:
             args:
                 - PACKAGE_BASE_NAME=val-verde
                 - PACKAGE_ROOT=/opt
-                - DEB_PATH_BASE=/opt/val-verde-platform-sdk/debs
-                - SOURCE_ROOT_BASE=/opt/val-verde-platform-sdk/sources
-                - STAGE_ROOT_BASE=/opt/val-verde-platform-sdk/staging
                 - VAL_VERDE_GH_TEAM=val-verde
         privileged: true
