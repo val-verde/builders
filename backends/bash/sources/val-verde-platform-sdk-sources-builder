@@ -7,7 +7,7 @@ source /sources/packaging-tools/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common
 source /sources/packaging-tools/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
 
 export SOURCE_PACKAGE_NAME=sources-builder
-export SOURCE_PACKAGE_VERSION=1.0.0
+export SOURCE_PACKAGE_VERSION=1
 export INSTALL_ROOT=/tmp/org.${VAL_VERDE_GH_TEAM}/scripts
 export STAGE_ROOT=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}

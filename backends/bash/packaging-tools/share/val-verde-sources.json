@@ -4,7 +4,7 @@
         "sourceType": "git",
         "sourcePackageName": "alive2",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.0.0",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
         "enableSubmodules": "false"
     },
@@ -21,7 +21,7 @@
         "sourceType": "git",
         "sourcePackageName": "android-ndk-patches",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.0.0",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -29,7 +29,7 @@
         "sourceType": "git",
         "sourcePackageName": "android-patch-elf",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.0.0",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -46,7 +46,7 @@
         "sourceType": "git",
         "sourcePackageName": "baikonur",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.0.0",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -102,7 +102,7 @@
         "sourceType": "git",
         "sourcePackageName": "egl-headers",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.0.0",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/egl-registry.git"
     },
     {
@@ -198,7 +198,7 @@
         "sourceType": "git",
         "sourcePackageName": "hiredis",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.0.0",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
         "enableSubmodules": "false"
     },
@@ -223,7 +223,7 @@
         "sourceType": "git",
         "sourcePackageName": "khr-headers",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.0.0",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/egl-registry.git"
     },
     {
@@ -296,7 +296,7 @@
         "sourceType": "git",
         "sourcePackageName": "llvm-project",
         "sourceBranchIndicator": "default-next",
-        "sourcePackageVersion": "12.0.0",
+        "sourcePackageVersion": "12",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -304,7 +304,7 @@
         "sourceType": "git",
         "sourcePackageName": "llvm-project",
         "sourceBranchIndicator": "android-next",
-        "sourcePackageVersion": "12.0.0",
+        "sourcePackageVersion": "12",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -368,7 +368,7 @@
         "sourceType": "git",
         "sourcePackageName": "mingw-w64",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "6.0.0",
+        "sourcePackageVersion": "6",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -384,7 +384,7 @@
         "sourceType": "git",
         "sourcePackageName": "musl-libc",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.0.0",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -408,7 +408,7 @@
         "sourceType": "git",
         "sourcePackageName": "opengl-es-headers",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.0.0",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/OpenGL-Registry.git"
     },
     {
@@ -416,7 +416,7 @@
         "sourceType": "git",
         "sourcePackageName": "opengl-headers",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.0.0",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/OpenGL-Registry.git"
     },
     {
@@ -448,7 +448,7 @@
         "sourceType": "git",
         "sourcePackageName": "pixman",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.0.0",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -512,7 +512,7 @@
         "sourceType": "git",
         "sourcePackageName": "souper",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.0.0",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
         "enableSubmodules": "false"
     },
@@ -777,7 +777,7 @@
         "sourceType": "git",
         "sourcePackageName": "wine",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "6.0.0",
+        "sourcePackageVersion": "6",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -978,7 +978,7 @@
         "sourceType": "git",
         "sourcePackageName": "yautja-server",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.0.0",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
