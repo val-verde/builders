@@ -5,6 +5,7 @@ set -e
 # Source package build helper functions
 export PACKAGE_USR_PREFIX=/
 export SYSTEM_NAME=Fuchsia
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # webassembly libc

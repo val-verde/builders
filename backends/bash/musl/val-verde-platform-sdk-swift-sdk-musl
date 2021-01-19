@@ -3,6 +3,7 @@
 set -e
 
 # Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # remove host foundation and libdispatch to avoid module collisions
