@@ -12,6 +12,14 @@ function set-build-base-environment() {
     export ANDROID_NDK_VERSION=r22
 }
 
+# invoke package builder
+function package-invoke-builder() {
+    ${ECHO} -e "Builder Invocation Started"
+    ${BASH} ${VAL_VERDE_GH_TEAM}-platform-sdk-${@}
+    ${ECHO} -e "Builder Invocation Complete"
+    ${ECHO}
+}
+
 # invoke platform builder
 function platform-invoke-builder() {
     set-build-base-environment
