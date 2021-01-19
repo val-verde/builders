@@ -196,14 +196,6 @@
     {
         "retainSource": "false",
         "sourceType": "git",
-        "sourcePackageName": "grep",
-        "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "3.6",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
-    },
-    {
-        "retainSource": "false",
-        "sourceType": "git",
         "sourcePackageName": "hiredis",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1.0.0",
