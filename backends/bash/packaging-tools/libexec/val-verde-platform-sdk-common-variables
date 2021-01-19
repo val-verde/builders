@@ -183,7 +183,7 @@ function package-git-tool() {
 
 function package-major-version() {
     MAJOR_VERSION=`echo "${SOURCE_PACKAGE_VERSION}" | cut -d "." -f1`
-    echo ${MAJOR_VERSION}.0.0
+    echo ${MAJOR_VERSION}
 }
 
 function package-push-directory() {
