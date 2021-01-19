@@ -352,7 +352,7 @@
         "sourceType": "git",
         "sourcePackageName": "mesa",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "21.0",
+        "sourcePackageVersion": "20.3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -408,7 +408,7 @@
         "sourceType": "git",
         "sourcePackageName": "node",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "15.3.0",
+        "sourcePackageVersion": "15.6.0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
