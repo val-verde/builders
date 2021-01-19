@@ -107,8 +107,7 @@ function fetch-sources() {
                 build-install-other-source-package
             fi
 
-            echo "Retrieved and packaged..."${PACKAGE_NAME}
-            done
+        done
 
         ${ECHO} -e "Source Builder Invocation Completed"
         ${ECHO}
