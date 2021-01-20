@@ -1212,7 +1212,7 @@
         "sourceType": "other",
         "sourcePackageName": "sdl",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "2.0.12",
+        "sourcePackageVersion": "2.0.14",
         "sourcePackageUrl": "https://www.libsdl.org/release/SDL2-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
