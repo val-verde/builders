@@ -1226,8 +1226,8 @@
         "sourceType": "other",
         "sourcePackageName": "sqlite",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "autoconf-3330000",
-        "sourcePackageUrl": "https://sqlite.org/2020/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+        "sourcePackageVersion": "autoconf-3340100",
+        "sourcePackageUrl": "https://sqlite.org/2021/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
         "sourceType": "other",
