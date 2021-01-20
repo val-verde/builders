@@ -13,14 +13,6 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 copy-source-to-staging
 
 cd ${STAGE_ROOT}
-
-if [ "${HOST_OS}" = "musl" ]; then
-    # IPPROTO_MAX is 263 in musl vs 256 in glibc
-    ${SED} -i \
-           "s/256/263/g" \
-           `${GREP} -l IPPROTO_MAX ${STAGE_ROOT}/xlat/inet_protocols.in`
-fi
-
 ./bootstrap
 
 CFLAGS="\
