@@ -1268,14 +1268,14 @@
         "sourceType": "other",
         "sourcePackageName": "vim",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "8.2.2057",
+        "sourcePackageVersion": "8.2.2380",
         "sourcePackageUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}/archive/v${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
         "sourceType": "other",
         "sourcePackageName": "wget",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "1.20.3",
+        "sourcePackageVersion": "1.21.1",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
