@@ -68,13 +68,11 @@ COPY backends/bash/compiler-tools/libexec/* \
 COPY backends/bash/bootstrap \
      /sources/
 
-RUN HOST_ARCH=${BUILD_ARCH} \
-    HOST_CPU=${BUILD_CPU} \
-    HOST_KERNEL=${BUILD_KERNEL} \
-    HOST_OS=${BUILD_OS} \
-    HOST_PROCESSOR=${BUILD_PROCESSOR} \
-    SYSROOT=/ \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap
+# Set defauly bash env for running builder scripts
+ENV BASH_ENV="/usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api"
+SHELL [ "/bin/bash", "-c" ]
+
+RUN platform-invoke-builder gnu-skylake gnu-bootstrap
 
 # platform independent package builders
 FROM GNU_BOOTSTRAP_BUILDER AS PLATFORM_INDEPENDENT_PACKAGE_BUILDERS
@@ -87,13 +85,7 @@ COPY backends/bash/cross \
 # gnu build
 FROM PLATFORM_INDEPENDENT_PACKAGE_BUILDERS AS GNU_BUILDER
 
-RUN HOST_ARCH=${BUILD_ARCH} \
-    HOST_CPU=${BUILD_CPU} \
-    HOST_KERNEL=${BUILD_KERNEL} \
-    HOST_OS=${BUILD_OS} \
-    HOST_PROCESSOR=${BUILD_PROCESSOR} \
-    SYSROOT=/ \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu
+RUN platform-invoke-builder gnu-skylake gnu
 
 # musl build
 FROM GNU_BUILDER AS MUSL_BUILDER
@@ -101,30 +93,14 @@ FROM GNU_BUILDER AS MUSL_BUILDER
 COPY backends/bash/musl \
      /sources/
 
-RUN HOST_ARCH=${BUILD_ARCH} \
-    HOST_CPU=${BUILD_CPU} \
-    HOST_KERNEL=${BUILD_KERNEL} \
-    HOST_OS=musl \
-    HOST_PROCESSOR=${BUILD_PROCESSOR} \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-musl
+RUN platform-invoke-builder musl-skylake musl
 
-RUN HOST_ARCH=armv8-a \
-    HOST_CPU=cortex-a57 \
-    HOST_KERNEL=${BUILD_KERNEL} \
-    HOST_OS=musl \
-    HOST_PROCESSOR=aarch64 \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-musl
+RUN platform-invoke-builder musl-armv8 musl
 
 # android-ndk package
 FROM MUSL_BUILDER AS ANDROID_NDK_BUILDER
 
-RUN HOST_ARCH=${BUILD_ARCH} \
-    HOST_CPU=${BUILD_CPU} \
-    HOST_KERNEL=${BUILD_KERNEL} \
-    HOST_OS=${BUILD_OS} \
-    HOST_PROCESSOR=${BUILD_PROCESSOR} \
-    SYSROOT=/ \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk
+RUN platform-invoke-builder gnu-skylake android-ndk
 
 # webassembly build
 FROM ANDROID_NDK_BUILDER AS WEBASSEMBLY_BUILDER
@@ -132,13 +108,7 @@ FROM ANDROID_NDK_BUILDER AS WEBASSEMBLY_BUILDER
 COPY backends/bash/webassembly \
      /sources/
 
-RUN HOST_ARCH=wasm32 \
-    HOST_CPU=wasm32 \
-    HOST_KERNEL=unknown \
-    HOST_OS=wasi \
-    HOST_OS_API_LEVEL= \
-    HOST_PROCESSOR=wasm32 \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-webassembly
+RUN platform-invoke-builder wasm32-wasm32 webassembly
 
 # android build
 FROM WEBASSEMBLY_BUILDER AS ANDROID_BUILDER
@@ -148,22 +118,10 @@ COPY backends/bash/android \
      /sources/
 
 # android-aarch64 environment
-RUN HOST_ARCH=armv8-a \
-    HOST_CPU=cortex-a57 \
-    HOST_KERNEL=linux \
-    HOST_OS=android \
-    HOST_OS_API_LEVEL=29 \
-    HOST_PROCESSOR=aarch64 \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android
+RUN platform-invoke-builder android-armv8 android
 
 # android-x86_64 environment
-RUN HOST_ARCH=westmere \
-    HOST_CPU=westmere \
-    HOST_KERNEL=linux \
-    HOST_OS=android \
-    HOST_OS_API_LEVEL=29 \
-    HOST_PROCESSOR=x86_64 \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android
+RUN platform-invoke-builder android-westmere android
 
 # windows environment
 FROM ANDROID_BUILDER AS WINDOWS_SOURCES_BUILDER
@@ -174,13 +132,7 @@ COPY backends/bash/windows \
 # windows build
 FROM WINDOWS_SOURCES_BUILDER AS WINDOWS_BUILDER
 
-RUN HOST_ARCH=haswell \
-    HOST_CPU=skylake \
-    HOST_KERNEL=w64 \
-    HOST_OS=mingw32 \
-    HOST_OS_API_LEVEL= \
-    HOST_PROCESSOR=x86_64 \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows
+RUN platform-invoke-builder windows-skylake windows
 
 FROM WINDOWS_BUILDER AS RUST_BUILDER
 
