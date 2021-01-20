@@ -20,14 +20,21 @@ export DEPENDS="\
 export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/llvm-project-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
 
 # Configure the build components
-cd ${STAGE_ROOT}
+BUILD_TRIPLE=${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}${BUILD_OS_API_LEVEL}
 
+${MKDIR} -p ${STAGE_ROOT}/${BUILD_TRIPLE}
+${RSYNC} -aPx \
+         ${PACKAGE_PREFIX}/staging-data/${BUILD_TRIPLE}/* \
+         ${STAGE_ROOT}/${BUILD_TRIPLE}/
+sed -i "s|build.download_stage0()|#build.download_stage0()|g" \
+        ${SOURCE_ROOT}/src/bootstrap/bootstrap.py
+
+cd ${STAGE_ROOT}
 ${RSYNC} -aPx \
          ${SOURCE_ROOT}/${VAL_VERDE_GH_TEAM}-config.toml.in \
          ${STAGE_ROOT}/config.toml
 
 BINDIR=${BUILD_PACKAGE_PREFIX}/bin
-BUILD_TRIPLE=${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}${BUILD_OS_API_LEVEL}
 
 FILECHECK=${LLVM_NATIVE_STAGE_ROOT}/bin/FileCheck
 LD=${CC}
