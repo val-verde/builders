@@ -1142,7 +1142,7 @@
         "sourceType": "other",
         "sourcePackageName": "libmicrohttpd",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "0.9.71",
+        "sourcePackageVersion": "0.9.72",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
