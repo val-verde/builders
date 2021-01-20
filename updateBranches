@@ -1,0 +1,110 @@
+#!/bin/bash
+
+set -e
+
+repoArray=('async-http-client'   'https://github.com/val-verde/async-http-client'            'master'        'dutch-master'          'https://github.com/swift-server/async-http-client' \
+            'async-kit'  'https://github.com/val-verde/async-kit'                    'master'        'dutch-master'          'https://github.com/swift-server/async-kit')
+
+############# REPO_TO_UPDATE ###################################### BRANCH_TO_UPDATE ## BUILDER_BRANCH ######### UPSTREAM_URL #########################################
+repoInput=('async-http-client'          'https://github.com/val-verde/async-http-client'            'master'        'dutch-master'          'https://github.com/swift-server/async-http-client' \
+            'async-kit'                  'https://github.com/val-verde/async-kit'                    'master'        'dutch-master'          'https://github.com/swift-server/async-kit' \
+            'CMake'                      'https://github.com/val-verde/CMake'                        'master'        'dutch-master'          'https://github.com/Kitware/CMake' \
+            'CommonMark'                 'https://github.com/val-verde/CommonMark'                   'master'        'dutch-master'          'https://github.com/SwiftDocOrg/CommonMark' \
+            'console-kit'                'https://github.com/val-verde/console-kit'                  'master'        'dutch-master'          'https://github.com/vapor/console-kit' \
+            'cpython'                    'https://github.com/val-verde/cpython'                      'master'        'dutch-master'          'https://github.com/python/cpython' \
+            'filament'                   'https://github.com/val-verde/filament'                     'master'        'dutch-master'          'https://github.com/google/filament' \
+            'git'                        'https://github.com/val-verde/git'                          'master'        'dutch-master'          'https://github.com/git/git' \
+            'indexstore-db'              'https://github.com/val-verde/indexstore-db'                'master'        'dutch-master'          'https://github.com/apple/indexstore-db' \
+            'llvm-project'               'https://github.com/val-verde/llvm-project'                 'swift/master'  'dutch-master'          'https://github.com/apple/llvm-project' \
+            'Markup'                     'https://github.com/val-verde/Markup'                       'master'        'dutch-master'          'https://github.com/SwiftDocOrg/Markup' \
+            'mingw-w64'                  'https://github.com/val-verde/mingw-w64'                    'master'        'dutch-master'          'https://github.com/mirror/mingw-w64' \
+            'ninja'                      'https://github.com/val-verde/ninja'                        'master'        'dutch-master'          'https://github.com/ninja-build/ninja' \
+            'node'                       'https://github.com/val-verde/node'                         'master'        'dutch-master'          'https://github.com/nodejs/node' \
+            'PythonKit'                  'https://github.com/val-verde/PythonKit'                    'master'        'dutch-master'          'https://github.com/pvieito/PythonKit' \
+            'routing-kit'                'https://github.com/val-verde/routing-kit'                  'master'        'dutch-master'          'https://github.com/vapor/routing-kit' \
+            'sourcekit-lsp'              'https://github.com/val-verde/sourcekit-lsp'                'master'        'dutch-master'          'https://github.com/apple/sourcekit-lsp' \
+            'swift'                      'https://github.com/val-verde/swift'                        'master'        'dutch-master'          'https://github.com/apple/swift' \
+            'swift-argument-parser'      'https://github.com/val-verde/swift-argument-parser'        'master'        'dutch-master'          'https://github.com/apple/swift-argunent-parser' \
+            'swift-backtrace'            'https://github.com/val-verde/swift-backtrace'              'master'        'dutch-master'          'https://github.com/swift-server/swiftbacktrace' \
+            'swift-cmark'                'https://github.com/val-verde/swift-cmark'                  'master'        'dutch-master'          'https://github.com/apple/swift-cmark' \
+            'swift-corelibs-foundation'  'https://github.com/val-verde/swift-corelibs-foundation'    'master'        'dutch-master'          'https://github.com/apple/swift-corelibs-foundation' \
+            'swift-corelibs-libdispatch' 'https://github.com/val-verde/swift-corelibs-libdispatch'   'master'        'dutch-master'          'https://github.com/apple/swift-corelibs-libdispatch' \
+            'swift-corelibs-xctest'      'https://github.com/val-verde/swift-corelibs-xctest'        'master'        'dutch-master'          'https://github.com/apple/swift-corelibs-xctest' \
+            'swift-crypto'               'https://github.com/val-verde/swift-crypto'                 'master'        'dutch-master'          'https://github.com/apple/swift-crypto' \
+            'swift-doc'                  'https://github.com/val-verde/swift-doc'                    'master'        'dutch-master'          'https://github.com/SwiftDocArg/swift-doc' \
+            'swift-driver'               'https://github.com/val-verde/swift-driver'                 'master'        'dutch-master'          'https://github.com/apple/swift-driver' \
+            'swift-format'               'https://github.com/val-verde/swift-format'                 'master'        'dutch-master'          'https://github.com/apple/swift-format' \
+            'swift-log'                  'https://github.com/val-verde/swift-log'                    'master'        'dutch-master'          'https://github.com/apple/swift-log' \
+            'swift-log-github-actions'   'https://github.com/val-verde/swift-log-github-actions'     'master'        'dutch-master'          'https://github.com/NSHipster/swift-log-github-actions' \
+            'swift-llbuild'              'https://github.com/val-verde/swift-llbuild'                'master'        'dutch-master'          'https://github.com/apple/swift-llbuild' \
+            'swift-metrics'              'https://github.com/val-verde/swift-metrics'                'master'        'dutch-master'          'https://github.com/apple/swift-metrics' \
+            'swift-nio'                  'https://github.com/val-verde/swift-nio'                    'master'        'dutch-master'          'https://github.com/apple/swift-nio' \
+            'swift-nio-extras'           'https://github.com/val-verde/swift-nio-extras'             'master'        'dutch-master'          'https://github.com/apple/swift-nio-extras' \
+            'swift-nio-http2'            'https://github.com/val-verde/swift-nio-http2'              'master'        'dutch-master'          'https://github.com/apple/swift-nio-http2' \
+            'swift-nio-ssl'              'https://github.com/val-verde/swift-nio-ssl'                'master'        'dutch-master'          'https://github.com/apple/swift-nio-ssl' \
+            'swift-package-manager'      'https://github.com/val-verde/swift-package-manager'        'master'        'dutch-master'          'https://github.com/apple/swift-package-manager' \
+            'swift-syntax'               'https://github.com/val-verde/swift-syntax'                 'master'        'dutch-master'          'https://github.com/apple/swift-syntax' \
+            'swift-tools-support-core'   'https://github.com/val-verde/swift-tools-support-core'     'master'        'dutch-master'          'https://github.com/apple/swift-tools-support-core' \
+            'swift-tensorflow-apis'      'https://github.com/val-verde/swift-tensorflow-apis'        'master'        'dutch-master'          'https://github.com/apple/tensorflow/swift-apis' \
+            'SwiftMarkup'                'https://github.com/val-verde/SwiftMarkup'                  'master'        'dutch-master'          'https://github.com/SwiftDocOrg/SwiftMarkup' \
+            'SwiftSemantics'             'https://github.com/val-verde/SwiftSemantics'               'master'        'dutch-master'          'https://github.com/SwiftDocOrg/SwiftSemantics' \
+            'SwiftSyntaxHighlighter'     'https://github.com/val-verde/SwiftSyntaxHighlighter'       'master'        'dutch-master'          'https://github.com/NSHipster/SwiftSyntaxHighlighter' \
+            'SwiftMarkup'                'https://github.com/val-verde/SwiftMarkup'                  'master'        'dutch-master'          'https://github.com/SwiftDocOrg/SwiftMarkup' \
+            'vapor'                      'https://github.com/val-verde/vapor'                        'master'        'dutch-master'          'https://github.com/vapor/vapor' \
+            'vscode'                     'https://github.com/val-verde/vscode'                       'master'        'dutch-master'          'https://github.com/microsoft/vscode' \
+            'Vulkan-Loader'              'https://github.com/val-verde/Vulkan-Loader'                'master'        'dutch-master'          'https://github.com/Khronos/Vulkan-Loader' \
+            'wasi-libc'                  'https://github.com/val-verde/wasi-libc'                    'master'        'dutch-master'          'https://github.com/WebAssembly/wasi-libc' \
+            'websocket-kit'              'https://github.com/val-verde/websocket-kit'                'master'        'dutch-master'          'https://github.com/vapor/websocket-kit' \
+            'Yams'                       'https://github.com/val-verde/Yams'                         'master'        'dutch-master'          'https://github.com/jpsim/Yams' \
+            'async-http-client'          'https://github.com/val-verde/async-http-client'            'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/async-http-client' \
+            'async-kit'                  'https://github.com/val-verde/async-kit'                    'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/async-kit' \
+            'CMake'                      'https://github.com/val-verde/CMake'                        'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/CMake'\
+            'console-kit'                'https://github.com/val-verde/console-kit'                  'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/console-kit' \
+            'llvm-project'               'https://github.com/val-verde/llvm-project'                 'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/llvm-project' \
+            'PythonKit'                  'https://github.com/val-verde/PythonKit'                    'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/PythonKit'
+            'sourcekit-lsp'              'https://github.com/val-verde/sourcekit-lsp'                'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/sourcekit-lsp' \
+            'swift'                      'https://github.com/val-verde/swift'                        'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/swift' \
+            'swift-doc'                  'https://github.com/val-verde/swift-doc'                    'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/swift-doc' \
+            'swift-driver'               'https://github.com/val-verde/swift-driver'                 'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/swift-driver' \
+            'swift-log'                  'https://github.com/val-verde/swift-log'                    'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/swift-log' \
+            'swift-log-github-actions'   'https://github.com/val-verde/swift-log-github-actions'     'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/swift-log-github-actions' \
+            'swift-llbuild'              'https://github.com/val-verde/swift-llbuild'                'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/swift-llbuild' \
+            'swift-nio'                  'https://github.com/val-verde/swift-nio'                    'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/swift-nio' \
+            'swift-nio-ssl'              'https://github.com/val-verde/swift-nio-ssl'                'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/swift-nio' \
+            'swift-package-manager'      'https://github.com/val-verde/swift-package-manager'        'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/swift-package-manager' \
+            'swift-tools-support-core'   'https://github.com/val-verde/swift-tools-support-core'     'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/swift-tools-support-core' \
+            'vapor'                      'https://github.com/val-verde/vapor'                        'dutch-master'  'dutch-android-master'  'https://github.com/val-verde/vapor')
+
+repoArrayCount=$((${#repoArray[@]} / 5))
+
+for i in `seq 0 $(($repoArrayCount - 1))`; do
+    repoNameIndex=$((i * 5))
+    repoIndex=$((i * 5 + 1))
+    branchIndex=$((i * 5 + 2))
+    builderBranchIndex=$((i * 5 + 3))
+    upstreamIndex=$((i * 5 + 4))
+    name=${repoArray[$repoNameIndex]}
+    repo=${repoArray[$repoIndex]}
+    branch=${repoArray[$branchIndex]}
+    builderBranch=${repoArray[$builderBranchIndex]}
+    upstream=${repoArray[$upstreamIndex]}
+    #git clone $repo -b $branch repo
+    pushd $name
+    if [[ `git ls-remote --exit-code --heads origin $builderBranch-mainline | wc -l` = 1 ]]; then
+        git checkout -b $builderBranch-mainline $builderBranch
+        git status
+        #git push --set-upstream origin $builderBranch-mainline
+        #git push origin :$builderBranch 
+    else
+        echo "Branch already exists"
+        git checkout $builderBranch-mainline
+        git status
+        git push --set-upstream origin $builderBranch-mainline
+        git push origin :$builderBranch 
+    fi
+    #git checkout $builderBranch
+    #git status
+    #git che
+    popd
+    #rm -rf repo
+done

@@ -177,5 +177,16 @@ RUN HOST_ARCH=haswell \
     HOST_PROCESSOR=x86_64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows
 
+FROM WINDOWS_BUILDER AS RUST_BUILDER
+
+# rust build
+RUN HOST_ARCH=${BUILD_ARCH} \
+    HOST_CPU=${BUILD_CPU} \
+    HOST_KERNEL=${BUILD_KERNEL} \
+    HOST_OS=${BUILD_OS} \
+    HOST_PROCESSOR=${BUILD_PROCESSOR} \
+    SYSROOT=/ \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-rust-build
+
 CMD []
 ENTRYPOINT ["tail", "-f", "/dev/null"]

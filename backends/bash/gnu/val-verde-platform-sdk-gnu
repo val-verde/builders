@@ -109,6 +109,3 @@ package-invoke-builder yarn-yautja-server-cross
 # wine build
 package-invoke-builder wine-cross
 
-# rust build
-package-invoke-builder rust
-
