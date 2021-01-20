@@ -1,0 +1,56 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=rust-bootstrap
+export SOURCE_PACKAGE_VERSION=1.49.0
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Configure the build components
+TARGET_DIR=${INSTALL_PREFIX}/staging-data/${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}/stage0
+mkdir -p ${TARGET_DIR}
+
+package-wget -c https://static.rust-lang.org/dist/rust-std-${SOURCE_PACKAGE_VERSION}-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}.tar.xz \
+     -O rust-std-${SOURCE_PACKAGE_VERSION}-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}.tar.xz
+package-tar -xf \
+            rust-std-${SOURCE_PACKAGE_VERSION}-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}.tar.xz
+
+package-rsync -ax \
+              rust-std-${SOURCE_PACKAGE_VERSION}-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}/rust-std-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}/* \
+              ${TARGET_DIR}/
+
+package-wget -c https://static.rust-lang.org/dist/rustc-${SOURCE_PACKAGE_VERSION}-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}.tar.xz \
+     -O rustc-${SOURCE_PACKAGE_VERSION}-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}.tar.xz
+package-tar -xf \
+            rustc-${SOURCE_PACKAGE_VERSION}-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}.tar.xz
+
+package-rsync -ax \
+              rustc-${SOURCE_PACKAGE_VERSION}-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}/rustc/* \
+              ${TARGET_DIR}/
+
+package-wget -c https://static.rust-lang.org/dist/cargo-${SOURCE_PACKAGE_VERSION}-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}.tar.xz \
+     -O cargo-${SOURCE_PACKAGE_VERSION}-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}.tar.xz
+package-tar -xf \
+            cargo-${SOURCE_PACKAGE_VERSION}-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}.tar.xz
+
+package-rsync -ax \
+              cargo-${SOURCE_PACKAGE_VERSION}-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}/cargo/* \
+              ${TARGET_DIR}/
+
+package-wget -c https://static.rust-lang.org/dist/rustfmt-${SOURCE_PACKAGE_VERSION}-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}.tar.xz \
+     -O rustfmt-${SOURCE_PACKAGE_VERSION}-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}.tar.xz
+package-tar -xf \
+            rustfmt-${SOURCE_PACKAGE_VERSION}-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}.tar.xz
+
+package-rsync -ax \
+              rustfmt-${SOURCE_PACKAGE_VERSION}-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}/rustfmt-preview/* \
+              ${TARGET_DIR}/
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install
