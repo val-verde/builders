@@ -26,13 +26,6 @@ ENV PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME} \
     BUILD_DEB_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/build-debs \
     SOURCE_DEB_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/source-debs
 
-ENV BUILD_ARCH=skylake \
-    BUILD_CPU=skylake \
-    BUILD_KERNEL=linux \
-    BUILD_OS=gnu \
-    BUILD_OS_API_LEVEL= \
-    BUILD_PROCESSOR=x86_64
-
 RUN mkdir -p ${BUILD_DEB_PATH} ${SOURCE_DEB_PATH}
 
 # platform sdk tool wrapper scripts and templates
