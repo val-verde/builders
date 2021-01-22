@@ -3,7 +3,7 @@
 set -e
 
 # Set all environment vars
-export SOURCE_PACKAGE_NAME=sqlite
+export SOURCE_PACKAGE_NAME=sqlite3
 export SOURCE_PACKAGE_VERSION=autoconf-3340100
 
 # Source package build helper functions
