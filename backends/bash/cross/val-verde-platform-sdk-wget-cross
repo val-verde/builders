@@ -16,6 +16,13 @@ export DEPENDS="\
 "
 
 # Configure the build components
+if [ "${HOST_OS}" = "mingw32" ]; then
+    export LIBS="\
+        -lbcrypt \
+        ${LIBS} \
+    "
+fi
+
 cd ${STAGE_ROOT}
 package-configure \
     ${SOURCE_ROOT}/configure \
