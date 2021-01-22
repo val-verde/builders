@@ -464,7 +464,7 @@
         "sourceType": "git",
         "sourcePackageName": "pythonkit",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "5.3.0",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -472,7 +472,7 @@
         "sourceType": "git",
         "sourcePackageName": "pythonkit",
         "sourceBranchIndicator": "android",
-        "sourcePackageVersion": "5.3.0",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {

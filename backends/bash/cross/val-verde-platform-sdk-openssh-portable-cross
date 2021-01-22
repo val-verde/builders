@@ -4,7 +4,7 @@ set -e
 
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=openssh-portable
-export SOURCE_PACKAGE_VERSION=8.4p1
+export SOURCE_PACKAGE_VERSION=8
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
