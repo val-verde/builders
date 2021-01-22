@@ -4,7 +4,7 @@ set -e
 
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=mingw-w64-crt
-export SOURCE_PACKAGE_VERSION=6.0.0
+export SOURCE_PACKAGE_VERSION=6
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
