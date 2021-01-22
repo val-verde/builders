@@ -32,7 +32,7 @@ function determine-git-source-package() {
         SOURCE_BRANCH=val-verde-android-mainline-next
         PACKAGE_NAME=${PACKAGE_NAME}-android
     elif [[ ${SOURCE_BRANCH_IND} == "android-next-testing" ]]; then
-        SOURCE_BRANCH=val-verde-android-mainline-next
+        SOURCE_BRANCH=val-verde-android-mainline-next-testing
         PACKAGE_NAME=${PACKAGE_NAME}-android
     elif [[ ${SOURCE_BRANCH_IND} == "windows" ]]; then
         SOURCE_BRANCH=val-verde-windows-mainline
