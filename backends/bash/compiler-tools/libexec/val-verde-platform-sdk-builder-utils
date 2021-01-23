@@ -312,6 +312,18 @@ function generate-compiler-tools() {
     fi
 }
 
+function get-rust-build-deps() {
+    RUST_PACKAGE_NAME=$(jq -r --argjson id $index \
+                                '.[$id].sourcePackageName' \
+                                ${RUST_PACKAGE_LIST})
+    RUST_PACKAGE_VERSION=$(jq -r --argjson id $index \
+                                '.[$id].sourcePackageVersion' \
+                                ${RUST_PACKAGE_LIST})
+    RUST_PACKAGE_URL=$(jq -r --argjson id $index \
+                                '.[$id].upstreamUrl' \
+                                ${RUST_PACKAGE_LIST})
+}
+
 function tool-build() {
     ${ECHO}
     ${ECHO} -e "    Tool Invocation"

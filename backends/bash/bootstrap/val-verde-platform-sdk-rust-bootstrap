@@ -5,49 +5,47 @@ set -e
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=rust-bootstrap
 export SOURCE_PACKAGE_VERSION=1
-RUST_VERSION=1.49
+
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
-TARGET_DIR=${INSTALL_PREFIX}/staging-data/${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}/stage0
-mkdir -p ${TARGET_DIR}
+DESTINATION_DIR=${INSTALL_PREFIX}/staging-data/${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}/stage0
+RUST_PACKAGE_LIST=/usr/share/${VAL_VERDE_GH_TEAM}-rust-binaries.json
+RUST_PACKAGE_COUNT=$(jq -r length ${RUST_PACKAGE_LIST})
 
-package-wget -c https://static.rust-lang.org/dist/rust-std-RUST_VERSION-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}.tar.xz \
-     -O rust-std-RUST_VERSION-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}.tar.xz
-package-tar -xf \
-            rust-std-RUST_VERSION-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}.tar.xz
+mkdir -p ${DESTINATION_DIR}
 
-package-rsync -ax \
-              rust-std-RUST_VERSION-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}/rust-std-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}/* \
-              ${TARGET_DIR}/
+for index in `seq 0 $(($RUST_PACKAGE_COUNT - 1))`; do
+    index=$index \
+    get-rust-build-deps
 
-package-wget -c https://static.rust-lang.org/dist/rustc-RUST_VERSION-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}.tar.xz \
-     -O rustc-RUST_VERSION-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}.tar.xz
-package-tar -xf \
-            rustc-RUST_VERSION-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}.tar.xz
+    RUST_PACKAGE_URL=${RUST_PACKAGE_URL//'${RUST_PACKAGE_NAME}'/${RUST_PACKAGE_NAME}}
+    RUST_PACKAGE_URL=${RUST_PACKAGE_URL//'${RUST_PACKAGE_VERSION}'/${RUST_PACKAGE_VERSION}}
+    RUST_PACKAGE_URL=${RUST_PACKAGE_URL//'${BUILD_OS}'/${BUILD_OS}}
+    RUST_PACKAGE_URL=${RUST_PACKAGE_URL//'${BUILD_KERNEL}'/${BUILD_KERNEL}}
+    RUST_PACKAGE_URL=${RUST_PACKAGE_URL//'${BUILD_PROCESSOR}'/${BUILD_PROCESSOR}}
 
-package-rsync -ax \
-              rustc-RUST_VERSION-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}/rustc/* \
-              ${TARGET_DIR}/
+    package-wget -c ${RUST_PACKAGE_URL} \
+     -O ${RUST_PACKAGE_NAME}-${RUST_PACKAGE_VERSION}-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}.tar.xz
+    package-tar -xf \
+            ${RUST_PACKAGE_NAME}-${RUST_PACKAGE_VERSION}-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}.tar.xz
 
-package-wget -c https://static.rust-lang.org/dist/cargo-RUST_VERSION-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}.tar.xz \
-     -O cargo-RUST_VERSION-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}.tar.xz
-package-tar -xf \
-            cargo-RUST_VERSION-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}.tar.xz
+    if [ ${RUST_PACKAGE_NAME} = 'rust-std' ]; then
+        package-rsync -ax \
+                ${RUST_PACKAGE_NAME}-${RUST_PACKAGE_VERSION}-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}/${RUST_PACKAGE_NAME}-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}/* \
+                ${DESTINATION_DIR}/
+    elif [ ${RUST_PACKAGE_NAME} = 'rustfmt' ]; then
+        package-rsync -ax \
+                ${RUST_PACKAGE_NAME}-${RUST_PACKAGE_VERSION}-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}/${RUST_PACKAGE_NAME}-preview/* \
+                ${DESTINATION_DIR}/
+    else
+        package-rsync -ax \
+              ${RUST_PACKAGE_NAME}-${RUST_PACKAGE_VERSION}-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}/${RUST_PACKAGE_NAME}/* \
+              ${DESTINATION_DIR}/
+    fi
 
-package-rsync -ax \
-              cargo-RUST_VERSION-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}/cargo/* \
-              ${TARGET_DIR}/
-
-package-wget -c https://static.rust-lang.org/dist/rustfmt-RUST_VERSION-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}.tar.xz \
-     -O rustfmt-RUST_VERSION-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}.tar.xz
-package-tar -xf \
-            rustfmt-RUST_VERSION-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}.tar.xz
-
-package-rsync -ax \
-              rustfmt-RUST_VERSION-${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}/rustfmt-preview/* \
-              ${TARGET_DIR}/
+done
 
 # Build the package
 deb-package-build
