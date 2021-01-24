@@ -179,6 +179,9 @@ RUN HOST_ARCH=haswell \
 
 FROM WINDOWS_BUILDER AS RUST_BUILDER
 
+COPY backends/bash/rust \
+     /sources/
+
 # rust build
 RUN HOST_ARCH=${BUILD_ARCH} \
     HOST_CPU=${BUILD_CPU} \
