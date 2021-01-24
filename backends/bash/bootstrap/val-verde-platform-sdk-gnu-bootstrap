@@ -36,6 +36,9 @@ package-invoke-builder libcxx-cross
 # llvm bootstrap build
 package-invoke-builder llvm-project-bootstrap
 
+# rust bootstrap build
+package-invoke-builder rust-bootstrap
+
 # remove host compiler and libraries as it is superceded by bootstrapped clang
 package-apt-remove \
     clang \
