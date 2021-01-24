@@ -463,7 +463,7 @@
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "pythonkit",
-        "sourceBranchIndicator": "default",
+        "sourceBranchIndicator": "default-next",
         "sourcePackageVersion": "5.3.0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
@@ -471,7 +471,7 @@
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "pythonkit",
-        "sourceBranchIndicator": "android",
+        "sourceBranchIndicator": "android-next",
         "sourcePackageVersion": "5.3.0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
@@ -520,7 +520,7 @@
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "sourcekit-lsp",
-        "sourceBranchIndicator": "default",
+        "sourceBranchIndicator": "default-next",
         "sourcePackageVersion": "5.2.0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
@@ -528,7 +528,7 @@
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "sourcekit-lsp",
-        "sourceBranchIndicator": "android",
+        "sourceBranchIndicator": "android-next",
         "sourcePackageVersion": "5.2.0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
@@ -576,7 +576,7 @@
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "swift-cmark",
-        "sourceBranchIndicator": "default",
+        "sourceBranchIndicator": "default-next",
         "sourcePackageVersion": "5.3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
@@ -584,7 +584,7 @@
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "swift-argument-parser",
-        "sourceBranchIndicator": "default",
+        "sourceBranchIndicator": "default-next",
         "sourcePackageVersion": "5.3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
@@ -592,7 +592,7 @@
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "swift-corelibs-foundation",
-        "sourceBranchIndicator": "default",
+        "sourceBranchIndicator": "default-next",
         "sourcePackageVersion": "5.3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
@@ -600,7 +600,7 @@
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "swift-corelibs-libdispatch",
-        "sourceBranchIndicator": "default",
+        "sourceBranchIndicator": "default-next",
         "sourcePackageVersion": "5.3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
@@ -608,7 +608,7 @@
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "swift-corelibs-xctest",
-        "sourceBranchIndicator": "default",
+        "sourceBranchIndicator": "default-next",
         "sourcePackageVersion": "5.3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
@@ -616,7 +616,7 @@
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "swift-doc",
-        "sourceBranchIndicator": "default",
+        "sourceBranchIndicator": "default-next",
         "sourcePackageVersion": "5.3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
@@ -624,7 +624,7 @@
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "swift-doc",
-        "sourceBranchIndicator": "android",
+        "sourceBranchIndicator": "android-next",
         "sourcePackageVersion": "5.3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
@@ -632,7 +632,7 @@
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "swift-driver",
-        "sourceBranchIndicator": "default",
+        "sourceBranchIndicator": "default-next",
         "sourcePackageVersion": "5.3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
@@ -640,7 +640,7 @@
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "swift-format",
-        "sourceBranchIndicator": "default",
+        "sourceBranchIndicator": "default-next",
         "sourcePackageVersion": "5.3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
@@ -648,7 +648,7 @@
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "swift-log",
-        "sourceBranchIndicator": "default",
+        "sourceBranchIndicator": "default-next",
         "sourcePackageVersion": "5.3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
@@ -656,7 +656,7 @@
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "swift-llbuild",
-        "sourceBranchIndicator": "default",
+        "sourceBranchIndicator": "default-next",
         "sourcePackageVersion": "5.3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
@@ -664,7 +664,7 @@
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "swift-llbuild",
-        "sourceBranchIndicator": "android",
+        "sourceBranchIndicator": "android-next",
         "sourcePackageVersion": "5.3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
@@ -672,7 +672,7 @@
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "swift-package-manager",
-        "sourceBranchIndicator": "default",
+        "sourceBranchIndicator": "default-next",
         "sourcePackageVersion": "5.3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
@@ -680,7 +680,7 @@
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "swift-syntax",
-        "sourceBranchIndicator": "default",
+        "sourceBranchIndicator": "default-next",
         "sourcePackageVersion": "5.3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
@@ -688,7 +688,7 @@
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "swift-tensorflow-apis",
-        "sourceBranchIndicator": "default",
+        "sourceBranchIndicator": "default-next",
         "sourcePackageVersion": "5.3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
@@ -696,7 +696,7 @@
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "swift-tools-support-core",
-        "sourceBranchIndicator": "default",
+        "sourceBranchIndicator": "default-next",
         "sourcePackageVersion": "5.3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
@@ -704,7 +704,7 @@
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "swift-tools-support-core",
-        "sourceBranchIndicator": "android",
+        "sourceBranchIndicator": "android-next",
         "sourcePackageVersion": "5.3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
