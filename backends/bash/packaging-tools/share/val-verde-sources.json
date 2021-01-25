@@ -140,6 +140,14 @@
     {
         "retainSource": "false",
         "sourceType": "git",
+        "sourcePackageName": "freeglut",
+        "sourceBranchIndicator": "git_master",
+        "sourcePackageVersion": "3",
+        "sourcePackageUrl": "https://github.com/dcnieho/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
         "sourcePackageName": "freetype2",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2.10.2",
@@ -344,8 +352,24 @@
         "sourceType": "git",
         "sourcePackageName": "mesa",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "20.3",
+        "sourcePackageVersion": "21",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "mesa-glu",
+        "sourceBranchIndicator": "master",
+        "sourcePackageVersion": "9",
+        "sourcePackageUrl": "https:///gitlab.freedesktop.org/mesa/glu.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "mesa-demos",
+        "sourceBranchIndicator": "master",
+        "sourcePackageVersion": "8",
+        "sourcePackageUrl": "https:///gitlab.freedesktop.org/mesa/demos.git"
     },
     {
         "retainSource": "false",

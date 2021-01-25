@@ -11,7 +11,22 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
 cd ${SOURCE_ROOT}
-package-meson-build
+package-meson-build \
+    -Damdgpu=true \
+    -Dbuild-tests=false \
+    -Dcairo-tests=false \
+    -Detnaviv=true \
+    -Dexynos=true \
+    -Dfreedreno=true \
+    -Dinstall-test-programs=false \
+    -Dintel=true \
+    -Dlibkms=true \
+    -Domap=true \
+    -Dnouveau=true \
+    -Dradeon=true \
+    -Dtegra=true \
+    -Dvivante=true \
+    -Dvmwgfx=true
 
 # Build the components
 cd ${STAGE_ROOT}

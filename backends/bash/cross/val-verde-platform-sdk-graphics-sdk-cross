@@ -47,6 +47,15 @@ if [ "${HOST_OS}" = "gnu" ] ||
    [ "${HOST_OS}" = "musl" ]; then
     # mesa build
     package-invoke-builder mesa-cross
+
+    # mesa glu build
+    package-invoke-builder mesa-glu-cross
+
+    # freeglut build
+    package-invoke-builder freeglut-cross
+
+    # mesa demos build
+    package-invoke-builder mesa-demos-cross
 fi
 
 # sdl build

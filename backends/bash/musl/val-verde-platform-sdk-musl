@@ -44,7 +44,7 @@ package-invoke-builder swift-tools-musl
 package-invoke-builder swift-sdk-musl
 
 # graphics sdk build
-# package-invoke-builder graphics-sdk-cross
+package-invoke-builder graphics-sdk-cross
 
 # node + sdk build
 package-invoke-builder node-cross
