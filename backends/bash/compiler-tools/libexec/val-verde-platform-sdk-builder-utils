@@ -388,7 +388,7 @@ function tool-install() {
 }
 
 function tool-invoke() {
-    unset BASH_ENV
+    BASH_ENV= \
     tool-log "${@}"
 }
 
