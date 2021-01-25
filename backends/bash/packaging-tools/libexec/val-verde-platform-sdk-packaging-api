@@ -101,3 +101,27 @@ function tar-package-build() {
 
     ${RM} -r ${INSTALL_ROOT}
 }
+
+function trigger-source-package-actions() {
+    ACTION_TYPE=${ACTION_TYPE:-'install'}
+
+    if [ ${ACTION_TYPE} = 'install' ]; then
+        if [ -z "$(ls -A ${SOURCE_DEB_PATH})" ]; then
+            ${ECHO} "No source debs found to install"
+        else
+            SOURCE_FILES=${SOURCE_DEB_PATH}/*
+            for src_file in ${SOURCE_FILES}; do
+                ${ECHO} -e "Installing Source Package: ${src_file}"
+                package-dpkg-install ${src_file}
+            done
+        fi
+    elif [ ${ACTION_TYPE} = 'copy' ]; then
+        if [ -z "$(ls -A /usr/share/source-debs)" ]; then
+            ${ECHO} -e "No source debs loaded"
+        else
+            package-rsync -ax /usr/share/source-debs/* \
+                              ${SOURCE_DEB_PATH}
+        fi
+    fi
+}
+

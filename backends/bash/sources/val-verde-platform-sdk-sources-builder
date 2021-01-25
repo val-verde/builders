@@ -30,10 +30,11 @@ TEMPLATE_ROOT=${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM} \
 deb-package-build
 deb-package-install
 
+# Check if any sources were loaded
+ACTION_TYPE=copy trigger-source-package-actions
+
 # Fetch sources
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-packages
 
-# Install source debs
-pushd ${SOURCE_DEB_PATH}
-    deb-package-install *.deb
-popd
+# Rerun source deb checks to install
+ACTION_TYPE=install trigger-source-package-actions
