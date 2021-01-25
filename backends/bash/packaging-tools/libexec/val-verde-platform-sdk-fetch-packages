@@ -4,4 +4,4 @@ set -e
 
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-retrieve-sources
 
-fetch-sources
+invoke-fetch

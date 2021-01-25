@@ -11,6 +11,12 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
 # Source package retrieval utils
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-utils
 
+function invoke-fetch() {
+    if [ -z "$(ls -A ${SOURCE_DEB_PATH})" ]; then
+        fetch-sources
+    fi
+}
+
 function build-install-git-source-package() {
     # Set up paths and dirs
     prepare-source-base
