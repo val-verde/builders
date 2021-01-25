@@ -12,8 +12,11 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-utils
 
 function invoke-fetch() {
-    if [ -z "$(ls -A ${SOURCE_DEB_PATH})" ]; then
-        fetch-sources
+    SEARCH_INPUT=${SOURCE_DEB_PATH}/$1
+    if [ -f "${SEARCH_INPUT}" ]; then
+        FILE_EXISTS='true'
+    else
+        FILE_EXISTS='false'
     fi
 }
 
@@ -49,18 +52,26 @@ function build-install-git-source-package() {
 }
 
 function build-install-other-source-package() {
-    # Set up paths and dirs
-    prepare-source-base
+    SOURCE_FILE_INPUT=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.deb
+    invoke-fetch ${SOURCE_FILE_INPUT}
+    
+    if [ "${FILE_EXISTS}" = 'true' ]; then
+        ${ECHO} -e "Source file ${SOURCE_FILE_INPUT} exists, "
+        ${ECHO} -e "Skipping source deb package build"
+    else
+        # Set up paths and dirs
+        prepare-source-base
 
-    # Extract source package from tar ball
-    untar-tar-balls
+        # Extract source package from tar ball
+        untar-tar-balls
 
-    # Build the source deb package
-    deb-package-build
+        # Build the source deb package
+        deb-package-build
 
-    # Clean up
-    ${RM} -rf ${INSTALL_ROOT}
-    ${ECHO} -e "    Source Builder Completed"
+        # Clean up
+        ${RM} -rf ${INSTALL_ROOT}
+        ${ECHO} -e "    Source Builder Completed"
+    fi
 }
 
 function fetch-single-source() {
