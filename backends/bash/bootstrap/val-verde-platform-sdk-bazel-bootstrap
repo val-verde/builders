@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=bazel
+export SOURCE_PACKAGE_VERSION=3
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Configure the build components
+mkdir -p ${INSTALL_PREFIX}/bin
+package-wget -c https://github.com/bazelbuild/${SOURCE_PACKAGE_NAME}/releases/download/${SOURCE_PACKAGE_VERSION}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR} \
+     -O ${INSTALL_PREFIX}/bin/${SOURCE_PACKAGE_NAME}
+
+${CHMOD} +x ${INSTALL_PREFIX}/bin/${SOURCE_PACKAGE_NAME}
+
+# Build the package
+deb-package-build
+
+# Build the package
+deb-package-install
