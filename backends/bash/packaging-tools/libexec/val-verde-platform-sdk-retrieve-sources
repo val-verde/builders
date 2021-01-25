@@ -8,7 +8,7 @@ DEB_PATH=${SOURCE_DEB_PATH}
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
 
-# Source package retrueval utils
+# Source package retrieval utils
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-utils
 
 function build-install-git-source-package() {
@@ -37,9 +37,6 @@ function build-install-git-source-package() {
     # Build the source deb package
     deb-package-build
 
-    # Install the source deb package
-    deb-package-install
-
     # Clean up
     ${RM} -rf ${INSTALL_ROOT}
     ${ECHO} -e "    Source Builder Completed"
@@ -54,9 +51,6 @@ function build-install-other-source-package() {
 
     # Build the source deb package
     deb-package-build
-
-    # Install the source deb package
-    deb-package-install
 
     # Clean up
     ${RM} -rf ${INSTALL_ROOT}

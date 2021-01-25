@@ -32,3 +32,8 @@ deb-package-install
 
 # Fetch sources
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-packages
+
+# Install source debs
+pushd ${SOURCE_DEB_PATH}
+    deb-package-install *.deb
+popd
