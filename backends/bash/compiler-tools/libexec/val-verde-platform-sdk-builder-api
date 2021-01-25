@@ -74,11 +74,12 @@ function set-defaults() {
     XZ=$(get-util-path xz)
 }
 
-# invoke platform builder
-function platform-invoke-builder() {
+# set build time package environment vars
+function set-package-environment() {
     set-build-base-environment
     OS_ARG="$(cut -d'-' -f1 <<<$1)"
     CPU_ARG="$(cut -d'-' -f2 <<<$1)"
+    ECHO=$(get-util-path echo)
 
     if [ ${OS_ARG} = 'gnu' ]; then
         export HOST_ARCH=${BUILD_ARCH}
@@ -87,7 +88,6 @@ function platform-invoke-builder() {
         export HOST_OS=${BUILD_OS}
         export HOST_PROCESSOR=${BUILD_PROCESSOR}
         export SYSROOT=/
-        BINDIR=/usr/bin
     elif [ ${OS_ARG} = 'musl' && ${CPU_ARG} = 'skylake']; then
         export HOST_ARCH=${BUILD_ARCH}
         export HOST_CPU=${BUILD_CPU}
@@ -129,10 +129,14 @@ function platform-invoke-builder() {
         export HOST_OS_API_LEVEL=
         export HOST_PROCESSOR=x86_64
     fi
+}
 
-    ECHO=$(get-util-path echo)
-    ${ECHO} -e "Platform Builder for $1-$2 Invocation Started"
-    package-invoke-builder $2
-    ${ECHO} -e "Platform Builder for $1-$2 Invocation Complete"
-    ${ECHO}
+# unset build time package environment vars
+function unset-package-environment() {
+    unset HOST_ARCH
+    unset HOST_CPU
+    unset HOST_KERNEL
+    unset HOST_OS
+    unset HOST_PROCESSOR
+    unset SYSROOT
 }

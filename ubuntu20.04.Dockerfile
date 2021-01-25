@@ -65,7 +65,9 @@ COPY backends/bash/bootstrap \
 ENV BASH_ENV="/usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api"
 SHELL [ "/bin/bash", "-c" ]
 
-RUN platform-invoke-builder gnu-skylake gnu-bootstrap
+RUN set-package-environment gnu-skylake
+
+RUN package-invoke-builder gnu-bootstrap
 
 # platform independent package builders
 FROM GNU_BOOTSTRAP_BUILDER AS PLATFORM_INDEPENDENT_PACKAGE_BUILDERS
@@ -78,7 +80,9 @@ COPY backends/bash/cross \
 # gnu build
 FROM PLATFORM_INDEPENDENT_PACKAGE_BUILDERS AS GNU_BUILDER
 
-RUN platform-invoke-builder gnu-skylake gnu
+RUN set-package-environment gnu-skylake
+
+RUN package-invoke-builder gnu
 
 # musl build
 FROM GNU_BUILDER AS MUSL_BUILDER
@@ -86,14 +90,20 @@ FROM GNU_BUILDER AS MUSL_BUILDER
 COPY backends/bash/musl \
      /sources/
 
-RUN platform-invoke-builder musl-skylake musl
+RUN set-package-environment musl-skylake
 
-RUN platform-invoke-builder musl-armv8 musl
+RUN package-invoke-builder musl
+
+RUN set-package-environment musl-armv8
+
+RUN package-invoke-builder musl
 
 # android-ndk package
 FROM MUSL_BUILDER AS ANDROID_NDK_BUILDER
 
-RUN platform-invoke-builder gnu-skylake android-ndk
+RUN set-package-environment gnu-skylake
+
+RUN package-invoke-builder android-ndk
 
 # webassembly build
 FROM ANDROID_NDK_BUILDER AS WEBASSEMBLY_BUILDER
@@ -101,7 +111,9 @@ FROM ANDROID_NDK_BUILDER AS WEBASSEMBLY_BUILDER
 COPY backends/bash/webassembly \
      /sources/
 
-RUN platform-invoke-builder wasm32-wasm32 webassembly
+RUN set-package-environment wasm32-wasm32
+
+RUN package-invoke-builder webassembly
 
 # android build
 FROM WEBASSEMBLY_BUILDER AS ANDROID_BUILDER
@@ -111,10 +123,14 @@ COPY backends/bash/android \
      /sources/
 
 # android-aarch64 environment
-RUN platform-invoke-builder android-armv8 android
+RUN set-package-environment android-armv8
+
+RUN package-invoke-builder android
 
 # android-x86_64 environment
-RUN platform-invoke-builder android-westmere android
+RUN set-package-environment android-westmere
+
+RUN package-invoke-builder android
 
 # windows environment
 FROM ANDROID_BUILDER AS WINDOWS_SOURCES_BUILDER
@@ -125,7 +141,9 @@ COPY backends/bash/windows \
 # windows build
 FROM WINDOWS_SOURCES_BUILDER AS WINDOWS_BUILDER
 
-RUN platform-invoke-builder windows-skylake windows
+RUN set-package-environment windows-skylake
+
+RUN package-invoke-builder windows
 
 FROM WINDOWS_BUILDER AS RUST_BUILDER
 
