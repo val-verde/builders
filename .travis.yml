@@ -2,7 +2,6 @@ language: generic
 deploy:
   provider: script
   script: bash scripts/updateRepo
-  github_token: $GH_TOKEN
   on:
     branch: enhancements/travis-integration
   

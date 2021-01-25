@@ -96,24 +96,4 @@ for index in `seq "${GIT_INDEX_OVERRIDE}" $(($sourceCount - 1))`; do    repoInde
 
         rm -rf ${SOURCE_PACKAGE_NAME}
     fi
-
-    # branchIndex=$((i * 4 + 1))
-    # builderBranchIndex=$((i * 4 + 2))
-    # upstreamIndex=$((i * 4 + 3))
-    # repo=${repoArray[$repoIndex]}
-    # branch=${repoArray[$branchIndex]}
-    # builderBranch=${repoArray[$builderBranchIndex]}
-    # upstream=${repoArray[$upstreamIndex]}
-    # echo $upstream
-    # git clone $repo -b $branch repo
-    # pushd repo
-    # git remote add upstream $upstream
-    # git fetch upstream $branch
-    # git rebase upstream/$branch
-    # git push -f
-    # git checkout $builderBranch
-    # git rebase origin/$branch
-    # git push -f
-    # popd
-    # rm -rf repo
 done
