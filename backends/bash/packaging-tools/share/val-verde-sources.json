@@ -96,6 +96,14 @@
     {
         "retainSource": "false",
         "sourceType": "git",
+        "sourcePackageName": "cython",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0.29.21",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
         "sourcePackageName": "egl-headers",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
@@ -449,6 +457,14 @@
         "sourcePackageName": "node",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "15.6.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "numpy",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.19.5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
