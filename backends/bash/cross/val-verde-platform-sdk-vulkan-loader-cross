@@ -8,26 +8,32 @@ export SOURCE_PACKAGE_VERSION=1
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+export-compiler-environment
 
 export DEPENDS="${PACKAGE_BASE_NAME}-glslang-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 
 # Configure the build components
 cd ${STAGE_ROOT}
 
+ENABLE_WAYLAND=FALSE
+ENABLE_XLIB=FALSE
+
 if [ "${HOST_OS}" = "android" ]; then
     CMAKE_ANDROID_DEFINE_CMD="-DANDROID=TRUE"
+elif [ "${HOST_OS}" = "gnu" ] ||
+     [ "${HOST_OS}" = "musl" ]; then
+    ENABLE_WAYLAND=TRUE
+    ENABLE_XLIB=TRUE
 fi
-
 package-cmake \
     -DBUILD_WSI_DIRECTFB_SUPPORT=FALSE \
-    -DBUILD_WSI_WAYLAND_SUPPORT=FALSE \
-    -DBUILD_WSI_XLIB_SUPPORT=FALSE \
+    -DBUILD_WSI_WAYLAND_SUPPORT=${ENABLE_WAYLAND} \
+    -DBUILD_WSI_XLIB_SUPPORT=${ENABLE_XLIB} \
     -DCMAKE_ASM_MASM_COMPILER_WORKS=FALSE \
     -DJWASM_FOUND=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-ml64 \
     -DPKG_CONFIG_EXECUTABLE=${PKG_CONFIG} \
     "${CMAKE_ANDROID_DEFINE_CMD}" \
     ${SOURCE_ROOT}
-
 # Build the components
 PATH=${STAGE_ROOT_BASE}/vulkan-loader-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/loader:${PATH} \
 ninja-install

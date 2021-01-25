@@ -9,6 +9,8 @@ export SOURCE_PACKAGE_VERSION=1
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
+export-compiler-environment
+
 export DEPENDS="${PACKAGE_BASE_NAME}-vulkan-loader-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 
 # Configure the build components
@@ -16,30 +18,38 @@ cd ${STAGE_ROOT}
 
 CMAKE_XCB_CMD="-DBUILD_WSI_XCB_SUPPORT=TRUE"
 CUBE_WSI_SELECTION=XCB
+ENABLE_WAYLAND=FALSE
+ENABLE_XCB=FALSE
+ENABLE_XLIB=FALSE
+LIB_SUFFIX=so
 
 if [ "${HOST_OS}" = "android" ]; then
     CMAKE_ANDROID_DEFINE_CMD="-DANDROID=1"
-    CUBE_WSI_SELECTION=Display
-    CMAKE_XCB_CMD="-DBUILD_WSI_XCB_SUPPORT=FALSE"
+    CUBE_WSI_SELECTION=DISPLAY
+elif [ "${HOST_OS}" = "gnu" ] ||
+     [ "${HOST_OS}" = "musl" ]; then
+    CUBE_WSI_SELECTION=WAYLAND
+    ENABLE_WAYLAND=TRUE
+    ENABLE_XCB=TRUE
+    ENABLE_XLIB=TRUE
 elif [ "${HOST_OS}" = "mingw32" ]; then
-    CMAKE_XCB_CMD="-DBUILD_WSI_XCB_SUPPORT=FALSE"
     LIB_SUFFIX=dll.a
     LIB_VERSION_SUFFIX=-1
     export LIBS="\
         -lgdi32 \
         ${LDFLAGS} \
     "
-else
-    LIB_SUFFIX=so
 fi
 
 package-cmake \
-    -DBUILD_CUBE=FALSE \
+    -DBUILD_CUBE=TRUE \
     -DBUILD_ICD=FALSE \
     -DBUILD_WSI_DIRECTFB_SUPPORT=FALSE \
-    -DBUILD_WSI_WAYLAND_SUPPORT=FALSE \
-    -DBUILD_WSI_XLIB_SUPPORT=FALSE \
+    -DBUILD_WSI_WAYLAND_SUPPORT=${ENABLE_WAYLAND} \
+    -DBUILD_WSI_XCB_SUPPORT=${ENABLE_XCB} \
+    -DBUILD_WSI_XLIB_SUPPORT=${ENABLE_XLIB} \
     -DCUBE_WSI_SELECTION=${CUBE_WSI_SELECTION} \
+    -DGLSLANG_INSTALL_DIR=${BUILD_PACKAGE_PREFIX}/bin \
     -DGLSLANG_VALIDATOR=${BUILD_PACKAGE_PREFIX}/bin/glslangValidator \
     -DPKG_CONFIG_EXECUTABLE=${PKG_CONFIG} \
     -DVulkan_LIBRARY=${PACKAGE_PREFIX}/lib/libvulkan${LIB_VERSION_SUFFIX}.${LIB_SUFFIX} \
