@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=mesa-demos
+export SOURCE_PACKAGE_VERSION=8
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Configure the build components
+cd ${STAGE_ROOT}
+package-cmake \
+    -DGLUT_glu_LIBRARY=${PACKAGE_PREFIX}/lib/libglu.so \
+    -DGLUT_glut_LIBRARY=${PACKAGE_PREFIX}/lib/libglut.so \
+    -DGLUT_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    ${SOURCE_ROOT}
+
+# Build the components
+ninja-install
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install
