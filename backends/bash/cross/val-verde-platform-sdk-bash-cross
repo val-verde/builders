@@ -10,9 +10,9 @@ export SOURCE_PACKAGE_VERSION=5
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export DEPENDS="\
-    ${PACKAGE_BASE_NAME}-acl-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-bzip2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-xz-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
+    ${PACKAGE_BASE_NAME}-acl-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-bzip2-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-xz-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
 # Configure the build components

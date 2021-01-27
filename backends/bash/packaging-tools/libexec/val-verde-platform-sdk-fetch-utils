@@ -2,8 +2,6 @@
 
 set -e
 
-SOURCE_FILE=${SOURCE_FILE:-/usr/share/${VAL_VERDE_GH_TEAM}-sources.json}
-
 # Source common variables and functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
 

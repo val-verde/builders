@@ -10,8 +10,8 @@ export SOURCE_PACKAGE_VERSION=5
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export DEPENDS="\
-    ${PACKAGE_BASE_NAME}-llvm-project-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-swift-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
+    ${PACKAGE_BASE_NAME}-llvm-project-12-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-swift-${SOURCE_MAJOR_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
 # Configure the build components

@@ -9,7 +9,7 @@ export SOURCE_PACKAGE_VERSION=12
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-export DEPENDS="${PACKAGE_BASE_NAME}-libunwind-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
+export DEPENDS="${PACKAGE_BASE_NAME}-libunwind-${SOURCE_NAJOR_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/llvm-project-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
 export SOURCE_ROOT=${SOURCE_ROOT_BASE}/llvm-project-${SOURCE_PACKAGE_VERSION}/${SOURCE_PACKAGE_NAME}
 
