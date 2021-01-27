@@ -12,11 +12,10 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 export DEPENDS="\
     ${PACKAGE_BASE_NAME}-llvm-project-12-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-sqlite3-autoconf-3340100-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-swift-${SOURCE_MAJOR_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${SOURCE_MAJOR_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${SOURCE_MAJOR_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
+    ${PACKAGE_BASE_NAME}-swift-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
-SOURCE_MAJOR_VERSION=$(package-major-version)
 
 # Configure the build components
 cd ${STAGE_ROOT}
@@ -28,7 +27,7 @@ CFLAGS="\
 CXXFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
-    -I${SOURCE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_MAJOR_VERSION}/lib/llvm/Support \
+    -I${SOURCE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/lib/llvm/Support \
     -Wno-documentation \
     -Wno-macro-redefined \
     -Wno-unused-function \
