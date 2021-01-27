@@ -12,7 +12,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 export-compiler-environment
 generate-compiler-tools
 
-export DEPENDS="${PACKAGE_BASE_NAME}-cmake-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
+export DEPENDS="${PACKAGE_BASE_NAME}-cmake-3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 
 # Configure the build components
 copy-source-to-staging
