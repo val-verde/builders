@@ -83,8 +83,8 @@ package-invoke-builder ncurses-cross
 # android libedit build
 package-invoke-builder libedit-cross
 
-# android sqlite3 build
-package-invoke-builder sqlite3-cross
+# android sqlite build
+package-invoke-builder sqlite-cross
 
 # android openssl build
 package-invoke-builder openssl-cross

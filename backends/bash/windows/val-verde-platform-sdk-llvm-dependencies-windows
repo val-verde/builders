@@ -72,8 +72,8 @@ package-invoke-builder ncurses-cross
 # windows editline build
 package-invoke-builder wineditline-cross
 
-# windows sqlite3 build
-package-invoke-builder sqlite3-cross
+# windows sqlite build
+package-invoke-builder sqlite-cross
 
 # windows openssl build
 package-invoke-builder openssl-cross
