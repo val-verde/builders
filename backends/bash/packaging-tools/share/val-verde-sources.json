@@ -1248,10 +1248,10 @@
     },
     {
         "sourceType": "other",
-        "sourcePackageName": "sqlite3",
+        "sourcePackageName": "sqlite",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "autoconf-3340100",
-        "sourcePackageUrl": "https://sqlite.org/2021/sqlite-${SOURCE_PACKAGE_VERSION}.tar.gz"
+        "sourcePackageVersion": "3",
+        "sourcePackageUrl": "https://sqlite.org/2021/sqlite-autoconf-3340100.tar.gz"
     },
     {
         "sourceType": "other",

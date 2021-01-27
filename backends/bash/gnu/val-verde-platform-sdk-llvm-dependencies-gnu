@@ -138,8 +138,8 @@ package-invoke-builder ncurses-cross
 # libedit build
 package-invoke-builder libedit-cross
 
-# sqlite3 build
-package-invoke-builder sqlite3-cross
+# sqlite build
+package-invoke-builder sqlite-cross
 
 # openssl build
 package-invoke-builder openssl-cross
