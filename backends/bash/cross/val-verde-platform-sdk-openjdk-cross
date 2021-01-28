@@ -45,7 +45,7 @@ unset \
     ZIP
 
 TOOL_LOG=${STAGE_ROOT}/builder-invocation
-tool-log ${SOURCE_ROOT}/configure \
+tool-invoke ${SOURCE_ROOT}/configure \
     AR=${AR} \
     BASH=${BASH} \
     BUILD_AR=${AR} \
