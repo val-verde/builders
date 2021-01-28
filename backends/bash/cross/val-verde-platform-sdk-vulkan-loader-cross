@@ -35,7 +35,7 @@ package-cmake \
     "${CMAKE_ANDROID_DEFINE_CMD}" \
     ${SOURCE_ROOT}
 # Build the components
-PATH=${STAGE_ROOT_BASE}/vulkan-loader-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/loader:${PATH} \
+PATH=${STAGE_ROOT_BASE}/vulkan-loader-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/loader:${PATH} \
 ninja-install
 
 # Build the package

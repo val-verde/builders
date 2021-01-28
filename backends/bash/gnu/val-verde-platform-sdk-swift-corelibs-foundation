@@ -20,7 +20,7 @@ export DEPENDS="\
 # Configure the build components
 cd ${STAGE_ROOT}
 package-cmake \
-    -Ddispatch_DIR=${STAGE_ROOT_BASE}/swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
+    -Ddispatch_DIR=${STAGE_ROOT_BASE}/swift-corelibs-libdispatch-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DICU_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DICU_LIBRARY=${PACKAGE_PREFIX}/lib/libicudataswift.so \
     -DICU_I18N_LIBRARY_RELEASE=${PACKAGE_PREFIX}/lib/libicui18nswift.so \
