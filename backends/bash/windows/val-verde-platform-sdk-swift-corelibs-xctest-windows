@@ -33,8 +33,8 @@ SWIFTCFLAGS="\
     ${SWIFTCFLAGS} \
 " \
 package-cmake \
-    -Ddispatch_DIR=${STAGE_ROOT_BASE}/swift-corelibs-libdispatch-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
-    -DFoundation_DIR=${STAGE_ROOT_BASE}/swift-corelibs-foundation-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
+    -Ddispatch_DIR=${STAGE_ROOT_BASE}/swift-corelibs-libdispatch-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
+    -DFoundation_DIR=${STAGE_ROOT_BASE}/swift-corelibs-foundation-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     ${SOURCE_ROOT}
 
 # Build the components

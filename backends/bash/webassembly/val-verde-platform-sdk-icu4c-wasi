@@ -5,7 +5,7 @@ set -e
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=icu4c
 export SOURCE_PACKAGE_VERSION=68
-export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}
+export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
@@ -35,7 +35,7 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
     --disable-tools \
     --enable-static \
     --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
-    --with-cross-build=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH} \
+    --with-cross-build=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH} \
     --with-library-suffix=swift
 
 # Build the components
