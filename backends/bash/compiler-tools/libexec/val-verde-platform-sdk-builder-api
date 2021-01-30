@@ -14,64 +14,11 @@ function set-build-base-environment() {
 
 # invoke package builder
 function package-invoke-builder() {
+    ECHO=/usr/bin/echo
     ${ECHO} -e "Builder Invocation Started"
     ${BASH} ${VAL_VERDE_GH_TEAM}-platform-sdk-${@}
     ${ECHO} -e "Builder Invocation Complete"
     ${ECHO}
-}
-
-# Check for util existence and get corect path
-function get-util-path() {
-    BIN_PATH_PREFIX=${PACKAGE_ROOT}/${VAL_VERDE_GH_TEAM}-platform-sdk
-    BUILD_TRIPLE=${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/sysroot/usr/bin
-    UTIL_FILE=${BIN_PATH_PREFIX}/${BUILD_TRIPLE}/${1}
-    if [ -f "${UTIL_FILE}" ]; then
-        echo ${BIN_PATH_PREFIX}/${BUILD_TRIPLE}/${1}
-    else
-        echo /usr/bin/${1}
-    fi
-}
-
-# set default build env vars
-function set-defaults() {
-    AUTORECONF=$(get-util-path autoreconf)
-    BASH=$(get-util-path bash)
-    BISON=$(get-util-path bison)
-    CHMOD=$(get-util-path chmod)
-    CP=$(get-util-path cp)
-    CURL=$(get-util-path curl)
-    CUT=$(get-util-path cut)
-    DPKG=$(get-util-path dpkg)
-    ECHO=$(get-util-path echo)
-    FIND=$(get-util-path find)
-    GAWK=$(get-util-path gawk)
-    GETTEXT=$(get-util-path gettext)
-    GIT=$(get-util-path git)
-    GPERF=$(get-util-path gperf)
-    GREP=$(get-util-path grep)
-    HELP2MAN=$(get-util-path true)
-    INSTALL=$(get-util-path install)
-    LN=$(get-util-path ln)
-    LS=$(get-util-path ls)
-    M4=$(get-util-path m4)
-    MAKE=$(get-util-path make)
-    MAKEINFO=$(get-util-path true)
-    MKDIR=$(get-util-path mkdir)
-    MV=$(get-util-path mv)
-    NINJA=$(get-util-path ninja)
-    PERL=$(get-util-path perl)
-    PKG_CONFIG=$(get-util-path pkg-config)
-    RM=$(get-util-path rm)
-    RMDIR=$(get-util-path rmdir)
-    RSYNC=$(get-util-path rsync)
-    SED=$(get-util-path sed)
-    SSH=$(get-util-path ssh)
-    TAR=$(get-util-path tar)
-    TEE=$(get-util-path tee)
-    TR=$(get-util-path tr)
-    WGET=$(get-util-path wget)
-    XARGS=$(get-util-path xargs)
-    XZ=$(get-util-path xz)
 }
 
 # set build time package environment vars

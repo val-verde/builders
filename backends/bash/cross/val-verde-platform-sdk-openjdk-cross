@@ -44,6 +44,8 @@ unset \
     UNZIP \
     ZIP
 
+set-defaults
+
 TOOL_LOG=${STAGE_ROOT}/builder-invocation
 tool-invoke ${SOURCE_ROOT}/configure \
     AR=${AR} \
