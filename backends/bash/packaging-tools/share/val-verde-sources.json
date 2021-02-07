@@ -245,6 +245,14 @@
     {
         "retainSource": "false",
         "sourceType": "git",
+        "sourcePackageName": "jq",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1.6",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
         "sourcePackageName": "khr-headers",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
