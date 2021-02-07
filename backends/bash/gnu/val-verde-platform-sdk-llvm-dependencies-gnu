@@ -154,6 +154,16 @@ package-invoke-builder expat-cross
 package-invoke-builder gettext-cross
 export GETTEXT=${BINDIR}/gettext
 
+# help2man build
+package-invoke-builder help2man-cross
+export HELP2MAN=${BINDIR}/help2man
+
+# texinfo build
+package-invoke-builder texinfo-cross
+
+# indent build
+package-invoke-builder indent-cross
+
 # util-linux build
 package-invoke-builder util-linux-cross
 
@@ -298,6 +308,12 @@ export SED=${BINDIR}/sed
 # bison build
 package-invoke-builder bison-cross
 export BISON=${BINDIR}/bison
+
+# flex build
+package-invoke-builder flex-cross
+
+# jq build
+package-invoke-builder jq-cross
 
 # gawk build
 package-invoke-builder gawk-cross
