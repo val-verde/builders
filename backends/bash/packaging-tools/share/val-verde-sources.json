@@ -1136,6 +1136,13 @@
     },
     {
         "sourceType": "other",
+        "sourcePackageName": "help2man",
+        "sourceBranchIndicator": "wget-xz",
+        "sourcePackageVersion": "1.48.1",
+        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz"
+    },
+    {
+        "sourceType": "other",
         "sourcePackageName": "libcap",
         "sourceBranchIndicator": "wget-xz",
         "sourcePackageVersion": "2.45",
