@@ -221,6 +221,14 @@
     {
         "retainSource": "false",
         "sourceType": "git",
+        "sourcePackageName": "indent",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2.2.9",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
         "sourcePackageName": "jwasm",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2.13",
