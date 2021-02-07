@@ -743,6 +743,14 @@
     {
         "retainSource": "false",
         "sourceType": "git",
+        "sourcePackageName": "texinfo",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "6.7",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
         "sourcePackageName": "vulkan-headers",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1.2.62",
