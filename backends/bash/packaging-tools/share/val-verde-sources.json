@@ -132,6 +132,14 @@
     {
         "retainSource": "false",
         "sourceType": "git",
+        "sourcePackageName": "flex",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2.6.4",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
         "sourcePackageName": "fontconfig",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2.13.93",
