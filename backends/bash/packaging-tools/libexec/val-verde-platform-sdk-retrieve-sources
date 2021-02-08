@@ -16,8 +16,13 @@ function build-install-git-source-package() {
     prepare-source-base
 
     GIT_URL=${PACKAGE_URL} \
-        TARGET_ROOT=${INSTALL_PREFIX} \
-        package-git-clone ${SOURCE_BRANCH}
+    TARGET_ROOT=${INSTALL_PREFIX} \
+    package-git-clone ${SOURCE_BRANCH}
+
+    package-push-directory ${INSTALL_PREFIX}
+        package-git-tool submodule init
+        package-git-tool submodule update
+    package-pop-directory
 
     # Prepare source root
     if [[ ${RETAIN_SOURCE} = 'false' ]]; then
@@ -39,7 +44,6 @@ function build-install-git-source-package() {
     # Clean up
     ${RM} -rf ${INSTALL_ROOT}
     ${ECHO} -e "    Source Builder Completed"
-
 }
 
 function build-install-other-source-package() {

@@ -156,11 +156,9 @@ function package-git-clone() {
         fi
 
         package-git-tool clone ${GIT_URL} \
-                             --branch ${GIT_BRANCH} \
-                             --single-branch \
-                             ${TARGET_ROOT}
-        package-git-tool submodule init
-        package-git-tool submodule update
+                               --branch ${GIT_BRANCH} \
+                               --single-branch \
+                               ${TARGET_ROOT}
     package-pop-directory
 }
 
