@@ -98,6 +98,9 @@ package-invoke-builder expat-cross
 # gettext build
 package-invoke-builder gettext-cross
 
+# gawk build
+package-invoke-builder gawk-cross
+
 # util-linux build
 package-invoke-builder util-linux-cross
 
@@ -255,9 +258,6 @@ package-invoke-builder sed-cross
 
 # bison build
 package-invoke-builder bison-cross
-
-# gawk build
-package-invoke-builder gawk-cross
 
 # strace build
 package-invoke-builder strace-cross
