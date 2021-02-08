@@ -11,7 +11,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
 mkdir -p ${INSTALL_PREFIX}/bin
-package-wget -c https://github.com/bazelbuild/${SOURCE_PACKAGE_NAME}/releases/download/${SOURCE_PACKAGE_VERSION}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR} \
+package-wget -c https://github.com/bazelbuild/${SOURCE_PACKAGE_NAME}/releases/download/${SOURCE_PACKAGE_VERSION}.7.2/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.7.2-${BUILD_KERNEL}-${BUILD_PROCESSOR} \
      -O ${INSTALL_PREFIX}/bin/${SOURCE_PACKAGE_NAME}
 
 ${CHMOD} +x ${INSTALL_PREFIX}/bin/${SOURCE_PACKAGE_NAME}
