@@ -81,7 +81,7 @@ function prepare-source-base() {
     fi
 
     export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources/${PACKAGE_NAME}
-    export INSTALL_ROOT=${TEMPDIR}/${INSTALL_ROOT_BASE}/${PACKAGE_NAME}-sources
+    export INSTALL_ROOT=${INSTALL_ROOT_BASE}/${PACKAGE_NAME}-sources
     export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX}
     export STAGE_ROOT=${STAGE_ROOT_BASE}/${PACKAGE_NAME}
     export DEB_PATH=${SOURCE_DEB_PATH}
