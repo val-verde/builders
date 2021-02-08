@@ -36,6 +36,9 @@ package-invoke-builder libcxx-cross
 # llvm bootstrap build
 package-invoke-builder llvm-project-bootstrap
 
+# bazel bootstrap build
+package-invoke-builder bazel-bootstrap
+
 # rust bootstrap build
 package-invoke-builder rust-bootstrap
 
