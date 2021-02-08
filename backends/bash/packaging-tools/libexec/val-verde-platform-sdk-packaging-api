@@ -10,15 +10,15 @@ VERSION=${VERSION:='1.0.0'}
 
 function deb-package-build() {
     package-push-directory ${INSTALL_ROOT}
-        ${MKDIR} -p /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
-        package-rsync -aPx ${BASE_DIRECTORY} /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+        ${MKDIR} -p ${TEMPDIR}/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+        package-rsync -aPx ${BASE_DIRECTORY} ${TEMPDIR}/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
 
         TEMPLATE_ROOT=${TEMPLATE_ROOT} \
         generate-control-file "${PACKAGE_NAME}"
-        package-dpkg-build /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+        package-dpkg-build ${TEMPDIR}/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
 
-        ${MV} /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}.deb ${DEB_PATH}/${PACKAGE_NAME}.deb
-        ${RM} -r /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}
+        ${MV} ${TEMPDIR}/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}.deb ${DEB_PATH}/${PACKAGE_NAME}.deb
+        ${RM} -r ${TEMPDIR}/pkg-intermediates-${SOURCE_PACKAGE_NAME}
     package-pop-directory
 }
 
@@ -61,7 +61,7 @@ function generate-control-file() {
     TEMPLATE_ROOT=${TEMPLATE_ROOT:-/usr/share/${VAL_VERDE_GH_TEAM}}
 
     # Template definition
-    package-push-directory /sources/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+    package-push-directory ${TEMPDIR}/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
         ${MKDIR} DEBIAN
         ${ECHO} 10 > DEBIAN/compat
         ${SED} "s|DEPENDS|${DEPENDS}|g; \
@@ -86,7 +86,7 @@ function tar-package-build() {
     PACKAGE_URL=$3
 
     PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-    INSTALL_ROOT=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}/${PACKAGE_NAME}-tar-archives
+    INSTALL_ROOT=${INSTALL_ROOT_BASE}/${PACKAGE_NAME}-tar-archives
     INSTALL_PREFIX=${INSTALL_ROOT}/${PACKAGE_NAME}
     ${MKDIR} -p ${INSTALL_PREFIX}
     package-push-directory ${INSTALL_ROOT}
