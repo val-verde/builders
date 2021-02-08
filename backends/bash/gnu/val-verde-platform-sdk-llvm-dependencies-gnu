@@ -381,6 +381,12 @@ export WGET=${BINDIR}/wget
 package-invoke-builder python-cross
 export PYTHON=${BINDIR}/python3
 
+# cython build
+package-invoke-builder cython-cross
+
+# numpy build
+package-invoke-builder numpy-cross
+
 # mako build
 package-invoke-builder mako-cross
 
