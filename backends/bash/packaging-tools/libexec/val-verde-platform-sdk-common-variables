@@ -155,10 +155,19 @@ function package-git-clone() {
             ${RM} -rf ${TARGET_ROOT}
         fi
 
-        package-git-tool clone ${GIT_URL} \
-                               --branch ${GIT_BRANCH} \
-                               --single-branch \
-                               ${TARGET_ROOT}
+        if [[ ${RETAIN_SOURCE} = 'false' ]]; then
+            package-git-tool clone ${GIT_URL} \
+                                --branch ${GIT_BRANCH} \
+                                --single-branch \
+                                --depth=1 \
+                                ${TARGET_ROOT}
+        else    
+            package-git-tool clone ${GIT_URL} \
+                                --branch ${GIT_BRANCH} \
+                                --single-branch \
+                                ${TARGET_ROOT}
+        fi
+
     package-pop-directory
 }
 

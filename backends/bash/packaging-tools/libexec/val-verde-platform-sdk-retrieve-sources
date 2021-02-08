@@ -17,6 +17,7 @@ function build-install-git-source-package() {
 
     GIT_URL=${PACKAGE_URL} \
     TARGET_ROOT=${INSTALL_PREFIX} \
+    RETAIN_SOURCE=${RETAIN_SOURCE} \
     package-git-clone ${SOURCE_BRANCH}
 
     package-push-directory ${INSTALL_PREFIX}
@@ -25,16 +26,14 @@ function build-install-git-source-package() {
     package-pop-directory
 
     # Prepare source root
-    if [[ ${RETAIN_SOURCE} = 'false' ]]; then
-        package-push-directory ${INSTALL_PREFIX}
-            ${RM} -rf .git*
-            ${RM} -rf "^.git*"
-            package-git-init
-            package-git-add -A
-            package-git-commit -m "Val verde source base commit."
-        package-pop-directory
-    fi
-
+    package-push-directory ${INSTALL_PREFIX}
+        ${RM} -rf .git*
+        ${RM} -rf "^.git*"
+        package-git-init
+        package-git-add -A
+        package-git-commit -m "Val verde source base commit."
+    package-pop-directory
+    
     # Build the source deb package
     deb-package-build
 
