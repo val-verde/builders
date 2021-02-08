@@ -5,9 +5,7 @@
         "sourcePackageName": "alive2",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
-        "enableSubmodules": "false"
-    },
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"    },
     {
         "retainSource": "false",
         "sourceType": "git",
@@ -38,9 +36,7 @@
         "sourcePackageName": "apt",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2.1.15",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
-        "enableSubmodules": "false"
-    },
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"    },
     {
         "retainSource": "false",
         "sourceType": "git",
@@ -215,9 +211,7 @@
         "sourcePackageName": "hiredis",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
-        "enableSubmodules": "false"
-    },
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"    },
     {
         "retainSource": "false",
         "sourceType": "git",
@@ -264,9 +258,7 @@
         "sourcePackageName": "klee",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2.2",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
-        "enableSubmodules": "false"
-    },
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"    },
     {
         "retainSource": "false",
         "sourceType": "git",
@@ -561,9 +553,7 @@
         "sourcePackageName": "souper",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
-        "enableSubmodules": "false"
-    },
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"    },
     {
         "retainSource": "false",
         "sourceType": "git",
@@ -946,9 +936,7 @@
         "sourcePackageName": "xorg-libxshmfence",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1.2",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git",
-        "enableSubmodules": "true"
-    },
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"    },
     {
         "retainSource": "false",
         "sourceType": "git",
