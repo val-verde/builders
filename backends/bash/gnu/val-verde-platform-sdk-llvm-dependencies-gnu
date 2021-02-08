@@ -108,6 +108,10 @@ package-invoke-builder libiconv-cross
 # libffi build
 package-invoke-builder libffi-cross
 
+# file build
+package-invoke-builder file-cross
+export FILE=${BINDIR}/file
+
 # perl build
 package-invoke-builder perl-cross
 export PERL=${BINDIR}/perl
