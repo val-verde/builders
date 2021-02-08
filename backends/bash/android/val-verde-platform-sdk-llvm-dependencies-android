@@ -95,6 +95,9 @@ package-invoke-builder expat-cross
 # android gettext build
 package-invoke-builder gettext-cross
 
+# android gawk build
+package-invoke-builder gawk-cross
+
 # android util-linux build
 package-invoke-builder util-linux-cross
 
@@ -234,9 +237,6 @@ package-invoke-builder sed-cross
 
 # android bison build
 package-invoke-builder bison-cross
-
-# android gawk build
-package-invoke-builder gawk-cross
 
 # android strace build
 if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then

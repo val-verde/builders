@@ -154,6 +154,10 @@ package-invoke-builder expat-cross
 package-invoke-builder gettext-cross
 export GETTEXT=${BINDIR}/gettext
 
+# gawk build
+package-invoke-builder gawk-cross
+export GAWK=${BINDIR}/gawk
+
 # help2man build
 package-invoke-builder help2man-cross
 export HELP2MAN=${BINDIR}/help2man
@@ -314,10 +318,6 @@ package-invoke-builder flex-cross
 
 # jq build
 package-invoke-builder jq-cross
-
-# gawk build
-package-invoke-builder gawk-cross
-export GAWK=${BINDIR}/gawk
 
 # strace build
 package-invoke-builder strace-cross
