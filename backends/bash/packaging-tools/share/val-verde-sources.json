@@ -50,7 +50,7 @@
         "sourceType": "git",
         "sourcePackageName": "bazel",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "3.7.2",
+        "sourcePackageVersion": "4.0.0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
