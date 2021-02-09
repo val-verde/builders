@@ -25,6 +25,7 @@ make-build
 make-install
 
 ${RM} -rf ${INSTALL_PREFIX}/tmp
+${RM} -rf ${INSTALL_PREFIX}/share/info/dir
 
 # Build the package
 deb-package-build
