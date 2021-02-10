@@ -1,0 +1,32 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=libunistring
+export SOURCE_PACKAGE_VERSION=0
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Configure the build components
+copy-source-to-staging
+
+cd ${STAGE_ROOT}
+package-autoreconf -fi
+package-configure \
+    ${STAGE_ROOT}/configure \
+    --disable-static \
+    --enable-shared
+
+# Build the components
+make-install
+
+${RM} -rf ${INSTALL_PREFIX}/lib/charset.alias
+${RM} -rf ${INSTALL_PREFIX}/share/info/dir
+
+# Build the package
+deb-package-build
+
+# Build the package
+deb-package-install

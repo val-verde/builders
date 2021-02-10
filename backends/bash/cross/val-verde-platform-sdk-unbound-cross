@@ -1,0 +1,36 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=unbound
+export SOURCE_PACKAGE_VERSION=1
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Configure the build components
+copy-source-to-staging
+
+cd ${STAGE_ROOT}
+
+package-autoreconf -fi
+CFLAGS="\
+    -pthread \
+    ${CFLAGS} \
+" \
+package-configure \
+    ${STAGE_ROOT}/configure \
+    --disable-static \
+    --enable-shared \
+    --with-libexpat=${PACKAGE_PREFIX} \
+    --with-ssl=${PACKAGE_PREFIX}
+
+# Build the components
+make-install
+
+# Build the package
+deb-package-build
+
+# Build the package
+deb-package-install
