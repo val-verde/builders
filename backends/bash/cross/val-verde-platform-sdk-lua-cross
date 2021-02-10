@@ -65,8 +65,8 @@ ${RSYNC} -aPx \
 
 ${MKDIR} -p ${INSTALL_PREFIX}/lib/pkgconfig
 ${ECHO} "
-V=git
-R=git
+V=5.4
+R=5.4
 
 prefix=${PACKAGE_PREFIX}
 INSTALL_INC=\${prefix}/include
