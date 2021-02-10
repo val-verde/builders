@@ -33,6 +33,8 @@ package-configure \
 # Build the components
 make-install
 
+${RM} -rf ${INSTALL_PREFIX}/share/info/dir
+
 # Build the package
 deb-package-build
 
