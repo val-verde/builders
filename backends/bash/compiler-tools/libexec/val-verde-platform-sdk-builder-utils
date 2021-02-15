@@ -700,6 +700,13 @@ function package-swift-build() {
         STRIP_LDFLAG="-s"
     fi
 
+    if [ -z "${DISABLE_VERBOSE}" ]; then
+        SWIFT_BUILD_FLAGS="\
+            -v \
+            ${SWIFT_BUILD_FLAGS} \
+        "
+    fi
+
     if [ -n "${ENABLE_FLTO}" ]; then
         FLTO_OPTION=`${ECHO} ${ENABLE_FLTO} | ${TR} '[:upper:]' '[:lower:]'`
         FLTO_CFLAG="-flto=${FLTO_OPTION}"
@@ -725,6 +732,10 @@ function package-swift-build() {
     else
         TARGET=${TARGET:-${HOST_PROCESSOR}-unknown-windows-gnu}
     fi
+
+    SWIFT_BUILD_FLAGS=`${ECHO} "\
+        ${SWIFT_BUILD_FLAGS} \
+    " | ${XARGS}`
 
     ${ECHO} -e "{ \n\
         \"version\": 1, \n\
