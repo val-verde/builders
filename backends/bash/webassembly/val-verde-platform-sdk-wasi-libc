@@ -13,11 +13,6 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 copy-source-to-staging
 
 # Build the components
-CFLAGS=`${ECHO} "\
-    -D_WASI_EMULATED_MMAN \
-    -D_WASI_EMULATED_SIGNAL \
-" | ${XARGS}`
-
 cd ${STAGE_ROOT}
 
 INSTALL_DIR=${INSTALL_PREFIX} \
