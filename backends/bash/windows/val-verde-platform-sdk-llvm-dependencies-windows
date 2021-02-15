@@ -85,7 +85,7 @@ package-invoke-builder expat-cross
 package-invoke-builder gettext-cross
 
 # gawk build
-package-invoke-builder gawk-cross
+# package-invoke-builder gawk-cross
 
 # windows glib build
 package-invoke-builder glib-cross
