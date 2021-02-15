@@ -239,15 +239,15 @@ package-invoke-builder sed-cross
 package-invoke-builder bison-cross
 
 # android strace build
-if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
-    package-invoke-builder strace-cross
-else
-    CFLAGS="\
-        -Dfputs_unlocked=fputs \
-        ${CFLAGS} \
-    " \
-    package-invoke-builder strace-cross
-fi
+# if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
+#     package-invoke-builder strace-cross
+# else
+#     CFLAGS="\
+#         -Dfputs_unlocked=fputs \
+#         ${CFLAGS} \
+#     " \
+#     package-invoke-builder strace-cross
+# fi
 
 # android gperf build
 package-invoke-builder gperf-cross
