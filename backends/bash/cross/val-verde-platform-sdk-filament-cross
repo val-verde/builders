@@ -26,6 +26,11 @@ if [ "${BUILD_TRIPLE}" != ${HOST_TRIPLE} ]; then
              ${STAGE_ROOT}/ImportExecutables-${BUILD_TYPE}.cmake
 fi
 
+if [ "${HOST_KERNEL}" = "linux" ] &&
+   [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+    CMAKE_BLUEGL_ARCH_CMD="-DLINUX_AARCH64=TRUE"
+fi
+
 if [ "${HOST_OS}" = "android" ]; then
     CFLAGS="\
         -DANDROID \
@@ -71,6 +76,7 @@ package-cmake \
     "${CMAKE_ASM_COMPILER_CMD}" \
     "${CMAKE_ASM_COMPILER_ID_CMD}" \
     "${CMAKE_ASM_FLAGS_CMD}" \
+    "${CMAKE_BLUEGL_ARCH_CMD}" \
     ${STAGE_ROOT}
 
 # Build the components
