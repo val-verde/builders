@@ -568,7 +568,7 @@
         "sourceType": "git",
         "sourcePackageName": "rust",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.49.0",
+        "sourcePackageVersion": "1.50.0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
