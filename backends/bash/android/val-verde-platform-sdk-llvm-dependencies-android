@@ -216,6 +216,15 @@ package-invoke-builder xorg-libxxf86vm-cross
 # android freetype2 build
 package-invoke-builder freetype2-cross
 
+# android wayland build
+package-invoke-builder wayland-cross
+
+# android wayland-protocols build
+package-invoke-builder wayland-protocols-cross
+
+# android mesa-drm build
+package-invoke-builder mesa-drm-cross
+
 # android libarchive build
 package-invoke-builder libarchive-cross
 
