@@ -98,6 +98,15 @@ package-invoke-builder gettext-cross
 # android gawk build
 package-invoke-builder gawk-cross
 
+# android help2man build
+package-invoke-builder help2man-cross
+
+# android texinfo build
+# package-invoke-builder texinfo-cross
+
+# android indent build
+package-invoke-builder indent-cross
+
 # android util-linux build
 package-invoke-builder util-linux-cross
 
@@ -246,6 +255,12 @@ package-invoke-builder sed-cross
 
 # android bison build
 package-invoke-builder bison-cross
+
+# android flex build
+# package-invoke-builder flex-cross
+
+# android jq build
+package-invoke-builder jq-cross
 
 # android strace build
 # if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then

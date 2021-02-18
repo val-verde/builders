@@ -101,6 +101,15 @@ package-invoke-builder gettext-cross
 # gawk build
 package-invoke-builder gawk-cross
 
+# help2man build
+package-invoke-builder help2man-cross
+
+# texinfo build
+# package-invoke-builder texinfo-cross
+
+# indent build
+package-invoke-builder indent-cross
+
 # util-linux build
 package-invoke-builder util-linux-cross
 
@@ -258,6 +267,12 @@ package-invoke-builder sed-cross
 
 # bison build
 package-invoke-builder bison-cross
+
+# flex build
+# package-invoke-builder flex-cross
+
+# jq build
+package-invoke-builder jq-cross
 
 # strace build
 package-invoke-builder strace-cross
