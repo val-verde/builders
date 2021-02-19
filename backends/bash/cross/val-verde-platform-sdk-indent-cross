@@ -26,6 +26,7 @@ package-configure \
 # Build the components
 make-install CC_FOR_BUILD=${BUILD_CC}
 
+${RM} -rf ${INSTALL_PREFIX}/lib/charset.alias
 ${RM} -rf ${INSTALL_PREFIX}/share/info/dir
 
 # Build the package
