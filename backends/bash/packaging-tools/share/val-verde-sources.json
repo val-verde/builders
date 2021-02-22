@@ -335,16 +335,16 @@
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "llvm-project",
-        "sourceBranchIndicator": "default-next",
-        "sourcePackageVersion": "12",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "13",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "llvm-project",
-        "sourceBranchIndicator": "android-next",
-        "sourcePackageVersion": "12",
+        "sourceBranchIndicator": "android",
+        "sourcePackageVersion": "13",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
