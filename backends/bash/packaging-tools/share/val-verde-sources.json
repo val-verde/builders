@@ -622,16 +622,16 @@
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "swift",
-        "sourceBranchIndicator": "default-next",
-        "sourcePackageVersion": "5.3",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "swift",
-        "sourceBranchIndicator": "android-next",
-        "sourcePackageVersion": "5.3",
+        "sourceBranchIndicator": "android",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -639,7 +639,7 @@
         "sourceType": "git",
         "sourcePackageName": "swift-cmark",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "5.3",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -647,7 +647,7 @@
         "sourceType": "git",
         "sourcePackageName": "swift-argument-parser",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "5.3",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -655,7 +655,7 @@
         "sourceType": "git",
         "sourcePackageName": "swift-corelibs-foundation",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "5.3",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -663,7 +663,7 @@
         "sourceType": "git",
         "sourcePackageName": "swift-corelibs-libdispatch",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "5.3",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -671,7 +671,7 @@
         "sourceType": "git",
         "sourcePackageName": "swift-corelibs-xctest",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "5.3",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -679,7 +679,7 @@
         "sourceType": "git",
         "sourcePackageName": "swift-doc",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "5.3",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -687,7 +687,7 @@
         "sourceType": "git",
         "sourcePackageName": "swift-doc",
         "sourceBranchIndicator": "android",
-        "sourcePackageVersion": "5.3",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -695,7 +695,7 @@
         "sourceType": "git",
         "sourcePackageName": "swift-driver",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "5.3",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -703,7 +703,7 @@
         "sourceType": "git",
         "sourcePackageName": "swift-format",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "5.3",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -711,7 +711,7 @@
         "sourceType": "git",
         "sourcePackageName": "swift-log",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "5.3",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -719,7 +719,7 @@
         "sourceType": "git",
         "sourcePackageName": "swift-llbuild",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "5.3",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -727,7 +727,7 @@
         "sourceType": "git",
         "sourcePackageName": "swift-llbuild",
         "sourceBranchIndicator": "android",
-        "sourcePackageVersion": "5.3",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -735,7 +735,7 @@
         "sourceType": "git",
         "sourcePackageName": "swift-package-manager",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "5.3",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -743,7 +743,7 @@
         "sourceType": "git",
         "sourcePackageName": "swift-syntax",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "5.3",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -751,7 +751,7 @@
         "sourceType": "git",
         "sourcePackageName": "swift-tensorflow-apis",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "5.3",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -759,7 +759,7 @@
         "sourceType": "git",
         "sourcePackageName": "swift-tools-support-core",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "5.3",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -767,7 +767,7 @@
         "sourceType": "git",
         "sourcePackageName": "swift-tools-support-core",
         "sourceBranchIndicator": "android",
-        "sourcePackageVersion": "5.3",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
