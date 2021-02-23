@@ -87,6 +87,9 @@ package-invoke-builder gettext-cross
 # gawk build
 # package-invoke-builder gawk-cross
 
+# windows gperf build
+package-invoke-builder gperf-cross
+
 # windows glib build
 package-invoke-builder glib-cross
 
@@ -131,9 +134,6 @@ package-invoke-builder grep-cross
 
 # windows bison build
 package-invoke-builder bison-cross
-
-# windows gperf build
-package-invoke-builder gperf-cross
 
 # windows findutils build
 # package-invoke-builder findutils-cross

@@ -101,6 +101,9 @@ package-invoke-builder gettext-cross
 # gawk build
 package-invoke-builder gawk-cross
 
+# gperf build
+package-invoke-builder gperf-cross
+
 # help2man build
 package-invoke-builder help2man-cross
 
@@ -276,9 +279,6 @@ package-invoke-builder jq-cross
 
 # strace build
 package-invoke-builder strace-cross
-
-# gperf build
-package-invoke-builder gperf-cross
 
 # fontconfig build
 package-invoke-builder fontconfig-cross

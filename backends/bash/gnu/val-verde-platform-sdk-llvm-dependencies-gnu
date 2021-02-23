@@ -162,6 +162,10 @@ export GETTEXT=${BINDIR}/gettext
 package-invoke-builder gawk-cross
 export GAWK=${BINDIR}/gawk
 
+# gperf build
+package-invoke-builder gperf-cross
+export GPERF=${BINDIR}/gperf
+
 # help2man build
 package-invoke-builder help2man-cross
 export HELP2MAN=${BINDIR}/help2man
@@ -325,10 +329,6 @@ package-invoke-builder jq-cross
 
 # strace build
 package-invoke-builder strace-cross
-
-# gperf build
-package-invoke-builder gperf-cross
-export GPERF=${BINDIR}/gperf
 
 # fontconfig build
 package-invoke-builder fontconfig-cross

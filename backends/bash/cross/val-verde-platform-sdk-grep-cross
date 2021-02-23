@@ -20,7 +20,7 @@ if [ ${HOST_OS} = "mingw32" ]; then
 fi
 
 cd ${STAGE_ROOT}
-package-autoreconf -fi
+./bootstrap
 ${SED} -i \
        's/$GREP/$GREP_DISABLED/g' \
        ${STAGE_ROOT}/configure
