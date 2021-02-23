@@ -115,12 +115,15 @@ function fetch-sources() {
             PACKAGE_VERSION=$(package-major-version) \
             derive-upstream-source-url
 
-            if [[ ${SOURCE_TYPE} = 'git' ]]; then
-                build-install-git-source-package
-            elif [[ ${SOURCE_TYPE} = 'other' ]]; then
-                build-install-other-source-package
+            if [ -f "${SOURCE_DEB_PATH}/${PACKAGE_NAME}.deb" ]; then
+                ${ECHO} "${PACKAGE_NAME} found, skipping.."
+            else
+                if [[ ${SOURCE_TYPE} = 'git' ]]; then
+                    build-install-git-source-package
+                elif [[ ${SOURCE_TYPE} = 'other' ]]; then
+                    build-install-other-source-package
+                fi
             fi
-
         done
 
         ${ECHO} -e "Source Builder Invocation Completed"
