@@ -110,15 +110,29 @@ function export-compiler-environment() {
     export SWIFTC=${SWIFTC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc}
     export WINDRES=${RC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-rc}
 
+    if [ -n "${HOST_ARCH}" ]; then
+        COMMON_CFLAGS="\
+            -march=${HOST_ARCH} \
+            ${COMMON_CFLAGS} \
+        "
+    fi
+
+    if [ -n "${HOST_CPU}" ]; then
+        COMMON_CFLAGS="\
+            -mtune=${HOST_CPU} \
+            ${COMMON_CFLAGS} \
+        "
+    fi
+
     if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
         COMMON_CFLAGS="\
             --sysroot=${SYSROOT} \
             --target=${HOST_TRIPLE} \
             ${COMMON_CFLAGS} \
         "
-        LDFLAGS="\
+        COMMON_LDFLAGS="\
             --sysroot=${SYSROOT} \
-            ${LDFLAGS} \
+            ${COMMON_LDFLAGS} \
         "
         SWIFTCFLAGS="\
             -sdk ${SYSROOT} \
@@ -128,6 +142,10 @@ function export-compiler-environment() {
         COMMON_CFLAGS="\
             -isystem ${PACKAGE_PREFIX}/include \
             ${COMMON_CFLAGS} \
+        "
+        COMMON_LDFLAGS="\
+            -L${BUILD_PACKAGE_PREFIX}/lib \
+            ${COMMON_LDFLAGS} \
         "
         SWIFTCFLAGS="\
             -I${PACKAGE_PREFIX}/include \
@@ -206,16 +224,9 @@ function export-compiler-environment() {
         "
     fi
 
-    if [ -n "${HOST_ARCH}" ]; then
+    if [ -n "${HOST_ARCH_VECTOR_SIZE}" ]; then
         COMMON_CFLAGS="\
-            -march=${HOST_ARCH} \
-            ${COMMON_CFLAGS} \
-        "
-    fi
-
-    if [ -n "${HOST_CPU}" ]; then
-        COMMON_CFLAGS="\
-            -mtune=${HOST_CPU} \
+            -mllvm -force-vector-width=${HOST_ARCH_VECTOR_SIZE} \
             ${COMMON_CFLAGS} \
         "
     fi
@@ -713,9 +724,14 @@ function package-swift-build() {
     SWIFT_BUILD_TYPE=${SWIFT_BUILD_TYPE:-release}
     TEMP_FILE=`mktemp`
 
+    if [ -n "${HOST_ARCH_VECTOR_SIZE}" ]; then
+        HOST_VECTOR_CFLAG="-mllvm\", \"-force-vector-width=${HOST_ARCH_VECTOR_SIZE}"
+        HOST_VECTOR_SWIFTCFLAG="-Xllvm\", \"-force-vector-width=${HOST_ARCH_VECTOR_SIZE}"
+    fi
+
     if [ -z "${DISABLE_POLLY}" ]; then
-        POLLY_CFLAG="\"-mllvm\", \"-polly\""
-        POLLY_SWIFTCFLAG="\"-Xllvm\", \"-polly\""
+        POLLY_CFLAG="-mllvm\", \"-polly"
+        POLLY_SWIFTCFLAG="-Xllvm\", \"-polly"
     fi
 
     if [ -z "${DISABLE_STRIP}" ]; then
@@ -776,7 +792,8 @@ function package-swift-build() {
             \"--sysroot=${SYSROOT}\", \n\
             \"${FLTO_CFLAG}\", \n\
             \"${FPIC_CFLAG}\", \n\
-            ${POLLY_CFLAG} \n\
+            \"${HOST_VECTOR_CFLAG}\", \n\
+            \"${POLLY_CFLAG}\" \n\
         ], \n\
         \"extra-cpp-flags\": [ \n\
         ], \n\
@@ -793,7 +810,8 @@ function package-swift-build() {
             \"-O${SWIFT_OPTIMIZATION_LEVEL}\", \n\
             \"-Xfrontend\", \"-disable-llvm-verify\", \n\
             \"${FLTO_SWIFTCFLAG}\", \n\
-            ${POLLY_SWIFTCFLAG} \n\
+            \"${HOST_VECTOR_SWIFTCFLAG}\", \n\
+            \"${POLLY_SWIFTCFLAG}\" \n\
         ] \n\
     } \n\
     " > ${TEMP_FILE}
