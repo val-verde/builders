@@ -20,7 +20,7 @@ if [ ${HOST_OS} = "mingw32" ]; then
 fi
 
 cd ${STAGE_ROOT}
-./bootstrap
+package-bootstrap
 ${SED} -i \
        's/$GREP/$GREP_DISABLED/g' \
        ${STAGE_ROOT}/configure

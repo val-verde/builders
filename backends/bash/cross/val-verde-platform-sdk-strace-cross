@@ -13,8 +13,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 copy-source-to-staging
 
 cd ${STAGE_ROOT}
-./bootstrap
-
+package-bootstrap
 CFLAGS="\
     -Wno-macro-redefined \
     -Wno-unused-command-line-argument \
