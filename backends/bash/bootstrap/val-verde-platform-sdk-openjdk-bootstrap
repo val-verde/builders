@@ -5,22 +5,30 @@ set -e
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=openjdk
 export SOURCE_PACKAGE_VERSION=16
+SUB_VERSION=36
+OPENJDK_URL=https://download.java.net/java/GA/jdk${SOURCE_PACKAGE_VERSION}/7863447f0ab643c585b9bdebf67c69db/${SUB_VERSION}/GPL
+OPENJDK_TAR_GZ=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.tar.gz
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
-if [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+if [ "${BUILD_PROCESSOR}" = "x86_64" ]; then
     OPENJDK_ARCH=x64
 else
-    OPENJDK_ARCH=${HOST_PROCESSOR}
+    OPENJDK_ARCH=${BUILD_PROCESSOR}
 fi
 
-SUB_VERSION=28
-package-wget -c https://download.java.net/java/early_access/jdk${SOURCE_PACKAGE_VERSION}/${SUB_VERSION}/GPL/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-ea+${SUB_VERSION}_${HOST_KERNEL}-${OPENJDK_ARCH}_bin.tar.gz \
-     -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.tar.gz
+if [ "${BUILD_OS}" = "mingw32" ]; then
+    OPENJDK_OS=windows
+else
+    OPENJDK_OS=${BUILD_KERNEL}
+fi
+
+package-wget -c ${OPENJDK_URL}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}_${OPENJDK_OS}-${OPENJDK_ARCH}_bin.tar.gz \
+             -O ${OPENJDK_TAR_GZ}
 package-tar -zxf \
-            ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.tar.gz
+            ${OPENJDK_TAR_GZ}
 package-rsync -ax \
               jdk-${SOURCE_PACKAGE_VERSION}/* \
               ${INSTALL_PREFIX}/
