@@ -33,6 +33,15 @@ package-invoke-builder libcxx-cross
 # llvm bootstrap build
 package-invoke-builder llvm-project-bootstrap
 
+# remove host compiler and libraries as it is superceded by bootstrapped clang
+package-apt-remove \
+    clang \
+    libc++-dev \
+    libc++1 \
+    libunwind-dev \
+    lld \
+    llvm
+
 # bazel bootstrap build
 package-invoke-builder bazel-bootstrap
 
@@ -44,12 +53,3 @@ package-invoke-builder openjdk-bootstrap
 
 # rust bootstrap build
 package-invoke-builder rust-bootstrap
-
-# remove host compiler and libraries as it is superceded by bootstrapped clang
-package-apt-remove \
-    clang \
-    libc++-dev \
-    libc++1 \
-    libunwind-dev \
-    lld \
-    llvm
