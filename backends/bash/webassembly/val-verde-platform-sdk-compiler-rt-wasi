@@ -4,7 +4,7 @@ set -e
 
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=compiler-rt
-export SOURCE_PACKAGE_VERSION=12
+export SOURCE_PACKAGE_VERSION=13
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
@@ -38,9 +38,9 @@ package-cmake \
 # Build the components
 ninja-install
 
-${MKDIR} -p ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/12.0.0/lib/wasi
+${MKDIR} -p ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/13.0.0/lib/wasi
 ${MV} ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/fuchsia/${CLANG_RT_LIB} \
-      ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/12.0.0/lib/wasi/${DST_CLANG_RT_LIB}
+      ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/13.0.0/lib/wasi/${DST_CLANG_RT_LIB}
 ${RM} -rf ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/fuchsia
 
 # Build the package

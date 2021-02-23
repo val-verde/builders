@@ -746,7 +746,7 @@ function package-swift-build() {
             \"-march=${HOST_ARCH}\", \n\
             \"-mtune=${HOST_CPU}\", \n\
             \"-pipe\", \n\
-            \"-resource-dir=${PACKAGE_PREFIX}/lib/clang/12.0.0\", \n\
+            \"-resource-dir=${PACKAGE_PREFIX}/lib/clang/13.0.0\", \n\
             \"-target\", \"${TARGET}\", \n\
             \"-I${PACKAGE_PREFIX}/lib/swift\", \n\
             \"-I${PACKAGE_PREFIX}/lib/swift/Block\", \n\

@@ -4,7 +4,7 @@ set -e
 
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=libcxx
-export SOURCE_PACKAGE_VERSION=12
+export SOURCE_PACKAGE_VERSION=13
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
