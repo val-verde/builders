@@ -410,6 +410,12 @@ function package-autoreconf() {
     tool-log ${AUTORECONF} "${@}"
 }
 
+function package-bootstrap() {
+    BOOTSTRAP_FILE=${BOOTSTRAP_FILE:-bootstrap}
+    TOOL_LOG=${STAGE_ROOT}/builder-bootstrap \
+    tool-log ${BASH} ${BOOTSTRAP_FILE} "${@}"
+}
+
 function package-cmake-invocation() {
     BUILD_TYPE=${BUILD_TYPE:-Release}
     COMPILER_TARGET=${COMPILER_TARGET:-${HOST_TRIPLE}}
