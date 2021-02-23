@@ -822,7 +822,6 @@ function package-swift-build() {
         --build-path ${STAGE_ROOT} \
         --configuration ${SWIFT_BUILD_TYPE} \
         --destination ${TEMP_FILE} \
-        --enable-test-discovery \
         ${SWIFT_BUILD_FLAGS}
 }
 
