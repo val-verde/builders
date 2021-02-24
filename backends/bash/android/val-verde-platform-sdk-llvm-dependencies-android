@@ -29,6 +29,9 @@ package-invoke-builder zstd-cross
 # android unzip build
 package-invoke-builder unzip-cross
 
+# android help2man build
+package-invoke-builder help2man-cross
+
 # android autoconf build
 package-invoke-builder autoconf-cross
 
@@ -100,9 +103,6 @@ package-invoke-builder gawk-cross
 
 # android grep build
 package-invoke-builder grep-cross
-
-# android help2man build
-package-invoke-builder help2man-cross
 
 # android texinfo build
 # package-invoke-builder texinfo-cross

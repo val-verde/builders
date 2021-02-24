@@ -80,6 +80,10 @@ package-invoke-builder zstd-cross
 package-invoke-builder unzip-cross
 UNZIP=${BINDIR}/unzip
 
+# help2man build
+package-invoke-builder help2man-cross
+export HELP2MAN=${BINDIR}/help2man
+
 # autoconf build
 package-invoke-builder autoconf-cross
 export AUTORECONF=${BINDIR}/autoreconf
@@ -165,10 +169,6 @@ export GAWK=${BINDIR}/gawk
 # gperf build
 package-invoke-builder gperf-cross
 export GPERF=${BINDIR}/gperf
-
-# help2man build
-package-invoke-builder help2man-cross
-export HELP2MAN=${BINDIR}/help2man
 
 # texinfo build
 package-invoke-builder texinfo-cross
@@ -344,7 +344,6 @@ export \
     CP=${BINDIR}/cp \
     CUT=${BINDIR}/cut \
     ECHO=${BINDIR}/echo \
-    HELP2MAN=${BINDIR}/true \
     INSTALL=${BINDIR}/install \
     LS=${BINDIR}/ls \
     LN=${BINDIR}/ln \

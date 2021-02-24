@@ -26,6 +26,9 @@ package-invoke-builder zstd-cross
 # windows unzip build
 # package-invoke-builder unzip-cross
 
+# windows help2man build
+# package-invoke-builder help2man-cross
+
 # windows autoconf build
 package-invoke-builder autoconf-cross
 

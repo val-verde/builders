@@ -29,6 +29,9 @@ package-invoke-builder zstd-cross
 # unzip build
 package-invoke-builder unzip-cross
 
+# help2man build
+package-invoke-builder help2man-cross
+
 # autoconf build
 CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-gnu" \
 package-invoke-builder autoconf-cross
@@ -103,9 +106,6 @@ package-invoke-builder gawk-cross
 
 # gperf build
 package-invoke-builder gperf-cross
-
-# help2man build
-package-invoke-builder help2man-cross
 
 # texinfo build
 # package-invoke-builder texinfo-cross
