@@ -14,10 +14,8 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-zlib-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Configure the build components
-cd ${STAGE_ROOT}
-package-configure \
-    ${SOURCE_ROOT}/configure \
+# Invoke one-shot template for configure/install
+package-configure-install \
     ac_cv_func_setns=yes \
     ac_cv_func_unshare=yes \
     --disable-all-programs \
@@ -27,12 +25,3 @@ package-configure \
     --enable-libmount \
     --enable-libuuid \
     --enable-shared
-
-# Build the package
-make-install
-
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install

@@ -16,11 +16,7 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-zlib-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Configure the build components
-sed -i \
-    "s/'auto-import'/'ld'/g" \
-    ${SOURCE_ROOT}/configure
-
+# Invoke one-shot template for stage/configure/install
 if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
     CROSS_COMPILING=yes
 else
@@ -38,24 +34,13 @@ else
     CONFIGURE_HOST_KERNEL=${HOST_KERNEL}
 fi
 
-cd ${STAGE_ROOT}
 CONFIGURE_HOST_TRIPLE=${HOST_PROCESSOR}-${CONFIGURE_HOST_KERNEL}-gnu \
 CXXFLAGS="\
     -std=c++14 \
     ${CXXFLAGS} \
 " \
 TAR=tar \
-package-configure \
-    ${SOURCE_ROOT}/configure \
+package-stage-configure-install \
     cross_compiling=${CROSS_COMPILING} \
     --disable-dselect \
     --with-admindir=${ADMIN_DIR}
-
-# Build the components
-make-install
-
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install

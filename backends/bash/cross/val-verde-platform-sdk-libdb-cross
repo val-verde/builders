@@ -9,27 +9,11 @@ export SOURCE_PACKAGE_VERSION=5
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-# Configure the build components
-copy-source-to-staging
-
-cd ${STAGE_ROOT}/dist
-package-autoreconf -fi
-cd ${STAGE_ROOT}
-package-configure \
-    ${STAGE_ROOT}/dist/configure \
+# Invoke one-shot template for stage/configure/install
+CONFIGURE_FILE_ROOT=${STAGE_ROOT}/dist \
+INSTALL_TARGET="install_include install_lib install_utilities" \
+package-stage-configure-install \
     cross_compiling=yes \
     --disable-doc \
     --disable-static \
     --enable-shared
-
-# Build the components
-make-build
-
-INSTALL_TARGET="install_include install_lib install_utilities" \
-make-install
-
-# Build the package
-deb-package-build
-
-# Build the package
-deb-package-install

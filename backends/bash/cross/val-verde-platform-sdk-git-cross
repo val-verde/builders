@@ -16,29 +16,17 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-zlib-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
+# Invoke one-shot template for stage/configure/install
 if [ "${HOST_OS}" != "android" ]; then
     NEEDS_LIBRT=1
 fi
 
-# Configure the build components
-copy-source-to-staging
-
-cd ${STAGE_ROOT}
-package-autoreconf -fi
-package-configure \
-    ${STAGE_ROOT}/configure \
+CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
+INSTALL_TARGET="NEEDS_LIBRT=${NEEDS_LIBRT} install" \
+package-stage-configure-install \
     ac_cv_fread_reads_directories=true \
     ac_cv_iconv_omits_bom=true \
     ac_cv_snprintf_returns_bogus=false \
     --with-curl=${PACKAGE_PREFIX} \
     --with-expat=${PACKAGE_PREFIX} \
     --with-openssl=${PACKAGE_PREFIX}
-
-# Build the components
-make-install NEEDS_LIBRT=${NEEDS_LIBRT}
-
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install

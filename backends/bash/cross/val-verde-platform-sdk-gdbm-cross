@@ -9,29 +9,11 @@ export SOURCE_PACKAGE_VERSION=1
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-# Configure the build components
-sed -i \
-    "s/'auto-import'/'ld'/g" \
-    ${SOURCE_ROOT}/configure
-
-cd ${STAGE_ROOT}
-
+# Invoke one-shot template for configure/install
 COMMON_LDFLAGS="\
     -Wl,-allow-multiple-definition \
     ${COMMON_LDFLAGS} \
 " \
-package-configure \
-    ${SOURCE_ROOT}/configure \
+package-configure-install \
     --disable-static \
     --enable-shared
-
-# Build the components
-make-install
-
-${RM} -rf ${INSTALL_PREFIX}/share/info/dir
-
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install

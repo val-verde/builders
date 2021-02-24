@@ -14,31 +14,11 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-attr-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Configure the build components
-cd ${STAGE_ROOT}
-
-${MKDIR} -p ${STAGE_ROOT}/bin
-${LN} -sf /usr/bin/true \
-       ${STAGE_ROOT}/bin/makeinfo
-
-export FORCE_UNSAFE_CONFIGURE=1
-export PATH=${PATH}:${STAGE_ROOT}/bin
-
+# Invoke one-shot template for stage/configure/install
 CFLAGS="\
     -Wno-unused-command-line-argument \
     ${CFLAGS} \
 " \
-package-configure \
-    ${SOURCE_ROOT}/configure \
+FORCE_UNSAFE_CONFIGURE=1 \
+package-stage-configure-install \
     --with-openssl
-
-# Build the components
-make-install
-
-${RM} -rf ${INSTALL_PREFIX}/share/info/dir
-
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install

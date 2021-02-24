@@ -14,21 +14,6 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-ncurses-6-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Configure the build components
-cd ${STAGE_ROOT}
+# Invoke one-shot template for stage/configure/install
 RM="${RM} -r" \
-package-configure \
-    ${SOURCE_ROOT}/configure
-
-# Build the components
-make-build
-make-install
-
-${RM} -rf ${INSTALL_PREFIX}/tmp
-${RM} -rf ${INSTALL_PREFIX}/share/info/dir
-
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install
+package-stage-configure-install

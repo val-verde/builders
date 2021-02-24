@@ -15,26 +15,17 @@ copy-source-to-staging
 cd ${STAGE_ROOT}
 package-autoreconf -fi
 
-sed -i \
-    "s/'auto-import'/'ld'/g" \
-    ${STAGE_ROOT}/configure
+${SED} -i \
+       "s/'auto-import'/'ld'/g" \
+       ${STAGE_ROOT}/configure
 
 if [ "${HOST_OS}" = "mingw32" ]; then
-    sed -i \
-        "s/-nostdlib//g" \
-        ${STAGE_ROOT}/configure
+    ${SED} -i \
+           "s/-nostdlib//g" \
+           ${STAGE_ROOT}/configure
 fi
 
-package-configure \
-    ${STAGE_ROOT}/configure \
+# Invoke one-shot template for configure/install
+package-configure-install \
     --disable-static \
     --enable-shared
-
-# Build the components
-make-install
-
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install

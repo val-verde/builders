@@ -15,35 +15,17 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-zlib-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Configure the build components
-sed -i \
-    "s/'auto-import'/'ld'/g" \
-    ${SOURCE_ROOT}/configure
-
-cd ${STAGE_ROOT}
+# Invoke one-shot template for configure/install
 CFLAGS="\
     -DTRUE=1 \
     ${CFLAGS} \
 " \
-package-configure \
-    ${SOURCE_ROOT}/configure \
+RPATH_COMPONENTS="\
+    ${INSTALL_PREFIX}/lib/libxml2.so \
+" \
+package-configure-install \
     lt_cv_deplibs_check_method=pass_all \
     --disable-static \
     --enable-shared \
     --with-icu \
     --without-python
-
-# Build the components
-make-install
-
-# RPATH fixups
-COMPONENTS="\
-    ${INSTALL_PREFIX}/lib/libxml2.so \
-" \
-rpath-fixup
-
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install

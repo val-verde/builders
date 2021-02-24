@@ -99,7 +99,7 @@ function export-compiler-environment() {
     export OBJCOPY=${OBJCOPY:-${BINTOOLS_PATH_PREFIX}objcopy}
     export OBJDUMP=${OBJDUMP:-${BINTOOLS_PATH_PREFIX}objdump}
     export PKG_CONFIG=${PKG_CONFIG:-${BUILD_PACKAGE_PREFIX}/bin/pkg-config}
-    export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-${PACKAGE_PREFIX}/lib/pkgconfig}
+    export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-${PACKAGE_PREFIX}/lib/pkgconfig:${PACKAGE_PREFIX}/share/pkgconfig}
     export PYTHON=${PYTHON:-${BINDIR}/python}
     export RANLIB=${RANLIB:-${BINTOOLS_PATH_PREFIX}ranlib}
     export RC=${RC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-rc}
@@ -413,7 +413,28 @@ function package-autoreconf() {
 function package-bootstrap() {
     BOOTSTRAP_FILE=${BOOTSTRAP_FILE:-bootstrap}
     TOOL_LOG=${STAGE_ROOT}/builder-bootstrap \
-    tool-log ${BASH} ${BOOTSTRAP_FILE} "${@}"
+    tool-log ${BASH} ${BOOTSTRAP_FILE}
+}
+
+function package-bootstrap-configure-install() {
+    CONFIGURE_FILE_ROOT=${CONFIGURE_FILE_ROOT:-${STAGE_ROOT}}
+    CONFIGURE_BUILD_ROOT=${CONFIGURE_BUILD_ROOT:-${STAGE_ROOT}/build}
+
+    # Configure the build components
+    copy-source-to-staging
+
+    mkdir -p ${CONFIGURE_BUILD_ROOT}
+
+    package-push-directory ${CONFIGURE_FILE_ROOT}
+        package-bootstrap
+    package-pop-directory
+
+    package-configure-install-staged "${@}"
+}
+
+function package-clean-texinfo-lint() {
+    ${RM} -rf ${INSTALL_PREFIX}/lib/charset.alias
+    ${RM} -rf ${INSTALL_PREFIX}/share/info/dir
 }
 
 function package-cmake-invocation() {
@@ -504,6 +525,13 @@ function package-cmake() {
     package-cmake-invocation ${@}
 }
 
+function package-configure() {
+    export-compiler-environment
+    generate-compiler-tools
+    package-configure-invocation \
+        ${@}
+}
+
 function package-configure-invocation() {
     CONFIGURE_HOST_TRIPLE=${CONFIGURE_HOST_TRIPLE:-${HOST_TRIPLE}}
 
@@ -515,11 +543,54 @@ function package-configure-invocation() {
         ${CONFIGURE_FLAGS}
 }
 
-function package-configure() {
-    export-compiler-environment
-    generate-compiler-tools
-    package-configure-invocation \
-        ${@}
+function package-configure-install() {
+    DISABLE_AUTORECONF=TRUE \
+    package-stage-configure-install "${@}"
+}
+
+function package-configure-install-staged() {
+    CONFIGURE_BUILD_ROOT=${CONFIGURE_BUILD_ROOT:-${STAGE_ROOT}}
+    CONFIGURE_FILE=${CONFIGURE_FILE:-configure}
+    CONFIGURE_FILE_ROOT=${CONFIGURE_FILE_ROOT:-${SOURCE_ROOT}}
+
+    package-push-directory ${CONFIGURE_BUILD_ROOT}
+        # Strip problematic configure checks
+        ${SED} -i \
+               "s/'auto-import'/'ld'/g" \
+               ${CONFIGURE_FILE_ROOT}/${CONFIGURE_FILE}
+
+        # Configure package
+        package-configure \
+            ${CONFIGURE_FILE_ROOT}/${CONFIGURE_FILE} \
+            "${@}"
+
+        # Build the package
+        make-build
+    package-pop-directory
+
+    # Install the package
+    package-install
+}
+
+function package-install() {
+    CONFIGURE_BUILD_ROOT=${CONFIGURE_BUILD_ROOT:-${STAGE_ROOT}}
+
+    package-push-directory ${CONFIGURE_BUILD_ROOT}
+        # Install package
+        make-install
+
+        # Remove texinfo related lint
+        package-clean-texinfo-lint
+
+        # RPATH fixups
+        rpath-fixup
+
+        # Build the package
+        deb-package-build
+
+        # Build the package
+        deb-package-install
+    package-pop-directory
 }
 
 function package-libtoolize() {
@@ -568,10 +639,10 @@ function package-meson-build() {
         MESON_BUILD_CONFIG=cross
 
         BUILD_CFLAGS="-I${BUILD_PACKAGE_PREFIX}/include"
-        BUILD_CMAKE_PREFIXES="${BUILD_PACKAGE_PREFIX}/lib/cmake:${BUILD_PACKAGE_PREFIX}/lib/pkgconfig"
+        BUILD_CMAKE_PREFIXES="${BUILD_PACKAGE_PREFIX}/lib/cmake:${BUILD_PACKAGE_PREFIX}/lib/pkgconfig:${BUILD_PACKAGE_PREFIX}/share/pkgconfig"
         BUILD_CXXFLAGS="-I${BUILD_PACKAGE_PREFIX}/include"
         BUILD_LDFLAGS="-L${BUILD_PACKAGE_PREFIX}/lib"
-        BUILD_PKG_CONFIG_PATH="${BUILD_PACKAGE_PREFIX}/lib/pkgconfig"
+        BUILD_PKG_CONFIG_PATH="${BUILD_PACKAGE_PREFIX}/lib/pkgconfig:${BUILD_PACKAGE_PREFIX}/share/pkgconfig"
 
         BUILD_C_ARGS=`${ECHO} [\'${BUILD_CFLAGS}\'] | ${SED} "s/ /','/g"`
         BUILD_C_LINK_ARGS=`${ECHO} [\'${BUILD_LDFLAGS}\'] | ${SED} "s/ /','/g"`
@@ -723,6 +794,28 @@ function package-python-build() {
                                            --single-version-externally-managed
 }
 
+function package-stage-configure-install() {
+    CONFIGURE_FILE_ROOT=${CONFIGURE_FILE_ROOT:-${STAGE_ROOT}}
+    CONFIGURE_BUILD_ROOT=${CONFIGURE_BUILD_ROOT:-${STAGE_ROOT}/build}
+
+    # Configure the build components
+    copy-source-to-staging
+
+    mkdir -p ${CONFIGURE_BUILD_ROOT}
+
+    package-push-directory ${CONFIGURE_FILE_ROOT}
+        if [ -n "${ENABLE_LIBTOOLIZE}" ]; then
+            package-libtoolize -ci
+        fi
+
+        if [ -z "${DISABLE_AUTORECONF}" ]; then
+            package-autoreconf -fi
+        fi
+    package-pop-directory
+
+    package-configure-install-staged "${@}"
+}
+
 function package-swift-build() {
     export-compiler-environment
 
@@ -848,7 +941,7 @@ function rpath-fixup() {
 
         COMPONENT_RPATH=${COMPONENT_RPATH:-"\$ORIGIN/../lib:\$ORIGIN/../lib/swift/${SDK_PLATFORM_DIR}"}
 
-        for COMPONENT in ${COMPONENTS}; do
+        for COMPONENT in ${RPATH_COMPONENTS}; do
             patchelf --set-rpath ${COMPONENT_RPATH} \
                                  ${COMPONENT}
         done

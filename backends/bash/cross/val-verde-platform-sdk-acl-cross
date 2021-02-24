@@ -11,26 +11,10 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export DEPENDS="${PACKAGE_BASE_NAME}-attr-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 
-# Configure the build components
-copy-source-to-staging
-sed -i \
-    "s/'auto-import'/'ld'/g" \
-    ${STAGE_ROOT}/configure
-
-cd ${STAGE_ROOT}
-package-configure \
-    ${STAGE_ROOT}/configure \
+# Invoke one-shot template for configure/install
+CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
+INSTALL_TARGET="install-dev install-lib" \
+package-configure-install \
     --disable-static \
     --enable-shared \
     --includedir=${PACKAGE_PREFIX}/include
-
-# Build the components
-make-build
-make-install install-dev \
-             install-lib
-
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install

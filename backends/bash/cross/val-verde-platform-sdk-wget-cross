@@ -15,7 +15,8 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-zlib-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Configure the build components
+# Invoke one-shot template for stage/configure/install
+
 if [ "${HOST_OS}" = "mingw32" ]; then
     export LIBS="\
         -lbcrypt \
@@ -23,20 +24,7 @@ if [ "${HOST_OS}" = "mingw32" ]; then
     "
 fi
 
-cd ${STAGE_ROOT}
-package-configure \
-    ${SOURCE_ROOT}/configure \
+package-stage-configure-install \
     --with-linux-crypto \
     --with-openssl \
     --with-ssl=openssl
-
-# Build the components
-make-install
-
-${RM} -rf ${INSTALL_PREFIX}/share/info/dir
-
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install
