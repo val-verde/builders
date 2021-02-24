@@ -9,14 +9,7 @@ export SOURCE_PACKAGE_VERSION=8
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-export-compiler-environment
-
-# Configure the build components
-copy-source-to-staging
-
-cd ${STAGE_ROOT}
-package-autoreconf -fi
-
+# Invoke one-shot template for stage/configure/install
 MAIL_DIR=/var/mail
 
 if [ "${HOST_OS}" = "android" ]; then
@@ -30,23 +23,11 @@ if [ "${HOST_OS}" = "android" ]; then
     MAIL_DIR=/data/local/tmp/mail
 fi
 
-package-configure \
-    ${STAGE_ROOT}/configure \
+INSTALL_TARGET=install-nokeys \
+package-stage-configure-install \
     --disable-static \
     --disable-strip \
     --disable-utmpx \
     --enable-shared \
     --with-ldns=${PACKAGE_PREFIX} \
     --with-maildir=${MAIL_DIR}
-
-# Build the components
-make-build
-
-INSTALL_TARGET=install-nokeys \
-make-install
-
-# Build the package
-deb-package-build
-
-# Build the package
-deb-package-install

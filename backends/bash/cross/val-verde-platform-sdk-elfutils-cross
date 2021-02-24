@@ -15,9 +15,7 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-libmicrohttpd-0-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Configure the build components
-cd ${STAGE_ROOT}
-
+# Invoke one-shot template for stage/configure/installs
 CFLAGS="\
     -Wno-implicit-function-declaration \
     -Wno-unknown-warning-option \
@@ -25,8 +23,11 @@ CFLAGS="\
     -Wno-unused-parameter \
     ${CFLAGS} \
 " \
-package-configure \
-    ${SOURCE_ROOT}/configure \
+INSTALL_TARGET="-C lib -C libelf install" \
+RPATH_COMPONENTS="\
+    ${INSTALL_PREFIX}/lib/libelf.so \
+" \
+package-stage-configure-install \
     ac_cv_c99=yes \
     ac_cv_lib_argp_argp_parse=yes \
     ac_cv_implicit_fallthrough=no \
@@ -34,19 +35,3 @@ package-configure \
     --disable-static \
     --enable-shared \
     --with-zlib=yes
-
-# Build the components]
-make-install -C lib
-make-install -C libelf
-
-# RPATH fixups
-COMPONENTS="\
-    ${INSTALL_PREFIX}/lib/libelf.so \
-" \
-rpath-fixup
-
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install

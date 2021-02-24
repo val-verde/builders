@@ -9,25 +9,8 @@ export SOURCE_PACKAGE_VERSION=2020
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-# Configure the build components
-copy-source-to-staging
-
-cd ${STAGE_ROOT}
-package-configure \
-    ${STAGE_ROOT}/autogen.sh \
+# Invoke one-shot template for configure/install
+CONFIGURE_FILE=autogen.sh \
+package-configure-install \
     --disable-static \
     --enable-shared
-
-# Build the components
-make-install
-
-${MKDIR} -p ${INSTALL_PREFIX}/lib
-${MV} ${INSTALL_PREFIX}/share/pkgconfig \
-      ${INSTALL_PREFIX}/lib/pkgconfig
-${RM} -rf ${INSTALL_PREFIX}/share
-
-# Build the package
-deb-package-build
-
-# Build the package
-deb-package-install

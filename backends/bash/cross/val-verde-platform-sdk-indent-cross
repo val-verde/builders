@@ -11,26 +11,12 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export-compiler-environment
 
-# Configure the build components
-copy-source-to-staging
-
-cd ${STAGE_ROOT}
-package-autoreconf -fi
+# Invoke one-shot template for configure/install
 CFLAGS="\
     -Wno-unused-command-line-argument \
     ${CFLAGS} \
 " \
-package-configure \
-    ${STAGE_ROOT}/configure
-
-# Build the components
-make-install CC_FOR_BUILD=${BUILD_CC}
-
-${RM} -rf ${INSTALL_PREFIX}/lib/charset.alias
-${RM} -rf ${INSTALL_PREFIX}/share/info/dir
-
-# Build the package
-deb-package-build
-
-# Build the package
-deb-package-install
+CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
+CONFIGURE_FILE=bootstrap \
+INSTALL_TARGET="CC_FOR_BUILD=${BUILD_CC} install" \
+package-configure-install

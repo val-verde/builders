@@ -9,21 +9,5 @@ export SOURCE_PACKAGE_VERSION=4
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-# Configure the build components
-copy-source-to-staging
-
-cd ${STAGE_ROOT}
-package-bootstrap
-package-configure \
-    ${STAGE_ROOT}/configure
-
-# Build the components
-make-install
-
-${RM} -rf ${INSTALL_PREFIX}/share/info/dir
-
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install
+# Invoke one-shot template for bootstrap/configure/install
+package-bootstrap-configure-install

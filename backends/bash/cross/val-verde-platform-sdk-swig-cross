@@ -15,29 +15,13 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-python-3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Configure the build components
-copy-source-to-staging
-sed -i \
-    "s/'auto-import'/'ld'/g" \
-    ${STAGE_ROOT}/configure
-
-cd ${STAGE_ROOT}
+# Invoke one-shot template for bootstrap/configure/install
+BOOTSTRAP_FILE=./autogen.sh \
 PCRE_CFLAGS=`${ECHO} "\
     -I${PACKAGE_PREFIX}/include \
     -L${PACKAGE_PREFIX}/lib \
 " | ${XARGS}` \
 PCRE_LIBS="-lpcre" \
-package-configure \
-    ${STAGE_ROOT}/configure \
+package-bootstrap-configure-install \
     --disable-static \
     --enable-shared
-
-# Build the components
-make-build swig
-make-install
-
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install
