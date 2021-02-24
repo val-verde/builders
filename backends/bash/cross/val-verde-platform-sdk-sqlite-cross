@@ -11,23 +11,8 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export DEPENDS="${PACKAGE_BASE_NAME}-ncurses-6-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 
-# Configure the build components
-sed -i \
-    "s/'auto-import'/'ld'/g" \
-    ${SOURCE_ROOT}/configure
-
-cd ${STAGE_ROOT}
-package-configure \
-    ${SOURCE_ROOT}/configure \
+# Invoke one-shot template for stage/configure/install
+package-stage-configure-install \
     lt_cv_deplibs_check_method=pass_all \
     --disable-static \
     --enable-shared
-
-# Build the components
-make-install
-
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install
