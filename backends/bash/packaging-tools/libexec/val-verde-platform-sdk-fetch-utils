@@ -105,22 +105,23 @@ function prepare-stage-root() {
 }
 
 function query-single-source() {
-    SOURCE_BRANCH_IND=$(jq --arg v ${SOURCE_PACKAGE_NAME} \
-                           '.[] | select(.sourcePackageName | test($v)) | .sourceBranchIndicator' \
-                           ${SOURCE_FILE})
-    SOURCE_PACKAGE_URL=$(jq --arg v ${SOURCE_PACKAGE_NAME} \
-                            '.[] | select(.sourcePackageName | test($v)) | .sourcePackageUrl' \
+    SOURCE_TYPE=$(jq --arg pkgName ${SOURCE_PACKAGE_NAME} \
+                     --arg branch ${SOURCE_BRANCH_IND} \
+                     '.[] | select(.sourcePackageName==$pkgName && .sourceBranchIndicator==$branch) | .sourceType' \
+                     ${SOURCE_FILE})
+    SOURCE_PACKAGE_URL=$(jq --arg pkgName ${SOURCE_PACKAGE_NAME} \
+                            --arg branch ${SOURCE_BRANCH_IND} \
+                            '.[] | select(.sourcePackageName==$pkgName && .sourceBranchIndicator==$branch) | .sourcePackageUrl' \
                             ${SOURCE_FILE})
-    SOURCE_PACKAGE_VERSION=$(jq --arg v ${SOURCE_PACKAGE_NAME} \
-                             '.[] | select(.sourcePackageName | test($v)) | .sourcePackageVersion' \
-                            ${SOURCE_FILE})
-    SOURCE_TYPE=$(jq --arg v ${SOURCE_PACKAGE_NAME} \
-                            '.[] | select(.sourcePackageName | test($v)) | .sourceType' \
-                            ${SOURCE_FILE})
+    SOURCE_PACKAGE_VERSION=$(jq --arg pkgName ${SOURCE_PACKAGE_NAME} \
+                                --arg branch ${SOURCE_BRANCH_IND} \
+                                '.[] | select(.sourcePackageName==$pkgName && .sourceBranchIndicator==$branch) | .sourcePackageVersion' \
+                                ${SOURCE_FILE})
 
     if [[ ${SOURCE_TYPE} = 'git' ]]; then
-        RETAIN_SOURCE=$(jq --arg v ${SOURCE_PACKAGE_NAME} \
-                            '.[] | select(.sourcePackageName | test($v)) | .retainSource' \
+        RETAIN_SOURCE=$(jq --arg pkgName ${SOURCE_PACKAGE_NAME} \
+                            --arg branch ${SOURCE_BRANCH_IND} \
+                            '.[] | select(.sourcePackageName==$pkgName && .sourceBranchIndicator==$branch) | .retainSource' \
                             ${SOURCE_FILE})
     fi
 }

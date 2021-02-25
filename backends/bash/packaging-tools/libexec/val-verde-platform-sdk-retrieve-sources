@@ -98,7 +98,7 @@ function fetch-single-source() {
     package-push-directory /sources
 
     SOURCE_PACKAGE_NAME=$1 \
-    SOURCE_TYPE=$2 \
+    SOURCE_BRANCH_IND=$2 \
     query-single-source
 
     if [[ ${SOURCE_TYPE} == "git" ]]; then
