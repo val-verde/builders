@@ -243,6 +243,9 @@ package-invoke-builder libarchive-cross
 # android libmicrohttpd build
 package-invoke-builder libmicrohttpd-cross
 
+# android argp-standalone build
+package-invoke-builder argp-standalone-cross
+
 # android elfutils build
 CFLAGS="\
     -lintl \

@@ -36,7 +36,16 @@
         "sourcePackageName": "apt",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2.1.15",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"    },
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "argp-standalone",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
     {
         "retainSource": "false",
         "sourceType": "git",
@@ -447,6 +456,14 @@
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "musl-libc",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "musl-obstack",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
