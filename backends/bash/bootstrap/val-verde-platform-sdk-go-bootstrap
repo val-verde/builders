@@ -25,7 +25,9 @@ package-wget -c https://dl.google.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NA
 package-tar -zxf \
             ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${GO_PROCESSOR}.tar.gz
 
-${MKDIR} -p ${INSTALL_PREFIX}/go
+${MKDIR} -p \
+        ${INSTALL_PREFIX}/bin \
+        ${INSTALL_PREFIX}/go
 
 package-rsync -aPx \
               go/bin \

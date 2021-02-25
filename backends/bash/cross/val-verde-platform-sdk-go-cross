@@ -38,10 +38,10 @@ ${MKDIR} -p \
          ${INSTALL_PREFIX}/bin \
          ${INSTALL_PREFIX}/go
 package-rsync -ax \
-	      ${STAGE_ROOT}/bin \
+	          ${STAGE_ROOT}/bin \
               ${STAGE_ROOT}/pkg \
-	      ${STAGE_ROOT}/src \
-	      ${INSTALL_PREFIX}/go
+	          ${STAGE_ROOT}/src \
+	          ${INSTALL_PREFIX}/go
 ${LN} -sf \
       ../go/bin/go \
       ${INSTALL_PREFIX}/bin/go

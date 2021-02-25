@@ -113,6 +113,9 @@ package-invoke-builder baikonur
 # android pythonkit build
 package-invoke-builder pythonkit-cross
 
+# android go build
+package-invoke-builder go-cross
+
 # android graphics sdk build
 package-invoke-builder graphics-sdk-cross
 
