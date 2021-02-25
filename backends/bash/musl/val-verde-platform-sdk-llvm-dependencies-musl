@@ -125,6 +125,9 @@ package-invoke-builder pkg-config-cross
 # musl fts build
 package-invoke-builder musl-fts
 
+# musl obstack build
+package-invoke-builder musl-obstack
+
 # xorg-macros build
 package-invoke-builder xorg-macros-cross
 
@@ -251,6 +254,9 @@ package-invoke-builder libarchive-cross
 
 # libmicrohttpd build
 package-invoke-builder libmicrohttpd-cross
+
+# musl argp-standalone build
+package-invoke-builder argp-standalone-cross
 
 # elfutils build
 package-invoke-builder elfutils-cross
