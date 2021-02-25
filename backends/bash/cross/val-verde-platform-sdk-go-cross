@@ -1,0 +1,56 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=go
+export SOURCE_PACKAGE_VERSION=1
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+copy-source-to-staging
+
+# Configure the build components
+if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+    export GOARCH=arm64
+elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    export GOARCH=amd64
+fi
+
+if [ "${HOST_OS}" = "android" ]; then
+    export GOOS=android
+elif [ "${HOST_OS}" = "gnu" ] ||
+     [ "${HOST_OS}" = "musl" ]; then
+    export GOOS=linux
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    export GOOD=windows
+fi
+
+export GOROOT_FINAL=${PACKAGE_PREFIX}/go
+export GOROOT_BOOTSTRAP=${BUILD_PACKAGE_PREFIX}/go
+
+package-push-directory ${STAGE_ROOT}/src
+    ${BASH} -x make.bash
+package-pop-directory
+
+${MKDIR} -p \
+         ${INSTALL_PREFIX}/bin \
+         ${INSTALL_PREFIX}/go
+package-rsync -ax \
+	      ${STAGE_ROOT}/bin \
+              ${STAGE_ROOT}/pkg \
+	      ${STAGE_ROOT}/src \
+	      ${INSTALL_PREFIX}/go
+${LN} -sf \
+      ../go/bin/go \
+      ${INSTALL_PREFIX}/bin/go
+${LN} -sf \
+      ../go/bin/gofmt \
+      ${INSTALL_PREFIX}/bin/gofmt
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install
