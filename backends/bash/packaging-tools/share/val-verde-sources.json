@@ -11,7 +11,7 @@
         "sourceType": "git",
         "sourcePackageName": "alsa-lib",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.2.4",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -35,7 +35,7 @@
         "sourceType": "git",
         "sourcePackageName": "apt",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "2.1.15",
+        "sourcePackageVersion": "2",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -59,7 +59,7 @@
         "sourceType": "git",
         "sourcePackageName": "bazel",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "4.0.0",
+        "sourcePackageVersion": "4",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -67,7 +67,7 @@
         "sourceType": "git",
         "sourcePackageName": "bzip2",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.0.8",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -75,7 +75,7 @@
         "sourceType": "git",
         "sourcePackageName": "bzip2",
         "sourceBranchIndicator": "windows",
-        "sourcePackageVersion": "1.0.8",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -83,7 +83,7 @@
         "sourceType": "git",
         "sourcePackageName": "cmake",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "3.18.1",
+        "sourcePackageVersion": "3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -91,7 +91,7 @@
         "sourceType": "git",
         "sourcePackageName": "coreutils",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "8.32",
+        "sourcePackageVersion": "8",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -99,7 +99,7 @@
         "sourceType": "git",
         "sourcePackageName": "cups",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "2.3.3",
+        "sourcePackageVersion": "2",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -107,7 +107,7 @@
         "sourceType": "git",
         "sourcePackageName": "cython",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "0.29.21",
+        "sourcePackageVersion": "0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -123,7 +123,7 @@
         "sourceType": "git",
         "sourcePackageName": "elfutils",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "0.181",
+        "sourcePackageVersion": "0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -131,7 +131,7 @@
         "sourceType": "git",
         "sourcePackageName": "filament",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.8.1",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -139,7 +139,7 @@
         "sourceType": "git",
         "sourcePackageName": "file",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "5.39",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -147,7 +147,7 @@
         "sourceType": "git",
         "sourcePackageName": "findutils",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "4.7.0",
+        "sourcePackageVersion": "4",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -155,7 +155,7 @@
         "sourceType": "git",
         "sourcePackageName": "flex",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "2.6.4",
+        "sourcePackageVersion": "2",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -163,7 +163,7 @@
         "sourceType": "git",
         "sourcePackageName": "fontconfig",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "2.13.93",
+        "sourcePackageVersion": "2",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -179,7 +179,7 @@
         "sourceType": "git",
         "sourcePackageName": "freetype2",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "2.10.2",
+        "sourcePackageVersion": "2",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -187,7 +187,7 @@
         "sourceType": "git",
         "sourcePackageName": "git",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "2.30.0",
+        "sourcePackageVersion": "2",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -195,7 +195,7 @@
         "sourceType": "git",
         "sourcePackageName": "glib",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.1.0",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -203,7 +203,7 @@
         "sourceType": "git",
         "sourcePackageName": "glslang",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "10-11.0",
+        "sourcePackageVersion": "10-11",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -211,7 +211,7 @@
         "sourceType": "git",
         "sourcePackageName": "gnulib",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "0.1.0",
+        "sourcePackageVersion": "0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -227,7 +227,7 @@
         "sourceType": "git",
         "sourcePackageName": "gobject-introspection",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.45.2",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -250,7 +250,7 @@
         "sourceType": "git",
         "sourcePackageName": "icu4c",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "68.2",
+        "sourcePackageVersion": "68",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/icu.git"
     },
     {
@@ -258,7 +258,7 @@
         "sourceType": "git",
         "sourcePackageName": "indent",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "2.2.9",
+        "sourcePackageVersion": "2",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -266,7 +266,7 @@
         "sourceType": "git",
         "sourcePackageName": "jwasm",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "2.13",
+        "sourcePackageVersion": "2",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -274,7 +274,7 @@
         "sourceType": "git",
         "sourcePackageName": "jq",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.6",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -290,14 +290,14 @@
         "sourceType": "git",
         "sourcePackageName": "klee",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "2.2",
+        "sourcePackageVersion": "2",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"    },
     {
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "ldns",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.7.1",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -305,7 +305,7 @@
         "sourceType": "git",
         "sourcePackageName": "libarchive",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "3.4.3",
+        "sourcePackageVersion": "3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -313,7 +313,7 @@
         "sourceType": "git",
         "sourcePackageName": "libsecret",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "0.20.4",
+        "sourcePackageVersion": "0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -321,7 +321,7 @@
         "sourceType": "git",
         "sourcePackageName": "libssh2",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.9.0",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -329,7 +329,7 @@
         "sourceType": "git",
         "sourcePackageName": "libuv",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.40.0",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -337,7 +337,7 @@
         "sourceType": "git",
         "sourcePackageName": "libx11",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.7.0",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -345,7 +345,7 @@
         "sourceType": "git",
         "sourcePackageName": "libxext",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.3.3",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -369,7 +369,7 @@
         "sourceType": "git",
         "sourcePackageName": "lua",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "5.4.1",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -377,7 +377,7 @@
         "sourceType": "git",
         "sourcePackageName": "lunarg-vulkan-tools",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.2.154",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -385,7 +385,7 @@
         "sourceType": "git",
         "sourcePackageName": "lz4",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.9.3",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -393,7 +393,7 @@
         "sourceType": "git",
         "sourcePackageName": "m4",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.4.18",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -425,7 +425,7 @@
         "sourceType": "git",
         "sourcePackageName": "mesa-drm",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "2.4.103",
+        "sourcePackageVersion": "2",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -433,7 +433,7 @@
         "sourceType": "git",
         "sourcePackageName": "meson",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "0.56",
+        "sourcePackageVersion": "0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -449,7 +449,7 @@
         "sourceType": "git",
         "sourcePackageName": "musl-fts",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.2.7",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -473,7 +473,7 @@
         "sourceType": "git",
         "sourcePackageName": "ninja",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.10.0",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -489,7 +489,7 @@
         "sourceType": "git",
         "sourcePackageName": "numpy",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.19.5",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -537,7 +537,7 @@
         "sourceType": "git",
         "sourcePackageName": "openssh-portable",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "8.4p1",
+        "sourcePackageVersion": "8",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -545,7 +545,7 @@
         "sourceType": "git",
         "sourcePackageName": "perl",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "5.32.0",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -561,7 +561,7 @@
         "sourceType": "git",
         "sourcePackageName": "python",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "3.6.8",
+        "sourcePackageVersion": "3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/c${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -585,7 +585,7 @@
         "sourceType": "git",
         "sourcePackageName": "qemu",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "5.2.0",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -593,7 +593,7 @@
         "sourceType": "git",
         "sourcePackageName": "qemu-dtc",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.6.0",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -609,7 +609,7 @@
         "sourceType": "git",
         "sourcePackageName": "rsync",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "3.2.3",
+        "sourcePackageVersion": "3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -617,7 +617,7 @@
         "sourceType": "git",
         "sourcePackageName": "rust",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.50.0",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -640,7 +640,7 @@
         "sourceType": "git",
         "sourcePackageName": "sourcekit-lsp",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "5.2.0",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -648,7 +648,7 @@
         "sourceType": "git",
         "sourcePackageName": "sourcekit-lsp",
         "sourceBranchIndicator": "android",
-        "sourcePackageVersion": "5.2.0",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -656,7 +656,7 @@
         "sourceType": "git",
         "sourcePackageName": "spirv-headers",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.5.4",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -664,7 +664,7 @@
         "sourceType": "git",
         "sourcePackageName": "spirv-tools",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "2020.5",
+        "sourcePackageVersion": "2020",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -672,7 +672,7 @@
         "sourceType": "git",
         "sourcePackageName": "strace",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "5.9",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -832,7 +832,7 @@
         "sourceType": "git",
         "sourcePackageName": "tensorflow",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "2.4.0",
+        "sourcePackageVersion": "2",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -840,7 +840,7 @@
         "sourceType": "git",
         "sourcePackageName": "texinfo",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "6.7",
+        "sourcePackageVersion": "6",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -848,7 +848,7 @@
         "sourceType": "git",
         "sourcePackageName": "vulkan-headers",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.2.62",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -856,7 +856,7 @@
         "sourceType": "git",
         "sourcePackageName": "vulkan-loader",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.2.151",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -864,7 +864,7 @@
         "sourceType": "git",
         "sourcePackageName": "vulkan-tools",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.2.161",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -872,7 +872,7 @@
         "sourceType": "git",
         "sourcePackageName": "vulkan-validation-layers",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.2.156",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/Vulkan-ValidationLayers.git"
     },
     {
@@ -880,7 +880,7 @@
         "sourceType": "git",
         "sourcePackageName": "wasi-libc",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "0.1.0",
+        "sourcePackageVersion": "0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -888,7 +888,7 @@
         "sourceType": "git",
         "sourcePackageName": "wayland",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.18.91",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -896,7 +896,7 @@
         "sourceType": "git",
         "sourcePackageName": "wayland-protocols",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.20",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -912,7 +912,7 @@
         "sourceType": "git",
         "sourcePackageName": "wineditline",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "2.201",
+        "sourcePackageVersion": "2",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -920,7 +920,7 @@
         "sourceType": "git",
         "sourcePackageName": "xcb-libxcb",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.12",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -928,7 +928,7 @@
         "sourceType": "git",
         "sourcePackageName": "xcb-pthread-stubs",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "0.4.0",
+        "sourcePackageVersion": "0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -936,7 +936,7 @@
         "sourceType": "git",
         "sourcePackageName": "xcbproto",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.14.1",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -944,7 +944,7 @@
         "sourceType": "git",
         "sourcePackageName": "xorg-libice",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.0.9",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -952,7 +952,7 @@
         "sourceType": "git",
         "sourcePackageName": "xorg-libpciaccess",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "0.16",
+        "sourcePackageVersion": "0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -960,7 +960,7 @@
         "sourceType": "git",
         "sourcePackageName": "xorg-libsm",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.2.2",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -968,7 +968,7 @@
         "sourceType": "git",
         "sourcePackageName": "xorg-libxau",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.0.8",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -976,7 +976,7 @@
         "sourceType": "git",
         "sourcePackageName": "xorg-libxkbfile",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.0'9",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -984,7 +984,7 @@
         "sourceType": "git",
         "sourcePackageName": "xorg-libxfixes",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "5.0.3",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -992,7 +992,7 @@
         "sourceType": "git",
         "sourcePackageName": "xorg-libxi",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.7.10",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1000,7 +1000,7 @@
         "sourceType": "git",
         "sourcePackageName": "xorg-libxrandr",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.5.2",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1008,7 +1008,7 @@
         "sourceType": "git",
         "sourcePackageName": "xorg-libxrender",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "0.9.10",
+        "sourcePackageVersion": "0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1016,14 +1016,14 @@
         "sourceType": "git",
         "sourcePackageName": "xorg-libxshmfence",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.2",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"    },
     {
         "retainSource": "false",
         "sourceType": "git",
         "sourcePackageName": "xorg-libxtrans",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.14.0",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1031,7 +1031,7 @@
         "sourceType": "git",
         "sourcePackageName": "xorg-libxt",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.2.0",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1039,7 +1039,7 @@
         "sourceType": "git",
         "sourcePackageName": "xorg-libxtst",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.2.3",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1047,7 +1047,7 @@
         "sourceType": "git",
         "sourcePackageName": "xorg-libxxf86vm",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.1.4",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1055,7 +1055,7 @@
         "sourceType": "git",
         "sourcePackageName": "xorg-macros",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.19.1",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1063,7 +1063,7 @@
         "sourceType": "git",
         "sourcePackageName": "xorg-xinput",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.6.3",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1071,7 +1071,7 @@
         "sourceType": "git",
         "sourcePackageName": "xorg-xorgproto",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "2020.1",
+        "sourcePackageVersion": "2020",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1079,7 +1079,7 @@
         "sourceType": "git",
         "sourcePackageName": "xorg-xserver",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.20.10",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1087,7 +1087,7 @@
         "sourceType": "git",
         "sourcePackageName": "xxhash",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "0.8.0",
+        "sourcePackageVersion": "0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1095,7 +1095,7 @@
         "sourceType": "git",
         "sourcePackageName": "yams",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "3.0.1",
+        "sourcePackageVersion": "3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1111,7 +1111,7 @@
         "sourceType": "git",
         "sourcePackageName": "z3",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "4.8.9",
+        "sourcePackageVersion": "4",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1119,7 +1119,7 @@
         "sourceType": "git",
         "sourcePackageName": "zlib",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1.2.11",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1127,7 +1127,7 @@
         "sourceType": "git",
         "sourcePackageName": "zstd",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "0.4.2",
+        "sourcePackageVersion": "0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
