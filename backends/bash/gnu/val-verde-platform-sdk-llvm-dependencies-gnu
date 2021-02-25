@@ -124,7 +124,7 @@ export PERL=${BINDIR}/perl
 package-invoke-builder pcre-cross
 
 # icu build
-package-invoke-builder icu4c
+package-invoke-builder icu4c-cross
 
 # xz build
 package-invoke-builder xz-cross
