@@ -253,13 +253,6 @@ package-invoke-builder libarchive-cross
 package-invoke-builder libmicrohttpd-cross
 
 # elfutils build
-CFLAGS="\
-    -include ${PACKAGE_PREFIX}/include/gnulib/config/config.h \
-    -include ${PACKAGE_PREFIX}/include/sys/cdefs.h \
-    -lgnu \
-    -I${PACKAGE_PREFIX}/include/gnulib \
-    ${CFLAGS} \
-" \
 package-invoke-builder elfutils-cross
 
 # grep build
