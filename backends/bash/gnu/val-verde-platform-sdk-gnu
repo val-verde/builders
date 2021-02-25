@@ -96,6 +96,9 @@ package-invoke-builder pythonkit
 # swift tensorflows apis build
 # package-invoke-builder swift-tensorflow-apis
 
+# go build
+package-invoke-builder go-cross
+
 # graphics sdk build
 package-invoke-builder graphics-sdk-cross
 
