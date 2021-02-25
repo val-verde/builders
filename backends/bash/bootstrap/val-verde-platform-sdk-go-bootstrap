@@ -1,0 +1,48 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=go
+export SOURCE_PACKAGE_VERSION=1
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+GO_PACKAGE_VERSION=1.16
+
+# Configure the build components
+GO_PROCESSOR=${BUILD_PROCESSOR}
+
+if [ "${BUILD_PROCESSOR}" = "aarch64" ]; then
+    GO_PROCESSOR=arm64
+elif [ "${BUILD_PROCESSOR}" = "x86_64" ]; then
+    GO_PROCESSOR=amd64
+fi
+
+package-wget -c https://dl.google.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}${GO_PACKAGE_VERSION}.${BUILD_KERNEL}-${GO_PROCESSOR}.tar.gz \
+             -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${GO_PROCESSOR}.tar.gz
+package-tar -zxf \
+            ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${GO_PROCESSOR}.tar.gz
+
+${MKDIR} -p \
+         ${INSTALL_PREFIX}/bin \
+         ${INSTALL_PREFIX}/go
+
+package-rsync -aPx \
+              go/bin \
+              go/pkg \
+              go/src \
+              ${INSTALL_PREFIX}/go/
+${LN} -sf \
+      ../go/bin/go \
+      ${INSTALL_PREFIX}/bin/go
+${LN} -sf \
+      ../go/bin/gofmt \
+      ${INSTALL_PREFIX}/bin/gofmt
+
+# Build the package
+deb-package-build
+
+# Build the package
+deb-package-install
