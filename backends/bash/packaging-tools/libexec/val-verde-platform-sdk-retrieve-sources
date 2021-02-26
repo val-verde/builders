@@ -12,7 +12,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-utils
 
 function invoke-fetch() {
-    SEARCH_INPUT=${SOURCE_DEB_PATH}/$1
+    SEARCH_INPUT=${SOURCE_DEB_PATH}/${PACKAGE_NAME}.deb
     if [ -f "${SEARCH_INPUT}" ]; then
         FILE_EXISTS='true'
     else
@@ -24,13 +24,18 @@ function build-install-git-source-package() {
     # Set up paths and dirs
     prepare-source-base
 
-    SOURCE_FILE_INPUT=${PACKAGE_NAME}.deb
-    invoke-fetch ${SOURCE_FILE_INPUT}
+    # Check if the source deb exists
+    invoke-fetch
 
     if [ "${FILE_EXISTS}" = 'true' ]; then
-        ${ECHO} -e "    Source file \e[37m${SOURCE_FILE_INPUT}\e[0m exists, "
-        ${ECHO} -e "    Skipping source deb package build"
+        ${ECHO} -e "    Skipping source build: \e[1;32m${PACKAGE_NAME}\e[0m"
     else
+        # Print source builder context
+        emit-source-builder-context
+
+        # Set up stage root for source build
+        prepare-stage-root
+
         GIT_URL=${PACKAGE_URL} \
         TARGET_ROOT=${INSTALL_PREFIX} \
         RETAIN_SOURCE=${RETAIN_SOURCE} \
@@ -52,23 +57,28 @@ function build-install-git-source-package() {
 
         # Build the source deb package
         deb-package-build
-    fi
 
-    # Clean up
-    ${RM} -rf ${INSTALL_ROOT}
-    ${ECHO} -e "    Source Builder Completed"
+        # Clean up
+        ${RM} -rf ${INSTALL_ROOT}
+        ${ECHO} -e "    Source Builder Completed"
+    fi
 }
 
 function build-install-other-source-package() {
-    SOURCE_FILE_INPUT=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.deb
-    invoke-fetch ${SOURCE_FILE_INPUT}
-    
+    # Set up paths and dirs
+    prepare-source-base
+
+    # Check if the source deb exists
+    invoke-fetch
+
     if [ "${FILE_EXISTS}" = 'true' ]; then
-        ${ECHO} -e "    Source file \e[37m${SOURCE_FILE_INPUT}\e[0m exists, "
-        ${ECHO} -e "    Skipping source deb package build"
+        ${ECHO} -e "    Skipping source build: \e[1;32m${PACKAGE_NAME}\e[0m"
     else
-        # Set up paths and dirs
-        prepare-source-base
+        # Print builder context message
+        emit-source-builder-context
+
+        # Set up stage root for source build
+        prepare-stage-root
 
         # Extract source package from tar ball
         untar-tar-balls
