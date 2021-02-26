@@ -24,6 +24,13 @@ package-rsync -ax \
               /sources/deb-templates/* \
               ${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM}/
 
+
+if [ -d "/sources/source-debs" ]; then
+    package-rsync -aPx \
+                  /sources/source-debs/* \
+                  ${SOURCE_DEB_PATH}
+fi
+
 # Package debs
 BASE_DIRECTORY=${INSTALL_ROOT}/usr \
 TEMPLATE_ROOT=${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM} \
