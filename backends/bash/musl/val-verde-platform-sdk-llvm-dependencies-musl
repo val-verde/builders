@@ -344,3 +344,12 @@ package-invoke-builder android-patch-elf-cross
 
 # jwasm (ml64) cross compiler build
 package-invoke-builder jwasm
+
+# re2c build
+package-invoke-builder re2c-cross
+
+# alive2 build
+package-invoke-builder alive2-cross
+
+# hiredis build
+package-invoke-builder hiredis-cross
