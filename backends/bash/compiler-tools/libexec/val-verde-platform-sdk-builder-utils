@@ -76,11 +76,13 @@ function export-compiler-environment() {
     CXX_INCLUDE_DIR=${CXX_INCLUDE_DIR:-${PACKAGE_PREFIX}/include/c++/v1}
     OPTIMIZATION_FLAGS=${OPTIMIZATION_FLAGS:-"-DNDEBUG"}
 
+    export CLANG=${CLANG:-clang}
     export ACLOCAL_PATH=${PACKAGE_PREFIX}/share/aclocal
     export AR=${AR:-${BINTOOLS_PATH_PREFIX}ar}
-    export AS=${CC:-${BINDIR}/clang}
-    export BUILD_CC=${CC:-${BINDIR}/clang}
-    export CC=${CC:-${BINDIR}/clang}
+    export AS=${CC:-${BINDIR}/${CLANG}}
+    export BUILD_CC=${BUILD_CC:-${BINDIR}/${CLANG}}
+    export BUILD_CXX=${BUILD_CXX:-${BUILD_CC}++}
+    export CC=${CC:-${BINDIR}/${CLANG}}
     export CCLD=${CCLD:-${CC}}
     export CMAKE=${CMAKE:-${BINDIR}/cmake}
     export CPP=${CPP:-${CC}-cpp}
@@ -652,8 +654,8 @@ function package-meson-build() {
         BUILD_CPP_ARGS=`${ECHO} [\'${BUILD_CXXFLAGS}\'] | ${SED} "s/ /','/g"`
         BUILD_CPP_LINK_ARGS=`${ECHO} [\'${BUILD_LDFLAGS}\'] | ${SED} "s/ /','/g"`
 
-        export CC_FOR_BUILD=${BINDIR}/clang
-        export CXX_FOR_BUILD=${BINDIR}/clang++
+        export CC_FOR_BUILD=${BINDIR}/${CLANG}
+        export CXX_FOR_BUILD=${BINDIR}/${CLANG}++
         export CMAKE_FOR_BUILD=${CMAKE}
         export CMAKE_PREFIX_PATH_FOR_BUILD=`${ECHO} ${BUILD_CMAKE_PREFIXES} | ${TR} ":" ";"`
 

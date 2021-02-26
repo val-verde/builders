@@ -44,12 +44,10 @@ else
     HOST_TRIPLE=${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS}
 fi
 
-BUILD_CC=${BINDIR}/clang
 BUILD_CFLAGS=`${ECHO} "\
     -I${BUILD_PACKAGE_PREFIX}/include \
     ${BUILD_CFLAGS} \
 " | ${XARGS}`
-BUILD_CXX=${BINDIR}/clang++
 BUILD_CXXFLAGS=`${ECHO} "\
     -I${BUILD_PACKAGE_PREFIX}/include \
     ${BUILD_CXXFLAGS} \
