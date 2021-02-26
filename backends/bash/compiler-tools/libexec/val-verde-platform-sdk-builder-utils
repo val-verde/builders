@@ -102,7 +102,7 @@ function export-compiler-environment() {
     export NODE=${NODE:-${BINDIR}/node}
     export OBJCOPY=${OBJCOPY:-${BINTOOLS_PATH_PREFIX}objcopy}
     export OBJDUMP=${OBJDUMP:-${BINTOOLS_PATH_PREFIX}objdump}
-    export PKG_CONFIG=${PKG_CONFIG:-${BUILD_PACKAGE_PREFIX}/bin/pkg-config}
+    export PKG_CONFIG=${PKG_CONFIG:-${BINDIR}/pkg-config}
     export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-${PACKAGE_PREFIX}/lib/pkgconfig:${PACKAGE_PREFIX}/share/pkgconfig}
     export PYTHON=${PYTHON:-${BINDIR}/python}
     export RANLIB=${RANLIB:-${BINTOOLS_PATH_PREFIX}ranlib}
