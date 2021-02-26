@@ -599,6 +599,14 @@
     {
         "retainSource": "false",
         "sourceType": "git",
+        "sourcePackageName": "re2c",
+        "sourceBranchIndicator": "master",
+        "sourcePackageVersion": "2",
+        "sourcePackageUrl": "https://github.com/skvadrik/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
         "sourcePackageName": "rsync",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "3.2.3",
