@@ -25,6 +25,9 @@ package-invoke-builder llvm-dependencies-gnu
 # llvm build
 package-invoke-builder llvm-project
 
+# souper build
+package-invoke-builder souper-cross
+
 # cmark build
 package-invoke-builder swift-cmark
 
