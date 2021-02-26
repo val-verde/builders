@@ -24,27 +24,35 @@ function build-install-git-source-package() {
     # Set up paths and dirs
     prepare-source-base
 
-    GIT_URL=${PACKAGE_URL} \
-    TARGET_ROOT=${INSTALL_PREFIX} \
-    RETAIN_SOURCE=${RETAIN_SOURCE} \
-    package-git-clone ${SOURCE_BRANCH}
+    SOURCE_FILE_INPUT=${PACKAGE_NAME}.deb
+    invoke-fetch ${SOURCE_FILE_INPUT}
 
-    package-push-directory ${INSTALL_PREFIX}
-        package-git-tool submodule init
-        package-git-tool submodule update
-    package-pop-directory
+    if [ "${FILE_EXISTS}" = 'true' ]; then
+        ${ECHO} -e "    Source file \e[37m${SOURCE_FILE_INPUT}\e[0m exists, "
+        ${ECHO} -e "    Skipping source deb package build"
+    else
+        GIT_URL=${PACKAGE_URL} \
+        TARGET_ROOT=${INSTALL_PREFIX} \
+        RETAIN_SOURCE=${RETAIN_SOURCE} \
+        package-git-clone ${SOURCE_BRANCH}
 
-    # Prepare source root
-    package-push-directory ${INSTALL_PREFIX}
-        ${RM} -rf .git*
-        ${RM} -rf "^.git*"
-        package-git-init
-        package-git-add -A
-        package-git-commit -m "Val verde source base commit."
-    package-pop-directory
-    
-    # Build the source deb package
-    deb-package-build
+        package-push-directory ${INSTALL_PREFIX}
+            package-git-tool submodule init
+            package-git-tool submodule update
+        package-pop-directory
+
+        # Prepare source root
+        package-push-directory ${INSTALL_PREFIX}
+            ${RM} -rf .git*
+            ${RM} -rf "^.git*"
+            package-git-init
+            package-git-add -A
+            package-git-commit -m "Val verde source base commit."
+        package-pop-directory
+
+        # Build the source deb package
+        deb-package-build
+    fi
 
     # Clean up
     ${RM} -rf ${INSTALL_ROOT}
@@ -56,8 +64,8 @@ function build-install-other-source-package() {
     invoke-fetch ${SOURCE_FILE_INPUT}
     
     if [ "${FILE_EXISTS}" = 'true' ]; then
-        ${ECHO} -e "Source file ${SOURCE_FILE_INPUT} exists, "
-        ${ECHO} -e "Skipping source deb package build"
+        ${ECHO} -e "    Source file \e[37m${SOURCE_FILE_INPUT}\e[0m exists, "
+        ${ECHO} -e "    Skipping source deb package build"
     else
         # Set up paths and dirs
         prepare-source-base
@@ -115,14 +123,10 @@ function fetch-sources() {
             PACKAGE_VERSION=$(package-major-version) \
             derive-upstream-source-url
 
-            if [ -f "${SOURCE_DEB_PATH}/${PACKAGE_NAME}.deb" ]; then
-                ${ECHO} "${PACKAGE_NAME} found, skipping.."
-            else
-                if [[ ${SOURCE_TYPE} = 'git' ]]; then
-                    build-install-git-source-package
-                elif [[ ${SOURCE_TYPE} = 'other' ]]; then
-                    build-install-other-source-package
-                fi
+            if [[ ${SOURCE_TYPE} = 'git' ]]; then
+                build-install-git-source-package
+            elif [[ ${SOURCE_TYPE} = 'other' ]]; then
+                build-install-other-source-package
             fi
         done
 
