@@ -235,7 +235,7 @@
         "sourceType": "git",
         "sourcePackageName": "grep",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "3.6",
+        "sourcePackageVersion": "3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1211,13 +1211,6 @@
         "sourcePackageName": "gperf",
         "sourceBranchIndicator": "wget",
         "sourcePackageVersion": "3.1",
-        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "grep",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "3.6",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
