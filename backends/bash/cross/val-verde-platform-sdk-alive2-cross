@@ -13,37 +13,38 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 cd ${STAGE_ROOT}
 package-cmake \
     ${SOURCE_ROOT} \
-    -DGIT_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/git
+    -DGIT_EXECUTABLE=${GIT} \
+    -DRE2C=${BUILD_PACKAGE_PREFIX}/bin/re2c
 
 # Build the components
 ninja-build
 
 ${MKDIR} -p \
-      ${INSTALL_PREFIX}/bin \
-      ${INSTALL_PREFIX}/include/alive2/ir \
-      ${INSTALL_PREFIX}/include/alive2/smt \
-      ${INSTALL_PREFIX}/include/alive2/tools \
-      ${INSTALL_PREFIX}/include/alive2/utils \
-      ${INSTALL_PREFIX}/lib/pkgconfig
+         ${INSTALL_PREFIX}/bin \
+         ${INSTALL_PREFIX}/include/alive2/ir \
+         ${INSTALL_PREFIX}/include/alive2/smt \
+         ${INSTALL_PREFIX}/include/alive2/tools \
+         ${INSTALL_PREFIX}/include/alive2/utils \
+         ${INSTALL_PREFIX}/lib/pkgconfig
 
-${SSYNC} -aPx \
-      ${STAGE_ROOT}/alive \
-      ${INSTALL_PREFIX}/bin/
-${SSYNC} -aPx \
-         ${SOURCE_ROOT}/ir/*.h \
-         ${INSTALL_PREFIX}/include/alive2/ir/
-${SSYNC} -aPx \
-         ${SOURCE_ROOT}/smt/*.h \
-         ${INSTALL_PREFIX}/include/alive2/smt/
-${SSYNC} -aPx \
-         ${SOURCE_ROOT}/tools/*.h \
-         ${INSTALL_PREFIX}/include/alive2/tools/
-${SSYNC} -aPx \
-         ${SOURCE_ROOT}/util/*.h \
-         ${INSTALL_PREFIX}/include/alive2/util/
-${SSYNC} -aPx \
-         ${STAGE_ROOT}/libalive2.* \
-         ${INSTALL_PREFIX}/lib/
+package-rsync -ax \
+              ${STAGE_ROOT}/alive \
+              ${INSTALL_PREFIX}/bin/
+package-rsync -ax \
+              ${SOURCE_ROOT}/ir/*.h \
+              ${INSTALL_PREFIX}/include/alive2/ir/
+package-rsync -ax \
+              ${SOURCE_ROOT}/smt/*.h \
+              ${INSTALL_PREFIX}/include/alive2/smt/
+package-rsync -ax \
+              ${SOURCE_ROOT}/tools/*.h \
+              ${INSTALL_PREFIX}/include/alive2/tools/
+package-rsync -ax \
+              ${SOURCE_ROOT}/util/*.h \
+              ${INSTALL_PREFIX}/include/alive2/util/
+package-rsync -ax \
+              ${STAGE_ROOT}/libalive2.* \
+              ${INSTALL_PREFIX}/lib/
 
 ${ECHO} "
 V=${SOURCE_PACKAGE_VERSION}
