@@ -14,7 +14,7 @@ export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}
 
 ${MKDIR} -p \
          ${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM} \
-	 ${STAGE_ROOT}
+         ${STAGE_ROOT}
 
 # Install builder sources
 package-rsync -aPx \
@@ -31,7 +31,7 @@ deb-package-build
 deb-package-install
 
 # Fetch sources
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-packages
+bash /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-packages
 
 # Rerun source deb checks to install
 trigger-source-package-install
