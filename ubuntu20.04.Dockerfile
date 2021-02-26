@@ -38,6 +38,9 @@ COPY backends/bash/deb-templates \
 COPY backends/bash/packaging-tools \
      /sources/packaging-tools/
 
+COPY /backends/bash/source-debs/ \
+     ${SOURCE_DEB_PATH}
+
 # upstream source package build
 FROM BASE AS SOURCES_BUILDER
 
