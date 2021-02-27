@@ -3,6 +3,7 @@
 set -e
 
 export \
+    APT=/usr/bin/apt \
     AUTORECONF=/usr/bin/autoreconf \
     BASH=/usr/bin/bash \
     BISON=/usr/bin/bison \
@@ -34,6 +35,7 @@ export \
     PYTHON=/usr/bin/python3 \
     RM="/usr/bin/rm -f" \
     RMDIR=/usr/bin/rmdir \
+    RPM=/usr/bin/rpm \
     RSYNC=/usr/bin/rsync \
     SED=/usr/bin/sed \
     SSH=/usr/bin/ssh \
@@ -142,12 +144,18 @@ package-invoke-builder libunistring-cross
 # gc build
 package-invoke-builder gc-cross
 
+# libev build
+package-invoke-builder libev-cross
+
 # gdbm build
 CFLAGS="\
     -fcommon \
     ${CFLAGS} \
 " \
 package-invoke-builder gdbm-cross
+
+# libdb build
+package-invoke-builder libdb-cross
 
 # ncurses build
 package-invoke-builder ncurses-cross
@@ -181,6 +189,30 @@ export GPERF=${BINDIR}/gperf
 
 # texinfo build
 package-invoke-builder texinfo-cross
+
+# guile build
+package-invoke-builder guile-cross
+
+# autogen build
+package-invoke-builder autogen-cross
+
+# libgpg-error build
+package-invoke-builder libgpg-error-cross
+
+# libgcrypt build
+package-invoke-builder libgcrypt-cross
+
+# libtans1 build
+package-invoke-builder libtasn1-cross
+
+# nettle build
+package-invoke-builder nettle-cross
+
+# p11-kit build
+package-invoke-builder p11-kit-cross
+
+# gnutls build
+package-invoke-builder gnutls-cross
 
 # indent build
 package-invoke-builder indent-cross
@@ -373,6 +405,17 @@ export \
 # dpkg build
 package-invoke-builder dpkg-cross
 export DPKG=${BINDIR}/dpkg
+
+# apt build
+package-invoke-builder apt-cross
+export APT=${BINDIR}/apt
+
+# popt build
+package-invoke-builder popt-cross
+
+# rpm build
+package-invoke-builder rpm-cross
+export RPM=${BINDIR}/rpm
 
 # rsync build
 package-invoke-builder rsync-cross
