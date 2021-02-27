@@ -133,6 +133,12 @@ export XZ=${BINDIR}/xz
 # libxml2 build
 package-invoke-builder libxml2-cross
 
+# gmp build
+package-invoke-builder gmp-cross
+
+# gc build
+package-invoke-builder gc-cross
+
 # gdbm build
 CFLAGS="\
     -fcommon \
