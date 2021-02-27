@@ -6,6 +6,8 @@ set -e
 export SOURCE_PACKAGE_NAME=libdb
 export SOURCE_PACKAGE_VERSION=5
 
+export DEPENDS="${PACKAGE_BASE_NAME}-gmp-6-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
+
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
