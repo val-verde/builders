@@ -136,6 +136,9 @@ package-invoke-builder libxml2-cross
 # gmp build
 package-invoke-builder gmp-cross
 
+# libunistring build
+package-invoke-builder libunistring-cross
+
 # gc build
 package-invoke-builder gc-cross
 
