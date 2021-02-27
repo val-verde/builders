@@ -89,12 +89,18 @@ package-invoke-builder libunistring-cross
 # gc build
 package-invoke-builder gc-cross
 
+# libev build
+package-invoke-builder libev-cross
+
 # android gdbm build
 CFLAGS="\
     -fcommon \
     ${CFLAGS} \
 " \
 package-invoke-builder gdbm-cross
+
+# libdb build
+package-invoke-builder libdb-cross
 
 # android ncurses build
 package-invoke-builder ncurses-cross
@@ -122,6 +128,30 @@ package-invoke-builder grep-cross
 
 # android texinfo build
 # package-invoke-builder texinfo-cross
+
+# guile build
+package-invoke-builder guile-cross
+
+# autogen build
+package-invoke-builder autogen-cross
+
+# libgpg-error build
+package-invoke-builder libgpg-error-cross
+
+# libgcrypt build
+package-invoke-builder libgcrypt-cross
+
+# libtans1 build
+package-invoke-builder libtasn1-cross
+
+# nettle build
+package-invoke-builder nettle-cross
+
+# p11-kit build
+package-invoke-builder p11-kit-cross
+
+# gnutls build
+package-invoke-builder gnutls-cross
 
 # android indent build
 package-invoke-builder indent-cross
@@ -313,6 +343,15 @@ CFLAGS="\
     ${CFLAGS} \
 " \
 package-invoke-builder dpkg-cross
+
+# apt build
+package-invoke-builder apt-cross
+
+# popt build
+package-invoke-builder popt-cross
+
+# rpm build
+package-invoke-builder rpm-cross
 
 # android rsync build
 package-invoke-builder rsync-cross
