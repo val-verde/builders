@@ -203,9 +203,9 @@ function export-compiler-environment() {
     fi
 
     if [ -z "${DISABLE_POLLY}" ]; then
-        COMMON_CFLAGS="\
+        COMMON_LLVM_CFLAGS="\
             -mllvm -polly \
-            ${COMMON_CFLAGS} \
+            ${COMMON_LLVM_CFLAGS} \
         "
     fi
 
@@ -229,21 +229,23 @@ function export-compiler-environment() {
     fi
 
     if [ -n "${HOST_ARCH_VECTOR_SIZE}" ]; then
-        COMMON_CFLAGS="\
+        COMMON_LLVM_CFLAGS="\
             -mllvm -force-vector-width=${HOST_ARCH_VECTOR_SIZE} \
-            ${COMMON_CFLAGS} \
+            ${COMMON_LLVM_CFLAGS} \
         "
     fi
 
     export ASFLAGS=`${ECHO} "\
         -pipe \
         ${COMMON_CFLAGS} \
+        ${COMMON_LLVM_CFLAGS} \
         ${OPTIMIZATION_FLAGS} \
         ${ASMFLAGS} \
     " | ${XARGS}`
     export CFLAGS=`${ECHO} "\
         -pipe \
         ${COMMON_CFLAGS} \
+        ${COMMON_LLVM_CFLAGS} \
         ${OPTIMIZATION_FLAGS} \
         ${CFLAGS} \
     " | ${XARGS}`
@@ -251,6 +253,7 @@ function export-compiler-environment() {
         -pipe \
         -rtlib=compiler-rt \
         ${COMMON_CFLAGS} \
+        ${COMMON_LLVM_CFLAGS} \
         ${COMMON_LDFLAGS} \
         ${CCLDFLAGS} \
     " | ${XARGS}`
@@ -262,6 +265,7 @@ function export-compiler-environment() {
     export CXXFLAGS=`${ECHO} "\
         -pipe \
         ${COMMON_CFLAGS} \
+        ${COMMON_LLVM_CFLAGS} \
         ${OPTIMIZATION_FLAGS} \
         ${CXXFLAGS} \
     " | ${XARGS}`
