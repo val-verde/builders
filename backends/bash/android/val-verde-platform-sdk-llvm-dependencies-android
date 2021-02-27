@@ -80,6 +80,12 @@ package-invoke-builder xz-cross
 # android libxml2 build
 package-invoke-builder libxml2-cross
 
+# gmp build
+package-invoke-builder gmp-cross
+
+# gc build
+package-invoke-builder gc-cross
+
 # android gdbm build
 CFLAGS="\
     -fcommon \
