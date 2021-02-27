@@ -975,6 +975,14 @@
     {
         "retainSource": "false",
         "sourceType": "git",
+        "sourcePackageName": "triehash",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
         "sourcePackageName": "unbound",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
