@@ -26,7 +26,7 @@ cd ${STAGE_ROOT}
 ninja-install
 
 package-rsync -ax \
-              ${STAGE_ROOT}/libsystemd*.so \
+              ${STAGE_ROOT}/libsystemd*.so* \
               ${INSTALL_PREFIX}/lib/
 
 # Build the package
