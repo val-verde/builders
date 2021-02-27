@@ -70,5 +70,11 @@ fi
 DXSDK_DIR=${SYSROOT} \
 package-invoke-builder sdl-cross
 
+# sdl-image build
+package-invoke-builder sdl-image-cross
+
+# sdl-ttf build
+package-invoke-builder sdl-ttf-cross
+
 # filament build
 package-invoke-builder filament-cross
