@@ -5,6 +5,7 @@ set -e
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=apt
 export SOURCE_PACKAGE_VERSION=2
+export DEPENDS="${PACKAGE_BASE_NAME}-gnutls-3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
@@ -17,6 +18,8 @@ package-cmake \
     -DLOG_DIR=/var/log/apt \
     -DSTATE_DIR=/var/lib/apt \
     -DTRIEHASH_EXECUTABLE=${SOURCE_ROOT_BASE}/triehash-0/triehash.pl \
+    -DWITH_DOC=FALSE \
+    -DWITH_TESTS=FALSE \
     ${SOURCE_ROOT}
 
 # Build the components
