@@ -31,6 +31,12 @@ fi
 # glslang build
 package-invoke-builder glslang-cross
 
+# opencl headers build
+package-invoke-builder opencl-headers-cross
+
+# opencl icd loader build
+package-invoke-builder opencl-icd-loader-cross
+
 # vulkan headers build
 package-invoke-builder vulkan-headers-cross
 
