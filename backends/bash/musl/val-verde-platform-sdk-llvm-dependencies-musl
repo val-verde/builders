@@ -5,6 +5,15 @@ set -e
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
+# musl argp-standalone build
+package-invoke-builder argp-standalone-cross
+
+# musl fts build
+package-invoke-builder musl-fts
+
+# musl obstack build
+package-invoke-builder musl-obstack
+
 # zlib build
 package-invoke-builder zlib-cross
 
@@ -116,17 +125,42 @@ package-invoke-builder indent-cross
 # util-linux build
 package-invoke-builder util-linux-cross
 
+# attr build
+CFLAGS="\
+    -include ${PACKAGE_PREFIX}/include/sys/cdefs.h \
+    ${CFLAGS} \
+" \
+CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-linux" \
+package-invoke-builder attr-cross
+
+# acl build
+CFLAGS="\
+    -include ${PACKAGE_PREFIX}/include/sys/cdefs.h \
+    ${CFLAGS} \
+" \
+CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-linux" \
+package-invoke-builder acl-cross
+
+# libarchive build
+package-invoke-builder libarchive-cross
+
+# libmicrohttpd build
+package-invoke-builder libmicrohttpd-cross
+
+# libssh2 build
+package-invoke-builder libssh2-cross
+
+# curl build
+package-invoke-builder curl-cross
+
+# elfutils build
+package-invoke-builder elfutils-cross
+
 # glib build
 package-invoke-builder glib-cross
 
 # pkg-config build
 package-invoke-builder pkg-config-cross
-
-# musl fts build
-package-invoke-builder musl-fts
-
-# musl obstack build
-package-invoke-builder musl-obstack
 
 # xorg-macros build
 package-invoke-builder xorg-macros-cross
@@ -182,33 +216,11 @@ package-invoke-builder cups-cross
 # libuv build
 package-invoke-builder libuv-cross
 
-# libssh2 build
-package-invoke-builder libssh2-cross
-
 # ldns build
 package-invoke-builder ldns-cross
 
 # openssh-portable build
 package-invoke-builder openssh-portable-cross
-
-# curl build
-package-invoke-builder curl-cross
-
-# attr build
-CFLAGS="\
-    -include ${PACKAGE_PREFIX}/include/sys/cdefs.h \
-    ${CFLAGS} \
-" \
-CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-linux" \
-package-invoke-builder attr-cross
-
-# acl build
-CFLAGS="\
-    -include ${PACKAGE_PREFIX}/include/sys/cdefs.h \
-    ${CFLAGS} \
-" \
-CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-linux" \
-package-invoke-builder acl-cross
 
 # bash build
 package-invoke-builder bash-cross
@@ -248,18 +260,6 @@ package-invoke-builder wayland-protocols-cross
 
 # mesa-drm build
 package-invoke-builder mesa-drm-cross
-
-# libarchive build
-package-invoke-builder libarchive-cross
-
-# libmicrohttpd build
-package-invoke-builder libmicrohttpd-cross
-
-# musl argp-standalone build
-package-invoke-builder argp-standalone-cross
-
-# elfutils build
-package-invoke-builder elfutils-cross
 
 # grep build
 package-invoke-builder grep-cross

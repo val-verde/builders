@@ -5,6 +5,12 @@ set -e
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
+# android argp-standalone build
+package-invoke-builder argp-standalone-cross
+
+# android musl obstack build
+package-invoke-builder musl-obstack
+
 # android zlib build
 package-invoke-builder zlib-cross
 
@@ -113,6 +119,45 @@ package-invoke-builder indent-cross
 # android util-linux build
 package-invoke-builder util-linux-cross
 
+# android attr build
+CFLAGS="\
+    -lintl \
+    -D__THROW= \
+    ${CFLAGS} \
+" \
+package-invoke-builder attr-cross
+
+# android acl build
+CFLAGS="\
+    -lintl \
+    -D__THROW= \
+    ${CFLAGS} \
+" \
+package-invoke-builder acl-cross
+
+# android libarchive build
+package-invoke-builder libarchive-cross
+
+# android libmicrohttpd build
+package-invoke-builder libmicrohttpd-cross
+
+# android libssh2 build
+package-invoke-builder libssh2-cross
+
+# android curl build
+package-invoke-builder curl-cross
+
+# android elfutils build
+CFLAGS="\
+    -lintl \
+    ${CFLAGS} \
+" \
+CXXFLAGS="\
+    -lintl \
+    ${CXXFLAGS} \
+" \
+package-invoke-builder elfutils-cross
+
 # android glib build
 package-invoke-builder glib-cross
 
@@ -170,33 +215,11 @@ package-invoke-builder xorg-libice-cross
 # android libuv build
 package-invoke-builder libuv-cross
 
-# android libssh2 build
-package-invoke-builder libssh2-cross
-
 # android ldns build
 package-invoke-builder ldns-cross
 
 # android openssh-portable build
 package-invoke-builder openssh-portable-cross
-
-# android curl build
-package-invoke-builder curl-cross
-
-# android attr build
-CFLAGS="\
-    -lintl \
-    -D__THROW= \
-    ${CFLAGS} \
-" \
-package-invoke-builder attr-cross
-
-# android acl build
-CFLAGS="\
-    -lintl \
-    -D__THROW= \
-    ${CFLAGS} \
-" \
-package-invoke-builder acl-cross
 
 # android bash build
 package-invoke-builder bash-cross
@@ -236,22 +259,6 @@ package-invoke-builder wayland-protocols-cross
 
 # android mesa-drm build
 package-invoke-builder mesa-drm-cross
-
-# android libarchive build
-package-invoke-builder libarchive-cross
-
-# android libmicrohttpd build
-package-invoke-builder libmicrohttpd-cross
-
-# android argp-standalone build
-package-invoke-builder argp-standalone-cross
-
-# android elfutils build
-CFLAGS="\
-    -lintl \
-    ${CFLAGS} \
-" \
-package-invoke-builder elfutils-cross
 
 # android sed build
 package-invoke-builder sed-cross
