@@ -51,5 +51,11 @@ package-invoke-builder go-bootstrap
 # openjdk bootstrap build
 package-invoke-builder openjdk-bootstrap
 
+# pkg-config bootstrap build
+CC=${BUILD_PACKAGE_PREFIX}/bin/${CLANG} \
+CPP=${BUILD_PACKAGE_PREFIX}/bin/${CLANG}-cpp \
+CXX=${BUILD_PACKAGE_PREFIX}/bin/${CLANG}++ \
+package-invoke-builder pkg-config
+
 # rust bootstrap build
 package-invoke-builder rust-bootstrap
