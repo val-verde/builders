@@ -92,7 +92,9 @@ function export-compiler-environment() {
     export DLLTOOL=${DLLTOOL:-${BINTOOLS_PATH_PREFIX}dlltool}
     export GO=${BINDIR}/go
     export GOROOT=${BUILD_PACKAGE_PREFIX}/go
+    export INSTALL_NAME_TOOL=${INSTALL_NAME_TOOL:-${BINTOOLS_PATH_PREFIX}install-name-tool}
     export LD=${LD:-${BINDIR}/ld.lld}
+    export LIPO=${LIPO:-${BINTOOLS_PATH_PREFIX}lipo}
     export MAKE=${MAKE:-${BINDIR}/make}
     export MAKEINFO=${MAKEINFO:-${BINDIR}/true}
     export MANIFEST_TOOL=${MANIFEST_TOOL:-${BINTOOLS_PATH_PREFIX}mt}
