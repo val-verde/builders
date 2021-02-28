@@ -5,10 +5,11 @@ set -e
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=libgcrypt
 export SOURCE_PACKAGE_VERSION=1
-export DEPENDS="${PACKAGE_BASE_NAME}-libgpg-error-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+export DEPENDS="${PACKAGE_BASE_NAME}-libgpg-error-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 
 # Invoke one-shot template for bootstrap/configure/install
 BOOTSTRAP_FILE=./autogen.sh \
