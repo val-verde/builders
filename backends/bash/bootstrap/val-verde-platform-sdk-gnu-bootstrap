@@ -83,3 +83,6 @@ package-invoke-builder hiredis
 
 # souper build
 package-invoke-builder souper
+
+# android ndk build
+package-invoke-builder android-ndk

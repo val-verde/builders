@@ -113,19 +113,8 @@ RUN HOST_ARCH=armv8-a \
     HOST_PROCESSOR=aarch64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-musl
 
-# android-ndk package
-FROM MUSL_BUILDER AS ANDROID_NDK_BUILDER
-
-RUN HOST_ARCH=${BUILD_ARCH} \
-    HOST_CPU=${BUILD_CPU} \
-    HOST_KERNEL=${BUILD_KERNEL} \
-    HOST_OS=${BUILD_OS} \
-    HOST_PROCESSOR=${BUILD_PROCESSOR} \
-    SYSROOT=/ \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android-ndk
-
 # webassembly build
-FROM ANDROID_NDK_BUILDER AS WEBASSEMBLY_BUILDER
+FROM MUSL_BUILDER AS WEBASSEMBLY_BUILDER
 
 COPY backends/bash/webassembly \
      /sources/
