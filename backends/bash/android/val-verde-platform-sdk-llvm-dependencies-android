@@ -83,9 +83,6 @@ package-invoke-builder libxml2-cross
 # gmp build
 package-invoke-builder gmp-cross
 
-# libunistring build
-package-invoke-builder libunistring-cross
-
 # gc build
 package-invoke-builder gc-cross
 
@@ -125,6 +122,9 @@ package-invoke-builder gawk-cross
 
 # android grep build
 package-invoke-builder grep-cross
+
+# android libunistring build
+package-invoke-builder libunistring-cross
 
 # android texinfo build
 # package-invoke-builder texinfo-cross
