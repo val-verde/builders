@@ -200,6 +200,8 @@ ninja-install
 
 ninja-install
 
+${LN} -sf lld.exe \
+          ${STAGE_ROOT}/bin/ld64.lld.exe
 ${RSYNC} -aPx \
          ${STAGE_ROOT}/bin/llvm-as* \
          ${STAGE_ROOT}/bin/llvm-dlltool* \
