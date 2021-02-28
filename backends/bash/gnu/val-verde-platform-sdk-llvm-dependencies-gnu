@@ -138,9 +138,6 @@ package-invoke-builder libxml2-cross
 # gmp build
 package-invoke-builder gmp-cross
 
-# libunistring build
-package-invoke-builder libunistring-cross
-
 # gc build
 package-invoke-builder gc-cross
 
@@ -186,6 +183,9 @@ export GAWK=${BINDIR}/gawk
 # gperf build
 package-invoke-builder gperf-cross
 export GPERF=${BINDIR}/gperf
+
+# libunistring build
+package-invoke-builder libunistring-cross
 
 # texinfo build
 package-invoke-builder texinfo-cross
