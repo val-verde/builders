@@ -337,6 +337,15 @@ package-invoke-builder dpkg-cross
 # apt build
 package-invoke-builder apt-cross
 
+# lua build
+package-invoke-builder lua-cross
+
+# popt build
+package-invoke-builder popt-cross
+
+# rpm build
+package-invoke-builder rpm-cross
+
 # rsync build
 package-invoke-builder rsync-cross
 
@@ -360,15 +369,6 @@ fi
 
 # libsecret build
 package-invoke-builder libsecret-cross
-
-# lua build
-package-invoke-builder lua-cross
-
-# popt build
-package-invoke-builder popt-cross
-
-# rpm build
-package-invoke-builder rpm-cross
 
 # swig build
 package-invoke-builder swig-cross
