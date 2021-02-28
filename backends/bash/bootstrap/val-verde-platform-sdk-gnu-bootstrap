@@ -42,6 +42,14 @@ package-apt-remove \
     lld \
     llvm
 
+export \
+    AR=${BUILD_PACKAGE_PREFIX}/bin/llvm-ar \
+    NM=${BUILD_PACKAGE_PREFIX}/bin/llvm-nm \
+    RANLIB=${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib \
+    CC=${BUILD_PACKAGE_PREFIX}/bin/clang \
+    CPP=${BUILD_PACKAGE_PREFIX}/bin/clang-cpp \
+    CXX=${BUILD_PACKAGE_PREFIX}/bin/clang++
+
 # bazel bootstrap build
 package-invoke-builder bazel-bootstrap
 
@@ -50,6 +58,9 @@ package-invoke-builder go-bootstrap
 
 # openjdk bootstrap build
 package-invoke-builder openjdk-bootstrap
+
+# pkg-config bootstrap build
+package-invoke-builder pkg-config
 
 # rust bootstrap build
 package-invoke-builder rust-bootstrap
