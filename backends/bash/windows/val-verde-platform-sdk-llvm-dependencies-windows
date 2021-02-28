@@ -93,6 +93,18 @@ package-invoke-builder gettext-cross
 # windows gperf build
 package-invoke-builder gperf-cross
 
+# windows libarchive build
+package-invoke-builder libarchive-cross
+
+# windows libmicrohttpd build
+package-invoke-builder libmicrohttpd-cross
+
+# windows libssh2 build
+package-invoke-builder libssh2-cross
+
+# windows curl build
+package-invoke-builder curl-cross
+
 # windows glib build
 package-invoke-builder glib-cross
 
@@ -116,18 +128,6 @@ package-invoke-builder xcb-pthread-stubs-cross
 
 # windows libuv build
 package-invoke-builder libuv-cross
-
-# windows libssh2 build
-package-invoke-builder libssh2-cross
-
-# windows curl build
-package-invoke-builder curl-cross
-
-# windows libarchive build
-package-invoke-builder libarchive-cross
-
-# windows libmicrohttpd build
-package-invoke-builder libmicrohttpd-cross
 
 # windows grep build
 package-invoke-builder grep-cross

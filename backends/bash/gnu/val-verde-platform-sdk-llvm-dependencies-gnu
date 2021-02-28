@@ -179,6 +179,28 @@ package-invoke-builder indent-cross
 # util-linux build
 package-invoke-builder util-linux-cross
 
+# attr build
+package-invoke-builder attr-cross
+
+# acl build
+package-invoke-builder acl-cross
+
+# libarchive build
+package-invoke-builder libarchive-cross
+
+# libmicrohttpd build
+package-invoke-builder libmicrohttpd-cross
+
+# libssh2 build
+package-invoke-builder libssh2-cross
+
+# curl build
+package-invoke-builder curl-cross
+export CURL=${BINDIR}/curl
+
+# elfutils build
+package-invoke-builder elfutils-cross
+
 # glib build
 package-invoke-builder glib-cross
 
@@ -240,25 +262,12 @@ package-invoke-builder cups-cross
 # libuv build
 package-invoke-builder libuv-cross
 
-# libssh2 build
-package-invoke-builder libssh2-cross
-
 # ldns build
 package-invoke-builder ldns-cross
 
 # openssh-portable build
 package-invoke-builder openssh-portable-cross
 export SSH=${BINDIR}/ssh
-
-# curl build
-package-invoke-builder curl-cross
-export CURL=${BINDIR}/curl
-
-# attr build
-package-invoke-builder attr-cross
-
-# acl build
-package-invoke-builder acl-cross
 
 # bash build
 package-invoke-builder bash-cross
@@ -299,15 +308,6 @@ package-invoke-builder wayland-protocols-cross
 
 # mesa-drm build
 package-invoke-builder mesa-drm-cross
-
-# libarchive build
-package-invoke-builder libarchive-cross
-
-# libmicrohttpd build
-package-invoke-builder libmicrohttpd-cross
-
-# elfutils build
-package-invoke-builder elfutils-cross
 
 # grep build
 package-invoke-builder grep-cross
