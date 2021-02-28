@@ -120,6 +120,9 @@ package-invoke-builder gettext-cross
 # android gawk build
 package-invoke-builder gawk-cross
 
+# android gperf build
+# package-invoke-builder gperf-cross
+
 # android grep build
 package-invoke-builder grep-cross
 
