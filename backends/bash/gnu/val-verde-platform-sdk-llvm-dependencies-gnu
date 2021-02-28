@@ -410,13 +410,6 @@ export DPKG=${BINDIR}/dpkg
 package-invoke-builder apt-cross
 export APT=${BINDIR}/apt
 
-# popt build
-package-invoke-builder popt-cross
-
-# rpm build
-package-invoke-builder rpm-cross
-export RPM=${BINDIR}/rpm
-
 # rsync build
 package-invoke-builder rsync-cross
 export RSYNC=${BINDIR}/rsync
@@ -456,6 +449,13 @@ package-invoke-builder tensorflow-cross
 
 # lua build
 package-invoke-builder lua-cross
+
+# popt build
+package-invoke-builder popt-cross
+
+# rpm build
+package-invoke-builder rpm-cross
+export RPM=${BINDIR}/rpm
 
 # swig build
 package-invoke-builder swig-cross

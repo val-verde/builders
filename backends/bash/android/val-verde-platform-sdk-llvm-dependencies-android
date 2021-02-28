@@ -347,12 +347,6 @@ package-invoke-builder dpkg-cross
 # apt build
 package-invoke-builder apt-cross
 
-# popt build
-package-invoke-builder popt-cross
-
-# rpm build
-package-invoke-builder rpm-cross
-
 # android rsync build
 package-invoke-builder rsync-cross
 
@@ -371,6 +365,12 @@ package-invoke-builder libsecret-cross
 
 # android lua build
 package-invoke-builder lua-cross
+
+# popt build
+package-invoke-builder popt-cross
+
+# rpm build
+package-invoke-builder rpm-cross
 
 # android swig build
 package-invoke-builder swig-cross
