@@ -18,9 +18,6 @@ ${CHMOD} +x ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang 
             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-rc \
             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc
 
-# openjdk bootstrap build
-package-invoke-builder openjdk-bootstrap
-
 # libunwind bootstrap build
 LLVM_NATIVE_STAGE_ROOT=/usr \
 package-invoke-builder libunwind-cross
@@ -38,6 +35,12 @@ package-invoke-builder llvm-project-bootstrap
 
 # bazel bootstrap build
 package-invoke-builder bazel-bootstrap
+
+# go bootstrap build
+package-invoke-builder go-bootstrap
+
+# openjdk bootstrap build
+package-invoke-builder openjdk-bootstrap
 
 # rust bootstrap build
 package-invoke-builder rust-bootstrap

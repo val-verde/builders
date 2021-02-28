@@ -208,6 +208,14 @@
     {
         "retainSource": "false",
         "sourceType": "git",
+        "sourcePackageName": "go",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
         "sourcePackageName": "gobject-introspection",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1.45.2",
