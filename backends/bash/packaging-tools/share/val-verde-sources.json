@@ -122,6 +122,14 @@
     {
         "retainSource": "false",
         "sourceType": "git",
+        "sourcePackageName": "dpkg",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
         "sourcePackageName": "egl-headers",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
@@ -1323,13 +1331,6 @@
         "sourceBranchIndicator": "wget",
         "sourcePackageVersion": "7.73.0",
         "sourcePackageUrl": "https://curl.haxx.se/download/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "dpkg",
-        "sourceBranchIndicator": "wget-xz",
-        "sourcePackageVersion": "1.20.7.1",
-        "sourcePackageUrl": "http://ftp.debian.org/debian/pool/main/d/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}_${SOURCE_PACKAGE_VERSION}.tar.xz"
     },
     {
         "sourceType": "other",
