@@ -298,6 +298,10 @@ package-invoke-builder coreutils-cross
 package-invoke-builder findutils-cross
 
 # android dpkg build
+CFLAGS="\
+    -lobstack \
+    ${CFLAGS} \
+" \
 package-invoke-builder dpkg-cross
 
 # android rsync build
