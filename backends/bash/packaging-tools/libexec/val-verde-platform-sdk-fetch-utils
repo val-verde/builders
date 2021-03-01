@@ -95,7 +95,9 @@ function prepare-source-base() {
     export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX}
     export STAGE_ROOT=${STAGE_ROOT_BASE}/${PACKAGE_NAME}
     export DEB_PATH=${SOURCE_DEB_PATH}
+}
 
+function prepare-stage-root() {
     # Prepare stage root (for logs) and install directory for source package
     ${MKDIR} -p \
                 ${INSTALL_PREFIX} \

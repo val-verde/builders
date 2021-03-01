@@ -33,6 +33,9 @@ function build-install-git-source-package() {
         # Print source builder context
         emit-source-builder-context
 
+        # Set up stage root for source build
+        prepare-stage-root
+
         GIT_URL=${PACKAGE_URL} \
         TARGET_ROOT=${INSTALL_PREFIX} \
         RETAIN_SOURCE=${RETAIN_SOURCE} \
@@ -54,11 +57,11 @@ function build-install-git-source-package() {
 
         # Build the source deb package
         deb-package-build
-    fi
 
-    # Clean up
-    ${RM} -rf ${INSTALL_ROOT}
-    ${ECHO} -e "    Source Builder Completed"
+        # Clean up
+        ${RM} -rf ${INSTALL_ROOT}
+        ${ECHO} -e "    Source Builder Completed"
+    fi
 }
 
 function build-install-other-source-package() {
@@ -74,16 +77,19 @@ function build-install-other-source-package() {
         # Print builder context message
         emit-source-builder-context
 
+        # Set up stage root for source build
+        prepare-stage-root
+
         # Extract source package from tar ball
         untar-tar-balls
 
         # Build the source deb package
         deb-package-build
-    fi
 
-    # Clean up
-    ${RM} -rf ${INSTALL_ROOT}
-    ${ECHO} -e "    Source Builder Completed"
+        # Clean up
+        ${RM} -rf ${INSTALL_ROOT}
+        ${ECHO} -e "    Source Builder Completed"
+    fi
 }
 
 function fetch-single-source() {
