@@ -25,3 +25,6 @@ PCRE_LIBS="-lpcre" \
 package-bootstrap-configure-install \
     --disable-static \
     --enable-shared
+
+# Build and install the package
+package-invoke-artifact-install

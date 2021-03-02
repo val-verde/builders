@@ -23,3 +23,7 @@ fi
 DISABLE_AUTOUPDATE=TRUE \
 package-stage-configure-install \
     --${ENABLE_OR_DISABLE_SHARED}-shared
+
+
+# Build and install the package
+package-invoke-artifact-install

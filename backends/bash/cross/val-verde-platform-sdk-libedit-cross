@@ -25,3 +25,6 @@ RPATH_COMPONENTS="\
 package-stage-configure-install \
     --disable-static \
     --enable-shared
+
+# Build and install the package
+package-invoke-artifact-install

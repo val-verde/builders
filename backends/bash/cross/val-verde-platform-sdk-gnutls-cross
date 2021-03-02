@@ -37,3 +37,6 @@ package-bootstrap-configure-install \
     --enable-shared \
     --enable-ssl3-support \
     --with-autoopts-config=${PACKAGE_PREFIX}/bin/autoopts-config
+
+# Build and install the package
+package-invoke-artifact-install

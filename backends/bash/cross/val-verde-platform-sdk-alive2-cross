@@ -65,8 +65,5 @@ Libs: -L\${libdir} -lalive2
 Cflags: -I\${includedir}
 " > ${INSTALL_PREFIX}/lib/pkgconfig/alive2.pc
 
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install
+# Build and install the package
+package-invoke-artifact-install

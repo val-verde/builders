@@ -36,3 +36,6 @@ package-bootstrap-configure-install \
     --${ENABLE_OR_DISABLE_JIT}-jit \
     --${ENABLE_OR_DISABLE_POSIX}-posix \
     --${WITH_OR_WITHOUT_MODULES}-modules
+
+# Build and install the package
+package-invoke-artifact-install

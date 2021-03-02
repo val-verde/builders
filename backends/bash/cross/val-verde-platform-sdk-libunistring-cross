@@ -16,3 +16,6 @@ CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 package-bootstrap-configure-install \
     --disable-static \
     --enable-shared
+
+# Build and install the package
+package-invoke-artifact-install

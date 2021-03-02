@@ -27,3 +27,6 @@ package-configure-install \
     --enable-libmount \
     --enable-libuuid \
     --enable-shared
+
+# Build and install the package
+package-invoke-artifact-install

@@ -19,3 +19,6 @@ package-stage-configure-install \
     --enable-shared \
     --with-libexpat=${PACKAGE_PREFIX} \
     --with-ssl=${PACKAGE_PREFIX}
+
+# Build and install the package
+package-invoke-artifact-install

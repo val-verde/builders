@@ -19,3 +19,6 @@ package-configure-install \
     --enable-pcregrep-libbz2 \
     --enable-shared \
     --enable-unicode-properties
+
+# Build and install the package
+package-invoke-artifact-install

@@ -25,9 +25,5 @@ make-install \
     DSTROOT=${INSTALL_PREFIX} \
     OUTDIR=${STAGE_ROOT}
 
-# Build the package
-cd ${STAGE_ROOT}
-deb-package-build
-
-# Install the package
-deb-package-install
+# Build and install the package
+package-invoke-artifact-install

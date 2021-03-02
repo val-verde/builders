@@ -28,3 +28,6 @@ package-stage-configure-install \
     rsync_cv_HAVE_BROKEN_READDIR=no \
     --disable-md2man \
     ${CONFIGURE_SIMD_CMD}
+
+# Build and install the package
+package-invoke-artifact-install

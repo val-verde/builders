@@ -15,3 +15,6 @@ package-configure-install \
     --disable-static \
     --enable-malloc0returnsnull \
     --enable-shared
+
+# Build and install the package
+package-invoke-artifact-install

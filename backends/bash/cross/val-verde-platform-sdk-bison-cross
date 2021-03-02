@@ -12,3 +12,6 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 # Invoke one-shot template for configure/install
 DISABLE_AUTOUPDATE=TRUE \
 package-configure-install
+
+# Build and install the package
+package-invoke-artifact-install

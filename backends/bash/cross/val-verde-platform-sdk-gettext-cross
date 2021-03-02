@@ -17,3 +17,6 @@ export DEPENDS="\
 # Invoke one-shot template for stage/configure/install
 RM="${RM} -r" \
 package-stage-configure-install
+
+# Build and install the package
+package-invoke-artifact-install
