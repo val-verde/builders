@@ -663,7 +663,6 @@ function package-configure-install-staged() {
 
 function package-install() {
     CONFIGURE_BUILD_ROOT=${CONFIGURE_BUILD_ROOT:-${STAGE_ROOT}}
-
     package-push-directory ${CONFIGURE_BUILD_ROOT}
         # Install package
         make-install
@@ -673,13 +672,15 @@ function package-install() {
 
         # RPATH fixups
         rpath-fixup
-
-        # Build the package
-        deb-package-build
-
-        # Build the package
-        deb-package-install
     package-pop-directory
+}
+
+function package-invoke-artifact-install() {
+    # Build the package
+    deb-package-build
+
+    # Install the package
+    deb-package-install
 }
 
 # package-get-path <name> <EXECUTABLE|SHARED|STATIC>
