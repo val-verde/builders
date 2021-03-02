@@ -16,3 +16,6 @@ INSTALL_TARGET="install-dev install-lib" \
 package-configure-install \
     --disable-static \
     --enable-shared
+
+# Build and install the package
+package-invoke-artifact-install

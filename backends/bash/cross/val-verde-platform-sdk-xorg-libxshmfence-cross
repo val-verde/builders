@@ -21,3 +21,6 @@ package-configure-install \
     ac_cv_func_memfd_create=${MEMFD_CREATE_AVAILABLE} \
     --disable-static \
     --enable-shared
+
+# Build and install the package
+package-invoke-artifact-install

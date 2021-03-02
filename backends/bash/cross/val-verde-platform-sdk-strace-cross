@@ -18,3 +18,6 @@ CFLAGS="\
 DISABLE_AUTOUPDATE=TRUE \
 package-bootstrap-configure-install \
     --enable-mpers=no
+
+# Build and install the package
+package-invoke-artifact-install

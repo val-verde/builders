@@ -12,6 +12,10 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 # Invoke one-shot template for stage/configure/install
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 CONFIGURE_FILE=gitcompile \
+DISABLE_AUTOUPDATE=TRUE \
 package-stage-configure-install \
     --disable-static \
     --enable-shared
+
+# Build and install the package
+package-invoke-artifact-install

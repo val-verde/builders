@@ -30,3 +30,6 @@ package-configure-install \
     --enable-tools \
     --with-library-suffix=swift \
     "${CROSS_BUILD_CMD}"
+
+# Build and install the package
+package-invoke-artifact-install

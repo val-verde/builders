@@ -28,3 +28,6 @@ package-stage-configure-install \
     --with-linux-crypto \
     --with-openssl \
     --with-ssl=openssl
+
+# Build and install the package
+package-invoke-artifact-install

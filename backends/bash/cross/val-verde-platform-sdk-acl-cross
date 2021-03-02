@@ -19,3 +19,6 @@ package-configure-install \
     --disable-static \
     --enable-shared \
     --includedir=${PACKAGE_PREFIX}/include
+
+# Build and install the package
+package-invoke-artifact-install

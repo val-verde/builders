@@ -58,3 +58,6 @@ package-stage-configure-install \
     --with-bzlib=yes \
     --with-lzma=yes \
     --with-zlib=yes
+
+# Build and install the package
+package-invoke-artifact-install

@@ -15,3 +15,6 @@ CXXFLAGS="\
     ${CXXFLAGS} \
 " \
 package-configure-install
+
+# Build and install the package
+package-invoke-artifact-install

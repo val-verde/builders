@@ -32,3 +32,6 @@ package-stage-configure-install \
     --enable-shared \
     --with-icu \
     ${WITH_OR_WITHOUT_PYTHON}
+
+# Build and install the package
+package-invoke-artifact-install

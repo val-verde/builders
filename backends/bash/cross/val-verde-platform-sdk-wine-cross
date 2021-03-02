@@ -19,3 +19,6 @@ package-stage-configure-install \
     --enable-shared \
     --enable-win64 \
     ${CROSS_CMD}
+
+# Build and install the package
+package-invoke-artifact-install

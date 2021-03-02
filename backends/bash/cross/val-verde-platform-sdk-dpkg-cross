@@ -50,3 +50,6 @@ package-bootstrap-configure-install \
     cross_compiling=${CROSS_COMPILING} \
     --disable-dselect \
     --with-admindir=${ADMIN_DIR}
+
+# Build and install the package
+package-invoke-artifact-install

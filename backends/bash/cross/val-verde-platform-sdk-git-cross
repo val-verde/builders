@@ -30,3 +30,6 @@ package-stage-configure-install \
     --with-curl=${PACKAGE_PREFIX} \
     --with-expat=${PACKAGE_PREFIX} \
     --with-openssl=${PACKAGE_PREFIX}
+
+# Build and install the package
+package-invoke-artifact-install

@@ -76,8 +76,5 @@ ${LN} -sf \
       python3 \
       ${INSTALL_PREFIX}/bin/python
 
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install
+# Build and install the package
+package-invoke-artifact-install

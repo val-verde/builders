@@ -13,3 +13,6 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 DISABLE_AUTOUPDATE=TRUE \
 package-stage-configure-install \
     --with-oniguruma=builtin
+
+# Build and install the package
+package-invoke-artifact-install

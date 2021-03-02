@@ -83,8 +83,5 @@ Libs: -L\${libdir} -llua -lm -ldl
 Cflags: -I\${includedir}
 " > ${INSTALL_PREFIX}/lib/pkgconfig/lua.pc
 
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install
+# Build and install the package
+package-invoke-artifact-install

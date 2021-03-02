@@ -22,3 +22,6 @@ package-stage-configure-install \
     --disable-static \
     --enable-shared \
     --with-ssl=${PACKAGE_PREFIX}
+
+# Build and install the package
+package-invoke-artifact-install

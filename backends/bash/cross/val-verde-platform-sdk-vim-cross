@@ -23,3 +23,6 @@ package-configure-install \
     vim_cv_tgetent=yes \
     vim_cv_toupper_broken=no \
     --with-tlib=ncurses
+
+# Build and install the package
+package-invoke-artifact-install

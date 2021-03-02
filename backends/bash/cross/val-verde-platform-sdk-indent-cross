@@ -20,3 +20,6 @@ CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 CONFIGURE_FILE=bootstrap \
 INSTALL_TARGET="CC_FOR_BUILD=${BUILD_CC} install" \
 package-configure-install
+
+# Build and install the package
+package-invoke-artifact-install

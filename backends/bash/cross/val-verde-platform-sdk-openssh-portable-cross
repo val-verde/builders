@@ -31,3 +31,6 @@ package-stage-configure-install \
     --enable-shared \
     --with-ldns=${PACKAGE_PREFIX} \
     --with-maildir=${MAIL_DIR}
+
+# Build and install the package
+package-invoke-artifact-install
