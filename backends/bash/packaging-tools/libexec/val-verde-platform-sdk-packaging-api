@@ -9,25 +9,28 @@ TARGETS=${TARGETS:-install}
 VERSION=${VERSION:='1.0.0'}
 
 function deb-package-build() {
-    package-push-directory ${INSTALL_ROOT}
-        ${MKDIR} -p ${TEMPDIR}/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
-        package-rsync -ax \
-                      ${BASE_DIRECTORY} \
-                      ${TEMPDIR}/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}/
+    if [ -z "${DISABLE_BUILD_DEB}" ]; then
+        package-push-directory ${INSTALL_ROOT}
+            ${MKDIR} -p ${TEMPDIR}/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+            package-rsync -ax \
+                        ${BASE_DIRECTORY} \
+                        ${TEMPDIR}/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}/
 
-        TEMPLATE_ROOT=${TEMPLATE_ROOT} \
-        generate-control-file "${PACKAGE_NAME}"
-        package-dpkg-build ${TEMPDIR}/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
-
-        ${MV} ${TEMPDIR}/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}.deb ${DEB_PATH}/${PACKAGE_NAME}.deb
-        ${RM} -r ${TEMPDIR}/pkg-intermediates-${SOURCE_PACKAGE_NAME}
-    package-pop-directory
+            TEMPLATE_ROOT=${TEMPLATE_ROOT} \
+            generate-control-file "${PACKAGE_NAME}"
+            package-dpkg-build ${TEMPDIR}/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+            ${MV} ${TEMPDIR}/pkg-intermediates-${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}.deb ${DEB_PATH}/${PACKAGE_NAME}.deb
+            ${RM} -r ${TEMPDIR}/pkg-intermediates-${SOURCE_PACKAGE_NAME}
+        package-pop-directory
+    fi
 }
 
 function deb-package-install() {
-    package-push-directory /sources
-        package-dpkg-install ${DEB_PATH}/${PACKAGE_NAME}.deb
-    package-pop-directory
+    if [ -z "${DISABLE_INSTALL_DEB}" ]; then
+        package-push-directory /sources
+            package-dpkg-install ${DEB_PATH}/${PACKAGE_NAME}.deb
+        package-pop-directory
+    fi
 }
 
 function deb-package-mgmt() {
