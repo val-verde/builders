@@ -39,5 +39,6 @@ if [ "${HOST_OS}" = "mingw32" ]; then
                   ${INSTALL_PREFIX}/
 fi
 
-# Build the package
-deb-package-build
+# Build and install the package
+DISABLE_INSTALL_DEB=TRUE \
+package-invoke-artifact-install
