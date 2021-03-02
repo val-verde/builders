@@ -6,6 +6,7 @@ set -e
 export SOURCE_PACKAGE_NAME=swift-driver
 export SOURCE_PACKAGE_VERSION=5
 
+
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
@@ -40,5 +41,6 @@ package-rsync -ax \
               ${STAGE_ROOT}/lib \
               ${INSTALL_PREFIX}/
 
-# Build the package
-deb-package-build
+# Build and install the package
+DISABLE_INSTALL_DEB=TRUE \
+package-invoke-artifact-install

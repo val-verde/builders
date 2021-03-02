@@ -31,8 +31,5 @@ package-rsync -ax \
               ${STAGE_ROOT}/${SHARED_LIBRARY_PREFIX}systemd*${SHARED_LIBRARY_SUFFIX}* \
               ${INSTALL_PREFIX}/lib/
 
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install
+# Build and install the package
+package-invoke-artifact-install

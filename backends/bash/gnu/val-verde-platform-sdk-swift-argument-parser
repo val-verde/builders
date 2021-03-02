@@ -34,5 +34,6 @@ package-rsync -ax \
               ${STAGE_ROOT}/lib \
               ${INSTALL_PREFIX}/
 
-# Build the package
-deb-package-build
+# Build and install the package
+DISABLE_INSTALL_DEB=TRUE \
+package-invoke-artifact-install

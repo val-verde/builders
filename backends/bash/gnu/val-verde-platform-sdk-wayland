@@ -20,3 +20,6 @@ package-configure-install \
     --disable-static \
     --disable-tests \
     --enable-shared
+
+# Build and install the package
+package-invoke-artifact-install
