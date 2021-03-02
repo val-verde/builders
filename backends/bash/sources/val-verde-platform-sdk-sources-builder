@@ -11,6 +11,7 @@ export SOURCE_PACKAGE_VERSION=1
 export INSTALL_ROOT=/tmp/org.${VAL_VERDE_GH_TEAM}/scripts
 export STAGE_ROOT=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}
+export PACKAGE_INSTALL_FLAG='install'
 
 ${MKDIR} -p \
          ${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM} \
@@ -29,6 +30,7 @@ if [ -d "/sources/source-debs" ]; then
     package-rsync -aPx \
                   /sources/source-debs/* \
                   ${SOURCE_DEB_PATH}
+    rm -rf /sources/source-debs
 fi
 
 # Package debs
