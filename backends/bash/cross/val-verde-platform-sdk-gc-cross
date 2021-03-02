@@ -14,3 +14,6 @@ export DEPENDS="${PACKAGE_BASE_NAME}-libatomic-ops-7-${HOST_OS}${HOST_OS_API_LEV
 # Invoke one-shot template for bootstrap/configure/install
 BOOTSTRAP_FILE=./autogen.sh \
 package-bootstrap-configure-install
+
+# Build and install the package
+package-invoke-installer

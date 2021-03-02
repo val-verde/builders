@@ -26,3 +26,6 @@ CFLAGS="\
 " \
 package-configure-install \
     "${MAKE_FS_CMD}"
+
+# Build and install the package
+package-invoke-installer

@@ -32,3 +32,6 @@ ${SED} -i \
 # Invoke one-shot template for install
 INSTALL_TARGET="HELP2MAN=${HELP2MAN} install" \
 package-install
+
+# Build and install the package
+package-invoke-installer

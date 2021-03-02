@@ -35,8 +35,5 @@ make-install \
     prefix=${PACKAGE_PREFIX} \
     CC=${CC}
 
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install
+# Build and install the package
+package-invoke-installer

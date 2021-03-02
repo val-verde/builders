@@ -21,3 +21,6 @@ DISABLE_AUTOUPDATE=TRUE \
 package-bootstrap-configure-install \
     --disable-static \
     --enable-shared
+
+# Build and install the package
+package-invoke-installer

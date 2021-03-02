@@ -23,3 +23,6 @@ fi
 NUM_PROCESSORS=1 \
 package-configure-install \
     ${MALLOC_CMD}
+
+# Build and install the package
+package-invoke-installer
