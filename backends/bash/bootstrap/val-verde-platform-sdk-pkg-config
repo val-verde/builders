@@ -16,3 +16,6 @@ package-configure-install \
     ac_cv_func_posix_getpwuid_r=yes \
     glib_cv_stack_grows=no \
     glib_cv_uscore=no
+
+# Build and install the package
+package-invoke-artifact-install

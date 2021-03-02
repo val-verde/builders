@@ -25,8 +25,5 @@ package-wget -c https://github.com/bazelbuild/${SOURCE_PACKAGE_NAME}/releases/do
 
 ${CHMOD} +x ${INSTALL_PREFIX}/bin/${SOURCE_PACKAGE_NAME}
 
-# Build the package
-deb-package-build
-
-# Build the package
-deb-package-install
+# Build and install the package
+package-invoke-artifact-install
