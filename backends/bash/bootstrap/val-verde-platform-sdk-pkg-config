@@ -17,3 +17,6 @@ package-configure-install \
     glib_cv_stack_grows=no \
     glib_cv_uscore=no \
     --with-internal-glib
+
+# Build and install the package
+package-invoke-installer
