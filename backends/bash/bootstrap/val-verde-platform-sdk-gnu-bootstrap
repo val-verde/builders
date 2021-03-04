@@ -3,7 +3,10 @@
 set -e
 
 # Source package build helper functions
-export BINDIR=/usr/bin
+export \
+    BINDIR=/usr/bin \
+    CLANG=clang
+
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 ${MKDIR} -p ${BUILD_PACKAGE_PREFIX}
@@ -59,8 +62,23 @@ package-invoke-builder go-bootstrap
 # openjdk bootstrap build
 package-invoke-builder openjdk-bootstrap
 
+# rust bootstrap build
+package-invoke-builder rust-bootstrap
+
 # pkg-config bootstrap build
 package-invoke-builder pkg-config
 
-# rust bootstrap build
-package-invoke-builder rust-bootstrap
+# z3 build
+package-invoke-builder z3
+
+# re2c build
+package-invoke-builder re2c
+
+# alive2 build
+package-invoke-builder alive2
+
+# hiredis build
+package-invoke-builder hiredis
+
+# souper build
+package-invoke-builder souper

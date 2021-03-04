@@ -77,7 +77,7 @@ function export-compiler-environment() {
     CXX_INCLUDE_DIR=${CXX_INCLUDE_DIR:-${PACKAGE_PREFIX}/include/c++/v1}
     OPTIMIZATION_FLAGS=${OPTIMIZATION_FLAGS:-"-DNDEBUG"}
 
-    export CLANG=${CLANG:-clang}
+    export CLANG=${CLANG:-sclang}
     export ACLOCAL_PATH=${PACKAGE_PREFIX}/share/aclocal
     export AR=${AR:-${BINTOOLS_PATH_PREFIX}ar}
     export AS=${CC:-${BINDIR}/${CLANG}}
