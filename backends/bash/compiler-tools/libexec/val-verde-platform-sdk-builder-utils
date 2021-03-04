@@ -91,8 +91,8 @@ function export-compiler-environment() {
     export CXXFILT=${CXXFILT:-${BINTOOLS_PATH_PREFIX}cxxfilt}
     export CXXLD=${CXXLD:-${CXX}}
     export DLLTOOL=${DLLTOOL:-${BINTOOLS_PATH_PREFIX}dlltool}
-    export GO=${BINDIR}/go
-    export GOROOT=${BUILD_PACKAGE_PREFIX}/go
+    export GO=${GO:-${BINDIR}/go}
+    export GOROOT=${GOROOT:-${BUILD_PACKAGE_PREFIX}/go}
     export INSTALL_NAME_TOOL=${INSTALL_NAME_TOOL:-${BINTOOLS_PATH_PREFIX}install-name-tool}
     export LD=${LD:-${BINDIR}/ld.lld}
     export LIPO=${LIPO:-${BINTOOLS_PATH_PREFIX}lipo}
@@ -116,6 +116,18 @@ function export-compiler-environment() {
     export STRIP=${STRIP:-${BINTOOLS_PATH_PREFIX}strip}
     export SWIFTC=${SWIFTC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc}
     export WINDRES=${RC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-rc}
+
+    if [ "${BUILD_PROCESSOR}" = "aarch64" ]; then
+        GOHOSTARCH=arm64
+    elif [ "${BUILD_PROCESSOR}" = "x86_64" ]; then
+        GOHOSTARCH=amd64
+    fi
+
+    if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+        GOARCH=arm64
+    elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+        GOARCH=amd64
+    fi
 
     if [ -n "${HOST_ARCH}" ]; then
         COMMON_CFLAGS="\
@@ -164,12 +176,22 @@ function export-compiler-environment() {
         export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:/usr/lib/${BUILD_TRIPLE}/pkgconfig:/usr/share/pkgconfig
     fi
 
+    if [ "${BUILD_OS}" = "android" ]; then
+        GOHOSTOS=android
+    elif [ "${BUILD_OS}" = "gnu" ] ||
+         [ "${BUILD_OS}" = "musl" ]; then
+        GOHOSTOS=linux
+    elif [ "${BUILD_OS}" = "mingw32" ]; then
+        GOHOSTOS=windows
+    fi
+
     if [ "${HOST_OS}" = "android" ]; then
         COMMON_CFLAGS="\
             -fPIC \
             -D__USE_FORTIFY_LEVEL=0 \
             ${COMMON_CFLAGS} \
         "
+        GOOS=android
         SWIFTCFLAGS="\
             -Xcc -D__USE_FORTIFY_LEVEL=0 \
             ${SWIFTCFLAGS} \
@@ -179,6 +201,7 @@ function export-compiler-environment() {
             -fPIC \
             ${COMMON_CFLAGS} \
         "
+        GOOS=linux
     elif [ "${HOST_OS}" = "musl" ]; then
         COMMON_CFLAGS="\
             -fPIC \
@@ -186,6 +209,8 @@ function export-compiler-environment() {
             -D__USE_FORTIFY_LEVEL=0 \
             ${COMMON_CFLAGS} \
         "
+        GO_LDSO=/lib/ld-${HOST_OS}-${HOST_PROCESSOR}.so.1
+        GOOS=linux
         SWIFTCFLAGS="\
             -Xcc -D_ALL_SOURCE=1 \
             -Xcc -D__USE_FORTIFY_LEVEL=0 \
@@ -196,6 +221,7 @@ function export-compiler-environment() {
             -fno-builtin-stpcpy \
             ${COMMON_CFLAGS} \
         "
+        GOOS=windows
     fi
 
     if [ -z "${DISABLE_CXX_INCLUDE}" ]; then
@@ -272,6 +298,11 @@ function export-compiler-environment() {
         ${OPTIMIZATION_FLAGS} \
         ${CXXFLAGS} \
     " | ${XARGS}`
+    export GO_LDSO=${GO_LDSO}
+    export GOARCH=${GOARCH}
+    export GOHOSTARCH=${GOHOSTARCH}
+    export GOHOSTOS=${GOHOSTOS}
+    export GOOS=${GOOS}
     export LDFLAGS=`${ECHO} "\
         ${LDFLAGS} \
     " | ${XARGS}`

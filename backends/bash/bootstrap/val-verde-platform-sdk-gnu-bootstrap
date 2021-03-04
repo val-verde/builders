@@ -47,17 +47,18 @@ package-apt-remove \
 
 export \
     AR=${BUILD_PACKAGE_PREFIX}/bin/llvm-ar \
-    NM=${BUILD_PACKAGE_PREFIX}/bin/llvm-nm \
-    RANLIB=${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib \
     CC=${BUILD_PACKAGE_PREFIX}/bin/clang \
     CPP=${BUILD_PACKAGE_PREFIX}/bin/clang-cpp \
-    CXX=${BUILD_PACKAGE_PREFIX}/bin/clang++
+    CXX=${BUILD_PACKAGE_PREFIX}/bin/clang++ \
+    NM=${BUILD_PACKAGE_PREFIX}/bin/llvm-nm \
+    RANLIB=${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib
 
 # bazel bootstrap build
 package-invoke-builder bazel-bootstrap
 
 # go bootstrap build
 package-invoke-builder go-bootstrap
+export GO=${BUILD_PACKAGE_PREFIX}/bin/go
 
 # openjdk bootstrap build
 package-invoke-builder openjdk-bootstrap
