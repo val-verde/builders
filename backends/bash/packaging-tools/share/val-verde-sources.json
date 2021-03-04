@@ -1183,7 +1183,7 @@
         "sourceType": "other",
         "sourcePackageName": "dpkg",
         "sourceBranchIndicator": "wget-xz",
-        "sourcePackageVersion": "1.20.5",
+        "sourcePackageVersion": "1.20.7.1",
         "sourcePackageUrl": "http://ftp.debian.org/debian/pool/main/d/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}_${SOURCE_PACKAGE_VERSION}.tar.xz"
     },
     {
