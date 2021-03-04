@@ -623,6 +623,14 @@
     {
         "retainSource": "false",
         "sourceType": "git",
+        "sourcePackageName": "sdl",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
         "sourcePackageName": "souper",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
@@ -1324,13 +1332,6 @@
         "sourceBranchIndicator": "wget",
         "sourcePackageVersion": "0.29.2",
         "sourcePackageUrl": "https://pkgconfig.freedesktop.org/releases/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "sdl",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "2.0.14",
-        "sourcePackageUrl": "https://www.libsdl.org/release/SDL2-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
         "sourceType": "other",
