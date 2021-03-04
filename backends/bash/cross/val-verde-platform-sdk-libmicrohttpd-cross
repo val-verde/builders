@@ -13,7 +13,12 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-zlib-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
+if [ "${HOST_OS}" = "mingw32" ]; then
+    ENABLE_OR_DISABLE_SHARED=disable
+else
+    ENABLE_OR_DISABLE_SHARED=enable
+fi
+
 # Invoke one-shot template for stage/configure/install
 package-stage-configure-install \
-    --disable-static \
-    --enable-shared
+    --${ENABLE_OR_DISABLE_SHARED}-shared
