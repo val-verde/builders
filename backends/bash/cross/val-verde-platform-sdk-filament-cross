@@ -21,9 +21,9 @@ BUILD_TYPE=${BUILD_TYPE:-Release}
 copy-source-to-staging
 
 if [ "${BUILD_TRIPLE}" != ${HOST_TRIPLE} ]; then
-    ${RSYNC} -aPx \
-             ${BUILD_PACKAGE_PREFIX}/lib/cmake/${SOURCE_PACKAGE_NAME}.cmake \
-             ${STAGE_ROOT}/ImportExecutables-${BUILD_TYPE}.cmake
+    package-rsync -ax \
+                  ${BUILD_PACKAGE_PREFIX}/lib/cmake/${SOURCE_PACKAGE_NAME}.cmake \
+                  ${STAGE_ROOT}/ImportExecutables-${BUILD_TYPE}.cmake
 fi
 
 if [ "${HOST_KERNEL}" = "linux" ] &&
@@ -85,9 +85,9 @@ ninja-install
 ${MKDIR} -p ${INSTALL_PREFIX}/lib/cmake
 
 if [ "${BUILD_TRIPLE}" == ${HOST_TRIPLE} ]; then
-    ${RSYNC} -aPx \
-             ${STAGE_ROOT}/ImportExecutables-${BUILD_TYPE}.cmake \
-             ${INSTALL_PREFIX}/lib/cmake/${SOURCE_PACKAGE_NAME}.cmake
+    package-rsync -ax \
+                  ${STAGE_ROOT}/ImportExecutables-${BUILD_TYPE}.cmake \
+                  ${INSTALL_PREFIX}/lib/cmake/${SOURCE_PACKAGE_NAME}.cmake
 fi
 
 # Build the package

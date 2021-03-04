@@ -33,10 +33,9 @@ package-swift-build
 
 cd ${STAGE_ROOT}
 ${MKDIR} -p ${INSTALL_PREFIX}/bin
-
-${RSYNC} -aPx \
-         `${FIND} release/baikonur* -executable -type f` \
-         ${INSTALL_PREFIX}/bin
+package-rsync -ax \
+              `${FIND} release/baikonur* -executable -type f` \
+              ${INSTALL_PREFIX}/bin
 
 # RPATH fixups
 COMPONENTS="\

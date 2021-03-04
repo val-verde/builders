@@ -29,7 +29,7 @@ ${MKDIR} -p \
          ${INSTALL_PREFIX}/bin \
          ${INSTALL_PREFIX}/go
 
-package-rsync -aPx \
+package-rsync -ax \
               go/bin \
               go/pkg \
               go/src \

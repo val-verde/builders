@@ -12,9 +12,9 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 # Configure the build components
 cd ${STAGE_ROOT}
 ${MKDIR} -p ${INSTALL_PREFIX}/include
-${RSYNC} -aPx \
-         ${SOURCE_ROOT}/api/GL \
-         ${INSTALL_PREFIX}/include/
+package-rsync -ax \
+              ${SOURCE_ROOT}/api/GL \
+              ${INSTALL_PREFIX}/include/
 
 # Build the package
 deb-package-build

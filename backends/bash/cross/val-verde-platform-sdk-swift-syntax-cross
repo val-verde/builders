@@ -26,15 +26,15 @@ fi
 
 cd ${STAGE_ROOT}
 ${MKDIR} -p ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
-${RSYNC} -aPx \
-         release/Swift*.swiftdoc \
-         ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
-${RSYNC} -aPx \
-         release/Swift*.swiftmodule \
-         ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
-${RSYNC} -aPx \
-         release/libSwift*.a \
-         ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/
+package-rsync -ax \
+              release/Swift*.swiftdoc \
+              ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
+package-rsync -ax \
+              release/Swift*.swiftmodule \
+              ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
+package-rsync -ax \
+              release/libSwift*.a \
+              ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/
 
 # Build the package
 deb-package-build

@@ -23,45 +23,44 @@ export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUA
 BUILD_TRIPLE=${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}${BUILD_OS_API_LEVEL}
 
 ${MKDIR} -p ${STAGE_ROOT}/${BUILD_TRIPLE}
-${RSYNC} -aPx \
-         ${PACKAGE_PREFIX}/staging-data/${BUILD_TRIPLE}/* \
-         ${STAGE_ROOT}/${BUILD_TRIPLE}/
-sed -i "s|build.download_stage0()|#build.download_stage0()|g" \
-        ${SOURCE_ROOT}/src/bootstrap/bootstrap.py
+package-rsync -ax \
+              ${PACKAGE_PREFIX}/staging-data/${BUILD_TRIPLE}/* \
+              ${STAGE_ROOT}/${BUILD_TRIPLE}/
+${SED} -i \
+       "s|build.download_stage0()|#build.download_stage0()|g" \
+       ${SOURCE_ROOT}/src/bootstrap/bootstrap.py
 
 cd ${STAGE_ROOT}
-${RSYNC} -aPx \
-         ${SOURCE_ROOT}/${VAL_VERDE_GH_TEAM}-config.toml.in \
-         ${STAGE_ROOT}/config.toml
-
-BINDIR=${BUILD_PACKAGE_PREFIX}/bin
+package-rsync -ax \
+              ${SOURCE_ROOT}/${VAL_VERDE_GH_TEAM}-config.toml.in \
+              ${STAGE_ROOT}/config.toml
 
 FILECHECK=${LLVM_NATIVE_STAGE_ROOT}/bin/FileCheck
 LD=${CC}
 LDFLAGS=
 LLVMCONFIG=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config
-NODE=${BINDIR}/node
-PYTHON=${BINDIR}/python3
 
-sed -i "s|@@AR@@|${AR}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@BUILD_TRIPLE@@|${BUILD_TRIPLE}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@CC@@|${CC}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@CFLAGS@@|${CFLAGS}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@CXX@@|${CXX}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@CXXFLAGS@@|${CXXFLAGS}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@FILECHECK@@|${FILECHECK}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@INSTALL_PREFIX@@|${INSTALL_PREFIX}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@LD@@|${LD}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@LDFLAGS@@|${LDFLAGS}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@LLVMCONFIG@@|${LLVMCONFIG}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@NODE@@|${NODE}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@PYTHON@@|${PYTHON}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@RANLIB@@|${RANLIB}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@STAGE_ROOT@@|${STAGE_ROOT}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@AR@@|${AR}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@BUILD_TRIPLE@@|${BUILD_TRIPLE}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@CC@@|${CC}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@CFLAGS@@|${CFLAGS}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@CXX@@|${CXX}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@CXXFLAGS@@|${CXXFLAGS}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@FILECHECK@@|${FILECHECK}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@INSTALL_PREFIX@@|${INSTALL_PREFIX}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@LD@@|${LD}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@LDFLAGS@@|${LDFLAGS}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@LLVMCONFIG@@|${LLVMCONFIG}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@NODE@@|${NODE}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@PYTHON@@|${PYTHON}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@RANLIB@@|${RANLIB}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@STAGE_ROOT@@|${STAGE_ROOT}|g" ${STAGE_ROOT}/config.toml
 
 # Build the components
-${PYTHON} ${SOURCE_ROOT}/x.py build --config ${STAGE_ROOT}/config.toml
-${PYTHON} ${SOURCE_ROOT}/x.py install --config ${STAGE_ROOT}/config.toml
+TOOL_LOG=${STAGE_ROOT}/builder-invocation \
+tool-log ${PYTHON} ${SOURCE_ROOT}/x.py build --config ${STAGE_ROOT}/config.toml
+TOOL_LOG=${STAGE_ROOT}/builder-installation \
+tool-log ${PYTHON} ${SOURCE_ROOT}/x.py install --config ${STAGE_ROOT}/config.toml
 
 # Build the package
 deb-package-build

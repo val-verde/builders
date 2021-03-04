@@ -25,10 +25,10 @@ SWIFT_BUILD_FLAGS="\
 package-swift-build
 
 cd ${STAGE_ROOT}
-
 ${MKDIR} -p ${INSTALL_PREFIX}/bin
-${CP} `${FIND} -type f -name sourcekit-lsp\*` \
-      ${INSTALL_PREFIX}/bin
+package-rsync -ax \
+              `${FIND} -type f -name sourcekit-lsp\*` \
+              ${INSTALL_PREFIX}/bin
 
 # Build the package
 deb-package-build

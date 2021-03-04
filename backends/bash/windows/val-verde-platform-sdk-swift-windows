@@ -112,10 +112,10 @@ package-cmake-invocation \
 # Build the components
 ninja-install
 
-${RSYNC} -aPx \
-         ${STAGE_ROOT}/lib/*.a \
-         ${INSTALL_PREFIX}/lib/*.a \
-         ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
+package-rsync -ax \
+              ${STAGE_ROOT}/lib/*.a \
+              ${INSTALL_PREFIX}/lib/*.a \
+              ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
 ${RM} -f \
       ${INSTALL_PREFIX}/bin/*libdispatch* \
       ${INSTALL_PREFIX}/bin/*BlocksRuntime* \

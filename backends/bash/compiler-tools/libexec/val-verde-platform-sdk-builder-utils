@@ -32,8 +32,9 @@ if [ "${SOURCE_PACKAGE_NAME}" != "" ]; then
 fi
 
 function copy-source-to-staging() {
-    package-rsync -aPx ${SOURCE_ROOT}/ \
-                       ${STAGE_ROOT}
+    package-rsync -ax \
+                  ${SOURCE_ROOT}/ \
+                  ${STAGE_ROOT}/
 }
 
 # create-host-tool <host_tool> <host_tool_flags> <wrapper_name>

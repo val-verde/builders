@@ -31,9 +31,9 @@ package-cmake \
 # Build the components
 ninja-install
 
-${RSYNC} -aPx \
-         ${STAGE_ROOT}/lib/*.so* \
-         ${INSTALL_PREFIX}/lib
+package-rsync -ax \
+              ${STAGE_ROOT}/lib/*.so* \
+              ${INSTALL_PREFIX}/lib
 
 # Build the package
 deb-package-build

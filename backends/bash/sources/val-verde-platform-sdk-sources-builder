@@ -17,10 +17,10 @@ ${MKDIR} -p \
          ${STAGE_ROOT}
 
 # Install builder sources
-package-rsync -aPx \
+package-rsync -ax \
               /sources/packaging-tools/* \
               ${INSTALL_ROOT}/usr/
-package-rsync -aPx \
+package-rsync -ax \
               /sources/deb-templates/* \
               ${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM}/
 

@@ -15,12 +15,12 @@ export TOOLCHAIN_ROOT=${ANDROID_NDK_STAGE_ROOT}/${BUILD_PACKAGE_PREFIX}/android-
 
 # Configure the build components
 ${MKDIR} -p ${INSTALL_PREFIX}/include
-${RSYNC} -aPx \
-         ${TOOLCHAIN_ROOT}/sysroot/usr/lib/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/*.so \
-         ${TOOLCHAIN_ROOT}/sysroot/usr/lib/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/${HOST_OS_API_LEVEL}/* \
-         ${TOOLCHAIN_ROOT}/lib/gcc/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/4.9.x/*.o \
-         ${TOOLCHAIN_ROOT}/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/lib64/*.a \
-         ${INSTALL_PREFIX}/lib
+package-rsync -ax \
+              ${TOOLCHAIN_ROOT}/sysroot/usr/lib/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/*.so \
+              ${TOOLCHAIN_ROOT}/sysroot/usr/lib/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/${HOST_OS_API_LEVEL}/* \
+              ${TOOLCHAIN_ROOT}/lib/gcc/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/4.9.x/*.o \
+              ${TOOLCHAIN_ROOT}/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/lib64/*.a \
+              ${INSTALL_PREFIX}/lib/
 
 ${RM} -f \
       ${INSTALL_PREFIX}/lib/libc++* \

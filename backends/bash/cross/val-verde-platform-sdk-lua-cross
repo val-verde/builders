@@ -46,9 +46,9 @@ make-build \
     MYLIBS="${MYLIBS}" \
     RANLIB="${RANLIB}"
 
-${RSYNC} -aPx \
-         ${STAGE_ROOT}/*.h \
-         ${INSTALL_PREFIX}/include/
+package-rsync -ax \
+              ${STAGE_ROOT}/*.h \
+              ${INSTALL_PREFIX}/include/
 ${ECHO} "
 #pragma once
 
@@ -59,9 +59,9 @@ extern \"C\" {
 }
 " > ${INSTALL_PREFIX}/include/lua.hpp
 
-${RSYNC} -aPx \
-         liblua.a \
-         ${INSTALL_PREFIX}/lib/
+package-rsync -ax \
+              liblua.a \
+              ${INSTALL_PREFIX}/lib/
 
 ${MKDIR} -p ${INSTALL_PREFIX}/lib/pkgconfig
 ${ECHO} "
