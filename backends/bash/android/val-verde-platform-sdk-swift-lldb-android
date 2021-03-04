@@ -75,7 +75,7 @@ package-cmake \
     -DLLVM_TABLEGEN=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-tblgen \
     -DNATIVE_Clang_DIR=${LLVM_NATIVE_STAGE_ROOT}/lib/cmake/clang \
     -DNATIVE_LLVM_DIR=${LLVM_NATIVE_STAGE_ROOT}/lib/cmake/lib \
-    -DPython3_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/python3 \
+    -DPython3_EXECUTABLE=${PYTHON} \
     -DPython3_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/python${PYTHON_VERSION} \
     -DPython3_LIBRARIES=${PACKAGE_PREFIX}/lib/libpython${PYTHON_VERSION}.so \
     -DPANEL_LIBRARIES=${PACKAGE_PREFIX}/lib/libpanel.so \

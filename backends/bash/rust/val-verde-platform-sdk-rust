@@ -60,8 +60,8 @@ sed -i "s|@@RANLIB@@|${RANLIB}|g" ${STAGE_ROOT}/config.toml
 sed -i "s|@@STAGE_ROOT@@|${STAGE_ROOT}|g" ${STAGE_ROOT}/config.toml
 
 # Build the components
-${BUILD_PACKAGE_PREFIX}/bin/python3 ${SOURCE_ROOT}/x.py build --config ${STAGE_ROOT}/config.toml
-${BUILD_PACKAGE_PREFIX}/bin/python3 ${SOURCE_ROOT}/x.py install --config ${STAGE_ROOT}/config.toml
+${PYTHON} ${SOURCE_ROOT}/x.py build --config ${STAGE_ROOT}/config.toml
+${PYTHON} ${SOURCE_ROOT}/x.py install --config ${STAGE_ROOT}/config.toml
 
 # Build the package
 deb-package-build

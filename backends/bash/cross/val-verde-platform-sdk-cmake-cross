@@ -77,7 +77,7 @@ package-cmake \
     -DLibArchive_LIBRARY=${LibArchive_LIBRARY} \
     -DLibUV_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DLibUV_LIBRARY=${LibUV_LIBRARY} \
-    -DPython3_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/python3 \
+    -DPython3_EXECUTABLE=${PYTHON} \
     -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DZLIB_LIBRARY=${ZLIB_LIBRARY} \
     ${SOURCE_ROOT}

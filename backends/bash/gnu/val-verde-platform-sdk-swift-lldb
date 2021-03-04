@@ -68,7 +68,7 @@ package-cmake \
     -DLLVM_LINK_LLVM_DYLIB=TRUE \
     -DLLVM_MAIN_INCLUDE_DIR=${LLVM_SOURCE_ROOT}/llvm/include \
     -DLLVM_TABLEGEN=${LLVM_STAGE_ROOT}/bin/llvm-tblgen \
-    -DPython3_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/python3 \
+    -DPython3_EXECUTABLE=${PYTHON} \
     -DPython3_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/python${PYTHON_VERSION} \
     -DPython3_LIBRARIES=${PACKAGE_PREFIX}/lib/libpython${PYTHON_VERSION}.so \
     -DPANEL_LIBRARIES=${PACKAGE_PREFIX}/lib/libpanel.so \

@@ -305,7 +305,7 @@ package-invoke-builder wget-cross
 
 # python build
 if [ "${BUILD_PROCESSOR}" = "${HOST_PROCESSOR}" ]; then
-    PYTHON_FOR_BUILD=${BUILD_PACKAGE_PREFIX}/bin/python3 \
+    PYTHON_FOR_BUILD=${PYTHON} \
     package-invoke-builder python-cross
 else
     _PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
