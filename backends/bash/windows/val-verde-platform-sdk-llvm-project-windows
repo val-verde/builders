@@ -191,7 +191,10 @@ package-cmake \
     ${SOURCE_ROOT}/llvm
 
 # Build the components
-INSTALL_TARGET="tools/clang/install projects/compiler-rt/install tools/lld/install tools/mlir/install" \
+INSTALL_TARGET="tools/clang/install" \
+ninja-install
+
+INSTALL_TARGET="projects/compiler-rt/install tools/lld/install tools/mlir/install" \
 ninja-install
 
 NUM_PROCESSORS=`awk '/MemTotal/ { printf "%d", $2/(1024*1024*5) }' /proc/meminfo` \
