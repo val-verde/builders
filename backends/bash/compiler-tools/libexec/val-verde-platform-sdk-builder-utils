@@ -31,6 +31,30 @@ if [ "${SOURCE_PACKAGE_NAME}" != "" ]; then
     ${ECHO} -e "        Install Prefix: \e[33m${INSTALL_PREFIX}\e[0m"
 fi
 
+# Determine format of executables, shared libraries and static archives.
+EXECUTABLE_SUFFIX=
+OBJECT_FILE_SUFFIX=".o"
+SHARED_LIBRARY_PREFIX="lib"
+SHARED_LIBRARY_SUFFIX=".so"
+STATIC_LIBRARY_PREFIX="lib"
+STATIC_LIBRARY_SUFFIX=".a"
+
+if [ "${HOST_OS}" = "darwin" ]; then
+    SHARED_LIBRARY_SUFFIX=".dylib"
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    EXECUTABLE_SUFFIX=".exe"
+    OBJECT_FILE_SUFFIX=".obj"
+    SHARED_LIBRARY_SUFFIX=".dll.a"
+    STATIC_LIBRARY_SUFFIX=".a"
+fi
+
+export EXECUTABLE_SUFFIX=${EXECUTABLE_SUFFIX}
+export OBJECT_FILE_SUFFIX=${OBJECT_FILE_SUFFIX}
+export SHARED_LIBRARY_PREFIX=${SHARED_LIBRARY_PREFIX}
+export SHARED_LIBRARY_SUFFIX=${SHARED_LIBRARY_SUFFIX}
+export STATIC_LIBRARY_PREFIX=${STATIC_LIBRARY_PREFIX}
+export STATIC_LIBRARY_SUFFIX=${STATIC_LIBRARY_SUFFIX}
+
 function copy-source-to-staging() {
     package-rsync -ax \
                   ${SOURCE_ROOT}/ \
