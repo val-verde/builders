@@ -1,0 +1,73 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# remove host foundation and libdispatch to avoid module collisions
+PACKAGE_ACTION=UNINSTALL
+PACKAGES_TO_MANAGE=( 'swift-corelibs-foundation-5'     'BUILD' \
+                     'swift-corelibs-libdispatch-5'    'BUILD' )
+deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
+
+# llbuild build
+package-invoke-builder swift-llbuild-cross
+
+# swift tools support core build
+package-invoke-builder swift-tools-support-core-cross
+
+# yams build
+package-invoke-builder yams-cross
+
+# swift argument parser build
+package-invoke-builder swift-argument-parser-cross
+
+# swift driver build
+package-invoke-builder swift-driver-cross
+
+# swift package manager build
+package-invoke-builder swift-package-manager-cross
+
+# reinstall swiftpm for build and host
+PACKAGE_ACTION=INSTALL
+PACKAGES_TO_MANAGE=( 'swift-argument-parser-5'         'BUILD' \
+                     'swift-corelibs-foundation-5'     'BUILD' \
+                     'swift-corelibs-libdispatch-5'    'BUILD' \
+                     'swift-corelibs-xctest-5'         'BUILD' \
+                     'swift-driver-5'                  'BUILD' \
+                     'swift-llbuild-5'                 'BUILD' \
+                     'swift-package-manager-5'         'BUILD' \
+                     'swift-tools-support-core-5'      'BUILD' \
+                     'yams-3'                          'BUILD' \
+                     'swift-argument-parser-5'         'HOST' \
+                     'swift-corelibs-foundation-5'     'HOST' \
+                     'swift-corelibs-libdispatch-5'    'HOST' \
+                     'swift-corelibs-xctest-5'         'HOST' \
+                     'swift-driver-5'                  'HOST' \
+                     'swift-llbuild-5'                 'HOST' \
+                     'swift-package-manager-5'         'HOST' \
+                     'swift-tools-support-core-5'      'HOST' \
+                     'yams-3'                          'HOST' )
+deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
+
+# swift-syntax build
+package-invoke-builder swift-syntax-cross
+
+# swift-format build
+package-invoke-builder swift-format-cross
+
+# swift-doc build
+package-invoke-builder swift-doc-cross
+
+# sourcekit-lsp build
+package-invoke-builder sourcekit-lsp-cross
+
+# baikonur build
+package-invoke-builder baikonur
+
+# pythonkit build
+package-invoke-builder pythonkit-cross
+
+# swift tensorflows apis build
+# package-invoke-builder swift-tensorflow-apis

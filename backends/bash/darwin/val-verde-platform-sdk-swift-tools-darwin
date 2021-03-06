@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# llvm build
+package-invoke-builder llvm-project-darwin
+
+# souper build
+package-invoke-builder souper-cross
+
+# cmark build
+package-invoke-builder swift-cmark
+
+# swift build
+package-invoke-builder swift-darwin
+
+# lldb build
+package-invoke-builder swift-lldb-darwin
+
