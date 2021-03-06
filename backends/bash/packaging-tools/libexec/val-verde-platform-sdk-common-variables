@@ -221,3 +221,9 @@ function package-wget() {
 function package-zip() {
     ${ZIP} ${@} > ${STAGE_ROOT}/builder-zip.log
 }
+
+function tool-log() {
+    "${@}" \
+        > ${TOOL_LOG}.log \
+        2> ${TOOL_LOG}-stderr.log
+}

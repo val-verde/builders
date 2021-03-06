@@ -421,12 +421,6 @@ function tool-install() {
     ${ECHO} -e "        Time Completed: \e[4m$(date)\e[0m"
 }
 
-function tool-log() {
-    "${@}" \
-        > ${TOOL_LOG}.log \
-        2> ${TOOL_LOG}-stderr.log
-}
-
 function make-build() {
     TOOL=${MAKE} \
     tool-build "${@}"
