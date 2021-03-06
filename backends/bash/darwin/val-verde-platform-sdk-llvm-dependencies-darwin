@@ -1,0 +1,363 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# autoconf build
+package-invoke-builder autoconf-cross
+
+# automake build
+package-invoke-builder automake-cross
+
+# automake build
+package-invoke-builder automake-cross
+
+# zlib build
+package-invoke-builder zlib-cross
+
+# bzip2 build
+package-invoke-builder bzip2-cross
+
+# gzip build
+package-invoke-builder gzip-cross
+
+# lz4 build
+package-invoke-builder lz4-cross
+
+# xxhash build
+package-invoke-builder xxhash-cross
+
+# zip build
+package-invoke-builder zip-cross
+
+# zstd build
+package-invoke-builder zstd-cross
+
+# unzip build
+package-invoke-builder unzip-cross
+
+# help2man build
+package-invoke-builder help2man-cross
+
+# gperf build
+package-invoke-builder gperf-cross
+
+# libtool build
+package-invoke-builder libtool-cross
+
+# libatomic-ops build
+package-invoke-builder libatomic-ops-cross
+
+# libffi build
+package-invoke-builder libffi-cross
+
+# libiconv build
+package-invoke-builder libiconv-cross
+
+# icu build
+package-invoke-builder icu4c-cross
+
+# xz build
+package-invoke-builder xz-cross
+
+# libxml2 build
+DISABLE_PYTHON=TRUE \
+package-invoke-builder libxml2-cross
+
+# libunistring build
+package-invoke-builder libunistring-cross
+
+# gc build
+package-invoke-builder gc-cross
+
+# gmp build
+package-invoke-builder gmp-cross
+
+# ncurses build
+package-invoke-builder ncurses-cross
+
+# gettext build
+package-invoke-builder gettext-cross
+
+# texinfo build
+# package-invoke-builder texinfo-cross
+
+# guile build
+package-invoke-builder guile-cross
+
+# make build
+package-invoke-builder make-cross
+
+# m4 build
+package-invoke-builder m4-cross
+
+# ninja build
+package-invoke-builder ninja-cross
+
+# libiconv build
+package-invoke-builder libiconv-cross
+
+# libffi build
+package-invoke-builder libffi-cross
+
+# gnulib build
+package-invoke-builder gnulib-cross
+
+# pcre build
+package-invoke-builder pcre-cross
+
+# icu build
+package-invoke-builder icu4c-cross
+
+# xz build
+package-invoke-builder xz-cross
+
+# libxml2 build
+package-invoke-builder libxml2-cross
+
+# gdbm build
+CFLAGS="\
+    -fcommon \
+    ${CFLAGS} \
+" \
+package-invoke-builder gdbm-cross
+
+# ncurses build
+package-invoke-builder ncurses-cross
+
+# libedit build
+package-invoke-builder libedit-cross
+
+# sqlite build
+package-invoke-builder sqlite-cross
+
+# openssl build
+package-invoke-builder openssl-cross
+
+# libcap build
+package-invoke-builder libcap-cross
+
+# libexpat build
+package-invoke-builder expat-cross
+
+# gettext build
+package-invoke-builder gettext-cross
+
+# gawk build
+package-invoke-builder gawk-cross
+
+# gperf build
+package-invoke-builder gperf-cross
+
+# texinfo build
+# package-invoke-builder texinfo-cross
+
+# indent build
+package-invoke-builder indent-cross
+
+# util-linux build
+package-invoke-builder util-linux-cross
+
+# libarchive build
+package-invoke-builder libarchive-cross
+
+# libssh2 build
+package-invoke-builder libssh2-cross
+
+# curl build
+package-invoke-builder curl-cross
+
+# glib build
+package-invoke-builder glib-cross
+
+# pkg-config build
+package-invoke-builder pkg-config-cross
+
+# xorg-macros build
+package-invoke-builder xorg-macros-cross
+
+# xorgproto build
+package-invoke-builder xorg-xorgproto-cross
+
+# xcb-proto build
+package-invoke-builder xcb-proto-cross
+
+# xcb-pthread-stubs build
+package-invoke-builder xcb-pthread-stubs-cross
+
+# libxau build
+package-invoke-builder xorg-libxau-cross
+
+# libxcb build
+package-invoke-builder xcb-libxcb-cross
+
+# pixman build
+package-invoke-builder pixman-cross
+
+# xorg-libpciaccess build
+package-invoke-builder xorg-libpciaccess-cross
+
+# xorg-libxtrans build
+package-invoke-builder xorg-libxtrans-cross
+
+# libx11 build
+package-invoke-builder libx11-cross
+
+# libxext build
+package-invoke-builder libxext-cross
+
+# xorg-libxrender build
+package-invoke-builder xorg-libxrender-cross
+
+# xorg-libxfixes build
+package-invoke-builder xorg-libxfixes-cross
+
+# xorg-libxi build
+package-invoke-builder xorg-libxi-cross
+
+# xorg-libice build
+package-invoke-builder xorg-libice-cross
+
+# alsa-lib build
+package-invoke-builder alsa-lib-cross
+
+# cups build
+package-invoke-builder cups-cross
+
+# libuv build
+package-invoke-builder libuv-cross
+
+# ldns build
+package-invoke-builder ldns-cross
+
+# openssh-portable build
+package-invoke-builder openssh-portable-cross
+
+# bash build
+package-invoke-builder bash-cross
+
+# xorg-libsm build
+package-invoke-builder xorg-libsm-cross
+
+# xorg-libxt build
+package-invoke-builder xorg-libxt-cross
+
+# xorg-libxtst build
+package-invoke-builder xorg-libxtst-cross
+
+# xorg-libxrandr build
+package-invoke-builder xorg-libxrandr-cross
+
+# xorg-xinput build
+# package-invoke-builder xorg-xinput-cross
+
+# xorg-libxkbfile build
+package-invoke-builder xorg-libxkbfile-cross
+
+# xorg-libxshmfence build
+package-invoke-builder xorg-libxshmfence-cross
+
+# xorg-libxxf86vm build
+package-invoke-builder xorg-libxxf86vm-cross
+
+# freetype2 build
+package-invoke-builder freetype2-cross
+
+# wayland build
+package-invoke-builder wayland-cross
+
+# wayland-protocols build
+package-invoke-builder wayland-protocols-cross
+
+# mesa-drm build
+package-invoke-builder mesa-drm-cross
+
+# grep build
+package-invoke-builder grep-cross
+
+# sed build
+package-invoke-builder sed-cross
+
+# bison build
+package-invoke-builder bison-cross
+
+# flex build
+# package-invoke-builder flex-cross
+
+# jq build
+package-invoke-builder jq-cross
+
+# strace build
+package-invoke-builder strace-cross
+
+# fontconfig build
+package-invoke-builder fontconfig-cross
+
+# tar build
+package-invoke-builder tar-cross
+
+# coreutils build
+package-invoke-builder coreutils-cross
+
+# findutils build
+package-invoke-builder findutils-cross
+
+# dpkg build
+package-invoke-builder dpkg-cross
+
+# rsync build
+package-invoke-builder rsync-cross
+
+# systemd build
+# package-invoke-builder systemd
+
+# wget build
+package-invoke-builder wget-cross
+
+# python build
+_PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
+package-invoke-builder python-cross
+
+# gobject-introspection build
+# package-invoke-builder gobject-introspection-cross
+
+# libsecret build
+package-invoke-builder libsecret-cross
+
+# lua build
+package-invoke-builder lua-cross
+
+# swig build
+package-invoke-builder swig-cross
+
+# openjdk build
+package-invoke-builder openjdk-cross
+
+# z3 build
+package-invoke-builder z3-cross
+
+# git build
+package-invoke-builder git-cross
+
+# vim build
+package-invoke-builder vim-cross
+
+# cmake build
+package-invoke-builder cmake-cross
+
+# android patch elf
+package-invoke-builder android-patch-elf-cross
+
+# jwasm (ml64) cross compiler build
+package-invoke-builder jwasm
+
+# re2c build
+package-invoke-builder re2c-cross
+
+# alive2 build
+package-invoke-builder alive2-cross
+
+# hiredis build
+package-invoke-builder hiredis-cross
