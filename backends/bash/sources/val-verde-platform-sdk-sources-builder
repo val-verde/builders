@@ -26,7 +26,7 @@ package-rsync -ax \
               ${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM}/
 
 
-if [ -d "/sources/source-debs" ]; then
+if [ -d "/sources/source-debs" ] && [ "$(ls -A /sources/source-debs)" ]; then
     package-rsync -aPx \
                   /sources/source-debs/* \
                   ${SOURCE_DEB_PATH}
