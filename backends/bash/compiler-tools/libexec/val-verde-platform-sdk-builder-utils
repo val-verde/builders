@@ -1080,7 +1080,12 @@ function package-invoke-builder() {
 function rpath-fixup() {
     SDK_PLATFORM_DIR=`${ECHO} ${SYSTEM_NAME} | ${TR} '[:upper:]' '[:lower:]'`
 
-    if [ "${SDK_PLATFORM_DIR}" != "windows" ]; then
+    if [ "${SDK_PLATFORM_DIR}" = "darwin" ]; then
+        for COMPONENT in ${RPATH_COMPONENTS}; do
+            ${INSTALL_NAME_TOOL} -add_rpath "@loader_path/../lib" ${COMPONENT}
+            ${INSTALL_NAME_TOOL} -add_rpath "@loader_path/../lib/swift/macosx" ${COMPONENT}
+        done
+    elif [ "${SDK_PLATFORM_DIR}" != "windows" ]; then
         if [ "${SDK_PLATFORM_DIR}" != "${HOST_OS}" ]; then
             SDK_PLATFORM_DIR=${HOST_OS}
         fi
