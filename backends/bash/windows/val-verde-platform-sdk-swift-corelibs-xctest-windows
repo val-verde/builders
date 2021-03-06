@@ -41,7 +41,7 @@ package-cmake \
 ninja-install
 
 ${MV} ${INSTALL_PREFIX}/lib/swift/windows/XCTest.lib \
-      ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}/libXCTest.dll.a
+      ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}/${SHARED_LIBRARY_PREFIX}XCTest${SHARED_LIBRARY_SUFFIX}
 
 # Build the package
 deb-package-build

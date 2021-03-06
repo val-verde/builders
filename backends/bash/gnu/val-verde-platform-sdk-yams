@@ -30,7 +30,7 @@ ninja-install
 
 # RPATH fixups
 COMPONENTS="\
-    ${INSTALL_PREFIX}/lib/swift/${HOST_KERNEL}/lib*.so \
+    ${INSTALL_PREFIX}/lib/swift/${HOST_KERNEL}/${SHARED_LIBRARY_PREFIX}*${SHARED_LIBRARY_SUFFIX} \
 " \
 COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
 rpath-fixup

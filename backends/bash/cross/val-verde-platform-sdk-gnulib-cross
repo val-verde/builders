@@ -42,7 +42,7 @@ package-rsync -ax \
               ${STAGE_ROOT}/gllib/*.h \
               ${INSTALL_PREFIX}/include/gnulib/
 package-rsync -ax \
-              ${STAGE_ROOT}/gllib/*.a \
+              ${STAGE_ROOT}/gllib/*${STATIC_LIBRARY_SUFFIX} \
               ${INSTALL_PREFIX}/lib/
 
 # Build the package

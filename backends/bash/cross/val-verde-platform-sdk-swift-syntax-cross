@@ -33,7 +33,7 @@ package-rsync -ax \
               release/Swift*.swiftmodule \
               ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
 package-rsync -ax \
-              release/libSwift*.a \
+              release/${STATIC_LIBRARY_PREFIX}Swift*${STATIC_LIBRARY_SUFFIX} \
               ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/
 
 # Build the package
