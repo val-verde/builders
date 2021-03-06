@@ -20,7 +20,7 @@ CFLAGS="\
 " \
 DISABLE_AUTOUPDATE=TRUE \
 RPATH_COMPONENTS="\
-    ${INSTALL_PREFIX}/lib/libedit.so \
+    ${INSTALL_PREFIX}/lib/${SHARED_LIBRARY_PREFIX}edit${SHARED_LIBRARY_SUFFIX} \
 " \
 package-stage-configure-install \
     --disable-static \

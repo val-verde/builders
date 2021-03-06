@@ -21,9 +21,9 @@ package-cmake \
     ${SOURCE_ROOT} \
     -DENABLE_TCMALLOC=FALSE \
     -DLLVM_CONFIG_BINARY=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config \
-    -DLLVM_LIBRARY=${PACKAGE_PREFIX}/lib/libLLVM.so \
-    -DLLVMCC=${BUILD_PACKAGE_PREFIX}/bin/clang \
-    -DLLVMCXX=${BUILD_PACKAGE_PREFIX}/bin/clang++
+    -DLLVM_LIBRARY=${PACKAGE_PREFIX}/lib/${SHARED_LIBRARY_PREFIX}LLVM${SHARED_LIBRARY_SUFFIX} \
+    -DLLVMCC=${CC} \
+    -DLLVMCXX=${CXX}
 
 # Build the components
 ninja-install

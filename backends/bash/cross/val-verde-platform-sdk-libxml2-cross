@@ -24,7 +24,7 @@ fi
 
 DISABLE_AUTOUPDATE=TRUE \
 RPATH_COMPONENTS="\
-    ${INSTALL_PREFIX}/lib/libxml2.so \
+    ${INSTALL_PREFIX}/lib/${SHARED_LIBRARY_PREFIX}xml2${SHARED_LIBRARY_SUFFIX} \
 " \
 package-stage-configure-install \
     lt_cv_deplibs_check_method=pass_all \

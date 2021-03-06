@@ -39,7 +39,7 @@ fi
 # RPATH fixups
 COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
 COMPONENTS="\
-    ${INSTALL_PREFIX}/lib/swift/${SDK}/lib*.so \
+    ${INSTALL_PREFIX}/lib/swift/${SDK}/${SHARED_LIBRARY_PREFIX}*${SHARED_LIBRARY_SUFFIX} \
 " \
 rpath-fixup
 

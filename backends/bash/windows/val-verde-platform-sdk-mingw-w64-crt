@@ -24,8 +24,8 @@ package-configure \
 make-install
 
 ${LN} -sf \
-      libuuid.a \
-      ${INSTALL_PREFIX}/lib/libwinuuid.a
+      ${STATIC_LIBRARY_PREFIX}uuid${STATIC_LIBRARY_SUFFIX} \
+      ${INSTALL_PREFIX}/lib/${STATIC_LIBRARY_PREFIX}winuuid${STATIC_LIBRARY_SUFFIX}
 
 # Build the package
 deb-package-build

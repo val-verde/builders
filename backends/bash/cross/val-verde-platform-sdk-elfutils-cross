@@ -47,7 +47,7 @@ CXXFLAGS="\
 " \
 I386_GENDIR_ROOT=${I386_GENDIR_ROOT} \
 RPATH_COMPONENTS="\
-    ${INSTALL_PREFIX}/lib/libelf.so \
+    ${INSTALL_PREFIX}/lib/${SHARED_LIBRARY_PREFIX}elf${SHARED_LIBRARY_SUFFIX} \
 " \
 package-stage-configure-install \
     ac_cv_c99=yes \

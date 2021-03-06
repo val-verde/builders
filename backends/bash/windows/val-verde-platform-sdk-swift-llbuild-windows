@@ -47,14 +47,14 @@ package-cmake \
     -DFoundation_DIR=${STAGE_ROOT_BASE}/swift-corelibs-foundation-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DLLBUILD_SUPPORT_BINDINGS=Swift \
     -DSQLite3_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DSQLite3_LIBRARY=${PACKAGE_PREFIX}/lib/libsqlite3.dll.a \
+    -DSQLite3_LIBRARY=${PACKAGE_PREFIX}/lib/${SHARED_LIBRARY_PREFIX}sqlite3${SHARED_LIBRARY_SUFFIX} \
     ${SOURCE_ROOT}
 
 # Build the components
 ninja-install
 
 package-rsync -ax \
-              ${STAGE_ROOT}/lib/*.dll* \
+              ${STAGE_ROOT}/lib/*${STATIC_LIBRARY_SUFFIX} \
               ${INSTALL_PREFIX}/lib
 
 # Build the package

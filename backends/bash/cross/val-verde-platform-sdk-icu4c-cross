@@ -16,10 +16,10 @@ fi
 
 CONFIGURE_FILE_ROOT=${STAGE_ROOT}/${SOURCE_PACKAGE_NAME}/source \
 RPATH_COMPONENTS="\
-    ${INSTALL_PREFIX}/lib/libicudataswift.so \
-    ${INSTALL_PREFIX}/lib/libicui18nswift.so \
-    ${INSTALL_PREFIX}/lib/libicuioswift.so \
-    ${INSTALL_PREFIX}/lib/libicuucswift.so \
+    ${INSTALL_PREFIX}/lib/${SHARED_LIBRARY_PREFIX}icudataswift${SHARED_LIBRARY_SUFFIX} \
+    ${INSTALL_PREFIX}/lib/${SHARED_LIBRARY_PREFIX}icui18nswift${SHARED_LIBRARY_SUFFIX} \
+    ${INSTALL_PREFIX}/lib/${SHARED_LIBRARY_PREFIX}icuioswift${SHARED_LIBRARY_SUFFIX} \
+    ${INSTALL_PREFIX}/lib/${SHARED_LIBRARY_PREFIX}icuucswift${SHARED_LIBRARY_SUFFIX} \
 " \
 package-configure-install \
     --disable-extras \
