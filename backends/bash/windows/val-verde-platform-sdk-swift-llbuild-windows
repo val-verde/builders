@@ -47,7 +47,7 @@ package-cmake \
     -DFoundation_DIR=${STAGE_ROOT_BASE}/swift-corelibs-foundation-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DLLBUILD_SUPPORT_BINDINGS=Swift \
     -DSQLite3_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DSQLite3_LIBRARY=${PACKAGE_PREFIX}/lib/${SHARED_LIBRARY_PREFIX}sqlite3${SHARED_LIBRARY_SUFFIX} \
+    -DSQLite3_LIBRARY=`package-get-path sqlite3 SHARED HOST` \
     ${SOURCE_ROOT}
 
 # Build the components

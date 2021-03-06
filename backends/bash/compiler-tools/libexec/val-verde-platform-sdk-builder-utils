@@ -682,6 +682,44 @@ function package-install() {
     package-pop-directory
 }
 
+# package-get-path <name> <EXECUTABLE|SHARED|STATIC>
+function package-get-filename() {
+    NAME=${1}
+    TYPE=${2}
+
+    case ${TYPE} in
+    EXECUTABLE)
+        RESULT=${NAME}${EXECUTABLE_SUFFIX}
+        ;;
+    SHARED)
+        RESULT=${SHARED_LIBRARY_PREFIX}${NAME}${SHARED_LIBRARY_SUFFIX}
+        ;;
+    STATIC)
+        RESULT=${STATIC_LIBRARY_PREFIX}${NAME}${STATIC_LIBRARY_SUFFIX}
+        ;;
+    *)
+        echo "package-get-filename: Unknown type ${TYPE}."
+        exit 1
+    esac
+
+    echo ${RESULT}
+}
+
+# package-get-path <name> <EXECUTABLE|SHARED|STATIC> <BUILD|HOST>
+function package-get-path() {
+    NAME=${1}
+    TYPE=${2}
+    VARIANT=${3}
+    RESULT=${PACKAGE_PREFIX}/lib
+
+    if [ "${VARIANT}" = "BUILD" ]; then
+        RESULT=${BUILD_PACKAGE_PREFIX}/lib
+    fi
+
+    RESULT=${RESULT}/`package-get-filename ${NAME} ${TYPE}`
+    echo ${RESULT}
+}
+
 function package-gnulib-override() {
     GNULIB_DIR=${GNULIB_DIR:-glib}
     GNULIB_ROOT=${GNULIB_ROOT:-${STAGE_ROOT}}

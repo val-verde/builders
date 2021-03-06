@@ -12,8 +12,8 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 # Configure the build components
 cd ${STAGE_ROOT}
 package-cmake \
-    -DGLUT_glu_LIBRARY=${PACKAGE_PREFIX}/lib/${SHARED_LIBRARY_PREFIX}glu${SHARED_LIBRARY_SUFFIX} \
-    -DGLUT_glut_LIBRARY=${PACKAGE_PREFIX}/lib/${SHARED_LIBRARY_PREFIX}glut${SHARED_LIBRARY_SUFFIX} \
+    -DGLUT_glu_LIBRARY=`package-get-path glu SHARED HOST` \
+    -DGLUT_glut_LIBRARY=`package-get-path glut SHARED HOST` \
     -DGLUT_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     ${SOURCE_ROOT}
 
