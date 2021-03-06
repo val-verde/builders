@@ -234,6 +234,8 @@ function export-compiler-environment() {
             -Xcc -D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL} \
             ${SWIFTCFLAGS} \
         "
+    elif [ "${HOST_OS}" = "darwin" ]; then
+        GOOS=darwin
     elif [ "${HOST_OS}" = "gnu" ]; then
         COMMON_CFLAGS="\
             -fPIC \
