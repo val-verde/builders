@@ -18,8 +18,8 @@ package-cmake \
     -DJSONCPP_INCLUDE_DIR=/sources/spirv-headers/tools/buildHeaders/jsoncpp/dist \
     -DJSONCPP_SEARCH_PATH=/sources/spirv-headers/tools/buildHeaders/jsoncpp/dist \
     -DJSONCPP_SOURCE_DIR=/sources/spirv-headers/tools/buildHeaders/jsoncpp/dist \
-    -DVkLayer_utils_LIBRARY=${PACKAGE_PREFIX}/lib/${STATIC_LIBRARY_PREFIX}VkLayer_utils${STATIC_LIBRARY_SUFFIX} \
-    -DVulkan_LIBRARY=${PACKAGE_PREFIX}/lib/${SHARED_LIBRARY_PREFIX}vulkan-1${SHARED_LIBRARY_SUFFIX} \
+    -DVkLayer_utils_LIBRARY=`package-get-path VkLayer_utils STATIC HOST` \
+    -DVulkan_LIBRARY=`package-get-path vulkan-1 SHARED HOST` \
     -DVULKAN_HEADERS_INSTALL_DIR=${PACKAGE_PREFIX} \
     -DVULKAN_LOADER_INSTALL_DIR=${PACKAGE_PREFIX} \
     -DVULKAN_VALIDATIONLAYERS_INSTALL_DIR=${PACKAGE_PREFIX} \
