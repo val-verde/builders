@@ -45,7 +45,8 @@ CXXFLAGS="\
     ${CXXFLAGS} \
 " \
 TAR=tar \
-package-stage-configure-install \
+BOOTSTRAP_FILE=./autogen \
+package-bootstrap-configure-install \
     cross_compiling=${CROSS_COMPILING} \
     --disable-dselect \
     --with-admindir=${ADMIN_DIR}
