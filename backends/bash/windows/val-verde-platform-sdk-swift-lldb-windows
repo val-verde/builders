@@ -88,8 +88,5 @@ package-cmake \
 # Package the components
 ninja-install
 
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install
+# Build and install the package
+package-invoke-artifact-install

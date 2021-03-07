@@ -29,8 +29,5 @@ ${MKDIR} -p ${INSTALL_PREFIX}/bin
 ${CP} `${FIND} -type f -name sourcekit-lsp\*` \
       ${INSTALL_PREFIX}/bin
 
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install
+# Build and install the package
+package-invoke-artifact-install

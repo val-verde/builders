@@ -43,5 +43,6 @@ ninja-install
 ${MV} ${INSTALL_PREFIX}/lib/swift/windows/XCTest.lib \
       ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}/${SHARED_LIBRARY_PREFIX}XCTest${SHARED_LIBRARY_SUFFIX}
 
-# Build the package
-deb-package-build
+# Build and install the package
+DISABLE_INSTALL_DEB=TRUE \
+package-invoke-artifact-install
