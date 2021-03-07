@@ -31,8 +31,5 @@ ${MV} ${INSTALL_ROOT}${SOURCE_ROOT}/src/bin \
       ${INSTALL_PREFIX}/
 ${RM} -rf ${INSTALL_ROOT}${SOURCE_ROOT_BASE}
 
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install
+# Build and install the package
+package-invoke-artifact-install
