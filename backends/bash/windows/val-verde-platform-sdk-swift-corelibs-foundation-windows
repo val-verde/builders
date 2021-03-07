@@ -58,5 +58,6 @@ ninja-install
 ${MV} ${INSTALL_PREFIX}/lib/swift/windows/*${STATIC_LIBRARY_SUFFIX} \
       ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
 
-# Build the package
-deb-package-build
+# Build and install the package
+DISABLE_INSTALL_DEB=TRUE \
+package-invoke-artifact-install

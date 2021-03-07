@@ -57,5 +57,6 @@ package-rsync -ax \
               ${STAGE_ROOT}/lib/*${STATIC_LIBRARY_SUFFIX} \
               ${INSTALL_PREFIX}/lib
 
-# Build the package
-deb-package-build
+# Build and install the package
+DISABLE_INSTALL_DEB=TRUE \
+package-invoke-artifact-install
