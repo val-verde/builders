@@ -27,8 +27,5 @@ make-install
 
 ${RM} -rf ${INSTALL_PREFIX}/include/iconv.h
 
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install
+# Build and install the package
+package-invoke-artifact-install

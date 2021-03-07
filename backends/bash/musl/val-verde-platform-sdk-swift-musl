@@ -123,4 +123,4 @@ COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
 rpath-fixup
 
 # Build and install the package
-package-invoke-installer
+package-invoke-artifact-install

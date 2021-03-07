@@ -35,8 +35,5 @@ ${LN} -sf \
       ../usr/lib/${SHARED_LIBRARY_PREFIX}c${SHARED_LIBRARY_SUFFIX} \
       ${INSTALL_PREFIX}/../lib/ld-${HOST_OS}-${HOST_PROCESSOR}${SHARED_LIBRARY_SUFFIX}.1
 
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install
+# Build and install the package
+package-invoke-artifact-install
