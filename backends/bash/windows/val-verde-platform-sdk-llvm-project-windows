@@ -225,9 +225,6 @@ DST_SDK_PLATFORM_DIR=${DST_SDK_PLATFORM_DIR:-${SDK_PLATFORM_DIR}}
 ${LN} -sf ${CLANG_RT_LIB} \
           ${INSTALL_PREFIX}/lib/clang/13.0.0/lib/${DST_SDK_PLATFORM_DIR}/${DST_CLANG_RT_LIB}
 
-# Build the package
-deb-package-build
-
 # remove libcxx, libcxxabi and libunwind as they are superceded by llvm-project.
 HOST_PROCESSOR=`${ECHO} ${HOST_PROCESSOR} | ${TR} _ -`
 PACKAGES_TO_MANAGE=( 'libcxx-13'    'HOST' \
@@ -237,5 +234,5 @@ PACKAGES_TO_MANAGE=( 'libcxx-13'    'HOST' \
 PACKAGE_ACTION=UNINSTALL \
 deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 
-# Install the package
-deb-package-install
+# Build and install the package
+package-invoke-artifact-install
