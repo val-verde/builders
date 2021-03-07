@@ -31,6 +31,14 @@ fi
 # glslang build
 package-invoke-builder glslang-cross
 
+# opencl headers build
+package-invoke-builder opencl-headers-cross
+
+if [ "${HOST_OS}" != "ming32" ]; then
+    # opencl icd loader build
+    package-invoke-builder opencl-icd-loader-cross
+fi
+
 # vulkan headers build
 package-invoke-builder vulkan-headers-cross
 
@@ -61,6 +69,12 @@ fi
 # sdl build
 DXSDK_DIR=${SYSROOT} \
 package-invoke-builder sdl-cross
+
+# sdl-image build
+package-invoke-builder sdl-image-cross
+
+# sdl-ttf build
+package-invoke-builder sdl-ttf-cross
 
 # filament build
 package-invoke-builder filament-cross
