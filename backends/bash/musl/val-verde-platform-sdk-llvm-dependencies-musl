@@ -53,6 +53,7 @@ package-invoke-builder automake-cross
 package-invoke-builder libtool-cross
 
 # m4 build
+HELP2MAN=${BINDIR}/true \
 package-invoke-builder m4-cross
 
 # make build

@@ -56,7 +56,8 @@ fi
 package-invoke-builder libtool-cross
 
 # android m4 build
-# package-invoke-builder m4-cross
+HELP2MAN=${BINDIR}/true \
+package-invoke-builder m4-cross
 
 # android libiconv build
 package-invoke-builder libiconv-cross
