@@ -26,9 +26,7 @@ SYSROOT=${STAGE_ROOT}/sysroot \
 ${BUILD_PACKAGE_PREFIX}/bin/make \
     install
 
-# Build the package
-cd ${STAGE_ROOT}
-deb-package-build
 
-# Install the package
-deb-package-install
+# Build and install the package
+cd ${STAGE_ROOT}
+package-invoke-artifact-install
