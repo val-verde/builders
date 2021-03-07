@@ -43,8 +43,5 @@ ${MV} ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/fuchsia/${CLANG_RT_LIB} \
       ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/13.0.0/lib/wasi/${DST_CLANG_RT_LIB}
 ${RM} -rf ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/fuchsia
 
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install
+# Build and install the package
+package-invoke-artifact-install
