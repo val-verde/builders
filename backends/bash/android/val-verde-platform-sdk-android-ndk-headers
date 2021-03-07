@@ -36,8 +36,5 @@ ${RM} -f ${INSTALL_PREFIX}/include/iconv.h \
          ${INSTALL_PREFIX}/include/zlib.h \
          ${INSTALL_PREFIX}/include/sys/capability.h
 
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install
+# Build and install the package
+package-invoke-artifact-install
