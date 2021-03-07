@@ -21,9 +21,6 @@ DISABLE_AUTOUPDATE=TRUE \
 package-configure-install \
     --disable-static \
     --enable-shared
-<<<<<<< HEAD
-=======
 
 # Build and install the package
 package-invoke-artifact-install
->>>>>>> 042775f8... Update gnu llvm dependencies builder scripts with usage of the install flag.
