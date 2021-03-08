@@ -28,8 +28,9 @@ export BUILD_PACKAGE_PREFIX=${PACKAGE_PLATFORM_SDKROOT}/${BUILD_OS}${BUILD_OS_AP
 
 # 'build' tools
 BINDIR=${BINDIR:-${BUILD_PACKAGE_PREFIX}/bin}
-export APT=${APT:-/usr/bin/apt}
-export AUTORECONF=${AUTORECONF:-/usr/bin/autoreconf}
+export APT=${APT:-${BINDIR}/apt}
+export AUTORECONF=${AUTORECONF:-${BINDIR}/autoreconf}
+export AUTOUPDATE=${AUTOUPDATE:-${BINDIR}/autoupdate}
 export BASH=${BASH:-${BINDIR}/bash}
 export BISON=${BISON:-${BINDIR}/bison}
 export CAT=${CAT:-${BINDIR}/cat}
