@@ -29,6 +29,9 @@ package-invoke-builder llvm-dependencies-android
 # android llvm build
 package-invoke-builder llvm-project-android
 
+# android souper build
+package-invoke-builder souper-cross
+
 # android cmark build
 package-invoke-builder swift-cmark-cross
 

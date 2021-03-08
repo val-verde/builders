@@ -13,20 +13,12 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-zlib-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Configure the build components
-cd ${STAGE_ROOT}
-package-configure \
-    ${SOURCE_ROOT}/configure \
-    --disable-static \
-    --enable-shared
+if [ "${HOST_OS}" = "mingw32" ]; then
+    ENABLE_OR_DISABLE_SHARED=disable
+else
+    ENABLE_OR_DISABLE_SHARED=enable
+fi
 
-# Build the components
-make-install
-
-${RM} -rf ${INSTALL_PREFIX}/share/info/dir
-
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install
+# Invoke one-shot template for stage/configure/install
+package-stage-configure-install \
+    --${ENABLE_OR_DISABLE_SHARED}-shared

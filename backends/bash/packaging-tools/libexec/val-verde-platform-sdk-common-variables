@@ -184,9 +184,15 @@ function package-git-submodule() {
 }
 
 function package-git-tool() {
-    ${GIT} "${@}" \
-           > ${STAGE_ROOT}/builder-git-${1}.log \
-           2> ${STAGE_ROOT}/builder-git-${1}-stderr.log
+    failed=false
+    TOOL_LOG=${STAGE_ROOT}/builder-git-${1} \
+    tool-log ${GIT} "${@}" || failed=true
+
+    while [ "${failed}" = "true" ]; do
+        failed=false
+        TOOL_LOG=${STAGE_ROOT}/builder-git-${1} \
+        tool-log ${GIT} "${@}" || failed=true
+    done
 }
 
 function package-major-version() {
@@ -220,4 +226,10 @@ function package-wget() {
 
 function package-zip() {
     ${ZIP} ${@} > ${STAGE_ROOT}/builder-zip.log
+}
+
+function tool-log() {
+    "${@}" \
+        > ${TOOL_LOG}.log \
+        2> ${TOOL_LOG}-stderr.log
 }

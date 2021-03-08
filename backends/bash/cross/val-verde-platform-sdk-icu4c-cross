@@ -9,34 +9,24 @@ export SOURCE_PACKAGE_VERSION=68
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-# Configure the build components
-cd ${STAGE_ROOT}
+# Invoke one-shot template for configure/install
+if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+    CROSS_BUILD_CMD="--with-cross-build=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/build"
+fi
 
-package-configure \
-    ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}/source/configure \
-    --disable-extras \
-    --disable-samples \
-    --disable-static \
-    --disable-tests \
-    --disable-tools \
-    --enable-shared \
-    --with-cross-build=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH} \
-    --with-library-suffix=swift
-
-# Build the components
-make-install
-
-# RPATH fixups
-COMPONENTS="\
+CONFIGURE_FILE_ROOT=${STAGE_ROOT}/${SOURCE_PACKAGE_NAME}/source \
+RPATH_COMPONENTS="\
     ${INSTALL_PREFIX}/lib/libicudataswift.so \
     ${INSTALL_PREFIX}/lib/libicui18nswift.so \
     ${INSTALL_PREFIX}/lib/libicuioswift.so \
     ${INSTALL_PREFIX}/lib/libicuucswift.so \
 " \
-rpath-fixup
-
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install
+package-configure-install \
+    --disable-extras \
+    --disable-samples \
+    --disable-static \
+    --disable-tests \
+    --enable-shared \
+    --enable-tools \
+    --with-library-suffix=swift \
+    "${CROSS_BUILD_CMD}"

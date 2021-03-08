@@ -9,27 +9,13 @@ export SOURCE_PACKAGE_VERSION=6
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-# Configure the build components
-copy-source-to-staging
-
+# Invoke one-shot template for stage/configure/install
 if [ "${HOST_TRIPLE}" != "${BUILD_TRIPLE}" ]; then
     CROSS_CMD="--with-wine-tools=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}"
 fi
 
-cd ${STAGE_ROOT}
-package-autoreconf -fi
-package-configure \
-    ${STAGE_ROOT}/configure \
+package-stage-configure-install \
     --disable-static \
     --enable-shared \
     --enable-win64 \
     ${CROSS_CMD}
-
-# Build the components
-make-install
-
-# Build the package
-deb-package-build
-
-# Build the package
-deb-package-install

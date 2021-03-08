@@ -179,7 +179,7 @@ package-cmake \
     -DMLIR_CUDA_RUNNER_ENABLED=FALSE \
     -DMLIR_LINALG_ODS_GEN_EXE=${LLVM_NATIVE_STAGE_ROOT}/bin/mlir-linalg-ods-gen \
     -DMLIR_TABLEGEN=${LLVM_NATIVE_STAGE_ROOT}/bin/mlir-tblgen \
-    -DPython3_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/python3 \
+    -DPython3_EXECUTABLE=${PYTHON} \
     -DPOLLY_ENABLE_GPGPU_CODEGEN=FALSE \
     -DSANITIZER_CXX_ABI=libc++ \
     -DZ3_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
@@ -191,7 +191,10 @@ package-cmake \
     ${SOURCE_ROOT}/llvm
 
 # Build the components
-INSTALL_TARGET="tools/clang/install projects/compiler-rt/install tools/lld/install tools/mlir/install" \
+INSTALL_TARGET="tools/clang/install" \
+ninja-install
+
+INSTALL_TARGET="projects/compiler-rt/install tools/lld/install tools/mlir/install" \
 ninja-install
 
 NUM_PROCESSORS=`awk '/MemTotal/ { printf "%d", $2/(1024*1024*5) }' /proc/meminfo` \
@@ -200,14 +203,18 @@ ninja-install
 
 ninja-install
 
-${RSYNC} -aPx \
-         ${STAGE_ROOT}/bin/llvm-as* \
-         ${STAGE_ROOT}/bin/llvm-dlltool* \
-         ${STAGE_ROOT}/bin/llvm-mt* \
-         ${STAGE_ROOT}/bin/llvm-pdbutil* \
-         ${STAGE_ROOT}/bin/llvm-readelf* \
-         ${STAGE_ROOT}/bin/llvm-readobj* \
-         ${INSTALL_PREFIX}/bin/
+${LN} -sf lld.exe \
+          ${STAGE_ROOT}/bin/ld64.lld.exe
+package-rsync -ax \
+              ${STAGE_ROOT}/bin/llvm-as* \
+              ${STAGE_ROOT}/bin/llvm-dlltool* \
+              ${STAGE_ROOT}/bin/llvm-install-name-tool* \
+              ${STAGE_ROOT}/bin/llvm-lipo* \
+              ${STAGE_ROOT}/bin/llvm-mt* \
+              ${STAGE_ROOT}/bin/llvm-pdbutil* \
+              ${STAGE_ROOT}/bin/llvm-readelf* \
+              ${STAGE_ROOT}/bin/llvm-readobj* \
+              ${INSTALL_PREFIX}/bin/
 
 CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a
 DST_CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a

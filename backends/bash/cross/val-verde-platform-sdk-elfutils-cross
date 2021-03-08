@@ -15,38 +15,46 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-libmicrohttpd-0-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Configure the build components
-cd ${STAGE_ROOT}
+# Invoke one-shot template for stage/configure/installs
+if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+    ARGP_LIB="-largp"
+    I386_GENDIR_ROOT=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/build/libcpu
+else
+    ARGP_LIB="yes"
+    I386_GENDIR_ROOT=.
+fi
 
-CFLAGS="\
+DISABLED_WARNINGS="\
+    -Wno-gnu-variable-sized-type-not-at-end \
+    -Wno-implicit-const-int-float-conversion \
     -Wno-implicit-function-declaration \
+    -Wno-logical-not-parentheses \
+    -Wno-pointer-integer-compare \
     -Wno-unknown-warning-option \
     -Wno-unused-command-line-argument \
+    -Wno-unused-const-variable \
     -Wno-unused-parameter \
+    -Wno-xor-used-as-pow \
+"
+
+CFLAGS="\
+    ${DISABLED_WARNINGS} \
     ${CFLAGS} \
 " \
-package-configure \
-    ${SOURCE_ROOT}/configure \
-    ac_cv_c99=yes \
-    ac_cv_lib_argp_argp_parse=yes \
-    ac_cv_implicit_fallthrough=no \
-    --disable-debuginfod \
-    --disable-static \
-    --enable-shared \
-    --with-zlib=yes
-
-# Build the components]
-make-install -C lib
-make-install -C libelf
-
-# RPATH fixups
-COMPONENTS="\
+CXXFLAGS="\
+    ${DISABLED_WARNINGS} \
+    ${CXXFLAGS} \
+" \
+I386_GENDIR_ROOT=${I386_GENDIR_ROOT} \
+RPATH_COMPONENTS="\
     ${INSTALL_PREFIX}/lib/libelf.so \
 " \
-rpath-fixup
-
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install
+package-stage-configure-install \
+    ac_cv_c99=yes \
+    ac_cv_lib_argp_argp_parse=${ARGP_LIB} \
+    ac_cv_implicit_fallthrough=no \
+    --enable-debuginfod \
+    --enable-maintainer-mode \
+    --with-bzlib=yes \
+    --with-lzma=yes \
+    --with-zlib=yes

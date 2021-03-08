@@ -35,15 +35,15 @@ ${SED} -i \
 ${SED} -i \
        "s/#define VERSION/#define GNULIB_VERSION/g" \
        ${STAGE_ROOT}/config.h
-${RSYNC} -aPx \
-         ${STAGE_ROOT}/config.h \
-         ${INSTALL_PREFIX}/include/gnulib/config/
-${RSYNC} -aPx \
-         ${STAGE_ROOT}/gllib/*.h \
-         ${INSTALL_PREFIX}/include/gnulib/
-${RSYNC} -aPx \
-         ${STAGE_ROOT}/gllib/*.a \
-         ${INSTALL_PREFIX}/lib/
+package-rsync -ax \
+              ${STAGE_ROOT}/config.h \
+              ${INSTALL_PREFIX}/include/gnulib/config/
+package-rsync -ax \
+              ${STAGE_ROOT}/gllib/*.h \
+              ${INSTALL_PREFIX}/include/gnulib/
+package-rsync -ax \
+              ${STAGE_ROOT}/gllib/*.a \
+              ${INSTALL_PREFIX}/lib/
 
 # Build the package
 deb-package-build

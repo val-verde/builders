@@ -26,6 +26,9 @@ package-invoke-builder zstd-cross
 # windows unzip build
 # package-invoke-builder unzip-cross
 
+# windows help2man build
+# package-invoke-builder help2man-cross
+
 # windows autoconf build
 package-invoke-builder autoconf-cross
 
@@ -36,6 +39,7 @@ package-invoke-builder automake-cross
 package-invoke-builder libtool-cross
 
 # windows m4 build
+HELP2MAN=${BINDIR}/true \
 package-invoke-builder m4-cross
 
 # windows make build
@@ -51,6 +55,10 @@ package-invoke-builder libiconv-cross
 package-invoke-builder libffi-cross
 
 # windows pcre build
+CXXFLAGS="\
+    -lclang_rt.builtins-x86_64 \
+    ${CXXFLAGS} \
+" \
 package-invoke-builder pcre-cross
 
 # windows icu build
@@ -90,6 +98,18 @@ package-invoke-builder gettext-cross
 # windows gperf build
 package-invoke-builder gperf-cross
 
+# windows libarchive build
+package-invoke-builder libarchive-cross
+
+# windows libmicrohttpd build
+package-invoke-builder libmicrohttpd-cross
+
+# windows libssh2 build
+package-invoke-builder libssh2-cross
+
+# windows curl build
+package-invoke-builder curl-cross
+
 # windows glib build
 package-invoke-builder glib-cross
 
@@ -113,18 +133,6 @@ package-invoke-builder xcb-pthread-stubs-cross
 
 # windows libuv build
 package-invoke-builder libuv-cross
-
-# windows libssh2 build
-package-invoke-builder libssh2-cross
-
-# windows curl build
-package-invoke-builder curl-cross
-
-# windows libarchive build
-package-invoke-builder libarchive-cross
-
-# windows libmicrohttpd build
-package-invoke-builder libmicrohttpd-cross
 
 # windows grep build
 package-invoke-builder grep-cross

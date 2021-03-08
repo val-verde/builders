@@ -67,7 +67,7 @@ package-cmake-invocation \
     -DLLVM_TABLEGEN=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-tblgen \
     -DLLVM_USE_NEWPM=${USE_NEWPM} \
     -DLLVM_USE_RELATIVE_PATHS_IN_DEBUG_INFO=TRUE \
-    -DPython3_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/python3 \
+    -DPython3_EXECUTABLE=${PYTHON} \
     -DPKG_CONFIG_EXECUTABLE=${PKG_CONFIG} \
     -DSWIFT_BUILD_DYNAMIC_SDK_OVERLAY=TRUE \
     -DSWIFT_BUILD_DYNAMIC_STDLIB=TRUE \
@@ -112,10 +112,10 @@ package-cmake-invocation \
 # Build the components
 ninja-install
 
-${RSYNC} -aPx \
-         ${STAGE_ROOT}/lib/*.a \
-         ${INSTALL_PREFIX}/lib/*.a \
-         ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
+package-rsync -ax \
+              ${STAGE_ROOT}/lib/*.a \
+              ${INSTALL_PREFIX}/lib/*.a \
+              ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
 ${RM} -f \
       ${INSTALL_PREFIX}/bin/*libdispatch* \
       ${INSTALL_PREFIX}/bin/*BlocksRuntime* \

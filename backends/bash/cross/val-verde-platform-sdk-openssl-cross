@@ -35,7 +35,9 @@ if [ "${HOST_OS}" = "mingw32" ]; then
     OPENSSL_TARGET=mingw64
 fi
 
-${SOURCE_ROOT}/Configure \
+TOOL_LOG=${STAGE_ROOT}/builder-invocation \
+tool-log ${SOURCE_ROOT}/Configure \
+    --libdir=${PACKAGE_PREFIX}/lib \
     --openssldir=${OPENSSL_DIR} \
     --prefix=${PACKAGE_PREFIX} \
     "${OPENSSL_DEFINES}" \

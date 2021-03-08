@@ -32,8 +32,9 @@ if [ "${SOURCE_PACKAGE_NAME}" != "" ]; then
 fi
 
 function copy-source-to-staging() {
-    package-rsync -aPx ${SOURCE_ROOT}/ \
-                       ${STAGE_ROOT}
+    package-rsync -ax \
+                  ${SOURCE_ROOT}/ \
+                  ${STAGE_ROOT}/
 }
 
 # create-host-tool <host_tool> <host_tool_flags> <wrapper_name>
@@ -67,16 +68,22 @@ PKG_CONFIG_PATH=\"${!host_pkg_config_path}\" exec ${PKG_CONFIG} \"\${@}\"
 }
 
 function export-compiler-environment() {
+    if [ -n "${BUILD_CC}" ]; then
+        return
+    fi
+
     BINTOOLS_PREFIX=${BINTOOLS_PREFIX:-llvm-}
     BINTOOLS_PATH_PREFIX=${BINDIR}/${BINTOOLS_PREFIX}
     CXX_INCLUDE_DIR=${CXX_INCLUDE_DIR:-${PACKAGE_PREFIX}/include/c++/v1}
     OPTIMIZATION_FLAGS=${OPTIMIZATION_FLAGS:-"-DNDEBUG"}
 
+    export CLANG=${CLANG:-sclang}
     export ACLOCAL_PATH=${PACKAGE_PREFIX}/share/aclocal
     export AR=${AR:-${BINTOOLS_PATH_PREFIX}ar}
-    export AS=${CC:-${BINDIR}/clang}
-    export BUILD_CC=${CC:-${BINDIR}/clang}
-    export CC=${CC:-${BINDIR}/clang}
+    export AS=${CC:-${BINDIR}/${CLANG}}
+    export BUILD_CC=${BUILD_CC:-${BINDIR}/${CLANG}}
+    export BUILD_CXX=${BUILD_CXX:-${BUILD_CC}++}
+    export CC=${CC:-${BINDIR}/${CLANG}}
     export CCLD=${CCLD:-${CC}}
     export CMAKE=${CMAKE:-${BINDIR}/cmake}
     export CPP=${CPP:-${CC}-cpp}
@@ -84,7 +91,11 @@ function export-compiler-environment() {
     export CXXFILT=${CXXFILT:-${BINTOOLS_PATH_PREFIX}cxxfilt}
     export CXXLD=${CXXLD:-${CXX}}
     export DLLTOOL=${DLLTOOL:-${BINTOOLS_PATH_PREFIX}dlltool}
+    export GO=${GO:-${BINDIR}/go}
+    export GOROOT=${GOROOT:-${BUILD_PACKAGE_PREFIX}/go}
+    export INSTALL_NAME_TOOL=${INSTALL_NAME_TOOL:-${BINTOOLS_PATH_PREFIX}install-name-tool}
     export LD=${LD:-${BINDIR}/ld.lld}
+    export LIPO=${LIPO:-${BINTOOLS_PATH_PREFIX}lipo}
     export MAKE=${MAKE:-${BINDIR}/make}
     export MAKEINFO=${MAKEINFO:-${BINDIR}/true}
     export MANIFEST_TOOL=${MANIFEST_TOOL:-${BINTOOLS_PATH_PREFIX}mt}
@@ -94,8 +105,8 @@ function export-compiler-environment() {
     export NODE=${NODE:-${BINDIR}/node}
     export OBJCOPY=${OBJCOPY:-${BINTOOLS_PATH_PREFIX}objcopy}
     export OBJDUMP=${OBJDUMP:-${BINTOOLS_PATH_PREFIX}objdump}
-    export PKG_CONFIG=${PKG_CONFIG:-${BUILD_PACKAGE_PREFIX}/bin/pkg-config}
-    export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-${PACKAGE_PREFIX}/lib/pkgconfig}
+    export PKG_CONFIG=${PKG_CONFIG:-${BINDIR}/pkg-config}
+    export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-${PACKAGE_PREFIX}/lib/pkgconfig:${PACKAGE_PREFIX}/share/pkgconfig}
     export PYTHON=${PYTHON:-${BINDIR}/python}
     export RANLIB=${RANLIB:-${BINTOOLS_PATH_PREFIX}ranlib}
     export RC=${RC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-rc}
@@ -106,15 +117,41 @@ function export-compiler-environment() {
     export SWIFTC=${SWIFTC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc}
     export WINDRES=${RC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-rc}
 
+    if [ "${BUILD_PROCESSOR}" = "aarch64" ]; then
+        GOHOSTARCH=arm64
+    elif [ "${BUILD_PROCESSOR}" = "x86_64" ]; then
+        GOHOSTARCH=amd64
+    fi
+
+    if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+        GOARCH=arm64
+    elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+        GOARCH=amd64
+    fi
+
+    if [ -n "${HOST_ARCH}" ]; then
+        COMMON_CFLAGS="\
+            -march=${HOST_ARCH} \
+            ${COMMON_CFLAGS} \
+        "
+    fi
+
+    if [ -n "${HOST_CPU}" ]; then
+        COMMON_CFLAGS="\
+            -mtune=${HOST_CPU} \
+            ${COMMON_CFLAGS} \
+        "
+    fi
+
     if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
         COMMON_CFLAGS="\
             --sysroot=${SYSROOT} \
             --target=${HOST_TRIPLE} \
             ${COMMON_CFLAGS} \
         "
-        LDFLAGS="\
+        COMMON_LDFLAGS="\
             --sysroot=${SYSROOT} \
-            ${LDFLAGS} \
+            ${COMMON_LDFLAGS} \
         "
         SWIFTCFLAGS="\
             -sdk ${SYSROOT} \
@@ -124,6 +161,10 @@ function export-compiler-environment() {
         COMMON_CFLAGS="\
             -isystem ${PACKAGE_PREFIX}/include \
             ${COMMON_CFLAGS} \
+        "
+        COMMON_LDFLAGS="\
+            -L${BUILD_PACKAGE_PREFIX}/lib \
+            ${COMMON_LDFLAGS} \
         "
         SWIFTCFLAGS="\
             -I${PACKAGE_PREFIX}/include \
@@ -135,12 +176,22 @@ function export-compiler-environment() {
         export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:/usr/lib/${BUILD_TRIPLE}/pkgconfig:/usr/share/pkgconfig
     fi
 
+    if [ "${BUILD_OS}" = "android" ]; then
+        GOHOSTOS=android
+    elif [ "${BUILD_OS}" = "gnu" ] ||
+         [ "${BUILD_OS}" = "musl" ]; then
+        GOHOSTOS=linux
+    elif [ "${BUILD_OS}" = "mingw32" ]; then
+        GOHOSTOS=windows
+    fi
+
     if [ "${HOST_OS}" = "android" ]; then
         COMMON_CFLAGS="\
             -fPIC \
             -D__USE_FORTIFY_LEVEL=0 \
             ${COMMON_CFLAGS} \
         "
+        GOOS=android
         SWIFTCFLAGS="\
             -Xcc -D__USE_FORTIFY_LEVEL=0 \
             ${SWIFTCFLAGS} \
@@ -150,6 +201,7 @@ function export-compiler-environment() {
             -fPIC \
             ${COMMON_CFLAGS} \
         "
+        GOOS=linux
     elif [ "${HOST_OS}" = "musl" ]; then
         COMMON_CFLAGS="\
             -fPIC \
@@ -157,6 +209,8 @@ function export-compiler-environment() {
             -D__USE_FORTIFY_LEVEL=0 \
             ${COMMON_CFLAGS} \
         "
+        GO_LDSO=/lib/ld-${HOST_OS}-${HOST_PROCESSOR}.so.1
+        GOOS=linux
         SWIFTCFLAGS="\
             -Xcc -D_ALL_SOURCE=1 \
             -Xcc -D__USE_FORTIFY_LEVEL=0 \
@@ -167,6 +221,7 @@ function export-compiler-environment() {
             -fno-builtin-stpcpy \
             ${COMMON_CFLAGS} \
         "
+        GOOS=windows
     fi
 
     if [ -z "${DISABLE_CXX_INCLUDE}" ]; then
@@ -177,9 +232,9 @@ function export-compiler-environment() {
     fi
 
     if [ -z "${DISABLE_POLLY}" ]; then
-        COMMON_CFLAGS="\
+        COMMON_LLVM_CFLAGS="\
             -mllvm -polly \
-            ${COMMON_CFLAGS} \
+            ${COMMON_LLVM_CFLAGS} \
         "
     fi
 
@@ -202,29 +257,24 @@ function export-compiler-environment() {
         "
     fi
 
-    if [ -n "${HOST_ARCH}" ]; then
-        COMMON_CFLAGS="\
-            -march=${HOST_ARCH} \
-            ${COMMON_CFLAGS} \
-        "
-    fi
-
-    if [ -n "${HOST_CPU}" ]; then
-        COMMON_CFLAGS="\
-            -mtune=${HOST_CPU} \
-            ${COMMON_CFLAGS} \
+    if [ -n "${HOST_ARCH_VECTOR_SIZE}" ]; then
+        COMMON_LLVM_CFLAGS="\
+            -mllvm -force-vector-width=${HOST_ARCH_VECTOR_SIZE} \
+            ${COMMON_LLVM_CFLAGS} \
         "
     fi
 
     export ASFLAGS=`${ECHO} "\
         -pipe \
         ${COMMON_CFLAGS} \
+        ${COMMON_LLVM_CFLAGS} \
         ${OPTIMIZATION_FLAGS} \
         ${ASMFLAGS} \
     " | ${XARGS}`
     export CFLAGS=`${ECHO} "\
         -pipe \
         ${COMMON_CFLAGS} \
+        ${COMMON_LLVM_CFLAGS} \
         ${OPTIMIZATION_FLAGS} \
         ${CFLAGS} \
     " | ${XARGS}`
@@ -232,6 +282,7 @@ function export-compiler-environment() {
         -pipe \
         -rtlib=compiler-rt \
         ${COMMON_CFLAGS} \
+        ${COMMON_LLVM_CFLAGS} \
         ${COMMON_LDFLAGS} \
         ${CCLDFLAGS} \
     " | ${XARGS}`
@@ -243,9 +294,15 @@ function export-compiler-environment() {
     export CXXFLAGS=`${ECHO} "\
         -pipe \
         ${COMMON_CFLAGS} \
+        ${COMMON_LLVM_CFLAGS} \
         ${OPTIMIZATION_FLAGS} \
         ${CXXFLAGS} \
     " | ${XARGS}`
+    export GO_LDSO=${GO_LDSO}
+    export GOARCH=${GOARCH}
+    export GOHOSTARCH=${GOHOSTARCH}
+    export GOHOSTOS=${GOHOSTOS}
+    export GOOS=${GOOS}
     export LDFLAGS=`${ECHO} "\
         ${LDFLAGS} \
     " | ${XARGS}`
@@ -364,12 +421,6 @@ function tool-install() {
     ${ECHO} -e "        Time Completed: \e[4m$(date)\e[0m"
 }
 
-function tool-log() {
-    "${@}" \
-        > ${TOOL_LOG}.log \
-        2> ${TOOL_LOG}-stderr.log
-}
-
 function make-build() {
     TOOL=${MAKE} \
     tool-build "${@}"
@@ -395,8 +446,35 @@ function package-autoreconf() {
     tool-log ${AUTORECONF} "${@}"
 }
 
+function package-bootstrap() {
+    BOOTSTRAP_FILE=${BOOTSTRAP_FILE:-bootstrap}
+    TOOL_LOG=${STAGE_ROOT}/builder-bootstrap \
+    tool-log ${BASH} ${BOOTSTRAP_FILE}
+}
+
+function package-bootstrap-configure-install() {
+    CONFIGURE_FILE_ROOT=${CONFIGURE_FILE_ROOT:-${STAGE_ROOT}}
+    CONFIGURE_BUILD_ROOT=${CONFIGURE_BUILD_ROOT:-${STAGE_ROOT}/build}
+
+    # Configure the build components
+    copy-source-to-staging
+
+    mkdir -p ${CONFIGURE_BUILD_ROOT}
+
+    package-push-directory ${CONFIGURE_FILE_ROOT}
+        package-bootstrap
+    package-pop-directory
+
+    package-configure-install-staged "${@}"
+}
+
+function package-clean-texinfo-lint() {
+    ${RM} -rf ${INSTALL_PREFIX}/lib/charset.alias
+    ${RM} -rf ${INSTALL_PREFIX}/share/info/dir
+}
+
 function package-cmake-invocation() {
-    BUILD_TYPE=${BUILD_TYPE:-MinSizeRel}
+    BUILD_TYPE=${BUILD_TYPE:-Release}
     COMPILER_TARGET=${COMPILER_TARGET:-${HOST_TRIPLE}}
     SYSTEM_NAME=${SYSTEM_NAME:-Linux}
 
@@ -415,30 +493,44 @@ function package-cmake-invocation() {
         -DCMAKE_ASM_COMPILER=${AS} \
         -DCMAKE_ASM_COMPILER_TARGET=${COMPILER_TARGET} \
         -DCMAKE_ASM_COMPILER_ID=${AS_COMPILER_ID} \
-        -DCMAKE_ASM_FLAGS_DEBUG="${ASMFLAGS}" \
-        -DCMAKE_ASM_FLAGS_MINSIZEREL="${ASMFLAGS}" \
-        -DCMAKE_ASM_FLAGS_RELEASE="${ASMFLAGS}" \
+        -DCMAKE_ASM_FLAGS="${ASMFLAGS}" \
+        -DCMAKE_ASM_FLAGS_DEBUG= \
+        -DCMAKE_ASM_FLAGS_MINSIZEREL= \
+        -DCMAKE_ASM_FLAGS_RELEASE= \
+        -DCMAKE_ASM_FLAGS_RELWITHDEBINFO= \
         -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
         -DCMAKE_C_COMPILER=${CC} \
         -DCMAKE_C_COMPILER_TARGET=${COMPILER_TARGET} \
         -DCMAKE_C_CREATE_SHARED_LIBRARY="${CCLD} <CMAKE_SHARED_LIBRARY_C_FLAGS> <LANGUAGE_COMPILE_FLAGS> <LINK_FLAGS> <CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS> <SONAME_FLAG><TARGET_SONAME> -o <TARGET> <OBJECTS> <LINK_LIBRARIES>" \
-        -DCMAKE_C_FLAGS_DEBUG="${CFLAGS}" \
-        -DCMAKE_C_FLAGS_MINSIZEREL="${CFLAGS}" \
-        -DCMAKE_C_FLAGS_RELEASE="${CFLAGS}" \
+        -DCMAKE_C_FLAGS="${CFLAGS}" \
+        -DCMAKE_C_FLAGS_DEBUG= \
+        -DCMAKE_C_FLAGS_MINSIZEREL= \
+        -DCMAKE_C_FLAGS_RELEASE= \
+        -DCMAKE_C_FLAGS_RELWITHDEBINFO= \
         -DCMAKE_C_LINK_EXECUTABLE="${CCLD} <FLAGS> <CMAKE_C_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>" \
         -DCMAKE_CXX_COMPILER=${CXX} \
         -DCMAKE_CXX_COMPILER_TARGET=${HOST_TRIPLE} \
         -DCMAKE_CXX_CREATE_SHARED_LIBRARY="${CXXLD} <CMAKE_SHARED_LIBRARY_CXX_FLAGS> <LANGUAGE_COMPILE_FLAGS> <LINK_FLAGS> <CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS> <SONAME_FLAG><TARGET_SONAME> -o <TARGET> <OBJECTS> <LINK_LIBRARIES>" \
-        -DCMAKE_CXX_FLAGS_DEBUG="${CXXFLAGS}" \
-        -DCMAKE_CXX_FLAGS_MINSIZEREL="${CXXFLAGS}" \
-        -DCMAKE_CXX_FLAGS_RELEASE="${CXXFLAGS}" \
+        -DCMAKE_CXX_FLAGS="${CXXFLAGS}" \
+        -DCMAKE_CXX_FLAGS_DEBUG= \
+        -DCMAKE_CXX_FLAGS_MINSIZEREL= \
+        -DCMAKE_CXX_FLAGS_RELEASE= \
+        -DCMAKE_CXX_FLAGS_RELWITHDEBINFO= \
         -DCMAKE_CXX_LINK_EXECUTABLE="${CXXLD} <FLAGS> <CMAKE_CXX_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>" \
         -DCMAKE_CXX_STANDARD=${CXX_STANDARD} \
         -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS}" \
+        -DCMAKE_EXE_LINKER_FLAGS_DEBUG= \
+        -DCMAKE_EXE_LINKER_FLAGS_MINSIZEREL= \
+        -DCMAKE_EXE_LINKER_FLAGS_RELEASE= \
+        -DCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO= \
         -DCMAKE_INSTALL_PREFIX=${PACKAGE_PREFIX} \
         -DCMAKE_LINKER=${LD} \
         -DCMAKE_MAKE_PROGRAM=${NINJA} \
         -DCMAKE_MODULE_LINKER_FLAGS="${LDFLAGS}" \
+        -DCMAKE_MODULE_LINKER_FLAGS_DEBUG= \
+        -DCMAKE_MODULE_LINKER_FLAGS_MINSIZEREL= \
+        -DCMAKE_MODULE_LINKER_FLAGS_RELEASE= \
+        -DCMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO= \
         -DCMAKE_NM=${NM} \
         -DCMAKE_OBJCOPY=${OBJCOPY} \
         -DCMAKE_OBJDUMP=${OBJDUMP} \
@@ -452,6 +544,10 @@ function package-cmake-invocation() {
         -DCMAKE_STRINGS=${STRINGS} \
         -DCMAKE_STRIP=${STRIP} \
         -DCMAKE_SHARED_LINKER_FLAGS="${LDFLAGS}" \
+        -DCMAKE_SHARED_LINKER_FLAGS_DEBUG= \
+        -DCMAKE_SHARED_LINKER_FLAGS_MINSIZEREL= \
+        -DCMAKE_SHARED_LINKER_FLAGS_RELEASE= \
+        -DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO= \
         -DCMAKE_SYSROOT=${SYSROOT} \
         -DCMAKE_SYSTEM_PROCESSOR=${HOST_PROCESSOR} \
         "${CROSSCOMPILING_CMD}" \
@@ -465,6 +561,13 @@ function package-cmake() {
     package-cmake-invocation ${@}
 }
 
+function package-configure() {
+    export-compiler-environment
+    generate-compiler-tools
+    package-configure-invocation \
+        ${@}
+}
+
 function package-configure-invocation() {
     CONFIGURE_HOST_TRIPLE=${CONFIGURE_HOST_TRIPLE:-${HOST_TRIPLE}}
 
@@ -476,11 +579,54 @@ function package-configure-invocation() {
         ${CONFIGURE_FLAGS}
 }
 
-function package-configure() {
-    export-compiler-environment
-    generate-compiler-tools
-    package-configure-invocation \
-        ${@}
+function package-configure-install() {
+    DISABLE_AUTORECONF=TRUE \
+    package-stage-configure-install "${@}"
+}
+
+function package-configure-install-staged() {
+    CONFIGURE_BUILD_ROOT=${CONFIGURE_BUILD_ROOT:-${STAGE_ROOT}}
+    CONFIGURE_FILE=${CONFIGURE_FILE:-configure}
+    CONFIGURE_FILE_ROOT=${CONFIGURE_FILE_ROOT:-${SOURCE_ROOT}}
+
+    package-push-directory ${CONFIGURE_BUILD_ROOT}
+        # Strip problematic configure checks
+        ${SED} -i \
+               "s/'auto-import'/'ld'/g" \
+               ${CONFIGURE_FILE_ROOT}/${CONFIGURE_FILE}
+
+        # Configure package
+        package-configure \
+            ${CONFIGURE_FILE_ROOT}/${CONFIGURE_FILE} \
+            "${@}"
+
+        # Build the package
+        make-build
+    package-pop-directory
+
+    # Install the package
+    package-install
+}
+
+function package-install() {
+    CONFIGURE_BUILD_ROOT=${CONFIGURE_BUILD_ROOT:-${STAGE_ROOT}}
+
+    package-push-directory ${CONFIGURE_BUILD_ROOT}
+        # Install package
+        make-install
+
+        # Remove texinfo related lint
+        package-clean-texinfo-lint
+
+        # RPATH fixups
+        rpath-fixup
+
+        # Build the package
+        deb-package-build
+
+        # Build the package
+        deb-package-install
+    package-pop-directory
 }
 
 function package-libtoolize() {
@@ -529,10 +675,10 @@ function package-meson-build() {
         MESON_BUILD_CONFIG=cross
 
         BUILD_CFLAGS="-I${BUILD_PACKAGE_PREFIX}/include"
-        BUILD_CMAKE_PREFIXES="${BUILD_PACKAGE_PREFIX}/lib/cmake:${BUILD_PACKAGE_PREFIX}/lib/pkgconfig"
+        BUILD_CMAKE_PREFIXES="${BUILD_PACKAGE_PREFIX}/lib/cmake:${BUILD_PACKAGE_PREFIX}/lib/pkgconfig:${BUILD_PACKAGE_PREFIX}/share/pkgconfig"
         BUILD_CXXFLAGS="-I${BUILD_PACKAGE_PREFIX}/include"
-        BUILD_LDFLAGS="-L${BUILD_PACKAGE_PREFIX}/include"
-        BUILD_PKG_CONFIG_PATH="${BUILD_PACKAGE_PREFIX}/lib/pkgconfig"
+        BUILD_LDFLAGS="-L${BUILD_PACKAGE_PREFIX}/lib"
+        BUILD_PKG_CONFIG_PATH="${BUILD_PACKAGE_PREFIX}/lib/pkgconfig:${BUILD_PACKAGE_PREFIX}/share/pkgconfig"
 
         BUILD_C_ARGS=`${ECHO} [\'${BUILD_CFLAGS}\'] | ${SED} "s/ /','/g"`
         BUILD_C_LINK_ARGS=`${ECHO} [\'${BUILD_LDFLAGS}\'] | ${SED} "s/ /','/g"`
@@ -540,8 +686,8 @@ function package-meson-build() {
         BUILD_CPP_ARGS=`${ECHO} [\'${BUILD_CXXFLAGS}\'] | ${SED} "s/ /','/g"`
         BUILD_CPP_LINK_ARGS=`${ECHO} [\'${BUILD_LDFLAGS}\'] | ${SED} "s/ /','/g"`
 
-        export CC_FOR_BUILD=${BINDIR}/clang
-        export CXX_FOR_BUILD=${BINDIR}/clang++
+        export CC_FOR_BUILD=${BINDIR}/${CLANG}
+        export CXX_FOR_BUILD=${BINDIR}/${CLANG}++
         export CMAKE_FOR_BUILD=${CMAKE}
         export CMAKE_PREFIX_PATH_FOR_BUILD=`${ECHO} ${BUILD_CMAKE_PREFIXES} | ${TR} ":" ";"`
 
@@ -684,6 +830,28 @@ function package-python-build() {
                                            --single-version-externally-managed
 }
 
+function package-stage-configure-install() {
+    CONFIGURE_FILE_ROOT=${CONFIGURE_FILE_ROOT:-${STAGE_ROOT}}
+    CONFIGURE_BUILD_ROOT=${CONFIGURE_BUILD_ROOT:-${STAGE_ROOT}/build}
+
+    # Configure the build components
+    copy-source-to-staging
+
+    mkdir -p ${CONFIGURE_BUILD_ROOT}
+
+    package-push-directory ${CONFIGURE_FILE_ROOT}
+        if [ -n "${ENABLE_LIBTOOLIZE}" ]; then
+            package-libtoolize -ci
+        fi
+
+        if [ -z "${DISABLE_AUTORECONF}" ]; then
+            package-autoreconf -fi
+        fi
+    package-pop-directory
+
+    package-configure-install-staged "${@}"
+}
+
 function package-swift-build() {
     export-compiler-environment
 
@@ -691,9 +859,14 @@ function package-swift-build() {
     SWIFT_BUILD_TYPE=${SWIFT_BUILD_TYPE:-release}
     TEMP_FILE=`mktemp`
 
+    if [ -n "${HOST_ARCH_VECTOR_SIZE}" ]; then
+        HOST_VECTOR_CFLAG="-mllvm\", \"-force-vector-width=${HOST_ARCH_VECTOR_SIZE}"
+        HOST_VECTOR_SWIFTCFLAG="-Xllvm\", \"-force-vector-width=${HOST_ARCH_VECTOR_SIZE}"
+    fi
+
     if [ -z "${DISABLE_POLLY}" ]; then
-        POLLY_CFLAG="\"-mllvm\", \"-polly\""
-        POLLY_SWIFTCFLAG="\"-Xllvm\", \"-polly\""
+        POLLY_CFLAG="-mllvm\", \"-polly"
+        POLLY_SWIFTCFLAG="-Xllvm\", \"-polly"
     fi
 
     if [ -z "${DISABLE_STRIP}" ]; then
@@ -754,7 +927,8 @@ function package-swift-build() {
             \"--sysroot=${SYSROOT}\", \n\
             \"${FLTO_CFLAG}\", \n\
             \"${FPIC_CFLAG}\", \n\
-            ${POLLY_CFLAG} \n\
+            \"${HOST_VECTOR_CFLAG}\", \n\
+            \"${POLLY_CFLAG}\" \n\
         ], \n\
         \"extra-cpp-flags\": [ \n\
         ], \n\
@@ -771,7 +945,8 @@ function package-swift-build() {
             \"-O${SWIFT_OPTIMIZATION_LEVEL}\", \n\
             \"-Xfrontend\", \"-disable-llvm-verify\", \n\
             \"${FLTO_SWIFTCFLAG}\", \n\
-            ${POLLY_SWIFTCFLAG} \n\
+            \"${HOST_VECTOR_SWIFTCFLAG}\", \n\
+            \"${POLLY_SWIFTCFLAG}\" \n\
         ] \n\
     } \n\
     " > ${TEMP_FILE}
@@ -782,7 +957,6 @@ function package-swift-build() {
         --build-path ${STAGE_ROOT} \
         --configuration ${SWIFT_BUILD_TYPE} \
         --destination ${TEMP_FILE} \
-        --enable-test-discovery \
         ${SWIFT_BUILD_FLAGS}
 }
 
@@ -803,7 +977,7 @@ function rpath-fixup() {
 
         COMPONENT_RPATH=${COMPONENT_RPATH:-"\$ORIGIN/../lib:\$ORIGIN/../lib/swift/${SDK_PLATFORM_DIR}"}
 
-        for COMPONENT in ${COMPONENTS}; do
+        for COMPONENT in ${RPATH_COMPONENTS}; do
             patchelf --set-rpath ${COMPONENT_RPATH} \
                                  ${COMPONENT}
         done

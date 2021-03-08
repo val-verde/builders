@@ -41,7 +41,7 @@ package-cmake \
     -DCLANG_ENABLE_STATIC_ANALYZER=FALSE \
     -DCLANG_INCLUDE_DOCS=FALSE \
     -DCLANG_INCLUDE_TESTS=FALSE \
-    -DCLANG_LINK_CLANG_DYLIB=FALSE \
+    -DCLANG_LINK_CLANG_DYLIB=TRUE \
     -DCLANG_OPENMP_NVPTX_DEFAULT_ARCH=sm_${CUDA_GPU_PRIMARY_ARCH} \
     -DCLANG_TOOL_ARCMT_TEST_BUILD=FALSE \
     -DCLANG_TOOL_CLANG_IMPORT_TEST_BUILD=FALSE \
@@ -127,7 +127,7 @@ package-cmake \
     -DLLVM_ABI_BREAKING_CHECKS=FORCE_OFF \
     -DLLVM_BUILD_DOCS=FALSE \
     -DLLVM_BUILD_EXAMPLES=FALSE \
-    -DLLVM_BUILD_LLVM_DYLIB=FALSE \
+    -DLLVM_BUILD_LLVM_DYLIB=TRUE \
     -DLLVM_BUILD_TESTS=FALSE \
     -DLLVM_BUILD_UTILS=FALSE \
     -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS} \
@@ -155,7 +155,7 @@ package-cmake \
     -DLLVM_INCLUDE_TESTS=FALSE \
     -DLLVM_INCLUDE_UTILS=TRUE \
     -DLLVM_INSTALL_TOOLCHAIN_ONLY=TRUE \
-    -DLLVM_LINK_LLVM_DYLIB=FALSE \
+    -DLLVM_LINK_LLVM_DYLIB=TRUE \
     -DLLVM_OPTIMIZED_TABLEGEN=TRUE \
     -DLLVM_POLLY_LINK_INTO_TOOLS=TRUE \
     -DLLVM_TARGETS_TO_BUILD="${LLVM_TARGETS_TO_BUILD}" \
@@ -179,14 +179,18 @@ package-cmake \
 # Build the components
 ninja-install
 
-${RSYNC} -aPx \
-         ${STAGE_ROOT}/bin/llvm-as* \
-         ${STAGE_ROOT}/bin/llvm-dlltool* \
-         ${STAGE_ROOT}/bin/llvm-mt* \
-         ${STAGE_ROOT}/bin/llvm-pdbutil* \
-         ${STAGE_ROOT}/bin/llvm-readelf* \
-         ${STAGE_ROOT}/bin/llvm-readobj* \
-         ${INSTALL_PREFIX}/bin
+${LN} -sf lld \
+          ${STAGE_ROOT}/bin/ld64.lld
+package-rsync -ax \
+              ${STAGE_ROOT}/bin/llvm-as* \
+              ${STAGE_ROOT}/bin/llvm-dlltool* \
+              ${STAGE_ROOT}/bin/llvm-install-name-tool* \
+              ${STAGE_ROOT}/bin/llvm-lipo* \
+              ${STAGE_ROOT}/bin/llvm-mt* \
+              ${STAGE_ROOT}/bin/llvm-pdbutil* \
+              ${STAGE_ROOT}/bin/llvm-readelf* \
+              ${STAGE_ROOT}/bin/llvm-readobj* \
+              ${INSTALL_PREFIX}/bin/
 
 # Build the package
 deb-package-build

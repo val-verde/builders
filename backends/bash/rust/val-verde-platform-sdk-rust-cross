@@ -26,11 +26,9 @@ export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUA
 # Configure the build components
 cd ${STAGE_ROOT}
 
-${RSYNC} -aPx \
-         ${SOURCE_ROOT}/${VAL_VERDE_GH_TEAM}-config-cross.toml.in \
-         ${STAGE_ROOT}/config.toml
-
-BINDIR=${BUILD_PACKAGE_PREFIX}/bin
+package-rsync -ax \
+              ${SOURCE_ROOT}/${VAL_VERDE_GH_TEAM}-config-cross.toml.in \
+              ${STAGE_ROOT}/config.toml
 
 if [ "${BUILD_OS}" = "android" ]; then
     BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}
@@ -44,12 +42,10 @@ else
     HOST_TRIPLE=${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS}
 fi
 
-BUILD_CC=${BINDIR}/clang
 BUILD_CFLAGS=`${ECHO} "\
     -I${BUILD_PACKAGE_PREFIX}/include \
     ${BUILD_CFLAGS} \
 " | ${XARGS}`
-BUILD_CXX=${BINDIR}/clang++
 BUILD_CXXFLAGS=`${ECHO} "\
     -I${BUILD_PACKAGE_PREFIX}/include \
     ${BUILD_CXXFLAGS} \
@@ -64,36 +60,34 @@ FILECHECK=${LLVM_NATIVE_STAGE_ROOT}/bin/FileCheck
 LD=${CCLD}
 LDFLAGS=
 LLVMCONFIG=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config
-NODE=${BINDIR}/node
-PYTHON=${BINDIR}/python3
 RUSTC=${BINDIR}/rustc
 RUSTFMT=${BINDIR}/rustfmt
 
-sed -i "s|@@AR@@|${AR}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@BUILD_CC@@|${BUILD_CC}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@BUILD_CXX@@|${BUILD_CXX}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@BUILD_LD@@|${BUILD_LD}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@BUILD_LLVMCONFIG@@|${LLVMCONFIG}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@BUILD_TRIPLE@@|${BUILD_TRIPLE}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@CARGO@@|${CARGO}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@CC@@|${CC}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@CFLAGS@@|${CFLAGS}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@CXX@@|${CXX}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@CXXFLAGS@@|${CXXFLAGS}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@FILECHECK@@|${FILECHECK}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@HOST_TRIPLE@@|${BUILD_TRIPLE}\", \"${HOST_TRIPLE}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@INSTALL_PREFIX@@|${INSTALL_PREFIX}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@LD@@|${LD}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@LDFLAGS@@|${LDFLAGS}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@LLVMCONFIG@@|${LLVMCONFIG}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@MUSLROOT@@|${PACKAGE_PREFIX}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@NODE@@|${NODE}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@PYTHON@@|${PYTHON}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@RANLIB@@|${RANLIB}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@RUSTC@@|${RUSTC}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@RUSTFMT@@|${RUSTFMT}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@STAGE_ROOT@@|${STAGE_ROOT}|g" ${STAGE_ROOT}/config.toml
-sed -i "s|@@TARGET_TRIPLE@@|${HOST_TRIPLE}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@AR@@|${AR}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@BUILD_CC@@|${BUILD_CC}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@BUILD_CXX@@|${BUILD_CXX}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@BUILD_LD@@|${BUILD_LD}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@BUILD_LLVMCONFIG@@|${LLVMCONFIG}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@BUILD_TRIPLE@@|${BUILD_TRIPLE}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@CARGO@@|${CARGO}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@CC@@|${CC}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@CFLAGS@@|${CFLAGS}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@CXX@@|${CXX}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@CXXFLAGS@@|${CXXFLAGS}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@FILECHECK@@|${FILECHECK}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@HOST_TRIPLE@@|${BUILD_TRIPLE}\", \"${HOST_TRIPLE}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@INSTALL_PREFIX@@|${INSTALL_PREFIX}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@LD@@|${LD}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@LDFLAGS@@|${LDFLAGS}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@LLVMCONFIG@@|${LLVMCONFIG}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@MUSLROOT@@|${PACKAGE_PREFIX}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@NODE@@|${NODE}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@PYTHON@@|${PYTHON}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@RANLIB@@|${RANLIB}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@RUSTC@@|${RUSTC}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@RUSTFMT@@|${RUSTFMT}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@STAGE_ROOT@@|${STAGE_ROOT}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@TARGET_TRIPLE@@|${HOST_TRIPLE}|g" ${STAGE_ROOT}/config.toml
 
 export HOST_CFLAGS="${BUILD_CFLAGS}"
 export HOST_CXXFLAGS="${BUILD_CXXFLAGS}"
@@ -102,8 +96,10 @@ export TARGET_CXXFLAGS="${CXXFLAGS}"
 unset CFLAGS CXXFLAGS
 
 # Build the components
-${BUILD_PACKAGE_PREFIX}/bin/python3 ${SOURCE_ROOT}/x.py build --config ${STAGE_ROOT}/config.toml
-${BUILD_PACKAGE_PREFIX}/bin/python3 ${SOURCE_ROOT}/x.py install --config ${STAGE_ROOT}/config.toml
+TOOL_LOG=${STAGE_ROOT}/builder-invocation \
+tool-log ${PYTHON} ${SOURCE_ROOT}/x.py build --config ${STAGE_ROOT}/config.toml
+TOOL_LOG=${STAGE_ROOT}/builder-installation \
+tool-log ${PYTHON} ${SOURCE_ROOT}/x.py install --config ${STAGE_ROOT}/config.toml
 
 # Build the package
 deb-package-build

@@ -3,15 +3,16 @@
 set -e
 
 # Set all environment vars
-export SOURCE_PACKAGE_NAME=attr
-export SOURCE_PACKAGE_VERSION=2
+export SOURCE_PACKAGE_NAME=pkg-config
+export SOURCE_PACKAGE_VERSION=0
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for configure/install
-CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
-INSTALL_TARGET="install-dev install-lib" \
 package-configure-install \
-    --disable-static \
-    --enable-shared
+    ac_cv_func_posix_getgrgid_r=yes \
+    ac_cv_func_posix_getpwuid_r=yes \
+    glib_cv_stack_grows=no \
+    glib_cv_uscore=no \
+    --with-internal-glib

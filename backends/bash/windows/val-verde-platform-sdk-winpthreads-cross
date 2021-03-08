@@ -16,7 +16,7 @@ export SOURCE_ROOT=${SOURCE_ROOT_BASE}/mingw-w64-${SOURCE_PACKAGE_VERSION}/mingw
 
 # Configure the build components
 cd ${STAGE_ROOT}
-sed -i \
+${SED} -i \
     "s/'auto-import'/'ld'/g" \
     ${SOURCE_ROOT}/configure
 package-configure \

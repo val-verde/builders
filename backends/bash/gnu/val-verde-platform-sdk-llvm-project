@@ -19,6 +19,7 @@ export DEPENDS="\
 
 CUDA_GPU_PRIMARY_ARCH=61
 CUDA_GPU_SECONDARY_ARCH=35
+CUDA_RUNTIME_LIBRARY=/usr/lib/${HOST_TRIPLE}/stubs/libcuda.so
 EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;flang;libclc;mlir;openmp;parallel-libs;polly;pstl"}
 
 # Configure the build components
@@ -60,6 +61,7 @@ package-cmake \
     -DCOMPILER_RT_EXCLUDE_ATOMIC_BUILTIN=FALSE \
     -DCOMPILER_RT_HAS_ATOMIC_KEYWORD=TRUE \
     -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
+    -DCUDA_RUNTIME_LIBRARY=${CUDA_RUNTIME_LIBRARY} \
     -DCUDA_NVCC_EXECUTABLE=/usr/bin/nvcc \
     -DENABLE_EXPERIMENTAL_NEW_PASS_MANAGER=TRUE \
     -DFFI_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
@@ -169,7 +171,7 @@ package-cmake \
     -DLLVM_VERSION_SUFFIX="-${PACKAGE_BASE_NAME}" \
     -DLLVM_Z3_INSTALL_DIR=${BUILD_PACKAGE_PREFIX} \
     -DMLIR_CUDA_RUNNER_ENABLED=TRUE \
-    -DPython3_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/python3 \
+    -DPython3_EXECUTABLE=${PYTHON} \
     -DPOLLY_ENABLE_GPGPU_CODEGEN=TRUE \
     -DSANITIZER_CXX_ABI=libc++ \
     -DZ3_INCLUDE_DIR=${BUILD_PACKAGE_PREFIX}/include \
@@ -182,7 +184,10 @@ package-cmake \
     ${SOURCE_ROOT}/llvm
 
 # Build the components
-INSTALL_TARGET="tools/clang/install projects/compiler-rt/install tools/lld/install tools/mlir/install" \
+INSTALL_TARGET="tools/clang/install" \
+ninja-install
+
+INSTALL_TARGET="projects/compiler-rt/install tools/lld/install tools/mlir/install" \
 ninja-install
 
 NUM_PROCESSORS=`awk '/MemTotal/ { printf "%d", $2/(1024*1024*5) }' /proc/meminfo` \
@@ -191,14 +196,18 @@ ninja-install
 
 ninja-install
 
-${RSYNC} -aPx \
-         ${STAGE_ROOT}/bin/llvm-as* \
-         ${STAGE_ROOT}/bin/llvm-dlltool* \
-         ${STAGE_ROOT}/bin/llvm-mt* \
-         ${STAGE_ROOT}/bin/llvm-pdbutil* \
-         ${STAGE_ROOT}/bin/llvm-readelf* \
-         ${STAGE_ROOT}/bin/llvm-readobj* \
-         ${INSTALL_PREFIX}/bin/
+${LN} -sf lld \
+          ${STAGE_ROOT}/bin/ld64.lld
+package-rsync -ax \
+              ${STAGE_ROOT}/bin/llvm-as* \
+              ${STAGE_ROOT}/bin/llvm-dlltool* \
+              ${STAGE_ROOT}/bin/llvm-install-name-tool* \
+              ${STAGE_ROOT}/bin/llvm-lipo* \
+              ${STAGE_ROOT}/bin/llvm-mt* \
+              ${STAGE_ROOT}/bin/llvm-pdbutil* \
+              ${STAGE_ROOT}/bin/llvm-readelf* \
+              ${STAGE_ROOT}/bin/llvm-readobj* \
+              ${INSTALL_PREFIX}/bin/
 
 # Build the package
 deb-package-build

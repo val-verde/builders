@@ -9,26 +9,11 @@ export SOURCE_PACKAGE_VERSION=5
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-# Configure the build components
-copy-source-to-staging
-
-cd ${STAGE_ROOT}
-./bootstrap
-
+# Invoke one-shot template for bootstrap/configure/install
 CFLAGS="\
     -Wno-macro-redefined \
     -Wno-unused-command-line-argument \
     ${CFLAGS} \
 " \
-package-configure \
-    ${STAGE_ROOT}/configure \
+package-bootstrap-configure-install \
     --enable-mpers=no
-
-# Build the components
-make-install
-
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install

@@ -9,14 +9,9 @@ export SOURCE_PACKAGE_VERSION=6
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-# Configure the build components
-sed -i "s/'auto-import'/'ld'/g" ${SOURCE_ROOT}/configure
-
-cd ${STAGE_ROOT}
-
+# Invoke one-shot template for configure/install
 INSTALL_PREFIX=${PACKAGE_PREFIX} \
-package-configure \
-    ${SOURCE_ROOT}/configure \
+package-configure-install \
     --enable-ext-colors \
     --enable-mixed-case \
     --enable-pc-files \
@@ -37,12 +32,3 @@ package-configure \
     --without-progs \
     --without-tack \
     --without-tests
-
-# Build the components
-make-install
-
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install

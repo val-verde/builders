@@ -15,15 +15,15 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-vulkan-loader-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-BUILD_TYPE=${BUILD_TYPE:-MinSizeRel}
+BUILD_TYPE=${BUILD_TYPE:-Release}
 
 # Configure the build components
 copy-source-to-staging
 
 if [ "${BUILD_TRIPLE}" != ${HOST_TRIPLE} ]; then
-    ${RSYNC} -aPx \
-             ${BUILD_PACKAGE_PREFIX}/lib/cmake/${SOURCE_PACKAGE_NAME}.cmake \
-             ${STAGE_ROOT}/ImportExecutables-${BUILD_TYPE}.cmake
+    package-rsync -ax \
+                  ${BUILD_PACKAGE_PREFIX}/lib/cmake/${SOURCE_PACKAGE_NAME}.cmake \
+                  ${STAGE_ROOT}/ImportExecutables-${BUILD_TYPE}.cmake
 fi
 
 if [ "${HOST_KERNEL}" = "linux" ] &&
@@ -44,7 +44,7 @@ if [ "${HOST_OS}" = "android" ]; then
 elif [ "${HOST_OS}" = "mingw32" ]; then
     CMAKE_ASM_COMPILER_CMD="-DCMAKE_ASM_COMPILER=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-ml64"
     CMAKE_ASM_COMPILER_ID_CMD="-DCMAKE_ASM_COMPILER_ID=MSVC"
-    CMAKE_ASM_FLAGS_CMD="-DCMAKE_ASM_FLAGS_MINSIZEREL="
+    CMAKE_ASM_FLAGS_CMD="-DCMAKE_ASM_FLAGS_RELEASE="
 fi
 
 cd ${STAGE_ROOT}
@@ -69,7 +69,7 @@ package-cmake \
     -DFILAMENT_ENABLE_LTO=FALSE \
     -DFILAMENT_SKIP_SAMPLES=TRUE \
     -DFILAMENT_SUPPORTS_VULKAN=TRUE \
-    -DPYTHON_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/python3 \
+    -DPYTHON_EXECUTABLE=${PYTHON} \
     -DSPIRV_WERROR=FALSE \
     -DUSE_STATIC_LIBCXX=FALSE \
     "${CMAKE_ANDROID_DEFINE_CMD}" \
@@ -85,9 +85,9 @@ ninja-install
 ${MKDIR} -p ${INSTALL_PREFIX}/lib/cmake
 
 if [ "${BUILD_TRIPLE}" == ${HOST_TRIPLE} ]; then
-    ${RSYNC} -aPx \
-             ${STAGE_ROOT}/ImportExecutables-${BUILD_TYPE}.cmake \
-             ${INSTALL_PREFIX}/lib/cmake/${SOURCE_PACKAGE_NAME}.cmake
+    package-rsync -ax \
+                  ${STAGE_ROOT}/ImportExecutables-${BUILD_TYPE}.cmake \
+                  ${INSTALL_PREFIX}/lib/cmake/${SOURCE_PACKAGE_NAME}.cmake
 fi
 
 # Build the package

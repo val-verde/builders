@@ -3,11 +3,14 @@
 set -e
 
 # Source package build helper functions
-export BINDIR=/usr/bin
+export \
+    BINDIR=/usr/bin \
+    CLANG=clang
+
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 ${MKDIR} -p ${BUILD_PACKAGE_PREFIX}
-package-rsync -aPx \
+package-rsync -ax \
               /usr/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-* \
               ${BUILD_PACKAGE_PREFIX}/bin/
 ${CHMOD} +x ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang \
@@ -33,18 +36,6 @@ package-invoke-builder libcxx-cross
 # llvm bootstrap build
 package-invoke-builder llvm-project-bootstrap
 
-# bazel bootstrap build
-package-invoke-builder bazel-bootstrap
-
-# go bootstrap build
-package-invoke-builder go-bootstrap
-
-# openjdk bootstrap build
-package-invoke-builder openjdk-bootstrap
-
-# rust bootstrap build
-package-invoke-builder rust-bootstrap
-
 # remove host compiler and libraries as it is superceded by bootstrapped clang
 package-apt-remove \
     clang \
@@ -53,3 +44,42 @@ package-apt-remove \
     libunwind-dev \
     lld \
     llvm
+
+export \
+    AR=${BUILD_PACKAGE_PREFIX}/bin/llvm-ar \
+    CC=${BUILD_PACKAGE_PREFIX}/bin/clang \
+    CPP=${BUILD_PACKAGE_PREFIX}/bin/clang-cpp \
+    CXX=${BUILD_PACKAGE_PREFIX}/bin/clang++ \
+    NM=${BUILD_PACKAGE_PREFIX}/bin/llvm-nm \
+    RANLIB=${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib
+
+# bazel bootstrap build
+package-invoke-builder bazel-bootstrap
+
+# go bootstrap build
+package-invoke-builder go-bootstrap
+export GO=${BUILD_PACKAGE_PREFIX}/bin/go
+
+# openjdk bootstrap build
+package-invoke-builder openjdk-bootstrap
+
+# rust bootstrap build
+package-invoke-builder rust-bootstrap
+
+# pkg-config bootstrap build
+package-invoke-builder pkg-config
+
+# z3 build
+package-invoke-builder z3
+
+# re2c build
+package-invoke-builder re2c
+
+# alive2 build
+package-invoke-builder alive2
+
+# hiredis build
+package-invoke-builder hiredis
+
+# souper build
+package-invoke-builder souper

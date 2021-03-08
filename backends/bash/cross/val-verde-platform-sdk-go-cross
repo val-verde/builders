@@ -12,38 +12,6 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 copy-source-to-staging
 
 # Configure the build components
-if [ "${BUILD_PROCESSOR}" = "aarch64" ]; then
-    export GOHOSTARCH=arm64
-elif [ "${BUILD_PROCESSOR}" = "x86_64" ]; then
-    export GOHOSTARCH=amd64
-fi
-
-if [ "${HOST_OS}" = "android" ]; then
-    export GOHOSTOS=android
-elif [ "${HOST_OS}" = "gnu" ] ||
-     [ "${HOST_OS}" = "musl" ]; then
-    export GOHOSTOS=linux
-elif [ "${HOST_OS}" = "mingw32" ]; then
-    export GOHOSTOS=windows
-fi
-
-if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
-    export GOARCH=arm64
-elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
-    export GOARCH=amd64
-fi
-
-if [ "${HOST_OS}" = "android" ]; then
-    export GOOS=android
-elif [ "${HOST_OS}" = "gnu" ]; then
-    export GOOS=linux
-elif [ "${HOST_OS}" = "musl" ]; then
-    export GOOS=linux
-    export GO_LDSO=/lib/ld-${HOST_OS}-${HOST_PROCESSOR}.so.1
-elif [ "${HOST_OS}" = "mingw32" ]; then
-    export GOOS=windows
-fi
-
 export-compiler-environment
 generate-compiler-tools
 

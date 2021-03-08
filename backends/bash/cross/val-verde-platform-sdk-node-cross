@@ -151,14 +151,14 @@ ${STAGE_ROOT}/configure \
 # Build the components
 make-install
 
-${RSYNC} -aPx \
-         ${STAGE_ROOT}/out/Release/node \
-         ${INSTALL_PREFIX}/bin
+package-rsync -ax \
+              ${STAGE_ROOT}/out/Release/node \
+              ${INSTALL_PREFIX}/bin/
 
 if [ "${HOST_OS}" = "android" ]; then
-    sed -i \
-        's|/usr/bin/env|/system/bin/env|g' \
-        `${GREP} -rl "/usr/bin/env" ${INSTALL_PREFIX}`
+    ${SED} -i \
+          's|/usr/bin/env|/system/bin/env|g' \
+          `${GREP} -rl "/usr/bin/env" ${INSTALL_PREFIX}`
 fi
 
 # Build the package

@@ -19,9 +19,9 @@ cd ${STAGE_ROOT}
 yarn-build
 
 ${MKDIR} -p ${INSTALL_PREFIX}
-${RSYNC} -aPx \
-         ${STAGE_ROOT}/ \
-         ${INSTALL_PREFIX}/
+package-rsync -ax \
+              ${STAGE_ROOT}/ \
+              ${INSTALL_PREFIX}/
 
 # Build the package
 deb-package-build

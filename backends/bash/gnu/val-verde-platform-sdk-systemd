@@ -25,8 +25,9 @@ package-meson-build
 cd ${STAGE_ROOT}
 ninja-install
 
-package-rsync -aPx ${STAGE_ROOT}/libsystemd*.so \
-                   ${INSTALL_PREFIX}/lib
+package-rsync -ax \
+              ${STAGE_ROOT}/libsystemd*.so \
+              ${INSTALL_PREFIX}/lib/
 
 # Build the package
 deb-package-build

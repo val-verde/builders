@@ -36,7 +36,16 @@
         "sourcePackageName": "apt",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2.1.15",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"    },
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "argp-standalone",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
     {
         "retainSource": "false",
         "sourceType": "git",
@@ -226,7 +235,7 @@
         "sourceType": "git",
         "sourcePackageName": "grep",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "3.6",
+        "sourcePackageVersion": "3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -454,6 +463,14 @@
     {
         "retainSource": "false",
         "sourceType": "git",
+        "sourcePackageName": "musl-obstack",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
         "sourcePackageName": "ninja",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1.10.0",
@@ -582,6 +599,14 @@
     {
         "retainSource": "false",
         "sourceType": "git",
+        "sourcePackageName": "re2c",
+        "sourceBranchIndicator": "master",
+        "sourcePackageVersion": "2",
+        "sourcePackageUrl": "https://github.com/skvadrik/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
         "sourcePackageName": "rsync",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "3.2.3",
@@ -593,6 +618,14 @@
         "sourcePackageName": "rust",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1.50.0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "sdl",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1150,7 +1183,7 @@
         "sourceType": "other",
         "sourcePackageName": "dpkg",
         "sourceBranchIndicator": "wget-xz",
-        "sourcePackageVersion": "1.20.5",
+        "sourcePackageVersion": "1.20.7.1",
         "sourcePackageUrl": "http://ftp.debian.org/debian/pool/main/d/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}_${SOURCE_PACKAGE_VERSION}.tar.xz"
     },
     {
@@ -1186,13 +1219,6 @@
         "sourcePackageName": "gperf",
         "sourceBranchIndicator": "wget",
         "sourcePackageVersion": "3.1",
-        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "grep",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "3.6",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
@@ -1306,13 +1332,6 @@
         "sourceBranchIndicator": "wget",
         "sourcePackageVersion": "0.29.2",
         "sourcePackageUrl": "https://pkgconfig.freedesktop.org/releases/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "sdl",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "2.0.14",
-        "sourcePackageUrl": "https://www.libsdl.org/release/SDL2-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
         "sourceType": "other",

@@ -14,7 +14,7 @@ export DEPENDS="${PACKAGE_BASE_NAME}-vulkan-loader-1-${HOST_OS}${HOST_OS_API_LEV
 # Configure the build components
 copy-source-to-staging
 
-sed -i \
+${SED} -i \
     's|${ANDROID_NDK}/sources/android/cpufeatures/cpu-features.c||g' \
     ${STAGE_ROOT}/CMakeLists.txt
 
