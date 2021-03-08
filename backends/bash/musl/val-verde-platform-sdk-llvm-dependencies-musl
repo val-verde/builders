@@ -86,6 +86,9 @@ package-invoke-builder libxml2-cross
 # gmp build
 package-invoke-builder gmp-cross
 
+# libatomic-ops build
+package-invoke-builder libatomic-ops-cross
+
 # gc build
 package-invoke-builder gc-cross
 
