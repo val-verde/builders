@@ -14,12 +14,3 @@ BOOTSTRAP_FILE=./autogen.sh \
 package-bootstrap-configure-install \
     --disable-static \
     --enable-shared
-
-# Build the components
-make-install
-
-# Build the package
-deb-package-build
-
-# Build the package
-deb-package-install
