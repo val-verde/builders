@@ -192,6 +192,7 @@ package-invoke-builder libunistring-cross
 
 # texinfo build
 package-invoke-builder texinfo-cross
+export MAKEINFO=${BINDIR}/makeinfo
 
 # guile build
 package-invoke-builder guile-cross
@@ -385,7 +386,6 @@ export \
     INSTALL=${BINDIR}/install \
     LS=${BINDIR}/ls \
     LN=${BINDIR}/ln \
-    MAKEINFO=${BINDIR}/true \
     MKDIR=${BINDIR}/mkdir \
     MV=${BINDIR}/mv \
     RM="${BINDIR}/rm -f" \
