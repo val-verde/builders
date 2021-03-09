@@ -424,6 +424,14 @@
     {
         "retainSource": "false",
         "sourceType": "git",
+        "sourcePackageName": "libtool",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
         "sourcePackageName": "libunistring",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "0",
@@ -1415,13 +1423,6 @@
         "sourceBranchIndicator": "wget",
         "sourcePackageVersion": "0.9.72",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "libtool",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "2.4.6",
-        "sourcePackageUrl": "https://ftp.gnu.org/pub/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
         "sourceType": "other",
