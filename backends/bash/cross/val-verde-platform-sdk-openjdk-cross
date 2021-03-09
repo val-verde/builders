@@ -123,6 +123,7 @@ tool-log ${SOURCE_ROOT}/configure \
 TOOL_LOG=${STAGE_ROOT}/builder-installation
 tool-log ${MAKE} \
     JOBS=${NUM_PROCESSORS} \
+    INSTALL_PREFIX=${INSTALL_PREFIX} \
     install
 
 # Build the package
