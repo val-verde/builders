@@ -348,13 +348,13 @@ package-invoke-builder dpkg-cross
 package-invoke-builder rsync-cross
 
 # android p11-kit build
-# package-invoke-builder p11-kit-cross
+package-invoke-builder p11-kit-cross
 
 # android gnutls build
-# package-invoke-builder gnutls-cross
+package-invoke-builder gnutls-cross
 
 # android apt build
-# package-invoke-builder apt-cross
+package-invoke-builder apt-cross
 
 # android lua build
 package-invoke-builder lua-cross

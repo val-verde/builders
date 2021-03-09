@@ -339,13 +339,13 @@ package-invoke-builder rsync-cross
 # package-invoke-builder systemd
 
 # p11-kit build
-# package-invoke-builder p11-kit-cross
+package-invoke-builder p11-kit-cross
 
 # gnutls build
-# package-invoke-builder gnutls-cross
+package-invoke-builder gnutls-cross
 
 # apt build
-# package-invoke-builder apt-cross
+package-invoke-builder apt-cross
 
 # lua build
 package-invoke-builder lua-cross
