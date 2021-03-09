@@ -19,6 +19,9 @@ CFLAGS="\
     ${CFLAGS} \
 " \
 package-stage-configure-install \
+    ag_cv_run_strcspn=yes \
+    libopts_cv_with_libregex=yes \
     --disable-dependency-tracking \
     --disable-static \
-    --enable-shared
+    --enable-shared \
+    --with-regex-header=${SOURCE_ROOT_BASE}/gnulib-0/lib/regex.h
