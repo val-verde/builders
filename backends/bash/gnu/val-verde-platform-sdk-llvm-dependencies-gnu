@@ -211,12 +211,6 @@ package-invoke-builder libtasn1-cross
 # nettle build
 package-invoke-builder nettle-cross
 
-# p11-kit build
-package-invoke-builder p11-kit-cross
-
-# gnutls build
-package-invoke-builder gnutls-cross
-
 # indent build
 package-invoke-builder indent-cross
 
@@ -409,6 +403,19 @@ export \
 package-invoke-builder dpkg-cross
 export DPKG=${BINDIR}/dpkg
 
+# rsync build
+package-invoke-builder rsync-cross
+export RSYNC=${BINDIR}/rsync
+
+# systemd build
+package-invoke-builder systemd
+
+# p11-kit build
+package-invoke-builder p11-kit-cross
+
+# gnutls build
+package-invoke-builder gnutls-cross
+
 # apt build
 package-invoke-builder apt-cross
 export APT=${BINDIR}/apt
@@ -422,13 +429,6 @@ package-invoke-builder popt-cross
 # rpm build
 package-invoke-builder rpm-cross
 export RPM=${BINDIR}/rpm
-
-# rsync build
-package-invoke-builder rsync-cross
-export RSYNC=${BINDIR}/rsync
-
-# systemd build
-package-invoke-builder systemd
 
 # wget build
 package-invoke-builder wget-cross

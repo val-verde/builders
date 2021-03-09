@@ -153,12 +153,6 @@ package-invoke-builder libtasn1-cross
 # nettle build
 package-invoke-builder nettle-cross
 
-# p11-kit build
-package-invoke-builder p11-kit-cross
-
-# gnutls build
-package-invoke-builder gnutls-cross
-
 # android indent build
 package-invoke-builder indent-cross
 
@@ -350,20 +344,26 @@ CFLAGS="\
 " \
 package-invoke-builder dpkg-cross
 
-# apt build
-package-invoke-builder apt-cross
+# android rsync build
+package-invoke-builder rsync-cross
+
+# android p11-kit build
+# package-invoke-builder p11-kit-cross
+
+# android gnutls build
+# package-invoke-builder gnutls-cross
+
+# android apt build
+# package-invoke-builder apt-cross
 
 # android lua build
 package-invoke-builder lua-cross
 
-# popt build
+# android popt build
 package-invoke-builder popt-cross
 
-# rpm build
+# android rpm build
 package-invoke-builder rpm-cross
-
-# android rsync build
-package-invoke-builder rsync-cross
 
 # android wget build
 package-invoke-builder wget-cross
