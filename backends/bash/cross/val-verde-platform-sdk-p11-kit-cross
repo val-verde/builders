@@ -11,8 +11,16 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
 cd ${SOURCE_ROOT}
+
+if [ "${HOST_OS}" = "gnu" ]; then
+    FEATURE_SYSTEMD=enabled
+else
+    FEATURE_SYSTEMD=disabled
+fi
+
 package-meson-build \
-    -Dprefix=${PACKAGE_PREFIX}
+    -Dprefix=${PACKAGE_PREFIX} \
+    -Dsystemd=${FEATURE_SYSTEMD}
 
 # Build the components
 cd ${STAGE_ROOT}
