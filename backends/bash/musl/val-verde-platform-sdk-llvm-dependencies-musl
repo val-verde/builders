@@ -157,12 +157,6 @@ package-invoke-builder libtasn1-cross
 # nettle build
 package-invoke-builder nettle-cross
 
-# p11-kit build
-package-invoke-builder p11-kit-cross
-
-# gnutls build
-package-invoke-builder gnutls-cross
-
 # indent build
 package-invoke-builder indent-cross
 
@@ -338,8 +332,20 @@ package-invoke-builder findutils-cross
 # dpkg build
 package-invoke-builder dpkg-cross
 
+# rsync build
+package-invoke-builder rsync-cross
+
+# systemd build
+# package-invoke-builder systemd
+
+# p11-kit build
+# package-invoke-builder p11-kit-cross
+
+# gnutls build
+# package-invoke-builder gnutls-cross
+
 # apt build
-package-invoke-builder apt-cross
+# package-invoke-builder apt-cross
 
 # lua build
 package-invoke-builder lua-cross
@@ -349,12 +355,6 @@ package-invoke-builder popt-cross
 
 # rpm build
 package-invoke-builder rpm-cross
-
-# rsync build
-package-invoke-builder rsync-cross
-
-# systemd build
-# package-invoke-builder systemd
 
 # wget build
 package-invoke-builder wget-cross
