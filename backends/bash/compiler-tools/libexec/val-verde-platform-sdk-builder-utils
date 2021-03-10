@@ -442,8 +442,17 @@ function ninja-install() {
 }
 
 function package-autoreconf() {
-    TOOL_LOG=${STAGE_ROOT}/builder-compile \
-    tool-log ${AUTORECONF} "${@}"
+    if [ -z "${DISABLE_AUTORECONF}" ]; then
+        TOOL_LOG=${STAGE_ROOT}/builder-compile \
+        tool-log ${AUTORECONF} "${@}"
+    fi
+}
+
+function package-autoupdate() {
+    if [ -z "${DISABLE_AUTOUPDATE}" ]; then
+        TOOL_LOG=${STAGE_ROOT}/builder-compile \
+        tool-log ${AUTOUPDATE} "${@}"
+    fi
 }
 
 function package-bootstrap() {
@@ -462,6 +471,7 @@ function package-bootstrap-configure-install() {
     mkdir -p ${CONFIGURE_BUILD_ROOT}
 
     package-push-directory ${CONFIGURE_FILE_ROOT}
+        package-autoupdate
         package-bootstrap
     package-pop-directory
 
@@ -630,8 +640,10 @@ function package-install() {
 }
 
 function package-libtoolize() {
-    TOOL_LOG=${STAGE_ROOT}/builder-libtoolize \
-    tool-log ${BINDIR}/libtoolize "${@}"
+    if [ -n "${ENABLE_LIBTOOLIZE}" ]; then
+        TOOL_LOG=${STAGE_ROOT}/builder-libtoolize \
+        tool-log ${BINDIR}/libtoolize "${@}"
+    fi
 }
 
 function package-meson-build() {
@@ -840,13 +852,9 @@ function package-stage-configure-install() {
     mkdir -p ${CONFIGURE_BUILD_ROOT}
 
     package-push-directory ${CONFIGURE_FILE_ROOT}
-        if [ -n "${ENABLE_LIBTOOLIZE}" ]; then
-            package-libtoolize -ci
-        fi
-
-        if [ -z "${DISABLE_AUTORECONF}" ]; then
-            package-autoreconf -fi
-        fi
+        package-autoupdate
+        package-libtoolize -ci
+        package-autoreconf -fi
     package-pop-directory
 
     package-configure-install-staged "${@}"

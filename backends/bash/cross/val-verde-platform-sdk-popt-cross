@@ -11,6 +11,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for bootstrap/configure/install
 BOOTSTRAP_FILE=./autogen.sh \
+DISABLE_AUTOUPDATE=TRUE \
 package-bootstrap-configure-install \
     --disable-doc \
     --disable-static \

@@ -25,6 +25,7 @@ CFLAGS="\
     -UNDEBUG \
     ${CFLAGS} \
 " \
+DISABLE_AUTOUPDATE=TRUE \
 package-bootstrap-configure-install \
     --disable-doc \
     --disable-static \

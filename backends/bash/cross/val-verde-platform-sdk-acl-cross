@@ -13,6 +13,7 @@ export DEPENDS="${PACKAGE_BASE_NAME}-attr-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOS
 
 # Invoke one-shot template for configure/install
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
+DISABLE_AUTOUPDATE=TRUE \
 INSTALL_TARGET="install-dev install-lib" \
 package-configure-install \
     --disable-static \

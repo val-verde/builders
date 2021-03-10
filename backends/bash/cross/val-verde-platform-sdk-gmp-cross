@@ -10,6 +10,7 @@ export SOURCE_PACKAGE_VERSION=6
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for stage/configure/install
+DISABLE_AUTOUPDATE=TRUE \
 package-stage-configure-install \
     --disable-static \
     --enable-shared

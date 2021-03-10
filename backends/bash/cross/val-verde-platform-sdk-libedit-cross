@@ -18,6 +18,7 @@ CFLAGS="\
     -I${PACKAGE_PREFIX}/include/ncurses \
     ${CFLAGS} \
 " \
+DISABLE_AUTOUPDATE=TRUE \
 RPATH_COMPONENTS="\
     ${INSTALL_PREFIX}/lib/libedit.so \
 " \

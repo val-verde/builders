@@ -26,4 +26,5 @@ ${SED} -i \
        ${STAGE_ROOT}/configure
 
 # Invoke one-shot template for configure/install
+DISABLE_AUTOUPDATE=TRUE \
 package-configure-install

@@ -15,6 +15,7 @@ export DEPENDS="\
 "
 
 # Invoke one-shot template for configure/install
+DISABLE_AUTOUPDATE=TRUE \
 package-configure-install \
     ac_cv_func_setns=yes \
     ac_cv_func_unshare=yes \
