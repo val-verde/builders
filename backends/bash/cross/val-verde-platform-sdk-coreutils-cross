@@ -19,6 +19,7 @@ CFLAGS="\
     -Wno-unused-command-line-argument \
     ${CFLAGS} \
 " \
+DISABLE_AUTOUPDATE=TRUE \
 FORCE_UNSAFE_CONFIGURE=1 \
 package-stage-configure-install \
     --with-openssl

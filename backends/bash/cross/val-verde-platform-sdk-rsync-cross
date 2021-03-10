@@ -22,6 +22,7 @@ else
 fi
 
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
+DISABLE_AUTOUPDATE=TRUE \
 MAKECMDGOALS=reconfigure \
 package-stage-configure-install \
     rsync_cv_HAVE_BROKEN_READDIR=no \

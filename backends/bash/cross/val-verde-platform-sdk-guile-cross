@@ -17,6 +17,7 @@ export DEPENDS="\
 # Invoke one-shot template for bootstrap/configure/install
 BOOTSTRAP_FILE=./autogen.sh \
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
+DISABLE_AUTOUPDATE=TRUE \
 package-bootstrap-configure-install \
     --disable-static \
     --enable-shared

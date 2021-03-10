@@ -17,6 +17,7 @@ export DEPENDS="\
 # Invoke one-shot template for configure/install
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 CONFIGURE_FILE=autogen.sh \
+DISABLE_AUTOUPDATE=TRUE \
 package-configure-install \
     --disable-static \
     --enable-shared
