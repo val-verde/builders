@@ -58,7 +58,7 @@ export CMAKE=`BINDIR= package-get-path cmake EXECUTABLE BUILD`
 package-invoke-builder z3
 
 # llvm bootstrap build
-package-invoke-builder llvm-project-bootstrap
+package-invoke-builder llvm-project-bootstrap 13
 
 # remove host cmake, compiler and libraries as it is superceded by bootstrapped clang
 package-apt-remove \
@@ -85,20 +85,20 @@ unset \
     USE_FUSE_LD_OVER_LD_PATH
 
 # bazel bootstrap build
-package-invoke-builder bazel-bootstrap
+package-invoke-builder bazel-bootstrap 4
 
 # go bootstrap build
-package-invoke-builder go-bootstrap
+package-invoke-builder go-bootstrap 1
 export GO=`BINDIR= package-get-path go EXECUTABLE BUILD`
 
 # openjdk bootstrap build
-package-invoke-builder openjdk-bootstrap
+package-invoke-builder openjdk-bootstrap 16
 
 # maven bootstrap build
 package-invoke-builder maven-bootstrap
 
 # rust bootstrap build
-package-invoke-builder rust-bootstrap
+package-invoke-builder rust-bootstrap 1
 
 # zlib bootstrap build
 package-invoke-builder zlib
@@ -117,19 +117,22 @@ package-invoke-builder libffi
 package-invoke-builder glib
 
 # pkg-config bootstrap build
-package-invoke-builder pkg-config
+package-invoke-builder pkg-config 0
+
+# z3 build
+package-invoke-builder z3 4
 
 # re2c build
-package-invoke-builder re2c
+package-invoke-builder re2c 2
 
 # alive2 build
-package-invoke-builder alive2
+package-invoke-builder alive2 1
 
 # hiredis build
-package-invoke-builder hiredis
+package-invoke-builder hiredis 1
 
 # souper build
-package-invoke-builder souper
+package-invoke-builder souper 1
 
 # android ndk build
-package-invoke-builder android-ndk
+package-invoke-builder android-ndk ${ANDROID_NDK_VERSION}
