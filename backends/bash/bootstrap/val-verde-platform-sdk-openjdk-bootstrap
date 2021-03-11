@@ -3,10 +3,8 @@
 set -e
 
 # Set all environment vars
-export SOURCE_PACKAGE_NAME=openjdk
-export SOURCE_PACKAGE_VERSION=17
 SUB_VERSION=35
-OPENJDK_URL=https://download.java.net/java/GA/jdk${SOURCE_PACKAGE_VERSION}/0d483333a00540d886896bac774ff48b/${SUB_VERSION}/GPL
+OPENJDK_URL=https://download.java.net/java/early_access/jdk${SOURCE_PACKAGE_VERSION}/${SUB_VERSION}/GPL
 OPENJDK_TAR_GZ=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.tar.gz
 
 # Source package build helper functions

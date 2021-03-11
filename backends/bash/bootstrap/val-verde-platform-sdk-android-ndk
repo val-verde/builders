@@ -4,8 +4,6 @@ set -e
 
 # Set all environment vars
 export ANDROID_NDK_URL=https://dl.google.com/android/repository
-export SOURCE_PACKAGE_NAME=android-ndk
-export SOURCE_PACKAGE_VERSION=${ANDROID_NDK_VERSION}
 export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 
 # Source package build helper functions
