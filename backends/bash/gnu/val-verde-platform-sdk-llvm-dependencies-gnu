@@ -5,6 +5,7 @@ set -e
 export \
     APT=/usr/bin/apt \
     AUTORECONF=/usr/bin/autoreconf \
+    AUTOUPDATE=/usr/bin/autoupdate \
     BASH=/usr/bin/bash \
     BISON=/usr/bin/bison \
     CHMOD=/usr/bin/chmod \
@@ -62,8 +63,8 @@ package-invoke-builder bzip2-cross
 
 # gzip build
 package-invoke-builder gzip-cross
-GUNZIP=${BINDIR}/gunzip
-GZIP=${BINDIR}/gzip
+unset GUNZIP
+unset GZIP
 
 # lz4 build
 package-invoke-builder lz4-cross
@@ -73,22 +74,23 @@ package-invoke-builder xxhash-cross
 
 # zip build
 package-invoke-builder zip-cross
-ZIP=${BINDIR}/zip
+unset ZIP
 
 # zstd build
 package-invoke-builder zstd-cross
 
 # unzip build
 package-invoke-builder unzip-cross
-UNZIP=${BINDIR}/unzip
+unset UNZIP
 
 # help2man build
 package-invoke-builder help2man-cross
-export HELP2MAN=${BINDIR}/help2man
+unset HELP2MAN
 
 # autoconf build
 package-invoke-builder autoconf-cross
-export AUTORECONF=${BINDIR}/autoreconf
+unset AUTORECONF
+unset AUTOUPDATE
 
 # automake build
 package-invoke-builder automake-cross
@@ -98,15 +100,15 @@ package-invoke-builder libtool-cross
 
 # m4 build
 package-invoke-builder m4-cross
-export M4=${BINDIR}/m4
+unset M4
 
 # make build
 package-invoke-builder make-cross
-export MAKE=${BINDIR}/make
+unset MAKE
 
 # ninja build
 package-invoke-builder ninja-cross
-export NINJA=${BINDIR}/ninja
+unset NINJA
 
 # libiconv build
 package-invoke-builder libiconv-cross
@@ -116,11 +118,11 @@ package-invoke-builder libffi-cross
 
 # file build
 package-invoke-builder file-cross
-export FILE=${BINDIR}/file
+unset FILE
 
 # perl build
 package-invoke-builder perl-cross
-export PERL=${BINDIR}/perl
+unset PERL
 
 # pcre build
 package-invoke-builder pcre-cross
@@ -130,7 +132,7 @@ package-invoke-builder icu4c-cross
 
 # xz build
 package-invoke-builder xz-cross
-export XZ=${BINDIR}/xz
+unset XZ
 
 # libxml2 build
 package-invoke-builder libxml2-cross
@@ -177,22 +179,22 @@ package-invoke-builder expat-cross
 
 # gettext build
 package-invoke-builder gettext-cross
-export GETTEXT=${BINDIR}/gettext
+unset GETTEXT
 
 # gawk build
 package-invoke-builder gawk-cross
-export GAWK=${BINDIR}/gawk
+unset GAWK
 
 # gperf build
 package-invoke-builder gperf-cross
-export GPERF=${BINDIR}/gperf
+unset GPERF
 
 # libunistring build
 package-invoke-builder libunistring-cross
 
 # texinfo build
 package-invoke-builder texinfo-cross
-export MAKEINFO=${BINDIR}/makeinfo
+unset MAKEINFO
 
 # guile build
 package-invoke-builder guile-cross
@@ -235,7 +237,7 @@ package-invoke-builder libssh2-cross
 
 # curl build
 package-invoke-builder curl-cross
-export CURL=${BINDIR}/curl
+unset CURL
 
 # elfutils build
 package-invoke-builder elfutils-cross
@@ -245,7 +247,7 @@ package-invoke-builder glib-cross
 
 # pkg-config build
 package-invoke-builder pkg-config-cross
-export PKG_CONFIG=${BINDIR}/pkg-config
+unset PKG_CONFIG
 
 # xorg-macros build
 package-invoke-builder xorg-macros-cross
@@ -306,11 +308,11 @@ package-invoke-builder ldns-cross
 
 # openssh-portable build
 package-invoke-builder openssh-portable-cross
-export SSH=${BINDIR}/ssh
+unset SSH
 
 # bash build
 package-invoke-builder bash-cross
-export BASH=${BINDIR}/bash
+unset BASH
 
 # xorg-libsm build
 package-invoke-builder xorg-libsm-cross
@@ -350,15 +352,15 @@ package-invoke-builder mesa-drm-cross
 
 # grep build
 package-invoke-builder grep-cross
-export GREP=${BINDIR}/grep
+unset GREP
 
 # sed build
 package-invoke-builder sed-cross
-export SED=${BINDIR}/sed
+unset SED
 
 # bison build
 package-invoke-builder bison-cross
-export BISON=${BINDIR}/bison
+unset BISON
 
 # flex build
 package-invoke-builder flex-cross
@@ -374,38 +376,38 @@ package-invoke-builder fontconfig-cross
 
 # tar build
 package-invoke-builder tar-cross
-export TAR=${BINDIR}/tar
+unset TAR
 
 # coreutils build
 package-invoke-builder coreutils-cross
-export \
-    CHMOD=${BINDIR}/chmod \
-    CP=${BINDIR}/cp \
-    CUT=${BINDIR}/cut \
-    ECHO=${BINDIR}/echo \
-    INSTALL=${BINDIR}/install \
-    LS=${BINDIR}/ls \
-    LN=${BINDIR}/ln \
-    MKDIR=${BINDIR}/mkdir \
-    MV=${BINDIR}/mv \
-    RM="${BINDIR}/rm -f" \
-    RMDIR=${BINDIR}/rmdir \
-    TEE=${BINDIR}/tee \
-    TR=${BINDIR}/tr
+unset \
+    CHMOD \
+    CP \
+    CUT \
+    ECHO \
+    INSTALL \
+    LS \
+    LN \
+    MKDIR \
+    MV \
+    RM \
+    RMDIR \
+    TEE \
+    TR
 
 # findutils build
 package-invoke-builder findutils-cross
-export \
-    FIND=${BINDIR}/find \
-    XARGS=${BINDIR}/xargs
+unset \
+    FIND \
+    XARGS
 
 # dpkg build
 package-invoke-builder dpkg-cross
-export DPKG=${BINDIR}/dpkg
+unset DPKG
 
 # rsync build
 package-invoke-builder rsync-cross
-export RSYNC=${BINDIR}/rsync
+unset RSYNC
 
 # systemd build
 package-invoke-builder systemd
@@ -418,7 +420,7 @@ package-invoke-builder gnutls-cross
 
 # apt build
 package-invoke-builder apt-cross
-export APT=${BINDIR}/apt
+unset APT
 
 # lua build
 package-invoke-builder lua-cross
@@ -428,15 +430,15 @@ package-invoke-builder popt-cross
 
 # rpm build
 package-invoke-builder rpm-cross
-export RPM=${BINDIR}/rpm
+unset RPM
 
 # wget build
 package-invoke-builder wget-cross
-export WGET=${BINDIR}/wget
+unset WGET
 
 # python build
 package-invoke-builder python-cross
-export PYTHON=${BINDIR}/python3
+unset PYTHON
 
 # cython build
 package-invoke-builder cython-cross
@@ -449,7 +451,7 @@ package-invoke-builder mako-cross
 
 # meson build
 package-invoke-builder meson-cross
-export MESON=${BINDIR}/meson
+unset MESON
 
 # gobject-introspection build
 package-invoke-builder gobject-introspection-cross
@@ -471,14 +473,14 @@ package-invoke-builder z3-cross
 
 # git build
 package-invoke-builder git-cross
-export GIT=${BINDIR}/git
+unset GIT
 
 # vim build
 package-invoke-builder vim-cross
 
 # cmake build
 package-invoke-builder cmake-cross
-export CMAKE=${BINDIR}/cmake
+unset CMAKE
 
 # android patch elf
 package-invoke-builder android-patch-elf-cross
