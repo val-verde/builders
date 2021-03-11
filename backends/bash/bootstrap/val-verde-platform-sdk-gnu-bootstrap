@@ -8,6 +8,7 @@ export \
     CLANG=clang
 
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 ${MKDIR} -p ${BUILD_PACKAGE_PREFIX}
 package-rsync -ax \
@@ -23,18 +24,18 @@ ${CHMOD} +x ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang 
 
 # libunwind bootstrap build
 LLVM_NATIVE_STAGE_ROOT=/usr \
-package-invoke-builder libunwind-cross
+package-invoke-builder libunwind-cross 13
 
 # libcxxabi bootstrap build
 LLVM_NATIVE_STAGE_ROOT=/usr \
-package-invoke-builder libcxxabi-cross
+package-invoke-builder libcxxabi-cross 13
 
 # libcxx bootstrap build
 LLVM_NATIVE_STAGE_ROOT=/usr \
-package-invoke-builder libcxx-cross
+package-invoke-builder libcxx-cross 13
 
 # llvm bootstrap build
-package-invoke-builder llvm-project-bootstrap
+package-invoke-builder llvm-project-bootstrap 13
 
 # remove host compiler and libraries as it is superceded by bootstrapped clang
 package-apt-remove \
@@ -54,35 +55,35 @@ export \
     RANLIB=${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib
 
 # bazel bootstrap build
-package-invoke-builder bazel-bootstrap
+package-invoke-builder bazel-bootstrap 4
 
 # go bootstrap build
-package-invoke-builder go-bootstrap
+package-invoke-builder go-bootstrap 1
 export GO=${BUILD_PACKAGE_PREFIX}/bin/go
 
 # openjdk bootstrap build
-package-invoke-builder openjdk-bootstrap
+package-invoke-builder openjdk-bootstrap 16
 
 # rust bootstrap build
-package-invoke-builder rust-bootstrap
+package-invoke-builder rust-bootstrap 1
 
 # pkg-config bootstrap build
-package-invoke-builder pkg-config
+package-invoke-builder pkg-config 0
 
 # z3 build
-package-invoke-builder z3
+package-invoke-builder z3 4
 
 # re2c build
-package-invoke-builder re2c
+package-invoke-builder re2c 2
 
 # alive2 build
-package-invoke-builder alive2
+package-invoke-builder alive2 1
 
 # hiredis build
-package-invoke-builder hiredis
+package-invoke-builder hiredis 1
 
 # souper build
-package-invoke-builder souper
+package-invoke-builder souper 1
 
 # android ndk build
-package-invoke-builder android-ndk
+package-invoke-builder android-ndk ${ANDROID_NDK_VERSION}
