@@ -12,8 +12,23 @@ function category-invoke-builder() {
 
 function package-invoke-builder() {
     source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
+    parse-builder-args "${@}"
     ${ECHO} -e "Builder Invocation Started"
     ${BASH} ${VAL_VERDE_GH_TEAM}-platform-sdk-${@}
     ${ECHO} -e "Builder Invocation Complete"
     ${ECHO}
+}
+
+function parse-builder-args() {
+    if [ ${1##*-} == 'cross' ] \
+       || [[ "$1" == *"bazel"* ]] \
+       || [[ "$1" == *"go"* ]] \
+       || [[ "$1" == *"openjdk"* ]] \
+       || [[ "$1" == *"llvm-project"* ]]; then
+        export SOURCE_PACKAGE_NAME=${1%-*}
+    else
+        export SOURCE_PACKAGE_NAME=$1
+    fi
+    export SOURCE_PACKAGE_VERSION=$2
+    export DISABLE_INSTALL_DEB=$3
 }
