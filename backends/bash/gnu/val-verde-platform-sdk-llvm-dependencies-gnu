@@ -53,7 +53,7 @@ UNZIP=/usr/bin/unzip
 ZIP=/usr/bin/zip
 
 # Source package build helper functions
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # autoconf build
 package-invoke-builder autoconf-cross

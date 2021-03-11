@@ -5,7 +5,7 @@ set -e
 # Source package build helper functions
 export PACKAGE_USR_PREFIX=/
 export SYSTEM_NAME=Windows
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # windows mingw-headers build
 package-invoke-builder mingw-w64-headers

@@ -7,7 +7,7 @@ export \
     BINDIR=/usr/bin \
     CLANG=clang
 
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 ${MKDIR} -p ${BUILD_PACKAGE_PREFIX}
 package-rsync -ax \
