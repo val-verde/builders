@@ -462,7 +462,7 @@ function package-autoupdate() {
 function package-bootstrap() {
     BOOTSTRAP_FILE=${BOOTSTRAP_FILE:-bootstrap}
     TOOL_LOG=${STAGE_ROOT}/builder-bootstrap \
-    tool-log ${BASH} ${BOOTSTRAP_FILE}
+    tool-log ${BASH} ${BOOTSTRAP_FILE} ${BOOTSTRAP_ARGS}
 }
 
 function package-bootstrap-configure-install() {
@@ -476,6 +476,7 @@ function package-bootstrap-configure-install() {
 
     package-push-directory ${CONFIGURE_FILE_ROOT}
         package-autoupdate
+        package-gnulib-override
         package-bootstrap
     package-pop-directory
 
@@ -641,6 +642,18 @@ function package-install() {
         # Build the package
         deb-package-install
     package-pop-directory
+}
+
+function package-gnulib-override() {
+    GNULIB_DIR=${GNULIB_DIR:-glib}
+    GNULIB_ROOT=${GNULIB_ROOT:-${STAGE_ROOT}}
+
+    if [ -n "${ENABLE_GNULIB_OVERRIDE}" ]; then
+        ${RM} -rf glib
+        ${LN} -sf \
+               ${SOURCE_ROOT_BASE}/gnulib-0 \
+               ${GNULIB_ROOT}/${GNULIB_DIR}
+    fi
 }
 
 function package-libtoolize() {
@@ -857,6 +870,7 @@ function package-stage-configure-install() {
 
     package-push-directory ${CONFIGURE_FILE_ROOT}
         package-autoupdate
+        package-gnulib-override
         package-libtoolize -ci
         package-autoreconf -fi
     package-pop-directory
