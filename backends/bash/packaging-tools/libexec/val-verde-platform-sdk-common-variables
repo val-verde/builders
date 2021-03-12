@@ -63,6 +63,7 @@ export INSTALL=${INSTALL:-${BINDIR}/install}
 export LN=${LN:-${BINDIR}/ln}
 export LS=${LS:-${BINDIR}/ls}
 export M4=${M4:-${BINDIR}/m4}
+export MAKEINFO=${MAKEINFO:-${BINDIR}/makeinfo}
 export MKDIR=${MKDIR:-${BINDIR}/mkdir}
 export MKTEMP=${MKTEMP:-${BINDIR}/mktemp}
 export MV=${MV:-${BINDIR}/mv}
