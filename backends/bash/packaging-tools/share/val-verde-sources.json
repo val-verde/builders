@@ -1309,7 +1309,7 @@
         "sourceType": "other",
         "sourcePackageName": "autoconf",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "2.69",
+        "sourcePackageVersion": "2.71",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
