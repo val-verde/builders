@@ -78,6 +78,7 @@ function export-compiler-environment() {
     OPTIMIZATION_FLAGS=${OPTIMIZATION_FLAGS:-"-DNDEBUG"}
 
     export CLANG=${CLANG:-sclang}
+    export FLANG=${FLANG:-${BINDIR}/flang}
     export ACLOCAL_PATH=${PACKAGE_PREFIX}/share/aclocal
     export AR=${AR:-${BINTOOLS_PATH_PREFIX}ar}
     export AS=${CC:-${BINDIR}/${CLANG}}
@@ -91,6 +92,9 @@ function export-compiler-environment() {
     export CXXFILT=${CXXFILT:-${BINTOOLS_PATH_PREFIX}cxxfilt}
     export CXXLD=${CXXLD:-${CXX}}
     export DLLTOOL=${DLLTOOL:-${BINTOOLS_PATH_PREFIX}dlltool}
+    export F77=${F77:-${FLANG}}
+    export FC=${FC:-${FLANG}}
+    export FORTRAN=${FORTRAN:-${FLANG}}
     export GO=${GO:-${BINDIR}/go}
     export GOROOT=${GOROOT:-${BUILD_PACKAGE_PREFIX}/go}
     export INSTALL_NAME_TOOL=${INSTALL_NAME_TOOL:-${BINTOOLS_PATH_PREFIX}install-name-tool}
