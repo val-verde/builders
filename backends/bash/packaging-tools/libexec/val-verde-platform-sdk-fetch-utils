@@ -133,6 +133,12 @@ function untar-tar-balls() {
         package-tar -xzvf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
                     -C ${INSTALL_PREFIX} --strip 1
         ${RM} ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
+    elif [[ ${SOURCE_BRANCH_IND} == "wget-bz2" ]]; then
+        package-wget -c ${PACKAGE_URL} \
+                        -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.bz2
+        package-tar -xvf ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.bz2 \
+                    -C ${INSTALL_PREFIX} --strip 1
+        ${RM} ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.bz2
     elif [[ ${SOURCE_BRANCH_IND} == "wget-xz" ]]; then
         package-wget -c ${PACKAGE_URL} \
                         -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz
