@@ -3,7 +3,7 @@
 set -e
 
 # Set all environment vars
-export SOURCE_PACKAGE_NAME=libxml2
+export SOURCE_PACKAGE_NAME=itstool
 export SOURCE_PACKAGE_VERSION=2
 
 # Source package build helper functions
@@ -15,20 +15,8 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-zlib-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Invoke one-shot template for stage/configure/install
-if [ -z "${DISABLE_PYTHON}" ]; then
-    WITH_OR_WITHOUT_PYTHON=--with-python
-else
-    WITH_OR_WITHOUT_PYTHON=--without-python
-fi
-
+# Invoke one-shot template for configure/install
 DISABLE_AUTOUPDATE=TRUE \
-RPATH_COMPONENTS="\
-    ${INSTALL_PREFIX}/lib/libxml2.so \
-" \
-package-stage-configure-install \
-    lt_cv_deplibs_check_method=pass_all \
+package-configure-install \
     --disable-static \
-    --enable-shared \
-    --with-icu \
-    ${WITH_OR_WITHOUT_PYTHON}
+    --enable-shared
