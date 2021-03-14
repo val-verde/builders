@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=gcc
+export SOURCE_PACKAGE_VERSION=12
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for stage/configure/install
+DISABLE_AUTOUPDATE=TRUE \
+package-stage-configure-install \
+    --disable-bootstrap \
+    --disable-c++tools \
+    --disable-gcov \
+    --disable-libatomic \
+    --disable-libcody \
+    --disable-libgcc \
+    --disable-libgomp \
+    --disable-libsanitizer \
+    --disable-multiarch \
+    --disable-multilib \
+    --disable-libquadmath \
+    --disable-libssp \
+    --disable-nls \
+    --disable-static \
+    --disable-libvtv \
+    --disable-werror \
+    --enable-languages=c \
+    --enable-large-address-aware \
+    --enable-shared \
+    --program-prefix=${PACKAGE_BASE_NAME}- \
+    --with-glibc-version=2.33 \
+    --with-long-double-128 \
+    --with-sysroot=${SYSROOT}

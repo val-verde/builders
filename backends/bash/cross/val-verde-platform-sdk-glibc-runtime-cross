@@ -1,0 +1,48 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=glibc-runtime
+export SOURCE_PACKAGE_VERSION=2
+
+# Source package build helper functions
+SOURCE_ROOT=${SOURCE_ROOT_BASE}/glibc-${SOURCE_PACKAGE_VERSION}
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+copy-source-to-staging
+
+AS=${BINDIR}/llvm-as \
+CC=${BINDIR}/gcc \
+DISABLE_POLLY=TRUE \
+export-compiler-environment
+
+# Configure the build components
+cd ${STAGE_ROOT}
+
+package-autoupdate
+package-autoreconf -fi
+
+${MKDIR} -p ${STAGE_ROOT}/build
+
+    # libc_cv_gcc_builtin_redirection=yes \
+
+cd ${STAGE_ROOT}/build
+package-configure \
+    ${STAGE_ROOT}/configure \
+    libc_cv_include_x86_isa_level=no \
+    --disable-werror
+
+# Build the components
+make-build
+
+# INSTALL_TARGET=install \
+# make-install
+
+${RM} -rf ${INSTALL_PREFIX}/include
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install
