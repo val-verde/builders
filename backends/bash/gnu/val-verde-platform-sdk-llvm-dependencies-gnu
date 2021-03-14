@@ -135,6 +135,7 @@ package-invoke-builder xz-cross
 unset XZ
 
 # libxml2 build
+DISABLE_PYTHON=TRUE \
 package-invoke-builder libxml2-cross
 
 # gmp build
@@ -207,12 +208,6 @@ package-invoke-builder libgpg-error-cross
 
 # libgcrypt build
 package-invoke-builder libgcrypt-cross
-
-# libtans1 build
-package-invoke-builder libtasn1-cross
-
-# nettle build
-package-invoke-builder nettle-cross
 
 # indent build
 package-invoke-builder indent-cross
@@ -415,13 +410,6 @@ package-invoke-builder systemd
 # p11-kit build
 package-invoke-builder p11-kit-cross
 
-# gnutls build
-package-invoke-builder gnutls-cross
-
-# apt build
-package-invoke-builder apt-cross
-unset APT
-
 # lua build
 package-invoke-builder lua-cross
 
@@ -440,8 +428,14 @@ unset WGET
 package-invoke-builder python-cross
 unset PYTHON
 
+# libxml2 build (with python support)
+package-invoke-builder libxml2-cross
+
 # cython build
 package-invoke-builder cython-cross
+
+# pygments build
+package-invoke-builder pygments-cross
 
 # numpy build
 package-invoke-builder numpy-cross
@@ -453,11 +447,33 @@ package-invoke-builder mako-cross
 package-invoke-builder meson-cross
 unset MESON
 
+# libxslt build
+package-invoke-builder libxslt-cross
+
+# itstool build
+package-invoke-builder itstool-cross
+
+# gtk-doc build
+package-invoke-builder gtk-doc-cross
+
 # gobject-introspection build
 package-invoke-builder gobject-introspection-cross
 
 # libsecret build
 package-invoke-builder libsecret-cross
+
+# libtans1 build
+package-invoke-builder libtasn1-cross
+
+# nettle build
+package-invoke-builder nettle-cross
+
+# gnutls build
+package-invoke-builder gnutls-cross
+
+# apt build
+package-invoke-builder apt-cross
+unset APT
 
 # tensorflow build
 package-invoke-builder tensorflow-cross
