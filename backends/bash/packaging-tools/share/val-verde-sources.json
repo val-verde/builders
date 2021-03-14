@@ -282,6 +282,14 @@
     {
         "retainSource": "false",
         "sourceType": "git",
+        "sourcePackageName": "gtk-doc",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
         "sourcePackageName": "guile",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "3",
@@ -419,6 +427,22 @@
         "sourcePackageName": "libtasn1",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "4",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "libxml2",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "libxslt",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -692,6 +716,14 @@
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
+        "sourcePackageName": "pygments",
+        "sourceBranchIndicator": "master",
+        "sourcePackageVersion": "2",
+        "sourcePackageUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
         "retainSource": "false",
@@ -1391,6 +1423,13 @@
     },
     {
         "sourceType": "other",
+        "sourcePackageName": "itstool",
+        "sourceBranchIndicator": "wget-bz2",
+        "sourcePackageVersion": "2.0.6",
+        "sourcePackageUrl": "http://files.${SOURCE_PACKAGE_NAME}.org/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.bz2"
+    },
+    {
+        "sourceType": "other",
         "sourcePackageName": "libcap",
         "sourceBranchIndicator": "wget-xz",
         "sourcePackageVersion": "2.45",
@@ -1423,13 +1462,6 @@
         "sourceBranchIndicator": "wget",
         "sourcePackageVersion": "0.9.72",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "libxml2",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "2.9.10",
-        "sourcePackageUrl": "http://xmlsoft.org/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
         "sourceType": "other",
