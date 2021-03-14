@@ -90,7 +90,6 @@ RUN HOST_ARCH=${BUILD_ARCH} \
     HOST_KERNEL=${BUILD_KERNEL} \
     HOST_OS=${BUILD_OS} \
     HOST_PROCESSOR=${BUILD_PROCESSOR} \
-    SYSROOT=/ \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu
 
 # musl build
@@ -180,7 +179,6 @@ RUN HOST_ARCH=${BUILD_ARCH} \
     HOST_KERNEL=${BUILD_KERNEL} \
     HOST_OS=${BUILD_OS} \
     HOST_PROCESSOR=${BUILD_PROCESSOR} \
-    SYSROOT=/ \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-rust-build
 
 CMD []

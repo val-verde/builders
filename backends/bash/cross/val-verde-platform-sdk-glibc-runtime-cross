@@ -1,0 +1,64 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=glibc-runtime
+export SOURCE_PACKAGE_VERSION=2
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+copy-source-to-staging
+
+# Configure the build components
+${MKDIR} -p ${STAGE_ROOT}/build
+
+cd ${STAGE_ROOT}
+package-autoupdate
+package-autoreconf -fi
+
+cd ${STAGE_ROOT}/build
+AR=${BINDIR}/llvm-ar
+AS=${BINDIR}/llvm-as
+ASFLAGS="-O${OPTIMIZATION_LEVEL}"
+BUILD_CC=${BINDIR}/sclang
+CC=${BINDIR}/sclang
+CFLAGS="-O${OPTIMIZATION_LEVEL}"
+CPP=${BINDIR}/sclang-cpp
+CCLD=${CC}
+CXX=${BINDIR}/sclang++
+CXXLD=${CXX}
+LD=${BINDIR}/ld.lld
+LDFLAGS="-O${LINKER_OPTIMIZATION_LEVEL}"
+NM=${BINDIR}/llvm-nm
+RANLIB=${BINDIR}/llvm-ranlib
+READELF=${BINDIR}/llvm-readelf
+
+TOOL_LOG=${STAGE_ROOT}/builder-invocation \
+tool-log ${STAGE_ROOT}/configure \
+    libc_cv_gcc_builtin_redirection=yes \
+    libc_cv_include_x86_isa_level=no \
+    --enable-cet \
+    --disable-sanity-checks \
+    --disable-werror \
+    --libdir=/usr/lib \
+    --prefix=/usr
+
+# Build the components
+make-build
+
+DESTDIR=${INSTALL_PREFIX}/.. \
+make-install
+
+${RM} -rf \
+      ${INSTALL_PREFIX}/../etc \
+      ${INSTALL_PREFIX}/../sbin \
+      ${INSTALL_PREFIX}/../var \
+      ${INSTALL_PREFIX}
+
+# Build the package
+deb-package-build
+
+# Install the package
+deb-package-install
