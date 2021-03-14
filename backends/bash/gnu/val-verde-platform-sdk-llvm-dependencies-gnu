@@ -2,6 +2,8 @@
 
 set -e
 
+export SYSROOT=/
+
 export \
     APT=/usr/bin/apt \
     AUTORECONF=/usr/bin/autoreconf \
@@ -32,7 +34,6 @@ export \
     MV=/usr/bin/mv \
     NINJA=/usr/bin/ninja \
     PERL=/usr/bin/perl \
-    PKG_CONFIG=/usr/bin/pkg-config \
     PYTHON=/usr/bin/python3 \
     RM="/usr/bin/rm -f" \
     RMDIR=/usr/bin/rmdir \
@@ -54,6 +55,28 @@ ZIP=/usr/bin/zip
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# autoconf build
+package-invoke-builder autoconf-cross
+unset AUTORECONF
+unset AUTOUPDATE
+
+# automake build
+package-invoke-builder automake-cross
+
+# autoconf-archive build
+package-invoke-builder autoconf-archive-cross
+
+# make build
+package-invoke-builder make-cross
+unset MAKE
+
+# glibc interface build
+package-invoke-builder glibc-interface-cross
+unset SYSROOT
+
+# glibc runtime build
+package-invoke-builder glibc-runtime-cross
 
 # zlib build
 package-invoke-builder zlib-cross
@@ -87,14 +110,6 @@ unset UNZIP
 package-invoke-builder help2man-cross
 unset HELP2MAN
 
-# autoconf build
-package-invoke-builder autoconf-cross
-unset AUTORECONF
-unset AUTOUPDATE
-
-# automake build
-package-invoke-builder automake-cross
-
 # libtool build
 package-invoke-builder libtool-cross
 
@@ -102,16 +117,9 @@ package-invoke-builder libtool-cross
 package-invoke-builder m4-cross
 unset M4
 
-# make build
-package-invoke-builder make-cross
-unset MAKE
-
 # ninja build
 package-invoke-builder ninja-cross
 unset NINJA
-
-# libiconv build
-package-invoke-builder libiconv-cross
 
 # libffi build
 package-invoke-builder libffi-cross
@@ -140,6 +148,15 @@ package-invoke-builder libxml2-cross
 
 # gmp build
 package-invoke-builder gmp-cross
+
+# mpfr build
+package-invoke-builder mpfr-cross
+
+# mpc build
+package-invoke-builder mpc-cross
+
+# isl build
+package-invoke-builder isl-cross
 
 # libatomic-ops build
 package-invoke-builder libatomic-ops-cross
@@ -184,7 +201,6 @@ unset GETTEXT
 
 # gawk build
 package-invoke-builder gawk-cross
-unset GAWK
 
 # gperf build
 package-invoke-builder gperf-cross
@@ -242,7 +258,6 @@ package-invoke-builder glib-cross
 
 # pkg-config build
 package-invoke-builder pkg-config-cross
-unset PKG_CONFIG
 
 # xorg-macros build
 package-invoke-builder xorg-macros-cross
