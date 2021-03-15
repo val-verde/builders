@@ -291,7 +291,7 @@ package-invoke-builder eudev-cross
 
 # p11-kit build
 DISABLE_SYSTEMD=TRUE \
-package-invoke-builder p11-kit-cross
+package-invoke-builder p11-kit-cross 0
 
 # dbus build
 package-invoke-builder dbus-cross
@@ -304,7 +304,7 @@ package-invoke-builder util-linux-cross
 package-invoke-builder nettle-cross
 
 # unbound build
-package-invoke-builder unbound-cross
+package-invoke-builder unbound-cross 1
 
 # gnutls build
 package-invoke-builder gnutls-cross
@@ -316,7 +316,7 @@ package-invoke-builder libmicrohttpd-cross
 package-invoke-builder elfutils-cross
 
 # strace build
-package-invoke-builder strace-cross
+package-invoke-builder strace-cross 5
 
 # glib build
 package-invoke-builder glib-cross
@@ -340,7 +340,7 @@ package-invoke-builder itstool-cross
 package-invoke-builder gtk-doc-cross
 
 # graphviz build
-package-invoke-builder graphviz-cross
+package-invoke-builder graphviz-cross 2
 
 # cups build
 package-invoke-builder cups-cross

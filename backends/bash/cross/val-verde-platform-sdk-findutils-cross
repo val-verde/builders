@@ -3,8 +3,6 @@
 set -e
 
 # Set all environment vars
-export SOURCE_PACKAGE_NAME=findutils
-export SOURCE_PACKAGE_VERSION=4
 export GNULIB_SRCDIR=${SOURCE_ROOT_BASE}/gnulib-0
 
 # Source package build helper functions

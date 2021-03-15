@@ -4,32 +4,33 @@ set -e
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # spirv headers build
-package-invoke-builder spirv-headers-cross
+package-invoke-builder spirv-headers-cross 1
 
 # spirv tools build
-package-invoke-builder spirv-tools-cross
+package-invoke-builder spirv-tools-cross 2020
 
 # spirv cross build
 package-invoke-builder spirv-cross-cross 2021
 
 # spirv llvm translator build
-package-invoke-builder spirv-llvm-translator-cross
+package-invoke-builder spirv-llvm-translator-cross 12
 
 # glslang build
-package-invoke-builder glslang-cross
+package-invoke-builder glslang-cross 10-11
 
 if [ "${HOST_OS}" = "macos" ]; then
     # moltenvk build
     package-invoke-builder moltenvk-cross 1
 else
     # vulkan tools build
-    package-invoke-builder vulkan-tools-cross
+    package-invoke-builder vulkan-tools-cross 1
 fi
 
 # vulkan validation layers build
-package-invoke-builder vulkan-validation-layers-cross
+package-invoke-builder vulkan-validation-layers-cross 1
 
 if [ "${HOST_OS}" = "gnu" ] ||
    [ "${HOST_OS}" = "macos" ] ||
@@ -38,7 +39,7 @@ if [ "${HOST_OS}" = "gnu" ] ||
     package-invoke-builder libclc-cross
 
     # mesa build
-    package-invoke-builder mesa-cross
+    package-invoke-builder mesa-cross 21
 fi
 
 if [ "${HOST_OS}" = "android" ] ||
@@ -58,19 +59,19 @@ if [ "${HOST_OS}" = "gnu" ] ||
    [ "${HOST_OS}" = "macos" ] ||
    [ "${HOST_OS}" = "musl" ]; then
     # xorg-xserver build
-    package-invoke-builder xorg-xserver-cross
+    package-invoke-builder xorg-xserver-cross 1
 
     # mesa glu build
-    package-invoke-builder mesa-glu-cross
+    package-invoke-builder mesa-glu-cross 9
 
     # freeglut build
-    package-invoke-builder freeglut-cross
+    package-invoke-builder freeglut-cross 3
 
     # glew build
     package-invoke-builder glew-cross 2
 
     # mesa demos build
-    package-invoke-builder mesa-demos-cross
+    package-invoke-builder mesa-demos-cross 8
 fi
 
 # libsass build
@@ -111,24 +112,24 @@ if [ "${HOST_OS}" = "gnu" ] ||
 fi
 
 # sdl build
-package-invoke-builder sdl-cross
+package-invoke-builder sdl-cross 2
 
 # sdl-image build
-package-invoke-builder sdl-image-cross
+package-invoke-builder sdl-image-cross 2
 
 # sdl-mixer build
-package-invoke-builder sdl-mixer-cross
+package-invoke-builder sdl-mixer-cross 2
 
 # sdl-net build
-package-invoke-builder sdl-net-cross
+package-invoke-builder sdl-net-cross 2
 
 # sdl-ttf build
-package-invoke-builder sdl-ttf-cross
+package-invoke-builder sdl-ttf-cross 2
 
 # filament build
-package-invoke-builder filament-cross
+package-invoke-builder filament-cross 1
 
 if [ "{HOST_OS}" = "mingw32" ]; then
     # dxvk-cross build
-    package-invoke-builder dxvk-cross
+    package-invoke-builder dxvk-cross 1
 fi
