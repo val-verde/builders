@@ -147,7 +147,7 @@ function export-compiler-environment() {
         "
     fi
 
-    if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+    if [ "${PACKAGE_PREFIX}" = "${SYSROOT}/usr" ]; then
         COMMON_CFLAGS="\
             --sysroot=${SYSROOT} \
             --target=${HOST_TRIPLE} \
