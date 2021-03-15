@@ -75,13 +75,13 @@ PACKAGES_TO_MANAGE=( 'swift-argument-parser-5'         'BUILD' \
 deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 
 # swift-protobuf build
-package-invoke-builder swift-protobuf-cross
+package-invoke-builder swift-protobuf-cross 1
 
 # swift-syntax build
 package-invoke-builder swift-syntax-cross
 
 # swift-syntax-highlighter build
-package-invoke-builder swift-syntax-highlighter-cross
+package-invoke-builder swift-syntax-highlighter-cross 1
 
 # swift-format build
 package-invoke-builder swift-format-cross
