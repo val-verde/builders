@@ -2,10 +2,6 @@
 
 set -e
 
-# Set all environment vars
-export SOURCE_PACKAGE_NAME=glibc-headers
-export SOURCE_PACKAGE_VERSION=2
-
 # Source package build helper functions
 SOURCE_ROOT=${SOURCE_ROOT_BASE}/glibc-${SOURCE_PACKAGE_VERSION}
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils

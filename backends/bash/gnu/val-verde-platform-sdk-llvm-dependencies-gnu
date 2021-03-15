@@ -206,7 +206,7 @@ package-invoke-builder mpc-cross
 package-invoke-builder isl-cross
 
 # libaio build
-package-invoke-builder libaio-cross
+package-invoke-builder libaio-cross 0
 
 # libev build
 package-invoke-builder libev-cross
@@ -294,7 +294,7 @@ package-invoke-builder libuv-cross
 package-invoke-builder ldns-cross
 
 # c-ares build
-package-invoke-builder c-ares-cross
+package-invoke-builder c-ares-cross 1
 
 # openssh-portable build
 package-invoke-builder openssh-portable-cross
@@ -330,7 +330,7 @@ package-invoke-builder tar-cross
 unset TAR
 
 # bc build
-package-invoke-builder bc-cross
+package-invoke-builder bc-cross 1
 
 # coreutils build
 package-invoke-builder coreutils-cross
@@ -404,14 +404,14 @@ package-invoke-builder itstool-cross
 package-invoke-builder gtk-doc-cross
 
 # graphviz build
-package-invoke-builder graphviz-cross
+package-invoke-builder graphviz-cross 2
 
 # libtasn1 build
 package-invoke-builder libtasn1-cross
 
 # p11-kit build
 DISABLE_SYSTEMD=TRUE \
-package-invoke-builder p11-kit-cross
+package-invoke-builder p11-kit-cross 0
 
 # nettle build
 package-invoke-builder nettle-cross
@@ -429,7 +429,7 @@ package-invoke-builder libmicrohttpd-cross
 package-invoke-builder elfutils-cross
 
 # strace build
-package-invoke-builder strace-cross
+package-invoke-builder strace-cross 5
 
 # glib build
 package-invoke-builder glib-cross
@@ -453,19 +453,19 @@ package-invoke-builder cups-cross
 package-invoke-builder intltool-cross
 
 # systemd build
-package-invoke-builder systemd
+package-invoke-builder systemd 248
 
 # p11-kit build
-package-invoke-builder p11-kit-cross
+package-invoke-builder p11-kit-cross 0
 
 # dbus build
 package-invoke-builder dbus-cross
 
 # util-linux build (with python and systemd support)
-package-invoke-builder util-linux-cross
+package-invoke-builder util-linux-cross 2
 
 # lvm2 build
-package-invoke-builder lvm2-cross
+package-invoke-builder lvm2-cross 2
 
 # apt build
 package-invoke-builder apt-cross
