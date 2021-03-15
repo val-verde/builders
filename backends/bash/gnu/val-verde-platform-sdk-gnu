@@ -8,47 +8,47 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # llvm dependencies
 ECHO=/usr/bin/echo \
-category-invoke-builder llvm-dependencies-gnu
+package-invoke-category-builder llvm-dependencies-gnu
 
 # llvm build
-package-invoke-builder llvm-project
+package-invoke-builder llvm-project 13
 
 # souper build
-package-invoke-builder souper-cross
+package-invoke-builder souper-cross 1
 
 # cmark build
-package-invoke-builder swift-cmark-cross
+package-invoke-builder swift-cmark-cross 5
 
 # swift build
-package-invoke-builder swift
+package-invoke-builder swift 5
 
 # lldb build
-package-invoke-builder swift-lldb
+package-invoke-builder swift-lldb 5
 
 # swift sdk build
 category-invoke-builder swift-sdk-cross
 
 # go build
-package-invoke-builder go-cross
+package-invoke-builder go-cross 1
 
 # ruby build
-package-invoke-builder ruby-cross
+package-invoke-builder ruby-cross 3
 
 # graphics sdk build
 category-invoke-builder graphics-sdk-cross
 
 # virtualization sdk build
-package-invoke-builder virtualization-sdk-cross
+category-invoke-builder virtualization-sdk-cross
 
 # node + sdk build
-package-invoke-builder node-cross
-package-invoke-builder npm-yarn-cross
+package-invoke-builder node-cross 15
+package-invoke-builder npm-yarn-cross 1
 
 # yautja server build
-package-invoke-builder yarn-yautja-server-cross
+package-invoke-builder yarn-yautja-server-cross 1
 
 # wine build
-package-invoke-builder wine-cross
+package-invoke-builder wine-cross 6
 
 # blockchain sdk build
-package-invoke-builder blockchain-sdk-cross
+category-invoke-builder blockchain-sdk-cross

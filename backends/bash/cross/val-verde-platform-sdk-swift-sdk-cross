@@ -87,7 +87,7 @@ package-invoke-builder swift-syntax-highlighter-cross 1
 package-invoke-builder swift-format-cross
 
 # swift-semantics build
-package-invoke-builder swift-semantics-cross
+package-invoke-builder swift-semantics-cross 0
 
 # swift-doc build
 package-invoke-builder swift-doc-cross
