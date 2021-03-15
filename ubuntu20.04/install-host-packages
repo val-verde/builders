@@ -5,22 +5,18 @@ set -e
 apt update
 apt dist-upgrade -y
 apt install -y \
+    autoconf \
     bison \
     build-essential \
     ca-certificates \
     clang \
     cmake \
-    git \
     flex \
-    intltool \
+    gawk \
+    git \
     jq \
-    libedit-dev \
     libelf-dev \
     libffi-dev \
-    libmpc-dev \
-    libmpfr-dev \
-    libnvidia-compute-440 \
-    libsqlite3-dev \
     libxml2-dev \
     libz3-dev \
     lld \
@@ -40,5 +36,5 @@ apt install -y \
     uuid-dev \
     unzip \
     zlib1g-dev
-apt autoremove
-apt clean
+apt autoremove -y
+apt clean -y
