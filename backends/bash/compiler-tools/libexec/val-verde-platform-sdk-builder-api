@@ -17,6 +17,10 @@ function package-invoke-builder() {
     ${BASH} ${VAL_VERDE_GH_TEAM}-platform-sdk-${@}
     ${ECHO} -e "Builder Invocation Complete"
     ${ECHO}
+
+    unset SOURCE_PACKAGE_NAME \
+          SOURCE_PACKAGE_VERSION \
+          DISABLE_INSTALL_DEB
 }
 
 function parse-builder-args() {
@@ -29,6 +33,15 @@ function parse-builder-args() {
     else
         export SOURCE_PACKAGE_NAME=$1
     fi
+
+    if [ ${SOURCE_PACKAGE_NAME} == "kernel-headers" ]; then
+        SOURCE_PACKAGE_NAME=linux
+    fi
+
+    if [ ${SOURCE_PACKAGE_NAME} == "xcb-proto" ]; then
+        SOURCE_PACKAGE_NAME=xcbproto
+    fi
+
     export SOURCE_PACKAGE_VERSION=$2
     export DISABLE_INSTALL_DEB=$3
 }
