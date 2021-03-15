@@ -2,11 +2,6 @@
 
 set -e
 
-# Set all environment vars
-export SOURCE_PACKAGE_NAME=opencl-icd-loader
-export SOURCE_PACKAGE_VERSION=2020
-export PACKAGE_INSTALL_FLAG='build'
-
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 

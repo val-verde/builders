@@ -12,7 +12,7 @@ package-invoke-builder spirv-headers-cross
 package-invoke-builder spirv-tools-cross
 
 # spirv cross build
-package-invoke-builder spirv-cross-cross
+package-invoke-builder spirv-cross-cross 2021
 
 # spirv llvm translator build
 package-invoke-builder spirv-llvm-translator-cross
@@ -22,7 +22,7 @@ package-invoke-builder glslang-cross
 
 if [ "${HOST_OS}" = "macos" ]; then
     # moltenvk build
-    package-invoke-builder moltenvk-cross
+    package-invoke-builder moltenvk-cross 1
 else
     # vulkan tools build
     package-invoke-builder vulkan-tools-cross
@@ -67,7 +67,7 @@ if [ "${HOST_OS}" = "gnu" ] ||
     package-invoke-builder freeglut-cross
 
     # glew build
-    package-invoke-builder glew-cross
+    package-invoke-builder glew-cross 2
 
     # mesa demos build
     package-invoke-builder mesa-demos-cross
