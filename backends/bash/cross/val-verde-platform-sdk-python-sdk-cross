@@ -7,37 +7,37 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # python-cython build
-package-invoke-builder python-cython-cross
+package-invoke-builder python-cython-cross 0
 
 # python-jinja build
-package-invoke-builder python-jinja-cross
+package-invoke-builder python-jinja-cross 3
 
 # python-lxml build
-package-invoke-builder python-lxml-cross
+package-invoke-builder python-lxml-cross 4
 
 # python-mako build
-package-invoke-builder python-mako-cross
+package-invoke-builder python-mako-cross 1
 
 # python-markupsafe build
-package-invoke-builder python-markupsafe-cross
+package-invoke-builder python-markupsafe-cross 2
 
 # python-meson build
-package-invoke-builder python-meson-cross
+package-invoke-builder python-meson-cross 0
 
 # python-numpy build
-package-invoke-builder python-numpy-cross
+package-invoke-builder python-numpy-cross 1
 
 # python-pybind11 build
-package-invoke-builder python-pybind11-cross
+package-invoke-builder python-pybind11-cross 2
 
 # python-pygments build
-package-invoke-builder python-pygments-cross
+package-invoke-builder python-pygments-cross 2
 
 # python-pyparsing build
-package-invoke-builder python-pyparsing-cross
+package-invoke-builder python-pyparsing-cross 2
 
 # python-six build
-package-invoke-builder python-six-cross
+package-invoke-builder python-six-cross 1
 
 # python-toml build
-package-invoke-builder python-toml-cross
+package-invoke-builder python-toml-cross 0

@@ -7,7 +7,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # coremltools build
-package-invoke-builder coremltools-cross
+package-invoke-builder coremltools-cross 5
 
 # tensorflow build
-package-invoke-builder tensorflow-cross
+package-invoke-builder tensorflow-cross 2
