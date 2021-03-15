@@ -5,7 +5,8 @@ set -e
 # builder configuration defaults
 BASE_DIRECTORY=$(echo "${PACKAGE_ROOT}" | cut -d "/" -f2)
 DEPENDS=${DEPENDS:=''}
-NUM_PROCESSORS=${NUM_PROCESSORS:-"$(($(getconf _NPROCESSORS_ONLN) + 1))"}
+GETCONF=${GETCONF:-/usr/bin/getconf}
+NUM_PROCESSORS=${NUM_PROCESSORS:-"$(($(${GETCONF} _NPROCESSORS_ONLN) + 1))"}
 TARGETS=${TARGETS:-install}
 VERSION=${VERSION:='1.0.0'}
 SOURCE_FILE=${SOURCE_FILE:-/usr/share/${VAL_VERDE_GH_TEAM}-sources.json}
