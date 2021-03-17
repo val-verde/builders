@@ -13,6 +13,12 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-zlib-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
+if [ "${HOST_OS}" = "gnu" ]; then
+    ICONV_LIB=libc
+else
+    ICONV_LIB=external
+fi
+
 if [ "${HOST_OS}" != "mingw32" ]; then
     export DEPENDS="\
         ${PACKAGE_BASE_NAME}-util-linux-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
@@ -23,7 +29,7 @@ fi
 # Configure the build components
 cd ${SOURCE_ROOT}
 package-meson-build \
-    -Diconv=external
+    -Diconv=${ICONV_LIB}
 
 # Build the components
 cd ${STAGE_ROOT}
