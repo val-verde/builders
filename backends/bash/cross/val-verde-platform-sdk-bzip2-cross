@@ -10,7 +10,6 @@ export SOURCE_PACKAGE_VERSION=1
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export-compiler-environment
-generate-compiler-tools
 
 # Determine source branch
 if [ "${HOST_OS}" = "mingw32" ]; then
@@ -28,6 +27,7 @@ make-install \
     AR=${AR} \
     CC=${CC} \
     CFLAGS="${CFLAGS}" \
+    LDFLAGS="${LDFLAGS}" \
     PREFIX=${PACKAGE_PREFIX} \
     RANLIB=${RANLIB}
 

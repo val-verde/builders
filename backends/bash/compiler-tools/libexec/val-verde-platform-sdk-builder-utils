@@ -147,7 +147,7 @@ function export-compiler-environment() {
         "
     fi
 
-    if [ "${PACKAGE_PREFIX}" = "${SYSROOT}/usr" ]; then
+    if [ "${SYSROOT}" != "/" ]; then
         COMMON_CFLAGS="\
             --sysroot=${SYSROOT} \
             --target=${HOST_TRIPLE} \
@@ -156,6 +156,10 @@ function export-compiler-environment() {
         COMMON_LDFLAGS="\
             --sysroot=${SYSROOT} \
             ${COMMON_LDFLAGS} \
+        "
+        LDFLAGS="\
+            --sysroot=${SYSROOT} \
+            ${LDFLAGS} \
         "
         SWIFTCFLAGS="\
             -sdk ${SYSROOT} \
@@ -169,6 +173,10 @@ function export-compiler-environment() {
         COMMON_LDFLAGS="\
             -L${BUILD_PACKAGE_PREFIX}/lib \
             ${COMMON_LDFLAGS} \
+        "
+        LDFLAGS="\
+            -L${BUILD_PACKAGE_PREFIX}/lib \
+            ${LDFLAGS} \
         "
         SWIFTCFLAGS="\
             -I${PACKAGE_PREFIX}/include \
