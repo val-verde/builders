@@ -22,13 +22,16 @@ if [ "${HOST_OS}" = "android" ]; then
     PLATFORM_CMD="-DANDROID=TRUE"
 fi
 
+if [ "${HOST_OS}" != "gnu" ]; then
+    export COMMON_LDFLAGS="\
+        -liconv \
+        ${COMMON_LDFLAGS} \
+    "
+fi
+
 ${MKDIR} -p ${STAGE_ROOT}/build
 
 cd ${STAGE_ROOT}/build
-COMMON_LDFLAGS="\
-    -liconv \
-    ${COMMON_LDFLAGS} \
-" \
 package-cmake \
     "${PLATFORM_CMD}" \
     ${STAGE_ROOT}

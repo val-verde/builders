@@ -11,7 +11,6 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export DEPENDS="\
     ${PACKAGE_BASE_NAME}-bzip2-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-libiconv-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-xz-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-zlib-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
@@ -23,9 +22,16 @@ if [ "${HOST_OS}" = "mingw32" ]; then
     LIBLZMA_LIBRARY=${PACKAGE_PREFIX}/lib/liblzma.dll.a
     ZLIB_LIBRARY=${PACKAGE_PREFIX}/lib/libz.dll.a
 else
+    if [ "${HOST_OS}" != "gnu" ]; then
+        export DEPENDS="\
+            ${PACKAGE_BASE_NAME}-libiconv-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+            ${DEPENDS} \
+        "
+    fi
+
     export DEPENDS="\
         ${PACKAGE_BASE_NAME}-acl-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
-	${DEPENDS} \
+        ${DEPENDS} \
     "
     ACL_LIBRARY=${PACKAGE_PREFIX}/lib/libacl.so
     LIBLZMA_LIBRARY=${PACKAGE_PREFIX}/lib/liblzma.so

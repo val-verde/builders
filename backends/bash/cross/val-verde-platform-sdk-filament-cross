@@ -47,6 +47,13 @@ elif [ "${HOST_OS}" = "mingw32" ]; then
     CMAKE_ASM_FLAGS_CMD="-DCMAKE_ASM_FLAGS_RELEASE="
 fi
 
+if [ "${HOST_OS}" != "gnu" ]; then
+    export COMMON_LDFLAGS="\
+        -liconv \
+        ${COMMON_LDFLAGS} \
+    "
+fi
+
 cd ${STAGE_ROOT}
 
 CFLAGS="\
