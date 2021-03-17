@@ -10,7 +10,6 @@ export SOURCE_PACKAGE_VERSION=60
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export-compiler-environment
-generate-compiler-tools
 
 # Configure the build components
 if [ "${HOST_OS}" = "android" ] ||
@@ -29,11 +28,15 @@ make-build \
     -f ${STAGE_ROOT}/${PLATFORM}/Makefile \
     prefix=${PACKAGE_PREFIX} \
     CC=${CC} \
+    CFLAGS="${CFLAGS}" \
+    LFLAGS2="${LDFLAGS}" \
     generic
 make-install \
     -f ${STAGE_ROOT}/${PLATFORM}/Makefile \
     prefix=${PACKAGE_PREFIX} \
-    CC=${CC}
+    CC=${CC} \
+    CFLAGS="${CFLAGS}" \
+    LFLAGS2="${LDFLAGS}"
 
 # Build the package
 deb-package-build
