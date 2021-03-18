@@ -56,6 +56,9 @@ export \
 # bazel bootstrap build
 package-invoke-builder bazel-bootstrap
 
+# cuda bootstrap build
+package-invoke-builder cuda-bootstrap
+
 # go bootstrap build
 package-invoke-builder go-bootstrap
 export GO=${BUILD_PACKAGE_PREFIX}/bin/go
