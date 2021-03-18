@@ -35,3 +35,6 @@ package-stage-configure-install \
     --with-glibc-version=2.33 \
     --with-long-double-128 \
     --with-sysroot=${SYSROOT}
+
+# Build and install the package
+package-invoke-artifact-install

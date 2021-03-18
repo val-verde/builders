@@ -23,3 +23,6 @@ package-configure-install \
     ac_cv_path_XML_CONFIG=${PACKAGE_PREFIX}/bin/xml2-config \
     --disable-static \
     --enable-shared
+
+# Build and install the package
+package-invoke-artifact-install
