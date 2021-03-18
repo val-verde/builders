@@ -1,0 +1,42 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=cuda
+export SOURCE_PACKAGE_VERSION=11
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+CUDA_PACKAGE_VERSION=11.2.2
+NVIDIA_DRIVER_VERSION=460.32.03
+PACKAGE_URL=https://developer.download.nvidia.com/compute/${SOURCE_PACKAGE_NAME}/${CUDA_PACKAGE_VERSION}/local_installers
+
+# Configure the build components
+if [ "${BUILD_PROCESSOR}" = "aarch64" ]; then
+    PACKAGE_FILENAME=${SOURCE_PACKAGE_NAME}_${CUDA_PACKAGE_VERSION}_${NVIDIA_DRIVER_VERSION}_${BUILD_KERNEL}_sbsa.run
+elif [ "${BUILD_PROCESSOR}" = "x86_64" ]; then
+    PACKAGE_FILENAME=${SOURCE_PACKAGE_NAME}_${CUDA_PACKAGE_VERSION}_${NVIDIA_DRIVER_VERSION}_${BUILD_KERNEL}.run
+fi
+
+package-wget -c ${PACKAGE_URL}/${PACKAGE_FILENAME} \
+             -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.run
+
+${BASH} ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.run \
+        --extract=${STAGE_ROOT}
+
+package-rsync -ax \
+              ${STAGE_ROOT}/cuda_cudart/targets/${BUILD_PROCESSOR}-${BUILD_KERNEL}/* \
+              ${STAGE_ROOT}/cuda_nvcc/bin \
+              ${STAGE_ROOT}/cuda_nvcc/nvvm \
+              ${STAGE_ROOT}/cuda_nvcc/targets/${BUILD_PROCESSOR}-${BUILD_KERNEL}/* \
+              ${STAGE_ROOT}/libcurand/targets/${BUILD_PROCESSOR}-${BUILD_KERNEL}/include \
+              ${INSTALL_PREFIX}/
+${RM} -rf ${INSTALL_PREFIX}/include/CL
+
+# Build the package
+deb-package-build
+
+# Build the package
+deb-package-install
