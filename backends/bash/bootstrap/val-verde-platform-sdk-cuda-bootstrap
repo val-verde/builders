@@ -26,14 +26,25 @@ package-wget -c ${PACKAGE_URL}/${PACKAGE_FILENAME} \
 ${BASH} ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.run \
         --extract=${STAGE_ROOT}
 
+${MKDIR} -p ${INSTALL_PREFIX}/bin
 package-rsync -ax \
               ${STAGE_ROOT}/cuda_cudart/targets/${BUILD_PROCESSOR}-${BUILD_KERNEL}/* \
-              ${STAGE_ROOT}/cuda_nvcc/bin \
               ${STAGE_ROOT}/cuda_nvcc/nvvm \
               ${STAGE_ROOT}/cuda_nvcc/targets/${BUILD_PROCESSOR}-${BUILD_KERNEL}/* \
               ${STAGE_ROOT}/libcurand/targets/${BUILD_PROCESSOR}-${BUILD_KERNEL}/include \
               ${INSTALL_PREFIX}/
-${RM} -rf ${INSTALL_PREFIX}/include/CL
+package-rsync -ax \
+              ${STAGE_ROOT}/cuda_nvcc/bin/fatbinary \
+              ${STAGE_ROOT}/cuda_nvcc/bin/ptxas \
+              ${INSTALL_PREFIX}/bin/
+${LN} -sf \
+      clang \
+      ${INSTALL_PREFIX}/bin/nvcc
+
+# Remove OpenCL components.
+${RM} -rf \
+      ${INSTALL_PREFIX}/include/CL \
+      ${INSTALL_PREFIX}/lib/libOpenCL*
 
 # Build the package
 deb-package-build

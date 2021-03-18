@@ -24,8 +24,6 @@ apt install -y \
     make \
     meson \
     ninja-build \
-    nvidia-cuda-dev \
-    nvidia-cuda-toolkit \
     patchelf \
     pkg-config \
     python3 \
