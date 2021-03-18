@@ -364,6 +364,18 @@ package-invoke-builder wayland-protocols-cross
 # mesa-drm build
 package-invoke-builder mesa-drm-cross
 
+# opencl headers build
+package-invoke-builder opencl-headers-cross
+
+# opencl icd loader build
+package-invoke-builder opencl-icd-loader-cross
+
+# vulkan headers build
+package-invoke-builder vulkan-headers-cross
+
+# vulkan loader build
+package-invoke-builder vulkan-loader-cross
+
 # grep build
 package-invoke-builder grep-cross
 unset GREP
