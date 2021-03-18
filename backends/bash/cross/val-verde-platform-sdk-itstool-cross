@@ -20,3 +20,6 @@ DISABLE_AUTOUPDATE=TRUE \
 package-configure-install \
     --disable-static \
     --enable-shared
+
+# Build and install the package
+package-invoke-artifact-install

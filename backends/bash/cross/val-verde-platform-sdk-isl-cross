@@ -14,3 +14,6 @@ package-stage-configure-install \
     ac_cv_have_decl_ffs=yes \
     --disable-static \
     --enable-shared
+
+# Build and install the package
+package-invoke-artifact-install
