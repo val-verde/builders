@@ -300,6 +300,18 @@ package-invoke-builder wayland-protocols-cross
 # android mesa-drm build
 package-invoke-builder mesa-drm-cross
 
+# android opencl headers build
+package-invoke-builder opencl-headers-cross
+
+# android opencl icd loader build
+package-invoke-builder opencl-icd-loader-cross
+
+# android vulkan headers build
+package-invoke-builder vulkan-headers-cross
+
+# android vulkan loader build
+package-invoke-builder vulkan-loader-cross
+
 # android sed build
 package-invoke-builder sed-cross
 

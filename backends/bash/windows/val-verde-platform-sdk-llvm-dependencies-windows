@@ -128,6 +128,18 @@ package-invoke-builder xcb-proto-cross
 # windows xcb-pthread-stubs build
 package-invoke-builder xcb-pthread-stubs-cross
 
+# windows opencl headers build
+package-invoke-builder opencl-headers-cross
+
+# windows opencl icd loader build
+# package-invoke-builder opencl-icd-loader-cross
+
+# windows vulkan headers build
+package-invoke-builder vulkan-headers-cross
+
+# windows vulkan loader build
+package-invoke-builder vulkan-loader-cross
+
 # cups build
 # package-invoke-builder cups-cross
 

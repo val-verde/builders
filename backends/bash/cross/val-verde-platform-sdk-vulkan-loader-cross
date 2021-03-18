@@ -10,8 +10,6 @@ export SOURCE_PACKAGE_VERSION=1
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 export-compiler-environment
 
-export DEPENDS="${PACKAGE_BASE_NAME}-glslang-10-11-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
-
 # Configure the build components
 cd ${STAGE_ROOT}
 
@@ -25,6 +23,7 @@ elif [ "${HOST_OS}" = "gnu" ] ||
     ENABLE_WAYLAND=TRUE
     ENABLE_XLIB=TRUE
 fi
+
 package-cmake \
     -DBUILD_WSI_DIRECTFB_SUPPORT=FALSE \
     -DBUILD_WSI_WAYLAND_SUPPORT=${ENABLE_WAYLAND} \
@@ -34,6 +33,7 @@ package-cmake \
     -DPKG_CONFIG_EXECUTABLE=${PKG_CONFIG} \
     "${CMAKE_ANDROID_DEFINE_CMD}" \
     ${SOURCE_ROOT}
+
 # Build the components
 PATH=${STAGE_ROOT_BASE}/vulkan-loader-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/loader:${PATH} \
 ninja-install
