@@ -33,6 +33,9 @@ package-invoke-builder libcxxabi-cross
 LLVM_NATIVE_STAGE_ROOT=/usr \
 package-invoke-builder libcxx-cross
 
+# cuda bootstrap build
+package-invoke-builder cuda-bootstrap
+
 # llvm bootstrap build
 package-invoke-builder llvm-project-bootstrap
 
@@ -55,9 +58,6 @@ export \
 
 # bazel bootstrap build
 package-invoke-builder bazel-bootstrap
-
-# cuda bootstrap build
-package-invoke-builder cuda-bootstrap
 
 # go bootstrap build
 package-invoke-builder go-bootstrap
