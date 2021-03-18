@@ -48,11 +48,13 @@ function build-install-git-source-package() {
 
         # Prepare source root
         package-push-directory ${INSTALL_PREFIX}
-            ${RM} -rf .git*
-            ${RM} -rf "^.git*"
-            package-git-init
-            package-git-add -A
-            package-git-commit -m "Val verde source base commit."
+            if [ "${RETAIN_SOURCE}" = 'false' ]; then
+                ${RM} -rf .git*
+                ${RM} -rf "^.git*"
+                package-git-init
+                package-git-add -A
+                package-git-commit -m "Val verde source base commit."
+            fi
         package-pop-directory
 
         # Build the source deb package
