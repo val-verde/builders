@@ -15,5 +15,6 @@ CFLAGS="\
     ${CFLAGS} \
 " \
 package-stage-configure-install \
+    ac_cv_prog_cc_c11= \
     --disable-static \
     --enable-shared
