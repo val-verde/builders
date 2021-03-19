@@ -160,13 +160,13 @@ function package-git-clone() {
             ${RM} -rf ${TARGET_ROOT}
         fi
 
-        if [[ ${RETAIN_SOURCE} = 'false' ]]; then
+        if [ "${RETAIN_SOURCE}" = 'true' ]; then
             package-git-tool clone ${GIT_URL} \
                                 --branch ${GIT_BRANCH} \
                                 --single-branch \
-                                --depth=1 \
+                                --depth=${DEPTH} \
                                 ${TARGET_ROOT}
-        else    
+        else
             package-git-tool clone ${GIT_URL} \
                                 --branch ${GIT_BRANCH} \
                                 --single-branch \

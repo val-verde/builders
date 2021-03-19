@@ -71,6 +71,9 @@ function get-source-package-metadata() {
         RETAIN_SOURCE=$(jq -r --argjson id $index \
                             '.[$id].retainSource' \
                             ${SOURCE_FILE})
+        DEPTH=$(jq -r --argjson id $index \
+                    '.[$id].depth' \
+                    ${SOURCE_FILE})
     fi
 
     PACKAGE_BASE_URL=${SOURCE_URL/'${VAL_VERDE_GH_TEAM}'/${VAL_VERDE_GH_TEAM}}
@@ -123,6 +126,10 @@ function query-single-source() {
                             --arg branch ${SOURCE_BRANCH_IND} \
                             '.[] | select(.sourcePackageName==$pkgName && .sourceBranchIndicator==$branch) | .retainSource' \
                             ${SOURCE_FILE})
+        DEPTH=$(jq --arg pkgName ${SOURCE_PACKAGE_NAME} \
+                    --arg branch ${SOURCE_BRANCH_IND} \
+                    '.[] | select(.sourcePackageName==$pkgName && .sourceBranchIndicator==$branch) | .depth' \
+                    ${SOURCE_FILE})
     fi
 }
 
