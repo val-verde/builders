@@ -101,8 +101,5 @@ tool-log ${PYTHON} ${SOURCE_ROOT}/x.py build --config ${STAGE_ROOT}/config.toml
 TOOL_LOG=${STAGE_ROOT}/builder-installation \
 tool-log ${PYTHON} ${SOURCE_ROOT}/x.py install --config ${STAGE_ROOT}/config.toml
 
-# Build the package
-deb-package-build
-
-# Install the package
-deb-package-install
+# Build and install the package
+package-invoke-artifact-install
