@@ -75,7 +75,7 @@ package-invoke-builder swift-format-cross
 package-invoke-builder swift-doc-cross
 
 # sourcekit-lsp build
-package-invoke-builder sourcekit-lsp
+# package-invoke-builder sourcekit-lsp
 
 # baikonur build
 package-invoke-builder baikonur
