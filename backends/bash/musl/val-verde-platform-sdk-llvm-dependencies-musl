@@ -49,6 +49,12 @@ package-invoke-builder autoconf-cross
 CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-gnu" \
 package-invoke-builder automake-cross
 
+# autoconf-archive build
+package-invoke-builder autoconf-archive-cross
+
+# gperf build
+package-invoke-builder gperf-cross
+
 # libtool build
 package-invoke-builder libtool-cross
 
@@ -56,23 +62,14 @@ package-invoke-builder libtool-cross
 HELP2MAN=${BINDIR}/true \
 package-invoke-builder m4-cross
 
-# make build
-package-invoke-builder make-cross
-
-# ninja build
-package-invoke-builder ninja-cross
-
-# libiconv build
-package-invoke-builder libiconv-cross
+# libatomic-ops build
+package-invoke-builder libatomic-ops-cross
 
 # libffi build
 package-invoke-builder libffi-cross
 
-# gnulib build
-package-invoke-builder gnulib-cross
-
-# pcre build
-package-invoke-builder pcre-cross
+# libiconv build
+package-invoke-builder libiconv-cross
 
 # icu build
 package-invoke-builder icu4c-cross
@@ -81,16 +78,41 @@ package-invoke-builder icu4c-cross
 package-invoke-builder xz-cross
 
 # libxml2 build
+DISABLE_PYTHON=TRUE \
 package-invoke-builder libxml2-cross
+
+# libunistring build
+package-invoke-builder libunistring-cross
+
+# gc build
+package-invoke-builder gc-cross
 
 # gmp build
 package-invoke-builder gmp-cross
 
-# libatomic-ops build
-package-invoke-builder libatomic-ops-cross
+# ncurses build
+package-invoke-builder ncurses-cross
 
-# gc build
-package-invoke-builder gc-cross
+# gettext build
+package-invoke-builder gettext-cross
+
+# texinfo build
+# package-invoke-builder texinfo-cross
+
+# guile build
+package-invoke-builder guile-cross
+
+# make build
+package-invoke-builder make-cross
+
+# ninja build
+package-invoke-builder ninja-cross
+
+# gnulib build
+package-invoke-builder gnulib-cross
+
+# pcre build
+package-invoke-builder pcre-cross
 
 # libev build
 package-invoke-builder libev-cross
@@ -105,9 +127,6 @@ package-invoke-builder gdbm-cross
 # libdb build
 CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-gnu" \
 package-invoke-builder libdb-cross
-
-# ncurses build
-package-invoke-builder ncurses-cross
 
 # libedit build
 package-invoke-builder libedit-cross
@@ -124,25 +143,12 @@ package-invoke-builder libcap-cross
 # libexpat build
 package-invoke-builder expat-cross
 
-# gettext build
-package-invoke-builder gettext-cross
-
 # gawk build
 package-invoke-builder gawk-cross
 
-# gperf build
-package-invoke-builder gperf-cross
-
-# libunistring build
-package-invoke-builder libunistring-cross
-
-# texinfo build
-# package-invoke-builder texinfo-cross
-
-# guile build
-package-invoke-builder guile-cross
-
 # autogen build
+AUTOGEN=${BINDIR}/autogen \
+COLUMNS=${BINDIR}/columns \
 package-invoke-builder autogen-cross
 
 # libgpg-error build

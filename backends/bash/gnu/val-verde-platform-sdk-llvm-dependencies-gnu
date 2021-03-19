@@ -60,6 +60,10 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 # kernel headers builds
 package-invoke-builder kernel-headers-cross
 
+# glibc interface build
+package-invoke-builder glibc-interface-cross
+unset SYSROOT
+
 # autoconf build
 package-invoke-builder autoconf-cross
 unset AUTORECONF
@@ -70,14 +74,6 @@ package-invoke-builder automake-cross
 
 # autoconf-archive build
 package-invoke-builder autoconf-archive-cross
-
-# make build
-package-invoke-builder make-cross
-unset MAKE
-
-# glibc interface build
-package-invoke-builder glibc-interface-cross
-unset SYSROOT
 
 # glibc runtime build
 package-invoke-builder glibc-runtime-cross
@@ -114,30 +110,18 @@ unset UNZIP
 package-invoke-builder help2man-cross
 unset HELP2MAN
 
+# gperf build
+package-invoke-builder gperf-cross
+unset GPERF
+
 # libtool build
 package-invoke-builder libtool-cross
 
-# m4 build
-package-invoke-builder m4-cross
-unset M4
-
-# ninja build
-package-invoke-builder ninja-cross
-unset NINJA
+# libatomic-ops build
+package-invoke-builder libatomic-ops-cross
 
 # libffi build
 package-invoke-builder libffi-cross
-
-# file build
-package-invoke-builder file-cross
-unset FILE
-
-# perl build
-package-invoke-builder perl-cross
-unset PERL
-
-# pcre build
-package-invoke-builder pcre-cross
 
 # icu build
 package-invoke-builder icu4c-cross
@@ -150,8 +134,51 @@ unset XZ
 DISABLE_PYTHON=TRUE \
 package-invoke-builder libxml2-cross
 
+# libunistring build
+package-invoke-builder libunistring-cross
+
+# gc build
+package-invoke-builder gc-cross
+
 # gmp build
 package-invoke-builder gmp-cross
+
+# ncurses build
+package-invoke-builder ncurses-cross
+
+# gettext build
+package-invoke-builder gettext-cross
+unset GETTEXT
+
+# texinfo build
+package-invoke-builder texinfo-cross
+unset MAKEINFO
+
+# guile build
+package-invoke-builder guile-cross
+
+# make build
+package-invoke-builder make-cross
+unset MAKE
+
+# m4 build
+package-invoke-builder m4-cross
+unset M4
+
+# ninja build
+package-invoke-builder ninja-cross
+unset NINJA
+
+# file build
+package-invoke-builder file-cross
+unset FILE
+
+# perl build
+package-invoke-builder perl-cross
+unset PERL
+
+# pcre build
+package-invoke-builder pcre-cross
 
 # mpfr build
 package-invoke-builder mpfr-cross
@@ -161,12 +188,6 @@ package-invoke-builder mpc-cross
 
 # isl build
 package-invoke-builder isl-cross
-
-# libatomic-ops build
-package-invoke-builder libatomic-ops-cross
-
-# gc build
-package-invoke-builder gc-cross
 
 # libev build
 package-invoke-builder libev-cross
@@ -180,9 +201,6 @@ package-invoke-builder gdbm-cross
 
 # libdb build
 package-invoke-builder libdb-cross
-
-# ncurses build
-package-invoke-builder ncurses-cross
 
 # libedit build
 package-invoke-builder libedit-cross
@@ -199,26 +217,8 @@ package-invoke-builder libcap-cross
 # expat build
 package-invoke-builder expat-cross
 
-# gettext build
-package-invoke-builder gettext-cross
-unset GETTEXT
-
 # gawk build
 package-invoke-builder gawk-cross
-
-# gperf build
-package-invoke-builder gperf-cross
-unset GPERF
-
-# libunistring build
-package-invoke-builder libunistring-cross
-
-# texinfo build
-package-invoke-builder texinfo-cross
-unset MAKEINFO
-
-# guile build
-package-invoke-builder guile-cross
 
 # autogen build
 package-invoke-builder autogen-cross
