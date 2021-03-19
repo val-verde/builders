@@ -39,6 +39,7 @@ function build-install-git-source-package() {
         GIT_URL=${PACKAGE_URL} \
         TARGET_ROOT=${INSTALL_PREFIX} \
         RETAIN_SOURCE=${RETAIN_SOURCE} \
+        DEPTH=${DEPTH} \
         package-git-clone ${SOURCE_BRANCH}
 
         package-push-directory ${INSTALL_PREFIX}
