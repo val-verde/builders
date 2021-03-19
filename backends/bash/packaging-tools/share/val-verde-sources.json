@@ -1,6 +1,7 @@
 [
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "alive2",
         "sourceBranchIndicator": "default",
@@ -9,6 +10,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "alsa-lib",
         "sourceBranchIndicator": "default",
@@ -17,6 +19,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "android-ndk-patches",
         "sourceBranchIndicator": "default",
@@ -25,6 +28,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "android-patch-elf",
         "sourceBranchIndicator": "default",
@@ -33,6 +37,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "apt",
         "sourceBranchIndicator": "default",
@@ -41,6 +46,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "argp-standalone",
         "sourceBranchIndicator": "default",
@@ -49,6 +55,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "autogen",
         "sourceBranchIndicator": "default",
@@ -57,6 +64,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "baikonur",
         "sourceBranchIndicator": "default",
@@ -65,6 +73,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "bazel",
         "sourceBranchIndicator": "default",
@@ -73,6 +82,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "bzip2",
         "sourceBranchIndicator": "default",
@@ -81,6 +91,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "bzip2",
         "sourceBranchIndicator": "windows",
@@ -89,6 +100,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "cmake",
         "sourceBranchIndicator": "default",
@@ -97,6 +109,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "coreutils",
         "sourceBranchIndicator": "default",
@@ -105,6 +118,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "cups",
         "sourceBranchIndicator": "default",
@@ -113,6 +127,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "cython",
         "sourceBranchIndicator": "default",
@@ -121,6 +136,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "dnf",
         "sourceBranchIndicator": "default",
@@ -129,6 +145,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "dpkg",
         "sourceBranchIndicator": "default",
@@ -137,6 +154,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "egl-headers",
         "sourceBranchIndicator": "default",
@@ -145,6 +163,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "elfutils",
         "sourceBranchIndicator": "default",
@@ -153,6 +172,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "filament",
         "sourceBranchIndicator": "default",
@@ -161,6 +181,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "file",
         "sourceBranchIndicator": "default",
@@ -169,6 +190,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "findutils",
         "sourceBranchIndicator": "default",
@@ -177,6 +199,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "flex",
         "sourceBranchIndicator": "default",
@@ -185,6 +208,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "fontconfig",
         "sourceBranchIndicator": "default",
@@ -193,6 +217,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "freeglut",
         "sourceBranchIndicator": "git_master",
@@ -201,6 +226,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "freetype2",
         "sourceBranchIndicator": "default",
@@ -209,6 +235,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "gc",
         "sourceBranchIndicator": "default",
@@ -217,6 +244,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "gcc",
         "sourceBranchIndicator": "master",
@@ -225,6 +253,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "git",
         "sourceBranchIndicator": "default",
@@ -233,6 +262,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "glib",
         "sourceBranchIndicator": "default",
@@ -241,6 +271,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "glibc-interface",
         "sourceBranchIndicator": "default",
@@ -249,6 +280,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "glibc-runtime",
         "sourceBranchIndicator": "default-next",
@@ -257,6 +289,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "glslang",
         "sourceBranchIndicator": "default",
@@ -265,6 +298,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "gmp",
         "sourceBranchIndicator": "default",
@@ -273,6 +307,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "gnulib",
         "sourceBranchIndicator": "default",
@@ -281,6 +316,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "gnutls",
         "sourceBranchIndicator": "default",
@@ -289,6 +325,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "go",
         "sourceBranchIndicator": "default",
@@ -297,6 +334,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "gobject-introspection",
         "sourceBranchIndicator": "default",
@@ -305,6 +343,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "grep",
         "sourceBranchIndicator": "default",
@@ -313,6 +352,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "gtk-doc",
         "sourceBranchIndicator": "default",
@@ -321,6 +361,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "guile",
         "sourceBranchIndicator": "default",
@@ -329,6 +370,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "hiredis",
         "sourceBranchIndicator": "default",
@@ -336,6 +378,7 @@
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"    },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "icu4c",
         "sourceBranchIndicator": "default",
@@ -344,6 +387,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "indent",
         "sourceBranchIndicator": "default",
@@ -352,6 +396,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "jwasm",
         "sourceBranchIndicator": "default",
@@ -360,6 +405,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "jq",
         "sourceBranchIndicator": "default",
@@ -368,6 +414,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "khr-headers",
         "sourceBranchIndicator": "default",
@@ -376,6 +423,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "klee",
         "sourceBranchIndicator": "default",
@@ -383,6 +431,7 @@
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"    },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "ldns",
         "sourceBranchIndicator": "default",
@@ -391,6 +440,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "libarchive",
         "sourceBranchIndicator": "default",
@@ -399,6 +449,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "libatomic-ops",
         "sourceBranchIndicator": "default",
@@ -407,6 +458,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "libdb",
         "sourceBranchIndicator": "default",
@@ -415,6 +467,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "libev",
         "sourceBranchIndicator": "default",
@@ -423,6 +476,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "libgcrypt",
         "sourceBranchIndicator": "default",
@@ -431,6 +485,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "libgpg-error",
         "sourceBranchIndicator": "default",
@@ -439,6 +494,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "libsecret",
         "sourceBranchIndicator": "default",
@@ -447,6 +503,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "libssh2",
         "sourceBranchIndicator": "default",
@@ -455,6 +512,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "libtasn1",
         "sourceBranchIndicator": "default",
@@ -463,6 +521,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "libxml2",
         "sourceBranchIndicator": "default",
@@ -471,6 +530,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "libxslt",
         "sourceBranchIndicator": "default",
@@ -479,6 +539,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "libtool",
         "sourceBranchIndicator": "default",
@@ -487,6 +548,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "libunistring",
         "sourceBranchIndicator": "default",
@@ -495,6 +557,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "libuv",
         "sourceBranchIndicator": "default",
@@ -503,6 +566,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "libx11",
         "sourceBranchIndicator": "default",
@@ -511,6 +575,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "libxext",
         "sourceBranchIndicator": "default",
@@ -519,6 +584,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "llvm-project",
         "sourceBranchIndicator": "default",
@@ -527,6 +593,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "llvm-project",
         "sourceBranchIndicator": "android",
@@ -535,6 +602,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "lua",
         "sourceBranchIndicator": "default",
@@ -543,6 +611,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "lunarg-vulkan-tools",
         "sourceBranchIndicator": "default",
@@ -551,6 +620,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "lz4",
         "sourceBranchIndicator": "default",
@@ -559,6 +629,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "m4",
         "sourceBranchIndicator": "default",
@@ -567,6 +638,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "make",
         "sourceBranchIndicator": "default",
@@ -583,6 +655,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "mesa-glu",
         "sourceBranchIndicator": "master",
@@ -591,6 +664,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "mesa-demos",
         "sourceBranchIndicator": "master",
@@ -599,6 +673,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "mesa-drm",
         "sourceBranchIndicator": "default",
@@ -607,6 +682,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "meson",
         "sourceBranchIndicator": "default",
@@ -615,6 +691,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "mingw-w64",
         "sourceBranchIndicator": "default",
@@ -623,6 +700,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "musl-fts",
         "sourceBranchIndicator": "default",
@@ -631,6 +709,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "musl-libc",
         "sourceBranchIndicator": "default",
@@ -639,6 +718,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "musl-obstack",
         "sourceBranchIndicator": "default",
@@ -647,6 +727,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "nettle",
         "sourceBranchIndicator": "default",
@@ -655,6 +736,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "ninja",
         "sourceBranchIndicator": "default",
@@ -663,6 +745,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "node",
         "sourceBranchIndicator": "default",
@@ -671,6 +754,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "numpy",
         "sourceBranchIndicator": "default",
@@ -679,6 +763,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "opencl-headers",
         "sourceBranchIndicator": "default",
@@ -687,6 +772,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "opencl-icd-loader",
         "sourceBranchIndicator": "default",
@@ -695,6 +781,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "opengl-es-headers",
         "sourceBranchIndicator": "default",
@@ -703,6 +790,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "opengl-headers",
         "sourceBranchIndicator": "default",
@@ -711,6 +799,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "openjdk",
         "sourceBranchIndicator": "default",
@@ -719,6 +808,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "openssh-portable",
         "sourceBranchIndicator": "default",
@@ -727,6 +817,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "p11-kit",
         "sourceBranchIndicator": "default",
@@ -735,6 +826,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "perl",
         "sourceBranchIndicator": "default",
@@ -743,6 +835,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "pixman",
         "sourceBranchIndicator": "default",
@@ -751,6 +844,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "popt",
         "sourceBranchIndicator": "default",
@@ -759,6 +853,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "pygments",
         "sourceBranchIndicator": "master",
@@ -767,6 +862,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "python",
         "sourceBranchIndicator": "default",
@@ -775,6 +871,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "pythonkit",
         "sourceBranchIndicator": "default",
@@ -783,6 +880,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "pythonkit",
         "sourceBranchIndicator": "android",
@@ -791,6 +889,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "qemu",
         "sourceBranchIndicator": "default",
@@ -799,6 +898,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "qemu-dtc",
         "sourceBranchIndicator": "default",
@@ -807,6 +907,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "re2c",
         "sourceBranchIndicator": "master",
@@ -815,6 +916,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "rpm",
         "sourceBranchIndicator": "default",
@@ -823,6 +925,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "rsync",
         "sourceBranchIndicator": "default",
@@ -831,6 +934,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "rust",
         "sourceBranchIndicator": "default",
@@ -839,6 +943,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "sdl",
         "sourceBranchIndicator": "default",
@@ -847,6 +952,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "souper",
         "sourceBranchIndicator": "default",
@@ -854,6 +960,7 @@
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"    },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "sourcekit-lsp",
         "sourceBranchIndicator": "default",
@@ -862,6 +969,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "sourcekit-lsp",
         "sourceBranchIndicator": "android",
@@ -870,6 +978,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "spirv-headers",
         "sourceBranchIndicator": "default",
@@ -878,6 +987,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "spirv-tools",
         "sourceBranchIndicator": "default",
@@ -886,6 +996,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "strace",
         "sourceBranchIndicator": "default",
@@ -894,6 +1005,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "swift",
         "sourceBranchIndicator": "default",
@@ -902,6 +1014,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "swift",
         "sourceBranchIndicator": "android",
@@ -910,6 +1023,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "swift-cmark",
         "sourceBranchIndicator": "default",
@@ -918,6 +1032,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "swift-argument-parser",
         "sourceBranchIndicator": "default",
@@ -926,6 +1041,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "swift-corelibs-foundation",
         "sourceBranchIndicator": "default",
@@ -934,6 +1050,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "swift-corelibs-libdispatch",
         "sourceBranchIndicator": "default",
@@ -942,6 +1059,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "swift-corelibs-xctest",
         "sourceBranchIndicator": "default",
@@ -950,6 +1068,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "swift-doc",
         "sourceBranchIndicator": "default",
@@ -958,6 +1077,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "swift-doc",
         "sourceBranchIndicator": "android",
@@ -966,6 +1086,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "swift-driver",
         "sourceBranchIndicator": "default",
@@ -974,6 +1095,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "swift-format",
         "sourceBranchIndicator": "default",
@@ -982,6 +1104,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "swift-log",
         "sourceBranchIndicator": "default",
@@ -990,6 +1113,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "swift-llbuild",
         "sourceBranchIndicator": "default",
@@ -998,6 +1122,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "swift-llbuild",
         "sourceBranchIndicator": "android",
@@ -1006,6 +1131,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "swift-package-manager",
         "sourceBranchIndicator": "default",
@@ -1014,6 +1140,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "swift-syntax",
         "sourceBranchIndicator": "default",
@@ -1022,6 +1149,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "swift-tensorflow-apis",
         "sourceBranchIndicator": "default",
@@ -1030,6 +1158,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "swift-tools-support-core",
         "sourceBranchIndicator": "default",
@@ -1038,6 +1167,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "swift-tools-support-core",
         "sourceBranchIndicator": "android",
@@ -1046,6 +1176,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "systemd",
         "sourceBranchIndicator": "default",
@@ -1062,6 +1193,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "texinfo",
         "sourceBranchIndicator": "default",
@@ -1070,6 +1202,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "triehash",
         "sourceBranchIndicator": "default",
@@ -1078,6 +1211,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "unbound",
         "sourceBranchIndicator": "default",
@@ -1086,6 +1220,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "vulkan-headers",
         "sourceBranchIndicator": "default",
@@ -1094,6 +1229,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "vulkan-loader",
         "sourceBranchIndicator": "default",
@@ -1102,6 +1238,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "vulkan-tools",
         "sourceBranchIndicator": "default",
@@ -1110,6 +1247,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "vulkan-validation-layers",
         "sourceBranchIndicator": "default",
@@ -1118,6 +1256,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "wasi-libc",
         "sourceBranchIndicator": "default",
@@ -1126,6 +1265,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "wayland",
         "sourceBranchIndicator": "default",
@@ -1134,6 +1274,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "wayland-protocols",
         "sourceBranchIndicator": "default",
@@ -1142,6 +1283,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "wine",
         "sourceBranchIndicator": "default",
@@ -1150,6 +1292,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "wineditline",
         "sourceBranchIndicator": "default",
@@ -1158,6 +1301,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "xcb-libxcb",
         "sourceBranchIndicator": "default",
@@ -1166,6 +1310,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "xcb-pthread-stubs",
         "sourceBranchIndicator": "default",
@@ -1174,6 +1319,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "xcbproto",
         "sourceBranchIndicator": "default",
@@ -1182,6 +1328,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "xorg-libice",
         "sourceBranchIndicator": "default",
@@ -1190,6 +1337,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "xorg-libpciaccess",
         "sourceBranchIndicator": "default",
@@ -1198,6 +1346,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "xorg-libsm",
         "sourceBranchIndicator": "default",
@@ -1206,6 +1355,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "xorg-libxau",
         "sourceBranchIndicator": "default",
@@ -1214,6 +1364,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "xorg-libxkbfile",
         "sourceBranchIndicator": "default",
@@ -1222,6 +1373,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "xorg-libxfixes",
         "sourceBranchIndicator": "default",
@@ -1230,6 +1382,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "xorg-libxi",
         "sourceBranchIndicator": "default",
@@ -1238,6 +1391,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "xorg-libxrandr",
         "sourceBranchIndicator": "default",
@@ -1246,6 +1400,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "xorg-libxrender",
         "sourceBranchIndicator": "default",
@@ -1254,6 +1409,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "xorg-libxshmfence",
         "sourceBranchIndicator": "default",
@@ -1261,6 +1417,7 @@
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"    },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "xorg-libxtrans",
         "sourceBranchIndicator": "default",
@@ -1269,6 +1426,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "xorg-libxt",
         "sourceBranchIndicator": "default",
@@ -1277,6 +1435,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "xorg-libxtst",
         "sourceBranchIndicator": "default",
@@ -1285,6 +1444,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "xorg-libxxf86vm",
         "sourceBranchIndicator": "default",
@@ -1293,6 +1453,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "xorg-macros",
         "sourceBranchIndicator": "default",
@@ -1301,6 +1462,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "xorg-xinput",
         "sourceBranchIndicator": "default",
@@ -1309,6 +1471,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "xorg-xorgproto",
         "sourceBranchIndicator": "default",
@@ -1317,6 +1480,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "xorg-xserver",
         "sourceBranchIndicator": "default",
@@ -1325,6 +1489,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "xxhash",
         "sourceBranchIndicator": "default",
@@ -1333,6 +1498,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "yams",
         "sourceBranchIndicator": "default",
@@ -1341,6 +1507,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "yautja-server",
         "sourceBranchIndicator": "default",
@@ -1349,6 +1516,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "z3",
         "sourceBranchIndicator": "default",
@@ -1357,6 +1525,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "zlib",
         "sourceBranchIndicator": "default",
@@ -1365,6 +1534,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "zstd",
         "sourceBranchIndicator": "default",
