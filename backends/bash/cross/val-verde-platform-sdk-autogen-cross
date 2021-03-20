@@ -27,7 +27,6 @@ package-stage-configure-install \
     --disable-static \
     --enable-shared \
     --with-regex-header=${SOURCE_ROOT_BASE}/gnulib-0/lib/regex.h
-    --enable-shared
 
 # Build and install the package
 package-invoke-artifact-install
