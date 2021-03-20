@@ -19,6 +19,7 @@ DISABLE_AUTOUPDATE=TRUE \
 package-configure-install \
     ac_cv_func_setns=yes \
     ac_cv_func_unshare=yes \
+    ac_cv_prog_ac_ct_NCURSES6_CONFIG= \
     --disable-all-programs \
     --disable-bash-completion \
     --disable-static \
