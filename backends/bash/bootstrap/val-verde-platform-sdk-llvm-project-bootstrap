@@ -186,6 +186,7 @@ package-rsync -ax \
               ${STAGE_ROOT}/bin/llvm-as* \
               ${STAGE_ROOT}/bin/llvm-dlltool* \
               ${STAGE_ROOT}/bin/llvm-install-name-tool* \
+              ${STAGE_ROOT}/bin/llvm-link* \
               ${STAGE_ROOT}/bin/llvm-lipo* \
               ${STAGE_ROOT}/bin/llvm-mt* \
               ${STAGE_ROOT}/bin/llvm-pdbutil* \
