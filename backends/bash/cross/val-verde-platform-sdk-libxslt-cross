@@ -19,5 +19,7 @@ export DEPENDS="\
 CONFIGURE_FILE=autogen.sh \
 DISABLE_AUTOUPDATE=TRUE \
 package-configure-install \
+    ac_cv_path_LIBGCRYPT_CONFIG=${PACKAGE_PREFIX}/bin/libgcrypt-config \
+    ac_cv_path_XML_CONFIG=${PACKAGE_PREFIX}/bin/xml2-config \
     --disable-static \
     --enable-shared
