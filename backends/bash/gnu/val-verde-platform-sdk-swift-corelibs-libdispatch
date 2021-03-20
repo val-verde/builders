@@ -31,5 +31,5 @@ COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
 rpath-fixup
 
 # Build and install the package
-DISABLE_INSTALL_DEB+TRUE \
+DISABLE_INSTALL_DEB=TRUE \
 package-invoke-artifact-install
