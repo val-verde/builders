@@ -6,6 +6,7 @@ export SYSROOT=/
 
 export \
     APT=/usr/bin/apt \
+    AUTOGEN=/usr/bin/autogen \
     AUTORECONF=/usr/bin/autoreconf \
     AUTOUPDATE=/usr/bin/autoupdate \
     BASH=/usr/bin/bash \
@@ -66,8 +67,9 @@ unset SYSROOT
 
 # autoconf build
 package-invoke-builder autoconf-cross
-unset AUTORECONF
-unset AUTOUPDATE
+unset \
+    AUTORECONF \
+    AUTOUPDATE
 
 # automake build
 package-invoke-builder automake-cross
@@ -86,8 +88,9 @@ package-invoke-builder bzip2-cross
 
 # gzip build
 package-invoke-builder gzip-cross
-unset GUNZIP
-unset GZIP
+unset \
+    GUNZIP \
+    GZIP
 
 # lz4 build
 package-invoke-builder lz4-cross
@@ -222,6 +225,7 @@ package-invoke-builder gawk-cross
 
 # autogen build
 package-invoke-builder autogen-cross
+unset AUTOGEN
 
 # libgpg-error build
 package-invoke-builder libgpg-error-cross

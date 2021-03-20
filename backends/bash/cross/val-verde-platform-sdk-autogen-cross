@@ -18,6 +18,7 @@ CFLAGS="\
     -Wno-unknown-warning-option \
     ${CFLAGS} \
 " \
+COLUMNS=${COLUMNS:-${BINDIR}/columns} \
 DISABLE_AUTOUPDATE=TRUE \
 package-stage-configure-install \
     ag_cv_run_strcspn=yes \

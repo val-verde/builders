@@ -30,6 +30,7 @@ export BUILD_PACKAGE_PREFIX=${PACKAGE_PLATFORM_SDKROOT}/${BUILD_OS}${BUILD_OS_AP
 # 'build' tools
 BINDIR=${BINDIR:-${BUILD_PACKAGE_PREFIX}/bin}
 export APT=${APT:-${BINDIR}/apt}
+export AUTOGEN=${AUTOGEN:-${BINDIR}/autogen}
 export AUTORECONF=${AUTORECONF:-${BINDIR}/autoreconf}
 export AUTOUPDATE=${AUTOUPDATE:-${BINDIR}/autoupdate}
 export BASH=${BASH:-${BINDIR}/bash}
