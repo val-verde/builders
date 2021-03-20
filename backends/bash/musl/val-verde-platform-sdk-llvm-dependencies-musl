@@ -147,8 +147,6 @@ package-invoke-builder expat-cross
 package-invoke-builder gawk-cross
 
 # autogen build
-AUTOGEN=${BINDIR}/autogen \
-COLUMNS=${BINDIR}/columns \
 package-invoke-builder autogen-cross
 
 # libgpg-error build
