@@ -28,8 +28,12 @@ CFLAGS="\
 DISABLE_AUTOUPDATE=TRUE \
 package-bootstrap-configure-install \
     --disable-doc \
+    --disable-gtk-doc \
+    --disable-gtk-doc-html \
+    --disable-gtk-doc-pdf \
     --disable-guile \
     --disable-static \
+    --disable-tests \
     --enable-shared \
     --enable-ssl3-support \
     --with-autoopts-config=${PACKAGE_PREFIX}/bin/autoopts-config
