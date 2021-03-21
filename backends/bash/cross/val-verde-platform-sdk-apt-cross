@@ -13,11 +13,19 @@ export DEPENDS="${PACKAGE_BASE_NAME}-gnutls-3-${HOST_OS}${HOST_OS_API_LEVEL}-${H
 
 # Configure the build components
 cd ${STAGE_ROOT}
+
+if [ "${HOST_OS}" = "gnu" ]; then
+    SYSTEMD_INCLUDE_DIRS=${PACKAGE_PREFIX}/include
+    SYSTEMD_LIBRARIES=${PACKAGE_PREFIX}/lib/libsystemd.so
+fi
+
 package-cmake \
     -DCONF_DIR=/etc/apt \
     -DCACHE_DIR=/var/cache/apt \
     -DLOG_DIR=/var/log/apt \
     -DSTATE_DIR=/var/lib/apt \
+    -DSYSTEMD_INCLUDE_DIRS=${SYSTEMD_INCLUDE_DIRS} \
+    -DSYSTEMD_LIBRARIES=${SYSTEM_LIBRARIES} \
     -DTRIEHASH_EXECUTABLE=${SOURCE_ROOT_BASE}/triehash-0/triehash.pl \
     -DWITH_DOC=FALSE \
     -DWITH_TESTS=FALSE \
