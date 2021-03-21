@@ -31,6 +31,8 @@ package-cmake \
     -DCMAKE_ASM_MASM_COMPILER_WORKS=FALSE \
     -DJWASM_FOUND=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-ml64 \
     -DPKG_CONFIG_EXECUTABLE=${PKG_CONFIG} \
+    -DVulkanHeaders_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DVulkanRegistry_DIR=${PACKAGE_PREFIX}/share/vulkan/registry \
     "${CMAKE_ANDROID_DEFINE_CMD}" \
     ${SOURCE_ROOT}
 
