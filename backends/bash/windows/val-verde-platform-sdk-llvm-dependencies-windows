@@ -5,11 +5,23 @@ set -e
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
+# windows autoconf build
+package-invoke-builder autoconf-cross
+
+# windows automake build
+package-invoke-builder automake-cross
+
+# windows autoconf-archive build
+package-invoke-builder autoconf-archive-cross
+
 # windows zlib build
 package-invoke-builder zlib-cross
 
 # windows bzip2 build
 package-invoke-builder bzip2-cross
+
+# windows gzip build
+package-invoke-builder gzip-cross
 
 # windows lz4 build
 package-invoke-builder lz4-cross
@@ -29,37 +41,20 @@ package-invoke-builder zstd-cross
 # windows help2man build
 # package-invoke-builder help2man-cross
 
-# windows autoconf build
-package-invoke-builder autoconf-cross
+# windows gperf build
+package-invoke-builder gperf-cross
 
-# windows automake build
-package-invoke-builder automake-cross
+# windows help2man build
+# package-invoke-builder help2man-cross
 
 # windows libtool build
 package-invoke-builder libtool-cross
 
-# windows m4 build
-HELP2MAN=${BINDIR}/true \
-package-invoke-builder m4-cross
-
-# windows make build
-package-invoke-builder make-cross
-
-# windows ninja build
-package-invoke-builder ninja-cross
-
-# windows libiconv build
-package-invoke-builder libiconv-cross
-
 # windows libffi build
 package-invoke-builder libffi-cross
 
-# windows pcre build
-CXXFLAGS="\
-    -lclang_rt.builtins-x86_64 \
-    ${CXXFLAGS} \
-" \
-package-invoke-builder pcre-cross
+# windows libiconv build
+package-invoke-builder libiconv-cross
 
 # windows icu build
 package-invoke-builder icu4c-cross
@@ -72,10 +67,58 @@ CFLAGS="\
     -fuse-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
     ${CFLAGS} \
 " \
+DISABLE_PYTHON=TRUE \
 package-invoke-builder libxml2-cross
+
+# windows libunistring build
+package-invoke-builder libunistring-cross
+
+# windows gc build
+package-invoke-builder gc-cross
+
+# windows gmp build
+package-invoke-builder gmp-cross
 
 # windows ncurses build
 package-invoke-builder ncurses-cross
+
+# windows gettext build
+package-invoke-builder gettext-cross
+
+# windows texinfo build
+# package-invoke-builder texinfo-cross
+
+# windows guile build
+package-invoke-builder guile-cross
+
+# windows make build
+package-invoke-builder make-cross
+
+# windows m4 build
+HELP2MAN=${BINDIR}/true \
+package-invoke-builder m4-cross
+
+# windows ninja build
+package-invoke-builder ninja-cross
+
+# windows file build
+package-invoke-builder file-cross
+
+# windows pcre build
+CXXFLAGS="\
+    -lclang_rt.builtins-x86_64 \
+    ${CXXFLAGS} \
+" \
+package-invoke-builder pcre-cross
+
+# windows mpfr build
+package-invoke-builder mpfr-cross
+
+# windows mpc build
+package-invoke-builder mpc-cross
+
+# windows isl build
+package-invoke-builder isl-cross
 
 # windows editline build
 package-invoke-builder wineditline-cross
@@ -89,32 +132,29 @@ package-invoke-builder openssl-cross
 # windows expat build
 package-invoke-builder expat-cross
 
-# windows gettext build
-package-invoke-builder gettext-cross
-
-# gawk build
+# windows gawk build
 # package-invoke-builder gawk-cross
 
-# windows gperf build
-package-invoke-builder gperf-cross
+# windows autogen build
+package-invoke-builder autogen-cross
+
+# windows libgpg-error build
+package-invoke-builder libgpg-error-cross
+
+# windows libgcrypt build
+package-invoke-builder libgcrypt-cross
+
+# windows indent build
+package-invoke-builder indent-cross
 
 # windows libarchive build
 package-invoke-builder libarchive-cross
-
-# windows libmicrohttpd build
-package-invoke-builder libmicrohttpd-cross
 
 # windows libssh2 build
 package-invoke-builder libssh2-cross
 
 # windows curl build
 package-invoke-builder curl-cross
-
-# windows glib build
-package-invoke-builder glib-cross
-
-# windows pkg-config build
-package-invoke-builder pkg-config-cross
 
 # windows xorg-macros build
 package-invoke-builder xorg-macros-cross
@@ -128,6 +168,9 @@ package-invoke-builder xcb-proto-cross
 # windows xcb-pthread-stubs build
 package-invoke-builder xcb-pthread-stubs-cross
 
+# windows libuv build
+package-invoke-builder libuv-cross
+
 # windows opencl headers build
 package-invoke-builder opencl-headers-cross
 
@@ -139,12 +182,6 @@ package-invoke-builder vulkan-headers-cross
 
 # windows vulkan loader build
 package-invoke-builder vulkan-loader-cross
-
-# cups build
-# package-invoke-builder cups-cross
-
-# windows libuv build
-package-invoke-builder libuv-cross
 
 # windows grep build
 package-invoke-builder grep-cross
@@ -158,20 +195,32 @@ package-invoke-builder bison-cross
 # windows findutils build
 # package-invoke-builder findutils-cross
 
+# windows lua build
+package-invoke-builder lua-cross
+
 # windows wget build
 package-invoke-builder wget-cross
+
+# windows libmicrohttpd build
+package-invoke-builder libmicrohttpd-cross
+
+# windows glib build
+package-invoke-builder glib-cross
+
+# windows gobject-introspection build
+# package-invoke-builder gobject-introspection-cross
+
+# windows pkg-config build
+package-invoke-builder pkg-config-cross
+
+# cups build
+# package-invoke-builder cups-cross
 
 # windows openjdk build
 # package-invoke-builder openjdk-cross
 
 # windows z3 build
 package-invoke-builder z3-cross
-
-# windows gobject-introspection build
-# package-invoke-builder gobject-introspection-cross
-
-# windows lua build
-package-invoke-builder lua-cross
 
 # windows cmake build
 package-invoke-builder cmake-cross
