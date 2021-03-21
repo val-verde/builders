@@ -5,6 +5,17 @@ set -e
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
+# autoconf build
+CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-gnu" \
+package-invoke-builder autoconf-cross
+
+# automake build
+CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-gnu" \
+package-invoke-builder automake-cross
+
+# autoconf-archive build
+package-invoke-builder autoconf-archive-cross
+
 # musl argp-standalone build
 package-invoke-builder argp-standalone-cross
 
@@ -41,26 +52,11 @@ package-invoke-builder unzip-cross
 # help2man build
 package-invoke-builder help2man-cross
 
-# autoconf build
-CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-gnu" \
-package-invoke-builder autoconf-cross
-
-# automake build
-CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-gnu" \
-package-invoke-builder automake-cross
-
-# autoconf-archive build
-package-invoke-builder autoconf-archive-cross
-
 # gperf build
 package-invoke-builder gperf-cross
 
 # libtool build
 package-invoke-builder libtool-cross
-
-# m4 build
-HELP2MAN=${BINDIR}/true \
-package-invoke-builder m4-cross
 
 # libatomic-ops build
 package-invoke-builder libatomic-ops-cross
@@ -105,14 +101,29 @@ package-invoke-builder guile-cross
 # make build
 package-invoke-builder make-cross
 
+# m4 build
+package-invoke-builder m4-cross
+
 # ninja build
 package-invoke-builder ninja-cross
+
+# file build
+package-invoke-builder file-cross
 
 # gnulib build
 package-invoke-builder gnulib-cross
 
 # pcre build
 package-invoke-builder pcre-cross
+
+# mpfr build
+package-invoke-builder mpfr-cross
+
+# mpc build
+package-invoke-builder mpc-cross
+
+# isl build
+package-invoke-builder isl-cross
 
 # libev build
 package-invoke-builder libev-cross
@@ -140,7 +151,7 @@ package-invoke-builder openssl-cross
 # libcap build
 package-invoke-builder libcap-cross
 
-# libexpat build
+# expat build
 package-invoke-builder expat-cross
 
 # gawk build
@@ -154,12 +165,6 @@ package-invoke-builder libgpg-error-cross
 
 # libgcrypt build
 package-invoke-builder libgcrypt-cross
-
-# libtans1 build
-package-invoke-builder libtasn1-cross
-
-# nettle build
-package-invoke-builder nettle-cross
 
 # indent build
 package-invoke-builder indent-cross
@@ -186,23 +191,11 @@ package-invoke-builder acl-cross
 # libarchive build
 package-invoke-builder libarchive-cross
 
-# libmicrohttpd build
-package-invoke-builder libmicrohttpd-cross
-
 # libssh2 build
 package-invoke-builder libssh2-cross
 
 # curl build
 package-invoke-builder curl-cross
-
-# elfutils build
-package-invoke-builder elfutils-cross
-
-# glib build
-package-invoke-builder glib-cross
-
-# pkg-config build
-package-invoke-builder pkg-config-cross
 
 # xorg-macros build
 package-invoke-builder xorg-macros-cross
@@ -251,9 +244,6 @@ package-invoke-builder xorg-libice-cross
 
 # alsa-lib build
 package-invoke-builder alsa-lib-cross
-
-# cups build
-package-invoke-builder cups-cross
 
 # libuv build
 package-invoke-builder libuv-cross
@@ -354,23 +344,8 @@ package-invoke-builder rsync-cross
 # systemd build
 # package-invoke-builder systemd
 
-# p11-kit build
-package-invoke-builder p11-kit-cross
-
-# gnutls build
-package-invoke-builder gnutls-cross
-
-# apt build
-package-invoke-builder apt-cross
-
 # lua build
 package-invoke-builder lua-cross
-
-# popt build
-package-invoke-builder popt-cross
-
-# rpm build
-package-invoke-builder rpm-cross
 
 # wget build
 package-invoke-builder wget-cross
@@ -384,11 +359,56 @@ else
     package-invoke-builder python-cross
 fi
 
+# libxslt build
+package-invoke-builder libxslt-cross
+
+# libtasn1 build
+package-invoke-builder libtasn1-cross
+
+# p11-kit build
+package-invoke-builder p11-kit-cross
+
+# nettle build
+package-invoke-builder nettle-cross
+
+# gnutls build
+package-invoke-builder gnutls-cross
+
+# libmicrohttpd build
+package-invoke-builder libmicrohttpd-cross
+
+# elfutils build
+package-invoke-builder elfutils-cross
+
+# glib build
+package-invoke-builder glib-cross
+
 # gobject-introspection build
 # package-invoke-builder gobject-introspection-cross
 
 # libsecret build
 package-invoke-builder libsecret-cross
+
+# pkg-config build
+package-invoke-builder pkg-config-cross
+
+# itstool build
+package-invoke-builder itstool-cross
+
+# gtk-doc build
+package-invoke-builder gtk-doc-cross
+
+# cups build
+package-invoke-builder cups-cross
+
+# apt build
+package-invoke-builder apt-cross
+
+# popt build
+package-invoke-builder popt-cross
+
+# rpm build
+package-invoke-builder rpm-cross
 
 # swig build
 package-invoke-builder swig-cross
