@@ -44,5 +44,8 @@ function parse-builder-args() {
     fi
 
     export SOURCE_PACKAGE_VERSION=$2
-    export DISABLE_INSTALL_DEB=$3
+    
+    if [ $# -lt 3 ]; then
+        export DISABLE_INSTALL_DEB=$3
+    fi
 }
