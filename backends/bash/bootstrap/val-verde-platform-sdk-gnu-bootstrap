@@ -53,8 +53,12 @@ export \
     CC=${BUILD_PACKAGE_PREFIX}/bin/clang \
     CPP=${BUILD_PACKAGE_PREFIX}/bin/clang-cpp \
     CXX=${BUILD_PACKAGE_PREFIX}/bin/clang++ \
+    LD=${BUILD_PACKAGE_PREFIX}/bin/ld.lld \
     NM=${BUILD_PACKAGE_PREFIX}/bin/llvm-nm \
-    RANLIB=${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib
+    RANLIB=${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib \
+    READELF=${BUILD_PACKAGE_PREFIX}/bin/llvm-readelf \
+    STRINGS=${BUILD_PACKAGE_PREFIX}/bin/llvm-strings \
+    STRIP=${BUILD_PACKAGE_PREFIX}/bin/llvm-strip
 
 # bazel bootstrap build
 package-invoke-builder bazel-bootstrap
@@ -68,6 +72,9 @@ package-invoke-builder openjdk-bootstrap
 
 # rust bootstrap build
 package-invoke-builder rust-bootstrap
+
+# glib bootstrap build
+package-invoke-builder glib
 
 # pkg-config bootstrap build
 package-invoke-builder pkg-config
