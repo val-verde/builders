@@ -79,6 +79,9 @@ package-invoke-builder glib
 # pkg-config bootstrap build
 package-invoke-builder pkg-config
 
+# help2man bootstrap build
+package-invoke-builder help2man
+
 # z3 build
 package-invoke-builder z3
 
