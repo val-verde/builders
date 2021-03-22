@@ -24,7 +24,7 @@ ${CHMOD} +x ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang 
             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-ml64
 
 # cuda bootstrap build
-package-invoke-builder cuda-bootstrap
+package-invoke-builder cuda-bootstrap 11
 
 # kernel-headers bootstrap build
 BUILD_SYSROOT=/ \
@@ -114,7 +114,7 @@ package-invoke-builder libtool
 package-invoke-builder libffi
 
 # glib bootstrap build
-package-invoke-builder glib
+package-invoke-builder glib 1
 
 # pkg-config bootstrap build
 package-invoke-builder pkg-config 0

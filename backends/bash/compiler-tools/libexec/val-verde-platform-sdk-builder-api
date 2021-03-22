@@ -26,6 +26,7 @@ function package-invoke-builder() {
 function parse-builder-args() {
     if [ ${1##*-} == 'cross' ] \
        || [[ "$1" == *"bazel"* ]] \
+       || [[ "$1" == *"cuda"* ]] \
        || [[ "$1" == *"go"* ]] \
        || [[ "$1" == *"openjdk"* ]] \
        || [[ "$1" == *"llvm-project"* ]]; then
