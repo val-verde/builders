@@ -19,7 +19,7 @@ package-invoke-builder android-ndk-runtime
 package-invoke-builder libcxx-bootstrap
 
 # android llvm dependencies build
-package-invoke-builder llvm-dependencies-android
+category-invoke-builder llvm-dependencies-android
 
 # android llvm build
 package-invoke-builder llvm-project-android
@@ -129,7 +129,7 @@ package-invoke-builder pythonkit-cross
 package-invoke-builder go-cross
 
 # android graphics sdk build
-package-invoke-builder graphics-sdk-cross
+category-invoke-builder graphics-sdk-cross
 
 # android node + sdk build
 package-invoke-builder node-cross

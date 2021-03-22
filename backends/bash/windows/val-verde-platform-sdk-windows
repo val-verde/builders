@@ -36,13 +36,13 @@ package-invoke-builder libcxxabi-windows
 package-invoke-builder libcxx-windows
 
 # windows llvm dependencies
-package-invoke-builder llvm-dependencies-windows
+category-invoke-builder llvm-dependencies-windows
 
 # windows swift tools build
-package-invoke-builder swift-tools-windows
+category-invoke-builder swift-tools-windows
 
 # windows swift sdk build
-package-invoke-builder swift-sdk-windows
+category-invoke-builder swift-sdk-windows
 
 # windows graphics sdk build
-package-invoke-builder graphics-sdk-cross
+category-invoke-builder graphics-sdk-cross

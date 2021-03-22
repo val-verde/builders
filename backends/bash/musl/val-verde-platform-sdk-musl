@@ -29,19 +29,19 @@ ENABLE_MUSL_LIBC=TRUE \
 package-invoke-builder libcxx-bootstrap
 
 # llvm dependencies
-package-invoke-builder llvm-dependencies-musl
+category-invoke-builder llvm-dependencies-musl
 
 # swift tools build
-package-invoke-builder swift-tools-musl
+category-invoke-builder swift-tools-musl
 
 # swift sdk build
-package-invoke-builder swift-sdk-musl
+category-invoke-builder swift-sdk-musl
 
 # go build
 package-invoke-builder go-cross
 
 # graphics sdk build
-package-invoke-builder graphics-sdk-cross
+category-invoke-builder graphics-sdk-cross
 
 # node + sdk build
 package-invoke-builder node-cross
