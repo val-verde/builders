@@ -13,5 +13,8 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 DISABLE_AUTOUPDATE=TRUE \
 package-bootstrap-configure-install \
     --disable-doc \
+    --disable-gtk-doc \
+    --disable-gtk-doc-html \
+    --disable-gtk-doc-pdf \
     --disable-static \
     --enable-shared
