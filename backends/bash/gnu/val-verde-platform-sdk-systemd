@@ -19,7 +19,8 @@ export DEPENDS="\
 
 # Configure the build components
 cd ${SOURCE_ROOT}
-package-meson-build
+package-meson-build \
+    -Dtests=false
 
 # Build the components
 cd ${STAGE_ROOT}
