@@ -106,22 +106,21 @@ export AS_target=${AS}
 export CC_host=${CC_host:-${BUILD_PACKAGE_PREFIX}/bin/clang}
 export CC_target=${CC}
 export CFLAGS_host=`${ECHO} "\
-    -I${BUILD_PACKAGE_PREFIX}/include \
+    --sysroot=${BUILD_PACKAGE_PREFIX}/.. \
     ${DISABLED_WARNING_CFLAGS} \
 " | ${XARGS}`
 export CFLAGS=`${ECHO} ${CFLAGS} | ${XARGS}`
 export CPP_host=${CPP_host:-"${BUILD_PACKAGE_PREFIX}/bin/clang -E"}
 export CPP_target=${CPP}
 export CPPFLAGS_host=`${ECHO} "\
-    -I${BUILD_PACKAGE_PREFIX}/include \
+    --sysroot=${BUILD_PACKAGE_PREFIX}/.. \
     ${DISABLED_WARNING_CFLAGS} \
 " | ${XARGS}`
 export CPPFLAGS=`${ECHO} ${CPPFLAGS} | ${XARGS}`
-export CXX_host=${CXX_host:-"${BUILD_PACKAGE_PREFIX}/bin/clang++ -stdlib++-isystem ${BUILD_PACKAGE_PREFIX}/include/c++/v1"}
+export CXX_host=${CXX_host:-"${BUILD_PACKAGE_PREFIX}/bin/clang++ --sysroot=${BUILD_PACKAGE_PREFIX}/.."}
 export CXX_target=${CXX}
 export CXXFLAGS_host=`${ECHO} "\
-    -stdlib++-isystem ${BUILD_PACKAGE_PREFIX}/include/c++/v1 \
-    -I${BUILD_PACKAGE_PREFIX}/include \
+    --sysroot=${BUILD_PACKAGE_PREFIX}/.. \
     ${DISABLED_WARNING_CFLAGS} \
 " | ${XARGS}`
 export CXXFLAGS=`${ECHO} "\
@@ -129,7 +128,7 @@ export CXXFLAGS=`${ECHO} "\
     ${CXXFLAGS} \
 " | ${XARGS}`
 LDFLAGS_host=`${ECHO} "\
-    -L${BUILD_PACKAGE_PREFIX}/lib \
+    --sysroot=${BUILD_PACKAGE_PREFIX}/.. \
 " | ${XARGS}`
 export LDFLAGS=`${ECHO} ${LDFLAGS} | ${XARGS}`
 export LINK="${LD_host:-${BUILD_PACKAGE_PREFIX}/bin/clang++} ${LDFLAGS_host}"
