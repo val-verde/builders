@@ -19,5 +19,7 @@ BOOTSTRAP_FILE=./autogen.sh \
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 DISABLE_AUTOUPDATE=TRUE \
 package-bootstrap-configure-install \
+    ac_cv_func_GC_is_heap_ptr=yes \
+    ac_cv_func_GC_move_disappearing_link=yes \
     --disable-static \
     --enable-shared
