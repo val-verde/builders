@@ -29,7 +29,7 @@ function parse-builder-args() {
        || [[ "$1" == *"cuda"* ]] \
        || [[ "$1" == *"go"* ]] \
        || [[ "$1" == *"openjdk"* ]] \
-       || [[ "$1" == *"llvm-project"* ]]; then
+       || [[ "$1" == *"llvm-project-bootstrap"* ]]; then
         export SOURCE_PACKAGE_NAME=${1%-*}
     else
         export SOURCE_PACKAGE_NAME=$1
