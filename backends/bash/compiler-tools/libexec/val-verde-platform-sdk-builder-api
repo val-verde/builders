@@ -37,10 +37,10 @@ function parse-builder-args() {
 
     if [ ${SOURCE_PACKAGE_NAME} == "kernel-headers" ]; then
         SOURCE_PACKAGE_NAME=linux
-    fi
-
-    if [ ${SOURCE_PACKAGE_NAME} == "xcb-proto" ]; then
+    elif [ ${SOURCE_PACKAGE_NAME} == "xcb-proto" ]; then
         SOURCE_PACKAGE_NAME=xcbproto
+    elif [ ${SOURCE_PACKAGE_NAME} == "yarn-yautja-server" ]; then
+        SOURCE_PACKAGE_NAME=yautja-server
     fi
 
     export SOURCE_PACKAGE_VERSION=$2
