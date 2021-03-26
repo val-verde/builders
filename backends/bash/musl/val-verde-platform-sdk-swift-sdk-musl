@@ -83,7 +83,7 @@ package-invoke-builder swift-format-cross
 package-invoke-builder swift-doc-cross
 
 # musl sourcekit-lsp build
-# package-invoke-builder sourcekit-lsp-cross
+package-invoke-builder sourcekit-lsp-cross
 
 # musl baikonur build
 SWIFT_BUILD_FLAGS="\
