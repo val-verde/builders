@@ -97,7 +97,7 @@ package-invoke-builder guile-cross
 package-invoke-builder make-cross
 
 # android m4 build
-package-invoke-builder m4-cross
+# package-invoke-builder m4-cross
 
 # android ninja build
 if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
