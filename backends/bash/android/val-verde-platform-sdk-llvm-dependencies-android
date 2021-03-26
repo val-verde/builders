@@ -336,9 +336,9 @@ package-invoke-builder coreutils-cross
 package-invoke-builder findutils-cross
 
 # android dpkg build
-CFLAGS="\
+LIBS="\
     -lobstack \
-    ${CFLAGS} \
+    ${LIBS} \
 " \
 package-invoke-builder dpkg-cross
 
@@ -412,6 +412,10 @@ package-invoke-builder apt-cross
 package-invoke-builder popt-cross
 
 # android rpm build
+LIBS="\
+    -lintl \
+    ${LIBS} \
+" \
 package-invoke-builder rpm-cross
 
 # android swig build
