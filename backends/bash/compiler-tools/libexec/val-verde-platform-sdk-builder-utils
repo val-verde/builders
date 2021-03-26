@@ -974,8 +974,8 @@ function package-swift-build() {
         ], \n\
         \"extra-swiftc-flags\": [ \n\
             \"-resource-dir\", \"${PACKAGE_PREFIX}/lib/swift\", \n\
+            \"-sdk\", \"${SYSROOT}\", \n\
             \"-target-cpu\", \"${HOST_CPU}\", \n\
-            \"-L${PACKAGE_PREFIX}/lib\", \n\
             \"-O${SWIFT_OPTIMIZATION_LEVEL}\", \n\
             \"-Xfrontend\", \"-disable-llvm-verify\", \n\
             \"${FLTO_SWIFTCFLAG}\", \n\
