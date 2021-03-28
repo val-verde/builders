@@ -1741,7 +1741,7 @@
         "sourceType": "other",
         "sourcePackageName": "openssl",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "1.1.1j",
+        "sourcePackageVersion": "1.1.1k",
         "sourcePackageUrl": "https://www.openssl.org/source/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
