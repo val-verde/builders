@@ -41,6 +41,9 @@ COPY backends/bash/packaging-tools \
 COPY /source-debs/ \
      ${SOURCE_DEB_PATH}
 
+COPY /build-debs/ \
+     ${BUILD_DEB_PATH}
+
 # upstream source package build
 FROM ubuntu AS sources_builder
 
