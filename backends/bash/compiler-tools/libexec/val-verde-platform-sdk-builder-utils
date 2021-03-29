@@ -200,17 +200,18 @@ function export-compiler-environment() {
     if [ "${HOST_OS}" = "android" ]; then
         COMMON_CFLAGS="\
             -fPIC \
-            -D__USE_FORTIFY_LEVEL=0 \
+            -D_FORTIFY_SOURCE=0 \
             ${COMMON_CFLAGS} \
         "
         GOOS=android
         SWIFTCFLAGS="\
-            -Xcc -D__USE_FORTIFY_LEVEL=0 \
+            -Xcc -D_FORTIFY_SOURCE=0 \
             ${SWIFTCFLAGS} \
         "
     elif [ "${HOST_OS}" = "gnu" ]; then
         COMMON_CFLAGS="\
             -fPIC \
+            -D_FORTIFY_SOURCE=2 \
             ${COMMON_CFLAGS} \
         "
         GOOS=linux
@@ -218,19 +219,20 @@ function export-compiler-environment() {
         COMMON_CFLAGS="\
             -fPIC \
             -D_ALL_SOURCE=1 \
-            -D__USE_FORTIFY_LEVEL=0 \
+            -D_FORTIFY_SOURCE=2 \
             ${COMMON_CFLAGS} \
         "
         GO_LDSO=/lib/ld-${HOST_OS}-${HOST_PROCESSOR}.so.1
         GOOS=linux
         SWIFTCFLAGS="\
             -Xcc -D_ALL_SOURCE=1 \
-            -Xcc -D__USE_FORTIFY_LEVEL=0 \
+            -Xcc -D_FORTIFY_SOURCE=2 \
             ${SWIFTCFLAGS} \
         "
     elif [ "${HOST_OS}" = "mingw32" ]; then
         COMMON_CFLAGS="\
             -fno-builtin-stpcpy \
+            -Xcc -D_FORTIFY_SOURCE=0 \
             ${COMMON_CFLAGS} \
         "
         GOOS=windows
@@ -922,13 +924,18 @@ function package-swift-build() {
 
     if [ "${HOST_OS}" = "android" ]; then
         SWIFT_BUILD_FLAGS="\
-            -Xcc -D__USE_FORTIFY_LEVEL=0 \
+            -Xcc -D_FORTIFY_SOURCE=0 \
             ${SWIFT_BUILD_FLAGS} \
         "
     elif [ "${HOST_OS}" = "musl" ]; then
         SWIFT_BUILD_FLAGS="\
             -Xcc -D_ALL_SOURCE=1 \
-            -Xcc -D__USE_FORTIFY_LEVEL=0 \
+            -Xcc -D_FORTIFY_SOURCE=0 \
+            ${SWIFT_BUILD_FLAGS} \
+        "
+    elif [ "${HOST_OS}" = "mingw32" ]; then
+        SWIFT_BUILD_FLAGS="\
+            -Xcc -D_FORTIFY_SOURCE=0 \
             ${SWIFT_BUILD_FLAGS} \
         "
     fi
