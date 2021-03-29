@@ -86,10 +86,6 @@ package-invoke-builder swift-doc-cross
 package-invoke-builder sourcekit-lsp-cross
 
 # musl baikonur build
-SWIFT_BUILD_FLAGS="\
-    -Xlinker -licuucswift \
-    ${SWIFT_BUILD_FLAGS} \
-" \
 package-invoke-builder baikonur
 
 # musl pythonkit build

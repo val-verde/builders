@@ -20,6 +20,8 @@ cd ${SOURCE_ROOT}
 # Build the components
 SWIFT_BUILD_FLAGS="\
     -Xlinker -lc++ \
+    -Xlinker -licuucswift \
+    -Xlinker -lncurses \
     ${SWIFT_BUILD_FLAGS} \
 " \
 package-swift-build
