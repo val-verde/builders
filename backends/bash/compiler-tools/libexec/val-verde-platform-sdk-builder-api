@@ -2,8 +2,9 @@
 
 set -e
 
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
+
 function category-invoke-builder() {
-    source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
     ${ECHO} -e "Builder Category Invocation Started"
     ${BASH} ${VAL_VERDE_GH_TEAM}-platform-sdk-${@}
     ${ECHO} -e "Builder Category Invocation Complete"
@@ -11,16 +12,27 @@ function category-invoke-builder() {
 }
 
 function package-invoke-builder() {
-    source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
     parse-builder-args "${@}"
-    ${ECHO} -e "Builder Invocation Started"
-    ${BASH} ${VAL_VERDE_GH_TEAM}-platform-sdk-${@}
-    ${ECHO} -e "Builder Invocation Complete"
-    ${ECHO}
+    export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+    export PACKAGE_NAME=${PACKAGE_NAME:-${PACKAGE_BASE_NAME}-${QUALIFIED_PACKAGE_NAME}}
 
-    unset SOURCE_PACKAGE_NAME \
-          SOURCE_PACKAGE_VERSION \
-          DISABLE_INSTALL_DEB
+    SEARCH_INPUT=${BUILD_DEB_PATH}/${PACKAGE_NAME}.deb \
+    tool-check
+
+    if [ ${FILE_EXISTS} == 'true' ]; then
+        ${ECHO} -e "\e[1;35mSkipping build and install${PACKAGE_NAME} exists\e[0m"
+    else
+        ${ECHO} -e "Builder Invocation Started"
+        ${BASH} ${VAL_VERDE_GH_TEAM}-platform-sdk-${@}
+        ${ECHO} -e "Builder Invocation Complete"
+        ${ECHO}
+    fi
+
+    unset DISABLE_INSTALL_DEB \
+          PACKAGE_NAME \
+          QUALIFIED_PACKAGE_NAME \
+          SOURCE_PACKAGE_NAME \
+          SOURCE_PACKAGE_VERSION
 }
 
 function parse-builder-args() {
