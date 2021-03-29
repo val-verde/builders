@@ -26,6 +26,7 @@ SWIFT_BUILD_FLAGS="\
     -Xcxx -Wno-unused-command-line-argument \
     -Xlinker -lc++ \
     -Xlinker -licuucswift \
+    -Xlinker -lm \
     -Xlinker -lunwind \
     ${SWIFT_BUILD_FLAGS} \
 " \
