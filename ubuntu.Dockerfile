@@ -52,14 +52,8 @@ COPY backends/bash/sources \
 
 RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sources-builder
 
-# gnu bootstrap build
-FROM sources_builder AS gnu_bootstrap_builder
-
-# LTO configuration: [OFF | Full | Thin]
-# ENV ENABLE_FLTO=Thin
-
-# Optimization level speed: [0-3] or size: [s, z]
-ENV OPTIMIZATION_LEVEL=3
+# bootstrap binaries build
+FROM sources_builder AS binaries_builder
 
 # platform sdk bootstrap package build scripts
 COPY backends/bash/compiler-tools/bin/* \
@@ -74,6 +68,23 @@ RUN HOST_ARCH=${BUILD_ARCH} \
     HOST_KERNEL=${BUILD_KERNEL} \
     HOST_OS=${BUILD_OS} \
     HOST_PROCESSOR=${BUILD_PROCESSOR} \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-binaries-builder
+
+# gnu bootstrap build
+FROM binaries_builder AS gnu_bootstrap_builder
+
+# LTO configuration: [OFF | Full | Thin]
+# ENV ENABLE_FLTO=Thin
+
+# Optimization level speed: [0-3] or size: [s, z]
+ENV OPTIMIZATION_LEVEL=3
+
+RUN HOST_ARCH=${BUILD_ARCH} \
+    HOST_CPU=${BUILD_CPU} \
+    HOST_KERNEL=${BUILD_KERNEL} \
+    HOST_OS=${BUILD_OS} \
+    HOST_PROCESSOR=${BUILD_PROCESSOR} \
+    SYSROOT=/ \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap
 
 # platform independent package builders
