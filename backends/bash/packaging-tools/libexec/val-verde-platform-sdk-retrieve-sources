@@ -11,21 +11,13 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
 # Source package retrieval utils
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-utils
 
-function invoke-fetch() {
-    SEARCH_INPUT=${SOURCE_DEB_PATH}/${PACKAGE_NAME}.deb
-    if [ -f "${SEARCH_INPUT}" ]; then
-        FILE_EXISTS='true'
-    else
-        FILE_EXISTS='false'
-    fi
-}
-
 function build-install-git-source-package() {
     # Set up paths and dirs
     prepare-source-base
 
     # Check if the source deb exists
-    invoke-fetch
+    SEARCH_INPUT=${SOURCE_DEB_PATH}/${PACKAGE_NAME}.deb \
+    tool-check
 
     if [ "${FILE_EXISTS}" = 'true' ]; then
         ${ECHO} -e "    Skipping source build: \e[1;32m${PACKAGE_NAME}\e[0m"
@@ -72,7 +64,8 @@ function build-install-other-source-package() {
     prepare-source-base
 
     # Check if the source deb exists
-    invoke-fetch
+    SEARCH_INPUT=${SOURCE_DEB_PATH}/${PACKAGE_NAME}.deb \
+    tool-check
 
     if [ "${FILE_EXISTS}" = 'true' ]; then
         ${ECHO} -e "    Skipping source build: \e[1;32m${PACKAGE_NAME}\e[0m"
