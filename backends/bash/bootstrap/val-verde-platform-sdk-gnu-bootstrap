@@ -28,34 +28,34 @@ package-invoke-builder cuda-bootstrap 11
 
 # kernel-headers bootstrap build
 BUILD_SYSROOT=/ \
-package-invoke-builder kernel-headers
+package-invoke-builder kernel-headers 5
 
 # autoconf bootstrap build
-package-invoke-builder autoconf
+package-invoke-builder autoconf 2
 
 # automake bootstrap build
-package-invoke-builder automake
+package-invoke-builder automake 1
 
 # gcc bootstrap build
-package-invoke-builder gcc
+package-invoke-builder gcc 12
 
 # glibc-interface bootstrap build
 CC=`BINDIR= package-get-path gcc EXECUTABLE BUILD` \
 CPP=`BINDIR= package-get-path cpp EXECUTABLE BUILD` \
-package-invoke-builder glibc-interface
+package-invoke-builder glibc-interface 2
 
 # libcxx bootstrap build
 DISABLE_CXX_INCLUDE=TRUE \
 DISABLE_CXX_STDLIB=TRUE \
-package-invoke-builder libcxx-bootstrap
+package-invoke-builder libcxx-bootstrap 13
 
 # cmake bootstrap build
-package-invoke-builder cmake
+package-invoke-builder cmake 3
 
 export CMAKE=`BINDIR= package-get-path cmake EXECUTABLE BUILD`
 
 # z3 build
-package-invoke-builder z3
+package-invoke-builder z3 4
 
 # llvm bootstrap build
 package-invoke-builder llvm-project-bootstrap 13
@@ -95,23 +95,23 @@ export GO=`BINDIR= package-get-path go EXECUTABLE BUILD`
 package-invoke-builder openjdk-bootstrap 16
 
 # maven bootstrap build
-package-invoke-builder maven-bootstrap
+package-invoke-builder maven-bootstrap 3
 
 # rust bootstrap build
 package-invoke-builder rust-bootstrap 1
 
 # zlib bootstrap build
-package-invoke-builder zlib
+package-invoke-builder zlib 1
 
 # help2man bootstrap build
-package-invoke-builder help2man
+package-invoke-builder help2man 1
 export HELP2MAN=`BINDIR= package-get-path help2man EXECUTABLE BUILD`
 
 # libtool bootstrap build
-package-invoke-builder libtool
+package-invoke-builder libtool 2
 
 # libffi bootstrap build
-package-invoke-builder libffi
+package-invoke-builder libffi 3
 
 # glib bootstrap build
 package-invoke-builder glib 1
