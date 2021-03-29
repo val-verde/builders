@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -e
+
+export \
+    BINDIR=/usr/bin
+
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# cuda bootstrap build
+package-invoke-builder cuda-bootstrap 11
+
+# bazel bootstrap build
+package-invoke-builder bazel-bootstrap 4
+
+# go bootstrap build
+package-invoke-builder go-bootstrap 1
+export GO=`BINDIR= package-get-path go EXECUTABLE BUILD`
+
+# openjdk bootstrap build
+package-invoke-builder openjdk-bootstrap 16
+
+# maven bootstrap build
+package-invoke-builder maven-bootstrap 3
+
+# rust bootstrap build
+package-invoke-builder rust-bootstrap 1

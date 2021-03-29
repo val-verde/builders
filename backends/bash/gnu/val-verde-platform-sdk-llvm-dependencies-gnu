@@ -489,7 +489,7 @@ category-invoke-builder ai-sdk-cross
 package-invoke-builder swig-cross 4
 
 # openjdk build
-package-invoke-builder openjdk-cross 16
+package-invoke-builder openjdk-cross 17
 
 # maven build
 package-invoke-builder maven-cross 3
