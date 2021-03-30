@@ -15,6 +15,16 @@ export DEPENDS="\
 "
 
 # Invoke one-shot template for bootstrap/configure/install
+if [ "${HOST_OS}" = "mingw32" ]; then
+    ENABLE_OR_DISABLE_JIT=disable
+    ENABLE_OR_DISABLE_POSIX=disable
+    WITH_OR_WITHOUT_MODULES=without
+else
+    ENABLE_OR_DISABLE_JIT=enable
+    ENABLE_OR_DISABLE_POSIX=enable
+    WITH_OR_WITHOUT_MODULES=with
+fi
+
 BOOTSTRAP_FILE=./autogen.sh \
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 DISABLE_AUTOUPDATE=TRUE \
@@ -22,4 +32,7 @@ package-bootstrap-configure-install \
     ac_cv_func_GC_is_heap_ptr=yes \
     ac_cv_func_GC_move_disappearing_link=yes \
     --disable-static \
-    --enable-shared
+    --enable-shared \
+    --${ENABLE_OR_DISABLE_JIT}-jit \
+    --${ENABLE_OR_DISABLE_POSIX}-posix \
+    --${WITH_OR_WITHOUT_MODULES}-modules
