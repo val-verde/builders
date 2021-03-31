@@ -1031,6 +1031,14 @@
     {
         "retainSource": "false",
         "sourceType": "git",
+        "sourcePackageName": "systemd",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "248",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
         "sourcePackageName": "tensorflow",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2",
@@ -1605,13 +1613,6 @@
         "sourceBranchIndicator": "wget",
         "sourcePackageVersion": "4.0.2",
         "sourcePackageUrl": "https://ftp.osuosl.org/pub/blfs/conglomeration/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "systemd",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "247",
-        "sourcePackageUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}/archive/v${SOURCE_PACKAGE_VERSION}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
         "sourceType": "other",
