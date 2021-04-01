@@ -428,7 +428,7 @@ package-invoke-builder rpm-cross
 package-invoke-builder swig-cross
 
 # android openjdk build
-# package-invoke-builder openjdk-cross
+package-invoke-builder openjdk-cross
 
 # android z3 build
 package-invoke-builder z3-cross
