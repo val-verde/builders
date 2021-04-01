@@ -238,6 +238,9 @@ package-invoke-builder xorg-libxi-cross
 # android xorg-libice build
 package-invoke-builder xorg-libice-cross
 
+# alsa-lib build
+package-invoke-builder alsa-lib-cross
+
 # android libuv build
 package-invoke-builder libuv-cross
 
@@ -406,7 +409,7 @@ package-invoke-builder itstool-cross
 package-invoke-builder gtk-doc-cross
 
 # android cups build
-# package-invoke-builder cups-cross
+package-invoke-builder cups-cross
 
 # android apt build
 package-invoke-builder apt-cross
