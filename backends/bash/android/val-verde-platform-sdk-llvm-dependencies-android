@@ -144,6 +144,9 @@ package-invoke-builder sqlite-cross
 # android openssl build
 package-invoke-builder openssl-cross
 
+# libcap build
+package-invoke-builder libcap-cross
+
 # android expat build
 package-invoke-builder expat-cross
 
