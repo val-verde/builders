@@ -24,6 +24,7 @@ TARGETS=`${ECHO} "\
     AR=${AR} \
     BUILD_CC=${BUILD_CC} \
     CC=${CC} \
+    PSXLINKFLAGS=-pthread \
     install \
 " | ${XARGS}`
 
