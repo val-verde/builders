@@ -4,9 +4,9 @@ set -e
 
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=openjdk
-export SOURCE_PACKAGE_VERSION=16
-SUB_VERSION=36
-OPENJDK_URL=https://download.java.net/java/GA/jdk${SOURCE_PACKAGE_VERSION}/7863447f0ab643c585b9bdebf67c69db/${SUB_VERSION}/GPL
+export SOURCE_PACKAGE_VERSION=17
+SUB_VERSION=16
+OPENJDK_URL=https://download.java.net/java/early_access/jdk${SOURCE_PACKAGE_VERSION}/${SUB_VERSION}/GPL
 OPENJDK_TAR_GZ=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.tar.gz
 
 # Source package build helper functions
@@ -25,7 +25,7 @@ else
     OPENJDK_OS=${BUILD_KERNEL}
 fi
 
-package-wget -c ${OPENJDK_URL}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}_${OPENJDK_OS}-${OPENJDK_ARCH}_bin.tar.gz \
+package-wget -c ${OPENJDK_URL}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-ea+${SUB_VERSION}_${OPENJDK_OS}-${OPENJDK_ARCH}_bin.tar.gz \
              -O ${OPENJDK_TAR_GZ}
 package-tar -zxf \
             ${OPENJDK_TAR_GZ}

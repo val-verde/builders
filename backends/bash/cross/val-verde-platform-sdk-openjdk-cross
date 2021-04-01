@@ -4,7 +4,7 @@ set -e
 
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=openjdk
-export SOURCE_PACKAGE_VERSION=16
+export SOURCE_PACKAGE_VERSION=17
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
