@@ -85,6 +85,7 @@ package-invoke-builder gmp-cross
 package-invoke-builder ncurses-cross
 
 # android gettext build
+FORTIFY_SOURCE_LEVEL=0 \
 package-invoke-builder gettext-cross
 
 # android texinfo build

@@ -10,8 +10,6 @@ export SOURCE_PACKAGE_VERSION=1
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
-copy-source-to-staging
-
 if [ "${HOST_OS}" = "gnu" ]; then
     export CFLAGS=`${ECHO} "\
         -D_IO_ftrylockfile=1 \
@@ -20,15 +18,9 @@ if [ "${HOST_OS}" = "gnu" ]; then
     " | ${XARGS}`
 fi
 
-cd ${STAGE_ROOT}
-package-autoreconf -fi
-package-configure \
-    ${STAGE_ROOT}/configure
+mkdir -p ${STAGE_ROOT}/bin
+create-host-tool ${BINDIR}/true NOFLAGS ${STAGE_ROOT}/bin/help2man
 
-${SED} -i \
-       "s|define _FORTIFY_SOURCE 2|define _FORTIFY_SOURCE 0|g" \
-       ${STAGE_ROOT}/lib/config.h
-
-# Invoke one-shot template for install
-INSTALL_TARGET="HELP2MAN=${HELP2MAN} install" \
-package-install
+# Invoke one-shot template for stage/configure/install
+PATH=${STAGE_ROOT}/bin:$PATH \
+package-stage-configure-install

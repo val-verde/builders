@@ -75,6 +75,7 @@ function export-compiler-environment() {
     BINTOOLS_PREFIX=${BINTOOLS_PREFIX:-llvm-}
     BINTOOLS_PATH_PREFIX=${BINDIR}/${BINTOOLS_PREFIX}
     CXX_INCLUDE_DIR=${CXX_INCLUDE_DIR:-${PACKAGE_PREFIX}/include/c++/v1}
+    FORTIFY_SOURCE_LEVEL=${FORTIFY_SOURCE_LEVEL:-2}
     OPTIMIZATION_FLAGS=${OPTIMIZATION_FLAGS:-"-DNDEBUG"}
 
     export CLANG=${CLANG:-sclang}
@@ -200,18 +201,19 @@ function export-compiler-environment() {
     if [ "${HOST_OS}" = "android" ]; then
         COMMON_CFLAGS="\
             -fPIC \
-            -D_FORTIFY_SOURCE=0 \
+            -D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL} \
+            -D__USE_FORTIFY_LEVEL=${FORTIFY_SOURCE_LEVEL} \
             ${COMMON_CFLAGS} \
         "
         GOOS=android
         SWIFTCFLAGS="\
-            -Xcc -D_FORTIFY_SOURCE=0 \
+            -Xcc -D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL} \
             ${SWIFTCFLAGS} \
         "
     elif [ "${HOST_OS}" = "gnu" ]; then
         COMMON_CFLAGS="\
             -fPIC \
-            -D_FORTIFY_SOURCE=2 \
+            -D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL} \
             ${COMMON_CFLAGS} \
         "
         GOOS=linux
@@ -219,20 +221,20 @@ function export-compiler-environment() {
         COMMON_CFLAGS="\
             -fPIC \
             -D_ALL_SOURCE=1 \
-            -D_FORTIFY_SOURCE=2 \
+            -D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL} \
             ${COMMON_CFLAGS} \
         "
         GO_LDSO=/lib/ld-${HOST_OS}-${HOST_PROCESSOR}.so.1
         GOOS=linux
         SWIFTCFLAGS="\
             -Xcc -D_ALL_SOURCE=1 \
-            -Xcc -D_FORTIFY_SOURCE=2 \
+            -Xcc -D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL} \
             ${SWIFTCFLAGS} \
         "
     elif [ "${HOST_OS}" = "mingw32" ]; then
         COMMON_CFLAGS="\
             -fno-builtin-stpcpy \
-            -Xcc -D_FORTIFY_SOURCE=0 \
+            -Xcc -D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL} \
             ${COMMON_CFLAGS} \
         "
         GOOS=windows
@@ -924,18 +926,19 @@ function package-swift-build() {
 
     if [ "${HOST_OS}" = "android" ]; then
         SWIFT_BUILD_FLAGS="\
-            -Xcc -D_FORTIFY_SOURCE=0 \
+            -Xcc -D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL} \
+            -Xcc -D__USE_FORTIFY_LEVEL=${FORTIFY_SOURCE_LEVEL} \
             ${SWIFT_BUILD_FLAGS} \
         "
     elif [ "${HOST_OS}" = "musl" ]; then
         SWIFT_BUILD_FLAGS="\
             -Xcc -D_ALL_SOURCE=1 \
-            -Xcc -D_FORTIFY_SOURCE=0 \
+            -Xcc -D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL} \
             ${SWIFT_BUILD_FLAGS} \
         "
     elif [ "${HOST_OS}" = "mingw32" ]; then
         SWIFT_BUILD_FLAGS="\
-            -Xcc -D_FORTIFY_SOURCE=0 \
+            -Xcc -D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL} \
             ${SWIFT_BUILD_FLAGS} \
         "
     fi
