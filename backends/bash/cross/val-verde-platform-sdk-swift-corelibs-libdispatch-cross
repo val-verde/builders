@@ -19,6 +19,8 @@ cd ${STAGE_ROOT}
 package-cmake \
     -DBUILD_TESTING=FALSE \
     -DENABLE_SWIFT=TRUE \
+    -DLibRT_INCLUDE_PATH= \
+    -DLibRT_LIBRARIES= \
     ${SOURCE_ROOT}
 
 # Build the components
