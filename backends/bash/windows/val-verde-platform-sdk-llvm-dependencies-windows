@@ -50,6 +50,9 @@ package-invoke-builder gperf-cross
 # windows libtool build
 package-invoke-builder libtool-cross
 
+# libatomic-ops build
+package-invoke-builder libatomic-ops-cross
+
 # windows libffi build
 package-invoke-builder libffi-cross
 
@@ -63,9 +66,9 @@ package-invoke-builder icu4c-cross
 package-invoke-builder xz-cross
 
 # windows libxml2 build
-CFLAGS="\
+COMMON_LDFLAGS="\
     -fuse-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
-    ${CFLAGS} \
+    ${COMMON_LDFLAGS} \
 " \
 DISABLE_PYTHON=TRUE \
 package-invoke-builder libxml2-cross
