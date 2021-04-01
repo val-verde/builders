@@ -24,15 +24,9 @@ fi
 # musl libc build
 package-invoke-builder musl-libc
 
-# libunwind build
-package-invoke-builder libunwind-cross
-
-# libcxxabi build
-package-invoke-builder libcxxabi-cross
-
 # libcxx build
 ENABLE_MUSL_LIBC=TRUE \
-package-invoke-builder libcxx-cross
+package-invoke-builder libcxx-bootstrap
 
 # llvm dependencies
 package-invoke-builder llvm-dependencies-musl

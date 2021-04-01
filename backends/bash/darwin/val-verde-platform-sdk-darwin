@@ -13,14 +13,8 @@ if [ "${BUILD_PROCESSOR}" != ${HOST_PROCESSOR} ]; then
     package-invoke-builder compiler-rt-musl
 fi
 
-# libunwind build
-package-invoke-builder libunwind-cross
-
-# libcxxabi build
-package-invoke-builder libcxxabi-cross
-
 # libcxx build
-package-invoke-builder libcxx-cross
+package-invoke-builder libcxx-bootstrap
 
 # llvm dependencies
 package-invoke-builder llvm-dependencies-darwin

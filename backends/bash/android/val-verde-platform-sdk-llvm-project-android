@@ -217,9 +217,7 @@ deb-package-build
 
 # remove libcxx, libcxxabi and libunwind as they are superceded by llvm-project.
 HOST_PROCESSOR=`${ECHO} ${HOST_PROCESSOR} | ${TR} _ -`
-PACKAGES_TO_MANAGE=( 'libcxx-13'    'HOST' \
-                     'libcxxabi-13' 'HOST' \
-                     'libunwind-13' 'HOST' )
+PACKAGES_TO_MANAGE=( 'libcxx-13' 'HOST' )
 
 PACKAGE_ACTION=UNINSTALL \
 deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}

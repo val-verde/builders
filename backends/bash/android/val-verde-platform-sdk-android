@@ -8,20 +8,15 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 # android ndk headers build
 package-invoke-builder android-ndk-headers
 
-# android ndk runtime build
-package-invoke-builder android-ndk-runtime
-
 # android compiler-rt build (for host)
 package-invoke-builder compiler-rt
 
-# android libunwind build
-package-invoke-builder libunwind-cross
-
-# android libcxxabi build
-package-invoke-builder libcxxabi-cross
+# android ndk runtime build
+package-invoke-builder android-ndk-runtime
 
 # android libcxx build
-package-invoke-builder libcxx-cross
+package-invoke-builder libcxx-bootstrap
+
 
 # android llvm dependencies build
 package-invoke-builder llvm-dependencies-android
