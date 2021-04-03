@@ -47,6 +47,7 @@ function parse-builder-args() {
        || [[ "$1" == *"bazel"* ]] \
        || [[ "$1" == *"cuda"* ]] \
        || [[ "$1" == *"go"* ]] \
+       || [[ "$1" == *"libcxx"* ]] \
        || [[ "$1" == *"openjdk"* ]] \
        || [[ "$1" == *"llvm-project-bootstrap"* ]]; then
         export SOURCE_PACKAGE_NAME=${1%-*}
