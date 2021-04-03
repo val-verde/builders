@@ -35,7 +35,8 @@ function package-invoke-builder() {
         ${ECHO}
     fi
 
-    unset DISABLE_INSTALL_DEB \
+    unset DISABLE_BUILD_DEB \
+          DISABLE_INSTALL_DEB \
           PACKAGE_NAME \
           QUALIFIED_PACKAGE_NAME \
           SOURCE_PACKAGE_NAME \
@@ -65,7 +66,12 @@ function parse-builder-args() {
 
     export SOURCE_PACKAGE_VERSION=$2
     
-    if [ $# -lt 3 ]; then
-        export DISABLE_INSTALL_DEB=$3
+    if [ "${3}" ]; then
+        if [ $3 == "none" ]; then
+            export DISABLE_BUILD_DEB=TRUE
+            export DISABLE_INSTALL_DEB=TRUE
+        elif [ $3 == "no-install" ]; then
+            export DISABLE_INSTALL_DEB=$3
+        fi
     fi
 }
