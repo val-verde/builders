@@ -821,6 +821,22 @@ function generate-compiler-tools-variant() {
     export ${TOOL_WINDRES}=${GENERATED_BINDIR}/${TOOL_PREFIX}-windres
 }
 
+
+function get-cuda-build-deps() {
+    CUDA_PACKAGE_NAME=$(jq -r --argjson id $index \
+                                '.[$id].sourcePackageName' \
+                                ${CUDA_PACKAGE_LIST})
+    CUDA_PACKAGE_VERSION=$(jq -r --argjson id $index \
+                                '.[$id].sourcePackageVersion' \
+                                ${CUDA_PACKAGE_LIST})
+    CUDA_PACKAGE_URL=$(jq -r --argjson id $index \
+                                '.[$id].upstreamUrl' \
+                                ${CUDA_PACKAGE_LIST})
+    NVIDIA_DRIVER_VERSION=$(jq -r --argjson id $index \
+                                    '.[$id].driverVersion' \
+                                    ${CUDA_PACKAGE_LIST})
+}
+
 function get-rust-build-deps() {
     RUST_PACKAGE_NAME=$(jq -r --argjson id $index \
                                 '.[$id].sourcePackageName' \
