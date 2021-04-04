@@ -560,6 +560,14 @@
     {
         "retainSource": "false",
         "sourceType": "git",
+        "sourcePackageName": "make",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "4",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "sourceType": "git",
         "sourcePackageName": "mesa",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "21",
@@ -1522,13 +1530,6 @@
         "sourceBranchIndicator": "wget-xz",
         "sourcePackageVersion": "11.1",
         "sourcePackageUrl": "https://github.com/joseluisq/${SOURCE_PACKAGE_NAME}-sdks/releases/download/${SOURCE_PACKAGE_VERSION}/${SOURCE_PACKAGE_NAME}${SOURCE_PACKAGE_VERSION}.sdk.tar.xz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "make",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "4.3",
-        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
         "sourceType": "other",
