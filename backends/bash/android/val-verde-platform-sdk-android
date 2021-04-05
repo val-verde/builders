@@ -17,7 +17,6 @@ package-invoke-builder android-ndk-runtime
 # android libcxx build
 package-invoke-builder libcxx-bootstrap
 
-
 # android llvm dependencies build
 package-invoke-builder llvm-dependencies-android
 
@@ -37,6 +36,7 @@ package-invoke-builder swift-android
 package-invoke-builder swift-lldb-android
 
 # android libdispatch build
+FORTIFY_SOURCE_LEVEL=0 \
 package-invoke-builder swift-corelibs-libdispatch-cross
 
 # remove host foundation and libdispatch to avoid module collisions
@@ -47,27 +47,35 @@ PACKAGE_ACTION=UNINSTALL \
 deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 
 # android foundation build
+FORTIFY_SOURCE_LEVEL=0 \
 package-invoke-builder swift-corelibs-foundation-cross
 
 # android xctest build
+FORTIFY_SOURCE_LEVEL=0 \
 package-invoke-builder swift-corelibs-xctest-cross
 
 # android llbuild build
+FORTIFY_SOURCE_LEVEL=0 \
 package-invoke-builder swift-llbuild-android
 
 # android swift-tools-support-core build
+FORTIFY_SOURCE_LEVEL=0 \
 package-invoke-builder swift-tools-support-core-android
 
 # android yams build
+FORTIFY_SOURCE_LEVEL=0 \
 package-invoke-builder yams-cross
 
 # android swift-argument-parser build
+FORTIFY_SOURCE_LEVEL=0 \
 package-invoke-builder swift-argument-parser-cross
 
 # android swift-driver build
+FORTIFY_SOURCE_LEVEL=0 \
 package-invoke-builder swift-driver-cross
 
 # android swiftpm build
+FORTIFY_SOURCE_LEVEL=0 \
 package-invoke-builder swift-package-manager-cross
 
 # reinstall swiftpm for build and host
@@ -94,18 +102,23 @@ PACKAGE_ACTION=INSTALL \
 deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 
 # android swift-syntax build
+FORTIFY_SOURCE_LEVEL=0 \
 package-invoke-builder swift-syntax-cross
 
 # android swift-format build
+FORTIFY_SOURCE_LEVEL=0 \
 package-invoke-builder swift-format-cross
 
 # android swift-doc build
+FORTIFY_SOURCE_LEVEL=0 \
 package-invoke-builder swift-doc-cross
 
 # android sourcekit-lsp build
+FORTIFY_SOURCE_LEVEL=0 \
 package-invoke-builder sourcekit-lsp-android
 
 # android baikonur build
+FORTIFY_SOURCE_LEVEL=0 \
 package-invoke-builder baikonur
 
 # android pythonkit build
