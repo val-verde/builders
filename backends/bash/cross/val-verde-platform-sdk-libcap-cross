@@ -32,4 +32,4 @@ make-install -C ${STAGE_ROOT}/libcap ${TARGETS}
 make-install -C ${STAGE_ROOT}/progs ${TARGETS}
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

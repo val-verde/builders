@@ -50,4 +50,4 @@ INSTALL_TARGET="install_sw install_ssldirs" \
 make-install
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

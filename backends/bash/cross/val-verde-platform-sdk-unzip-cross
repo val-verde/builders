@@ -40,4 +40,4 @@ make-install \
     LFLAGS2="${LDFLAGS}"
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

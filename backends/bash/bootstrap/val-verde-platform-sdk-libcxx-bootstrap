@@ -122,4 +122,4 @@ INSTALL_TARGET="projects/compiler-rt/install projects/libcxx/install projects/li
 ninja-install
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

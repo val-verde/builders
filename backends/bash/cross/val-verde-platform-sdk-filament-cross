@@ -99,4 +99,4 @@ if [ "${BUILD_TRIPLE}" == ${HOST_TRIPLE} ]; then
 fi
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

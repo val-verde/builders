@@ -27,4 +27,4 @@ if [ "${HOST_OS}" = "android" ]; then
 fi
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

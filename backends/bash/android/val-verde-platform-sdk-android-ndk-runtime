@@ -29,4 +29,4 @@ ${RM} -f \
       ${INSTALL_PREFIX}/lib/libz.*
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

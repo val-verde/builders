@@ -223,4 +223,4 @@ PACKAGE_ACTION=UNINSTALL \
 deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

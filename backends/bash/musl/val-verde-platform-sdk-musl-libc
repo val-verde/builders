@@ -36,4 +36,4 @@ ${LN} -sf \
       ${INSTALL_PREFIX}/../lib/ld-${HOST_OS}-${HOST_PROCESSOR}${SHARED_LIBRARY_SUFFIX}.1
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

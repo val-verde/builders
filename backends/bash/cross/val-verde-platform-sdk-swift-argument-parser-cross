@@ -41,4 +41,4 @@ fi
 
 # Build and install the package
 DISABLE_INSTALL_DEB=TRUE \
-package-invoke-artifact-install
+package-invoke-archive-install

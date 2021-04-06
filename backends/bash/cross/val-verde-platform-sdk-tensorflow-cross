@@ -18,4 +18,4 @@ package-python-build
 ${RM} -rf ${INSTALL_PREFIX}/bin/easy_install*
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install
