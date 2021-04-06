@@ -16,7 +16,9 @@ generate-compiler-tools
 copy-source-to-staging
 
 # Build the components
-if [ "${HOST_OS}" = "mingw32" ]; then
+if [ "${HOST_OS}" = "macos" ]; then
+    TARGET_OS=Darwin
+elif [ "${HOST_OS}" = "mingw32" ]; then
     TARGET_OS=Windows
 else
     TARGET_OS=Linux
