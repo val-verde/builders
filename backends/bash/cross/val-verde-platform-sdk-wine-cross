@@ -14,6 +14,7 @@ if [ "${HOST_TRIPLE}" != "${BUILD_TRIPLE}" ]; then
     CROSS_CMD="--with-wine-tools=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}"
 fi
 
+DISABLE_INSTALL_DEB=TRUE \
 package-stage-configure-install \
     --disable-static \
     --enable-shared \
