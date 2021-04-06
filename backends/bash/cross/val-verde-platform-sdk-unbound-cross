@@ -14,11 +14,8 @@ CFLAGS="\
     -pthread \
     ${CFLAGS} \
 " \
-package-stage-configure-install \
+package-stage-configure-install-archive \
     --disable-static \
     --enable-shared \
     --with-libexpat=${PACKAGE_PREFIX} \
     --with-ssl=${PACKAGE_PREFIX}
-
-# Build and install the package
-package-invoke-artifact-install

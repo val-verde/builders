@@ -18,7 +18,4 @@ export DEPENDS="\
 # Invoke one-shot template for stage/configure/install
 DISABLE_AUTOUPDATE=TRUE \
 FORCE_UNSAFE_CONFIGURE=1 \
-package-stage-configure-install
-
-# Build and install the package
-package-invoke-artifact-install
+package-stage-configure-install-archive

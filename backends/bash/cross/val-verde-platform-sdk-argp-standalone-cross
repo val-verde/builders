@@ -14,10 +14,7 @@ CFLAGS="\
     -std=c89 \
     ${CFLAGS} \
 " \
-package-stage-configure-install \
+package-stage-configure-install-archive \
     ac_cv_prog_cc_c11= \
     --disable-static \
     --enable-shared
-
-# Build and install the package
-package-invoke-artifact-install

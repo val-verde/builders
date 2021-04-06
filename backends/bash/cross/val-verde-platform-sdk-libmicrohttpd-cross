@@ -21,9 +21,6 @@ fi
 
 # Invoke one-shot template for stage/configure/install
 DISABLE_AUTOUPDATE=TRUE \
-package-stage-configure-install \
+package-stage-configure-install-archive \
     --${ENABLE_OR_DISABLE_SHARED}-shared
 
-
-# Build and install the package
-package-invoke-artifact-install

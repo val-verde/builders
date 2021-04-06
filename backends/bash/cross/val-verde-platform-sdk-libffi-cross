@@ -16,10 +16,7 @@ if [ "${SDK_PLATFORM_DIR}" = "windows" ]; then
     SYMVER_CMD="--disable-symvers"
 fi
 
-package-stage-configure-install \
+package-stage-configure-install-archive \
     --disable-static \
     --enable-shared \
     "${SYMVER_CMD}"
-
-# Build and install the package
-package-invoke-artifact-install

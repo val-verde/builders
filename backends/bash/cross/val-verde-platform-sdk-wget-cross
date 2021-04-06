@@ -24,10 +24,7 @@ if [ "${HOST_OS}" = "mingw32" ]; then
     "
 fi
 
-package-stage-configure-install \
+package-stage-configure-install-archive \
     --with-linux-crypto \
     --with-openssl \
     --with-ssl=openssl
-
-# Build and install the package
-package-invoke-artifact-install
