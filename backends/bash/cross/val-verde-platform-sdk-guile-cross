@@ -28,7 +28,7 @@ fi
 BOOTSTRAP_FILE=./autogen.sh \
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 DISABLE_AUTOUPDATE=TRUE \
-package-bootstrap-configure-install \
+package-bootstrap-configure-install-archive \
     ac_cv_func_GC_is_heap_ptr=yes \
     ac_cv_func_GC_move_disappearing_link=yes \
     --disable-static \
@@ -36,6 +36,3 @@ package-bootstrap-configure-install \
     --${ENABLE_OR_DISABLE_JIT}-jit \
     --${ENABLE_OR_DISABLE_POSIX}-posix \
     --${WITH_OR_WITHOUT_MODULES}-modules
-
-# Build and install the package
-package-invoke-artifact-install

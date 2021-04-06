@@ -20,8 +20,5 @@ CFLAGS="\
     -U__MINGW32__ \
     ${CFLAGS} \
 " \
-package-bootstrap-configure-install \
+package-bootstrap-configure-install-archive \
     "${MAKE_FS_CMD}"
-
-# Build and install the package
-package-invoke-artifact-install

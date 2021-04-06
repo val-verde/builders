@@ -17,7 +17,4 @@ BOOTSTRAP_ARGS="\
 " \
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 ENABLE_GNULIB_OVERRIDE=TRUE \
-package-bootstrap-configure-install
-
-# Build and install the package
-package-invoke-artifact-install
+package-bootstrap-configure-install-archive

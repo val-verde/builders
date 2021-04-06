@@ -22,9 +22,6 @@ PCRE_CFLAGS=`${ECHO} "\
     -L${PACKAGE_PREFIX}/lib \
 " | ${XARGS}` \
 PCRE_LIBS="-lpcre" \
-package-bootstrap-configure-install \
+package-bootstrap-configure-install-archive \
     --disable-static \
     --enable-shared
-
-# Build and install the package
-package-invoke-artifact-install
