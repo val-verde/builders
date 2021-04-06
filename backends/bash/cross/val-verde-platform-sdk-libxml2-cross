@@ -26,12 +26,9 @@ DISABLE_AUTOUPDATE=TRUE \
 RPATH_COMPONENTS="\
     ${INSTALL_PREFIX}/lib/${SHARED_LIBRARY_PREFIX}xml2${SHARED_LIBRARY_SUFFIX} \
 " \
-package-stage-configure-install \
+package-stage-configure-install-archive \
     lt_cv_deplibs_check_method=pass_all \
     --disable-static \
     --enable-shared \
     --with-icu \
     ${WITH_OR_WITHOUT_PYTHON}
-
-# Build and install the package
-package-invoke-artifact-install

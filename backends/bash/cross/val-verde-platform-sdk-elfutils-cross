@@ -49,7 +49,7 @@ I386_GENDIR_ROOT=${I386_GENDIR_ROOT} \
 RPATH_COMPONENTS="\
     ${INSTALL_PREFIX}/lib/${SHARED_LIBRARY_PREFIX}elf${SHARED_LIBRARY_SUFFIX} \
 " \
-package-stage-configure-install \
+package-stage-configure-install-archive \
     ac_cv_c99=yes \
     ac_cv_lib_argp_argp_parse=${ARGP_LIB} \
     ac_cv_implicit_fallthrough=no \
@@ -58,6 +58,3 @@ package-stage-configure-install \
     --with-bzlib=yes \
     --with-lzma=yes \
     --with-zlib=yes
-
-# Build and install the package
-package-invoke-artifact-install

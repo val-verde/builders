@@ -10,11 +10,8 @@ export SOURCE_PACKAGE_VERSION=3
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for stage/configure/install
-package-stage-configure-install \
+package-stage-configure-install-archive \
     --disable-documentation \
     --disable-static \
     --enable-shared \
     --libdir=${PACKAGE_PREFIX}/lib
-
-# Build and install the package
-package-invoke-artifact-install

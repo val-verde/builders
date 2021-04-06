@@ -22,9 +22,6 @@ DISABLE_AUTOUPDATE=TRUE \
 RPATH_COMPONENTS="\
     ${INSTALL_PREFIX}/lib/${SHARED_LIBRARY_PREFIX}edit${SHARED_LIBRARY_SUFFIX} \
 " \
-package-stage-configure-install \
+package-stage-configure-install-archive \
     --disable-static \
     --enable-shared
-
-# Build and install the package
-package-invoke-artifact-install

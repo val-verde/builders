@@ -18,10 +18,7 @@ fi
 
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 DISABLE_AUTORECONF=TRUE \
-package-stage-configure-install \
+package-stage-configure-install-archive \
     --disable-static \
     --enable-shared \
     --${ENABLE_OR_DISABLE_SYSTEMD}-systemd
-
-# Build and install the package
-package-invoke-artifact-install

@@ -15,11 +15,8 @@ if [ "${HOST_TRIPLE}" != "${BUILD_TRIPLE}" ]; then
 fi
 
 DISABLE_INSTALL_DEB=TRUE \
-package-stage-configure-install \
+package-stage-configure-install-archive \
     --disable-static \
     --enable-shared \
     --enable-win64 \
     ${CROSS_CMD}
-
-# Build and install the package
-package-invoke-artifact-install

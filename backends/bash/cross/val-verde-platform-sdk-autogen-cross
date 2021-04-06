@@ -20,13 +20,10 @@ CFLAGS="\
 " \
 COLUMNS=${COLUMNS:-${BINDIR}/columns} \
 DISABLE_AUTOUPDATE=TRUE \
-package-stage-configure-install \
+package-stage-configure-install-archive \
     ag_cv_run_strcspn=yes \
     libopts_cv_with_libregex=yes \
     --disable-dependency-tracking \
     --disable-static \
     --enable-shared \
     --with-regex-header=${SOURCE_ROOT_BASE}/gnulib-0/lib/regex.h
-
-# Build and install the package
-package-invoke-artifact-install

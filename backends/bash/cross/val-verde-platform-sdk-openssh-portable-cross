@@ -24,13 +24,10 @@ if [ "${HOST_OS}" = "android" ]; then
 fi
 
 INSTALL_TARGET=install-nokeys \
-package-stage-configure-install \
+package-stage-configure-install-archive \
     --disable-static \
     --disable-strip \
     --disable-utmpx \
     --enable-shared \
     --with-ldns=${PACKAGE_PREFIX} \
     --with-maildir=${MAIL_DIR}
-
-# Build and install the package
-package-invoke-artifact-install
