@@ -3,6 +3,7 @@
 set -e
 
 # Source package build helper functions
+export FORTIFY_SOURCE_LEVEL=0
 export PACKAGE_USR_PREFIX=/
 export SYSTEM_NAME=Windows
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
@@ -22,18 +23,12 @@ CXXFLAGS="\
 " \
 package-invoke-builder compiler-rt
 
-# windows libunwind build
-package-invoke-builder libunwind-windows
+# windows libcxx build
+package-invoke-builder libcxx-bootstrap
 
 # windows mingw-winpthreads build
 LD=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
 package-invoke-builder winpthreads-cross
-
-# windows libcxxabi build
-package-invoke-builder libcxxabi-windows
-
-# windows libcxx build
-package-invoke-builder libcxx-windows
 
 # windows llvm dependencies
 category-invoke-builder llvm-dependencies-windows
