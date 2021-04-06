@@ -16,8 +16,5 @@ CFLAGS="\
     ${CFLAGS} \
 " \
 DISABLE_AUTOUPDATE=TRUE \
-package-bootstrap-configure-install \
+package-bootstrap-configure-install-archive \
     --enable-mpers=no
-
-# Build and install the package
-package-invoke-artifact-install

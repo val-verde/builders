@@ -17,8 +17,5 @@ if [ "${HOST_OS}" = "macos" ]; then
 fi
 
 BOOTSTRAP_FILE=./autogen.sh \
-package-bootstrap-configure-install \
+package-bootstrap-configure-install-archive \
     ${DISABLE_THREADS_CMD}
-
-# Build and install the package
-package-invoke-artifact-install

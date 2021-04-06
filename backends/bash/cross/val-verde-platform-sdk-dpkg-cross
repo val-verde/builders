@@ -46,10 +46,7 @@ CXXFLAGS="\
 " \
 TAR=tar \
 BOOTSTRAP_FILE=./autogen \
-package-bootstrap-configure-install \
+package-bootstrap-configure-install-archive \
     cross_compiling=${CROSS_COMPILING} \
     --disable-dselect \
     --with-admindir=${ADMIN_DIR}
-
-# Build and install the package
-package-invoke-artifact-install

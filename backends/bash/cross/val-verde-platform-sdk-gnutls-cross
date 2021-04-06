@@ -26,7 +26,7 @@ CFLAGS="\
     ${CFLAGS} \
 " \
 DISABLE_AUTOUPDATE=TRUE \
-package-bootstrap-configure-install \
+package-bootstrap-configure-install-archive \
     --disable-doc \
     --disable-gtk-doc \
     --disable-gtk-doc-html \
@@ -37,6 +37,3 @@ package-bootstrap-configure-install \
     --enable-shared \
     --enable-ssl3-support \
     --with-autoopts-config=${PACKAGE_PREFIX}/bin/autoopts-config
-
-# Build and install the package
-package-invoke-artifact-install

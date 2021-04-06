@@ -13,10 +13,7 @@ export DEPENDS="${PACKAGE_BASE_NAME}-libgpg-error-1-${HOST_OS}${HOST_OS_API_LEVE
 
 # Invoke one-shot template for bootstrap/configure/install
 BOOTSTRAP_FILE=./autogen.sh \
-package-bootstrap-configure-install \
+package-bootstrap-configure-install-archive \
     --disable-doc \
     --disable-static \
     --enable-shared
-
-# Build and install the package
-package-invoke-artifact-install
