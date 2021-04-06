@@ -16,7 +16,7 @@ export DEPENDS="\
 
 # Invoke one-shot template for configure/install
 DISABLE_AUTOUPDATE=TRUE \
-package-configure-install \
+package-configure-install-archive \
     ac_cv_func_setns=yes \
     ac_cv_func_unshare=yes \
     ac_cv_prog_ac_ct_NCURSES6_CONFIG= \
@@ -27,6 +27,3 @@ package-configure-install \
     --enable-libmount \
     --enable-libuuid \
     --enable-shared
-
-# Build and install the package
-package-invoke-artifact-install

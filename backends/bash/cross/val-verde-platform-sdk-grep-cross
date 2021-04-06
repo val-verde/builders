@@ -27,7 +27,4 @@ ${SED} -i \
 
 # Invoke one-shot template for configure/install
 DISABLE_AUTOUPDATE=TRUE \
-package-configure-install
-
-# Build and install the package
-package-invoke-artifact-install
+package-configure-install-archive

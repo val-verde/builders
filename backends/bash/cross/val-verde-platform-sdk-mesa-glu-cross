@@ -15,9 +15,6 @@ CXXFLAGS="\
     ${CXXFLAGS} \
 " \
 CONFIGURE_FILE=autogen.sh \
-package-configure-install \
+package-configure-install-archive \
     --disable-static \
     --enable-shared
-
-# Build and install the package
-package-invoke-artifact-install
