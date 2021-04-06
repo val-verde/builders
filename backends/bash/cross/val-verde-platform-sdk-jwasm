@@ -23,4 +23,4 @@ ${CP} ${STAGE_ROOT}/jwasm* \
       ${INSTALL_PREFIX}/bin/
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

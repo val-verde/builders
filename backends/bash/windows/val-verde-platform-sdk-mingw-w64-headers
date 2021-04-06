@@ -31,4 +31,4 @@ ${LN} -sf . \
       ${INSTALL_PREFIX}/usr
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

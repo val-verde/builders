@@ -27,4 +27,4 @@ cd ${STAGE_ROOT}
 ninja-install
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

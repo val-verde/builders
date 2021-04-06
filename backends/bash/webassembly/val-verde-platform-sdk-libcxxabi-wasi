@@ -56,4 +56,4 @@ ${MV} ${INSTALL_PREFIX}/${HOST_PROCESSOR}-${HOST_OS} \
       ${INSTALL_PREFIX}/lib
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

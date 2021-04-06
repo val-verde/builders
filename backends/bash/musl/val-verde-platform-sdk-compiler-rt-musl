@@ -57,4 +57,4 @@ ${MV} ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/${SDK_PLATFORM_DIR}/clang_rt.cr
       ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/13.0.0/lib/${DST_SDK_PLATFORM_DIR}/crtendS.o
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

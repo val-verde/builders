@@ -37,4 +37,4 @@ ${RM} -f ${INSTALL_PREFIX}/include/iconv.h \
          ${INSTALL_PREFIX}/include/sys/capability.h
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

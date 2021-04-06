@@ -66,4 +66,4 @@ Cflags: -I\${includedir}
 " > ${INSTALL_PREFIX}/lib/pkgconfig/alive2.pc
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

@@ -35,4 +35,4 @@ make-install \
     WINDRES=${WINDRES}
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

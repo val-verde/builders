@@ -14,4 +14,4 @@ cd ${SOURCE_ROOT}
 package-python-build
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

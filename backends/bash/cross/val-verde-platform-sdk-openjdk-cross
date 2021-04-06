@@ -127,4 +127,4 @@ tool-log ${MAKE} \
     install
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

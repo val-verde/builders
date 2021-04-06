@@ -30,4 +30,4 @@ ${RM} -rf ${INSTALL_PREFIX}/include/pthread_signal.h \
           ${INSTALL_PREFIX}/include/pthread_unistd.h
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

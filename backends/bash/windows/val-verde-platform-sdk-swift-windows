@@ -125,4 +125,4 @@ ${RM} -f \
       ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}/*BlocksRuntime*
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

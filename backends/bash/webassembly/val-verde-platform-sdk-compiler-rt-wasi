@@ -44,4 +44,4 @@ ${MV} ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/fuchsia/${CLANG_RT_LIB} \
 ${RM} -rf ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/fuchsia
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

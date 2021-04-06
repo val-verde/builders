@@ -41,4 +41,4 @@ PATH=${STAGE_ROOT_BASE}/vulkan-loader-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUI
 ninja-install
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

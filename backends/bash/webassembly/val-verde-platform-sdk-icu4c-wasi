@@ -42,4 +42,4 @@ ${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
 make-install
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

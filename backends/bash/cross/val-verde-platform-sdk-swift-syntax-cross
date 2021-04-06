@@ -37,4 +37,4 @@ package-rsync -ax \
               ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

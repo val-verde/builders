@@ -32,4 +32,4 @@ make-install \
     UNAME=${UNAME}
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

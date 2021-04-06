@@ -19,4 +19,4 @@ package-rsync -ax \
               ${INSTALL_PREFIX}/include/
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

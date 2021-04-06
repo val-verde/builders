@@ -56,4 +56,4 @@ ${MV} ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/${SDK_PLATFORM_DIR}/${CLANG_RT_
       ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/13.0.0/lib/${DST_SDK_PLATFORM_DIR}/${DST_CLANG_RT_LIB}
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

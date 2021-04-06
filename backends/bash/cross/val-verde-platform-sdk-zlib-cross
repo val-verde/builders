@@ -22,4 +22,4 @@ ${MV} ${INSTALL_PREFIX}/share/pkgconfig \
       ${INSTALL_PREFIX}/lib/pkgconfig
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install

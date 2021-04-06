@@ -60,4 +60,4 @@ ${MV} ${INSTALL_PREFIX}/lib/swift/windows/*${STATIC_LIBRARY_SUFFIX} \
 
 # Build and install the package
 DISABLE_INSTALL_DEB=TRUE \
-package-invoke-artifact-install
+package-invoke-archive-install

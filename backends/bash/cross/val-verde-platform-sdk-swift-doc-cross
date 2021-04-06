@@ -34,4 +34,4 @@ package-rsync -ax \
 package-pop-directory
 
 # Build and install the package
-package-invoke-artifact-install
+package-invoke-archive-install
