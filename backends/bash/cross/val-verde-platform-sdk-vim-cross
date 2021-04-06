@@ -14,7 +14,7 @@ export DEPENDS="${PACKAGE_BASE_NAME}-ncurses-6-${HOST_OS}${HOST_OS_API_LEVEL}-${
 # Invoke one-shot template for configure/install
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 DISABLE_AUTOUPDATE=TRUE \
-package-configure-install \
+package-configure-install-archive \
     ac_cv_small_wchar_t=yes \
     vim_cv_getcwd_broken=no \
     vim_cv_memmove_handles_overlap=yes \
@@ -23,6 +23,3 @@ package-configure-install \
     vim_cv_tgetent=yes \
     vim_cv_toupper_broken=no \
     --with-tlib=ncurses
-
-# Build and install the package
-package-invoke-artifact-install

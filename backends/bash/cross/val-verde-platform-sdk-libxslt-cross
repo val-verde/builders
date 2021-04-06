@@ -18,11 +18,8 @@ export DEPENDS="\
 # Invoke one-shot template for configure/install
 CONFIGURE_FILE=autogen.sh \
 DISABLE_AUTOUPDATE=TRUE \
-package-configure-install \
+package-configure-install-archive \
     ac_cv_path_LIBGCRYPT_CONFIG=${PACKAGE_PREFIX}/bin/libgcrypt-config \
     ac_cv_path_XML_CONFIG=${PACKAGE_PREFIX}/bin/xml2-config \
     --disable-static \
     --enable-shared
-
-# Build and install the package
-package-invoke-artifact-install

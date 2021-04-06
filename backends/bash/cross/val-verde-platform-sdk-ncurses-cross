@@ -11,7 +11,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for configure/install
 INSTALL_PREFIX=${PACKAGE_PREFIX} \
-package-configure-install \
+package-configure-install-archive \
     --enable-ext-colors \
     --enable-mixed-case \
     --enable-pc-files \
@@ -32,6 +32,3 @@ package-configure-install \
     --without-progs \
     --without-tack \
     --without-tests
-
-# Build and install the package
-package-invoke-artifact-install

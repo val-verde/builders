@@ -10,9 +10,6 @@ export SOURCE_PACKAGE_VERSION=1
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for configure/install
-package-configure-install \
+package-configure-install-archive \
     --disable-shared \
     --enable-shared
-
-# Build and install the package
-package-invoke-artifact-install

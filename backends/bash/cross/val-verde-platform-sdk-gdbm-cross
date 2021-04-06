@@ -15,9 +15,6 @@ COMMON_LDFLAGS="\
     ${COMMON_LDFLAGS} \
 " \
 DISABLE_AUTOUPDATE=TRUE \
-package-configure-install \
+package-configure-install-archive \
     --disable-static \
     --enable-shared
-
-# Build and install the package
-package-invoke-artifact-install

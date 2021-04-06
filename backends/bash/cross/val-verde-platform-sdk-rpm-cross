@@ -18,9 +18,6 @@ export DEPENDS="\
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 CONFIGURE_FILE=autogen.sh \
 DISABLE_AUTOUPDATE=TRUE \
-package-configure-install \
+package-configure-install-archive \
     --disable-static \
     --enable-shared
-
-# Build and install the package
-package-invoke-artifact-install

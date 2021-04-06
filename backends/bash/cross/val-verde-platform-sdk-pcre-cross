@@ -11,7 +11,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for configure/install
 DISABLE_AUTOUPDATE=TRUE \
-package-configure-install \
+package-configure-install-archive \
     --disable-static \
     --enable-pcre16 \
     --enable-pcre32 \
@@ -19,6 +19,3 @@ package-configure-install \
     --enable-pcregrep-libbz2 \
     --enable-shared \
     --enable-unicode-properties
-
-# Build and install the package
-package-invoke-artifact-install

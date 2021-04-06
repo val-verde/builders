@@ -15,10 +15,7 @@ export DEPENDS="${PACKAGE_BASE_NAME}-attr-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOS
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 DISABLE_AUTOUPDATE=TRUE \
 INSTALL_TARGET="install-dev install-lib" \
-package-configure-install \
+package-configure-install-archive \
     --disable-static \
     --enable-shared \
     --includedir=${PACKAGE_PREFIX}/include
-
-# Build and install the package
-package-invoke-artifact-install

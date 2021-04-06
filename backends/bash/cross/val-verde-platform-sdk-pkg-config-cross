@@ -16,12 +16,9 @@ export DEPENDS="\
 
 # Invoke one-shot template for configure/install
 DISABLE_AUTOUPDATE=TRUE \
-package-configure-install \
+package-configure-install-archive \
     ac_cv_func_posix_getgrgid_r=yes \
     ac_cv_func_posix_getpwuid_r=yes \
     glib_cv_stack_grows=no \
     glib_cv_uscore=no \
     --with-libiconv=gnu
-
-# Build and install the package
-package-invoke-artifact-install

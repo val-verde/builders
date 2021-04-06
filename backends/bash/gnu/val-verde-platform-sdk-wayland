@@ -15,11 +15,8 @@ OPTIMIZATION_FLAGS="\
     -UNDEBUG \
     ${CFLAGS} \
 " \
-package-configure-install \
+package-configure-install-archive \
     --disable-documentation \
     --disable-static \
     --disable-tests \
     --enable-shared
-
-# Build and install the package
-package-invoke-artifact-install
