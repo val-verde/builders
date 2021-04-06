@@ -21,8 +21,10 @@ function package-invoke-builder() {
 
     get-common-variables
 
-    SEARCH_INPUT=${BUILD_DEB_PATH}/${PACKAGE_NAME}.deb \
-    tool-check
+    if [ -z ${DISABLE_SKIP_BUILD_DEB_CHECK} ]; then
+        SEARCH_INPUT=${BUILD_DEB_PATH}/${PACKAGE_NAME}.deb \
+        tool-check
+    fi
 
     if [ ${FILE_EXISTS} == 'true' ]; then
         ${ECHO} -e "\e[1;35mSkipping build and install \
@@ -71,7 +73,7 @@ function parse-builder-args() {
             export DISABLE_BUILD_DEB=TRUE
             export DISABLE_INSTALL_DEB=TRUE
         elif [ $3 == "no-install" ]; then
-            export DISABLE_INSTALL_DEB=$3
+            export DISABLE_INSTALL_DEB=TRUE
         fi
     fi
 }
