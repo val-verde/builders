@@ -60,7 +60,7 @@ extern \"C\" {
 " > ${INSTALL_PREFIX}/include/lua.hpp
 
 package-rsync -ax \
-              liblua.a \
+              `package-get-filename lua STATIC` \
               ${INSTALL_PREFIX}/lib/
 
 ${MKDIR} -p ${INSTALL_PREFIX}/lib/pkgconfig

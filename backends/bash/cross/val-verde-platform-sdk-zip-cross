@@ -14,6 +14,7 @@ export-compiler-environment
 # Configure the build components
 if [ "${HOST_OS}" = "android" ] ||
    [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "macos" ] ||
    [ "${HOST_OS}" = "musl" ]; then
     PLATFORM=unix
 elif [ "${HOST_OS}" = "mingw32" ]; then

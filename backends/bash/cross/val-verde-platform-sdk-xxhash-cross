@@ -16,13 +16,20 @@ generate-compiler-tools
 copy-source-to-staging
 
 # Build the components
+if [ "${HOST_OS}" = "macos" ]; then
+    UNAME=Darwin
+else
+    UNAME=`uname`
+fi
+
 cd ${STAGE_ROOT}
 make-install \
     AR=${AR} \
     CC=${CC} \
     CFLAGS="${CFLAGS}" \
     PREFIX=${PACKAGE_PREFIX} \
-    RANLIB=${RANLIB}
+    RANLIB=${RANLIB} \
+    UNAME=${UNAME}
 
 # Build the package
 deb-package-build

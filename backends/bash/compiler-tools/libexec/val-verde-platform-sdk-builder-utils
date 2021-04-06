@@ -31,6 +31,30 @@ if [ "${SOURCE_PACKAGE_NAME}" != "" ]; then
     ${ECHO} -e "        Install Prefix: \e[33m${INSTALL_PREFIX}\e[0m"
 fi
 
+# Determine format of executables, shared libraries and static archives.
+EXECUTABLE_SUFFIX=
+OBJECT_FILE_SUFFIX=".o"
+SHARED_LIBRARY_PREFIX="lib"
+SHARED_LIBRARY_SUFFIX=".so"
+STATIC_LIBRARY_PREFIX="lib"
+STATIC_LIBRARY_SUFFIX=".a"
+
+if [ "${HOST_OS}" = "darwin" ]; then
+    SHARED_LIBRARY_SUFFIX=".dylib"
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    EXECUTABLE_SUFFIX=".exe"
+    OBJECT_FILE_SUFFIX=".obj"
+    SHARED_LIBRARY_SUFFIX=".dll.a"
+    STATIC_LIBRARY_SUFFIX=".a"
+fi
+
+export EXECUTABLE_SUFFIX=${EXECUTABLE_SUFFIX}
+export OBJECT_FILE_SUFFIX=${OBJECT_FILE_SUFFIX}
+export SHARED_LIBRARY_PREFIX=${SHARED_LIBRARY_PREFIX}
+export SHARED_LIBRARY_SUFFIX=${SHARED_LIBRARY_SUFFIX}
+export STATIC_LIBRARY_PREFIX=${STATIC_LIBRARY_PREFIX}
+export STATIC_LIBRARY_SUFFIX=${STATIC_LIBRARY_SUFFIX}
+
 function copy-source-to-staging() {
     package-rsync -ax \
                   ${SOURCE_ROOT}/ \
@@ -210,6 +234,8 @@ function export-compiler-environment() {
             -Xcc -D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL} \
             ${SWIFTCFLAGS} \
         "
+    elif [ "${HOST_OS}" = "darwin" ]; then
+        GOOS=darwin
     elif [ "${HOST_OS}" = "gnu" ]; then
         COMMON_CFLAGS="\
             -fPIC \
@@ -656,6 +682,44 @@ function package-install() {
     package-pop-directory
 }
 
+# package-get-path <name> <EXECUTABLE|SHARED|STATIC>
+function package-get-filename() {
+    NAME=${1}
+    TYPE=${2}
+
+    case ${TYPE} in
+    EXECUTABLE)
+        RESULT=${NAME}${EXECUTABLE_SUFFIX}
+        ;;
+    SHARED)
+        RESULT=${SHARED_LIBRARY_PREFIX}${NAME}${SHARED_LIBRARY_SUFFIX}
+        ;;
+    STATIC)
+        RESULT=${STATIC_LIBRARY_PREFIX}${NAME}${STATIC_LIBRARY_SUFFIX}
+        ;;
+    *)
+        echo "package-get-filename: Unknown type ${TYPE}."
+        exit 1
+    esac
+
+    echo ${RESULT}
+}
+
+# package-get-path <name> <EXECUTABLE|SHARED|STATIC> <BUILD|HOST>
+function package-get-path() {
+    NAME=${1}
+    TYPE=${2}
+    VARIANT=${3}
+    RESULT=${PACKAGE_PREFIX}/lib
+
+    if [ "${VARIANT}" = "BUILD" ]; then
+        RESULT=${BUILD_PACKAGE_PREFIX}/lib
+    fi
+
+    RESULT=${RESULT}/`package-get-filename ${NAME} ${TYPE}`
+    echo ${RESULT}
+}
+
 function package-gnulib-override() {
     GNULIB_DIR=${GNULIB_DIR:-glib}
     GNULIB_ROOT=${GNULIB_ROOT:-${STAGE_ROOT}}
@@ -987,6 +1051,7 @@ function package-swift-build() {
             \"-resource-dir\", \"${PACKAGE_PREFIX}/lib/swift\", \n\
             \"-sdk\", \"${SYSROOT}\", \n\
             \"-target-cpu\", \"${HOST_CPU}\", \n\
+            \"-L${PACKAGE_PREFIX}/lib\", \n\
             \"-O${SWIFT_OPTIMIZATION_LEVEL}\", \n\
             \"-Xfrontend\", \"-disable-llvm-verify\", \n\
             \"${FLTO_SWIFTCFLAG}\", \n\
@@ -1016,7 +1081,12 @@ function package-invoke-builder() {
 function rpath-fixup() {
     SDK_PLATFORM_DIR=`${ECHO} ${SYSTEM_NAME} | ${TR} '[:upper:]' '[:lower:]'`
 
-    if [ "${SDK_PLATFORM_DIR}" != "windows" ]; then
+    if [ "${SDK_PLATFORM_DIR}" = "darwin" ]; then
+        for COMPONENT in ${RPATH_COMPONENTS}; do
+            ${INSTALL_NAME_TOOL} -add_rpath "@loader_path/../lib" ${COMPONENT}
+            ${INSTALL_NAME_TOOL} -add_rpath "@loader_path/../lib/swift/macosx" ${COMPONENT}
+        done
+    elif [ "${SDK_PLATFORM_DIR}" != "windows" ]; then
         if [ "${SDK_PLATFORM_DIR}" != "${HOST_OS}" ]; then
             SDK_PLATFORM_DIR=${HOST_OS}
         fi

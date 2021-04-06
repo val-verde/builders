@@ -21,17 +21,8 @@ ${CHMOD} +x ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang 
             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-rc \
             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc
 
-# libunwind bootstrap build
-LLVM_NATIVE_STAGE_ROOT=/usr \
-package-invoke-builder libunwind-cross
-
-# libcxxabi bootstrap build
-LLVM_NATIVE_STAGE_ROOT=/usr \
-package-invoke-builder libcxxabi-cross
-
 # libcxx bootstrap build
-LLVM_NATIVE_STAGE_ROOT=/usr \
-package-invoke-builder libcxx-cross
+package-invoke-builder libcxx-bootstrap
 
 # cuda bootstrap build
 package-invoke-builder cuda-bootstrap

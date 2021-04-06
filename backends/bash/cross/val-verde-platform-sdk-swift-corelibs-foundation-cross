@@ -22,16 +22,16 @@ cd ${STAGE_ROOT}
 package-cmake \
     -Ddispatch_DIR=${STAGE_ROOT_BASE}/swift-corelibs-libdispatch-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DICU_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DICU_LIBRARY=${PACKAGE_PREFIX}/lib/libicudataswift.so \
-    -DICU_I18N_LIBRARY_RELEASE=${PACKAGE_PREFIX}/lib/libicui18nswift.so \
-    -DICU_UC_LIBRARY_RELEASE=${PACKAGE_PREFIX}/lib/libicuucswift.so \
+    -DICU_LIBRARY=`package-get-path icudataswift SHARED HOST` \
+    -DICU_I18N_LIBRARY_RELEASE=`package-get-path icui18nswift SHARED HOST` \
+    -DICU_UC_LIBRARY_RELEASE=`package-get-path icuucswift SHARED HOST` \
     -DCURL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DCURL_LIBRARY=${PACKAGE_PREFIX}/lib/libcurl.so \
+    -DCURL_LIBRARY=`package-get-path curl SHARED HOST` \
     -DLIBXML2_INCLUDE_DIR=${PACKAGE_PREFIX}/include/libxml2 \
-    -DLIBXML2_LIBRARY=${PACKAGE_PREFIX}/lib/libxml2.so \
-    -DOPENSSL_CRYPTO_LIBRARY=${PACKAGE_PREFIX}/lib/libcrypto.so \
+    -DLIBXML2_LIBRARY=`package-get-path xml2 SHARED HOST` \
+    -DOPENSSL_CRYPTO_LIBRARY=`package-get-path crypto SHARED HOST` \
     -DOPENSSL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DOPENSSL_SSL_LIBRARY=${PACKAGE_PREFIX}/lib/libssl.so \
+    -DOPENSSL_SSL_LIBRARY=`package-get-path ssl SHARED HOST` \
     ${SOURCE_ROOT}
 
 # Build the components
@@ -50,7 +50,7 @@ fi
 # RPATH fixups
 COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
 COMPONENTS="\
-    ${INSTALL_PREFIX}/lib/swift/${SDK}/lib*.so \
+    ${INSTALL_PREFIX}/lib/swift/${SDK}/${SHARED_LIBRARY_PREFIX}*${SHARED_LIBRARY_SUFFIX} \
 " \
 rpath-fixup
 

@@ -18,30 +18,28 @@ export DEPENDS="\
 # Configure the build components
 cd ${STAGE_ROOT}
 
-if [ "${HOST_OS}" = "mingw32" ]; then
-    LIBLZMA_LIBRARY=${PACKAGE_PREFIX}/lib/liblzma.dll.a
-    ZLIB_LIBRARY=${PACKAGE_PREFIX}/lib/libz.dll.a
-else
-    if [ "${HOST_OS}" != "gnu" ]; then
-        export DEPENDS="\
-            ${PACKAGE_BASE_NAME}-libiconv-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
-            ${DEPENDS} \
-        "
-    fi
+if [ "${HOST_OS}" != "gnu" ]; then
+    export DEPENDS="\
+        ${PACKAGE_BASE_NAME}-libiconv-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+        ${DEPENDS} \
+    "
+fi
 
+if [ "${HOST_OS}" != "mingw32" ]; then
     export DEPENDS="\
         ${PACKAGE_BASE_NAME}-acl-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
         ${DEPENDS} \
     "
-    ACL_LIBRARY=${PACKAGE_PREFIX}/lib/libacl.so
-    LIBLZMA_LIBRARY=${PACKAGE_PREFIX}/lib/liblzma.so
-    ZLIB_LIBRARY=${PACKAGE_PREFIX}/lib/libz.so
+    ACL_LIBRARY=`package-get-path acl SHARED HOST`
 fi
+
+LIBLZMA_LIBRARY=`package-get-path lzma SHARED HOST`
+ZLIB_LIBRARY=`package-get-path z SHARED HOST` \
 
 package-cmake \
     -DACL_LIBRARY=${ACL_LIBRARY} \
     -DBZIP2_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DBZIP2_LIBRARIES=${PACKAGE_PREFIX}/lib/libbz2.a \
+    -DBZIP2_LIBRARIES=`package-get-path bz2 STATIC HOST` \
     -DENABLE_CAT_SHARED=TRUE \
     -DENABLE_CPIO_SHARED=TRUE \
     -DENABLE_LibGCC=FALSE \

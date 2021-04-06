@@ -23,21 +23,16 @@ cd ${STAGE_ROOT}
 
 if [ "${HOST_OS}" = "mingw32" ]; then
     CMake_HAVE_CXX_FILESYSTEM=FALSE
-    CURSES_CURSES_LIBRARY=${PACKAGE_PREFIX}/lib/libncurses.dll.a
-    CURL_LIBRARY=${PACKAGE_PREFIX}/lib/libcurl_imp.lib
-    EXPAT_LIBRARY=${PACKAGE_PREFIX}/lib/libexpat.dll.a
-    LibArchive_LIBRARY=${PACKAGE_PREFIX}/lib/libarchive.dll.a
-    LibUV_LIBRARY=${PACKAGE_PREFIX}/lib/libuv.dll.a
-    ZLIB_LIBRARY=${PACKAGE_PREFIX}/lib/libz.dll.a
 else
     CMake_HAVE_CXX_FILESYSTEM=TRUE
-    CURSES_CURSES_LIBRARY=${PACKAGE_PREFIX}/lib/libncurses.so
-    CURL_LIBRARY=${PACKAGE_PREFIX}/lib/libcurl.so
-    EXPAT_LIBRARY=${PACKAGE_PREFIX}/lib/libexpat.so
-    LibArchive_LIBRARY=${PACKAGE_PREFIX}/lib/libarchive.so
-    LibUV_LIBRARY=${PACKAGE_PREFIX}/lib/libuv.so
-    ZLIB_LIBRARY=${PACKAGE_PREFIX}/lib/libz.so
 fi
+
+CURL_LIBRARY=`package-get-path curl SHARED HOST`
+CURSES_CURSES_LIBRARY=`package-get-path ncurses SHARED HOST`
+EXPAT_LIBRARY=`package-get-path expat SHARED HOST`
+LibArchive_LIBRARY=`package-get-path archive SHARED HOST`
+LibUV_LIBRARY=`package-get-path uv SHARED HOST`
+ZLIB_LIBRARY=`package-get-path z SHARED HOST`
 
 CFLAGS="\
     -target ${HOST_TRIPLE} \

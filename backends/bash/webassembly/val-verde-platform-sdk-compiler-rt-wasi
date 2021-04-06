@@ -9,7 +9,7 @@ export SOURCE_PACKAGE_VERSION=13
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-export CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a
+export CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
 export DEPENDS="${PACKAGE_BASE_NAME}-llvm-project-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH} (>=1.0.0)"
 export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
 export SOURCE_ROOT=${SOURCE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}/${SOURCE_PACKAGE_NAME}

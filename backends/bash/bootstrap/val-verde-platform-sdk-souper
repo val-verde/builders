@@ -44,12 +44,12 @@ COMMON_LDFLAGS="\
 " \
 package-cmake \
     ${SOURCE_ROOT} \
-    -DALIVE_LIBRARY=${PACKAGE_PREFIX}/lib/libalive2.so \
+    -DALIVE_LIBRARY=`package-get-path alive2 SHARED HOST` \
     -DHIREDIS_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DHIREDIS_LIBRARY=${PACKAGE_PREFIX}/lib/libhiredis.so \
+    -DHIREDIS_LIBRARY=`package-get-path hiredis SHARED HOST` \
     -DKLEE_SRC_DIR=${KLEE_SRC_DIR} \
     -DLLVM_CONFIG_EXECUTABLE=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config \
-    -DZ3_LIBRARY=${PACKAGE_PREFIX}/lib/libz3.so
+    -DZ3_LIBRARY=`package-get-path z3 SHARED HOST`
 
 # Build the components
 ninja-build

@@ -9,7 +9,7 @@ export SOURCE_PACKAGE_VERSION=13
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-export DEPENDS="libz3-4 (>= 4.8.7-4build1), libffi7 (>= 3.3-4), libelf1 (>= 0.176-1.1build1)"
+export DEPENDS="libz3-4 (>= 4.8.7-4build1), libelf1 (>= 0.176-1.1build1)"
 
 CUDA_GPU_PRIMARY_ARCH=61
 CUDA_GPU_SECONDARY_ARCH=35
@@ -23,12 +23,10 @@ elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
     LLVM_TARGETS_TO_BUILD="NVPTX;X86"
 fi
 
-BINDIR=${BINDIR:-"/usr/bin"} \
-CXX_INCLUDE_DIR=${SOURCE_ROOT}/libcxx/include \
 CXX_STANDARD=17 \
 COMMON_LDFLAGS="\
     -lunwind \
-    ${LDFLAGS} \
+    ${COMMON_LDFLAGS} \
 " \
 package-cmake \
     -DBUILD_SHARED_LIBS=FALSE \
@@ -63,8 +61,10 @@ package-cmake \
     -DFFI_INCLUDE_DIR=${SYSROOT}/usr/include/${HOST_TRIPLE} \
     -DFFI_INCLUDE_PATH=${SYSROOT}/usr/include/${HOST_TRIPLE} \
     -DFFI_LIBRARY_DIR=${SYSROOT}/usr/lib/${HOST_TRIPLE} \
-    -DFFI_LIBRARY_PATH=${SYSROOT}/usr/lib/${HOST_TRIPLE}/libffi.so \
+    -DFFI_LIBRARY_PATH=${SYSROOT}/usr/lib/${HOST_TRIPLE}/${SHARED_LIBRARY_PREFIX}ffi${SHARED_LIBRARY_SUFFIX} \
     -DHAVE_GNU_POSIX_REGEX=TRUE \
+    -DHAVE_CXX_ATOMICS_WITHOUT_LIB=TRUE \
+    -DHAVE_CXX_ATOMICS64_WITHOUT_LIB=TRUE \
     -DHAVE_INOTIFY=TRUE \
     -DHAVE_LIBCXXABI=TRUE \
     -DHAVE_LIBUNWIND=TRUE \
@@ -107,7 +107,7 @@ package-cmake \
     -DLIBCXXABI_USE_SJLJ_EXCEPTIONS=FALSE \
     -DLIBOMP_ENABLE_ASSERTIONS=FALSE \
     -DLIBOMPTARGET_DEP_LIBELF_INCLUDE_DIRS=${SYSROOT}/usr/include \
-    -DLIBOMPTARGET_DEP_LIBELF_LIBRARIES=${SYSROOT}/usr/lib/${HOST_TRIPLE}/libelf.so \
+    -DLIBOMPTARGET_DEP_LIBELF_LIBRARIES=${SYSROOT}/usr/lib/${HOST_TRIPLE}/${SHARED_LIBRARY_PREFIX}elf${SHARED_LIBRARY_SUFFIX} \
     -DLIBOMPTARGET_NVPTX_ALTERNATE_HOST_COMPILER=gcc-8 \
     -DLIBOMPTARGET_NVPTX_COMPUTE_CAPABILITIES="${CUDA_GPU_PRIMARY_ARCH},${CUDA_GPU_SECONDARY_ARCH}" \
     -DLIBOMPTARGET_SEARCH_LIBFFI_INCLUDE_DIRS=${SYSROOT}/usr/include \
@@ -172,9 +172,9 @@ package-cmake \
     -DPOLLY_ENABLE_GPGPU_CODEGEN=FALSE \
     -DSANITIZER_CXX_ABI=libc++ \
     -DZ3_INCLUDE_DIR=${SYSROOT}/usr/include \
-    -DZ3_LIBRARIES=${SYSROOT}/usr/lib/${HOST_TRIPLE}/libz3.so \
+    -DZ3_LIBRARIES=${SYSROOT}/usr/lib/${HOST_TRIPLE}/${SHARED_LIBRARY_PREFIX}z3${SHARED_LIBRARY_SUFFIX} \
     -DZ3_RETURNCODE=0 \
-    -DZ3_RETURNCODE__TRYRUN_OUTPUT=4.8.8 \
+    -DZ3_RETURNCODE__TRYRUN_OUTPUT=4.8.10 \
     ${SOURCE_ROOT}/llvm
 
 # Build the components
@@ -197,11 +197,9 @@ package-rsync -ax \
 # Build the package
 deb-package-build
 
-# remove libcxx, libcxxabi and libunwind as they are superceded by llvm-project.
+# remove libcxx as it is superceded by llvm-project.
 HOST_PROCESSOR=`${ECHO} ${HOST_PROCESSOR} | ${TR} _ -`
-PACKAGES_TO_MANAGE=( 'libcxx-13'    'HOST' \
-                     'libcxxabi-13' 'HOST' \
-                     'libunwind-13' 'HOST' )
+PACKAGES_TO_MANAGE=( 'libcxx-13' 'HOST' )
 
 PACKAGE_ACTION=UNINSTALL \
 deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}

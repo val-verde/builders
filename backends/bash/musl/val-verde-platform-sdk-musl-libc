@@ -29,11 +29,11 @@ make-install
 
 ${MKDIR} -p ${INSTALL_PREFIX}/bin
 ${LN} -sf \
-      ../lib/libc.so \
+      ../lib/${SHARED_LIBRARY_PREFIX}c${SHARED_LIBRARY_SUFFIX} \
       ${INSTALL_PREFIX}/bin/ldd
 ${LN} -sf \
-      ../usr/lib/libc.so \
-      ${INSTALL_PREFIX}/../lib/ld-${HOST_OS}-${HOST_PROCESSOR}.so.1
+      ../usr/lib/${SHARED_LIBRARY_PREFIX}c${SHARED_LIBRARY_SUFFIX} \
+      ${INSTALL_PREFIX}/../lib/ld-${HOST_OS}-${HOST_PROCESSOR}${SHARED_LIBRARY_SUFFIX}.1
 
 # Build the package
 deb-package-build

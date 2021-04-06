@@ -38,7 +38,7 @@ package-cmake \
 # Build the components
 ninja-install
 
-${MV} ${INSTALL_PREFIX}/lib/swift/windows/*.a \
+${MV} ${INSTALL_PREFIX}/lib/swift/windows/*${STATIC_LIBRARY_SUFFIX} \
       ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
 
 # Build the package

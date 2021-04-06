@@ -42,13 +42,13 @@ package-cmake \
     -DCLANG_LINK_CLANG_DYLIB=TRUE \
     -DCMAKE_EXE_LINKER_FLAGS="-O2" \
     -DCURSES_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/ncurses \
-    -DCURSES_LIBRARIES=${PACKAGE_PREFIX}/lib/libncurses.so \
+    -DCURSES_LIBRARIES=`package-get-path ncurses SHARED HOST` \
     -DLibEdit_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
-    -DLibEdit_LIBRARIES=${PACKAGE_PREFIX}/lib/libedit.so \
+    -DLibEdit_LIBRARIES=`package-get-path edit SHARED HOST` \
     -DLIBLZMA_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DLIBLZMA_LIBRARY=${PACKAGE_PREFIX}/lib/liblzma.so \
+    -DLIBLZMA_LIBRARY=`package-get-path lzma SHARED HOST` \
     -DLIBXML2_INCLUDE_DIR=${PACKAGE_PREFIX}/include/libxml2 \
-    -DLIBXML2_LIBRARY=${PACKAGE_PREFIX}/lib/libxml2.so \
+    -DLIBXML2_LIBRARY=`package-get-path xml2 SHARED HOST` \
     -DLLDB_ENABLE_PYTHON=TRUE \
     -DLLDB_ENABLE_SWIFT_SUPPORT=TRUE \
     -DLLDB_ENABLE_WERROR=FALSE \
@@ -70,8 +70,8 @@ package-cmake \
     -DLLVM_TABLEGEN=${LLVM_STAGE_ROOT}/bin/llvm-tblgen \
     -DPython3_EXECUTABLE=${PYTHON} \
     -DPython3_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/python${PYTHON_VERSION} \
-    -DPython3_LIBRARIES=${PACKAGE_PREFIX}/lib/libpython${PYTHON_VERSION}.so \
-    -DPANEL_LIBRARIES=${PACKAGE_PREFIX}/lib/libpanel.so \
+    -DPython3_LIBRARIES=`package-get-path python${PYTHON_VERSION} SHARED HOST` \
+    -DPANEL_LIBRARIES=`package-get-path panel SHARED HOST` \
     -DSwift_DIR=${SWIFT_STAGE_ROOT}/lib/cmake/swift \
     -DSWIG_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/swig \
     ${SOURCE_ROOT}
@@ -83,7 +83,7 @@ ninja-install
 COMPONENTS="\
     ${INSTALL_PREFIX}/bin/lldb \
     ${INSTALL_PREFIX}/bin/repl_swift \
-    ${INSTALL_PREFIX}/lib/liblldb.so \
+    ${INSTALL_PREFIX}/lib/${SHARED_LIBRARY_PREFIX}lldb${SHARED_LIBRARY_SUFFIX} \
 " \
 rpath-fixup
 

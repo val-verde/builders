@@ -14,8 +14,8 @@ package-invoke-builder mingw-w64-headers
 package-invoke-builder mingw-w64-crt
 
 # windows compiler-rt build (for host)
-CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a \
-DST_CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a \
+CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC` \
+DST_CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC` \
 CXXFLAGS="\
     -Wl,/force:unresolved \
     ${CXXFLAGS} \

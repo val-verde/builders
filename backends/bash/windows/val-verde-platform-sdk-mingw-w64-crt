@@ -24,8 +24,8 @@ package-configure \
 make-install
 
 ${LN} -sf \
-      libuuid.a \
-      ${INSTALL_PREFIX}/lib/libwinuuid.a
+      `package-get-filename uuid STATIC` \
+      ${INSTALL_PREFIX}/lib/`package-get-filename winuuid STATIC`
 
 # Build the package
 deb-package-build

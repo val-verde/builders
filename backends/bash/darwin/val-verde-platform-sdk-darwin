@@ -3,39 +3,27 @@
 set -e
 
 # Source package build helper functions
+export COMMON_CFLAGS="-Wl,-platform_version,${HOST_OS},${HOST_OS_API_LEVEL},${HOST_OS_API_LEVEL} -Wno-unused-command-line-argument"
+export SYSTEM_NAME=Darwin
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
-
-# kernel headers build
-package-invoke-builder kernel-headers-cross
-
-# musl headers build
-package-invoke-builder musl-headers
 
 # compiler-rt build
 if [ "${BUILD_PROCESSOR}" != ${HOST_PROCESSOR} ]; then
     CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC` \
-    CXXFLAGS="\
-        -Dprintf\\\(...\\\)= \
-        ${CXXFLAGS} \
-    " \
     package-invoke-builder compiler-rt-musl
 fi
 
-# musl libc build
-package-invoke-builder musl-libc
-
 # libcxx build
-ENABLE_MUSL_LIBC=TRUE \
 package-invoke-builder libcxx-bootstrap
 
 # llvm dependencies
-package-invoke-builder llvm-dependencies-musl
+package-invoke-builder llvm-dependencies-darwin
 
 # swift tools build
-package-invoke-builder swift-tools-musl
+package-invoke-builder swift-tools-darwin
 
 # swift sdk build
-package-invoke-builder swift-sdk-musl
+package-invoke-builder swift-sdk-darwin
 
 # go build
 package-invoke-builder go-cross

@@ -71,7 +71,7 @@ package-cmake \
     -DFFI_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DFFI_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
     -DFFI_LIBRARY_DIR=${PACKAGE_PREFIX}/lib \
-    -DFFI_LIBRARY_PATH=${PACKAGE_PREFIX}/lib/libffi.dll.a \
+    -DFFI_LIBRARY_PATH=`package-get-path ffi SHARED HOST` \
     -DHAVE_GNU_POSIX_REGEX=TRUE \
     -DHAVE_INOTIFY=TRUE \
     -DHAVE_LIBCXXABI=TRUE \
@@ -184,11 +184,11 @@ package-cmake \
     -DPOLLY_ENABLE_GPGPU_CODEGEN=FALSE \
     -DSANITIZER_CXX_ABI=libc++ \
     -DZ3_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DZ3_LIBRARIES=${PACKAGE_PREFIX}/lib/libz3.dll.a \
+    -DZ3_LIBRARIES=`package-get-path z3 SHARED HOST` \
     -DZ3_RETURNCODE=0 \
     -DZ3_RETURNCODE__TRYRUN_OUTPUT=4.8.8 \
     -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DZLIB_LIBRARY_RELEASE=${PACKAGE_PREFIX}/lib/libzlib.dll.a \
+    -DZLIB_LIBRARY_RELEASE=`package-get-path zlib SHARED HOST` \
     ${SOURCE_ROOT}/llvm
 
 # Build the components
@@ -218,8 +218,8 @@ package-rsync -ax \
               ${STAGE_ROOT}/bin/llvm-readobj* \
               ${INSTALL_PREFIX}/bin/
 
-CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a
-DST_CLANG_RT_LIB=libclang_rt.builtins-${HOST_PROCESSOR}.a
+CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
+DST_CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
 SDK_PLATFORM_DIR=`${ECHO} ${SYSTEM_NAME} | ${TR} '[:upper:]' '[:lower:]'`
 DST_SDK_PLATFORM_DIR=${DST_SDK_PLATFORM_DIR:-${SDK_PLATFORM_DIR}}
 ${LN} -sf ${CLANG_RT_LIB} \
