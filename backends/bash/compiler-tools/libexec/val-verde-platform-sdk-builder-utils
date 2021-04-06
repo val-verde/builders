@@ -521,6 +521,13 @@ function package-bootstrap-configure-install() {
     package-configure-install-staged "${@}"
 }
 
+
+function package-bootstrap-configure-install-archive() {
+    package-bootstrap-configure-install "${@}"
+
+    package-invoke-archive-install
+}
+
 function package-clean-texinfo-lint() {
     ${RM} -rf ${INSTALL_PREFIX}/lib/charset.alias
     ${RM} -rf ${INSTALL_PREFIX}/share/info/dir
@@ -661,6 +668,12 @@ function package-configure-install-staged() {
     package-install
 }
 
+function package-configure-install-archive() {
+    package-configure-install "${@}"
+
+    package-invoke-archive-install
+}
+
 function package-install() {
     CONFIGURE_BUILD_ROOT=${CONFIGURE_BUILD_ROOT:-${STAGE_ROOT}}
     package-push-directory ${CONFIGURE_BUILD_ROOT}
@@ -675,7 +688,7 @@ function package-install() {
     package-pop-directory
 }
 
-function package-invoke-artifact-install() {
+function package-invoke-archive-install() {
     # Build the package
     deb-package-build
 
@@ -953,6 +966,12 @@ function package-stage-configure-install() {
     package-pop-directory
 
     package-configure-install-staged "${@}"
+}
+
+function package-stage-configure-install-archive() {
+    package-stage-configure-install "${@}"
+
+    package-invoke-archive-install
 }
 
 function package-swift-build() {
