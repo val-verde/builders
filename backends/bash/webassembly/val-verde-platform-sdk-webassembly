@@ -25,11 +25,5 @@ CXXFLAGS="\
 " \
 package-invoke-builder compiler-rt-wasi
 
-# webassembly libcxxabi
-package-invoke-builder libcxxabi-wasi
-
 # webassembly libcxx
-package-invoke-builder libcxx-wasi
-
-# webassembly compiler-rt (rebuild with c++)
-package-invoke-builder compiler-rt-wasi
+package-invoke-builder libcxx-bootstrap
