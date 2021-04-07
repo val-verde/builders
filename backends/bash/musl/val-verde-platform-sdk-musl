@@ -18,7 +18,7 @@ if [ "${BUILD_PROCESSOR}" != ${HOST_PROCESSOR} ]; then
         -Dprintf\\\(...\\\)= \
         ${CXXFLAGS} \
     " \
-    package-invoke-builder compiler-rt-musl
+    package-invoke-builder compiler-rt-cross
 fi
 
 # musl libc build

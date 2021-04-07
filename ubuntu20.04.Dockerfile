@@ -92,14 +92,11 @@ RUN HOST_ARCH=${BUILD_ARCH} \
     HOST_PROCESSOR=${BUILD_PROCESSOR} \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu
 
-# musl build
+# macos build
 FROM GNU_BUILDER AS MACOS_BUILDER
 
 COPY backends/bash/darwin \
      /sources/
-
-# musl build
-FROM MACOS_BUILDER AS MUSL_BUILDER
 
 RUN HOST_ARCH=${BUILD_ARCH} \
     HOST_CPU=${BUILD_CPU} \
@@ -109,6 +106,18 @@ RUN HOST_ARCH=${BUILD_ARCH} \
     HOST_PROCESSOR=${BUILD_PROCESSOR} \
     SYSROOT=${SOURCE_ROOT_BASE}/macosx-11 \
     ; # bash ${VAL_VERDE_GH_TEAM}-platform-sdk-darwin
+
+RUN HOST_ARCH=armv8-a \
+    HOST_CPU=apple-a14 \
+    HOST_KERNEL=apple \
+    HOST_OS=macos \
+    HOST_OS_API_LEVEL=11 \
+    HOST_PROCESSOR=${BUILD_PROCESSOR} \
+    SYSROOT=${SOURCE_ROOT_BASE}/macosx-11 \
+    ; # bash ${VAL_VERDE_GH_TEAM}-platform-sdk-darwin
+
+# musl build
+FROM MACOS_BUILDER AS MUSL_BUILDER
 
 COPY backends/bash/musl \
      /sources/
