@@ -39,7 +39,7 @@ SHARED_LIBRARY_SUFFIX=".so"
 STATIC_LIBRARY_PREFIX="lib"
 STATIC_LIBRARY_SUFFIX=".a"
 
-if [ "${HOST_OS}" = "darwin" ]; then
+if [ "${HOST_OS}" = "macos" ]; then
     SHARED_LIBRARY_SUFFIX=".dylib"
 elif [ "${HOST_OS}" = "mingw32" ]; then
     EXECUTABLE_SUFFIX=".exe"
@@ -234,8 +234,6 @@ function export-compiler-environment() {
             -Xcc -D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL} \
             ${SWIFTCFLAGS} \
         "
-    elif [ "${HOST_OS}" = "darwin" ]; then
-        GOOS=darwin
     elif [ "${HOST_OS}" = "gnu" ]; then
         COMMON_CFLAGS="\
             -fPIC \
@@ -243,6 +241,8 @@ function export-compiler-environment() {
             ${COMMON_CFLAGS} \
         "
         GOOS=linux
+    elif [ "${HOST_OS}" = "macos" ]; then
+        GOOS=darwin
     elif [ "${HOST_OS}" = "musl" ]; then
         COMMON_CFLAGS="\
             -fPIC \
