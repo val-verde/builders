@@ -17,10 +17,12 @@ export DEPENDS="\
 # Invoke one-shot template for bootstrap/configure/install
 if [ "${HOST_OS}" = "mingw32" ]; then
     ENABLE_OR_DISABLE_JIT=disable
+    ENABLE_OR_DISABLE_NETWORKING=disable
     ENABLE_OR_DISABLE_POSIX=disable
     WITH_OR_WITHOUT_MODULES=without
 else
     ENABLE_OR_DISABLE_JIT=enable
+    ENABLE_OR_DISABLE_NETWORKING=enable
     ENABLE_OR_DISABLE_POSIX=enable
     WITH_OR_WITHOUT_MODULES=with
 fi
@@ -34,5 +36,6 @@ package-bootstrap-configure-install-archive \
     --disable-static \
     --enable-shared \
     --${ENABLE_OR_DISABLE_JIT}-jit \
+    --${ENABLE_OR_DISABLE_NETWORKING}-networking \
     --${ENABLE_OR_DISABLE_POSIX}-posix \
     --${WITH_OR_WITHOUT_MODULES}-modules
