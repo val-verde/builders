@@ -86,7 +86,7 @@ package-invoke-builder gmp-cross
 package-invoke-builder ncurses-cross
 
 # windows gettext build
-package-invoke-builder gettext-cross
+# package-invoke-builder gettext-cross
 
 # windows texinfo build
 # package-invoke-builder texinfo-cross
@@ -98,7 +98,6 @@ package-invoke-builder guile-cross
 package-invoke-builder make-cross
 
 # windows m4 build
-HELP2MAN=${BINDIR}/true \
 package-invoke-builder m4-cross
 
 # windows ninja build
@@ -121,7 +120,7 @@ package-invoke-builder mpfr-cross
 package-invoke-builder mpc-cross
 
 # windows isl build
-package-invoke-builder isl-cross
+# package-invoke-builder isl-cross
 
 # windows editline build
 package-invoke-builder wineditline-cross
@@ -139,13 +138,13 @@ package-invoke-builder expat-cross
 # package-invoke-builder gawk-cross
 
 # windows autogen build
-package-invoke-builder autogen-cross
+# package-invoke-builder autogen-cross
 
 # windows libgpg-error build
 package-invoke-builder libgpg-error-cross
 
 # windows libgcrypt build
-package-invoke-builder libgcrypt-cross
+# package-invoke-builder libgcrypt-cross
 
 # windows indent build
 package-invoke-builder indent-cross
