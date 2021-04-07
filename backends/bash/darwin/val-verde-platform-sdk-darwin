@@ -4,8 +4,10 @@ set -e
 
 # Source package build helper functions
 export COMMON_CFLAGS="-Wl,-platform_version,${HOST_OS},${HOST_OS_API_LEVEL},${HOST_OS_API_LEVEL} -Wno-unused-command-line-argument"
+export DARWIN_OS=darwin
+export DARWIN_OS_API_LEVEL=20
 export SYSTEM_NAME=Darwin
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # compiler-rt build
 if [ "${BUILD_PROCESSOR}" != ${HOST_PROCESSOR} ]; then
@@ -20,20 +22,20 @@ package-invoke-builder libcxx-bootstrap
 package-invoke-builder llvm-dependencies-darwin
 
 # swift tools build
-package-invoke-builder swift-tools-darwin
+# package-invoke-builder swift-tools-darwin
 
 # swift sdk build
-package-invoke-builder swift-sdk-darwin
+# package-invoke-builder swift-sdk-darwin
 
 # go build
 package-invoke-builder go-cross
 
 # graphics sdk build
-package-invoke-builder graphics-sdk-cross
+# package-invoke-builder graphics-sdk-cross
 
 # node + sdk build
-package-invoke-builder node-cross
-package-invoke-builder npm-yarn-cross
+# package-invoke-builder node-cross
+# package-invoke-builder npm-yarn-cross
 
 # rust build
 # package-invoke-builder rust-cross
