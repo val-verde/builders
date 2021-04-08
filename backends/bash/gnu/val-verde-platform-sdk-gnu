@@ -17,7 +17,7 @@ package-invoke-builder llvm-project 13
 package-invoke-builder souper-cross 1
 
 # cmark build
-package-invoke-builder swift-cmark-cross 5
+package-invoke-builder swift-cmark-cross 5 none
 
 # swift build
 package-invoke-builder swift 5
