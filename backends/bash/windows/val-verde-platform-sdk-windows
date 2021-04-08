@@ -15,7 +15,7 @@ package-invoke-builder mingw-w64-headers
 package-invoke-builder mingw-w64-crt
 
 # windows compiler-rt build (for host)
-package-invoke-builder compiler-rt
+package-invoke-builder compiler-rt-cross
 
 # windows libcxx build
 package-invoke-builder libcxx-bootstrap
