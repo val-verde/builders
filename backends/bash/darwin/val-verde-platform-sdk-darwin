@@ -4,15 +4,9 @@ set -e
 
 # Source package build helper functions
 export COMMON_CFLAGS="-Wl,-platform_version,${HOST_OS},${HOST_OS_API_LEVEL},${HOST_OS_API_LEVEL} -Wno-unused-command-line-argument"
-export DARWIN_OS=darwin
-export DARWIN_OS_API_LEVEL=20
+export SYSROOT=${SOURCE_ROOT_BASE}/macosx-${HOST_OS_API_LEVEL}
 export SYSTEM_NAME=Darwin
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
-
-# compiler-rt build
-if [ "${BUILD_PROCESSOR}" != ${HOST_PROCESSOR} ]; then
-    package-invoke-builder compiler-rt-cross
-fi
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # libcxx build
 package-invoke-builder libcxx-bootstrap
