@@ -10,7 +10,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 package-invoke-builder android-ndk-headers
 
 # android compiler-rt build (for host)
-package-invoke-builder compiler-rt
+package-invoke-builder compiler-rt-cross
 
 # android ndk runtime build
 package-invoke-builder android-ndk-runtime

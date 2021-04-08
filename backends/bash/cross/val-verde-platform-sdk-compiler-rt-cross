@@ -68,10 +68,14 @@ DST_SDK_PLATFORM_DIR=${DST_SDK_PLATFORM_DIR:-${SDK_PLATFORM_DIR}}
 ${MKDIR} -p ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/13.0.0/lib/${SDK_PLATFORM_DIR}
 ${MV} ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/${SDK_PLATFORM_DIR}/${CLANG_RT_LIB} \
       ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/13.0.0/lib/${DST_SDK_PLATFORM_DIR}/${DST_CLANG_RT_LIB}
-${MV} ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/${SDK_PLATFORM_DIR}/clang_rt.crtbegin-${HOST_PROCESSOR}.o \
-      ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/13.0.0/lib/${DST_SDK_PLATFORM_DIR}/crtbeginS.o
-${MV} ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/${SDK_PLATFORM_DIR}/clang_rt.crtend-${HOST_PROCESSOR}.o \
-      ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/13.0.0/lib/${DST_SDK_PLATFORM_DIR}/crtendS.o
+
+if [ "${HOST_OS}" = "linux" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    ${MV} ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/${SDK_PLATFORM_DIR}/clang_rt.crtbegin-${HOST_PROCESSOR}.o \
+          ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/13.0.0/lib/${DST_SDK_PLATFORM_DIR}/crtbeginS.o
+    ${MV} ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/${SDK_PLATFORM_DIR}/clang_rt.crtend-${HOST_PROCESSOR}.o \
+          ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/13.0.0/lib/${DST_SDK_PLATFORM_DIR}/crtendS.o
+fi
 
 # Build and install the package
 package-invoke-archive-install
