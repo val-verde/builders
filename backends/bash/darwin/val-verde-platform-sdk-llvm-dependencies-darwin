@@ -3,7 +3,7 @@
 set -e
 
 # Source package build helper functions
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # autoconf build
 package-invoke-builder autoconf-cross
@@ -61,6 +61,9 @@ package-invoke-builder icu4c-cross
 
 # xz build
 package-invoke-builder xz-cross
+
+# TODO: Remove after verification
+exit 0
 
 # libxml2 build
 DISABLE_PYTHON=TRUE \
