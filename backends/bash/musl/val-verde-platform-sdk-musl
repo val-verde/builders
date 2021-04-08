@@ -13,11 +13,6 @@ package-invoke-builder musl-headers
 
 # compiler-rt build
 if [ "${BUILD_PROCESSOR}" != ${HOST_PROCESSOR} ]; then
-    CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC` \
-    CXXFLAGS="\
-        -Dprintf\\\(...\\\)= \
-        ${CXXFLAGS} \
-    " \
     package-invoke-builder compiler-rt-cross
 fi
 
