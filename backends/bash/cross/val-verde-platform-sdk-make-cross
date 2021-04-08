@@ -16,9 +16,5 @@ if [ "${HOST_OS}" = "mingw32" ]; then
 fi
 
 # Invoke one-shot template for bootstrap/configure/install
-CFLAGS="\
-    -U__MINGW32__ \
-    ${CFLAGS} \
-" \
 package-bootstrap-configure-install-archive \
     "${MAKE_FS_CMD}"
