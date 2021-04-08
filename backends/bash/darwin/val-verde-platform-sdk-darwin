@@ -11,7 +11,6 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # compiler-rt build
 if [ "${BUILD_PROCESSOR}" != ${HOST_PROCESSOR} ]; then
-    CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC` \
     package-invoke-builder compiler-rt-cross
 fi
 
