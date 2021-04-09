@@ -21,7 +21,8 @@ ENV PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME} \
     BUILD_DEB_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/build-debs \
     CUDA_VERSION=11.4.1 \
     MACOS_VERSION=11 \
-    SOURCE_DEB_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/source-debs
+    SOURCE_DEB_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/source-debs \
+    TOOLCHAIN_DEB_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/toolchain-debs
 
 ENV BUILD_ARCH=skylake \
     BUILD_CPU=skylake \
@@ -30,7 +31,9 @@ ENV BUILD_ARCH=skylake \
     BUILD_OS_API_LEVEL= \
     BUILD_PROCESSOR=x86_64
 
-RUN mkdir -p ${BUILD_DEB_PATH} ${SOURCE_DEB_PATH}
+RUN mkdir -p ${BUILD_DEB_PATH} \
+             ${SOURCE_DEB_PATH} \
+             ${TOOLCHAIN_DEB_PATH}
 
 # platform sdk tool wrapper scripts and templates
 COPY backends/bash/deb-templates \
@@ -43,6 +46,9 @@ COPY /source-debs/ \
 
 COPY /build-debs/ \
      ${BUILD_DEB_PATH}
+
+COPY /toolchain-debs/ \
+     ${TOOLCHAIN_DEB_PATH}
 
 # upstream source package build
 FROM ubuntu AS sources_builder
