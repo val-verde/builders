@@ -147,7 +147,7 @@ package-invoke-builder libgpg-error-cross
 # package-invoke-builder libgcrypt-cross
 
 # windows indent build
-package-invoke-builder indent-cross
+# package-invoke-builder indent-cross
 
 # windows libarchive build
 package-invoke-builder libarchive-cross
