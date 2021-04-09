@@ -410,6 +410,9 @@ package-invoke-builder popt-cross
 # rpm build
 package-invoke-builder rpm-cross
 
+# dnf build
+# package-invoke-builder dnf-cross
+
 # swig build
 package-invoke-builder swig-cross
 

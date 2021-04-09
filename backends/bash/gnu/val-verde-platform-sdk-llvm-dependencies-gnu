@@ -16,6 +16,7 @@ export \
     CP=/usr/bin/cp \
     CURL=/usr/bin/curl \
     CUT=/usr/bin/cut \
+    DNF=/usr/bin/dnf \
     DPKG=/usr/bin/dpkg \
     ECHO=/usr/bin/echo \
     FIND=/usr/bin/find \
@@ -509,6 +510,10 @@ package-invoke-builder popt-cross
 # rpm build
 package-invoke-builder rpm-cross
 unset RPM
+
+# rpm build
+package-invoke-builder dnf-cross
+unset DNF
 
 # tensorflow build
 package-invoke-builder tensorflow-cross
