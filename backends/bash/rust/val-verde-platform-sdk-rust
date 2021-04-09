@@ -22,9 +22,14 @@ export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUA
 # Configure the build components
 BUILD_TRIPLE=${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}${BUILD_OS_API_LEVEL}
 
-${MKDIR} -p ${STAGE_ROOT}
+${MKDIR} -p ${STAGE_ROOT}/libgcc
 
-cd ${STAGE_ROOT}
+if [ "${HOST_OS}" = "gnu" ]; then
+    ${LN} -sf \
+          `package-get-path unwind SHARED HOST` \
+          ${STAGE_ROOT}/libgcc/libgcc_s.so
+fi
+
 package-rsync -ax \
               ${SOURCE_ROOT}/${VAL_VERDE_GH_TEAM}-config.toml.in \
               ${STAGE_ROOT}/config.toml
@@ -32,7 +37,7 @@ package-rsync -ax \
 CARGO=${BINDIR}/cargo
 FILECHECK=${LLVM_NATIVE_STAGE_ROOT}/bin/FileCheck
 LD=${CCLD}
-LDFLAGS=
+LDFLAGS="-L${STAGE_ROOT}/libgcc"
 LLVMCONFIG=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config
 RUSTC=${BINDIR}/rustc
 RUSTFMT=${BINDIR}/rustfmt
