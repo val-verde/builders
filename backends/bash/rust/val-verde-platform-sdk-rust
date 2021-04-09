@@ -22,26 +22,24 @@ export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUA
 # Configure the build components
 BUILD_TRIPLE=${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}${BUILD_OS_API_LEVEL}
 
-${MKDIR} -p ${STAGE_ROOT}/${BUILD_TRIPLE}
-package-rsync -ax \
-              ${PACKAGE_PREFIX}/staging-data/${BUILD_TRIPLE}/* \
-              ${STAGE_ROOT}/${BUILD_TRIPLE}/
-${SED} -i \
-       "s|build.download_stage0()|#build.download_stage0()|g" \
-       ${SOURCE_ROOT}/src/bootstrap/bootstrap.py
+${MKDIR} -p ${STAGE_ROOT}
 
 cd ${STAGE_ROOT}
 package-rsync -ax \
               ${SOURCE_ROOT}/${VAL_VERDE_GH_TEAM}-config.toml.in \
               ${STAGE_ROOT}/config.toml
 
+CARGO=${BINDIR}/cargo
 FILECHECK=${LLVM_NATIVE_STAGE_ROOT}/bin/FileCheck
-LD=${CC}
+LD=${CCLD}
 LDFLAGS=
 LLVMCONFIG=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config
+RUSTC=${BINDIR}/rustc
+RUSTFMT=${BINDIR}/rustfmt
 
 ${SED} -i "s|@@AR@@|${AR}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@BUILD_TRIPLE@@|${BUILD_TRIPLE}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@CARGO@@|${CARGO}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@CC@@|${CC}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@CFLAGS@@|${CFLAGS}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@CXX@@|${CXX}|g" ${STAGE_ROOT}/config.toml
@@ -54,6 +52,8 @@ ${SED} -i "s|@@LLVMCONFIG@@|${LLVMCONFIG}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@NODE@@|${NODE}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@PYTHON@@|${PYTHON}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@RANLIB@@|${RANLIB}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@RUSTC@@|${RUSTC}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@RUSTFMT@@|${RUSTFMT}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@STAGE_ROOT@@|${STAGE_ROOT}|g" ${STAGE_ROOT}/config.toml
 
 # Build the components

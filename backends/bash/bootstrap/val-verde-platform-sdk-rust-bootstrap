@@ -10,7 +10,7 @@ export SOURCE_PACKAGE_VERSION=1
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
-DESTINATION_DIR=${INSTALL_PREFIX}/staging-data/${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}/stage0
+DESTINATION_DIR=${INSTALL_PREFIX}
 RUST_PACKAGE_LIST=/usr/share/${VAL_VERDE_GH_TEAM}-rust-binaries.json
 RUST_PACKAGE_COUNT=$(jq -r length ${RUST_PACKAGE_LIST})
 
