@@ -346,7 +346,7 @@ package-invoke-builder xorg-libxxf86vm-cross
 package-invoke-builder freetype2-cross
 
 # wayland build
-package-invoke-builder wayland
+package-invoke-builder wayland-cross
 
 # wayland-protocols build
 package-invoke-builder wayland-protocols-cross
