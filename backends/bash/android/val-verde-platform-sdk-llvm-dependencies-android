@@ -425,6 +425,9 @@ LIBS="\
 " \
 package-invoke-builder rpm-cross
 
+# android dnf build
+# package-invoke-builder dnf-cross
+
 # android swig build
 package-invoke-builder swig-cross
 
