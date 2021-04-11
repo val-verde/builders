@@ -3,7 +3,7 @@
 set -e
 
 # Set all environment vars
-export SOURCE_PACKAGE_NAME=rust-bootstrap
+export SOURCE_PACKAGE_NAME=rust
 export SOURCE_PACKAGE_VERSION=1
 
 # Source package build helper functions
