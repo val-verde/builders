@@ -174,7 +174,7 @@ package-invoke-builder libuv-cross
 package-invoke-builder opencl-headers-cross
 
 # windows opencl icd loader build
-# package-invoke-builder opencl-icd-loader-cross
+package-invoke-builder opencl-icd-loader-cross
 
 # windows vulkan headers build
 package-invoke-builder vulkan-headers-cross
