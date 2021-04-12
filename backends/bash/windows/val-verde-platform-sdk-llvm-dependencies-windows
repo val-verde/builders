@@ -14,6 +14,9 @@ package-invoke-builder automake-cross
 # windows autoconf-archive build
 package-invoke-builder autoconf-archive-cross
 
+# windows argp-standalone build
+package-invoke-builder argp-standalone-cross
+
 # windows zlib build
 package-invoke-builder zlib-cross
 
