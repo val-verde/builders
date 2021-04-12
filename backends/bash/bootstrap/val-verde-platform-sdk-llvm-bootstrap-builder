@@ -1,0 +1,63 @@
+#!/bin/bash
+
+set -e
+
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# kernel-headers bootstrap build
+BUILD_SYSROOT=/ \
+package-invoke-builder kernel-headers 5
+
+# autoconf bootstrap build
+package-invoke-builder autoconf 2
+
+# automake bootstrap build
+package-invoke-builder automake 1
+
+# gcc bootstrap build
+package-invoke-builder gcc 11
+
+# glibc-interface bootstrap build
+CC=`BINDIR= package-get-path gcc EXECUTABLE BUILD` \
+CPP=`BINDIR= package-get-path cpp EXECUTABLE BUILD` \
+package-invoke-builder glibc-interface 2
+
+# libcxx bootstrap build
+DISABLE_CXX_INCLUDE=TRUE \
+DISABLE_CXX_STDLIB=TRUE \
+package-invoke-builder libcxx-bootstrap 13 none
+
+# cmake bootstrap build
+package-invoke-builder cmake 3
+export CMAKE=`BINDIR= package-get-path cmake EXECUTABLE BUILD`
+
+# z3 build
+package-invoke-builder z3 4
+
+# llvm bootstrap build
+ENABLE_INCREMENTAL_BUILD=TRUE \
+ENABLE_STAGE_ROOT_BUILD=TRUE \
+package-invoke-builder llvm-project-bootstrap 13 no-install
+
+# remove libcxx, libcxxabi and libunwind as they are superceded by llvm-project.
+HOST_PROCESSOR=`${ECHO} ${HOST_PROCESSOR} | ${TR} _ -`
+PACKAGES_TO_MANAGE=( 'libcxx-13' 'HOST' )
+
+PACKAGE_ACTION=UNINSTALL \
+deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
+
+# install llvm for host
+PACKAGES_TO_MANAGE=( 'llvm-project-13' 'HOST'
+                     'llvm-project-13-stage' 'HOST' )
+
+PACKAGE_ACTION=INSTALL \
+deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
+
+# remove host compiler and libraries as it is superceded by bootstrapped clang
+package-apt-remove \
+    clang* \
+    cmake \
+    libclang* \
+    libllvm* \
+    lld*

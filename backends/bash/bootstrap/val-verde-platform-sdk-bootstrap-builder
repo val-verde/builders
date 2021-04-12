@@ -1,0 +1,60 @@
+#!/bin/bash
+
+set -e
+
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+export \
+    AR=`BINDIR= package-get-path llvm-ar EXECUTABLE BUILD` \
+    CC=`BINDIR= package-get-path clang EXECUTABLE BUILD` \
+    CPP=`BINDIR= package-get-path clang-cpp EXECUTABLE BUILD` \
+    CXX=`BINDIR= package-get-path clang++ EXECUTABLE BUILD` \
+    LD=`BINDIR= package-get-path ld.lld EXECUTABLE BUILD` \
+    MAKEINFO=`package-get-path true EXECUTABLE BUILD` \
+    NM=`BINDIR= package-get-path llvm-nm EXECUTABLE BUILD` \
+    RANLIB=`BINDIR= package-get-path llvm-ranlib EXECUTABLE BUILD` \
+    READELF=`BINDIR= package-get-path llvm-readelf EXECUTABLE BUILD` \
+    STRINGS=`BINDIR= package-get-path llvm-strings EXECUTABLE BUILD` \
+    STRIP=`BINDIR= package-get-path llvm-strip EXECUTABLE BUILD`
+
+export GO=`BINDIR= package-get-path go EXECUTABLE BUILD` \
+       CMAKE=`BINDIR= package-get-path cmake EXECUTABLE BUILD`
+
+unset \
+    DISABLE_POLLY \
+    USE_FUSE_LD_OVER_LD_PATH
+
+# zlib bootstrap build
+package-invoke-builder zlib 1
+
+# help2man bootstrap build
+package-invoke-builder help2man 1
+export HELP2MAN=`BINDIR= package-get-path help2man EXECUTABLE BUILD`
+
+# libtool bootstrap build
+package-invoke-builder libtool 2
+
+# libffi bootstrap build
+package-invoke-builder libffi 3
+
+# glib bootstrap build
+package-invoke-builder glib 1
+
+# pkg-config bootstrap build
+package-invoke-builder pkg-config 0
+
+# re2c build
+package-invoke-builder re2c 2
+
+# alive2 build
+package-invoke-builder alive2 1
+
+# hiredis build
+package-invoke-builder hiredis 1
+
+# souper build
+package-invoke-builder souper 1
+
+# android ndk build
+package-invoke-builder android-ndk ${ANDROID_NDK_VERSION}
