@@ -10,6 +10,10 @@ export SOURCE_PACKAGE_VERSION=1
 
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
+COMMON_LDFLAGS="\
+    -L${STAGE_ROOT}/libgcc \
+    ${COMMON_LDFLAGS} \
+" \
 export-compiler-environment
 generate-compiler-tools
 
@@ -37,7 +41,6 @@ package-rsync -ax \
 CARGO=${BINDIR}/cargo
 FILECHECK=${LLVM_NATIVE_STAGE_ROOT}/bin/FileCheck
 LD=${CCLD}
-LDFLAGS="-L${STAGE_ROOT}/libgcc"
 LLVMCONFIG=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config
 RUSTC=${BINDIR}/rustc
 RUSTFMT=${BINDIR}/rustfmt
