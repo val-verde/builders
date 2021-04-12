@@ -478,8 +478,8 @@ package-invoke-builder popt-cross 1
 package-invoke-builder rpm-cross 4
 unset RPM
 
-# rpm build
-package-invoke-builder dnf-cross
+# dnf build
+package-invoke-builder dnf-cross 4
 unset DNF
 
 # AI SDK build
