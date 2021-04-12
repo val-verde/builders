@@ -173,6 +173,9 @@ package-invoke-builder xcb-pthread-stubs-cross
 # windows libuv build
 package-invoke-builder libuv-cross
 
+# freetype2 build
+package-invoke-builder freetype2-cross
+
 # windows opencl headers build
 package-invoke-builder opencl-headers-cross
 
