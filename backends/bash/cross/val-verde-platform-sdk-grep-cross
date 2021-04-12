@@ -12,7 +12,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 copy-source-to-staging
 
 # Configure the build components
-if [ ${HOST_OS} = "mingw32" ]; then
+if [ "${HOST_OS}" = "mingw32" ]; then
     export CFLAGS="\
         -pthread \
         ${CFLAGS} \
