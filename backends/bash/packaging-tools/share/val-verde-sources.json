@@ -129,6 +129,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "curl",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "7",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "cython",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "0",
@@ -1589,13 +1598,6 @@
         "sourceBranchIndicator": "wget",
         "sourcePackageVersion": "3.7.4",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "curl",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "7.73.0",
-        "sourcePackageUrl": "https://curl.haxx.se/download/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
         "sourceType": "other",
