@@ -21,15 +21,13 @@ function package-invoke-builder() {
 
     get-common-variables
 
-    if [ -z ${DISABLE_SKIP_BUILD_DEB_CHECK} ]; then
-        SEARCH_INPUT=${BUILD_DEB_PATH}/${PACKAGE_NAME}.deb \
-        tool-check
-    fi
+    SEARCH_INPUT=${DEB_PATH}/${PACKAGE_NAME}.deb \
+    tool-check
 
     if [ ${FILE_EXISTS} == 'true' ]; then
-        ${ECHO} -e "\e[1;35mSkipping build and install \
-                    ${PACKAGE_NAME} exists\e[0m"
-        ${DPKG} -i ${BUILD_DEB_PATH}/${PACKAGE_NAME}.deb
+        source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
+        ${ECHO} -e "\e[1;35mSkipping re-build: ${PACKAGE_NAME}\e[0m"
+        deb-package-install
     else
         ${ECHO} -e "Builder Invocation Started"
         ${BASH} ${VAL_VERDE_GH_TEAM}-platform-sdk-${@}
@@ -47,12 +45,7 @@ function package-invoke-builder() {
 
 function parse-builder-args() {
     if [ ${1##*-} == 'cross' ] \
-       || [[ "$1" == *"bazel"* ]] \
-       || [[ "$1" == *"cuda"* ]] \
-       || [[ "$1" == *"go"* ]] \
-       || [[ "$1" == *"libcxx"* ]] \
-       || [[ "$1" == *"openjdk"* ]] \
-       || [[ "$1" == *"llvm-project-bootstrap"* ]]; then
+       || [[ ${1##*-} == *"bootstrap"* ]]; then
         export SOURCE_PACKAGE_NAME=${1%-*}
     else
         export SOURCE_PACKAGE_NAME=$1
