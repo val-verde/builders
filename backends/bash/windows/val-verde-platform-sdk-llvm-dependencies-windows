@@ -39,13 +39,10 @@ package-invoke-builder zstd-cross
 # package-invoke-builder unzip-cross
 
 # windows help2man build
-# package-invoke-builder help2man-cross
+package-invoke-builder help2man-cross
 
 # windows gperf build
 package-invoke-builder gperf-cross
-
-# windows help2man build
-# package-invoke-builder help2man-cross
 
 # windows libtool build
 package-invoke-builder libtool-cross
