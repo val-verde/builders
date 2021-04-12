@@ -33,5 +33,8 @@ category-invoke-builder swift-tools-windows
 # windows swift sdk build
 category-invoke-builder swift-sdk-windows
 
+# windows go build
+package-invoke-builder go-cross
+
 # windows graphics sdk build
 category-invoke-builder graphics-sdk-cross
