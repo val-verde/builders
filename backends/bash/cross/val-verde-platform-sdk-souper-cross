@@ -59,19 +59,28 @@ ${MKDIR} -p \
          ${INSTALL_PREFIX}/lib
 
 package-rsync -ax \
-              clang-souper \
-              sclang \
-              sclang++ \
-              souper \
+              clang-souper${EXECUTABLE_SUFFIX} \
+              sclang${EXECUTABLE_SUFFIX} \
+              sclang++${EXECUTABLE_SUFFIX} \
+              souper${EXECUTABLE_SUFFIX} \
               ${INSTALL_PREFIX}/bin/
+
+if [ "${HOST_OS}" = "mingw32" ]; then
+    package-rsync -ax \
+                  libsouperCodegen${SHARED_LIBRARY_SUFFIX} \
+                  libsouperPass${SHARED_LIBRARY_SUFFIX} \
+                  libsouperPassProfileAll${SHARED_LIBRARY_SUFFIX} \
+                  ${INSTALL_PREFIX}/bin/
+fi
+
 package-rsync -ax \
-              libsouperCodegen.* \
-              libsouperPass.* \
-              libsouperPassProfileAll.* \
+              libsouperCodegen${SHARED_LIBRARY_SUFFIX} \
+              libsouperPass${SHARED_LIBRARY_SUFFIX} \
+              libsouperPassProfileAll${SHARED_LIBRARY_SUFFIX} \
               ${INSTALL_PREFIX}/lib/
 ${LN} -sf \
-      clang-cpp \
-      ${INSTALL_PREFIX}/bin/sclang-cpp
+      clang-cpp${EXECUTABLE_SUFFIX} \
+      ${INSTALL_PREFIX}/bin/sclang-cpp${EXECUTABLE_SUFFIX}
 
 # Build and install the package
 package-invoke-archive-install
