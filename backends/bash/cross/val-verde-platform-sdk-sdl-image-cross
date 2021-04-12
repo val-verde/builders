@@ -12,7 +12,17 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 # Invoke one-shot template for bootstrap/configure/install
 BOOTSTRAP_FILE=autogen.sh \
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
+CFLAGS="\
+    -I${PACKAGE_PREFIX}/include/SDL2 \
+    ${CFLAGS} \
+" \
+LIBS="\
+    -lSDL2 \
+    -lSDL2main \
+    ${LIBS} \
+" \
 package-bootstrap-configure-install-archive \
+    ac_cv_path_SDL2_CONFIG= \
     --disable-static \
-    --enable-shared
-
+    --enable-shared \
+    --with-sdl-prefix=${PACKAGE_PREFIX}
