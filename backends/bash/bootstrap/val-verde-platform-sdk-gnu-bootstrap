@@ -6,7 +6,8 @@ set -e
 export \
     BINDIR=/usr/bin \
     C_COMPILER=clang \
-    CPP="/usr/bin/clang -E"
+    CPP="/usr/bin/clang -E" \
+    DEB_PATH=${TOOLCHAIN_DEB_PATH}
 
 export \
     DISABLE_POLLY=TRUE \
@@ -16,6 +17,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 ${MKDIR} -p ${BUILD_PACKAGE_PREFIX}
+
 package-rsync -ax \
               /usr/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-* \
               ${BUILD_PACKAGE_PREFIX}/bin/
@@ -23,116 +25,8 @@ ${CHMOD} +x ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang 
             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang++ \
             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-ml64
 
-# cuda bootstrap build
-package-invoke-builder cuda-bootstrap 11
+# libcxx and llvm bootstrap build
+category-invoke-builder llvm-bootstrap-builder
 
-# kernel-headers bootstrap build
-BUILD_SYSROOT=/ \
-package-invoke-builder kernel-headers 5
-
-# autoconf bootstrap build
-package-invoke-builder autoconf 2
-
-# automake bootstrap build
-package-invoke-builder automake 1
-
-# gcc bootstrap build
-package-invoke-builder gcc 12
-
-# glibc-interface bootstrap build
-CC=`BINDIR= package-get-path gcc EXECUTABLE BUILD` \
-CPP=`BINDIR= package-get-path cpp EXECUTABLE BUILD` \
-package-invoke-builder glibc-interface 2
-
-# libcxx bootstrap build
-DISABLE_CXX_INCLUDE=TRUE \
-DISABLE_CXX_STDLIB=TRUE \
-package-invoke-builder libcxx-bootstrap 13
-
-# cmake bootstrap build
-package-invoke-builder cmake 3
-
-export CMAKE=`BINDIR= package-get-path cmake EXECUTABLE BUILD`
-
-# z3 build
-package-invoke-builder z3 4
-
-# llvm bootstrap build
-package-invoke-builder llvm-project-bootstrap 13
-
-# remove host cmake, compiler and libraries as it is superceded by bootstrapped clang
-package-apt-remove \
-    clang* \
-    cmake \
-    libclang* \
-    libllvm* \
-    lld*
-
-export \
-    AR=`BINDIR= package-get-path llvm-ar EXECUTABLE BUILD` \
-    CC=`BINDIR= package-get-path clang EXECUTABLE BUILD` \
-    CPP=`BINDIR= package-get-path clang-cpp EXECUTABLE BUILD` \
-    CXX=`BINDIR= package-get-path clang++ EXECUTABLE BUILD` \
-    LD=`BINDIR= package-get-path ld.lld EXECUTABLE BUILD` \
-    MAKEINFO=`package-get-path true EXECUTABLE BUILD` \
-    NM=`BINDIR= package-get-path llvm-nm EXECUTABLE BUILD` \
-    RANLIB=`BINDIR= package-get-path llvm-ranlib EXECUTABLE BUILD` \
-    READELF=`BINDIR= package-get-path llvm-readelf EXECUTABLE BUILD` \
-    STRINGS=`BINDIR= package-get-path llvm-strings EXECUTABLE BUILD` \
-    STRIP=`BINDIR= package-get-path llvm-strip EXECUTABLE BUILD`
-unset \
-    DISABLE_POLLY \
-    USE_FUSE_LD_OVER_LD_PATH
-
-# bazel bootstrap build
-package-invoke-builder bazel-bootstrap 4
-
-# go bootstrap build
-package-invoke-builder go-bootstrap 1
-export GO=`BINDIR= package-get-path go EXECUTABLE BUILD`
-
-# openjdk bootstrap build
-package-invoke-builder openjdk-bootstrap 16
-
-# maven bootstrap build
-package-invoke-builder maven-bootstrap 3
-
-# rust bootstrap build
-package-invoke-builder rust-bootstrap 1
-
-# zlib bootstrap build
-package-invoke-builder zlib 1
-
-# help2man bootstrap build
-package-invoke-builder help2man 1
-export HELP2MAN=`BINDIR= package-get-path help2man EXECUTABLE BUILD`
-
-# libtool bootstrap build
-package-invoke-builder libtool 2
-
-# libffi bootstrap build
-package-invoke-builder libffi 3
-
-# glib bootstrap build
-package-invoke-builder glib 1
-
-# pkg-config bootstrap build
-package-invoke-builder pkg-config 0
-
-# z3 build
-package-invoke-builder z3 4
-
-# re2c build
-package-invoke-builder re2c 2
-
-# alive2 build
-package-invoke-builder alive2 1
-
-# hiredis build
-package-invoke-builder hiredis 1
-
-# souper build
-package-invoke-builder souper 1
-
-# android ndk build
-package-invoke-builder android-ndk ${ANDROID_NDK_VERSION}
+# post llvm bootstrap build
+category-invoke-builder bootstrap-builder
