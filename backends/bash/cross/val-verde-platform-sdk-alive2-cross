@@ -28,8 +28,15 @@ ${MKDIR} -p \
          ${INSTALL_PREFIX}/lib/pkgconfig
 
 package-rsync -ax \
-              ${STAGE_ROOT}/alive \
+              ${STAGE_ROOT}/alive${EXECUTABLE_SUFFIX} \
               ${INSTALL_PREFIX}/bin/
+
+if [ "${HOST_OS}" = "mingw32" ]; then
+    package-rsync -ax \
+                  ${STAGE_ROOT}/libalive2.dll \
+                  ${INSTALL_PREFIX}/bin/
+fi
+
 package-rsync -ax \
               ${SOURCE_ROOT}/ir/*.h \
               ${INSTALL_PREFIX}/include/alive2/ir/
@@ -43,7 +50,7 @@ package-rsync -ax \
               ${SOURCE_ROOT}/util/*.h \
               ${INSTALL_PREFIX}/include/alive2/util/
 package-rsync -ax \
-              ${STAGE_ROOT}/libalive2.* \
+              ${STAGE_ROOT}/libalive2${SHARED_LIBRARY_SUFFIX} \
               ${INSTALL_PREFIX}/lib/
 
 ${ECHO} "
