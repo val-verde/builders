@@ -146,7 +146,7 @@ package-invoke-builder sqlite-cross
 package-invoke-builder openssl-cross
 
 # libcap build
-package-invoke-builder libcap-cross
+# package-invoke-builder libcap-cross
 
 # expat build
 package-invoke-builder expat-cross
