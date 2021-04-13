@@ -24,7 +24,6 @@ tool-log ${GO} get github.com/gomodule/redigo/redis
 
 DISABLED_WARNINGS="\
     -Wno-deprecated-enum-enum-conversion \
-    -Wno-unused-command-line-argument \
 "
 CFLAGS="\
     -I${PACKAGE_PREFIX}/include/alive2 \

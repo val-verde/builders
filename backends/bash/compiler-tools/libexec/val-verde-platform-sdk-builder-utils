@@ -158,6 +158,11 @@ function export-compiler-environment() {
         GOARCH=amd64
     fi
 
+    COMMON_CFLAGS="\
+        -Qunused-arguments \
+        ${COMMON_CFLAGS} \
+    "
+
     if [ -n "${HOST_ARCH}" ]; then
         COMMON_CFLAGS="\
             -march=${HOST_ARCH} \
@@ -195,7 +200,7 @@ function export-compiler-environment() {
         export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:/usr/lib/${BUILD_TRIPLE}/pkgconfig:/usr/share/pkgconfig
     fi
 
-    if [ "${PACKAGE_PREFIX}${PACKAGE_USR_PREFIX}" != "${SYSROOT}" ]; then
+    if [ "${SYSROOT}${PACKAGE_USR_PREFIX}" != "${PACKAGE_PREFIX}" ]; then
         COMMON_CFLAGS="\
             -isystem ${PACKAGE_PREFIX}/include \
             -L${PACKAGE_PREFIX}/lib \
@@ -245,6 +250,14 @@ function export-compiler-environment() {
         "
         GOOS=linux
     elif [ "${HOST_OS}" = "macos" ]; then
+        COMMON_CFLAGS="\
+            -Wl,-platform_version,${HOST_OS},${HOST_OS_API_LEVEL},${HOST_OS_API_LEVEL} \
+            ${COMMON_CFLAGS} \
+        "
+        LDFLAGS="\
+            -platform_version ${HOST_OS} ${HOST_OS_API_LEVEL} ${HOST_OS_API_LEVEL} \
+            ${LDFLAGS} \
+        "
         GOOS=darwin
     elif [ "${HOST_OS}" = "musl" ]; then
         COMMON_CFLAGS="\
@@ -543,9 +556,20 @@ function package-clean-texinfo-lint() {
 function package-cmake-invocation() {
     BUILD_TYPE=${BUILD_TYPE:-Release}
     COMPILER_TARGET=${COMPILER_TARGET:-${HOST_TRIPLE}}
-    SYSTEM_NAME=${SYSTEM_NAME:-Linux}
 
     if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+        if [ "${HOST_OS}" = "android" ] ||
+           [ "${HOST_OS}" = "gnu" ] ||
+           [ "${HOST_OS}" = "musl" ]; then
+            SYSTEM_NAME=${SYSTEM_NAME:-Linux}
+        elif [ "${HOST_OS}" = "macos" ]; then
+            SYSTEM_NAME=${SYSTEM_NAME:-Darwin}
+        elif [ "${HOST_OS}" = "mingw32" ]; then
+            SYSTEM_NAME=${SYSTEM_NAME:-Windows}
+        elif [ "${HOST_OS}" = "wasi" ]; then
+            SYSTEM_NAME=${SYSTEM_NAME:-Fuchsia}
+        fi
+
         CROSSCOMPILING_CMD="-DCMAKE_CROSSCOMPILING=TRUE"
         SYSTEM_NAME_CMD="-DCMAKE_SYSTEM_NAME=${SYSTEM_NAME}"
     fi
@@ -984,7 +1008,6 @@ function package-stage-configure-install-archive() {
 function package-swift-build() {
     export-compiler-environment
 
-    SDK_PLATFORM_DIR=`${ECHO} ${SYSTEM_NAME} | ${TR} '[:upper:]' '[:lower:]'`
     SWIFT_BUILD_TYPE=${SWIFT_BUILD_TYPE:-release}
     TEMP_FILE=`mktemp`
 
@@ -1098,15 +1121,12 @@ function package-swift-build() {
 }
 
 function rpath-fixup() {
-    SDK_PLATFORM_DIR=`${ECHO} ${SYSTEM_NAME} | ${TR} '[:upper:]' '[:lower:]'`
-
-    if [ "${SDK_PLATFORM_DIR}" = "darwin" ]; then
-        for COMPONENT in ${RPATH_COMPONENTS}; do
-            ${INSTALL_NAME_TOOL} -add_rpath "@loader_path/../lib" ${COMPONENT}
-            ${INSTALL_NAME_TOOL} -add_rpath "@loader_path/../lib/swift/macosx" ${COMPONENT}
-        done
-    elif [ "${SDK_PLATFORM_DIR}" != "windows" ]; then
-        if [ "${SDK_PLATFORM_DIR}" != "${HOST_OS}" ]; then
+    if [ "${HOST_OS}" = "android" ] ||
+       [ "${HOST_OS}" = "gnu" ] ||
+       [ "${HOST_OS}" = "musl" ] ; then
+        if [ "${HOST_OS}" = "gnu" ]; then
+            SDK_PLATFORM_DIR=linux
+        else
             SDK_PLATFORM_DIR=${HOST_OS}
         fi
 
@@ -1115,6 +1135,11 @@ function rpath-fixup() {
         for COMPONENT in ${RPATH_COMPONENTS}; do
             patchelf --set-rpath ${COMPONENT_RPATH} \
                                  ${COMPONENT}
+        done
+    elif [ "${HOST_OS}" = "macos" ]; then
+        for COMPONENT in ${RPATH_COMPONENTS}; do
+            ${INSTALL_NAME_TOOL} -add_rpath "@loader_path/../lib" ${COMPONENT}
+            ${INSTALL_NAME_TOOL} -add_rpath "@loader_path/../lib/swift/macosx" ${COMPONENT}
         done
     fi
 }

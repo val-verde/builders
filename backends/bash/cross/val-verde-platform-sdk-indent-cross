@@ -12,10 +12,6 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 export-compiler-environment
 
 # Invoke one-shot template for configure/install
-CFLAGS="\
-    -Wno-unused-command-line-argument \
-    ${CFLAGS} \
-" \
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 CONFIGURE_FILE=bootstrap \
 INSTALL_TARGET="CC_FOR_BUILD=${BUILD_CC} install" \

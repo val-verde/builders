@@ -18,10 +18,14 @@ export DEPENDS="\
 cd ${SOURCE_ROOT}
 package-swift-build
 
-SDK_PLATFORM_DIR=`${ECHO} ${SYSTEM_NAME} | ${TR} '[:upper:]' '[:lower:]'`
-
-if [ "${HOST_OS}" = "android" ]; then
-    SDK_PLATFORM_DIR="android"
+if [ "${HOST_OS}" = "gnu" ]; then
+    SDK_PLATFORM_DIR="linux"
+elif [ "${HOST_OS}" = "macos" ]; then
+    SDK_PLATFORM_DIR="macosx"
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    SDK_PLATFORM_DIR="windows"
+else
+    SDK_PLATFORM_DIR=${HOST_OS}
 fi
 
 cd ${STAGE_ROOT}

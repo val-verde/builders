@@ -63,7 +63,16 @@ package-cmake \
 # Build the components
 ninja-install
 
-SDK_PLATFORM_DIR=`${ECHO} ${SYSTEM_NAME} | ${TR} '[:upper:]' '[:lower:]'`
+if [ "${HOST_OS}" = "gnu" ]; then
+    SDK_PLATFORM_DIR=linux
+elif [ "${HOST_OS}" = "macos" ]; then
+    SDK_PLATFORM_DIR=darwin
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    SDK_PLATFORM_DIR=windows
+else
+    SDK_PLATFORM_DIR=${HOST_OS}
+fi
+
 DST_SDK_PLATFORM_DIR=${DST_SDK_PLATFORM_DIR:-${SDK_PLATFORM_DIR}}
 ${MKDIR} -p ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/13.0.0/lib/${SDK_PLATFORM_DIR}
 ${MV} ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/${SDK_PLATFORM_DIR}/${CLANG_RT_LIB} \
