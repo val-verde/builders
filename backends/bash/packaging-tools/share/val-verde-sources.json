@@ -738,6 +738,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "ncurses",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "6",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "nettle",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "3",
@@ -1730,13 +1739,6 @@
         "sourcePackageName": "mpc",
         "sourceBranchIndicator": "wget",
         "sourcePackageVersion": "1.2.1",
-        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "ncurses",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "6.2",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
