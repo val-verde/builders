@@ -191,16 +191,22 @@ function export-compiler-environment() {
             ${SWIFTCFLAGS} \
         "
     else
+        export ACLOCAL_PATH=${ACLOCAL_PATH}:/usr/share/aclocal
+        export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:/usr/lib/${BUILD_TRIPLE}/pkgconfig:/usr/share/pkgconfig
+    fi
+
+    if [ "${PACKAGE_PREFIX}${PACKAGE_USR_PREFIX}" != "${SYSROOT}" ]; then
         COMMON_CFLAGS="\
             -isystem ${PACKAGE_PREFIX}/include \
+            -L${PACKAGE_PREFIX}/lib \
             ${COMMON_CFLAGS} \
         "
         COMMON_LDFLAGS="\
-            -L${BUILD_PACKAGE_PREFIX}/lib \
+            -L${PACKAGE_PREFIX}/lib \
             ${COMMON_LDFLAGS} \
         "
         LDFLAGS="\
-            -L${BUILD_PACKAGE_PREFIX}/lib \
+            -L${PACKAGE_PREFIX}/lib \
             ${LDFLAGS} \
         "
         SWIFTCFLAGS="\
@@ -208,9 +214,6 @@ function export-compiler-environment() {
             -L${PACKAGE_PREFIX}/lib \
             ${SWIFTCFLAGS} \
         "
-
-        export ACLOCAL_PATH=${ACLOCAL_PATH}:/usr/share/aclocal
-        export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:/usr/lib/${BUILD_TRIPLE}/pkgconfig:/usr/share/pkgconfig
     fi
 
     if [ "${BUILD_OS}" = "android" ]; then
