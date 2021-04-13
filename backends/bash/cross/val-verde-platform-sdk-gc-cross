@@ -12,10 +12,5 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 export DEPENDS="${PACKAGE_BASE_NAME}-libatomic-ops-7-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 
 # Invoke one-shot template for bootstrap/configure/install
-if [ "${HOST_OS}" = "macos" ]; then
-    DISABLE_THREADS_CMD=--disable-threads
-fi
-
 BOOTSTRAP_FILE=./autogen.sh \
-package-bootstrap-configure-install-archive \
-    ${DISABLE_THREADS_CMD}
+package-bootstrap-configure-install-archive
