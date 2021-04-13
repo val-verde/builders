@@ -126,6 +126,9 @@ package-invoke-builder isl-cross
 # libev build
 package-invoke-builder libev-cross
 
+# libedit build
+package-invoke-builder libedit-cross
+
 # gdbm build
 CFLAGS="\
     -fcommon \
@@ -135,9 +138,6 @@ package-invoke-builder gdbm-cross
 
 # libdb build
 package-invoke-builder libdb-cross
-
-# libedit build
-package-invoke-builder libedit-cross
 
 # sqlite build
 package-invoke-builder sqlite-cross
