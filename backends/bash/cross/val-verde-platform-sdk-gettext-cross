@@ -15,5 +15,12 @@ export DEPENDS="\
 "
 
 # Invoke one-shot template for stage/configure/install
+if [ "${HOST_OS}" = "macos" ]; then
+    DEFAULT_VISIBILITY_HIDDEN=no
+else
+    DEFAULT_VISIBILITY_HIDDEN=yes
+fi
+
 RM="${RM} -r" \
-package-stage-configure-install-archive
+package-stage-configure-install-archive \
+    gl_cv_cc_visibility=${DEFAULT_VISIBILITY_HIDDEN}
