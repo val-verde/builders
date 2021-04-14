@@ -123,7 +123,13 @@ function export-compiler-environment() {
     export GO=${GO:-${BINDIR}/go}
     export GOROOT=${GOROOT:-${BUILD_PACKAGE_PREFIX}/go}
     export INSTALL_NAME_TOOL=${INSTALL_NAME_TOOL:-${BINTOOLS_PATH_PREFIX}install-name-tool}
-    export LD=${LD:-${BINDIR}/ld.lld}
+
+    if [ "${HOST_OS}" = "macos" ]; then
+        export LD=${LD:-${BINDIR}/ld64.lld}
+    else
+        export LD=${LD:-${BINDIR}/ld.lld}
+    fi
+
     export LIPO=${LIPO:-${BINTOOLS_PATH_PREFIX}lipo}
     export MAKE=${MAKE:-${BINDIR}/make}
     export MAKEINFO=${MAKEINFO:-${BINDIR}/true}
@@ -132,7 +138,10 @@ function export-compiler-environment() {
     export NINJA=${NINJA:-${BINDIR}/ninja}
     export NM=${NM:-${BINTOOLS_PATH_PREFIX}nm}
     export NODE=${NODE:-${BINDIR}/node}
+    export OBJC=${OBJC:-${CC}}
     export OBJCOPY=${OBJCOPY:-${BINTOOLS_PATH_PREFIX}objcopy}
+    export OBJCPP=${OBJCPP:-${CPP}}
+    export OBJCXX=${OBJCXX:-${CXX}}
     export OBJDUMP=${OBJDUMP:-${BINTOOLS_PATH_PREFIX}objdump}
     export PKG_CONFIG=${PKG_CONFIG:-${BINDIR}/pkg-config}
     export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-${PACKAGE_PREFIX}/lib/pkgconfig:${PACKAGE_PREFIX}/share/pkgconfig}
