@@ -107,8 +107,16 @@ function export-compiler-environment() {
     export ACLOCAL_PATH=${PACKAGE_PREFIX}/share/aclocal
     export AR=${AR:-${BINTOOLS_PATH_PREFIX}ar}
     export AS=${CC:-${BINDIR}/${CLANG}}
+    export BUILD_AS=${BUILD_AS:-${BINDIR}/${CLANG}}
     export BUILD_CC=${BUILD_CC:-${BINDIR}/${CLANG}}
     export BUILD_CXX=${BUILD_CXX:-${BUILD_CC}++}
+
+    if [ "${BUILD_OS}" = "macos" ]; then
+        export BUILD_LD=${BUILD_LD:-${BINDIR}/ld64.lld}
+    else
+        export BUILD_LD=${BUILD_LD:-${BINDIR}/ld.lld}
+    fi
+
     export CC=${CC:-${BINDIR}/${CLANG}}
     export CCLD=${CCLD:-${CC}}
     export CMAKE=${CMAKE:-${BINDIR}/cmake}
