@@ -262,6 +262,12 @@ package-invoke-builder xorg-libxshmfence-cross
 # xorg-libxxf86vm build
 package-invoke-builder xorg-libxxf86vm-cross
 
+# libjpeg build
+package-invoke-builder libjpeg-cross
+
+# libpng build
+package-invoke-builder libpng-cross
+
 # freetype2 build
 package-invoke-builder freetype2-cross
 

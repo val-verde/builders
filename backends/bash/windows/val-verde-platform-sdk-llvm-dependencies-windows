@@ -173,6 +173,12 @@ package-invoke-builder xcb-pthread-stubs-cross
 # windows libuv build
 package-invoke-builder libuv-cross
 
+# libjpeg build
+package-invoke-builder libjpeg-cross
+
+# libpng build
+package-invoke-builder libpng-cross
+
 # freetype2 build
 package-invoke-builder freetype2-cross
 

@@ -1701,10 +1701,24 @@
     },
     {
         "sourceType": "other",
+        "sourcePackageName": "libjpeg",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "9d",
+        "sourcePackageUrl": "https://www.ijg.org/files/jpegsrc.v${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
         "sourcePackageName": "libmicrohttpd",
         "sourceBranchIndicator": "wget",
         "sourcePackageVersion": "0.9.72",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
+        "sourcePackageName": "libpng",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "1.6.37",
+        "sourcePackageUrl": "https://download.sourceforge.net/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
         "sourceType": "other",
