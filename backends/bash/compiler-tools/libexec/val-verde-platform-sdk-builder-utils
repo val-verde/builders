@@ -439,7 +439,8 @@ function generate-compiler-tools() {
         " | ${XARGS}`
     fi
 
-    if [ -z "${DISABLE_STRIP}" ]; then
+    if [ -z "${DISABLE_STRIP}" ] &&
+       [ "${HOST_OS}" != "macos" ]; then
         export LDFLAGS=`${ECHO} "\
             -s \
             ${LDFLAGS} \
@@ -1038,7 +1039,8 @@ function package-swift-build() {
         POLLY_SWIFTCFLAG="-Xllvm\", \"-polly"
     fi
 
-    if [ -z "${DISABLE_STRIP}" ]; then
+    if [ -z "${DISABLE_STRIP}" ] &&
+       [ "${HOST_OS}" != "macos" ]; then
         STRIP_LDFLAG="-s"
     fi
 
