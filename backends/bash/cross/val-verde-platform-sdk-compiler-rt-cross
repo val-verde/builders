@@ -76,7 +76,10 @@ package-cmake \
 # Build the components
 ninja-install
 
-if [ "${HOST_OS}" = "gnu" ]; then
+if [ "${HOST_OS}" = "android" ]; then
+    SDK_PLATFORM_DIR=linux
+    DST_SDK_PLATFORM_DIR=android
+elif [ "${HOST_OS}" = "gnu" ]; then
     SDK_PLATFORM_DIR=linux
 elif [ "${HOST_OS}" = "macos" ]; then
     SDK_PLATFORM_DIR=darwin
