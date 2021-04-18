@@ -778,14 +778,24 @@ function package-get-path() {
     NAME=${1}
     TYPE=${2}
     VARIANT=${3}
-    RESULT=${PACKAGE_PREFIX}/lib
+
+    if [ "${TYPE}" = "EXECUTABLE" ]; then
+        SUBDIR=bin
+    else
+        SUBDIR=lib
+    fi
+
+    RESULT=${PACKAGE_PREFIX}/${SUBDIR}
 
     if [ "${VARIANT}" = "BUILD" ]; then
-        RESULT=${BUILD_PACKAGE_PREFIX}/lib
+        RESULT=${BUILD_PACKAGE_PREFIX}/${SUBDIR}
     fi
 
     RESULT=${RESULT}/`package-get-filename ${NAME} ${TYPE}`
-    echo ${RESULT}
+
+    if [ -f "${RESULT}" ]; then
+        echo ${RESULT}
+    fi
 }
 
 function package-gnulib-override() {
