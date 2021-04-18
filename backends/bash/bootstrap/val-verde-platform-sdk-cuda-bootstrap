@@ -9,29 +9,30 @@ export SOURCE_PACKAGE_VERSION=11
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-CUDA_PACKAGE_VERSION=11.2.2
-NVIDIA_DRIVER_VERSION=460.32.03
+CUDA_PACKAGE_VERSION=11.3.0
+CUDA_HOST_PROCESSOR=${HOST_PROCESSOR}
+NVIDIA_DRIVER_VERSION=465.19.01
 PACKAGE_URL=https://developer.download.nvidia.com/compute/${SOURCE_PACKAGE_NAME}/${CUDA_PACKAGE_VERSION}/local_installers
 
 # Configure the build components
-if [ "${BUILD_PROCESSOR}" = "aarch64" ]; then
-    PACKAGE_FILENAME=${SOURCE_PACKAGE_NAME}_${CUDA_PACKAGE_VERSION}_${NVIDIA_DRIVER_VERSION}_${BUILD_KERNEL}_sbsa.run
-elif [ "${BUILD_PROCESSOR}" = "x86_64" ]; then
-    PACKAGE_FILENAME=${SOURCE_PACKAGE_NAME}_${CUDA_PACKAGE_VERSION}_${NVIDIA_DRIVER_VERSION}_${BUILD_KERNEL}.run
+if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+    CUDA_HOST_PROCESSOR=sbsa
+    PACKAGE_FILENAME_SUFFIX=_${CUDA_HOST_PROCESSOR}
 fi
 
+PACKAGE_FILENAME=${SOURCE_PACKAGE_NAME}_${CUDA_PACKAGE_VERSION}_${NVIDIA_DRIVER_VERSION}_${HOST_KERNEL}${PACKAGE_FILENAME_SUFFIX}.run
 package-wget -c ${PACKAGE_URL}/${PACKAGE_FILENAME} \
-             -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.run
+             -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.run
 
-${BASH} ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}.run \
+${BASH} ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.run \
         --extract=${STAGE_ROOT}
 
 ${MKDIR} -p ${INSTALL_PREFIX}/bin
 package-rsync -ax \
-              ${STAGE_ROOT}/cuda_cudart/targets/${BUILD_PROCESSOR}-${BUILD_KERNEL}/* \
+              ${STAGE_ROOT}/cuda_cudart/targets/${CUDA_HOST_PROCESSOR}-${HOST_KERNEL}/* \
               ${STAGE_ROOT}/cuda_nvcc/nvvm \
-              ${STAGE_ROOT}/cuda_nvcc/targets/${BUILD_PROCESSOR}-${BUILD_KERNEL}/* \
-              ${STAGE_ROOT}/libcurand/targets/${BUILD_PROCESSOR}-${BUILD_KERNEL}/include \
+              ${STAGE_ROOT}/cuda_nvcc/targets/${CUDA_HOST_PROCESSOR}-${HOST_KERNEL}/* \
+              ${STAGE_ROOT}/libcurand/targets/${CUDA_HOST_PROCESSOR}-${HOST_KERNEL}/include \
               ${INSTALL_PREFIX}/
 package-rsync -ax \
               ${STAGE_ROOT}/cuda_nvcc/bin/fatbinary \
