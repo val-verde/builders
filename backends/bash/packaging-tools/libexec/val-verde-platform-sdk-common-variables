@@ -161,18 +161,15 @@ function package-git-clone() {
             ${RM} -rf ${TARGET_ROOT}
         fi
 
-        if [ "${RETAIN_SOURCE}" = 'true' ]; then
-            package-git-tool clone ${GIT_URL} \
-                                --branch ${GIT_BRANCH} \
-                                --single-branch \
-                                --depth=${DEPTH} \
-                                ${TARGET_ROOT}
-        else
-            package-git-tool clone ${GIT_URL} \
-                                --branch ${GIT_BRANCH} \
-                                --single-branch \
-                                ${TARGET_ROOT}
+        if [ "${RETAIN_SOURCE}" != 'true' ]; then
+            DEPTH_CMD="--depth=${DEPTH}"
         fi
+
+        package-git-tool clone ${GIT_URL} \
+                               --branch ${GIT_BRANCH} \
+                               --single-branch \
+                               ${DEPTH_CMD} \
+                               ${TARGET_ROOT}
 
     package-pop-directory
 }
