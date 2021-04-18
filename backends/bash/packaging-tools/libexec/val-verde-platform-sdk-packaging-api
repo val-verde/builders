@@ -11,16 +11,16 @@ VERSION=${VERSION:='1.0.0'}
 function deb-package-build() {
     if [ -z "${DISABLE_BUILD_DEB}" ]; then
         package-push-directory ${INSTALL_ROOT}
-            ${MKDIR} -p ${INSTALL_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+            ${MKDIR} -p ${TEMP_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
             package-rsync -ax \
                         ${BASE_DIRECTORY} \
-                        ${INSTALL_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}/
+                        ${TEMP_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}/
 
             TEMPLATE_ROOT=${TEMPLATE_ROOT} \
             generate-control-file "${PACKAGE_NAME}"
-            package-dpkg-build ${INSTALL_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
-            ${MV} ${INSTALL_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}.deb ${DEB_PATH}/${PACKAGE_NAME}.deb
-            ${RM} -r ${INSTALL_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}
+            package-dpkg-build ${TEMP_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+            ${MV} ${TEMP_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}.deb ${DEB_PATH}/${PACKAGE_NAME}.deb
+            ${RM} -r ${TEMP_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}
         package-pop-directory
     fi
 }
@@ -66,7 +66,7 @@ function generate-control-file() {
     TEMPLATE_ROOT=${TEMPLATE_ROOT:-/usr/share/${VAL_VERDE_GH_TEAM}}
 
     # Template definition
-    package-push-directory ${INSTALL_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+    package-push-directory ${TEMP_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
         ${MKDIR} DEBIAN
         ${ECHO} 10 > DEBIAN/compat
         ${SED} "s|DEPENDS|${DEPENDS}|g; \
@@ -91,7 +91,7 @@ function tar-package-build() {
     PACKAGE_URL=$3
 
     PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-    INSTALL_ROOT=${INSTALL_ROOT_BASE}/${PACKAGE_NAME}-tar-archives
+    INSTALL_ROOT=${TEMP_ROOT_BASE}/${PACKAGE_NAME}-tar-archives
     INSTALL_PREFIX=${INSTALL_ROOT}/${PACKAGE_NAME}
     ${MKDIR} -p ${INSTALL_PREFIX}
     package-push-directory ${INSTALL_ROOT}

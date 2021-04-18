@@ -108,7 +108,7 @@ export LD_LIBRARY_PATH=${BUILD_PACKAGE_PREFIX}/lib
 export NODE_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/web
 export PATH=${BUILD_PACKAGE_PREFIX}/bin:${PATH}
 export TEMPDIR=${TEMPDIR:-/tmp}
-INSTALL_ROOT_BASE=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}
+TEMP_ROOT_BASE=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}
 export QUALIFIED_LLVM_PATH=llvm-project-13
 
 # 'host' configuration
