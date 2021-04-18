@@ -16,8 +16,12 @@ if [ "${SOURCE_PACKAGE_NAME}" != "" ]; then
     export SOURCE_ROOT=${SOURCE_ROOT:-${SOURCE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}}
 
     # pre-build cleanup
-    ${RM} -rf ${INSTALL_PREFIX}/* \
-              ${STAGE_ROOT}/*
+    ${RM} -rf ${INSTALL_PREFIX}/*
+
+    if [ -z "${ENABLE_INCREMENTAL_BUILD}" ]; then
+        ${RM} -rf ${STAGE_ROOT}/*
+    fi
+
     ${MKDIR} -p ${INSTALL_PREFIX} \
                 ${STAGE_ROOT}
 
