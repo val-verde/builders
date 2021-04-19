@@ -656,6 +656,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "mesa",
         "sourceBranchIndicator": "default",
@@ -1203,6 +1204,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "tensorflow",
         "sourceBranchIndicator": "default",
