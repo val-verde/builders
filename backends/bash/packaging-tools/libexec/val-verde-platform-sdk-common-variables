@@ -153,7 +153,8 @@ function package-git-add() {
 }
 
 function package-git-clone() {
-    GIT_BRANCH=$1
+    DEPTH=${DEPTH:-1}
+    GIT_BRANCH=${1}
     TARGET_ROOT=${TARGET_ROOT:-${SOURCE_ROOT}}
 
     package-push-directory /sources
