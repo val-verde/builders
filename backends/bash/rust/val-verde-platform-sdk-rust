@@ -10,6 +10,10 @@ export SOURCE_PACKAGE_VERSION=1
 
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
+COMMON_CFLAGS="\
+    -DMB_LEN_MAX=16 \
+    ${COMMON_CFLAGS} \
+" \
 COMMON_LDFLAGS="\
     -L${STAGE_ROOT}/libgcc \
     ${COMMON_LDFLAGS} \
