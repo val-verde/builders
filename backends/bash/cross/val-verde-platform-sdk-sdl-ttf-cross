@@ -12,10 +12,10 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 # Invoke one-shot template for bootstrap/configure/install
 BOOTSTRAP_FILE=autogen.sh \
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
+SDL_CFLAGS="-I${PACKAGE_PREFIX}/include/SDL2" \
+SDL_LIBS="-lSDL2 -lSDL2main" \
+FT2_CFLAGS="-I${PACKAGE_PREFIX}/include/freetype2" \
+FT2_LIBS="-lfreetype" \
 package-bootstrap-configure-install-archive \
     --disable-static \
-    --enable-shared \
-    --with-ft-exec-prefix=${PACKAGE_PREFIX} \
-    --with-ft-prefix=${PACKAGE_PREFIX} \
-    --with-sdl-exec-prefix=${PACKAGE_PREFIX} \
-    --with-sdl-prefix=${PACKAGE_PREFIX}
+    --enable-shared
