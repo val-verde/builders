@@ -25,13 +25,21 @@ if [ "${HOST_OS}" = "android" ]; then
 elif [ "${HOST_OS}" = "gnu" ] || \
      [ "${HOST_OS}" = "musl" ]; then
     OPENSSL_OS=linux
+elif [ "${HOST_OS}" = "macos" ]; then
+    OPENSSL_OS=darwin64
+
+    if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+        OPENSSL_PROCESSOR=arm64
+    fi
 elif [ "${HOST_OS}" = "mingw32" ]; then
     OPENSSL_DIR=${PACKAGE_PREFIX}/etc/ssl
 fi
 
 OPENSSL_TARGET=${OPENSSL_OS}-${OPENSSL_PROCESSOR}
 
-if [ "${HOST_OS}" = "mingw32" ]; then
+if [ "${HOST_OS}" = "macos" ]; then
+    OPENSSL_TARGET=${OPENSSL_TARGET}-cc
+elif [ "${HOST_OS}" = "mingw32" ]; then
     OPENSSL_TARGET=mingw64
 fi
 

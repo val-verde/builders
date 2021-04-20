@@ -15,16 +15,25 @@ export DEPENDS="\
 "
 
 # Invoke one-shot template for bootstrap/configure/install
-if [ "${HOST_OS}" = "mingw32" ]; then
+ENABLE_OR_DISABLE_JIT=enable
+ENABLE_OR_DISABLE_NETWORKING=enable
+ENABLE_OR_DISABLE_POSIX=enable
+WITH_OR_WITHOUT_MODULES=with
+
+if [ "${HOST_OS}" = "macos" ]; then
+    COMMON_CFLAGS="\
+        -U__nonnull \
+	${COMMON_CFLAGS} \
+    "
+    LIBS="\
+        -framework CoreFoundation \
+	${LIBS} \
+    "
+elif [ "${HOST_OS}" = "mingw32" ]; then
     ENABLE_OR_DISABLE_JIT=disable
     ENABLE_OR_DISABLE_NETWORKING=disable
     ENABLE_OR_DISABLE_POSIX=disable
     WITH_OR_WITHOUT_MODULES=without
-else
-    ENABLE_OR_DISABLE_JIT=enable
-    ENABLE_OR_DISABLE_NETWORKING=enable
-    ENABLE_OR_DISABLE_POSIX=enable
-    WITH_OR_WITHOUT_MODULES=with
 fi
 
 BOOTSTRAP_FILE=./autogen.sh \

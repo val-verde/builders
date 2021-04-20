@@ -31,7 +31,6 @@ DISABLED_WARNINGS="\
     -Wno-logical-not-parentheses \
     -Wno-pointer-integer-compare \
     -Wno-unknown-warning-option \
-    -Wno-unused-command-line-argument \
     -Wno-unused-const-variable \
     -Wno-unused-parameter \
     -Wno-xor-used-as-pow \

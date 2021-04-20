@@ -1,4 +1,4 @@
-FROM ubuntu:20.04 AS BASE
+FROM ubuntu:20.04 AS ubuntu
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -19,7 +19,7 @@ ENV PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME} \
     SOURCE_ROOT_BASE=${SOURCE_ROOT_BASE:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources} \
     STAGE_ROOT_BASE=${STAGE_ROOT_BASE:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/staging} \
     VAL_VERDE_GH_TEAM=${VAL_VERDE_GH_TEAM} \
-    ANDROID_NDK_VERSION=r22 \
+    ANDROID_NDK_VERSION=r22b \
     BUILD_DEB_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/build-debs \
     SOURCE_DEB_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/source-debs
 
@@ -42,7 +42,7 @@ COPY /source-debs/ \
      ${SOURCE_DEB_PATH}
 
 # upstream source package build
-FROM BASE AS SOURCES_BUILDER
+FROM ubuntu AS sources_builder
 
 COPY backends/bash/sources \
      /sources/
@@ -50,7 +50,7 @@ COPY backends/bash/sources \
 RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sources-builder
 
 # gnu bootstrap build
-FROM SOURCES_BUILDER AS GNU_BOOTSTRAP_BUILDER
+FROM sources_builder AS gnu_bootstrap_builder
 
 # LTO configuration: [OFF | Full | Thin]
 # ENV ENABLE_FLTO=Thin
@@ -75,7 +75,7 @@ RUN HOST_ARCH=${BUILD_ARCH} \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap
 
 # platform independent package builders
-FROM GNU_BOOTSTRAP_BUILDER AS PLATFORM_INDEPENDENT_PACKAGE_BUILDERS
+FROM gnu_bootstrap_builder AS platform_independent_package_builders
 
 # platform sdk package build scripts
 COPY backends/bash/cross \
@@ -83,7 +83,7 @@ COPY backends/bash/cross \
      /sources/
 
 # gnu build
-FROM PLATFORM_INDEPENDENT_PACKAGE_BUILDERS AS GNU_BUILDER
+FROM platform_independent_package_builders AS gnu_builder
 
 RUN HOST_ARCH=${BUILD_ARCH} \
     HOST_CPU=${BUILD_CPU} \
@@ -93,7 +93,7 @@ RUN HOST_ARCH=${BUILD_ARCH} \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu
 
 # macos build
-FROM GNU_BUILDER AS MACOS_BUILDER
+FROM gnu_builder AS macos_builder
 
 COPY backends/bash/darwin \
      /sources/
@@ -106,7 +106,7 @@ RUN DARWIN_OS=darwin \
     HOST_OS=macos \
     HOST_OS_API_LEVEL=11 \
     HOST_PROCESSOR=x86_64 \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-darwin
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-darwin || true
 
 RUN DARWIN_OS=darwin \
     DARWIN_OS_API_LEVEL=20 \
@@ -116,10 +116,10 @@ RUN DARWIN_OS=darwin \
     HOST_OS=macos \
     HOST_OS_API_LEVEL=11 \
     HOST_PROCESSOR=aarch64 \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-darwin
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-darwin || true
 
 # musl build
-FROM MACOS_BUILDER AS MUSL_BUILDER
+FROM macos_builder AS musl_builder
 
 COPY backends/bash/musl \
      /sources/
@@ -139,7 +139,7 @@ RUN HOST_ARCH=armv8-a \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-musl
 
 # webassembly build
-FROM MUSL_BUILDER AS WEBASSEMBLY_BUILDER
+FROM musl_builder AS webassembly_builder
 
 COPY backends/bash/webassembly \
      /sources/
@@ -153,7 +153,7 @@ RUN HOST_ARCH=wasm32 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-webassembly
 
 # android build
-FROM WEBASSEMBLY_BUILDER AS ANDROID_BUILDER
+FROM webassembly_builder AS android_builder
 
 # android package builders
 COPY backends/bash/android \
@@ -178,13 +178,13 @@ RUN HOST_ARCH=westmere \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android
 
 # windows environment
-FROM ANDROID_BUILDER AS WINDOWS_SOURCES_BUILDER
+FROM android_builder AS windows_sources_builder
 
 COPY backends/bash/windows \
      /sources/
 
 # windows build
-FROM WINDOWS_SOURCES_BUILDER AS WINDOWS_BUILDER
+FROM windows_sources_builder AS windows_builder
 
 RUN HOST_ARCH=haswell \
     HOST_CPU=skylake \
@@ -194,7 +194,7 @@ RUN HOST_ARCH=haswell \
     HOST_PROCESSOR=x86_64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows
 
-FROM WINDOWS_BUILDER AS RUST_BUILDER
+FROM windows_builder AS rust_builder
 
 COPY backends/bash/rust \
      /sources/

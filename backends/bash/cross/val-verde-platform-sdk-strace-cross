@@ -12,7 +12,6 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 # Invoke one-shot template for bootstrap/configure/install
 CFLAGS="\
     -Wno-macro-redefined \
-    -Wno-unused-command-line-argument \
     ${CFLAGS} \
 " \
 DISABLE_AUTOUPDATE=TRUE \

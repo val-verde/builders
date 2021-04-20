@@ -9,9 +9,14 @@ export SOURCE_PACKAGE_VERSION=6
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
+export-compiler-environment
+
 # Invoke one-shot template for configure/install
+DISABLE_AUTOUPDATE=TRUE \
 INSTALL_PREFIX=${PACKAGE_PREFIX} \
 package-configure-install-archive \
+    cf_cv_posix_visible=yes \
+    --disable-widec \
     --enable-ext-colors \
     --enable-mixed-case \
     --enable-pc-files \
@@ -22,8 +27,8 @@ package-configure-install-archive \
     --with-cxx \
     --with-cxx-shared \
     --with-install-prefix=${INSTALL_ROOT}/ \
-    --with-pkg-config=/usr/bin/pkg-config \
-    --with-pkg-config-libdir=${PACKAGE_PREFIX}/lib/pkgconfig \
+    --with-pkg-config=${PKG_CONFIG} \
+    --with-pkg-config-libdir="${PKG_CONFIG_PATH}" \
     --with-shared \
     --with-ticlib \
     --with-tic-path=/usr/bin/tic \

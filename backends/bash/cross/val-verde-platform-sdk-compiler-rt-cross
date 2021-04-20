@@ -10,8 +10,8 @@ export SOURCE_PACKAGE_VERSION=13
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export DEPENDS="${PACKAGE_BASE_NAME}-llvm-project-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH} (>=1.0.0)"
+export INSTALL_PREFIX=${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}
 export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
-export PACKAGE_PREFIX=${BUILD_PACKAGE_PREFIX}
 export SOURCE_ROOT=${SOURCE_ROOT_BASE}/llvm-project-${SOURCE_PACKAGE_VERSION}/${SOURCE_PACKAGE_NAME}
 
 # Configure the build components
@@ -20,33 +20,45 @@ if [ "${HOST_OS}" = "macos" ]; then
 elif [ "${HOST_OS}" = "mingw32" ]; then
     CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
     DST_CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
-    CXXFLAGS="\
+    COMMON_CFLAGS="\
         -Wl,/force:unresolved \
-        ${CXXFLAGS} \
+        ${COMMON_CFLAGS} \
     "
 elif [ "${HOST_OS}" = "musl" ]; then
     CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
-    CXXFLAGS="\
+    COMMON_CFLAGS="\
         -Dprintf\\\(...\\\)= \
-        ${CXXFLAGS} \
+        ${COMMON_CFLAGS} \
     "
+elif [ "${HOST_OS}" = "wasi" ]; then
+    CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
+    COMMON_CFLAGS="\
+        -Wl,--allow-undefined \
+        -Wl,--no-entry \
+        ${COMMON_CFLAGS} \
+    "
+    LLVM_CONFIG_PATH=`package-get-filename ${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config EXECUTABLE`
 else
     CLANG_RT_LIB=${CLANG_RT_LIB:-`package-get-filename clang_rt.builtins-${HOST_PROCESSOR}-${HOST_OS} STATIC`}
 fi
 
+SIZEOF_VOID_P=8
+
+if [ "${HOST_PROCESSOR}" = "wasm32" ]; then
+        SIZEOF_VOID_P=4
+fi
+
 cd ${STAGE_ROOT}
-CFLAGS="\
+CMAKE_INSTALL_PREFIX=${BUILD_PACKAGE_PREFIX} \
+COMMON_CFLAGS="\
     -nostdlib \
-    ${CFLAGS} \
-" \
-CXXFLAGS="\
-    -nostdlib \
-    ${CXXFLAGS} \
+    ${COMMON_CFLAGS} \
 " \
 package-cmake \
     -DCMAKE_C_COMPILER_WORKS=TRUE \
     -DCMAKE_CXX_COMPILER_WORKS=TRUE \
     -DCMAKE_LIPO=${BINDIR}/llvm-lipo \
+    -DCMAKE_SIZEOF_VOID_P=${SIZEOF_VOID_P} \
     -DCOMPILER_RT_BUILD_LIBFUZZER=FALSE \
     -DCOMPILER_RT_BUILD_MEMPROF=FALSE \
     -DCOMPILER_RT_BUILD_PROFILE=FALSE \
@@ -57,25 +69,47 @@ package-cmake \
     -DCOMPILER_RT_EXCLUDE_ATOMIC_BUILTIN=FALSE \
     -DCOMPILER_RT_HAS_ATOMIC_KEYWORD=TRUE \
     -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
-    -DPython3_EXECUTABLE=${BINDIR}/python3 \
+    -DLLVM_CONFIG_PATH=${LLVM_CONFIG_PATH} \
+    -DPython3_EXECUTABLE=${PYTHON} \
     ${SOURCE_ROOT}
 
 # Build the components
 ninja-install
 
-SDK_PLATFORM_DIR=`${ECHO} ${SYSTEM_NAME} | ${TR} '[:upper:]' '[:lower:]'`
+if [ "${HOST_OS}" = "android" ]; then
+    SDK_PLATFORM_DIR=linux
+    DST_SDK_PLATFORM_DIR=android
+elif [ "${HOST_OS}" = "gnu" ]; then
+    SDK_PLATFORM_DIR=linux
+elif [ "${HOST_OS}" = "macos" ]; then
+    SDK_PLATFORM_DIR=darwin
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    SDK_PLATFORM_DIR=windows
+elif [ "${HOST_OS}" = "musl" ]; then
+    SDK_PLATFORM_DIR=linux
+    DST_SDK_PLATFORM_DIR=musl
+elif [ "${HOST_OS}" = "wasi" ]; then
+    SDK_PLATFORM_DIR=fuchsia
+    DST_SDK_PLATFORM_DIR=wasi
+else
+    SDK_PLATFORM_DIR=${HOST_OS}
+fi
+
 DST_SDK_PLATFORM_DIR=${DST_SDK_PLATFORM_DIR:-${SDK_PLATFORM_DIR}}
-${MKDIR} -p ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/13.0.0/lib/${SDK_PLATFORM_DIR}
-${MV} ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/${SDK_PLATFORM_DIR}/${CLANG_RT_LIB} \
-      ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/13.0.0/lib/${DST_SDK_PLATFORM_DIR}/${DST_CLANG_RT_LIB}
+CLANG_RT_SOURCE_INSTALL_PREFIX=${INSTALL_PREFIX}/lib/${SDK_PLATFORM_DIR}
+CLANG_RT_INSTALL_PREFIX=${INSTALL_PREFIX}/lib/clang/13.0.0/lib/${DST_SDK_PLATFORM_DIR}
+${MKDIR} -p ${CLANG_RT_INSTALL_PREFIX}
 
 if [ "${HOST_OS}" = "linux" ] ||
    [ "${HOST_OS}" = "musl" ]; then
-    ${MV} ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/${SDK_PLATFORM_DIR}/clang_rt.crtbegin-${HOST_PROCESSOR}.o \
-          ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/13.0.0/lib/${DST_SDK_PLATFORM_DIR}/crtbeginS.o
-    ${MV} ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/${SDK_PLATFORM_DIR}/clang_rt.crtend-${HOST_PROCESSOR}.o \
-          ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/clang/13.0.0/lib/${DST_SDK_PLATFORM_DIR}/crtendS.o
+    ${MV} ${CLANG_RT_SOURCE_INSTALL_PREFIX}/clang_rt.crtbegin-${HOST_PROCESSOR}.o \
+          ${CLANG_RT_INSTALL_PREFIX}/
+    ${MV} ${CLANG_RT_SOURCE_INSTALL_PREFIX}/clang_rt.crtend-${HOST_PROCESSOR}.o \
+          ${CLANG_RT_INSTALL_PREFIX}/
 fi
+
+${MV} ${CLANG_RT_SOURCE_INSTALL_PREFIX}/${CLANG_RT_LIB} \
+      ${CLANG_RT_INSTALL_PREFIX}/${DST_CLANG_RT_LIB}
 
 # Build and install the package
 package-invoke-archive-install

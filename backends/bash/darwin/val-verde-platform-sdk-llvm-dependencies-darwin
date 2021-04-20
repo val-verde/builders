@@ -11,8 +11,17 @@ package-invoke-builder autoconf-cross
 # automake build
 package-invoke-builder automake-cross
 
-# automake build
-package-invoke-builder automake-cross
+# autoconf-archive build
+package-invoke-builder autoconf-archive-cross
+
+# argp-standalone build
+package-invoke-builder argp-standalone-cross
+
+# musl fts build
+package-invoke-builder musl-fts
+
+# musl obstack build
+package-invoke-builder musl-obstack
 
 # zlib build
 package-invoke-builder zlib-cross
@@ -62,9 +71,6 @@ package-invoke-builder icu4c-cross
 # xz build
 package-invoke-builder xz-cross
 
-# TODO: Remove after verification
-exit 0
-
 # libxml2 build
 DISABLE_PYTHON=TRUE \
 package-invoke-builder libxml2-cross
@@ -99,11 +105,8 @@ package-invoke-builder m4-cross
 # ninja build
 package-invoke-builder ninja-cross
 
-# libiconv build
-package-invoke-builder libiconv-cross
-
-# libffi build
-package-invoke-builder libffi-cross
+# file build
+package-invoke-builder file-cross
 
 # gnulib build
 package-invoke-builder gnulib-cross
@@ -111,14 +114,20 @@ package-invoke-builder gnulib-cross
 # pcre build
 package-invoke-builder pcre-cross
 
-# icu build
-package-invoke-builder icu4c-cross
+# mpfr build
+package-invoke-builder mpfr-cross
 
-# xz build
-package-invoke-builder xz-cross
+# mpc build
+package-invoke-builder mpc-cross
 
-# libxml2 build
-package-invoke-builder libxml2-cross
+# isl build
+package-invoke-builder isl-cross
+
+# libev build
+package-invoke-builder libev-cross
+
+# libedit build
+package-invoke-builder libedit-cross
 
 # gdbm build
 CFLAGS="\
@@ -127,11 +136,8 @@ CFLAGS="\
 " \
 package-invoke-builder gdbm-cross
 
-# ncurses build
-package-invoke-builder ncurses-cross
-
-# libedit build
-package-invoke-builder libedit-cross
+# libdb build
+package-invoke-builder libdb-cross
 
 # sqlite build
 package-invoke-builder sqlite-cross
@@ -140,22 +146,22 @@ package-invoke-builder sqlite-cross
 package-invoke-builder openssl-cross
 
 # libcap build
-package-invoke-builder libcap-cross
+# package-invoke-builder libcap-cross
 
-# libexpat build
+# expat build
 package-invoke-builder expat-cross
-
-# gettext build
-package-invoke-builder gettext-cross
 
 # gawk build
 package-invoke-builder gawk-cross
 
-# gperf build
-package-invoke-builder gperf-cross
+# autogen build
+package-invoke-builder autogen-cross
 
-# texinfo build
-# package-invoke-builder texinfo-cross
+# libgpg-error build
+package-invoke-builder libgpg-error-cross
+
+# libgcrypt build
+package-invoke-builder libgcrypt-cross
 
 # indent build
 package-invoke-builder indent-cross
@@ -171,12 +177,6 @@ package-invoke-builder libssh2-cross
 
 # curl build
 package-invoke-builder curl-cross
-
-# glib build
-package-invoke-builder glib-cross
-
-# pkg-config build
-package-invoke-builder pkg-config-cross
 
 # xorg-macros build
 package-invoke-builder xorg-macros-cross
@@ -226,9 +226,6 @@ package-invoke-builder xorg-libice-cross
 # alsa-lib build
 package-invoke-builder alsa-lib-cross
 
-# cups build
-package-invoke-builder cups-cross
-
 # libuv build
 package-invoke-builder libuv-cross
 
@@ -265,6 +262,12 @@ package-invoke-builder xorg-libxshmfence-cross
 # xorg-libxxf86vm build
 package-invoke-builder xorg-libxxf86vm-cross
 
+# libjpeg build
+package-invoke-builder libjpeg-cross
+
+# libpng build
+package-invoke-builder libpng-cross
+
 # freetype2 build
 package-invoke-builder freetype2-cross
 
@@ -276,6 +279,18 @@ package-invoke-builder wayland-protocols-cross
 
 # mesa-drm build
 package-invoke-builder mesa-drm-cross
+
+# opencl headers build
+package-invoke-builder opencl-headers-cross
+
+# opencl icd loader build
+package-invoke-builder opencl-icd-loader-cross
+
+# vulkan headers build
+package-invoke-builder vulkan-headers-cross
+
+# vulkan loader build
+package-invoke-builder vulkan-loader-cross
 
 # grep build
 package-invoke-builder grep-cross
@@ -316,6 +331,9 @@ package-invoke-builder rsync-cross
 # systemd build
 # package-invoke-builder systemd
 
+# lua build
+package-invoke-builder lua-cross
+
 # wget build
 package-invoke-builder wget-cross
 
@@ -323,14 +341,59 @@ package-invoke-builder wget-cross
 _PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
 package-invoke-builder python-cross
 
+# libxslt build
+package-invoke-builder libxslt-cross
+
+# libtasn1 build
+package-invoke-builder libtasn1-cross
+
+# p11-kit build
+package-invoke-builder p11-kit-cross
+
+# nettle build
+package-invoke-builder nettle-cross
+
+# gnutls build
+package-invoke-builder gnutls-cross
+
+# libmicrohttpd build
+package-invoke-builder libmicrohttpd-cross
+
+# elfutils build
+package-invoke-builder elfutils-cross
+
+# glib build
+package-invoke-builder glib-cross
+
 # gobject-introspection build
 # package-invoke-builder gobject-introspection-cross
 
 # libsecret build
 package-invoke-builder libsecret-cross
 
-# lua build
-package-invoke-builder lua-cross
+# pkg-config build
+package-invoke-builder pkg-config-cross
+
+# itstool build
+package-invoke-builder itstool-cross
+
+# gtk-doc build
+package-invoke-builder gtk-doc-cross
+
+# cups build
+package-invoke-builder cups-cross
+
+# apt build
+package-invoke-builder apt-cross
+
+# popt build
+package-invoke-builder popt-cross
+
+# rpm build
+package-invoke-builder rpm-cross
+
+# dnf build
+# package-invoke-builder dnf-cross
 
 # swig build
 package-invoke-builder swig-cross

@@ -34,18 +34,6 @@ LibArchive_LIBRARY=`package-get-path archive SHARED HOST`
 LibUV_LIBRARY=`package-get-path uv SHARED HOST`
 ZLIB_LIBRARY=`package-get-path z SHARED HOST`
 
-CFLAGS="\
-    -target ${HOST_TRIPLE} \
-    --sysroot ${SYSROOT} \
-    -Wno-unused-command-line-argument \
-    ${CFLAGS} \
-" \
-CXXFLAGS="\
-    -target ${HOST_TRIPLE} \
-    --sysroot ${SYSROOT} \
-    -Wno-unused-command-line-argument \
-    ${CXXFLAGS} \
-" \
 package-cmake \
     -DBUILD_TESTING=FALSE \
     -DCMake_HAVE_CXX_FILESYSTEM=${CMake_HAVE_CXX_FILESYSTEM} \

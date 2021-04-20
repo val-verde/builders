@@ -12,9 +12,7 @@ package-invoke-builder kernel-headers-cross
 package-invoke-builder musl-headers
 
 # compiler-rt build
-if [ "${BUILD_PROCESSOR}" != ${HOST_PROCESSOR} ]; then
-    package-invoke-builder compiler-rt-cross
-fi
+package-invoke-builder compiler-rt-cross
 
 # musl libc build
 package-invoke-builder musl-libc

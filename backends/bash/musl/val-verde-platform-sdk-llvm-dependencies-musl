@@ -128,6 +128,9 @@ package-invoke-builder isl-cross
 # libev build
 package-invoke-builder libev-cross
 
+# libedit build
+package-invoke-builder libedit-cross
+
 # gdbm build
 CFLAGS="\
     -fcommon \
@@ -138,9 +141,6 @@ package-invoke-builder gdbm-cross
 # libdb build
 CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-gnu" \
 package-invoke-builder libdb-cross
-
-# libedit build
-package-invoke-builder libedit-cross
 
 # sqlite build
 package-invoke-builder sqlite-cross
@@ -280,6 +280,12 @@ package-invoke-builder xorg-libxshmfence-cross
 
 # xorg-libxxf86vm build
 package-invoke-builder xorg-libxxf86vm-cross
+
+# libjpeg build
+package-invoke-builder libjpeg-cross
+
+# libpng build
+package-invoke-builder libpng-cross
 
 # freetype2 build
 package-invoke-builder freetype2-cross

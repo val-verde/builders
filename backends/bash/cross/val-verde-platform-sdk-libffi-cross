@@ -10,13 +10,14 @@ export SOURCE_PACKAGE_VERSION=3
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for stage/configure/install
-SDK_PLATFORM_DIR=`${ECHO} ${SYSTEM_NAME} | ${TR} '[:upper:]' '[:lower:]'`
-
-if [ "${SDK_PLATFORM_DIR}" = "windows" ]; then
-    SYMVER_CMD="--disable-symvers"
+if [ "${HOST_OS}" = "macos" ] ||
+   [ "${HOST_OS}" = "mingw32" ]; then
+    ENABLE_OR_DISABLE_SYMVERS=disable
+else
+    ENABLE_OR_DISABLE_SYMVERS=enable
 fi
 
 package-stage-configure-install-archive \
     --disable-static \
     --enable-shared \
-    "${SYMVER_CMD}"
+    --${ENABLE_OR_DISABLE_SYMVERS}-symvers

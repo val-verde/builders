@@ -3,9 +3,7 @@
 set -e
 
 # Source package build helper functions
-export COMMON_CFLAGS="-Wl,-platform_version,${HOST_OS},${HOST_OS_API_LEVEL},${HOST_OS_API_LEVEL} -Wno-unused-command-line-argument"
 export SYSROOT=${SOURCE_ROOT_BASE}/macosx-${HOST_OS_API_LEVEL}
-export SYSTEM_NAME=Darwin
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # libcxx build

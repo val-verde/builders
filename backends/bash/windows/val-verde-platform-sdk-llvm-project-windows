@@ -220,8 +220,7 @@ package-rsync -ax \
 
 CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
 DST_CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
-SDK_PLATFORM_DIR=`${ECHO} ${SYSTEM_NAME} | ${TR} '[:upper:]' '[:lower:]'`
-DST_SDK_PLATFORM_DIR=${DST_SDK_PLATFORM_DIR:-${SDK_PLATFORM_DIR}}
+DST_SDK_PLATFORM_DIR=${DST_SDK_PLATFORM_DIR:-windows}
 ${LN} -sf ${CLANG_RT_LIB} \
           ${INSTALL_PREFIX}/lib/clang/13.0.0/lib/${DST_SDK_PLATFORM_DIR}/${DST_CLANG_RT_LIB}
 

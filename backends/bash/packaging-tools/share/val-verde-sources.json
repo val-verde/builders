@@ -656,6 +656,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "mesa",
         "sourceBranchIndicator": "default",
@@ -732,6 +733,15 @@
         "sourcePackageName": "musl-obstack",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "ncurses",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "6",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1194,6 +1204,7 @@
     },
     {
         "retainSource": "false",
+        "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "tensorflow",
         "sourceBranchIndicator": "default",
@@ -1692,6 +1703,13 @@
     },
     {
         "sourceType": "other",
+        "sourcePackageName": "libjpeg",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "9d",
+        "sourcePackageUrl": "https://www.ijg.org/files/jpegsrc.v${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
         "sourcePackageName": "libmicrohttpd",
         "sourceBranchIndicator": "wget",
         "sourcePackageVersion": "0.9.72",
@@ -1699,9 +1717,16 @@
     },
     {
         "sourceType": "other",
+        "sourcePackageName": "libpng",
+        "sourceBranchIndicator": "wget",
+        "sourcePackageVersion": "1.6.37",
+        "sourcePackageUrl": "https://download.sourceforge.net/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+    },
+    {
+        "sourceType": "other",
         "sourcePackageName": "linux",
         "sourceBranchIndicator": "wget-xz",
-        "sourcePackageVersion": "5.11.12",
+        "sourcePackageVersion": "5.11.15",
         "sourcePackageUrl": "https://cdn.kernel.org/pub/${SOURCE_PACKAGE_NAME}/kernel/v5.x/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz"
     },
     {
@@ -1730,13 +1755,6 @@
         "sourcePackageName": "mpc",
         "sourceBranchIndicator": "wget",
         "sourcePackageVersion": "1.2.1",
-        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "ncurses",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "6.2",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {

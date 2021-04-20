@@ -126,6 +126,9 @@ package-invoke-builder isl-cross
 # android libev build
 package-invoke-builder libev-cross
 
+# android libedit build
+package-invoke-builder libedit-cross
+
 # android gdbm build
 CFLAGS="\
     -fcommon \
@@ -136,16 +139,13 @@ package-invoke-builder gdbm-cross
 # android libdb build
 package-invoke-builder libdb-cross
 
-# android libedit build
-package-invoke-builder libedit-cross
-
 # android sqlite build
 package-invoke-builder sqlite-cross
 
 # android openssl build
 package-invoke-builder openssl-cross
 
-# libcap build
+# android libcap build
 package-invoke-builder libcap-cross
 
 # android expat build
@@ -277,6 +277,12 @@ package-invoke-builder xorg-libxshmfence-cross
 
 # android xorg-libxxf86vm build
 package-invoke-builder xorg-libxxf86vm-cross
+
+# android libjpeg build
+package-invoke-builder libjpeg-cross
+
+# android libpng build
+package-invoke-builder libpng-cross
 
 # android freetype2 build
 package-invoke-builder freetype2-cross
