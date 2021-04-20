@@ -106,7 +106,7 @@ RUN DARWIN_OS=darwin \
     HOST_OS=macos \
     HOST_OS_API_LEVEL=11 \
     HOST_PROCESSOR=x86_64 \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-darwin
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-darwin || true
 
 RUN DARWIN_OS=darwin \
     DARWIN_OS_API_LEVEL=20 \
@@ -116,7 +116,7 @@ RUN DARWIN_OS=darwin \
     HOST_OS=macos \
     HOST_OS_API_LEVEL=11 \
     HOST_PROCESSOR=aarch64 \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-darwin
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-darwin || true
 
 # musl build
 FROM macos_builder AS musl_builder
