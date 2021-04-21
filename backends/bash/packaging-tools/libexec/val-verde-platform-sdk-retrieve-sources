@@ -15,10 +15,6 @@ function build-install-git-source-package() {
     # Set up paths and dirs
     prepare-source-base
 
-    # Check if the source deb exists
-    SEARCH_INPUT=${SOURCE_DEB_PATH}/${PACKAGE_NAME}.deb \
-    tool-check
-
     if [ "${FILE_EXISTS}" = 'true' ]; then
         ${ECHO} -e "    Skipping source build: \e[1;32m${PACKAGE_NAME}\e[0m"
     else
@@ -62,10 +58,6 @@ function build-install-git-source-package() {
 function build-install-other-source-package() {
     # Set up paths and dirs
     prepare-source-base
-
-    # Check if the source deb exists
-    SEARCH_INPUT=${SOURCE_DEB_PATH}/${PACKAGE_NAME}.deb \
-    tool-check
 
     if [ "${FILE_EXISTS}" = 'true' ]; then
         ${ECHO} -e "    Skipping source build: \e[1;32m${PACKAGE_NAME}\e[0m"

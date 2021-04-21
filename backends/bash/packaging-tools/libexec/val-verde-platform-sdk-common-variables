@@ -246,8 +246,10 @@ function package-zip() {
 }
 
 function tool-check() {
-    if [ -f "${SEARCH_INPUT}" ]; then
+    SEARCH_KEY=${SEARCH_PATH}/${SEARCH_INPUT}
+    if [ -f "${SEARCH_KEY}.${SEARCH_EXTENSION}" ]; then
         FILE_EXISTS='true'
+        readarray -d ' ' SEARCH_RESULTS < <(compgen -G "${SEARCH_KEY}*") 
     else
         FILE_EXISTS='false'
     fi
