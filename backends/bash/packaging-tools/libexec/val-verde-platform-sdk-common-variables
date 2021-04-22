@@ -249,7 +249,7 @@ function tool-check() {
     SEARCH_KEY=${SEARCH_PATH}/${SEARCH_INPUT}
     if [ -f "${SEARCH_KEY}.${SEARCH_EXTENSION}" ]; then
         FILE_EXISTS='true'
-        readarray -d ' ' SEARCH_RESULTS < <(compgen -G "${SEARCH_KEY}*") 
+        SEARCH_RESULTS=`compgen -G "${SEARCH_KEY}*"`
     else
         FILE_EXISTS='false'
     fi

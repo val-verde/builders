@@ -921,6 +921,14 @@ function ninja-install() {
     tool-install "${@}"
 }
 
+function package-archive-build-install() {
+    # Build the package
+    deb-package-build
+
+    # Install the package
+    deb-package-install
+}
+
 function package-autoreconf() {
     if [ -z "${DISABLE_AUTORECONF}" ]; then
         TOOL_LOG=${STAGE_ROOT}/builder-compile \
@@ -1354,11 +1362,23 @@ function package-install() {
 }
 
 function package-invoke-archive-install() {
-    # Build the package
-    deb-package-build
+    package-archive-build-install
 
-    # Install the package
-    deb-package-install
+    if [ -n "${ENABLE_STAGE_ROOT_BUILD}" ]; then
+        package-invoke-stage-root-archive
+    fi
+}
+
+function package-invoke-stage-root-archive() {
+    STAGING_BUILD_PATH=${TEMP_ROOT_BASE}/staging${STAGE_ROOT}/
+    ${MKDIR} -p ${STAGING_BUILD_PATH}
+
+    package-rsync -ax ${STAGE_ROOT}/* \
+                      ${STAGING_BUILD_PATH}
+    
+    INSTALL_ROOT=${TEMP_ROOT_BASE}/staging \
+    PACKAGE_NAME=${PACKAGE_NAME}-stage \
+    package-archive-build-install
 }
 
 # package-get-filename <name> <EXECUTABLE|SHARED|STATIC> <BUILD|HOST>
