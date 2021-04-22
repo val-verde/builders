@@ -126,6 +126,7 @@ package-invoke-builder libatomic-ops-cross 7
 package-invoke-builder libffi-cross 3
 
 # icu build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder icu4c-cross 68
 
 # libunistring build
