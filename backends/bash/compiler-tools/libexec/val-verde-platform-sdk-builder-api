@@ -21,13 +21,19 @@ function package-invoke-builder() {
 
     get-common-variables
 
-    SEARCH_INPUT=${DEB_PATH}/${PACKAGE_NAME}.deb \
+    SEARCH_PATH=${DEB_PATH} \
+    SEARCH_INPUT=${PACKAGE_NAME} \
+    SEARCH_EXTENSION=deb \
     tool-check
 
     if [ ${FILE_EXISTS} == 'true' ]; then
         source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
-        ${ECHO} -e "\e[1;35mSkipping re-build: ${PACKAGE_NAME}\e[0m"
-        deb-package-install
+        SEARCH_RESULTS_ARRAY=( ${SEARCH_RESULTS} )
+        for file in "${SEARCH_RESULTS_ARRAY[@]}"; do
+            PACKAGE_NAME=$(echo $file | cut -d '/' -f5 | cut -d '.' -f1)
+            ${ECHO} -e "    Skipping re-build: \e[1;35m${PACKAGE_NAME}\e[0m"
+            deb-package-install
+        done
     else
         ${ECHO} -e "Builder Invocation Started"
         ${BASH} ${VAL_VERDE_GH_TEAM}-platform-sdk-${@}
@@ -45,7 +51,8 @@ function package-invoke-builder() {
 
 function parse-builder-args() {
     if [ ${1##*-} == 'cross' ] \
-       || [[ ${1##*-} == *"bootstrap"* ]]; then
+       || [[ ${1##*-} == *"bootstrap"* ]] \
+       || [[ ${1##*-} == *"musl"* ]]; then
         export SOURCE_PACKAGE_NAME=${1%-*}
     else
         export SOURCE_PACKAGE_NAME=$1
