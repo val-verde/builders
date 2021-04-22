@@ -6,21 +6,21 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # kernel headers build
-package-invoke-builder kernel-headers-cross
+package-invoke-builder kernel-headers-cross 5
 
 # musl headers build
-package-invoke-builder musl-headers
+package-invoke-builder musl-headers 1
 
 # compiler-rt build
-package-invoke-builder compiler-rt-cross
+package-invoke-builder compiler-rt-cross 13
 
 # musl libc build
 DISABLE_FORTIFY_SOURCE_LEVEL=TRUE \
-package-invoke-builder musl-libc
+package-invoke-builder musl-libc 1
 
 # libcxx build
 ENABLE_MUSL_LIBC=TRUE \
-package-invoke-builder libcxx-bootstrap
+package-invoke-builder libcxx-bootstrap 13
 
 # llvm dependencies
 category-invoke-builder llvm-dependencies-musl
@@ -32,23 +32,23 @@ category-invoke-builder swift-tools-musl
 category-invoke-builder swift-sdk-cross
 
 # go build
-package-invoke-builder go-cross
+package-invoke-builder go-cross 1
 
 # ruby build
-package-invoke-builder ruby-cross
+package-invoke-builder ruby-cross 3
 
 # graphics sdk build
 category-invoke-builder graphics-sdk-cross
 
 # virtualization sdk build
-package-invoke-builder virtualization-sdk-cross
+category-invoke-builder virtualization-sdk-cross
 
 # node + sdk build
-package-invoke-builder node-cross
-package-invoke-builder npm-yarn-cross
+package-invoke-builder node-cross 15
+package-invoke-builder npm-yarn-cross 1
 
 # wine build
-package-invoke-builder wine-cross
+package-invoke-builder wine-cross 6
 
 # blockchain sdk build
-package-invoke-builder blockchain-sdk-cross
+category-invoke-builder blockchain-sdk-cross
