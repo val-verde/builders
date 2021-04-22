@@ -6,17 +6,17 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # llvm build
-package-invoke-builder llvm-project-musl
+package-invoke-builder llvm-project-musl 13
 
 # souper build
-package-invoke-builder souper-cross
+package-invoke-builder souper-cross 1
 
 # cmark build
-package-invoke-builder swift-cmark-cross
+package-invoke-builder swift-cmark-cross 5 none
 
 # swift build
-package-invoke-builder swift-musl
+package-invoke-builder swift-musl 5
 
 # lldb build
-package-invoke-builder swift-lldb-musl
+package-invoke-builder swift-lldb-musl 5
 

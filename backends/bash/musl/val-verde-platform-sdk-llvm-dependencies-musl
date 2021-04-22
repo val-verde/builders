@@ -6,413 +6,413 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # autoconf build
-package-invoke-builder autoconf-cross
+package-invoke-builder autoconf-cross 2
 
 # automake build
-package-invoke-builder automake-cross
+package-invoke-builder automake-cross 1
 
 # autoconf-archive build
-package-invoke-builder autoconf-archive-cross
+package-invoke-builder autoconf-archive-cross 2021
 
 # musl argp-standalone build
-package-invoke-builder argp-standalone-cross
+package-invoke-builder argp-standalone-cross 1
 
 # musl sys-queue-h build
-package-invoke-builder sys-queue-h-cross
+package-invoke-builder sys-queue-h-cross 1
 
 # musl fts build
-package-invoke-builder musl-fts
+package-invoke-builder musl-fts 1
 
 # musl obstack build
-package-invoke-builder musl-obstack
+package-invoke-builder musl-obstack 1
 
 # libxcrypt build
-package-invoke-builder libxcrypt-cross
+package-invoke-builder libxcrypt-cross 4
 
 # zlib build
-package-invoke-builder zlib-cross
+package-invoke-builder zlib-cross 1
 
 # bzip2 build
-package-invoke-builder bzip2-cross
+package-invoke-builder bzip2-cross 1
 
 # lz4 build
-package-invoke-builder lz4-cross
+package-invoke-builder lz4-cross 1
 
 # xxhash build
-package-invoke-builder xxhash-cross
+package-invoke-builder xxhash-cross 0
 
 # zip build
-package-invoke-builder zip-cross
+package-invoke-builder zip-cross 30
 
 # zstd build
-package-invoke-builder zstd-cross
+package-invoke-builder zstd-cross 0
 
 # unzip build
-package-invoke-builder unzip-cross
+package-invoke-builder unzip-cross 60
 
 # help2man build
-package-invoke-builder help2man-cross
+package-invoke-builder help2man-cross 1
 
 # gperf build
-package-invoke-builder gperf-cross
+package-invoke-builder gperf-cross 3
 
 # libtool build
-package-invoke-builder libtool-cross
+package-invoke-builder libtool-cross 2
 
 # libatomic-ops build
-package-invoke-builder libatomic-ops-cross
+package-invoke-builder libatomic-ops-cross 7
 
 # libffi build
-package-invoke-builder libffi-cross
+package-invoke-builder libffi-cross 3
 
 # libiconv build
-package-invoke-builder libiconv-cross
+package-invoke-builder libiconv-cross 1
 
 # icu build
-package-invoke-builder icu4c-cross
+package-invoke-builder icu4c-cross 68
 
 # libunistring build
-package-invoke-builder libunistring-cross
+package-invoke-builder libunistring-cross 0
 
 # gc build
-package-invoke-builder gc-cross
+package-invoke-builder gc-cross 8
 
 # gmp build
-package-invoke-builder gmp-cross
+package-invoke-builder gmp-cross 6
 
 # ncurses build
-package-invoke-builder ncurses-cross
+package-invoke-builder ncurses-cross 6
 
 # gettext build (without libxml2 and xz)
 DISABLE_LIBXML2=TRUE \
 DISABLE_XZ=TRUE \
-package-invoke-builder gettext-cross
+package-invoke-builder gettext-cross 0
 
 # gzip build
-package-invoke-builder gzip-cross
+package-invoke-builder gzip-cross 1
 
 # xz build
-package-invoke-builder xz-cross
+package-invoke-builder xz-cross 5
 
 # libxml2 build
 DISABLE_PYTHON=TRUE \
-package-invoke-builder libxml2-cross
+package-invoke-builder libxml2-cross 0
 
 # gettext build
-package-invoke-builder gettext-cross
+package-invoke-builder gettext-cross 0
 
 # texinfo build
-# package-invoke-builder texinfo-cross
+# package-invoke-builder texinfo-cross 6
 
 # guile build
-package-invoke-builder guile-cross
+package-invoke-builder guile-cross 3
 
 # make build
-package-invoke-builder make-cross
+package-invoke-builder make-cross 4
 
 # m4 build
-package-invoke-builder m4-cross
+package-invoke-builder m4-cross 1
 
 # ninja build
-package-invoke-builder ninja-cross
+package-invoke-builder ninja-cross 1
 
 # file build
-package-invoke-builder file-cross
+package-invoke-builder file-cross 5
 
 # libedit build
-package-invoke-builder libedit-cross
+package-invoke-builder libedit-cross 20210714-3
 
 # pcre build
-package-invoke-builder pcre-cross
+package-invoke-builder pcre-cross 8
 
 # mpfr build
-package-invoke-builder mpfr-cross
+package-invoke-builder mpfr-cross 4
 
 # mpc build
-package-invoke-builder mpc-cross
+package-invoke-builder mpc-cross 1
 
 # isl build
-package-invoke-builder isl-cross
+package-invoke-builder isl-cross 0
 
 # libev build
-package-invoke-builder libev-cross
+package-invoke-builder libev-cross 4
 
 # gdbm build
-package-invoke-builder gdbm-cross
+package-invoke-builder gdbm-cross 1
 
 # libdb build
-package-invoke-builder libdb-cross
+package-invoke-builder libdb-cross 5
 
 # tcl build
 package-invoke-builder tcl-cross
 
 # sqlite build
-package-invoke-builder sqlite-cross
+package-invoke-builder sqlite-cross 3
 
 # openssl build
-package-invoke-builder openssl-cross
+package-invoke-builder openssl-cross 1
 
 # libcap build
-package-invoke-builder libcap-cross
+package-invoke-builder libcap-cross 2
 
 # krb5 build
-package-invoke-builder krb5-cross
+package-invoke-builder krb5-cross 1
 
 # expat build
-package-invoke-builder expat-cross
+package-invoke-builder expat-cross 2
 
 # gawk build
-package-invoke-builder gawk-cross
+package-invoke-builder gawk-cross 5
 
 # autogen build
-package-invoke-builder autogen-cross
+package-invoke-builder autogen-cross 5
 
 # libgpg-error build
-package-invoke-builder libgpg-error-cross
+package-invoke-builder libgpg-error-cross 1
 
 # libgcrypt build
-package-invoke-builder libgcrypt-cross
+package-invoke-builder libgcrypt-cross 1
 
 # indent build
-package-invoke-builder indent-cross
+package-invoke-builder indent-cross 2
 
 # util-linux build
 DISABLE_PYTHON=TRUE \
 DISABLE_SYSTEMD=TRUE \
-package-invoke-builder util-linux-cross
+package-invoke-builder util-linux-cross 2
 
 # attr build
-package-invoke-builder attr-cross
+package-invoke-builder attr-cross 2
 
 # acl build
-package-invoke-builder acl-cross
+package-invoke-builder acl-cross 2
 
 # libarchive build
-package-invoke-builder libarchive-cross
+package-invoke-builder libarchive-cross 3
 
 # libssh build
-package-invoke-builder libssh-cross
+package-invoke-builder libssh-cross 0
 
 # libssh2 build
-package-invoke-builder libssh2-cross
+package-invoke-builder libssh2-cross 1
 
 # curl build
-package-invoke-builder curl-cross
+package-invoke-builder curl-cross 7
 
 # apple-mig build
-package-invoke-builder apple-mig-cross
+package-invoke-builder apple-mig-cross 121
 
 # alsa-lib build
-package-invoke-builder alsa-lib-cross
+package-invoke-builder alsa-lib-cross 1
 
 # libuv build
-package-invoke-builder libuv-cross
+package-invoke-builder libuv-cross 1
 
 # ldns build
-package-invoke-builder ldns-cross
+package-invoke-builder ldns-cross 1
 
 # c-ares build
-package-invoke-builder c-ares-cross
+package-invoke-builder c-ares-cross 1
 
 # openssh-portable build
-package-invoke-builder openssh-portable-cross
+package-invoke-builder openssh-portable-cross 8
 
 # bash build
-package-invoke-builder bash-cross
+package-invoke-builder bash-cross 5
 
 # grep build
-package-invoke-builder grep-cross
+package-invoke-builder grep-cross 3
 
 # sed build
-package-invoke-builder sed-cross
+package-invoke-builder sed-cross 4
 
 # bison build
-package-invoke-builder bison-cross
+package-invoke-builder bison-cross 3
 
 # flex build
-# package-invoke-builder flex-cross
+# package-invoke-builder flex-cross 2
 
 # jq build
-package-invoke-builder jq-cross
+package-invoke-builder jq-cross 1
 
 # json-c build
 package-invoke-builder json-c-cross
 
 # tar build
-package-invoke-builder tar-cross
+package-invoke-builder tar-cross 1
 
 # coreutils build
-package-invoke-builder coreutils-cross
+package-invoke-builder coreutils-cross 8
 
 # which build
-package-invoke-builder which-cross
+package-invoke-builder which-cross 2
 
 # findutils build
-package-invoke-builder findutils-cross
+package-invoke-builder findutils-cross 4
 
 # less build
-package-invoke-builder less-cross
+package-invoke-builder less-cross 590
 
 # dpkg build
-package-invoke-builder dpkg-cross
+package-invoke-builder dpkg-cross 1
 
 # rsync build
-package-invoke-builder rsync-cross
+package-invoke-builder rsync-cross 3
 
 # lua build
-package-invoke-builder lua-cross
+package-invoke-builder lua-cross 5
 
 # wget build
-package-invoke-builder wget-cross
+package-invoke-builder wget-cross 1
 
 # python build
 if [ "${BUILD_PROCESSOR}" = "${HOST_PROCESSOR}" ]; then
     PYTHON_FOR_BUILD=${PYTHON} \
-    package-invoke-builder python-cross
+    package-invoke-builder python-cross 3
 else
     _PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
-    package-invoke-builder python-cross
+    package-invoke-builder python-cross 3
 fi
 
 # libxml2 build (with python support)
-package-invoke-builder libxml2-cross
+package-invoke-builder libxml2-cross 2
 
 # libxslt build
-package-invoke-builder libxslt-cross
+package-invoke-builder libxslt-cross 1
 
 # python sdk build
 category-invoke-builder python-sdk-cross
 
 # libtasn1 build
-package-invoke-builder libtasn1-cross
+package-invoke-builder libtasn1-cross 4
 
 # eudev build
-package-invoke-builder eudev-cross
+package-invoke-builder eudev-cross 3
 
 # p11-kit build
 DISABLE_SYSTEMD=TRUE \
 package-invoke-builder p11-kit-cross 0
 
 # dbus build
-package-invoke-builder dbus-cross
+package-invoke-builder dbus-cross 1
 
 # util-linux build (with python support)
 DISABLE_SYSTEMD=TRUE \
-package-invoke-builder util-linux-cross
+package-invoke-builder util-linux-cross 2
 
 # nettle build
-package-invoke-builder nettle-cross
+package-invoke-builder nettle-cross 3
 
 # unbound build
 package-invoke-builder unbound-cross 1
 
 # gnutls build
-package-invoke-builder gnutls-cross
+package-invoke-builder gnutls-cross 3
 
 # libmicrohttpd build
-package-invoke-builder libmicrohttpd-cross
+package-invoke-builder libmicrohttpd-cross 0
 
 # elfutils build
-package-invoke-builder elfutils-cross
+package-invoke-builder elfutils-cross 0
 
 # strace build
 package-invoke-builder strace-cross 5
 
 # glib build
-package-invoke-builder glib-cross
+package-invoke-builder glib-cross 1
 
 # gobject-introspection build
-# package-invoke-builder gobject-introspection-cross
+# package-invoke-builder gobject-introspection-cross 1
 
 # libsecret build
-package-invoke-builder libsecret-cross
+package-invoke-builder libsecret-cross 0
 
 # pkg-config build
-package-invoke-builder pkg-config-cross
+package-invoke-builder pkg-config-cross 0
 
 # graphics server build
 package-invoke-builder graphics-server-cross
 
 # itstool build
-package-invoke-builder itstool-cross
+package-invoke-builder itstool-cross 2
 
 # gtk-doc build
-package-invoke-builder gtk-doc-cross
+package-invoke-builder gtk-doc-cross 1
 
 # graphviz build
 package-invoke-builder graphviz-cross 2
 
 # cups build
-package-invoke-builder cups-cross
+package-invoke-builder cups-cross 2
 
 # apt build
-package-invoke-builder apt-cross
+package-invoke-builder apt-cross 2
 
 # lvm2 build
 # package-invoke-builder lvm2
 
 # popt build
-package-invoke-builder popt-cross
+package-invoke-builder popt-cross 1
 
 # rpm build
-package-invoke-builder rpm-cross
+package-invoke-builder rpm-cross 4
 
 # dnf build
-# package-invoke-builder dnf-cross
+# package-invoke-builder dnf-cross 2
 
 # swig build
-package-invoke-builder swig-cross
+package-invoke-builder swig-cross 4
 
 # openjdk build
-package-invoke-builder openjdk-cross
+package-invoke-builder openjdk-cross 17
 
 # jansi build
-package-invoke-builder jansi-cross
+package-invoke-builder jansi-cross 2
 
 # maven build
-package-invoke-builder maven-cross
+package-invoke-builder maven-cross 3
 
 # z3 build
-package-invoke-builder z3-cross
+package-invoke-builder z3-cross 4
 
 # git build
-package-invoke-builder git-cross
+package-invoke-builder git-cross 2
 
 # vim build
-package-invoke-builder vim-cross
+package-invoke-builder vim-cross 8
 
 # cmake build
-package-invoke-builder cmake-cross
+package-invoke-builder cmake-cross 3
 
 # protobuf build
-package-invoke-builder protobuf-cross
+package-invoke-builder protobuf-cross 3
 
 # boost build
-package-invoke-builder boost-cross
+package-invoke-builder boost-cross 1
 
 # cereal build
-package-invoke-builder cereal-cross
+package-invoke-builder cereal-cross 1
 
 # libobjc2 build
-package-invoke-builder libobjc2-cross
+package-invoke-builder libobjc2-cross 2
 
 # android patch elf
-package-invoke-builder android-patch-elf-cross
+package-invoke-builder android-patch-elf-cross 1
 
 # jwasm (ml64) cross compiler build
-package-invoke-builder jwasm
+package-invoke-builder jwasm 2
 
 # re2c build
-package-invoke-builder re2c-cross
+package-invoke-builder re2c-cross 2
 
 # alive2 build
-package-invoke-builder alive2-cross
+package-invoke-builder alive2-cross 1
 
 # hiredis build
-package-invoke-builder hiredis-cross
+package-invoke-builder hiredis-cross 1
 
 # ccache build
-package-invoke-builder ccache-cross
+package-invoke-builder ccache-cross 4
 
 # distcc build
-package-invoke-builder distcc-cross
+package-invoke-builder distcc-cross 3
