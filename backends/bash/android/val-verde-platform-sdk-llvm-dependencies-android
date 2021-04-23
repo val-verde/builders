@@ -21,7 +21,7 @@ package-invoke-builder argp-standalone-cross
 package-invoke-builder musl-obstack
 
 # android libxcrypt build
-package-invoke-builder libxcrypt-cross
+package-invoke-builder libxcrypt-cross 4
 
 # android zlib build
 package-invoke-builder zlib-cross
@@ -189,7 +189,7 @@ package-invoke-builder acl-cross
 package-invoke-builder libarchive-cross
 
 # android libssh build
-package-invoke-builder libssh-cross
+package-invoke-builder libssh-cross 0
 
 # android libssh2 build
 package-invoke-builder libssh2-cross
@@ -364,10 +364,10 @@ package-invoke-builder swig-cross
 package-invoke-builder openjdk-cross
 
 # openjdk jansi build
-package-invoke-builder jansi-cross
+package-invoke-builder jansi-cross 2
 
 # android maven build
-package-invoke-builder maven-cross
+package-invoke-builder maven-cross 3
 
 # android z3 build
 package-invoke-builder z3-cross
