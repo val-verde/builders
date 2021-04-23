@@ -23,13 +23,20 @@ TARGETS=`${ECHO} "\
     prefix=${PACKAGE_PREFIX} \
     AR=${AR} \
     BUILD_CC=${BUILD_CC} \
+    BUILD_COPTS=${OPTIMIZATION_LEVEL} \
+    BUILD_GPERF=${GPERF} \
     CC=${CC} \
+    CFLAGS=${CFLAGS} \
+    COPTS=${OPTIMIZATION_LEVEL} \
+    DYNAMIC=yes \
+    GOLANG=yes \
+    LDFLAGS=${LDFLAGS} \
     PSXLINKFLAGS=-pthread \
+    TESTS=no \
     install \
 " | ${XARGS}`
 
-make-install -C ${STAGE_ROOT}/libcap ${TARGETS}
-make-install -C ${STAGE_ROOT}/progs ${TARGETS}
+make-install ${TARGETS}
 
 # Build and install the package
 package-invoke-archive-install
