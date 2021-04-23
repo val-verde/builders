@@ -57,10 +57,10 @@ export \
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # webassembly libc
-package-invoke-builder wasi-libc
+package-invoke-builder wasi-libc 0
 
 # webassembly compiler-rt (bootstrap)
-package-invoke-builder compiler-rt-cross
+package-invoke-builder compiler-rt-cross 13
 
 # webassembly libcxx
-package-invoke-builder libcxx-bootstrap
+package-invoke-builder libcxx-bootstrap 13
