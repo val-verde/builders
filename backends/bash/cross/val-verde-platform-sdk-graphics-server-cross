@@ -159,6 +159,7 @@ fi
 package-invoke-builder vulkan-headers-cross 1
 
 # vulkan loader build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder vulkan-loader-cross 1
 
 # brotli build
