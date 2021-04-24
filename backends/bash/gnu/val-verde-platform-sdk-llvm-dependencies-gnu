@@ -27,6 +27,7 @@ export \
     GREP=/usr/bin/grep \
     HELP2MAN=/usr/bin/true \
     INSTALL=/usr/bin/install \
+    LESS=/usr/bin/less \
     LN=/usr/bin/ln \
     LS=/usr/bin/ls \
     M4=/usr/bin/m4 \
@@ -419,6 +420,10 @@ unset \
     RMDIR \
     TEE \
     TR
+
+# less build
+package-invoke-builder less-cross
+unset LESS
 
 # findutils build
 package-invoke-builder findutils-cross

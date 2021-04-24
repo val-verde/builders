@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=diffutils
+export SOURCE_PACKAGE_VERSION=3
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for bootstrap/configure/install
+BOOTSTRAP_ARGS="\
+    --force \
+    --gnulib-srcdir=${STAGE_ROOT}/glib \
+" \
+CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
+ENABLE_GNULIB_OVERRIDE=TRUE \
+package-bootstrap-configure-install-archive \
+    gl_cv_warn_c__Werror=no

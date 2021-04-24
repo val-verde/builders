@@ -60,6 +60,7 @@ export HEAD=${HEAD:-${BINDIR}/head}
 export HELP2MAN=${HELP2MAN:-${BINDIR}/help2man}
 export JAVA=${JAVA:-${BINDIR}/java}
 export JAVAC=${JAVAC:-${BINDIR}/javac}
+export LESS=${LESS:-${BINDIR}/less}
 export LSB_RELEASE=${LSB_RELEASE:-/usr/bin/lsb_release}
 export INSTALL=${INSTALL:-${BINDIR}/install}
 export LN=${LN:-${BINDIR}/ln}
