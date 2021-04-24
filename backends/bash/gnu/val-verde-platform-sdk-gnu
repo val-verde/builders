@@ -26,31 +26,31 @@ package-invoke-builder swift
 package-invoke-builder swift-lldb
 
 # libdispatch build
-package-invoke-builder swift-corelibs-libdispatch
+package-invoke-builder swift-corelibs-libdispatch-cross
 
 # foundation build
-package-invoke-builder swift-corelibs-foundation
+package-invoke-builder swift-corelibs-foundation-cross
 
 # xctest build
-package-invoke-builder swift-corelibs-xctest
+package-invoke-builder swift-corelibs-xctest-cross
 
 # llbuild build
 package-invoke-builder swift-llbuild-cross
 
 # swift tools support core build
-package-invoke-builder swift-tools-support-core
+package-invoke-builder swift-tools-support-core-cross
 
 # yams build
-package-invoke-builder yams
+package-invoke-builder yams-cross
 
 # swift argument parser build
-package-invoke-builder swift-argument-parser
+package-invoke-builder swift-argument-parser-cross
 
 # swift driver build
-package-invoke-builder swift-driver
+package-invoke-builder swift-driver-cross
 
 # swift package manager build
-package-invoke-builder swift-package-manager
+package-invoke-builder swift-package-manager-cross
 
 # reinstall swiftpm for build and host
 PACKAGES_TO_MANAGE=( 'swift-argument-parser-5'         'BUILD' \
