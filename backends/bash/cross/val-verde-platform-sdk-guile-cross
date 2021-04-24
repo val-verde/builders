@@ -15,10 +15,14 @@ export DEPENDS="\
 "
 
 # Invoke one-shot template for bootstrap/configure/install
-ENABLE_OR_DISABLE_JIT=enable
+ENABLE_JIT=yes
 ENABLE_OR_DISABLE_NETWORKING=enable
 ENABLE_OR_DISABLE_POSIX=enable
 WITH_OR_WITHOUT_MODULES=with
+
+if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+    ENABLE_JIT=no
+fi
 
 if [ "${HOST_OS}" = "macos" ]; then
     COMMON_CFLAGS="\
@@ -30,7 +34,7 @@ if [ "${HOST_OS}" = "macos" ]; then
 	${LIBS} \
     "
 elif [ "${HOST_OS}" = "mingw32" ]; then
-    ENABLE_OR_DISABLE_JIT=disable
+    ENABLE_JIT=no
     ENABLE_OR_DISABLE_NETWORKING=disable
     ENABLE_OR_DISABLE_POSIX=disable
     WITH_OR_WITHOUT_MODULES=without
@@ -43,8 +47,8 @@ package-bootstrap-configure-install-archive \
     ac_cv_func_GC_is_heap_ptr=yes \
     ac_cv_func_GC_move_disappearing_link=yes \
     --disable-static \
+    --enable-jit=${ENABLE_JIT} \
     --enable-shared \
-    --${ENABLE_OR_DISABLE_JIT}-jit \
     --${ENABLE_OR_DISABLE_NETWORKING}-networking \
     --${ENABLE_OR_DISABLE_POSIX}-posix \
     --${WITH_OR_WITHOUT_MODULES}-modules
