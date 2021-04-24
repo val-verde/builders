@@ -487,6 +487,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "libcap",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "libdb",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "5",
@@ -1708,13 +1717,6 @@
         "sourceBranchIndicator": "wget-bz2",
         "sourcePackageVersion": "0.23",
         "sourcePackageUrl": "http://isl.gforge.inria.fr/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.bz2"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "libcap",
-        "sourceBranchIndicator": "wget-xz",
-        "sourcePackageVersion": "2.45",
-        "sourcePackageUrl": "https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz"
     },
     {
         "sourceType": "other",
