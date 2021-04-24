@@ -14,10 +14,6 @@ copy-source-to-staging
 # Configure the build components
 ${MKDIR} -p ${STAGE_ROOT}/build
 
-cd ${STAGE_ROOT}
-package-autoupdate
-package-autoreconf -fi
-
 cd ${STAGE_ROOT}/build
 AR=${BINDIR}/llvm-ar
 AS=${BINDIR}/llvm-as
