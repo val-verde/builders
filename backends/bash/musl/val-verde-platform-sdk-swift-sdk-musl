@@ -87,7 +87,7 @@ package-invoke-builder swift-doc-cross
 package-invoke-builder sourcekit-lsp-cross
 
 # musl baikonur build
-package-invoke-builder baikonur
+package-invoke-builder baikonur-cross
 
 # musl pythonkit build
 package-invoke-builder pythonkit-cross

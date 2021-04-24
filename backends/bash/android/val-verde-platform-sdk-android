@@ -120,7 +120,7 @@ package-invoke-builder sourcekit-lsp-android
 
 # android baikonur build
 FORTIFY_SOURCE_LEVEL=0 \
-package-invoke-builder baikonur
+package-invoke-builder baikonur-cross
 
 # android pythonkit build
 package-invoke-builder pythonkit-cross
