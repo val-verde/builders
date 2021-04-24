@@ -3,6 +3,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "acl",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "alive2",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
@@ -51,6 +60,15 @@
         "sourcePackageName": "argp-standalone",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "attr",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1614,20 +1632,6 @@
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "attr",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "2.4.47",
-        "sourcePackageUrl": "http://download.savannah.gnu.org/releases/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.src.tar.gz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "acl",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "2.2.52",
-        "sourcePackageUrl": "http://download.savannah.gnu.org/releases/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.src.tar.gz"
     },
     {
         "sourceType": "other",
