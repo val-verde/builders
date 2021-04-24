@@ -142,6 +142,9 @@ package-invoke-builder gdbm-cross
 CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-gnu" \
 package-invoke-builder libdb-cross
 
+# tcl build
+package-invoke-builder tcl-cross
+
 # sqlite build
 package-invoke-builder sqlite-cross
 

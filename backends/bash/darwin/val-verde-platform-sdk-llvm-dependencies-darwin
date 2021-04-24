@@ -139,6 +139,9 @@ package-invoke-builder gdbm-cross
 # libdb build
 package-invoke-builder libdb-cross
 
+# tcl build
+package-invoke-builder tcl-cross
+
 # sqlite build
 package-invoke-builder sqlite-cross
 

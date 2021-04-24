@@ -125,6 +125,9 @@ package-invoke-builder mpc-cross
 # windows editline build
 package-invoke-builder wineditline-cross
 
+# windows tcl build
+package-invoke-builder tcl-cross
+
 # windows sqlite build
 package-invoke-builder sqlite-cross
 
