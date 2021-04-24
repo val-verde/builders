@@ -10,9 +10,5 @@ export SOURCE_PACKAGE_VERSION=2
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for configure/install
-CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
-DISABLE_AUTOUPDATE=TRUE \
-INSTALL_TARGET="install-dev install-lib" \
-package-configure-install-archive \
-    --disable-static \
-    --enable-shared
+BOOTSTRAP_FILE=./autogen.sh \
+package-bootstrap-configure-install-archive
