@@ -1233,6 +1233,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "tcl",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "8",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "tensorflow",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2",
