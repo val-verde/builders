@@ -18,28 +18,27 @@ copy-source-to-staging
 cd ${STAGE_ROOT}
 
 # Build the components
-TARGETS=`${ECHO} "\
+INSTALL_TARGET=`${ECHO} "\
     lib=lib \
     prefix=${PACKAGE_PREFIX} \
     AR=${AR} \
     BUILD_CC=${BUILD_CC} \
-    BUILD_COPTS=${OPTIMIZATION_LEVEL} \
+    BUILD_COPTS="-O${OPTIMIZATION_LEVEL}" \
     BUILD_GPERF=${GPERF} \
     CC=${CC} \
-    CFLAGS=${CFLAGS} \
-    COPTS=${OPTIMIZATION_LEVEL} \
+    COPTS="-O${OPTIMIZATION_LEVEL}" \
     DYNAMIC=yes \
     GOLANG=yes \
     INDENT=${INDENT} \
     KERNEL_HEADERS=${PACKAGE_PREFIX}/include/uapi \
-    LDFLAGS=${LDFLAGS} \
     PSXLINKFLAGS=-pthread \
     SYSTEM_HEADERS=${PACKAGE_PREFIX}/include \
     TESTS=no \
     install \
-" | ${XARGS}`
-
-make-install ${TARGETS}
+" | ${XARGS}` \
+make-install \
+    CFLAGS="${CFLAGS}" \
+    LDFLAGS="${LDFLAGS}"
 
 # Build and install the package
 package-invoke-archive-install
