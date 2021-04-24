@@ -139,6 +139,9 @@ package-invoke-builder gdbm-cross
 # android libdb build
 package-invoke-builder libdb-cross
 
+# android tcl build
+package-invoke-builder tcl-cross
+
 # android sqlite build
 package-invoke-builder sqlite-cross
 
