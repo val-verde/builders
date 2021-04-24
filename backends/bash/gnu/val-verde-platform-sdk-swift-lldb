@@ -42,7 +42,7 @@ package-cmake \
     -DCLANG_LINK_CLANG_DYLIB=TRUE \
     -DCMAKE_EXE_LINKER_FLAGS="-O2" \
     -DCURSES_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/ncurses \
-    -DCURSES_LIBRARIES=`package-get-path ncurses SHARED HOST` \
+    -DCURSES_LIBRARIES="`package-get-path ncurses SHARED HOST`;`package-get-path tinfo SHARED HOST`" \
     -DLibEdit_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
     -DLibEdit_LIBRARIES=`package-get-path edit SHARED HOST` \
     -DLIBLZMA_INCLUDE_DIR=${PACKAGE_PREFIX}/include \

@@ -22,6 +22,7 @@ SWIFT_BUILD_FLAGS="\
     -Xlinker -lc++ \
     -Xlinker -licuucswift \
     -Xlinker -lncurses \
+    -Xlinker -ltinfo \
     ${SWIFT_BUILD_FLAGS} \
 " \
 package-swift-build

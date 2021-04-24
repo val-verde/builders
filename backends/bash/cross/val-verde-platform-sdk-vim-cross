@@ -22,4 +22,4 @@ package-configure-install-archive \
     vim_cv_terminfo=yes \
     vim_cv_tgetent=yes \
     vim_cv_toupper_broken=no \
-    --with-tlib=ncurses
+    --with-tlib=tinfo
