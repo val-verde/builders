@@ -11,6 +11,7 @@ ECHO=/usr/bin/echo \
 package-invoke-category-builder llvm-dependencies-gnu
 
 # llvm build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder llvm-project 13
 
 # souper build
@@ -23,6 +24,7 @@ package-invoke-builder swift-cmark-cross 5 none
 package-invoke-builder swift 5
 
 # lldb build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-lldb 5
 
 # swift sdk build

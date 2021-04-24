@@ -266,6 +266,7 @@ package-invoke-builder lua-cross
 package-invoke-builder wget-cross
 
 # android python build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
 _PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
 package-invoke-builder python-cross
 
