@@ -19,6 +19,10 @@ export DEPENDS="\
 
 # Configure the build components
 cd ${STAGE_ROOT}
+COMMON_LDFLAGS="\
+    -ltinfo \
+    ${COMMON_LDFLAGS} \
+" \
 package-cmake \
     -Ddispatch_DIR=${STAGE_ROOT_BASE}/swift-corelibs-libdispatch-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DFoundation_DIR=${STAGE_ROOT_BASE}/swift-corelibs-foundation-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \

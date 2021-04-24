@@ -12,17 +12,37 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 export-compiler-environment
 
 # Invoke one-shot template for configure/install
+TIC=${TIC:-/usr/bin/tic}
+
+if [ "${HOST_OS}" = "mingw32" ]; then
+    ENABLE_VERSIONED_SYMS=no
+else
+    ENABLE_VERSIONED_SYMS=yes
+fi
+
+${MKDIR} -p \
+         ${INSTALL_PREFIX}/include \
+         ${INSTALL_PREFIX}/lib
+${LN} -sf \
+      ncursesw \
+      ${INSTALL_PREFIX}/include/ncurses
+${LN} -sf \
+      `package-get-filename ncursesw SHARED` \
+      ${INSTALL_PREFIX}/lib/`package-get-filename ncurses SHARED`
+${LN} -sf \
+      `package-get-filename tinfow SHARED` \
+      ${INSTALL_PREFIX}/lib/`package-get-filename tinfo SHARED`
+
 DISABLE_AUTOUPDATE=TRUE \
 INSTALL_PREFIX=${PACKAGE_PREFIX} \
 package-configure-install-archive \
-    cf_cv_posix_visible=yes \
-    --disable-widec \
+    --disable-termcap \
     --enable-ext-colors \
     --enable-mixed-case \
     --enable-pc-files \
     --enable-rpath \
     --enable-sp-funcs \
-    --enable-term-driver \
+    --enable-widec \
     --with-curses-h \
     --with-cxx \
     --with-cxx-shared \
@@ -30,8 +50,10 @@ package-configure-install-archive \
     --with-pkg-config=${PKG_CONFIG} \
     --with-pkg-config-libdir="${PKG_CONFIG_PATH}" \
     --with-shared \
+    --with-termlib \
+    --with-tic-path=${TIC} \
     --with-ticlib \
-    --with-tic-path=/usr/bin/tic \
+    --with-versioned-syms=${ENABLE_VERSIONED_SYMS} \
     --without-debug \
     --without-manpages \
     --without-progs \
