@@ -86,7 +86,7 @@ package-invoke-builder gmp-cross
 package-invoke-builder ncurses-cross
 
 # windows gettext build
-# package-invoke-builder gettext-cross
+package-invoke-builder gettext-cross
 
 # windows texinfo build
 # package-invoke-builder texinfo-cross
