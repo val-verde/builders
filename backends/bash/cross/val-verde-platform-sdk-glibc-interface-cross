@@ -98,14 +98,21 @@ ${LN} -sf \
       ../glibc-interface/libutil.so.1 \
       ${INSTALL_PREFIX}/lib/libutil.so
 
+if [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    ${SED} -i \
+           "s| /lib64/| ${PACKAGE_PREFIX}/glibc-interface/|g" \
+           ${INSTALL_PREFIX}/lib/libm.so
+    ${SED} -i \
+           "s| /usr/| ${PACKAGE_PREFIX}/|g" \
+           ${INSTALL_PREFIX}/lib/libm.so
+fi
+
 ${SED} -i \
        "s| /lib64/| ${PACKAGE_PREFIX}/glibc-interface/|g" \
-       ${INSTALL_PREFIX}/lib/libc.so \
-       ${INSTALL_PREFIX}/lib/libm.so
+       ${INSTALL_PREFIX}/lib/libc.so
 ${SED} -i \
        "s| /usr/| ${PACKAGE_PREFIX}/|g" \
-       ${INSTALL_PREFIX}/lib/libc.so \
-       ${INSTALL_PREFIX}/lib/libm.so
+       ${INSTALL_PREFIX}/lib/libc.so
 
 # Build and install the package
 package-invoke-archive-install
