@@ -30,8 +30,11 @@ TARGETS=`${ECHO} "\
     COPTS=${OPTIMIZATION_LEVEL} \
     DYNAMIC=yes \
     GOLANG=yes \
+    INDENT=${INDENT} \
+    KERNEL_HEADERS=${PACKAGE_PREFIX}/include/uapi \
     LDFLAGS=${LDFLAGS} \
     PSXLINKFLAGS=-pthread \
+    SYSTEM_HEADERS=${PACKAGE_PREFIX}/include \
     TESTS=no \
     install \
 " | ${XARGS}`
