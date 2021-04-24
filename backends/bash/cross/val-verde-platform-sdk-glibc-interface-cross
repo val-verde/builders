@@ -47,6 +47,7 @@ make-build
 DESTDIR=${INSTALL_PREFIX}/.. \
 make-install
 
+${RM} -rf ${INSTALL_PREFIX}/../lib
 ${MV} ${INSTALL_PREFIX}/../lib64 \
       ${INSTALL_PREFIX}/glibc-interface
 ${LN} -sf \
