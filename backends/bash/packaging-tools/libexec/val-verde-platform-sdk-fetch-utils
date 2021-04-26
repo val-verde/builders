@@ -47,7 +47,7 @@ function emit-source-builder-context() {
         ${ECHO} -e "        Version: \e[32m${SOURCE_PACKAGE_VERSION}\e[0m"
         ${ECHO} -e "        URL: \e[31m${PACKAGE_URL}\e[0m"
         ${ECHO} -e "        Stage Root: \e[33m${STAGE_ROOT}\e[0m"
-        ${ECHO} -e "        Install Prefix: \e[33m${PACKAGE_PREFIX}\e[0m"
+        ${ECHO} -e "        Install Prefix: \e[33m${INSTALL_PREFIX}\e[0m"
 }
 
 function get-source-package-metadata() {
@@ -95,9 +95,10 @@ function prepare-source-base() {
 
     export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources/${PACKAGE_NAME} \
            INSTALL_ROOT=${TEMP_ROOT_BASE}/${PACKAGE_NAME}-sources \
-           INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX} \
            STAGE_ROOT=${STAGE_ROOT_BASE}/${PACKAGE_NAME} \
            DEB_PATH=${SOURCE_DEB_PATH}
+    
+    export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX}
 
     # Check if the source deb exists
     SEARCH_PATH=${SOURCE_DEB_PATH} \

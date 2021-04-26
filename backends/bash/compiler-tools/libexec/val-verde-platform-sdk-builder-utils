@@ -1370,15 +1370,19 @@ function package-invoke-archive-install() {
 }
 
 function package-invoke-stage-root-archive() {
-    STAGING_BUILD_PATH=${TEMP_ROOT_BASE}/staging${STAGE_ROOT}/
+    STAGING_BUILD_ROOT=${TEMP_ROOT_BASE}/staging/${PACKAGE_NAME}
+    STAGING_BUILD_PATH=${STAGING_BUILD_ROOT}${STAGE_ROOT}/
     ${MKDIR} -p ${STAGING_BUILD_PATH}
 
     package-rsync -ax ${STAGE_ROOT}/* \
                       ${STAGING_BUILD_PATH}
-    
-    INSTALL_ROOT=${TEMP_ROOT_BASE}/staging \
+
+    DEPENDS= \
+    INSTALL_ROOT=${STAGING_BUILD_ROOT} \
     PACKAGE_NAME=${PACKAGE_NAME}-stage \
     package-archive-build-install
+
+    ${RM} -rf ${STAGING_BUILD_ROOT}
 }
 
 # package-get-filename <name> <EXECUTABLE|SHARED|STATIC> <BUILD|HOST>
