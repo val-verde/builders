@@ -12,6 +12,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 copy-source-to-staging
 
 # Configure the build components
+CGO_ENABLED=0 \
 export-compiler-environment
 generate-compiler-tools
 
@@ -19,7 +20,6 @@ export CC_FOR_TARGET=${CC}
 export CXX_FOR_TARGET=${CXX}
 export CC=${BUILD_CC}
 export CXX=${BUILD_CXX}
-export CGO_ENABLED=0
 export GOBIN=${BUILD_PACKAGE_PREFIX}/go/bin
 export GOROOT_BOOTSTRAP=${BUILD_PACKAGE_PREFIX}/go
 export GOROOT_FINAL=${PACKAGE_PREFIX}/go
