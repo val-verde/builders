@@ -19,6 +19,9 @@ package-invoke-builder autoconf-archive-cross
 # musl argp-standalone build
 package-invoke-builder argp-standalone-cross
 
+# musl sys-queue-h build
+package-invoke-builder sys-queue-h-cross
+
 # musl fts build
 package-invoke-builder musl-fts
 
