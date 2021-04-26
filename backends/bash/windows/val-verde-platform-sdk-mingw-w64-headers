@@ -13,12 +13,25 @@ export SOURCE_ROOT=${SOURCE_ROOT_BASE}/mingw-w64-${SOURCE_PACKAGE_VERSION}/${SOU
 
 # Configure the build components
 cd ${STAGE_ROOT}
+
+if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+    ENABLE_OR_DISABLE_LIB64=disable
+    ENABLE_OR_DISABLE_LIBARM64=enable
+else
+    ENABLE_OR_DISABLE_LIB64=enable
+    ENABLE_OR_DISABLE_LIBARM64=disable
+fi
+
 package-configure \
     ${SOURCE_ROOT}/configure \
+    --disable-libarm32 \
+    --disable-lib32 \
     --enable-crt \
     --enable-sdk=all \
     --with-default-msvcrt=ucrt \
-    --with-default-win32-winnt=0x0A00
+    --with-default-win32-winnt=0x0A00 \
+    --${ENABLE_OR_DISABLE_LIB64}-lib64 \
+    --${ENABLE_OR_DISABLE_LIBARM64}-libarm64
 
 # Build the components
 make-install
