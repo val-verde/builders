@@ -381,6 +381,23 @@ function export-compiler-environment() {
         ${OPTIMIZATION_FLAGS} \
         ${CXXFLAGS} \
     " | ${XARGS}`
+    export CGO_ENABLED=${CGO_ENABLED:-1}
+    export CGO_CFLAGS=`${ECHO} "\
+        -O${OPTIMIZATION_LEVEL} \
+        ${CFLAGS} \
+    " | ${XARGS}`
+    export CGO_CPPFLAGS=`${ECHO} "\
+        -O${OPTIMIZATION_LEVEL} \
+        ${CPPFLAGS} \
+    " | ${XARGS}`
+    export CGO_CXXFLAGS=`${ECHO} "\
+        -O${OPTIMIZATION_LEVEL} \
+        ${CXXFLAGS} \
+    " | ${XARGS}`
+    export CGO_LDFLAGS=`${ECHO} "\
+        -O${LINKER_OPTIMIZATION_LEVEL} \
+        ${CCLDFLAGS} \
+    " | ${XARGS}`
     export GO_LDSO=${GO_LDSO}
     export GOARCH=${GOARCH}
     export GOHOSTARCH=${GOHOSTARCH}
