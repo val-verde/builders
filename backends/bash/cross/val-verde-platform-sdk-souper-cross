@@ -9,6 +9,20 @@ export SOURCE_PACKAGE_VERSION=1
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
+DISABLED_WARNINGS="\
+    -Wno-deprecated-enum-enum-conversion \
+"
+
+COMMON_CFLAGS="\
+    -I${PACKAGE_PREFIX}/include/alive2 \
+    -I${KLEE_SOURCE_ROOT}/include \
+    ${DISABLED_WARNINGS} \
+    ${COMMON_CFLAGS} \
+" \
+COMMON_LDFLAGS="\
+    -L${PACKAGE_PREFIX}/lib \
+    ${COMMON_LDFLAGS} \
+" \
 export-compiler-environment
 
 export KLEE_SRC_DIR=${SOURCE_ROOT_BASE}/klee-2
@@ -22,25 +36,6 @@ tool-log ${GO} mod init souper
 TOOL_LOG=${STAGE_ROOT}/builder-go-get \
 tool-log ${GO} get github.com/gomodule/redigo/redis
 
-DISABLED_WARNINGS="\
-    -Wno-deprecated-enum-enum-conversion \
-"
-CFLAGS="\
-    -I${PACKAGE_PREFIX}/include/alive2 \
-    -I${KLEE_SOURCE_ROOT}/include \
-    ${DISABLED_WARNINGS} \
-    ${CFLAGS} \
-" \
-CXXFLAGS="\
-    -I${PACKAGE_PREFIX}/include/alive2 \
-    -I${KLEE_SOURCE_ROOT}/include \
-    ${DISABLED_WARNINGS} \
-    ${CXXFLAGS} \
-" \
-COMMON_LDFLAGS="\
-    -L${PACKAGE_PREFIX}/lib \
-    ${COMMON_LDFLAGS} \
-" \
 package-cmake \
     ${SOURCE_ROOT} \
     -DALIVE_LIBRARY=`package-get-path alive2 SHARED HOST` \
