@@ -222,7 +222,7 @@ package-invoke-builder gdbm-cross 1
 package-invoke-builder libdb-cross 5
 
 # tcl build
-package-invoke-builder tcl-cross
+package-invoke-builder tcl-cross 8
 
 # sqlite build
 package-invoke-builder sqlite-cross 3
@@ -370,7 +370,7 @@ unset \
     XARGS
 
 # less build
-package-invoke-builder less-cross
+package-invoke-builder less-cross 590
 unset LESS
 
 # dpkg build
