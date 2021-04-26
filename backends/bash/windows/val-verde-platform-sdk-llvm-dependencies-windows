@@ -17,6 +17,9 @@ package-invoke-builder autoconf-archive-cross
 # windows argp-standalone build
 package-invoke-builder argp-standalone-cross
 
+# sys-queue-h build
+package-invoke-builder sys-queue-h-cross
+
 # windows zlib build
 package-invoke-builder zlib-cross
 

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=sys-queue-h
+export SOURCE_PACKAGE_VERSION=1
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Configure the build components
+${MKDIR} -p ${INSTALL_PREFIX}/include/sys
+
+package-rsync -ax ${SOURCE_ROOT}/queue.h \
+                  ${INSTALL_PREFIX}/include/sys/queue.h
+
+# Build and install the package
+package-invoke-archive-install

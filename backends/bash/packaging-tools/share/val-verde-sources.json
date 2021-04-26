@@ -1859,6 +1859,13 @@
     },
     {
         "sourceType": "other",
+        "sourcePackageName": "sys-queue-h",
+        "sourceBranchIndicator": "wget-raw",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://ftp.netbsd.org/pub/NetBSD/NetBSD-current/src/sys/sys/queue.h"
+    },
+    {
+        "sourceType": "other",
         "sourcePackageName": "tar",
         "sourceBranchIndicator": "wget",
         "sourcePackageVersion": "1.32",
