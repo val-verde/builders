@@ -15,15 +15,36 @@ export DEPENDS="\
 "
 
 # Invoke one-shot template for configure/install
+if [ -z "${DISABLE_PYTHON}" ]; then
+    ENABLE_OR_DISABLE_PYTHON=enable
+else
+    ENABLE_OR_DISABLE_PYTHON=disable
+fi
+
+if [ -z "${DISABLE_SYSTEMD}" ]; then
+    ENABLE_OR_DISABLE_SYSTEMD=enable
+else
+    ENABLE_OR_DISABLE_SYSTEMD=disable
+fi
+
 DISABLE_AUTOUPDATE=TRUE \
+NCURSES_CFLAGS="-I${PACKAGE_PREFIX}/include" \
+NCURSES_LDFLAGS="-L`package-get-path ncursesw SHARED HOST`" \
+NCURSESW6_CONFIG=${PACKAGE_PREFIX}/bin/`package-get-filename ncursesw6-config EXECUTABLE` \
+PYTHON_CFLAGS=${PACKAGE_PREFIX}/include/python3.9 \
+PYTHON_LDFLAGS="-L`package-get-path ncursesw SHARED HOST`" \
+SYSTEMD_CFLAGS=${PACKAGE_PREFIX}/include \
+SYSTEMD_LDFLAGS="-L`package-get-path systemd SHARED HOST`" \
 package-configure-install-archive \
     ac_cv_func_setns=yes \
     ac_cv_func_unshare=yes \
-    ac_cv_prog_ac_ct_NCURSES6_CONFIG= \
     --disable-all-programs \
     --disable-bash-completion \
     --disable-static \
     --enable-libblkid \
     --enable-libmount \
     --enable-libuuid \
-    --enable-shared
+    --enable-shared \
+    --with-ncursesw \
+    --${ENABLE_OR_DISABLE_PYTHON}-python \
+    --${ENABLE_OR_DISABLE_SYSTEMD}-systemd
