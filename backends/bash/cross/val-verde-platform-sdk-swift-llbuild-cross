@@ -19,6 +19,11 @@ export DEPENDS="\
 
 # Configure the build components
 cd ${STAGE_ROOT}
+
+if [ "${HOST_OS}" = "android" ]; then
+    export SOURCE_ROOT=${SOURCE_ROOT}-android
+fi
+
 COMMON_LDFLAGS="\
     -ltinfo \
     ${COMMON_LDFLAGS} \
