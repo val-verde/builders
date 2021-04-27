@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=libaio
+export SOURCE_PACKAGE_VERSION=0
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+export-compiler-environment
+generate-compiler-tools
+
+# Build the components
+copy-source-to-staging
+
+cd ${STAGE_ROOT}
+make-install \
+    prefix=${PACKAGE_PREFIX}
+
+# Build and install the package
+package-invoke-archive-install
