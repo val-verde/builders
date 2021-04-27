@@ -57,7 +57,7 @@ package-invoke-builder swift-corelibs-xctest-cross
 
 # android llbuild build
 FORTIFY_SOURCE_LEVEL=0 \
-package-invoke-builder swift-llbuild-android
+package-invoke-builder swift-llbuild-cross
 
 # android swift-tools-support-core build
 FORTIFY_SOURCE_LEVEL=0 \
