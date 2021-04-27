@@ -242,6 +242,8 @@ package-invoke-builder libgcrypt-cross
 package-invoke-builder indent-cross
 
 # util-linux build
+DISABLE_PYTHON=TRUE \
+DISABLE_SYSTEMD=TRUE \
 package-invoke-builder util-linux-cross
 
 # attr build
