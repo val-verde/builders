@@ -31,13 +31,9 @@ export SWIFT_STAGE_ROOT=${STAGE_ROOT_BASE}/swift-${SOURCE_PACKAGE_VERSION}-${HOS
 # Configure the build components
 cd ${STAGE_ROOT}
 
-CFLAGS="\
+COMMON_CFLAGS="\
     -Wno-register \
-    ${CFLAGS} \
-" \
-CXXFLAGS="\
-    -Wno-register \
-    ${CXXFLAGS} \
+    ${COMMON_CFLAGS} \
 " \
 CXX_STANDARD=17 \
 package-cmake \
@@ -45,7 +41,7 @@ package-cmake \
     -DCLANG_LINK_CLANG_DYLIB=TRUE \
     -DCMAKE_EXE_LINKER_FLAGS="-O2" \
     -DCURSES_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/ncurses \
-    -DCURSES_LIBRARIES="`package-get-path ncurses SHARED HOST`;`package-get-path tinfo SHARED HOST`" \
+    -DCURSES_LIBRARIES=`package-get-path ncursesw SHARED HOST` \
     -DLibEdit_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
     -DLibEdit_LIBRARIES=`package-get-path edit SHARED HOST` \
     -DLIBLZMA_INCLUDE_DIR=${PACKAGE_PREFIX}/include \

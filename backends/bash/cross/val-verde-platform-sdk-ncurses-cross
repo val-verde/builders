@@ -29,9 +29,6 @@ ${LN} -sf \
 ${LN} -sf \
       `package-get-filename ncursesw SHARED` \
       ${INSTALL_PREFIX}/lib/`package-get-filename ncurses SHARED`
-${LN} -sf \
-      `package-get-filename tinfow SHARED` \
-      ${INSTALL_PREFIX}/lib/`package-get-filename tinfo SHARED`
 
 DISABLE_AUTOUPDATE=TRUE \
 INSTALL_PREFIX=${PACKAGE_PREFIX} \
@@ -42,6 +39,7 @@ package-configure-install-archive \
     --enable-pc-files \
     --enable-rpath \
     --enable-sp-funcs \
+    --enable-term-driver \
     --enable-widec \
     --with-curses-h \
     --with-cxx \
@@ -50,7 +48,6 @@ package-configure-install-archive \
     --with-pkg-config=${PKG_CONFIG} \
     --with-pkg-config-libdir="${PKG_CONFIG_PATH}" \
     --with-shared \
-    --with-termlib \
     --with-tic-path=${TIC} \
     --with-ticlib \
     --with-versioned-syms=${ENABLE_VERSIONED_SYMS} \
@@ -58,4 +55,5 @@ package-configure-install-archive \
     --without-manpages \
     --without-progs \
     --without-tack \
+    --without-termlib \
     --without-tests

@@ -21,8 +21,7 @@ cd ${SOURCE_ROOT}
 SWIFT_BUILD_FLAGS="\
     -Xlinker -lc++ \
     -Xlinker -licuucswift \
-    -Xlinker -lncurses \
-    -Xlinker -ltinfo \
+    -Xlinker -lncursesw \
     ${SWIFT_BUILD_FLAGS} \
 " \
 package-swift-build

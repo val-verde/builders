@@ -28,6 +28,7 @@ fi
 # Build the components
 SWIFT_BUILD_FLAGS="\
     -Xlinker -lc++ \
+    -Xlinker -lncursesw \
     -Xlinker -lunwind \
     ${SWIFT_BUILD_FLAGS} \
 " \

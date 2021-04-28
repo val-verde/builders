@@ -28,7 +28,7 @@ else
 fi
 
 CURL_LIBRARY=`package-get-path curl SHARED HOST`
-CURSES_CURSES_LIBRARY=`package-get-path ncurses SHARED HOST`
+CURSES_CURSES_LIBRARY=`package-get-path ncursesw SHARED HOST`
 EXPAT_LIBRARY=`package-get-path expat SHARED HOST`
 LibArchive_LIBRARY=`package-get-path archive SHARED HOST`
 LibUV_LIBRARY=`package-get-path uv SHARED HOST`
