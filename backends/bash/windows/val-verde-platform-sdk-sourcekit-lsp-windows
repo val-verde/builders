@@ -20,6 +20,7 @@ SWIFT_BUILD_FLAGS="\
     -Xcc -DLLVM_ON_WIN32=1 \
     -Xcc -I${STAGE_ROOT}/checkouts/swift-llbuild/lib/llvm/Support \
     -Xlinker -lc++ \
+    -Xlinker -lncursesw \
     ${SWIFT_BUILD_FLAGS} \
 " \
 package-swift-build
