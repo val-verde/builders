@@ -194,6 +194,9 @@ package-invoke-builder mpc-cross
 # isl build
 package-invoke-builder isl-cross
 
+# libaio build
+package-invoke-builder libaio-cross
+
 # libev build
 package-invoke-builder libev-cross
 
@@ -443,6 +446,9 @@ unset RSYNC
 
 # systemd build
 package-invoke-builder systemd
+
+# lvm2 build
+package-invoke-builder lvm2-cross
 
 # lua build
 package-invoke-builder lua-cross
