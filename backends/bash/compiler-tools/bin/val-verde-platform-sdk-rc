@@ -21,9 +21,9 @@ for ((i=0; i<"${#args[@]}"; ++i)); do
         OTHER_FLAGS="${OTHER_FLAGS} -D${DEFINE}"
         i=$((i+1))
         ;;
-    -I)
+    -I|--include)
         INCLUDE=`${ECHO} ${args[i+1]} | ${XARGS}`
-        OTHER_FLAGS="${OTHER_FLAGS} -I${INCLUDE}"
+        INCLUDES="${INCLUDES} -I${INCLUDE}"
         i=$((i+1))
         ;;
     --preprocessor-arg=*)
@@ -47,6 +47,7 @@ ${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-gcc-mingw32 \
     -E \
     -DRC_INVOKED \
     -xc \
+    ${INCLUDES} \
     ${OTHER_FLAGS} \
     ${IN_FILE} \
     -o ${TEMP_FILE}
@@ -57,6 +58,7 @@ ${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-gcc-mingw32 \
 WORKING_DIR=`dirname ${IN_FILE}`
 pushd ${WORKING_DIR}
 ${BINDIR}/llvm-rc \
+    ${INCLUDES} \
     ${TEMP_FILE}.rc \
     -fo ${TEMP_FILE}.res
 popd
