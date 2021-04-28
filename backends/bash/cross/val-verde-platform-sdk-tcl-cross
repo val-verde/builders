@@ -9,14 +9,22 @@ export SOURCE_PACKAGE_VERSION=8
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-if [ "${HOST_OS}" = "macos" ]; then
-    CONFIGURE_FILE_DIR=macosx
-elif [ "${HOST_OS}" = "mingw32" ]; then
+if [ "${HOST_OS}" = "mingw32" ]; then
     CONFIGURE_FILE_DIR=win
 else
     CONFIGURE_FILE_DIR=unix
 fi
 
 # Invoke one-shot template for stage/configure/install
+${MKDIR} -p ${INSTALL_PREFIX}/bin
+
+# Extract TCL_VERSION from unix configure builder to set up tclsh symlink
+TCL_VERSION=`${GREP} -r TCL_VERSION= ${SOURCE_ROOT}/unix/configure.in | cut -d= -f2`
+${LN} -sf \
+      `package-get-filename ${SOURCE_PACKAGE_NAME}sh${TCL_VERSION} EXECUTABLE` \
+      ${INSTALL_PREFIX}/bin/`package-get-filename ${SOURCE_PACKAGE_NAME}sh EXECUTABLE`
+
+CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 CONFIGURE_FILE_ROOT=${STAGE_ROOT}/${CONFIGURE_FILE_DIR} \
-package-stage-configure-install-archive
+package-stage-configure-install-archive \
+    ac_cv_func_memmove=yes
