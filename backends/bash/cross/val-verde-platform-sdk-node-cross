@@ -140,6 +140,7 @@ ${STAGE_ROOT}/configure \
     --dest-cpu=${CONFIGURE_HOST_PROCESSOR} \
     --dest-os=${CONFIGURE_HOST_OS} \
     --prefix=${PACKAGE_PREFIX} \
+    --shared-brotli \
     --shared-openssl \
     --shared-libuv \
     --shared-zlib \
