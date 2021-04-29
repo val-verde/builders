@@ -141,6 +141,7 @@ ${STAGE_ROOT}/configure \
     --dest-os=${CONFIGURE_HOST_OS} \
     --prefix=${PACKAGE_PREFIX} \
     --shared-brotli \
+    --shared-cares \
     --shared-openssl \
     --shared-libuv \
     --shared-zlib \
