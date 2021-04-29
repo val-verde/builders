@@ -237,6 +237,9 @@ package-invoke-builder libuv-cross
 # ldns build
 package-invoke-builder ldns-cross
 
+# c-ares build
+package-invoke-builder c-ares-cross
+
 # openssh-portable build
 package-invoke-builder openssh-portable-cross
 

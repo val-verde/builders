@@ -253,6 +253,9 @@ package-invoke-builder libuv-cross
 # android ldns build
 package-invoke-builder ldns-cross
 
+# android c-ares build
+package-invoke-builder c-ares-cross
+
 # android openssh-portable build
 package-invoke-builder openssh-portable-cross
 

@@ -134,6 +134,9 @@ package-invoke-builder tcl-cross
 # windows sqlite build
 package-invoke-builder sqlite-cross
 
+# windows c-ares build
+package-invoke-builder c-ares-cross
+
 # windows openssl build
 package-invoke-builder openssl-cross
 

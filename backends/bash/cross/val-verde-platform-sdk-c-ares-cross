@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=c-ares
+export SOURCE_PACKAGE_VERSION=1
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Configure the build components
+cd ${STAGE_ROOT}
+package-cmake \
+    -DHAVE_AF_INET6=TRUE \
+    -DHAVE_IOCTLSOCKET_FIONBIO=TRUE \
+    -DHAVE_RECV=TRUE \
+    -DHAVE_RECVFROM=TRUE \
+    -DHAVE_SEND=TRUE \
+    -DHAVE_STRDUP=TRUE \
+    -DHAVE_STRUCT_ADDRINFO=TRUE \
+    -DHAVE_STRUCT_SOCKADDR_IN6=TRUE \
+    -DHAVE_STRUCT_TIMEVAL=TRUE \
+    ${SOURCE_ROOT}
+
+# Build the components
+ninja-install
+
+# Build and install the package
+package-invoke-archive-install
