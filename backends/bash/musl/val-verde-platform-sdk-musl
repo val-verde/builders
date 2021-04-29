@@ -44,7 +44,7 @@ category-invoke-builder graphics-sdk-cross
 category-invoke-builder virtualization-sdk-cross
 
 # node + sdk build
-package-invoke-builder node-cross 15
+package-invoke-builder node-cross 16
 package-invoke-builder npm-yarn-cross 1
 
 # wine build
