@@ -358,6 +358,13 @@ package-invoke-builder libjpeg-cross
 package-invoke-builder libpng-cross
 
 # freetype2 build
+DISABLE_HARFBUZZ=TRUE \
+package-invoke-builder freetype2-cross
+
+# harfbuzz build
+package-invoke-builder harfbuzz-cross
+
+# freetype2 build
 package-invoke-builder freetype2-cross
 
 # wayland build

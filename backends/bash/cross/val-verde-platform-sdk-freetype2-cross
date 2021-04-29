@@ -11,8 +11,24 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
 cd ${STAGE_ROOT}
+
+if [ -z "${DISABLE_HARFBUZZ}" ]; then
+    FT_WITH_HARFBUZZ=TRUE
+    HARFBUZZ_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/harfbuzz
+    HARFBUZZ_LIBRARIES=`package-get-path harfbuzz SHARED HOST`
+else
+    FT_WITH_HARFBUZZ=FALSE
+fi
+
 package-cmake \
     -DBUILD_SHARED_LIBS=true \
+    -DFT_WITH_BROTLI=FALSE \
+    -DFT_WITH_BZIP2=TRUE \
+    -DFT_WITH_HARFBUZZ=${FT_WITH_HARFBUZZ} \
+    -DFT_WITH_PNG=TRUE \
+    -DFT_WITH_ZLIB=TRUE \
+    -DHARFBUZZ_INCLUDE_DIRS=${HARFBUZZ_INCLUDE_DIRS} \
+    -DHARFBUZZ_LIBRARIES=${HARFBUZZ_LIBRARIES} \
     ${SOURCE_ROOT}
 
 # Build the components

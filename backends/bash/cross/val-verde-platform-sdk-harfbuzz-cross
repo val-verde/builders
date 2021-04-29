@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=harfbuzz
+export SOURCE_PACKAGE_VERSION=2
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Configure the build components
+cd ${SOURCE_ROOT}
+
+if [ -z "${ENABLE_GLIB}" ]; then
+    ENABLE_OR_DISABLE_GLIB=disabled
+else
+    ENABLE_OR_DISABLE_GLIB=enabled
+fi
+
+package-meson-build \
+    -Ddocs=disabled \
+    -Dglib=${ENABLE_OR_DISABLE_GLIB} \
+    -Dgobject=${ENABLE_OR_DISABLE_GLIB} \
+    -Dintrospection=${ENABLE_OR_DISABLE_GLIB} \
+    -Dtests=disabled
+
+# Build the components
+cd ${STAGE_ROOT}
+ninja-install
+
+# Build and install the package
+package-invoke-archive-install
