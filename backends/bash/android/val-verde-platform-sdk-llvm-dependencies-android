@@ -290,6 +290,13 @@ package-invoke-builder libjpeg-cross
 package-invoke-builder libpng-cross
 
 # android freetype2 build
+DISABLE_HARFBUZZ=TRUE \
+package-invoke-builder freetype2-cross
+
+# android harfbuzz build
+package-invoke-builder harfbuzz-cross
+
+# android freetype2 build
 package-invoke-builder freetype2-cross
 
 # android wayland build
