@@ -61,6 +61,9 @@ function deb-package-mgmt() {
     elif [ "${PACKAGE_ACTION}" = "INSTALL" ]; then
         package-dpkg-install ${QUALIFIED_DEB}
     fi
+
+    unset QUALIFIED_DEB \
+          QUALIFIED_FILE_NAME
 }
 
 function generate-control-file() {
