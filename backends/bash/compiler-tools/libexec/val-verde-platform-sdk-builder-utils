@@ -840,6 +840,8 @@ function package-meson-build() {
     if [ "${HOST_OS}" = "gnu" ] ||
        [ "${HOST_OS}" = "musl" ]; then
         HOST_SYSTEM="linux"
+    elif [ "${HOST_OS}" = "macos" ]; then
+        HOST_SYSTEM="darwin"
     elif [ "${HOST_OS}" = "mingw32" ]; then
         HOST_SYSTEM="windows"
     fi
