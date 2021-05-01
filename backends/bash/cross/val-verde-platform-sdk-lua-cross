@@ -18,7 +18,8 @@ export DEPENDS="${PACKAGE_BASE_NAME}-zlib-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOS
 copy-source-to-staging
 
 # Build the components
-if [ "${HOST_OS}" != "mingw32" ]; then
+if [ "${HOST_OS}" != "macos" ] &&
+   [ "${HOST_OS}" != "mingw32" ]; then
     MYCFLAGS="\
         -DDLUA_USE_LINUX \
     "
