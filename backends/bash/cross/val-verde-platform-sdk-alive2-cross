@@ -14,7 +14,12 @@ cd ${STAGE_ROOT}
 package-cmake \
     ${SOURCE_ROOT} \
     -DGIT_EXECUTABLE=${GIT} \
-    -DRE2C=${BUILD_PACKAGE_PREFIX}/bin/re2c
+    -DRE2C=${BUILD_PACKAGE_PREFIX}/bin/re2c \
+    -DZ3_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZ3_LIBRARIES=`package-get-path z3 SHARED HOST` \
+    -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZLIB_LIBRARY_DEBUG=`package-get-path zlib SHARED HOST` \
+    -DZLIB_LIBRARY_RELEASE=`package-get-path zlib SHARED HOST`
 
 # Build the components
 ninja-build
