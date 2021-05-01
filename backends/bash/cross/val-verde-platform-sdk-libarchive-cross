@@ -25,32 +25,43 @@ if [ "${HOST_OS}" != "gnu" ]; then
     "
 fi
 
-if [ "${HOST_OS}" != "mingw32" ]; then
+if [ "${HOST_OS}" != "macos" ] &&
+   [ "${HOST_OS}" != "mingw32" ]; then
     export DEPENDS="\
         ${PACKAGE_BASE_NAME}-acl-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
         ${DEPENDS} \
     "
-    ACL_LIBRARY=`package-get-path acl SHARED HOST`
 fi
 
+ACL_LIBRARY=`package-get-path acl SHARED HOST`
+BZIP2_LIBRARY=`package-get-path bzip2 STATIC HOST`
+LZ4_LIBRARY=`package-get-path lz4 SHARED HOST`
 LIBLZMA_LIBRARY=`package-get-path lzma SHARED HOST`
-ZLIB_LIBRARY=`package-get-path z SHARED HOST` \
+LIBXML2_LIBRARY=`package-get-path xml2 SHARED HOST`
+ZLIB_LIBRARY=`package-get-path z SHARED HOST`
+ZSTD_LIBRARY=`package-get-path zstd SHARED HOST`
 
 package-cmake \
     -DACL_LIBRARY=${ACL_LIBRARY} \
     -DBZIP2_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DBZIP2_LIBRARIES=`package-get-path bz2 STATIC HOST` \
+    -DBZIP2_LIBRARIES=${BZIP2_LIBRARY} \
     -DENABLE_CAT_SHARED=TRUE \
     -DENABLE_CPIO_SHARED=TRUE \
     -DENABLE_LibGCC=FALSE \
     -DENABLE_TAR_SHARED=TRUE \
     -DENABLE_TEST=FALSE \
+    -DLZ4_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DLZ4_LIBRARY=${LZ4_LIBRARY} \
     -DLIBLZMA_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DLIBLZMA_LIBRARY=${LIBLZMA_LIBRARY} \
+    -DLIBXML2_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DLIBXML2_LIBRARY=${LIBXML2_LIBRARY} \
     -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DZLIB_LIBRARY=${ZLIB_LIBRARY} \
     -DZLIB_WINAPI_EXITCODE=0 \
     -DZLIB_WINAPI_EXITCODE__TRYRUN_OUTPUT=1 \
+    -DZSTD_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZSTD_LIBRARY=${ZSTD_LIBRARY} \
     ${SOURCE_ROOT}
 
 # Build the components
