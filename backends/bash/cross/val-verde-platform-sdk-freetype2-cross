@@ -29,6 +29,9 @@ package-cmake \
     -DFT_WITH_ZLIB=TRUE \
     -DHARFBUZZ_INCLUDE_DIRS=${HARFBUZZ_INCLUDE_DIRS} \
     -DHARFBUZZ_LIBRARIES=${HARFBUZZ_LIBRARIES} \
+    -DPNG_LIBRARY_DEBUG=`package-get-path png SHARED HOST` \
+    -DPNG_LIBRARY_RELEASE=`package-get-path png SHARED HOST` \
+    -DPNG_PNG_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     ${SOURCE_ROOT}
 
 # Build the components
