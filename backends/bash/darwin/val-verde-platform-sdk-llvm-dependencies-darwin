@@ -161,13 +161,13 @@ package-invoke-builder gawk-cross
 package-invoke-builder autogen-cross
 
 # libgpg-error build
-package-invoke-builder libgpg-error-cross
+# package-invoke-builder libgpg-error-cross
 
 # libgcrypt build
-package-invoke-builder libgcrypt-cross
+# package-invoke-builder libgcrypt-cross
 
 # indent build
-package-invoke-builder indent-cross
+# package-invoke-builder indent-cross
 
 # util-linux build
 DISABLE_PYTHON=TRUE \
@@ -205,7 +205,7 @@ package-invoke-builder xcb-libxcb-cross
 package-invoke-builder pixman-cross
 
 # xorg-libpciaccess build
-package-invoke-builder xorg-libpciaccess-cross
+# package-invoke-builder xorg-libpciaccess-cross
 
 # xorg-libxtrans build
 package-invoke-builder xorg-libxtrans-cross
@@ -229,7 +229,7 @@ package-invoke-builder xorg-libxi-cross
 package-invoke-builder xorg-libice-cross
 
 # alsa-lib build
-package-invoke-builder alsa-lib-cross
+# package-invoke-builder alsa-lib-cross
 
 # libuv build
 package-invoke-builder libuv-cross
@@ -290,13 +290,13 @@ package-invoke-builder harfbuzz-cross
 package-invoke-builder freetype2-cross
 
 # wayland build
-package-invoke-builder wayland-cross
+# package-invoke-builder wayland-cross
 
 # wayland-protocols build
 package-invoke-builder wayland-protocols-cross
 
 # mesa-drm build
-package-invoke-builder mesa-drm-cross
+# package-invoke-builder mesa-drm-cross
 
 # opencl headers build
 package-invoke-builder opencl-headers-cross
@@ -326,7 +326,7 @@ package-invoke-builder bison-cross
 package-invoke-builder jq-cross
 
 # strace build
-package-invoke-builder strace-cross
+# package-invoke-builder strace-cross
 
 # fontconfig build
 package-invoke-builder fontconfig-cross
@@ -341,10 +341,10 @@ package-invoke-builder coreutils-cross
 package-invoke-builder findutils-cross
 
 # dpkg build
-package-invoke-builder dpkg-cross
+# package-invoke-builder dpkg-cross
 
 # rsync build
-package-invoke-builder rsync-cross
+# package-invoke-builder rsync-cross
 
 # systemd build
 # package-invoke-builder systemd
@@ -353,14 +353,14 @@ package-invoke-builder rsync-cross
 package-invoke-builder lua-cross
 
 # wget build
-package-invoke-builder wget-cross
+# package-invoke-builder wget-cross
 
 # python build
-_PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
-package-invoke-builder python-cross
+# _PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
+# package-invoke-builder python-cross
 
 # libxslt build
-package-invoke-builder libxslt-cross
+# package-invoke-builder libxslt-cross
 
 # libtasn1 build
 package-invoke-builder libtasn1-cross
@@ -372,13 +372,13 @@ package-invoke-builder p11-kit-cross
 package-invoke-builder nettle-cross
 
 # gnutls build
-package-invoke-builder gnutls-cross
+# package-invoke-builder gnutls-cross
 
 # libmicrohttpd build
 package-invoke-builder libmicrohttpd-cross
 
 # elfutils build
-package-invoke-builder elfutils-cross
+# package-invoke-builder elfutils-cross
 
 # glib build
 package-invoke-builder glib-cross
@@ -399,16 +399,16 @@ package-invoke-builder itstool-cross
 package-invoke-builder gtk-doc-cross
 
 # cups build
-package-invoke-builder cups-cross
+# package-invoke-builder cups-cross
 
 # apt build
-package-invoke-builder apt-cross
+# package-invoke-builder apt-cross
 
 # popt build
 package-invoke-builder popt-cross
 
 # rpm build
-package-invoke-builder rpm-cross
+# package-invoke-builder rpm-cross
 
 # dnf build
 # package-invoke-builder dnf-cross
@@ -423,7 +423,7 @@ package-invoke-builder openjdk-cross
 package-invoke-builder z3-cross
 
 # git build
-package-invoke-builder git-cross
+# package-invoke-builder git-cross
 
 # vim build
 package-invoke-builder vim-cross
@@ -432,7 +432,7 @@ package-invoke-builder vim-cross
 package-invoke-builder cmake-cross
 
 # android patch elf
-package-invoke-builder android-patch-elf-cross
+# package-invoke-builder android-patch-elf-cross
 
 # jwasm (ml64) cross compiler build
 package-invoke-builder jwasm
