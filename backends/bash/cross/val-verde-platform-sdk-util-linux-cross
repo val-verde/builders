@@ -27,6 +27,12 @@ else
     ENABLE_OR_DISABLE_SYSTEMD=disable
 fi
 
+if [ "${HOST_OS}" = "macos" ]; then
+    ENABLE_OR_DISABLE_LIBMOUNT=disable
+else
+    ENABLE_OR_DISABLE_LIBMOUNT=enable
+fi
+
 DISABLE_AUTOUPDATE=TRUE \
 NCURSES_CFLAGS="-I${PACKAGE_PREFIX}/include" \
 NCURSES_LDFLAGS="-L`package-get-path ncursesw SHARED HOST`" \
@@ -42,9 +48,9 @@ package-configure-install-archive \
     --disable-bash-completion \
     --disable-static \
     --enable-libblkid \
-    --enable-libmount \
     --enable-libuuid \
     --enable-shared \
     --with-ncursesw \
+    --${ENABLE_OR_DISABLE_LIBMOUNT}-libmount \
     --${ENABLE_OR_DISABLE_PYTHON}-python \
     --${ENABLE_OR_DISABLE_SYSTEMD}-systemd
