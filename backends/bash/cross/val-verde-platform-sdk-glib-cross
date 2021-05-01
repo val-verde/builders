@@ -16,7 +16,8 @@ export DEPENDS="\
 if [ "${HOST_OS}" = "gnu" ]; then
     ICONV_LIB=libc
     LIBELF_ENABLED=enabled
-elif [ "${HOST_OS}" = "mingw32" ]; then
+elif [ "${HOST_OS}" = "macos" ] ||
+     [ "${HOST_OS}" = "mingw32" ]; then
     ICONV_LIB=external
     LIBELF_ENABLED=disabled
 else
