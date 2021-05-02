@@ -259,22 +259,26 @@ function export-compiler-environment() {
         GOHOSTOS=windows
     fi
 
+    if [ "${FORTIFY_SOURCE_LEVEL}" != "0" ]; then
+        FORTIFY_CFLAGS="-D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL}"
+    fi
+
     if [ "${HOST_OS}" = "android" ]; then
         COMMON_CFLAGS="\
             -fPIC \
-            -D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL} \
             -D__USE_FORTIFY_LEVEL=${FORTIFY_SOURCE_LEVEL} \
+            ${FORTIFY_CFLAGS} \
             ${COMMON_CFLAGS} \
         "
         GOOS=android
         SWIFTCFLAGS="\
-            -Xcc -D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL} \
+            -Xcc ${FORTIFY_CFLAGS} \
             ${SWIFTCFLAGS} \
         "
     elif [ "${HOST_OS}" = "gnu" ]; then
         COMMON_CFLAGS="\
             -fPIC \
-            -D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL} \
+            ${FORTIFY_CFLAGS} \
             ${COMMON_CFLAGS} \
         "
         GOOS=linux
@@ -292,25 +296,25 @@ function export-compiler-environment() {
         COMMON_CFLAGS="\
             -fPIC \
             -D_ALL_SOURCE=1 \
-            -D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL} \
+            ${FORTIFY_CFLAGS} \
             ${COMMON_CFLAGS} \
         "
         GO_LDSO=/lib/ld-${HOST_OS}-${HOST_PROCESSOR}.so.1
         GOOS=linux
         SWIFTCFLAGS="\
             -Xcc -D_ALL_SOURCE=1 \
-            -Xcc -D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL} \
+            -Xcc ${FORTIFY_CFLAGS} \
             ${SWIFTCFLAGS} \
         "
     elif [ "${HOST_OS}" = "mingw32" ]; then
         COMMON_CFLAGS="\
             -fno-builtin-stpcpy \
-            -D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL} \
+            ${FORTIFY_CFLAGS} \
             ${COMMON_CFLAGS} \
         "
         GOOS=windows
         SWIFTCFLAGS="\
-            -Xcc -D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL} \
+            -Xcc ${FORTIFY_CFLAGS} \
             ${SWIFTCFLAGS} \
         "
     fi
