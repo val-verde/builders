@@ -64,7 +64,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 package-invoke-builder kernel-headers-cross
 
 # glibc interface build
-package-invoke-builder glibc-interface-cross
+package-invoke-builder glibc-interface
 
 # autoconf build
 package-invoke-builder autoconf-cross
@@ -79,7 +79,7 @@ package-invoke-builder automake-cross
 package-invoke-builder autoconf-archive-cross
 
 # glibc runtime build
-package-invoke-builder glibc-runtime-cross
+package-invoke-builder glibc-runtime
 unset SYSROOT
 
 # zlib build
