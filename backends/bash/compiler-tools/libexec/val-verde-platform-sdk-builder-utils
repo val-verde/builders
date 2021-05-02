@@ -203,7 +203,6 @@ function export-compiler-environment() {
     if [ "${SYSROOT}" != "/" ]; then
         COMMON_CFLAGS="\
             --sysroot=${SYSROOT} \
-            --target=${HOST_TRIPLE} \
             ${COMMON_CFLAGS} \
         "
         COMMON_LDFLAGS="\
@@ -218,6 +217,13 @@ function export-compiler-environment() {
             -sdk ${SYSROOT} \
             ${SWIFTCFLAGS} \
         "
+
+	if [ -z "${DISABLE_COMPILER_TARGET}" ]; then
+            COMMON_CFLAGS="\
+                --target=${HOST_TRIPLE} \
+                ${COMMON_CFLAGS} \
+            "
+	fi
     else
         export ACLOCAL_PATH=${ACLOCAL_PATH}:/usr/share/aclocal
         export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:/usr/lib/${BUILD_TRIPLE}/pkgconfig:/usr/share/pkgconfig
