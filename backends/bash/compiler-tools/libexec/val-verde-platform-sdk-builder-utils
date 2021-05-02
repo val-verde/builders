@@ -263,11 +263,16 @@ function export-compiler-environment() {
         FORTIFY_CFLAGS="-D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL}"
     fi
 
+    if [ -z "${DISABLE_FPIC}" ] &&
+       [ "${HOST_OS}" != "mingw32" ]; then
+        FPIC_CFLAG="-fPIC"
+    fi
+
     if [ "${HOST_OS}" = "android" ]; then
         COMMON_CFLAGS="\
-            -fPIC \
             -D__USE_FORTIFY_LEVEL=${FORTIFY_SOURCE_LEVEL} \
             ${FORTIFY_CFLAGS} \
+            ${FPIC_CFLAG} \
             ${COMMON_CFLAGS} \
         "
         GOOS=android
@@ -277,8 +282,8 @@ function export-compiler-environment() {
         "
     elif [ "${HOST_OS}" = "gnu" ]; then
         COMMON_CFLAGS="\
-            -fPIC \
             ${FORTIFY_CFLAGS} \
+            ${FPIC_CFLAG} \
             ${COMMON_CFLAGS} \
         "
         GOOS=linux
@@ -294,9 +299,9 @@ function export-compiler-environment() {
         GOOS=darwin
     elif [ "${HOST_OS}" = "musl" ]; then
         COMMON_CFLAGS="\
-            -fPIC \
             -D_ALL_SOURCE=1 \
             ${FORTIFY_CFLAGS} \
+            ${FPIC_CFLAG} \
             ${COMMON_CFLAGS} \
         "
         GO_LDSO=/lib/ld-${HOST_OS}-${HOST_PROCESSOR}.so.1
@@ -1129,7 +1134,6 @@ function package-swift-build() {
     fi
 
     if [ "${HOST_OS}" != "mingw32" ]; then
-        FPIC_CFLAG="-fPIC"
         TARGET=${TARGET:-${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}}
     else
         TARGET=${TARGET:-${HOST_PROCESSOR}-unknown-windows-gnu}
