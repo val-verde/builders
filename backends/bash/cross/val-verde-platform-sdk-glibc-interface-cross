@@ -15,21 +15,19 @@ copy-source-to-staging
 ${MKDIR} -p ${STAGE_ROOT}/build
 
 cd ${STAGE_ROOT}/build
-AR=${BINDIR}/llvm-ar
-AS=${BINDIR}/llvm-as
-ASFLAGS="-O${OPTIMIZATION_LEVEL}"
-BUILD_CC=${BINDIR}/sclang
-CC=${BINDIR}/sclang
-CFLAGS="-O${OPTIMIZATION_LEVEL}"
-CPP=${BINDIR}/sclang-cpp
-CCLD=${CC}
-CXX=${BINDIR}/sclang++
-CXXLD=${CXX}
-LD=${BINDIR}/ld.lld
-LDFLAGS="-O${LINKER_OPTIMIZATION_LEVEL}"
-NM=${BINDIR}/llvm-nm
-RANLIB=${BINDIR}/llvm-ranlib
-READELF=${BINDIR}/llvm-readelf
+
+CC=gcc \
+CPP=cpp \
+CXX=${BINDIR}/clang++ \
+DISABLE_COMPILER_TARGET=TRUE \
+DISABLE_UNUSED_ARGUMENTS=TRUE \
+DISABLE_POLLY=TRUE \
+FORTIFY_SOURCE_LEVEL=0 \
+HOST_ARCH= \
+HOST_CPU= \
+OPTIMIZATION_LEVEL=2 \
+export-compiler-environment
+generate-compiler-tools
 
 TOOL_LOG=${STAGE_ROOT}/builder-invocation \
 tool-log ${STAGE_ROOT}/configure \
