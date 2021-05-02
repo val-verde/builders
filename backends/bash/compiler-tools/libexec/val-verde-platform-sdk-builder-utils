@@ -179,10 +179,12 @@ function export-compiler-environment() {
         GOARCH=amd64
     fi
 
-    COMMON_CFLAGS="\
-        -Qunused-arguments \
-        ${COMMON_CFLAGS} \
-    "
+    if [ -z "${DISABLE_UNUSED_ARGUMENTS}" ]; then
+        COMMON_CFLAGS="\
+            -Qunused-arguments \
+            ${COMMON_CFLAGS} \
+        "
+    fi
 
     if [ -n "${HOST_ARCH}" ]; then
         COMMON_CFLAGS="\
