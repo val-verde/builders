@@ -20,7 +20,7 @@ cd ${STAGE_ROOT}
 # Build the components
 INSTALL_TARGET=`${ECHO} "\
     lib=lib \
-    prefix=${PACKAGE_PREFIX} \
+    prefix=${INSTALL_PREFIX} \
     AR=${AR} \
     BUILD_CC=${BUILD_CC} \
     BUILD_COPTS="-O${OPTIMIZATION_LEVEL}" \
