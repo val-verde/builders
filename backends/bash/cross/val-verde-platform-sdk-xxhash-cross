@@ -27,7 +27,7 @@ make-install \
     AR=${AR} \
     CC=${CC} \
     CFLAGS="${CFLAGS}" \
-    PREFIX=${INSTALL_PREFIX} \
+    PREFIX=${PACKAGE_PREFIX} \
     RANLIB=${RANLIB} \
     UNAME=${UNAME}
 
