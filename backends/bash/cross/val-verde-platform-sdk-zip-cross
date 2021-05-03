@@ -28,14 +28,14 @@ copy-source-to-staging
 cd ${STAGE_ROOT}
 make-build \
     -f ${STAGE_ROOT}/${PLATFORM}/Makefile \
-    prefix=${PACKAGE_PREFIX} \
+    prefix=${INSTALL_PREFIX} \
     CC=${CC} \
     CFLAGS="${CFLAGS}" \
     LFLAGS2="${LDFLAGS}" \
     generic
 make-install \
     -f ${STAGE_ROOT}/${PLATFORM}/Makefile \
-    prefix=${PACKAGE_PREFIX} \
+    prefix=${INSTALL_PREFIX} \
     CC=${CC} \
     CFLAGS="${CFLAGS}" \
     LFLAGS2="${LDFLAGS}"

@@ -29,7 +29,7 @@ make-install \
     AR=${AR} \
     CC=${CC} \
     CFLAGS="${CFLAGS}" \
-    PREFIX=${PACKAGE_PREFIX} \
+    PREFIX=${INSTALL_PREFIX} \
     RANLIB=${RANLIB} \
     TARGET_OS=${TARGET_OS} \
     WINDRES=${WINDRES}

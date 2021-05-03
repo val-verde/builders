@@ -29,7 +29,7 @@ make-install \
     CC=${CC} \
     CFLAGS="${CFLAGS}" \
     LDFLAGS="${LDFLAGS}" \
-    PREFIX=${PACKAGE_PREFIX} \
+    PREFIX=${INSTALL_PREFIX} \
     RANLIB=${RANLIB}
 
 ${MKDIR} -p ${INSTALL_PREFIX}/lib/pkgconfig

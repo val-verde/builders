@@ -17,7 +17,7 @@ copy-source-to-staging
 
 cd ${STAGE_ROOT}
 make-install \
-    prefix=${PACKAGE_PREFIX}
+    prefix=${INSTALL_PREFIX}
 
 # Build and install the package
 package-invoke-archive-install
