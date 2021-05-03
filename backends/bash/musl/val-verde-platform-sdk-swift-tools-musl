@@ -36,5 +36,6 @@ ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-musl 5
 
 # lldb build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-lldb-musl 5
 
