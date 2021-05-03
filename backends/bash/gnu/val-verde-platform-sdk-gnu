@@ -18,9 +18,11 @@ package-invoke-builder llvm-project 13
 package-invoke-builder souper-cross 1
 
 # cmark build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-cmark-cross 5 none
 
 # swift build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift 5
 
 # lldb build
