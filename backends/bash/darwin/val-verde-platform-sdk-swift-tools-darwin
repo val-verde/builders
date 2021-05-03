@@ -6,12 +6,14 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # llvm build
-package-invoke-builder llvm-project-darwin 13
+ENABLE_STAGE_ROOT_BUILD=TRUE \
+package-invoke-builder llvm-project-darwin 13 no-install
 
 # souper build
 package-invoke-builder souper-cross 1
 
 # cmark build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-cmark-cross 5 none
 
 # swift build
