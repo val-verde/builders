@@ -4,17 +4,35 @@ set -e
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # llvm build
-package-invoke-builder llvm-project-musl 13
+ENABLE_STAGE_ROOT_BUILD=TRUE \
+package-invoke-builder llvm-project-musl 13 no-install
+
+# remove libcxx, libcxxabi and libunwind as they are superceded by llvm-project.
+HOST_PROCESSOR=`${ECHO} ${HOST_PROCESSOR} | ${TR} _ -`
+PACKAGES_TO_MANAGE=( 'libcxx-13' 'HOST' )
+
+PACKAGE_ACTION=UNINSTALL \
+deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
+
+# install llvm for host
+PACKAGES_TO_MANAGE=( 'llvm-project-13' 'HOST'
+                     'llvm-project-13-stage' 'HOST' )
+
+PACKAGE_ACTION=INSTALL \
+deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 
 # souper build
 package-invoke-builder souper-cross 1
 
 # cmark build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-cmark-cross 5 none
 
 # swift build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-musl 5
 
 # lldb build
