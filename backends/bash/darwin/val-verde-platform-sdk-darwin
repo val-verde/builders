@@ -24,7 +24,7 @@ package-invoke-builder swift-tools-darwin
 package-invoke-builder go-cross 1
 
 # ruby build
-package-invoke-builder ruby-cross
+package-invoke-builder ruby-cross 3
 
 # graphics sdk build
 category-invoke-builder graphics-sdk-cross
