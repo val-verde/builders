@@ -2,10 +2,6 @@
 
 set -e
 
-# Set all environment vars
-export SOURCE_PACKAGE_NAME=llvm-project
-export SOURCE_PACKAGE_VERSION=13
-
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
@@ -42,13 +38,6 @@ function package-install-completion-callback() {
                   ${STAGE_ROOT}/bin/llvm-windres* \
                   ${STAGE_ROOT}/bin/opt* \
                   ${INSTALL_PREFIX}/bin/
-
-    # remove libcxx as it is superceded by llvm-project
-    HOST_PROCESSOR=`${ECHO} ${HOST_PROCESSOR} | ${TR} _ -`
-    PACKAGES_TO_MANAGE=( 'libcxx-13' 'HOST' )
-
-    PACKAGE_ACTION=UNINSTALL \
-    deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 }
 
 function tool-install-invocation() {
