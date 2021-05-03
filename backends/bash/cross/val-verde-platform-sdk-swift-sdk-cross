@@ -20,35 +20,43 @@ PACKAGES_TO_MANAGE=( 'swift-argument-parser-5'         'BUILD' \
                      'yams-3'                          'BUILD' )
 deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 
-# libdispatch build
+# musl libdispatch build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-corelibs-libdispatch-cross 5 no-install
 
-# foundation build
-package-invoke-builder swift-corelibs-foundation-cross
+# musl foundation build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
+package-invoke-builder swift-corelibs-foundation-cross 5 no-install
 
-# xctest build
+# musl xctest build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-corelibs-xctest-cross 5 no-install
 
-# llbuild build
+# musl llbuild build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-llbuild-cross 5 no-install
 
-# swift tools support core build
-package-invoke-builder swift-tools-support-core-cross
+# musl swift tools support core build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
+package-invoke-builder swift-tools-support-core-cross 5 no-install
 
-# yams build
+# musl yams build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder yams-cross 3 no-install
 
-# swift argument parser build
+# musl swift argument parser build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-argument-parser-cross 5 no-install
 
 # swift crypto build
-package-invoke-builder swift-crypto-cross
+package-invoke-builder swift-crypto-cross 5 no-install
 
-# swift driver build
+# musl swift driver build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-driver-cross 5 no-install
 
 # swift package manager build
-package-invoke-builder swift-package-manager-cross
+package-invoke-builder swift-package-manager-cross 5 no-install
 
 # reinstall swiftpm for build and host
 PACKAGE_ACTION=INSTALL
