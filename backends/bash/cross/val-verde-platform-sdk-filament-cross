@@ -56,14 +56,10 @@ fi
 
 cd ${STAGE_ROOT}
 
-CFLAGS="\
-    -fno-builtin \
-    ${CFLAGS} \
-" \
-CXXFLAGS="\
+COMMON_CFLAGS="\
     -fno-builtin \
     -DSTRSAFE_NO_DEPRECATE \
-    ${CXXFLAGS} \
+    ${COMMON_CFLAGS} \
 " \
 CXX_STANDARD=17 \
 package-cmake \
