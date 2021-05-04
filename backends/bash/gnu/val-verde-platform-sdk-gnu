@@ -8,7 +8,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # llvm dependencies
 ECHO=/usr/bin/echo \
-package-invoke-category-builder llvm-dependencies-gnu
+category-invoke-builder llvm-dependencies-gnu
 
 # llvm build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
