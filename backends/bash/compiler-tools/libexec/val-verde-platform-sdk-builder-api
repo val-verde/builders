@@ -14,6 +14,17 @@ function category-invoke-builder() {
     ${ECHO}
 }
 
+function package-install-build-archive() {
+    source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
+    ${ECHO} -e "    Skipping re-build: \e[1;35m${PACKAGE_NAME}\e[0m"
+    if [[ "${PACKAGE_NAME}" == *"stage"* ]]; then
+        DISABLE_INSTALL_DEB= \
+        deb-package-install
+    else
+        deb-package-install
+    fi
+}
+
 function package-invoke-builder() {
     parse-builder-args "${@}"
     export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
@@ -27,12 +38,10 @@ function package-invoke-builder() {
     tool-check
 
     if [ ${FILE_EXISTS} == 'true' ]; then
-        source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
         SEARCH_RESULTS_ARRAY=( ${SEARCH_RESULTS} )
         for file in "${SEARCH_RESULTS_ARRAY[@]}"; do
-            PACKAGE_NAME=$(echo $file | cut -d '/' -f5 | cut -d '.' -f1)
-            ${ECHO} -e "    Skipping re-build: \e[1;35m${PACKAGE_NAME}\e[0m"
-            deb-package-install
+            PACKAGE_NAME=$(echo $file | cut -d '/' -f5 | cut -d '.' -f1) \
+            package-install-build-archive
         done
     else
         ${ECHO} -e "Builder Invocation Started"
