@@ -609,6 +609,12 @@ function package-clean-texinfo-lint() {
     ${RM} -rf ${INSTALL_PREFIX}/share/info/dir
 }
 
+function package-cmake() {
+    export-compiler-environment
+    generate-compiler-tools
+    package-cmake-invocation ${@}
+}
+
 function package-cmake-invocation() {
     BUILD_TYPE=${BUILD_TYPE:-Release}
     CMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX:-${PACKAGE_PREFIX}}
@@ -701,12 +707,6 @@ function package-cmake-invocation() {
         "${CROSSCOMPILING_CMD}" \
         "${SYSTEM_NAME_CMD}" \
         "${@}"
-}
-
-function package-cmake() {
-    export-compiler-environment
-    generate-compiler-tools
-    package-cmake-invocation ${@}
 }
 
 function package-configure() {
