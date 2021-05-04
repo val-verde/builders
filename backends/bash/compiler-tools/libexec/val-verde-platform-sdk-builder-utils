@@ -499,23 +499,26 @@ function get-rust-build-deps() {
 }
 
 function tool-build() {
-    ${ECHO}
-    ${ECHO} -e "    Tool Invocation"
-    ${ECHO} -e "        Tool Name: \e[1m${TOOL}\e[0m"
-    ${ECHO} -e "        Parallel Invocations: ${NUM_PROCESSORS}"
-    ${ECHO} -e "        Log Files: \e[31m${STAGE_ROOT}/builder-compile.log\e[0m"
-    ${ECHO} -e "                   \e[31m${STAGE_ROOT}/builder-compile-stderr.log\e[0m"
-    ${ECHO} -e "        Time Started: \e[4m$(date)\e[0m"
+    if [ -z "${DISABLE_TOOL_BUILD}" ]; then
+        ${ECHO}
+        ${ECHO} -e "    Tool Invocation"
+        ${ECHO} -e "        Tool Name: \e[1m${TOOL}\e[0m"
+        ${ECHO} -e "        Parallel Invocations: ${NUM_PROCESSORS}"
+        ${ECHO} -e "        Log Files: \e[31m${STAGE_ROOT}/builder-compile.log\e[0m"
+        ${ECHO} -e "                   \e[31m${STAGE_ROOT}/builder-compile-stderr.log\e[0m"
+        ${ECHO} -e "        Time Started: \e[4m$(date)\e[0m"
 
-    TOOL_LOG=${STAGE_ROOT}/builder-compile \
-    tool-log ${TOOL} -j${NUM_PROCESSORS} \
-                     "${@}"
+        TOOL_LOG=${STAGE_ROOT}/builder-compile \
+        tool-log ${TOOL} -j${NUM_PROCESSORS} \
+                        "${@}"
 
-    ${ECHO} -e "        Time Completed: \e[4m$(date)\e[0m"
+        ${ECHO} -e "        Time Completed: \e[4m$(date)\e[0m"
+    fi
 }
 
 function tool-install() {
     DESTDIR=${DESTDIR:-${INSTALL_ROOT}}
+    TOOL_INSTALL_INVOCATION=${TOOL_INSTALL_INVOCATION:-tool-install-default-invocation}
 
     ${ECHO}
     ${ECHO} -e "    Installation Invocation"
@@ -531,12 +534,16 @@ function tool-install() {
         export DESTDIR=${DESTDIR}
     fi
 
+    ${TOOL_INSTALL_INVOCATION}
+    ${ECHO} -e "        Time Completed: \e[4m$(date)\e[0m"
+}
+
+function tool-install-default-invocation() {
     TOOL_LOG=${STAGE_ROOT}/builder-installation \
     tool-log ${TOOL} -j${NUM_PROCESSORS} \
                      ${INSTALL_TARGET:-install} \
                      ${DESTDIR_CMD} \
                      "${@}"
-    ${ECHO} -e "        Time Completed: \e[4m$(date)\e[0m"
 }
 
 function make-build() {
