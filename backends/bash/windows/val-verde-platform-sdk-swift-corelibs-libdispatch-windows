@@ -32,8 +32,7 @@ SWIFTCFLAGS="\
 " \
 package-cmake \
     -DBUILD_TESTING=FALSE \
-    -DENABLE_SWIFT=TRUE \
-    ${SOURCE_ROOT}
+    -DENABLE_SWIFT=TRUE
 
 # Build the components
 ninja-install

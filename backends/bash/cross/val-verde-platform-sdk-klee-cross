@@ -18,7 +18,6 @@ COMMON_LDFLAGS="\
     ${COMMON_LDFLAGS} \
 " \
 package-cmake \
-    ${SOURCE_ROOT} \
     -DENABLE_TCMALLOC=FALSE \
     -DLLVM_CONFIG_BINARY=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config \
     -DLLVM_LIBRARY=`package-get-path LLVM SHARED HOST` \

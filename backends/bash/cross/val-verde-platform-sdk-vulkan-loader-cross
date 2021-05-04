@@ -33,8 +33,7 @@ package-cmake \
     -DPKG_CONFIG_EXECUTABLE=${PKG_CONFIG} \
     -DVulkanHeaders_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DVulkanRegistry_DIR=${PACKAGE_PREFIX}/share/vulkan/registry \
-    "${CMAKE_ANDROID_DEFINE_CMD}" \
-    ${SOURCE_ROOT}
+    "${CMAKE_ANDROID_DEFINE_CMD}"
 
 # Build the components
 PATH=${STAGE_ROOT_BASE}/vulkan-loader-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/loader:${PATH} \

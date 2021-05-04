@@ -57,6 +57,7 @@ COMMON_CFLAGS="\
     -unwindlib=none \
     ${COMMON_CFLAGS} \
 " \
+CMAKE_CONFIGURE_ROOT=${SOURCE_ROOT}/llvm \
 CXXFLAGS="\
     -nostdlib++ \
     ${CXXFLAGS} \
@@ -138,8 +139,7 @@ package-cmake \
     -DLLVM_INCLUDE_UTILS=FALSE \
     -DLLVM_TARGETS_TO_BUILD= \
     -DPython3_EXECUTABLE=${PYTHON} \
-    "${BUILD_WITH_INSTALL_RPATH_CMD}" \
-    ${SOURCE_ROOT}/llvm
+    "${BUILD_WITH_INSTALL_RPATH_CMD}"
 
 # Build the components
 if [ "${HOST_OS}" != "wasi" ]; then

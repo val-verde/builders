@@ -19,8 +19,7 @@ CFLAGS="\
      ${CFLAGS} \
 " \
 package-cmake \
-    -DCMAKE_POSITION_INDEPENDENT_CODE=FALSE \
-    ${SOURCE_ROOT}/src
+    -DCMAKE_POSITION_INDEPENDENT_CODE=FALSE
 
 # Build the components
 ninja-install

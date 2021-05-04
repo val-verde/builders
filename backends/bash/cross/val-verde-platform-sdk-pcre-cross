@@ -55,8 +55,7 @@ package-cmake \
     -DPCRE_SUPPORT_LIBZ=TRUE \
     -DPCRE_SUPPORT_PCREGREP_JIT=TRUE \
     -DPCRE_SUPPORT_UNICODE_PROPERTIES=TRUE \
-    -DPCRE_SUPPORT_UTF=TRUE \
-    ${SOURCE_ROOT}
+    -DPCRE_SUPPORT_UTF=TRUE
 
 # Build the components
 ninja-install

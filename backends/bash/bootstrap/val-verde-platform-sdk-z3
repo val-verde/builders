@@ -12,8 +12,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 # Configure the build components
 cd ${STAGE_ROOT}
 package-cmake \
-    -DPYTHON_EXECUTABLE=${PYTHON} \
-    ${SOURCE_ROOT}
+    -DPYTHON_EXECUTABLE=${PYTHON}
 
 # Build the components
 ninja-install

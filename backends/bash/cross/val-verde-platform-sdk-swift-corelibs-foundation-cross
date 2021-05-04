@@ -31,8 +31,7 @@ package-cmake \
     -DLIBXML2_LIBRARY=`package-get-path xml2 SHARED HOST` \
     -DOPENSSL_CRYPTO_LIBRARY=`package-get-path crypto SHARED HOST` \
     -DOPENSSL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DOPENSSL_SSL_LIBRARY=`package-get-path ssl SHARED HOST` \
-    ${SOURCE_ROOT}
+    -DOPENSSL_SSL_LIBRARY=`package-get-path ssl SHARED HOST`
 
 # Build the components
 ninja-install

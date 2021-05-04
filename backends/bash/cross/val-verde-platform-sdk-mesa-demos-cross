@@ -14,8 +14,7 @@ cd ${STAGE_ROOT}
 package-cmake \
     -DGLUT_glu_LIBRARY=`package-get-path glu SHARED HOST` \
     -DGLUT_glut_LIBRARY=`package-get-path glut SHARED HOST` \
-    -DGLUT_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    ${SOURCE_ROOT}
+    -DGLUT_INCLUDE_DIR=${PACKAGE_PREFIX}/include
 
 # Build the components
 ninja-install

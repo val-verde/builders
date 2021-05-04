@@ -22,8 +22,7 @@ cd ${STAGE_ROOT}
 package-cmake \
     -Ddispatch_DIR=${STAGE_ROOT_BASE}/swift-corelibs-libdispatch-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DFoundation_DIR=${STAGE_ROOT_BASE}/swift-corelibs-foundation-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
-    -DXCTest_DIR=${STAGE_ROOT_BASE}/swift-corelibs-xctest-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
-    ${SOURCE_ROOT}
+    -DXCTest_DIR=${STAGE_ROOT_BASE}/swift-corelibs-xctest-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules
 
 # Build the components
 ninja-install

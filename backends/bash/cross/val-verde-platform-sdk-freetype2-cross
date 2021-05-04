@@ -31,8 +31,7 @@ package-cmake \
     -DHARFBUZZ_LIBRARIES=${HARFBUZZ_LIBRARIES} \
     -DPNG_LIBRARY_DEBUG=`package-get-path png SHARED HOST` \
     -DPNG_LIBRARY_RELEASE=`package-get-path png SHARED HOST` \
-    -DPNG_PNG_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    ${SOURCE_ROOT}
+    -DPNG_PNG_INCLUDE_DIR=${PACKAGE_PREFIX}/include
 
 # Build the components
 ninja-install

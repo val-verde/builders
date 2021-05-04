@@ -70,8 +70,7 @@ package-cmake \
     -DCOMPILER_RT_HAS_ATOMIC_KEYWORD=TRUE \
     -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
     -DLLVM_CONFIG_PATH=${LLVM_CONFIG_PATH} \
-    -DPython3_EXECUTABLE=${PYTHON} \
-    ${SOURCE_ROOT}
+    -DPython3_EXECUTABLE=${PYTHON}
 
 # Build the components
 ninja-install

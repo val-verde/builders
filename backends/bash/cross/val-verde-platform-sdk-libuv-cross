@@ -22,8 +22,7 @@ fi
 
 package-cmake \
     -DBUILD_TESTING=FALSE \
-    ${FORCE_ANDROID_CMD} \
-    ${SOURCE_ROOT}
+    ${FORCE_ANDROID_CMD}
 
 # Build the components
 ninja-install

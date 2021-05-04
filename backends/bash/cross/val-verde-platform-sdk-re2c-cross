@@ -12,8 +12,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 # Configure the build components
 cd ${STAGE_ROOT}
 package-cmake \
-    -DBISON_EXECUTABLE=${BISON} \
-    ${SOURCE_ROOT}
+    -DBISON_EXECUTABLE=${BISON}
 
 # Build the components
 ninja-install

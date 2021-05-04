@@ -98,8 +98,7 @@ package-cmake-invocation \
     -DSWIFT_VENDOR="${PACKAGE_BASE_NAME}" \
     -DUSE_POSIX_SEM=1 \
     -DUUID_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
-    -DUUID_LIBRARIES=`package-get-path uuid SHARED HOST` \
-    ${SOURCE_ROOT}
+    -DUUID_LIBRARIES=`package-get-path uuid SHARED HOST`
 
 # Package the components
 ninja-install

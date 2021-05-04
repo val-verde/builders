@@ -106,8 +106,7 @@ package-cmake-invocation \
     -DSWIFT_WINDOWS_NATIVE_SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot \
     -DUSE_POSIX_SEM=1 \
     -DUUID_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
-    -DUUID_LIBRARIES=`package-get-path uuid STATIC HOST` \
-    ${SOURCE_ROOT}
+    -DUUID_LIBRARIES=`package-get-path uuid STATIC HOST`
 
 # Build the components
 ninja-install

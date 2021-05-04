@@ -37,8 +37,7 @@ SWIFTCFLAGS="\
 package-cmake \
     -Ddispatch_DIR=${STAGE_ROOT_BASE}/swift-corelibs-libdispatch-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DBUILD_TESTING=FALSE \
-    -DFoundation_DIR=${STAGE_ROOT_BASE}/swift-corelibs-foundation-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
-    ${SOURCE_ROOT}
+    -DFoundation_DIR=${STAGE_ROOT_BASE}/swift-corelibs-foundation-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules
 
 # Build the components
 ninja-install

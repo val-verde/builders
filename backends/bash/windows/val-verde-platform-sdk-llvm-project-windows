@@ -32,17 +32,13 @@ fi
 
 export PATH=${PATH}:${LLVM_NATIVE_STAGE_ROOT}/bin
 
-CFLAGS="\
-    -fms-compatibility-version=19.2 \
-    -fms-extensions \
-    ${CFLAGS} \
-" \
-CXXFLAGS="\
+COMMON_CFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
     -D_Unwind_Personality_Fn=__personality_routine \
-    ${CXXFLAGS} \
+    ${COMMON_CFLAGS} \
 " \
+CMAKE_CONFIGURE_ROOT=${SOURCE_ROOT}/llvm \
 CXX_STANDARD=17 \
 package-cmake \
     -DBUILD_SHARED_LIBS=TRUE \
@@ -196,8 +192,7 @@ package-cmake \
     -DZ3_RETURNCODE=0 \
     -DZ3_RETURNCODE__TRYRUN_OUTPUT=4.8.8 \
     -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DZLIB_LIBRARY_RELEASE=`package-get-path zlib SHARED HOST` \
-    ${SOURCE_ROOT}/llvm
+    -DZLIB_LIBRARY_RELEASE=`package-get-path zlib SHARED HOST`
 
 # Build the components
 INSTALL_TARGET="tools/clang/install" \

@@ -47,6 +47,7 @@ NVCCFLAGS=`${ECHO} "\
 
 create-host-tool ${NVCC} NVCCFLAGS ${CUDA_COMPILER}
 
+CMAKE_CONFIGURE_ROOT=${SOURCE_ROOT}/llvm \
 CXX_STANDARD=17 \
 package-cmake \
     -DBUILD_SHARED_LIBS=FALSE \
@@ -207,8 +208,7 @@ package-cmake \
     -DZ3_RETURNCODE__TRYRUN_OUTPUT=4.8.8 \
     -DZLIB_INCLUDE_DIR=${BUILD_PACKAGE_PREFIX}/include \
     -DZLIB_LIBRARY_RELEASE=`package-get-path z SHARED HOST` \
-    "${LIBC_CMD}" \
-    ${SOURCE_ROOT}/llvm
+    "${LIBC_CMD}"
 
 # Build the components
 INSTALL_TARGET="tools/clang/install" \

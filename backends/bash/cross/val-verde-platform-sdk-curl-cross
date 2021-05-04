@@ -24,8 +24,7 @@ package-cmake \
     -DHAVE_POLL_FINE_EXITCODE=0 \
     -DHAVE_POLL_FINE_EXITCODE__TRYRUN_OUTPUT=1 \
     -DLIBSSH2_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DLIBSSH2_LIBRARY=`package-get-path ssh2 SHARED HOST` \
-    ${SOURCE_ROOT}
+    -DLIBSSH2_LIBRARY=`package-get-path ssh2 SHARED HOST`
 
 # Build the components
 ninja-install

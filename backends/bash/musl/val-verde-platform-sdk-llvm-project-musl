@@ -33,6 +33,7 @@ fi
 
 export PATH=${PATH}:${LLVM_NATIVE_STAGE_ROOT}/bin
 
+CMAKE_CONFIGURE_ROOT=${SOURCE_ROOT}/llvm \
 CXX_STANDARD=17 \
 package-cmake \
     -DBUILD_SHARED_LIBS=FALSE \
@@ -186,8 +187,7 @@ package-cmake \
     -DZ3_RETURNCODE=0 \
     -DZ3_RETURNCODE__TRYRUN_OUTPUT=4.8.8 \
     -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DZLIB_LIBRARY_RELEASE=`package-get-path z SHARED HOST` \
-    ${SOURCE_ROOT}/llvm
+    -DZLIB_LIBRARY_RELEASE=`package-get-path z SHARED HOST`
 
 # Build the components
 INSTALL_TARGET="tools/clang/install" \

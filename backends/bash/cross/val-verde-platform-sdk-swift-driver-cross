@@ -29,8 +29,7 @@ package-cmake \
     -DFoundation_DIR=${STAGE_ROOT_BASE}/swift-corelibs-foundation-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DLLBuild_DIR=${STAGE_ROOT_BASE}/swift-llbuild-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DTSC_DIR=${STAGE_ROOT_BASE}/swift-tools-support-core-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
-    -DYams_DIR=${STAGE_ROOT_BASE}/yams-3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
-    ${SOURCE_ROOT}
+    -DYams_DIR=${STAGE_ROOT_BASE}/yams-3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules
 
 # Build the components
 ninja-build

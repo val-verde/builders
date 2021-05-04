@@ -13,8 +13,7 @@ export DEPENDS="${PACKAGE_BASE_NAME}-llvm-project-13-${HOST_OS}${HOST_OS_API_LEV
 
 # Configure the build components
 cd ${STAGE_ROOT}
-package-cmake \
-    ${SOURCE_ROOT}
+package-cmake
 
 # Build the components
 ninja-install

@@ -37,7 +37,6 @@ TOOL_LOG=${STAGE_ROOT}/builder-go-get \
 tool-log ${GO} get github.com/gomodule/redigo/redis
 
 package-cmake \
-    ${SOURCE_ROOT} \
     -DALIVE_LIBRARY=`package-get-path alive2 SHARED HOST` \
     -DHIREDIS_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DHIREDIS_LIBRARY=`package-get-path hiredis SHARED HOST` \

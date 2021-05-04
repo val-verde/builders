@@ -25,11 +25,12 @@ elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
     LLVM_TARGETS_TO_BUILD="NVPTX;X86"
 fi
 
-CXX_STANDARD=17 \
+CMAKE_CONFIGURE_ROOT=${SOURCE_ROOT}/llvm \
 COMMON_LDFLAGS="\
     -lunwind \
     ${COMMON_LDFLAGS} \
 " \
+CXX_STANDARD=17 \
 package-cmake \
     -DBUILD_SHARED_LIBS=FALSE \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
@@ -177,8 +178,7 @@ package-cmake \
     -DZ3_INCLUDE_DIR=${SYSROOT}/usr/include \
     -DZ3_LIBRARIES=${SYSROOT}/usr/lib/${HOST_TRIPLE}/${SHARED_LIBRARY_PREFIX}z3${SHARED_LIBRARY_SUFFIX} \
     -DZ3_RETURNCODE=0 \
-    -DZ3_RETURNCODE__TRYRUN_OUTPUT=4.8.10 \
-    ${SOURCE_ROOT}/llvm
+    -DZ3_RETURNCODE__TRYRUN_OUTPUT=4.8.10
 
 # Build the components
 ninja-install

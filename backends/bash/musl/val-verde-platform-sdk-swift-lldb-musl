@@ -76,8 +76,7 @@ package-cmake \
     -DPython3_LIBRARIES=`package-get-path python${PYTHON_VERSION} SHARED HOST` \
     -DPANEL_LIBRARIES=`package-get-path panel SHARED HOST` \
     -DSwift_DIR=${SWIFT_STAGE_ROOT}/lib/cmake/swift \
-    -DSWIG_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/swig \
-    ${SOURCE_ROOT}
+    -DSWIG_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/swig
 
 # Package the components
 ninja-install

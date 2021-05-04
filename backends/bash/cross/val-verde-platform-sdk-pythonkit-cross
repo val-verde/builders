@@ -22,8 +22,7 @@ SWIFTCFLAGS="\
     -sdk ${SYSROOT} \
     ${SWIFTCFLAGS} \
 " \
-package-cmake \
-    ${SOURCE_ROOT}
+package-cmake
 
 # Build the components
 ninja-install

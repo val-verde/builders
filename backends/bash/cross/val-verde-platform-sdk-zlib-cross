@@ -12,8 +12,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
 cd ${STAGE_ROOT}
-package-cmake \
-    ${SOURCE_ROOT}
+package-cmake
 
 # Build the components
 ninja-install

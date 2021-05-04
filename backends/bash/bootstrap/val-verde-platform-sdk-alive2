@@ -12,7 +12,6 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 # Configure the build components
 cd ${STAGE_ROOT}
 package-cmake \
-    ${SOURCE_ROOT} \
     -DGIT_EXECUTABLE=${GIT} \
     -DRE2C=${BUILD_PACKAGE_PREFIX}/bin/re2c
 

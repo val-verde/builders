@@ -35,8 +35,7 @@ package-cmake \
     -DSPIRV_TOOLS_OPT_LIB=`package-get-path SPIRV-Tools-opt STATIC HOST` \
     -DVulkanHeaders_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DVulkanRegistry_DIR=${PACKAGE_PREFIX}/share/vulkan/registry \
-    "${CMAKE_XCB_CMD}" \
-    ${SOURCE_ROOT}
+    "${CMAKE_XCB_CMD}"
 
 # Build the components
 ninja-install

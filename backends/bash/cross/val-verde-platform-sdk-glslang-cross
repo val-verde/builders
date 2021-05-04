@@ -20,8 +20,7 @@ fi
 
 package-cmake \
     -DPYTHON_EXECUTABLE=${PYTHON} \
-    "${CMAKE_ANDROID_DEFINE_CMD}" \
-    ${SOURCE_ROOT}
+    "${CMAKE_ANDROID_DEFINE_CMD}"
 
 # Build the components
 ninja-install

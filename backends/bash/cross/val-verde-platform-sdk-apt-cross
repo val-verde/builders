@@ -32,8 +32,7 @@ package-cmake \
     -DUDEV_INCLUDE_DIRS=${UDEV_INCLUDE_DIRS} \
     -DUDEV_LIBRARIES=${UDEV_LIBRARIES} \
     -DWITH_DOC=FALSE \
-    -DWITH_TESTS=FALSE \
-    ${SOURCE_ROOT}
+    -DWITH_TESTS=FALSE
 
 # Build the components
 ninja-install

@@ -617,6 +617,7 @@ function package-cmake() {
 
 function package-cmake-invocation() {
     BUILD_TYPE=${BUILD_TYPE:-Release}
+    CMAKE_CONFIGURE_ROOT=${CMAKE_CONFIGURE_ROOT:-${SOURCE_ROOT}}
     CMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX:-${PACKAGE_PREFIX}}
     COMPILER_TARGET=${COMPILER_TARGET:-${HOST_TRIPLE}}
 
@@ -706,7 +707,29 @@ function package-cmake-invocation() {
         -DCMAKE_SYSTEM_PROCESSOR=${HOST_PROCESSOR} \
         "${CROSSCOMPILING_CMD}" \
         "${SYSTEM_NAME_CMD}" \
+        "${@}" \
+        ${CMAKE_CONFIGURE_ROOT}
+}
+
+function package-cmake-install() {
+    # Configure the build components
+    package-push-directory ${STAGE_ROOT}
+        package-cmake \
+            "${@}"
+
+        # Build the package
+        ninja-build
+    package-pop-directory
+
+    # Install the package
+    TOOL=ninja \
+    package-install
+}
+
+function package-cmake-install-archive() {
+    package-cmake-install \
         "${@}"
+    package-invoke-archive-install
 }
 
 function package-configure() {
@@ -729,7 +752,8 @@ function package-configure-invocation() {
 
 function package-configure-install() {
     DISABLE_AUTORECONF=TRUE \
-    package-stage-configure-install "${@}"
+    package-stage-configure-install \
+        "${@}"
 }
 
 function package-configure-install-staged() {
@@ -753,20 +777,21 @@ function package-configure-install-staged() {
     package-pop-directory
 
     # Install the package
+    TOOL=make \
     package-install
 }
 
 function package-configure-install-archive() {
     package-configure-install "${@}"
-
     package-invoke-archive-install
 }
 
 function package-install() {
     CONFIGURE_BUILD_ROOT=${CONFIGURE_BUILD_ROOT:-${STAGE_ROOT}}
+
     package-push-directory ${CONFIGURE_BUILD_ROOT}
         # Install package
-        make-install
+        tool-install
 
         # Remove texinfo related lint
         package-clean-texinfo-lint

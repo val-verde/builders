@@ -57,8 +57,7 @@ package-cmake \
     -DPKG_CONFIG_EXECUTABLE=${PKG_CONFIG} \
     -DVulkan_LIBRARY=${PACKAGE_PREFIX}/lib/libvulkan${LIB_VERSION_SUFFIX}.${LIB_SUFFIX} \
     "${CMAKE_ANDROID_DEFINE_CMD}" \
-    "${CMAKE_XCB_CMD}" \
-    ${SOURCE_ROOT}
+    "${CMAKE_XCB_CMD}"
 
 # Build the components
 ninja-install

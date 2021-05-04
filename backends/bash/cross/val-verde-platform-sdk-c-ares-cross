@@ -20,8 +20,7 @@ package-cmake \
     -DHAVE_STRDUP=TRUE \
     -DHAVE_STRUCT_ADDRINFO=TRUE \
     -DHAVE_STRUCT_SOCKADDR_IN6=TRUE \
-    -DHAVE_STRUCT_TIMEVAL=TRUE \
-    ${SOURCE_ROOT}
+    -DHAVE_STRUCT_TIMEVAL=TRUE
 
 # Build the components
 ninja-install

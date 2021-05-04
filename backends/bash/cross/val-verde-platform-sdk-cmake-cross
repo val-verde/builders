@@ -65,8 +65,7 @@ package-cmake \
     -DLibUV_LIBRARY=${LibUV_LIBRARY} \
     -DPython3_EXECUTABLE=${PYTHON} \
     -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DZLIB_LIBRARY=${ZLIB_LIBRARY} \
-    ${SOURCE_ROOT}
+    -DZLIB_LIBRARY=${ZLIB_LIBRARY}
 
 # Build the components
 ninja-install

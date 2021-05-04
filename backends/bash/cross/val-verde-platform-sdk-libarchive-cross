@@ -61,8 +61,7 @@ package-cmake \
     -DZLIB_WINAPI_EXITCODE=0 \
     -DZLIB_WINAPI_EXITCODE__TRYRUN_OUTPUT=1 \
     -DZSTD_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DZSTD_LIBRARY=${ZSTD_LIBRARY} \
-    ${SOURCE_ROOT}
+    -DZSTD_LIBRARY=${ZSTD_LIBRARY}
 
 # Build the components
 ninja-install

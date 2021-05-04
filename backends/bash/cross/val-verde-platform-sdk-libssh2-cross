@@ -21,8 +21,7 @@ package-cmake \
     -DBUILD_EXAMPLES=FALSE \
     -DBUILD_SHARED_LIBS=TRUE \
     -DBUILD_TESTING=FALSE \
-    -DOPENSSL_ROOT_DIR=${PACKAGE_PREFIX} \
-    ${SOURCE_ROOT}
+    -DOPENSSL_ROOT_DIR=${PACKAGE_PREFIX}
 
 # Build the package
 ninja-install
