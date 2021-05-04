@@ -798,6 +798,11 @@ function package-install() {
 
         # RPATH fixups
         rpath-fixup
+
+        # Completion callback
+        if [ -n "${PACKAGE_INSTALL_COMPLETION_CALLBACK}" ]; then
+            ${PACKAGE_INSTALL_COMPLETION_CALLBACK}
+        fi
     package-pop-directory
 }
 
