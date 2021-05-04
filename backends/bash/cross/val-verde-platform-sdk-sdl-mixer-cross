@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=sdl-mixer
+export SOURCE_PACKAGE_VERSION=2
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for bootstrap/configure/install
+BOOTSTRAP_FILE=autogen.sh \
+CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
+SDL_CFLAGS="-I${PACKAGE_PREFIX}/include/SDL2" \
+SDL_LIBS="-lSDL2 -lSDL2main" \
+package-bootstrap-configure-install-archive \
+    --disable-static \
+    --enable-shared
