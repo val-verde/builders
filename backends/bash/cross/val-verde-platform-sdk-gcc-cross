@@ -32,6 +32,5 @@ package-stage-configure-install-archive \
     --enable-large-address-aware \
     --enable-shared \
     --program-prefix=${PACKAGE_BASE_NAME}- \
-    --with-glibc-version=2.33 \
     --with-long-double-128 \
     --with-sysroot=${SYSROOT}

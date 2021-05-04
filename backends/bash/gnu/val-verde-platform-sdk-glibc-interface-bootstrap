@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=glibc-interface
+export SOURCE_PACKAGE_VERSION=2
+
+# Source package build helper functions
+SOURCE_ROOT=${SOURCE_ROOT_BASE}/glibc-${SOURCE_PACKAGE_VERSION}
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for configure/install
+DISABLE_TOOL_BUILD=TRUE \
+INSTALL_TARGET=install-headers \
+package-configure-install-archive \
+    ${STAGE_ROOT}/configure \
+    libc_cv_gcc_builtin_redirection=yes

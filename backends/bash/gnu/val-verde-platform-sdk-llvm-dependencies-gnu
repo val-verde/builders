@@ -63,6 +63,12 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 # kernel headers build
 package-invoke-builder kernel-headers-cross
 
+# glibc interface bootstrap build
+package-invoke-builder glibc-interface-bootstrap
+
+# gcc interface build
+package-invoke-builder gcc-cross
+
 # glibc interface build
 package-invoke-builder glibc-interface
 
