@@ -59,6 +59,12 @@ package-invoke-builder sdl-cross
 # sdl-image build
 package-invoke-builder sdl-image-cross
 
+# sdl-mixer build
+package-invoke-builder sdl-mixer-cross
+
+# sdl-net build
+package-invoke-builder sdl-net-cross
+
 # sdl-ttf build
 package-invoke-builder sdl-ttf-cross
 
