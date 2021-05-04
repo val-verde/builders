@@ -91,7 +91,7 @@ tool-log ${SOURCE_ROOT}/configure \
     --disable-static-build \
     --disable-warnings-as-errors \
     --openjdk-target=${HOST_TRIPLE} \
-    --prefix=${INSTALL_PREFIX} \
+    --prefix=${PACKAGE_PREFIX} \
     --with-boot-jdk=${BUILD_PACKAGE_PREFIX} \
     --with-extra-asflags="${HOST_ASFLAGS}" \
     --with-extra-cflags="${HOST_CFLAGS}" \
