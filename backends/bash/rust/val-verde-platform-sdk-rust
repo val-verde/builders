@@ -4,10 +4,6 @@ set -e
 
 # Source package build helper functions
 
-# Set all environment vars
-export SOURCE_PACKAGE_NAME=rust
-export SOURCE_PACKAGE_VERSION=1
-
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export DEPENDS="\
