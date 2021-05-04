@@ -38,7 +38,7 @@ package-rsync -ax \
               ${INSTALL_PREFIX}/bin
 
 # RPATH fixups
-COMPONENTS="\
+RPATH_COMPONENTS="\
     ${INSTALL_PREFIX}/bin/baikonur \
 " \
 rpath-fixup

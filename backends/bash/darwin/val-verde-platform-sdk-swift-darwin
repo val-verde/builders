@@ -107,12 +107,12 @@ ${MV} ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/*.swift* \
       ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/${HOST_PROCESSOR}/
 
 # RPATH fixups
-COMPONENTS="\
+RPATH_COMPONENTS="\
     ${INSTALL_PREFIX}/bin/swift \
 " \
 rpath-fixup
 
-COMPONENTS="\
+RPATH_COMPONENTS="\
     ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/${SHARED_LIBRARY_PREFIX}*${SHARED_LIBRARY_SUFFIX} \
 " \
 COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \

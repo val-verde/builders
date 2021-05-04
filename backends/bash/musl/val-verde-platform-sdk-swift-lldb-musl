@@ -82,7 +82,7 @@ package-cmake \
 ninja-install
 
 # RPATH fixups
-COMPONENTS="\
+RPATH_COMPONENTS="\
     ${INSTALL_PREFIX}/bin/lldb \
     ${INSTALL_PREFIX}/bin/repl_swift \
     ${INSTALL_PREFIX}/lib/${SHARED_LIBRARY_PREFIX}lldb${SHARED_LIBRARY_SUFFIX} \

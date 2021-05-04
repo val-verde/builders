@@ -38,7 +38,7 @@ elif [ "${HOST_OS}" = "musl" ]; then
 fi
 
 # RPATH fixups
-COMPONENTS="\
+RPATH_COMPONENTS="\
     ${INSTALL_PREFIX}/lib/swift/${SDK}/${SHARED_LIBRARY_PREFIX}*${SHARED_LIBRARY_SUFFIX} \
 " \
 COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
