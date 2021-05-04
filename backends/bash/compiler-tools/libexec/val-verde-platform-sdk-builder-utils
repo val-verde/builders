@@ -499,19 +499,21 @@ function get-rust-build-deps() {
 }
 
 function tool-build() {
-    ${ECHO}
-    ${ECHO} -e "    Tool Invocation"
-    ${ECHO} -e "        Tool Name: \e[1m${TOOL}\e[0m"
-    ${ECHO} -e "        Parallel Invocations: ${NUM_PROCESSORS}"
-    ${ECHO} -e "        Log Files: \e[31m${STAGE_ROOT}/builder-compile.log\e[0m"
-    ${ECHO} -e "                   \e[31m${STAGE_ROOT}/builder-compile-stderr.log\e[0m"
-    ${ECHO} -e "        Time Started: \e[4m$(date)\e[0m"
+    if [ -z "${DISABLE_TOOL_BUILD}" ]; then
+        ${ECHO}
+        ${ECHO} -e "    Tool Invocation"
+        ${ECHO} -e "        Tool Name: \e[1m${TOOL}\e[0m"
+        ${ECHO} -e "        Parallel Invocations: ${NUM_PROCESSORS}"
+        ${ECHO} -e "        Log Files: \e[31m${STAGE_ROOT}/builder-compile.log\e[0m"
+        ${ECHO} -e "                   \e[31m${STAGE_ROOT}/builder-compile-stderr.log\e[0m"
+        ${ECHO} -e "        Time Started: \e[4m$(date)\e[0m"
 
-    TOOL_LOG=${STAGE_ROOT}/builder-compile \
-    tool-log ${TOOL} -j${NUM_PROCESSORS} \
-                     "${@}"
+        TOOL_LOG=${STAGE_ROOT}/builder-compile \
+        tool-log ${TOOL} -j${NUM_PROCESSORS} \
+                         "${@}"
 
-    ${ECHO} -e "        Time Completed: \e[4m$(date)\e[0m"
+        ${ECHO} -e "        Time Completed: \e[4m$(date)\e[0m"
+    fi
 }
 
 function tool-install() {
