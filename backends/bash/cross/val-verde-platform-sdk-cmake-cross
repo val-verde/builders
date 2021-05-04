@@ -19,8 +19,6 @@ export DEPENDS="\
 "
 
 # Configure the build components
-cd ${STAGE_ROOT}
-
 if [ "${HOST_OS}" = "mingw32" ]; then
     CMake_HAVE_CXX_FILESYSTEM=FALSE
 else
@@ -35,7 +33,7 @@ LibArchive_LIBRARY=`package-get-path archive SHARED HOST`
 LibUV_LIBRARY=`package-get-path uv SHARED HOST`
 ZLIB_LIBRARY=`package-get-path z SHARED HOST`
 
-package-cmake \
+package-cmake-install-archive \
     -DBUILD_TESTING=FALSE \
     -DCMake_HAVE_CXX_FILESYSTEM=${CMake_HAVE_CXX_FILESYSTEM} \
     -DCMake_HAVE_CXX_UNIQUE_PTR=TRUE \
@@ -66,9 +64,3 @@ package-cmake \
     -DPython3_EXECUTABLE=${PYTHON} \
     -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DZLIB_LIBRARY=${ZLIB_LIBRARY}
-
-# Build the components
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install

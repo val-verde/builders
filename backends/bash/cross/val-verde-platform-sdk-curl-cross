@@ -16,8 +16,7 @@ export DEPENDS="\
 "
 
 # Configure the build components
-cd ${STAGE_ROOT}
-package-cmake \
+package-cmake-install-archive \
     -DBUILD_SHARED_LIBS=TRUE \
     -DBUILD_TESTING=FALSE \
     -DCURL_TARGET_WINDOWS_VERSION=0x0A00 \
@@ -25,9 +24,3 @@ package-cmake \
     -DHAVE_POLL_FINE_EXITCODE__TRYRUN_OUTPUT=1 \
     -DLIBSSH2_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DLIBSSH2_LIBRARY=`package-get-path ssh2 SHARED HOST`
-
-# Build the components
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install

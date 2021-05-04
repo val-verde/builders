@@ -10,8 +10,7 @@ export SOURCE_PACKAGE_VERSION=1
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
-cd ${STAGE_ROOT}
-package-cmake \
+package-cmake-install-archive \
     -DBUILD_WSI_DIRECTFB_SUPPORT=FALSE \
     -DBUILD_WSI_WAYLAND_SUPPORT=FALSE \
     -DBUILD_WSI_XLIB_SUPPORT=FALSE \
@@ -23,9 +22,3 @@ package-cmake \
     -DVULKAN_HEADERS_INSTALL_DIR=${PACKAGE_PREFIX} \
     -DVULKAN_LOADER_INSTALL_DIR=${PACKAGE_PREFIX} \
     -DVULKAN_VALIDATIONLAYERS_INSTALL_DIR=${PACKAGE_PREFIX}
-
-# Build the components
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install

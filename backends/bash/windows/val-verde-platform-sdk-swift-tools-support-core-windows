@@ -29,19 +29,13 @@ CXXFLAGS="\
     -fms-extensions \
     ${CXXFLAGS} \
 " \
+DISABLE_INSTALL_DEB=TRUE \
 SWIFTCFLAGS="\
     -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
     ${SWIFTCFLAGS} \
 " \
-package-cmake \
+package-cmake-install-archive \
     -Ddispatch_DIR=${STAGE_ROOT_BASE}/swift-corelibs-libdispatch-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DFoundation_DIR=${STAGE_ROOT_BASE}/swift-corelibs-foundation-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DSQLite3_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DSQLite3_LIBRARY=`package-get-path sqlite3 SHARED HOST`
-
-# Build the components
-ninja-install
-
-# Build and install the package
-DISABLE_INSTALL_DEB=TRUE \
-package-invoke-archive-install

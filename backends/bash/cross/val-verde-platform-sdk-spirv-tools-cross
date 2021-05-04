@@ -10,14 +10,7 @@ export SOURCE_PACKAGE_VERSION=2020
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
-cd ${STAGE_ROOT}
-package-cmake \
+package-cmake-install-archive \
     -DLIBRT= \
     -DPYTHON_EXECUTABLE=${PYTHON} \
     -DSPIRV-Headers_SOURCE_DIR=${PACKAGE_PREFIX}
-
-# Build the components
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install

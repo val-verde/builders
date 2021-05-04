@@ -18,30 +18,17 @@ export DEPENDS="\
 "
 
 # Configure the build components
-cd ${STAGE_ROOT}
-
-CFLAGS="\
+COMMON_CFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
-    ${CFLAGS} \
+    ${COMMON_CFLAGS} \
 " \
-CXXFLAGS="\
-    -fms-compatibility-version=19.2 \
-    -fms-extensions \
-    ${CXXFLAGS} \
-" \
+DISABLE_INSTALL_DEB=TRUE \
 SWIFTCFLAGS="\
     -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
     ${SWIFTCFLAGS} \
 " \
-package-cmake \
+package-cmake-install-archive \
     -Ddispatch_DIR=${STAGE_ROOT_BASE}/swift-corelibs-libdispatch-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DBUILD_TESTING=FALSE \
     -DFoundation_DIR=${STAGE_ROOT_BASE}/swift-corelibs-foundation-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules
-
-# Build the components
-ninja-install
-
-# Build and install the package
-DISABLE_INSTALL_DEB=TRUE \
-package-invoke-archive-install

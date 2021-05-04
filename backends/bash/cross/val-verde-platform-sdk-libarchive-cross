@@ -41,7 +41,7 @@ LIBXML2_LIBRARY=`package-get-path xml2 SHARED HOST`
 ZLIB_LIBRARY=`package-get-path z SHARED HOST`
 ZSTD_LIBRARY=`package-get-path zstd SHARED HOST`
 
-package-cmake \
+package-cmake-install-archive \
     -DACL_LIBRARY=${ACL_LIBRARY} \
     -DBZIP2_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DBZIP2_LIBRARIES=${BZIP2_LIBRARY} \
@@ -62,9 +62,3 @@ package-cmake \
     -DZLIB_WINAPI_EXITCODE__TRYRUN_OUTPUT=1 \
     -DZSTD_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DZSTD_LIBRARY=${ZSTD_LIBRARY}
-
-# Build the components
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install

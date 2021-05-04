@@ -19,22 +19,15 @@ export DEPENDS="\
 export SOURCE_ROOT=${SOURCE_ROOT}-android
 
 # Configure the build components
-cd ${STAGE_ROOT}
+DISABLE_INSTALL_DEB=TRUE \
 SWIFTCFLAGS="\
     -sdk ${SYSROOT} \
     ${SWIFTCFLAGS} \
 " \
-package-cmake \
+package-cmake-install-archive \
     -Ddispatch_DIR=${STAGE_ROOT_BASE}/swift-corelibs-libdispatch-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DCMAKE_C_FLAGS="-D__GLIBC_PREREQ\(a,b\)=1" \
     -DCMAKE_HAVE_LIBC_PTHREAD=TRUE \
     -DFoundation_DIR=${STAGE_ROOT_BASE}/swift-corelibs-foundation-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DSQLite3_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DSQLite3_LIBRARY=`package-get-path sqlite3 SHARED HOST`
-
-# Build the components
-ninja-install
-
-# Build and install the package
-DISABLE_INSTALL_DEB=TRUE \
-package-invoke-archive-install

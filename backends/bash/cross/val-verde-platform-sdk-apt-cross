@@ -12,8 +12,6 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 export DEPENDS="${PACKAGE_BASE_NAME}-gnutls-3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 
 # Configure the build components
-cd ${STAGE_ROOT}
-
 if [ "${HOST_OS}" = "gnu" ]; then
     SYSTEMD_INCLUDE_DIRS=${PACKAGE_PREFIX}/include
     SYSTEMD_LIBRARIES=${PACKAGE_PREFIX}/lib/libsystemd.so
@@ -21,7 +19,7 @@ if [ "${HOST_OS}" = "gnu" ]; then
     UDEV_LIBRARIES=${PACKAGE_PREFIX}/lib/libudev.so
 fi
 
-package-cmake \
+package-cmake-install-archive \
     -DCONF_DIR=/etc/apt \
     -DCACHE_DIR=/var/cache/apt \
     -DLOG_DIR=/var/log/apt \
@@ -33,9 +31,3 @@ package-cmake \
     -DUDEV_LIBRARIES=${UDEV_LIBRARIES} \
     -DWITH_DOC=FALSE \
     -DWITH_TESTS=FALSE
-
-# Build the components
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install

@@ -53,6 +53,12 @@ if [ -z "${DISABLE_LIBUNWIND}" ]; then
     ENABLED_PROJECTS="${ENABLED_PROJECTS};libunwind"
 fi
 
+INSTALL_TARGET="projects/compiler-rt/install projects/libcxx/install projects/libcxxabi/install projects/parallel-libs/install projects/pstl/install"
+
+if [ "${HOST_OS}" != "wasi" ]; then
+    INSTALL_TARGET="projects/libunwind/install ${INSTALL_PREFIX}"
+fi
+
 COMMON_CFLAGS="\
     -unwindlib=none \
     ${COMMON_CFLAGS} \
@@ -62,7 +68,7 @@ CXXFLAGS="\
     -nostdlib++ \
     ${CXXFLAGS} \
 " \
-package-cmake \
+package-cmake-install-archive \
     -DCMAKE_C_COMPILER_WORKS=TRUE \
     -DCMAKE_CXX_COMPILER_WORKS=TRUE \
     -DCMAKE_LIPO=${BINDIR}/llvm-lipo \
@@ -140,15 +146,3 @@ package-cmake \
     -DLLVM_TARGETS_TO_BUILD= \
     -DPython3_EXECUTABLE=${PYTHON} \
     "${BUILD_WITH_INSTALL_RPATH_CMD}"
-
-# Build the components
-if [ "${HOST_OS}" != "wasi" ]; then
-    INSTALL_TARGET="projects/libunwind/install" \
-    ninja-install
-fi
-
-INSTALL_TARGET="projects/compiler-rt/install projects/libcxx/install projects/libcxxabi/install projects/parallel-libs/install projects/pstl/install" \
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install

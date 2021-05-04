@@ -14,8 +14,6 @@ export-compiler-environment
 export DEPENDS="${PACKAGE_BASE_NAME}-vulkan-loader-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 
 # Configure the build components
-cd ${STAGE_ROOT}
-
 BUILD_CUBE=TRUE
 CUBE_WSI_SELECTION=WAYLAND
 ENABLE_WAYLAND=FALSE
@@ -43,7 +41,7 @@ elif [ "${HOST_OS}" = "mingw32" ]; then
     "
 fi
 
-package-cmake \
+package-cmake-install-archive \
     -DBUILD_CUBE=${BUILD_CUBE} \
     -DBUILD_ICD=FALSE \
     -DBUILD_WSI_DIRECTFB_SUPPORT=FALSE \
@@ -58,9 +56,3 @@ package-cmake \
     -DVulkan_LIBRARY=${PACKAGE_PREFIX}/lib/libvulkan${LIB_VERSION_SUFFIX}.${LIB_SUFFIX} \
     "${CMAKE_ANDROID_DEFINE_CMD}" \
     "${CMAKE_XCB_CMD}"
-
-# Build the components
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install

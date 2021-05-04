@@ -14,18 +14,10 @@ export DEPENDS="\
 "
 
 # Configure the build components
-cd ${STAGE_ROOT}
-
 if [ "${HOST_OS}" = "android" ]; then
     FORCE_ANDROID_CMD="-DFORCE_ANDROID=TRUE"
 fi
 
-package-cmake \
+package-cmake-install-archive \
     -DBUILD_TESTING=FALSE \
     ${FORCE_ANDROID_CMD}
-
-# Build the components
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install

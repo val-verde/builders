@@ -10,12 +10,5 @@ export SOURCE_PACKAGE_VERSION=2
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
-cd ${STAGE_ROOT}
-package-cmake \
+package-cmake-install-archive \
     -DBISON_EXECUTABLE=${BISON}
-
-# Build the components
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install

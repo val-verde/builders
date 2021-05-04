@@ -37,7 +37,12 @@ CXXFLAGS="\
     ${CXXFLAGS} \
 " \
 CXX_STANDARD=17 \
-package-cmake \
+RPATH_COMPONENTS="\
+    ${INSTALL_PREFIX}/bin/lldb \
+    ${INSTALL_PREFIX}/bin/repl_swift \
+    ${INSTALL_PREFIX}/lib/${SHARED_LIBRARY_PREFIX}lldb${SHARED_LIBRARY_SUFFIX} \
+" \
+package-cmake-install-archive \
     -DClang_DIR=${LLVM_STAGE_ROOT}/lib/cmake/clang \
     -DCLANG_LINK_CLANG_DYLIB=TRUE \
     -DCMAKE_EXE_LINKER_FLAGS="-O2" \
@@ -74,17 +79,3 @@ package-cmake \
     -DPANEL_LIBRARIES=`package-get-path panel SHARED HOST` \
     -DSwift_DIR=${SWIFT_STAGE_ROOT}/lib/cmake/swift \
     -DSWIG_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/swig
-
-# Build the components
-ninja-install
-
-# RPATH fixups
-RPATH_COMPONENTS="\
-    ${INSTALL_PREFIX}/bin/lldb \
-    ${INSTALL_PREFIX}/bin/repl_swift \
-    ${INSTALL_PREFIX}/lib/${SHARED_LIBRARY_PREFIX}lldb${SHARED_LIBRARY_SUFFIX} \
-" \
-rpath-fixup
-
-# Build and install the package
-package-invoke-archive-install

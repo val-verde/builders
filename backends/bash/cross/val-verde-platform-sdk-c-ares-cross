@@ -10,8 +10,7 @@ export SOURCE_PACKAGE_VERSION=1
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
-cd ${STAGE_ROOT}
-package-cmake \
+package-cmake-install-archive \
     -DHAVE_AF_INET6=TRUE \
     -DHAVE_IOCTLSOCKET_FIONBIO=TRUE \
     -DHAVE_RECV=TRUE \
@@ -21,9 +20,3 @@ package-cmake \
     -DHAVE_STRUCT_ADDRINFO=TRUE \
     -DHAVE_STRUCT_SOCKADDR_IN6=TRUE \
     -DHAVE_STRUCT_TIMEVAL=TRUE
-
-# Build the components
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install

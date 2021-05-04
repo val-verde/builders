@@ -43,7 +43,7 @@ LDFLAGS="\
     -luuid \
     ${LDFLAGS} \
 "
-package-cmake \
+package-cmake-install-archive \
     -DClang_DIR=${LLVM_STAGE_ROOT}/lib/cmake/clang \
     -DCLANG_LINK_CLANG_DYLIB=FALSE \
     -DCMAKE_EXE_LINKER_FLAGS="-O2" \
@@ -83,9 +83,3 @@ package-cmake \
     -DPANEL_LIBRARIES=`package-get-path panel SHARED HOST` \
     -DSwift_DIR=${SWIFT_STAGE_ROOT}/lib/cmake/swift \
     -DSWIG_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/swig
-
-# Package the components
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install

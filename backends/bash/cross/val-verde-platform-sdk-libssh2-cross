@@ -15,16 +15,8 @@ export DEPENDS="\
 "
 
 # Configure the build components
-cd ${STAGE_ROOT}
-
-package-cmake \
+package-cmake-install-archive \
     -DBUILD_EXAMPLES=FALSE \
     -DBUILD_SHARED_LIBS=TRUE \
     -DBUILD_TESTING=FALSE \
     -DOPENSSL_ROOT_DIR=${PACKAGE_PREFIX}
-
-# Build the package
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install

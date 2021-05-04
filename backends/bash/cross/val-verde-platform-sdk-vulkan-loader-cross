@@ -11,8 +11,6 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 export-compiler-environment
 
 # Configure the build components
-cd ${STAGE_ROOT}
-
 ENABLE_WAYLAND=FALSE
 ENABLE_XLIB=FALSE
 
@@ -24,7 +22,8 @@ elif [ "${HOST_OS}" = "gnu" ] ||
     ENABLE_XLIB=TRUE
 fi
 
-package-cmake \
+PATH=${STAGE_ROOT_BASE}/vulkan-loader-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/loader:${PATH} \
+package-cmake-install-archive \
     -DBUILD_WSI_DIRECTFB_SUPPORT=FALSE \
     -DBUILD_WSI_WAYLAND_SUPPORT=${ENABLE_WAYLAND} \
     -DBUILD_WSI_XLIB_SUPPORT=${ENABLE_XLIB} \
@@ -34,10 +33,3 @@ package-cmake \
     -DVulkanHeaders_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DVulkanRegistry_DIR=${PACKAGE_PREFIX}/share/vulkan/registry \
     "${CMAKE_ANDROID_DEFINE_CMD}"
-
-# Build the components
-PATH=${STAGE_ROOT_BASE}/vulkan-loader-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/loader:${PATH} \
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install

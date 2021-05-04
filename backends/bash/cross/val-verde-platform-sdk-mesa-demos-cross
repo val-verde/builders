@@ -10,14 +10,7 @@ export SOURCE_PACKAGE_VERSION=8
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
-cd ${STAGE_ROOT}
-package-cmake \
+package-cmake-install-archive \
     -DGLUT_glu_LIBRARY=`package-get-path glu SHARED HOST` \
     -DGLUT_glut_LIBRARY=`package-get-path glut SHARED HOST` \
     -DGLUT_INCLUDE_DIR=${PACKAGE_PREFIX}/include
-
-# Build the components
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install

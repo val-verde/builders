@@ -11,12 +11,5 @@ export PACKAGE_INSTALL_FLAG='build'
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
-cd ${STAGE_ROOT}
-package-cmake \
+package-cmake-install-archive \
     -DOPENCL_ICD_LOADER_DISABLE_OPENCLON12=TRUE
-
-# Build the components
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install

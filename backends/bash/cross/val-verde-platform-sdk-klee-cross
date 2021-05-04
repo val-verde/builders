@@ -17,15 +17,9 @@ COMMON_LDFLAGS="\
     -L${PACKAGE_PREFIX}/lib \
     ${COMMON_LDFLAGS} \
 " \
-package-cmake \
+package-cmake-install-archive \
     -DENABLE_TCMALLOC=FALSE \
     -DLLVM_CONFIG_BINARY=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config \
     -DLLVM_LIBRARY=`package-get-path LLVM SHARED HOST` \
     -DLLVMCC=${CC} \
     -DLLVMCXX=${CXX}
-
-# Build the components
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install
