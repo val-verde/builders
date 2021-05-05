@@ -9,9 +9,8 @@ export SOURCE_PACKAGE_VERSION=2
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-# Configure the build components
-cd ${SOURCE_ROOT}
-package-meson-build \
+# Invoke one-shot template for meson/install
+package-meson-install-archive \
     -Damdgpu=true \
     -Dbuild-tests=false \
     -Dcairo-tests=false \
@@ -27,10 +26,3 @@ package-meson-build \
     -Dtegra=true \
     -Dvivante=true \
     -Dvmwgfx=true
-
-# Build the components
-cd ${STAGE_ROOT}
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install

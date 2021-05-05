@@ -1114,6 +1114,27 @@ windres = '${WINDRES}'
          "${@}"
 }
 
+function package-meson-install() {
+    package-push-directory ${STAGE_ROOT}
+        # Configure the package
+        package-meson-build \
+            "${@}"
+
+        # Build the package
+        ninja-build
+    package-pop-directory
+
+    # Install the package
+    TOOL=ninja \
+    package-install
+}
+
+function package-meson-install-archive() {
+    package-meson-install \
+        "${@}"
+    package-invoke-archive-install
+}
+
 function package-python-build() {
     SETUP_PY=${SETUP_PY:-${SOURCE_ROOT}/setup.py}
     INSTALLED_FILE_LIST=${INSTALLED_FILE_LIST:-${STAGE_ROOT}/installed-file-list.txt}

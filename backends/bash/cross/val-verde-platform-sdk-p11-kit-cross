@@ -9,22 +9,13 @@ export SOURCE_PACKAGE_VERSION=0
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-# Configure the build components
-cd ${SOURCE_ROOT}
-
+# Invoke one-shot template for meson/install
 if [ "${HOST_OS}" = "gnu" ]; then
     FEATURE_SYSTEMD=enabled
 else
     FEATURE_SYSTEMD=disabled
 fi
 
-package-meson-build \
+package-meson-install-archive \
     -Dprefix=${PACKAGE_PREFIX} \
     -Dsystemd=${FEATURE_SYSTEMD}
-
-# Build the components
-cd ${STAGE_ROOT}
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install

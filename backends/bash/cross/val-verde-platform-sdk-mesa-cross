@@ -13,9 +13,7 @@ export-compiler-environment
 
 export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
 
-# Configure the build components
-cd ${SOURCE_ROOT}
-
+# Invoke one-shot template for meson/install
 GALLIUM_DRIVERS="freedreno,iris,lima,panfrost,nouveau,radeonsi,svga,swrast,v3d,vc4,virgl,zink"
 
 CXXFLAGS="\
@@ -25,7 +23,7 @@ CXXFLAGS="\
 MESON_EXTRA_BINARIES="\
 llvm-config = '${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config'
 " \
-package-meson-build \
+package-meson-install-archive \
     -Ddri-drivers= \
     -Ddri3=true \
     -Dgallium-drivers="${GALLIUM_DRIVERS}" \
@@ -43,10 +41,3 @@ package-meson-build \
     -Dshared-swr=true \
     -Dvulkan-drivers="amd,broadcom,freedreno,intel,swrast" \
     -Dzstd=enabled
-
-# Build the components
-cd ${STAGE_ROOT}
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install

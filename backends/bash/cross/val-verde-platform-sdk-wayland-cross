@@ -9,20 +9,10 @@ export SOURCE_PACKAGE_VERSION=1
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
+# Invoke one-shot template for meson/install
 OPTIMIZATION_FLAGS="\
     -UNDEBUG \
     ${CFLAGS} \
 " \
-export-compiler-environment
-
-# Configure the build components
-cd ${SOURCE_ROOT}
-package-meson-build \
+package-meson-install-archive \
     -Ddocumentation=false
-
-# Build the components
-cd ${STAGE_ROOT}
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install
