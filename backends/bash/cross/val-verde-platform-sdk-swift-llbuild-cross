@@ -20,7 +20,6 @@ function package-install-completion-callback {
                   ${INSTALL_PREFIX}/lib/
 }
 
-DISABLE_INSTALL_DEB=TRUE \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-cmake-install-archive \
     -Ddispatch_DIR=${STAGE_ROOT_BASE}/swift-corelibs-libdispatch-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
