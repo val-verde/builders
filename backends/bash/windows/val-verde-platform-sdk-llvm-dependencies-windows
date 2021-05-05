@@ -6,278 +6,278 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # windows autoconf build
-package-invoke-builder autoconf-cross
+package-invoke-builder autoconf-cross 2
 
 # windows automake build
-package-invoke-builder automake-cross
+package-invoke-builder automake-cross 1
 
 # windows autoconf-archive build
-package-invoke-builder autoconf-archive-cross
+package-invoke-builder autoconf-archive-cross 2021
 
 # windows argp-standalone build
-package-invoke-builder argp-standalone-cross
+package-invoke-builder argp-standalone-cross 1
 
 # sys-queue-h build
-package-invoke-builder sys-queue-h-cross
+package-invoke-builder sys-queue-h-cross 1
 
 # windows libxcrypt build
-# package-invoke-builder libxcrypt-cross
+# package-invoke-builder libxcrypt-cross 4
 
 # windows zlib build
-package-invoke-builder zlib-cross
+package-invoke-builder zlib-cross 1
 
 # windows bzip2 build
-package-invoke-builder bzip2-cross
+package-invoke-builder bzip2-cross 1
 
 # windows lz4 build
-package-invoke-builder lz4-cross
+package-invoke-builder lz4-cross 1
 
 # windows xxhash build
-# package-invoke-builder xxhash-cross
+# package-invoke-builder xxhash-cross 0
 
 # windows zip build
-# package-invoke-builder zip-cross
+# package-invoke-builder zip-cross 30
 
 # windows zstd build
-package-invoke-builder zstd-cross
+package-invoke-builder zstd-cross 0
 
 # windows unzip build
-# package-invoke-builder unzip-cross
+# package-invoke-builder unzip-cross 60
 
 # windows help2man build
-package-invoke-builder help2man-cross
+package-invoke-builder help2man-cross 1
 
 # windows gperf build
-package-invoke-builder gperf-cross
+package-invoke-builder gperf-cross 3
 
 # windows libtool build
-package-invoke-builder libtool-cross
+package-invoke-builder libtool-cross 2
 
 # libatomic-ops build
-package-invoke-builder libatomic-ops-cross
+package-invoke-builder libatomic-ops-cross 7
 
 # windows libffi build
-package-invoke-builder libffi-cross
+package-invoke-builder libffi-cross 3
 
 # windows libiconv build
-package-invoke-builder libiconv-cross
+package-invoke-builder libiconv-cross 1
 
 # windows icu build
-package-invoke-builder icu4c-cross
+package-invoke-builder icu4c-cross 68
 
 # windows libunistring build
-package-invoke-builder libunistring-cross
+package-invoke-builder libunistring-cross 0
 
 # windows gc build
-package-invoke-builder gc-cross
+package-invoke-builder gc-cross 8
 
 # windows gmp build
-package-invoke-builder gmp-cross
+package-invoke-builder gmp-cross 6
 
 # windows ncurses build
-package-invoke-builder ncurses-cross
+package-invoke-builder ncurses-cross 6
 
 # windows gettext build (without libxml2 and xz)
 DISABLE_LIBXML2=TRUE \
 DISABLE_XZ=TRUE \
-package-invoke-builder gettext-cross
+package-invoke-builder gettext-cross 0
 
 # windows gzip build
 DISABLE_FORTIFY_SOURCE_LEVEL= \
-package-invoke-builder gzip-cross
+package-invoke-builder gzip-cross 1
 
 # windows xz build
-package-invoke-builder xz-cross
+package-invoke-builder xz-cross 5
 
 # windows libxml2 build
 DISABLE_PYTHON=TRUE \
-package-invoke-builder libxml2-cross
+package-invoke-builder libxml2-cross 2
 
 # windows gettext build
-package-invoke-builder gettext-cross
+package-invoke-builder gettext-cross 0
 
 # windows texinfo build
-# package-invoke-builder texinfo-cross
+# package-invoke-builder texinfo-cross 6
 
 # windows guile build
-package-invoke-builder guile-cross
+package-invoke-builder guile-cross 3
 
 # windows make build
-package-invoke-builder make-cross
+package-invoke-builder make-cross 4
 
 # windows m4 build
-package-invoke-builder m4-cross
+package-invoke-builder m4-cross 1
 
 # windows ninja build
-package-invoke-builder ninja-cross
+package-invoke-builder ninja-cross 1
 
 # windows file build
-# package-invoke-builder file-cross
+# package-invoke-builder file-cross 5
 
 # windows editline build
-package-invoke-builder wineditline-cross
+package-invoke-builder wineditline-cross 2
 
 # windows pcre build
-package-invoke-builder pcre-cross
+package-invoke-builder pcre-cross 8
 
 # windows mpfr build
-package-invoke-builder mpfr-cross
+package-invoke-builder mpfr-cross 4
 
 # windows mpc build
-package-invoke-builder mpc-cross
+package-invoke-builder mpc-cross 1
 
 # windows isl build
-# package-invoke-builder isl-cross
+# package-invoke-builder isl-cross 0
 
 # windows tcl build
-package-invoke-builder tcl-cross
+package-invoke-builder tcl-cross 8
 
 # windows sqlite build
-package-invoke-builder sqlite-cross
+package-invoke-builder sqlite-cross 3
 
 # windows c-ares build
-package-invoke-builder c-ares-cross
+package-invoke-builder c-ares-cross 1
 
 # windows openssl build
-package-invoke-builder openssl-cross
+package-invoke-builder openssl-cross 1
 
 # windows krb5 build
-# package-invoke-builder krb5-cross
+# package-invoke-builder krb5-cross 1
 
 # windows expat build
-package-invoke-builder expat-cross
+package-invoke-builder expat-cross 2
 
 # windows gawk build
-# package-invoke-builder gawk-cross
+# package-invoke-builder gawk-cross 5
 
 # windows autogen build
-# package-invoke-builder autogen-cross
+# package-invoke-builder autogen-cross 5
 
 # windows libgpg-error build
-package-invoke-builder libgpg-error-cross
+package-invoke-builder libgpg-error-cross 1
 
 # windows libgcrypt build
-# package-invoke-builder libgcrypt-cross
+# package-invoke-builder libgcrypt-cross 1
 
 # windows indent build
-# package-invoke-builder indent-cross
+# package-invoke-builder indent-cross 2
 
 # windows libarchive build
-package-invoke-builder libarchive-cross
+package-invoke-builder libarchive-cross 3
 
 # windows libssh build
-package-invoke-builder libssh-cross
+package-invoke-builder libssh-cross 0
 
 # windows libssh2 build
-package-invoke-builder libssh2-cross
+package-invoke-builder libssh2-cross 1
 
 # windows curl build
-package-invoke-builder curl-cross
+package-invoke-builder curl-cross 7
 
 # windows apple-mig build
 package-invoke-builder apple-mig-cross
 
 # windows libuv build
-package-invoke-builder libuv-cross
+package-invoke-builder libuv-cross 1
 
 # windows grep build
-package-invoke-builder grep-cross
+package-invoke-builder grep-cross 3
 
 # windows sed build
-# package-invoke-builder sed-cross
+# package-invoke-builder sed-cross 4
 
 # windows bison build
-package-invoke-builder bison-cross
+package-invoke-builder bison-cross 3
 
 # flex build
 # package-invoke-builder flex-cross
 
 # jq build
-package-invoke-builder jq-cross
+package-invoke-builder jq-cross 1
 
 # json-c build
 package-invoke-builder json-c-cross
 
 # which build
-# package-invoke-builder which-cross
+# package-invoke-builder which-cross 2
 
 # windows findutils build
-# package-invoke-builder findutils-cross
+# package-invoke-builder findutils-cross 4
 
 # less build
-# package-invoke-builder less-cross
+# package-invoke-builder less-cross 590
 
 # windows lua build
-package-invoke-builder lua-cross
+package-invoke-builder lua-cross 5
 
 # windows wget build
-package-invoke-builder wget-cross
+package-invoke-builder wget-cross 1
 
 # windows unbound build
 package-invoke-builder unbound-cross
 
 # windows libmicrohttpd build
-package-invoke-builder libmicrohttpd-cross
+package-invoke-builder libmicrohttpd-cross 0
 
 # windows glib build
-package-invoke-builder glib-cross
+package-invoke-builder glib-cross 1
 
 # windows gobject-introspection build
-# package-invoke-builder gobject-introspection-cross
+# package-invoke-builder gobject-introspection-cross 1
 
 # windows pkg-config build
-package-invoke-builder pkg-config-cross
+package-invoke-builder pkg-config-cross 0
 
 # windows graphics server build
 package-invoke-builder graphics-server-cross
 
 # graphviz build
-package-invoke-builder graphviz-cross
+package-invoke-builder graphviz-cross 2
 
 # cups build
-# package-invoke-builder cups-cross
+# package-invoke-builder cups-cross 2
 
 # windows openjdk build
-# package-invoke-builder openjdk-cross
+# package-invoke-builder openjdk-cross 17
 
 # windows jansi build
-package-invoke-builder jansi-cross
+package-invoke-builder jansi-cross 2
 
 # windows maven build
-package-invoke-builder maven-cross
+package-invoke-builder maven-cross 3
 
 # windows z3 build
-package-invoke-builder z3-cross
+package-invoke-builder z3-cross 4
 
 # windows cmake build
-package-invoke-builder cmake-cross
+package-invoke-builder cmake-cross 3
 
 # windows protobuf build
-package-invoke-builder protobuf-cross
+package-invoke-builder protobuf-cross 3
 
 # windows boost build
-package-invoke-builder boost-cross
+package-invoke-builder boost-cross 1
 
 # windows cereal build
-package-invoke-builder cereal-cross
+package-invoke-builder cereal-cross 1
 
 # windows android patch elf build
-# package-invoke-builder android-patch-elf-cross
+# package-invoke-builder android-patch-elf-cross 1
 
 # windows jwasm build
-package-invoke-builder jwasm
+package-invoke-builder jwasm 2
 
 # re2c build
-package-invoke-builder re2c-cross
+package-invoke-builder re2c-cross 2
 
 # alive2 build
-package-invoke-builder alive2-cross
+package-invoke-builder alive2-cross 1
 
 # hiredis build
-package-invoke-builder hiredis-cross
+package-invoke-builder hiredis-cross 1
 
 # ccache build
-package-invoke-builder ccache-cross
+package-invoke-builder ccache-cross 4
 
 # distcc build
-# package-invoke-builder distcc-cross
+# package-invoke-builder distcc-cross 3
