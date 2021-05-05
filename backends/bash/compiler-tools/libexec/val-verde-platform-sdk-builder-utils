@@ -733,6 +733,7 @@ function package-cmake-install() {
     package-pop-directory
 
     # Install the package
+    PACKAGE_INSTALL_STAGE_ROOT=${CMAKE_STAGE_ROOT} \
     TOOL=ninja \
     package-install
 }
@@ -788,6 +789,7 @@ function package-configure-install-staged() {
     package-pop-directory
 
     # Install the package
+    PACKAGE_INSTALL_STAGE_ROOT=${CONFIGURE_BUILD_ROOT} \
     TOOL=make \
     package-install
 }
@@ -798,9 +800,9 @@ function package-configure-install-archive() {
 }
 
 function package-install() {
-    CONFIGURE_BUILD_ROOT=${CONFIGURE_BUILD_ROOT:-${STAGE_ROOT}}
+    PACKAGE_INSTALL_STAGE_ROOT=${PACKAGE_INSTALL_STAGE_ROOT:-${STAGE_ROOT}}
 
-    package-push-directory ${CONFIGURE_BUILD_ROOT}
+    package-push-directory ${PACKAGE_INSTALL_STAGE_ROOT}
         # Install package
         tool-install
 
@@ -1115,7 +1117,9 @@ windres = '${WINDRES}'
 }
 
 function package-meson-install() {
-    package-push-directory ${STAGE_ROOT}
+    MESON_STAGE_ROOT=${MESON_STAGE_ROOT:-${STAGE_ROOT}}
+
+    package-push-directory ${MESON_STAGE_ROOT}
         # Configure the package
         package-meson-build \
             "${@}"
@@ -1125,6 +1129,7 @@ function package-meson-install() {
     package-pop-directory
 
     # Install the package
+    PACKAGE_INSTALL_STAGE_ROOT=${MESON_STAGE_ROOT} \
     TOOL=ninja \
     package-install
 }

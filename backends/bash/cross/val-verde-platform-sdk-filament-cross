@@ -69,6 +69,7 @@ COMMON_CFLAGS="\
     -DSTRSAFE_NO_DEPRECATE \
     ${COMMON_CFLAGS} \
 " \
+CMAKE_CONFIGURE_ROOT=${STAGE_ROOT} \
 CXX_STANDARD=17 \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-cmake-install-archive \
