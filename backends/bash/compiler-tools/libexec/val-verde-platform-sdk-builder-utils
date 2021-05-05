@@ -261,6 +261,7 @@ function export-compiler-environment() {
 
     if [ "${FORTIFY_SOURCE_LEVEL}" != "0" ]; then
         FORTIFY_CFLAGS="-D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL}"
+        FORTIFY_SWIFTCFLAGS="-Xcc -D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL}"
     fi
 
     if [ -z "${DISABLE_FPIC}" ] &&
@@ -277,7 +278,7 @@ function export-compiler-environment() {
         "
         GOOS=android
         SWIFTCFLAGS="\
-            -Xcc ${FORTIFY_CFLAGS} \
+            ${FORTIFY_SWIFTCFLAGS} \
             ${SWIFTCFLAGS} \
         "
     elif [ "${HOST_OS}" = "gnu" ]; then
@@ -308,7 +309,7 @@ function export-compiler-environment() {
         GOOS=linux
         SWIFTCFLAGS="\
             -Xcc -D_ALL_SOURCE=1 \
-            -Xcc ${FORTIFY_CFLAGS} \
+            ${FORTIFY_SWIFTCFLAGS} \
             ${SWIFTCFLAGS} \
         "
     elif [ "${HOST_OS}" = "mingw32" ]; then
@@ -319,7 +320,7 @@ function export-compiler-environment() {
         "
         GOOS=windows
         SWIFTCFLAGS="\
-            -Xcc ${FORTIFY_CFLAGS} \
+            ${FORTIFY_SWIFTCFLAGS} \
             ${SWIFTCFLAGS} \
         "
     fi
