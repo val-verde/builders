@@ -12,13 +12,13 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 package-invoke-builder libcxx-bootstrap 13
 
 # llvm dependencies
-category-invoke-builder llvm-dependencies-darwin
+package-invoke-category-builder llvm-dependencies-darwin
 
 # swift tools build
-package-invoke-builder swift-tools-darwin
+package-invoke-category-builder swift-tools-darwin
 
 # swift sdk build
-# category-invoke-builder swift-sdk-cross
+# package-invoke-category-builder swift-sdk-darwin
 
 # go build
 package-invoke-builder go-cross 1
@@ -27,14 +27,14 @@ package-invoke-builder go-cross 1
 package-invoke-builder ruby-cross 3
 
 # graphics sdk build
-category-invoke-builder graphics-sdk-cross
+package-invoke-category-builder graphics-sdk-cross
 
 # virtualization sdk build
-category-invoke-builder virtualization-sdk-cross
+package-invoke-category-builder virtualization-sdk-cross
 
 # node + sdk build
 # package-invoke-builder node-cross 16
 # package-invoke-builder npm-yarn-cross 1
 
 # blockchain sdk build
-category-invoke-builder blockchain-sdk-cross
+package-invoke-category-builder blockchain-sdk-cross

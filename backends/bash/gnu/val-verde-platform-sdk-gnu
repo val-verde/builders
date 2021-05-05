@@ -8,7 +8,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # llvm dependencies
 ECHO=/usr/bin/echo \
-category-invoke-builder llvm-dependencies-gnu
+package-invoke-category-builder llvm-dependencies-gnu
 
 # llvm build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
@@ -30,7 +30,7 @@ ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-lldb 5
 
 # swift sdk build
-category-invoke-builder swift-sdk-cross
+package-invoke-category-builder swift-sdk-cross
 
 # go build
 package-invoke-builder go-cross 1
@@ -39,10 +39,10 @@ package-invoke-builder go-cross 1
 package-invoke-builder ruby-cross 3
 
 # graphics sdk build
-category-invoke-builder graphics-sdk-cross
+package-invoke-category-builder graphics-sdk-cross
 
 # virtualization sdk build
-category-invoke-builder virtualization-sdk-cross
+package-invoke-category-builder virtualization-sdk-cross
 
 # node + sdk build
 package-invoke-builder node-cross 16
@@ -55,4 +55,4 @@ package-invoke-builder yarn-yautja-server-cross 1
 package-invoke-builder wine-cross 6
 
 # blockchain sdk build
-category-invoke-builder blockchain-sdk-cross
+package-invoke-category-builder blockchain-sdk-cross

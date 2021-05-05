@@ -23,13 +23,13 @@ ENABLE_MUSL_LIBC=TRUE \
 package-invoke-builder libcxx-bootstrap 13
 
 # llvm dependencies
-category-invoke-builder llvm-dependencies-musl
+package-invoke-category-builder llvm-dependencies-musl
 
 # swift tools build
-category-invoke-builder swift-tools-musl
+package-invoke-category-builder swift-tools-musl
 
 # swift sdk build
-category-invoke-builder swift-sdk-cross
+package-invoke-category-builder swift-sdk-musl
 
 # go build
 package-invoke-builder go-cross 1
@@ -38,10 +38,10 @@ package-invoke-builder go-cross 1
 package-invoke-builder ruby-cross 3
 
 # graphics sdk build
-category-invoke-builder graphics-sdk-cross
+package-invoke-category-builder graphics-sdk-cross
 
 # virtualization sdk build
-category-invoke-builder virtualization-sdk-cross
+package-invoke-category-builder virtualization-sdk-cross
 
 # node + sdk build
 package-invoke-builder node-cross 16
@@ -51,4 +51,4 @@ package-invoke-builder npm-yarn-cross 1
 package-invoke-builder wine-cross 6
 
 # blockchain sdk build
-category-invoke-builder blockchain-sdk-cross
+package-invoke-category-builder blockchain-sdk-cross

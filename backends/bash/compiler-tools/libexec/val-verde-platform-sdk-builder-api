@@ -6,7 +6,7 @@ function get-common-variables() {
     source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
 }
 
-function category-invoke-builder() {
+function package-invoke-category-builder() {
     get-common-variables
     ${ECHO} -e "Builder Category Invocation Started"
     ${BASH} ${VAL_VERDE_GH_TEAM}-platform-sdk-${@}
