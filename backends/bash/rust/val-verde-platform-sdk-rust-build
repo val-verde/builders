@@ -6,4 +6,4 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # rust build
-package-invoke-builder rust
+package-invoke-builder rust 1
