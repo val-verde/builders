@@ -518,7 +518,7 @@ function tool-build() {
 
 function tool-install() {
     DESTDIR=${DESTDIR:-${INSTALL_ROOT}}
-    TOOL_INSTALL_INVOCATION=${TOOL_INSTALL_INVOCATION:-tool-install-default-invocation}
+    TOOL_INSTALL=${TOOL_INSTALL_INVOCATION:-tool-install-default-invocation}
 
     ${ECHO}
     ${ECHO} -e "    Installation Invocation"
@@ -534,7 +534,9 @@ function tool-install() {
         export DESTDIR=${DESTDIR}
     fi
 
-    ${TOOL_INSTALL_INVOCATION}
+    TOOL_INSTALL_INVOCATION= \
+    ${TOOL_INSTALL} "${@}"
+
     ${ECHO} -e "        Time Completed: \e[4m$(date)\e[0m"
 }
 
@@ -719,8 +721,10 @@ function package-cmake-invocation() {
 }
 
 function package-cmake-install() {
+    CMAKE_STAGE_ROOT=${CMAKE_STAGE_ROOT:-${STAGE_ROOT}}
+    
     # Configure the build components
-    package-push-directory ${STAGE_ROOT}
+    package-push-directory ${CMAKE_STAGE_ROOT}
         package-cmake \
             "${@}"
 

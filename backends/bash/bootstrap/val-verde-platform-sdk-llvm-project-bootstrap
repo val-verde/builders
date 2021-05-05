@@ -14,8 +14,30 @@ export DEPENDS="libz3-4 (>= 4.8.7-4build1), libelf1 (>= 0.176-1.1build1)"
 CUDA_GPU_PRIMARY_ARCH=61
 CUDA_GPU_SECONDARY_ARCH=35
 
-# Configure the build components
-cd ${STAGE_ROOT}
+# Invoke one-shot template for cmake/install
+function package-install-completion-callback() {
+    ${LN} -sf \
+          lld \
+          ${STAGE_ROOT}/bin/ld64.lld
+    package-rsync -ax \
+                  ${STAGE_ROOT}/bin/llvm-as* \
+                  ${STAGE_ROOT}/bin/llvm-dlltool* \
+                  ${STAGE_ROOT}/bin/llvm-install-name-tool* \
+                  ${STAGE_ROOT}/bin/llvm-link* \
+                  ${STAGE_ROOT}/bin/llvm-lipo* \
+                  ${STAGE_ROOT}/bin/llvm-mt* \
+                  ${STAGE_ROOT}/bin/llvm-pdbutil* \
+                  ${STAGE_ROOT}/bin/llvm-readelf* \
+                  ${STAGE_ROOT}/bin/llvm-readobj* \
+                  ${INSTALL_PREFIX}/bin/
+
+    # remove libcxx as it is superceded by llvm-project.
+    HOST_PROCESSOR=`${ECHO} ${HOST_PROCESSOR} | ${TR} _ -`
+    PACKAGES_TO_MANAGE=( 'libcxx-13' 'HOST' )
+
+    PACKAGE_ACTION=UNINSTALL \
+    deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
+}
 
 if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
     COMPILER_RT_HAS_FVISIBILITY_HIDDEN_FLAG=FALSE
@@ -31,7 +53,8 @@ COMMON_LDFLAGS="\
     ${COMMON_LDFLAGS} \
 " \
 CXX_STANDARD=17 \
-package-cmake \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+package-cmake-install-archive \
     -DBUILD_SHARED_LIBS=FALSE \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
     -DCLANG_DEFAULT_RTLIB=compiler-rt \
@@ -179,30 +202,3 @@ package-cmake \
     -DZ3_LIBRARIES=${SYSROOT}/usr/lib/${HOST_TRIPLE}/${SHARED_LIBRARY_PREFIX}z3${SHARED_LIBRARY_SUFFIX} \
     -DZ3_RETURNCODE=0 \
     -DZ3_RETURNCODE__TRYRUN_OUTPUT=4.8.10
-
-# Build the components
-ninja-install
-
-${LN} -sf lld \
-          ${STAGE_ROOT}/bin/ld64.lld
-package-rsync -ax \
-              ${STAGE_ROOT}/bin/llvm-as* \
-              ${STAGE_ROOT}/bin/llvm-dlltool* \
-              ${STAGE_ROOT}/bin/llvm-install-name-tool* \
-              ${STAGE_ROOT}/bin/llvm-link* \
-              ${STAGE_ROOT}/bin/llvm-lipo* \
-              ${STAGE_ROOT}/bin/llvm-mt* \
-              ${STAGE_ROOT}/bin/llvm-pdbutil* \
-              ${STAGE_ROOT}/bin/llvm-readelf* \
-              ${STAGE_ROOT}/bin/llvm-readobj* \
-              ${INSTALL_PREFIX}/bin/
-
-# remove libcxx, libcxxabi and libunwind as they are superceded by llvm-project.
-HOST_PROCESSOR=`${ECHO} ${HOST_PROCESSOR} | ${TR} _ -`
-PACKAGES_TO_MANAGE=( 'libcxx-13' 'HOST' )
-
-PACKAGE_ACTION=UNINSTALL \
-deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
-
-# Build and install the package
-package-invoke-archive-install

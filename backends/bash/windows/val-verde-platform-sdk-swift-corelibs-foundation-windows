@@ -17,27 +17,28 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-swift-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Configure the build components
-cd ${STAGE_ROOT}
-CFLAGS="\
+# Invoke one-shot template for cmake/install
+function package-install-completion-callback() {
+    ${MV} ${INSTALL_PREFIX}/lib/swift/windows/*${STATIC_LIBRARY_SUFFIX} \
+          ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
+}
+
+COMMON_CFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
     -Wno-implicit-int-float-conversion \
     -Wno-nonnull \
     -Wno-pointer-sign \
     -Wno-switch \
-    ${CFLAGS} \
+    ${COMMON_CFLAGS} \
 " \
-CXXFLAGS="\
-    -fms-compatibility-version=19.2 \
-    -fms-extensions \
-    ${CXXFLAGS} \
-" \
+DISABLE_INSTALL_DEB=TRUE \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 SWIFTCFLAGS="\
     -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
     ${SWIFTCFLAGS} \
 " \
-package-cmake \
+package-cmake-install-archive \
     -Ddispatch_DIR=${STAGE_ROOT_BASE}/swift-corelibs-libdispatch-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DICU_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DICU_LIBRARY=`package-get-path icudataswift SHARED HOST` \
@@ -50,13 +51,3 @@ package-cmake \
     -DOPENSSL_CRYPTO_LIBRARY=`package-get-path crypto SHARED HOST` \
     -DOPENSSL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DOPENSSL_SSL_LIBRARY=`package-get-path ssl SHARED HOST`
-
-# Build the components
-ninja-install
-
-${MV} ${INSTALL_PREFIX}/lib/swift/windows/*${STATIC_LIBRARY_SUFFIX} \
-      ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
-
-# Build and install the package
-DISABLE_INSTALL_DEB=TRUE \
-package-invoke-archive-install

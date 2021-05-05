@@ -23,14 +23,21 @@ export LLVM_SOURCE_ROOT=${SOURCE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}
 export LLVM_STAGE_ROOT=${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOST_OS_API_LEVEL}-${BUILD_ARCH}
 USE_NEWPM=${USE_NEWPM:-TRUE}
 
-# Source deb packaging helper functions
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
-
-# Configure the build components
-cd ${STAGE_ROOT}
+# Invoke one-shot template for cmake/install
+function package-install-completion-callback() {
+    COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
+    RPATH_COMPONENTS="\
+        ${INSTALL_PREFIX}/lib/swift/${HOST_KERNEL}/${SHARED_LIBRARY_PREFIX}*${SHARED_LIBRARY_SUFFIX} \
+    " \
+    rpath-fixup
+}
 
 CXX_STANDARD=17 \
-package-cmake-invocation \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+RPATH_COMPONENTS="\
+    ${INSTALL_PREFIX}/bin/swift \
+" \
+package-cmake-install-archive \
     -DClang_DIR=${LLVM_STAGE_ROOT}/lib/cmake/clang \
     -DICU_I18N_INCLUDE_DIRS=${BUILD_PACKAGE_PREFIX}/include \
     -DICU_I18N_LIBRARIES=`package-get-path icui18nswift SHARED HOST` \
@@ -89,21 +96,3 @@ package-cmake-invocation \
     -DSWIFT_VENDOR="${PACKAGE_BASE_NAME}" \
     -DUUID_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
     -DUUID_LIBRARIES=`package-get-path uuid SHARED HOST`
-
-# Build the components
-ninja-install
-
-# RPATH fixups
-RPATH_COMPONENTS="\
-    ${INSTALL_PREFIX}/bin/swift \
-" \
-rpath-fixup
-
-RPATH_COMPONENTS="\
-    ${INSTALL_PREFIX}/lib/swift/${HOST_KERNEL}/${SHARED_LIBRARY_PREFIX}*${SHARED_LIBRARY_SUFFIX} \
-" \
-COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
-rpath-fixup
-
-# Build and install the package
-package-invoke-archive-install

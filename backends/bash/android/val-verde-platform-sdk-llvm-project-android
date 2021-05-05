@@ -24,8 +24,44 @@ CUDA_GPU_PRIMARY_ARCH=61
 CUDA_GPU_SECONDARY_ARCH=35
 EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;libclc;mlir;openmp;parallel-libs;polly;pstl"}
 
-# Configure the build components
-cd ${STAGE_ROOT}
+# Invoke one-shot template for cmake/install
+function package-install-completion-callback() {
+    ${LN} -sf \
+          lld \
+          ${STAGE_ROOT}/bin/ld64.lld
+    package-rsync -ax \
+                  ${STAGE_ROOT}/bin/llvm-as* \
+                  ${STAGE_ROOT}/bin/llvm-dlltool* \
+                  ${STAGE_ROOT}/bin/llvm-install-name-tool* \
+                  ${STAGE_ROOT}/bin/llvm-link* \
+                  ${STAGE_ROOT}/bin/llvm-lipo* \
+                  ${STAGE_ROOT}/bin/llvm-mt* \
+                  ${STAGE_ROOT}/bin/llvm-pdbutil* \
+                  ${STAGE_ROOT}/bin/llvm-readelf* \
+                  ${STAGE_ROOT}/bin/llvm-readobj* \
+                  ${INSTALL_PREFIX}/bin/
+
+    # remove libcxx, as it is superceded by llvm-project.
+    HOST_PROCESSOR=`${ECHO} ${HOST_PROCESSOR} | ${TR} _ -`
+    PACKAGES_TO_MANAGE=( 'libcxx-13' 'HOST' )
+
+    PACKAGE_ACTION=UNINSTALL \
+    deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
+}
+
+function tool-install-invocation() {
+    INSTALL_TARGET="tools/clang/install" \
+    tool-install
+
+    INSTALL_TARGET="projects/compiler-rt/install tools/lld/install tools/mlir/install" \
+    tool-install
+
+    NUM_PROCESSORS=`awk '/MemTotal/ { printf "%d", $2/(1024*1024*5) }' /proc/meminfo` \
+    INSTALL_TARGET=tools/flang/install \
+    tool-install
+
+    tool-install
+}
 
 if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
     COMPILER_RT_HAS_FVISIBILITY_HIDDEN_FLAG=FALSE
@@ -37,7 +73,10 @@ export PATH=${PATH}:${LLVM_NATIVE_STAGE_ROOT}/bin
 
 CMAKE_CONFIGURE_ROOT=${SOURCE_ROOT}/llvm \
 CXX_STANDARD=17 \
-package-cmake \
+DISABLE_TOOL_BUILD=TRUE \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+TOOL_INSTALL_INVOCATION=tool-install-invocation \
+package-cmake-install-archive \
     -DBUILD_SHARED_LIBS=FALSE \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
     -DCLANG_DEFAULT_RTLIB=compiler-rt \
@@ -194,40 +233,3 @@ package-cmake \
     -DZ3_RETURNCODE__TRYRUN_OUTPUT=4.8.8 \
     -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DZLIB_LIBRARY_RELEASE=`package-get-path z SHARED HOST`
-
-# Build the components
-INSTALL_TARGET="tools/clang/install" \
-ninja-install
-
-INSTALL_TARGET="projects/compiler-rt/install tools/lld/install tools/mlir/install" \
-ninja-install
-
-NUM_PROCESSORS=`awk '/MemTotal/ { printf "%d", $2/(1024*1024*5) }' /proc/meminfo` \
-INSTALL_TARGET=tools/flang/install \
-ninja-install
-
-ninja-install
-
-${LN} -sf lld \
-          ${STAGE_ROOT}/bin/ld64.lld
-package-rsync -ax \
-              ${STAGE_ROOT}/bin/llvm-as* \
-              ${STAGE_ROOT}/bin/llvm-dlltool* \
-              ${STAGE_ROOT}/bin/llvm-install-name-tool* \
-              ${STAGE_ROOT}/bin/llvm-link* \
-              ${STAGE_ROOT}/bin/llvm-lipo* \
-              ${STAGE_ROOT}/bin/llvm-mt* \
-              ${STAGE_ROOT}/bin/llvm-pdbutil* \
-              ${STAGE_ROOT}/bin/llvm-readelf* \
-              ${STAGE_ROOT}/bin/llvm-readobj* \
-              ${INSTALL_PREFIX}/bin/
-
-# remove libcxx, libcxxabi and libunwind as they are superceded by llvm-project.
-HOST_PROCESSOR=`${ECHO} ${HOST_PROCESSOR} | ${TR} _ -`
-PACKAGES_TO_MANAGE=( 'libcxx-13' 'HOST' )
-
-PACKAGE_ACTION=UNINSTALL \
-deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
-
-# Build and install the package
-package-invoke-archive-install

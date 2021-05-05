@@ -29,15 +29,8 @@ if [ "${HOST_OS}" != "gnu" ]; then
     "
 fi
 
-${MKDIR} -p ${STAGE_ROOT}/build
+CMAKE_STAGE_ROOT=${STAGE_ROOT}/build
+${MKDIR} -p ${CMAKE_STAGE_ROOT}
 
-cd ${STAGE_ROOT}/build
-package-cmake \
-    "${PLATFORM_CMD}" \
-    ${STAGE_ROOT}
-
-# Build the components
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install
+package-cmake-install-archive \
+    "${PLATFORM_CMD}"

@@ -25,11 +25,28 @@ export LLVM_STAGE_ROOT=${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOS
 USE_NEWPM=${USE_NEWPM:-TRUE}
 export SOURCE_ROOT=${SOURCE_ROOT}-android
 
-# Configure the build components
-cd ${STAGE_ROOT}
+# Invoke one-shot template for cmake/install
+function package-install-completion-callback() {
+    ${SED} -i \
+           's/\/usr/\.\.\/\.\.\/\.\.\/\.\./g' \
+           ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/${HOST_PROCESSOR}/glibc.modulemap
+
+    ${MV} ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/*.swift* \
+          ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/${HOST_PROCESSOR}/
+
+    COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
+    RPATH_COMPONENTS="\
+        ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/${SHARED_LIBRARY_PREFIX}*${SHARED_LIBRARY_SUFFIX} \
+    " \
+    rpath-fixup
+}
 
 CXX_STANDARD=17 \
-package-cmake-invocation \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+RPATH_COMPONENTS="\
+    ${INSTALL_PREFIX}/bin/swift \
+" \
+package-cmake-install-archive \
     -DClang_DIR=${LLVM_STAGE_ROOT}/lib/cmake/clang \
     -DICU_I18N_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
     -DICU_I18N_LIBRARIES=`package-get-path icui18nswift SHARED HOST` \
@@ -99,27 +116,3 @@ package-cmake-invocation \
     -DUSE_POSIX_SEM=1 \
     -DUUID_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
     -DUUID_LIBRARIES=`package-get-path uuid SHARED HOST`
-
-# Package the components
-ninja-install
-
-${SED} -i 's/\/usr/\.\.\/\.\.\/\.\.\/\.\./g' \
-       ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/${HOST_PROCESSOR}/glibc.modulemap
-
-${MV} ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/*.swift* \
-      ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/${HOST_PROCESSOR}/
-
-# RPATH fixups
-RPATH_COMPONENTS="\
-    ${INSTALL_PREFIX}/bin/swift \
-" \
-rpath-fixup
-
-RPATH_COMPONENTS="\
-    ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/${SHARED_LIBRARY_PREFIX}*${SHARED_LIBRARY_SUFFIX} \
-" \
-COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
-rpath-fixup
-
-# Build and install the package
-package-invoke-archive-install

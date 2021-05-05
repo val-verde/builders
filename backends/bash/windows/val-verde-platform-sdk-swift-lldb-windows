@@ -25,16 +25,10 @@ export SWIFT_STAGE_ROOT=${STAGE_ROOT_BASE}/swift-${SOURCE_PACKAGE_VERSION}-${HOS
 export SWIFT_NATIVE_STAGE_ROOT=${SWIFT_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/swift-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
 export SWIFT_STAGE_ROOT=${STAGE_ROOT_BASE}/swift-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
-# Configure the build components
-
-cd ${STAGE_ROOT}
-CFLAGS="\
+# Invoke one-shot template for cmake/install
+COMMON_CFLAGS="\
     -Wno-register \
-    ${CFLAGS} \
-" \
-CXXFLAGS="\
-    -Wno-register \
-    ${CXXFLAGS} \
+    ${COMMON_CFLAGS} \
 " \
 CXX_STANDARD=17 \
 LDFLAGS="\

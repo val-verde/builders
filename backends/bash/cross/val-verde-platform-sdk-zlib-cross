@@ -2,7 +2,6 @@
 
 set -e
 
-
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=zlib
 export SOURCE_PACKAGE_VERSION=1
@@ -10,15 +9,11 @@ export SOURCE_PACKAGE_VERSION=1
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-# Configure the build components
-cd ${STAGE_ROOT}
-package-cmake
+# Invoke one-shot template for cmake/install
+function package-install-completion-callback() {
+    ${MV} ${INSTALL_PREFIX}/share/pkgconfig \
+          ${INSTALL_PREFIX}/lib/pkgconfig
+}
 
-# Build the components
-ninja-install
-
-${MV} ${INSTALL_PREFIX}/share/pkgconfig \
-      ${INSTALL_PREFIX}/lib/pkgconfig
-
-# Build and install the package
-package-invoke-archive-install
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+package-cmake-install-archive

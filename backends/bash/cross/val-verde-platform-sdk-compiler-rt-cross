@@ -14,7 +14,44 @@ export INSTALL_PREFIX=${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}
 export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
 export SOURCE_ROOT=${SOURCE_ROOT_BASE}/llvm-project-${SOURCE_PACKAGE_VERSION}/${SOURCE_PACKAGE_NAME}
 
-# Configure the build components
+# Invoke one-shot template for cmake/install
+function package-install-completion-callback() {
+    if [ "${HOST_OS}" = "android" ]; then
+        SDK_PLATFORM_DIR=linux
+        DST_SDK_PLATFORM_DIR=android
+    elif [ "${HOST_OS}" = "gnu" ]; then
+        SDK_PLATFORM_DIR=linux
+    elif [ "${HOST_OS}" = "macos" ]; then
+        SDK_PLATFORM_DIR=darwin
+    elif [ "${HOST_OS}" = "mingw32" ]; then
+        SDK_PLATFORM_DIR=windows
+    elif [ "${HOST_OS}" = "musl" ]; then
+        SDK_PLATFORM_DIR=linux
+        DST_SDK_PLATFORM_DIR=musl
+    elif [ "${HOST_OS}" = "wasi" ]; then
+        SDK_PLATFORM_DIR=fuchsia
+        DST_SDK_PLATFORM_DIR=wasi
+    else
+        SDK_PLATFORM_DIR=${HOST_OS}
+    fi
+
+    DST_SDK_PLATFORM_DIR=${DST_SDK_PLATFORM_DIR:-${SDK_PLATFORM_DIR}}
+    CLANG_RT_SOURCE_INSTALL_PREFIX=${INSTALL_PREFIX}/lib/${SDK_PLATFORM_DIR}
+    CLANG_RT_INSTALL_PREFIX=${INSTALL_PREFIX}/lib/clang/13.0.0/lib/${DST_SDK_PLATFORM_DIR}
+    ${MKDIR} -p ${CLANG_RT_INSTALL_PREFIX}
+
+    if [ "${HOST_OS}" = "linux" ] ||
+    [ "${HOST_OS}" = "musl" ]; then
+        ${MV} ${CLANG_RT_SOURCE_INSTALL_PREFIX}/clang_rt.crtbegin-${HOST_PROCESSOR}.o \
+              ${CLANG_RT_INSTALL_PREFIX}/
+        ${MV} ${CLANG_RT_SOURCE_INSTALL_PREFIX}/clang_rt.crtend-${HOST_PROCESSOR}.o \
+              ${CLANG_RT_INSTALL_PREFIX}/
+    fi
+
+    ${MV} ${CLANG_RT_SOURCE_INSTALL_PREFIX}/${CLANG_RT_LIB} \
+          ${CLANG_RT_INSTALL_PREFIX}/${DST_CLANG_RT_LIB}
+}
+
 if [ "${HOST_OS}" = "macos" ]; then
     CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
 elif [ "${HOST_OS}" = "mingw32" ]; then
@@ -45,16 +82,16 @@ fi
 SIZEOF_VOID_P=8
 
 if [ "${HOST_PROCESSOR}" = "wasm32" ]; then
-        SIZEOF_VOID_P=4
+    SIZEOF_VOID_P=4
 fi
 
-cd ${STAGE_ROOT}
 CMAKE_INSTALL_PREFIX=${BUILD_PACKAGE_PREFIX} \
 COMMON_CFLAGS="\
     -nostdlib \
     ${COMMON_CFLAGS} \
 " \
-package-cmake \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+package-cmake-install-archive \
     -DCMAKE_C_COMPILER_WORKS=TRUE \
     -DCMAKE_CXX_COMPILER_WORKS=TRUE \
     -DCMAKE_LIPO=${BINDIR}/llvm-lipo \
@@ -71,44 +108,3 @@ package-cmake \
     -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
     -DLLVM_CONFIG_PATH=${LLVM_CONFIG_PATH} \
     -DPython3_EXECUTABLE=${PYTHON}
-
-# Build the components
-ninja-install
-
-if [ "${HOST_OS}" = "android" ]; then
-    SDK_PLATFORM_DIR=linux
-    DST_SDK_PLATFORM_DIR=android
-elif [ "${HOST_OS}" = "gnu" ]; then
-    SDK_PLATFORM_DIR=linux
-elif [ "${HOST_OS}" = "macos" ]; then
-    SDK_PLATFORM_DIR=darwin
-elif [ "${HOST_OS}" = "mingw32" ]; then
-    SDK_PLATFORM_DIR=windows
-elif [ "${HOST_OS}" = "musl" ]; then
-    SDK_PLATFORM_DIR=linux
-    DST_SDK_PLATFORM_DIR=musl
-elif [ "${HOST_OS}" = "wasi" ]; then
-    SDK_PLATFORM_DIR=fuchsia
-    DST_SDK_PLATFORM_DIR=wasi
-else
-    SDK_PLATFORM_DIR=${HOST_OS}
-fi
-
-DST_SDK_PLATFORM_DIR=${DST_SDK_PLATFORM_DIR:-${SDK_PLATFORM_DIR}}
-CLANG_RT_SOURCE_INSTALL_PREFIX=${INSTALL_PREFIX}/lib/${SDK_PLATFORM_DIR}
-CLANG_RT_INSTALL_PREFIX=${INSTALL_PREFIX}/lib/clang/13.0.0/lib/${DST_SDK_PLATFORM_DIR}
-${MKDIR} -p ${CLANG_RT_INSTALL_PREFIX}
-
-if [ "${HOST_OS}" = "linux" ] ||
-   [ "${HOST_OS}" = "musl" ]; then
-    ${MV} ${CLANG_RT_SOURCE_INSTALL_PREFIX}/clang_rt.crtbegin-${HOST_PROCESSOR}.o \
-          ${CLANG_RT_INSTALL_PREFIX}/
-    ${MV} ${CLANG_RT_SOURCE_INSTALL_PREFIX}/clang_rt.crtend-${HOST_PROCESSOR}.o \
-          ${CLANG_RT_INSTALL_PREFIX}/
-fi
-
-${MV} ${CLANG_RT_SOURCE_INSTALL_PREFIX}/${CLANG_RT_LIB} \
-      ${CLANG_RT_INSTALL_PREFIX}/${DST_CLANG_RT_LIB}
-
-# Build and install the package
-package-invoke-archive-install

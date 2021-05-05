@@ -14,7 +14,7 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-zlib-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Configure the build components
+# Invoke one-shot template for cmake/install
 package-cmake-install-archive \
     -DBUILD_EXAMPLES=FALSE \
     -DBUILD_SHARED_LIBS=TRUE \

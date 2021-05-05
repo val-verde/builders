@@ -11,24 +11,20 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export DEPENDS="${PACKAGE_BASE_NAME}-ncurses-6-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 
-# Configure the build components
-cd ${STAGE_ROOT}
-CFLAGS="\
+# Invoke one-shot template for cmake/install
+function package-install-completion-callback() {
+    ${MV} ${INSTALL_ROOT}${SOURCE_ROOT}/src/bin \
+        ${INSTALL_ROOT}${SOURCE_ROOT}/src/include \
+        ${INSTALL_ROOT}${SOURCE_ROOT}/src/lib \
+        ${INSTALL_PREFIX}/
+    ${RM} -rf ${INSTALL_ROOT}${SOURCE_ROOT_BASE}
+}
+
+COMMON_CFLAGS="\
      -I${SOURCE_ROOT} \
      -I${SOURCE_ROOT}/src \
-     ${CFLAGS} \
+     ${COMMON_CFLAGS} \
 " \
-package-cmake \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+package-cmake-install-archive \
     -DCMAKE_POSITION_INDEPENDENT_CODE=FALSE
-
-# Build the components
-ninja-install
-
-${MV} ${INSTALL_ROOT}${SOURCE_ROOT}/src/bin \
-      ${INSTALL_ROOT}${SOURCE_ROOT}/src/include \
-      ${INSTALL_ROOT}${SOURCE_ROOT}/src/lib \
-      ${INSTALL_PREFIX}/
-${RM} -rf ${INSTALL_ROOT}${SOURCE_ROOT_BASE}
-
-# Build and install the package
-package-invoke-archive-install

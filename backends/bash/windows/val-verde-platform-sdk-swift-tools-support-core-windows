@@ -17,17 +17,11 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Configure the build components
-cd ${STAGE_ROOT}
-CFLAGS="\
+# Invoke one-shot template for cmake/install
+COMMON_CFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
-    ${CFLAGS} \
-" \
-CXXFLAGS="\
-    -fms-compatibility-version=19.2 \
-    -fms-extensions \
-    ${CXXFLAGS} \
+    ${COMMON_CFLAGS} \
 " \
 DISABLE_INSTALL_DEB=TRUE \
 SWIFTCFLAGS="\

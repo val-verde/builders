@@ -17,33 +17,32 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-swift-corelibs-xctest-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Configure the build components
-cd ${STAGE_ROOT}
-package-cmake \
-    -Ddispatch_DIR=${STAGE_ROOT_BASE}/swift-corelibs-libdispatch-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
-    -DFoundation_DIR=${STAGE_ROOT_BASE}/swift-corelibs-foundation-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
-    -DXCTest_DIR=${STAGE_ROOT_BASE}/swift-corelibs-xctest-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules
+# Invoke one-shot template for cmake/install
+function package-install-completion-callback() {
+    if [ "${HOST_OS}" = "android" ]; then
+        ${MV} ${INSTALL_PREFIX}/lib/swift/linux \
+              ${INSTALL_PREFIX}/lib/swift/android
+    elif [ "${HOST_OS}" = "musl" ]; then
+        ${MV} ${INSTALL_PREFIX}/lib/swift/linux \
+              ${INSTALL_PREFIX}/lib/swift/musl
+    fi
+}
 
-# Build the components
-ninja-install
-
-SDK=${HOST_OS}
-
-if [ "${HOST_OS}" = "android" ]; then
-    ${MV} ${INSTALL_PREFIX}/lib/swift/linux \
-          ${INSTALL_PREFIX}/lib/swift/android
-elif [ "${HOST_OS}" = "musl" ]; then
-    ${MV} ${INSTALL_PREFIX}/lib/swift/linux \
-          ${INSTALL_PREFIX}/lib/swift/musl
+if [ "${HOST_OS}" = "gnu" ]; then
+    SDK="linux"
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    SDK="windows"
+else
+    SDK=${HOST_OS}
 fi
 
-# RPATH fixups
+COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
+DISABLE_INSTALL_DEB=TRUE \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 RPATH_COMPONENTS="\
     ${INSTALL_PREFIX}/lib/swift/${SDK}/${SHARED_LIBRARY_PREFIX}*${SHARED_LIBRARY_SUFFIX} \
 " \
-COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
-rpath-fixup
-
-# Build and install the package
-DISABLE_INSTALL_DEB=TRUE \
-package-invoke-archive-install
+package-cmake-install-archive \
+    -Ddispatch_DIR=${STAGE_ROOT_BASE}/swift-corelibs-libdispatch-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
+    -DFoundation_DIR=${STAGE_ROOT_BASE}/swift-corelibs-foundation-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
+    -DXCTest_DIR=${STAGE_ROOT_BASE}/swift-corelibs-xctest-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules

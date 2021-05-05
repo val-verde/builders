@@ -9,6 +9,8 @@ export SOURCE_PACKAGE_VERSION=1
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
+copy-source-to-staging
+
 export DEPENDS="\
     ${PACKAGE_BASE_NAME}-glslang-10-11-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-spirv-tools-2020-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
@@ -17,8 +19,16 @@ export DEPENDS="\
 
 BUILD_TYPE=${BUILD_TYPE:-Release}
 
-# Configure the build components
-copy-source-to-staging
+# Invoke one-shot template for cmake/install
+function package-install-completion-callback() {
+    ${MKDIR} -p ${INSTALL_PREFIX}/lib/cmake
+
+    if [ "${BUILD_TRIPLE}" == ${HOST_TRIPLE} ]; then
+        package-rsync -ax \
+                      ${STAGE_ROOT}/ImportExecutables-${BUILD_TYPE}.cmake \
+                      ${INSTALL_PREFIX}/lib/cmake/${SOURCE_PACKAGE_NAME}.cmake
+    fi
+}
 
 if [ "${BUILD_TRIPLE}" != ${HOST_TRIPLE} ]; then
     package-rsync -ax \
@@ -54,15 +64,14 @@ if [ "${HOST_OS}" != "gnu" ]; then
     "
 fi
 
-cd ${STAGE_ROOT}
-
 COMMON_CFLAGS="\
     -fno-builtin \
     -DSTRSAFE_NO_DEPRECATE \
     ${COMMON_CFLAGS} \
 " \
 CXX_STANDARD=17 \
-package-cmake \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+package-cmake-install-archive \
     -DBUILD_WSI_DIRECTFB_SUPPORT=FALSE \
     -DBUILD_WSI_WAYLAND_SUPPORT=FALSE \
     -DBUILD_WSI_XLIB_SUPPORT=FALSE \
@@ -80,19 +89,4 @@ package-cmake \
     "${CMAKE_ASM_COMPILER_CMD}" \
     "${CMAKE_ASM_COMPILER_ID_CMD}" \
     "${CMAKE_ASM_FLAGS_CMD}" \
-    "${CMAKE_BLUEGL_ARCH_CMD}" \
-    ${STAGE_ROOT}
-
-# Build the components
-ninja-install
-
-${MKDIR} -p ${INSTALL_PREFIX}/lib/cmake
-
-if [ "${BUILD_TRIPLE}" == ${HOST_TRIPLE} ]; then
-    package-rsync -ax \
-                  ${STAGE_ROOT}/ImportExecutables-${BUILD_TYPE}.cmake \
-                  ${INSTALL_PREFIX}/lib/cmake/${SOURCE_PACKAGE_NAME}.cmake
-fi
-
-# Build and install the package
-package-invoke-archive-install
+    "${CMAKE_BLUEGL_ARCH_CMD}"

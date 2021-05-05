@@ -11,14 +11,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export DEPENDS="${PACKAGE_BASE_NAME}-llvm-project-13-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 
-# Configure the build components
-cd ${STAGE_ROOT}
-package-cmake
-
-# Build the components
-ninja-install
-
-# Build and install the package
+# Invoke one-shot template for cmake/install
 DISABLE_BUILD_DEB=TRUE \
 DISABLE_INSTALL_DEB=TRUE \
-package-invoke-archive-install
+package-cmake-install-archive

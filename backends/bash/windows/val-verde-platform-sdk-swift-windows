@@ -22,24 +22,32 @@ export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUA
 export LLVM_STAGE_ROOT=${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 USE_NEWPM=${USE_NEWPM:-TRUE}
 
-# Configure the build components
-cd ${STAGE_ROOT}
+# Invoke one-shot template for cmake/install
+function package-install-completion-callback() {
+    package-rsync -ax \
+                  ${STAGE_ROOT}/lib/*${STATIC_LIBRARY_SUFFIX} \
+                  ${INSTALL_PREFIX}/lib/*${STATIC_LIBRARY_SUFFIX} \
+                  ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}/
+    ${RM} -f \
+          ${INSTALL_PREFIX}/bin/*libdispatch* \
+          ${INSTALL_PREFIX}/bin/*BlocksRuntime* \
+          ${INSTALL_PREFIX}/lib/*libdispatch* \
+          ${INSTALL_PREFIX}/lib/*BlocksRuntime* \
+          ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}/*libdispatch* \
+          ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}/*BlocksRuntime*
+}
 
-CFLAGS="\
+COMMON_CFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
-    ${CFLAGS} \
-" \
-CXXFLAGS="\
-    -fms-compatibility-version=19.2 \
-    -fms-extensions \
-    ${CXXFLAGS} \
+    ${COMMON_CFLAGS} \
 " \
 CXX_STANDARD=17 \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 UniversalCRTSdkDir=${SYSROOT} \
 UCRTVersion=git \
 VCToolsInstallDir=${SYSROOT} \
-package-cmake-invocation \
+package-cmake-install-archive \
     -DBUILD_SHARED_LIBS=TRUE \
     -DClang_DIR=${LLVM_STAGE_ROOT}/lib/cmake/clang \
     -DCLANG_LINK_CLANG_DYLIB=FALSE \
@@ -107,21 +115,3 @@ package-cmake-invocation \
     -DUSE_POSIX_SEM=1 \
     -DUUID_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
     -DUUID_LIBRARIES=`package-get-path uuid STATIC HOST`
-
-# Build the components
-ninja-install
-
-package-rsync -ax \
-              ${STAGE_ROOT}/lib/*${STATIC_LIBRARY_SUFFIX} \
-              ${INSTALL_PREFIX}/lib/*${STATIC_LIBRARY_SUFFIX} \
-              ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}/
-${RM} -f \
-      ${INSTALL_PREFIX}/bin/*libdispatch* \
-      ${INSTALL_PREFIX}/bin/*BlocksRuntime* \
-      ${INSTALL_PREFIX}/lib/*libdispatch* \
-      ${INSTALL_PREFIX}/lib/*BlocksRuntime* \
-      ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}/*libdispatch* \
-      ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}/*BlocksRuntime*
-
-# Build and install the package
-package-invoke-archive-install

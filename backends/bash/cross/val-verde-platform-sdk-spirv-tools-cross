@@ -9,7 +9,7 @@ export SOURCE_PACKAGE_VERSION=2020
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-# Configure the build components
+# Invoke one-shot template for cmake/install
 package-cmake-install-archive \
     -DLIBRT= \
     -DPYTHON_EXECUTABLE=${PYTHON} \

@@ -15,9 +15,7 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-zlib-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Configure the build components
-cd ${STAGE_ROOT}
-
+# Invoke one-shot template for cmake/install
 if [ "${HOST_OS}" != "gnu" ]; then
     export DEPENDS="\
         ${PACKAGE_BASE_NAME}-libiconv-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \

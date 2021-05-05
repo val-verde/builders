@@ -14,34 +14,33 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-swift-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Configure the build components
-cd ${STAGE_ROOT}
-package-cmake \
+# Invoke one-shot template for cmake/install
+function package-install-completion-callback() {
+    if [ "${HOST_OS}" = "android" ]; then
+        ${MV} ${INSTALL_PREFIX}/lib/swift/linux \
+              ${INSTALL_PREFIX}/lib/swift/android
+    elif [ "${HOST_OS}" = "musl" ]; then
+        ${MV} ${INSTALL_PREFIX}/lib/swift/linux \
+              ${INSTALL_PREFIX}/lib/swift/musl
+    fi
+}
+
+if [ "${HOST_OS}" = "gnu" ]; then
+    SDK="linux"
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    SDK="windows"
+else
+    SDK=${HOST_OS}
+fi
+
+COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
+DISABLE_INSTALL_DEB=TRUE \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+RPATH_COMPONENTS="\
+    ${INSTALL_PREFIX}/lib/swift/${SDK}/${SHARED_LIBRARY_PREFIX}*${SHARED_LIBRARY_SUFFIX} \
+" \
+package-cmake-install-archive \
     -DBUILD_TESTING=FALSE \
     -DENABLE_SWIFT=TRUE \
     -DLibRT_INCLUDE_PATH= \
     -DLibRT_LIBRARIES=
-
-# Build the components
-ninja-install
-
-SDK=${HOST_OS}
-
-if [ "${HOST_OS}" = "android" ]; then
-    ${MV} ${INSTALL_PREFIX}/lib/swift/linux \
-          ${INSTALL_PREFIX}/lib/swift/android
-elif [ "${HOST_OS}" = "musl" ]; then
-    ${MV} ${INSTALL_PREFIX}/lib/swift/linux \
-          ${INSTALL_PREFIX}/lib/swift/musl
-fi
-
-# RPATH fixups
-COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
-RPATH_COMPONENTS="\
-    ${INSTALL_PREFIX}/lib/swift/${SDK}/${SHARED_LIBRARY_PREFIX}*${SHARED_LIBRARY_SUFFIX} \
-" \
-rpath-fixup
-
-# Build and install the package
-DISABLE_INSTALL_DEB=TRUE \
-package-invoke-archive-install

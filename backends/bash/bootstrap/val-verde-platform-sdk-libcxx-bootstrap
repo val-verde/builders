@@ -11,8 +11,6 @@ export SOURCE_ROOT=${SOURCE_ROOT_BASE}/llvm-project-${SOURCE_PACKAGE_VERSION}
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
-cd ${STAGE_ROOT}
-
 ENABLE_FILESYSTEM=TRUE
 ENABLE_SHARED=TRUE
 ENABLE_STATIC=TRUE
@@ -56,7 +54,7 @@ fi
 INSTALL_TARGET="projects/compiler-rt/install projects/libcxx/install projects/libcxxabi/install projects/parallel-libs/install projects/pstl/install"
 
 if [ "${HOST_OS}" != "wasi" ]; then
-    INSTALL_TARGET="projects/libunwind/install ${INSTALL_PREFIX}"
+    INSTALL_TARGET="projects/libunwind/install ${INSTALL_TARGET}"
 fi
 
 COMMON_CFLAGS="\
@@ -68,6 +66,7 @@ CXXFLAGS="\
     -nostdlib++ \
     ${CXXFLAGS} \
 " \
+DISABLE_TOOL_BUILD=TRUE \
 package-cmake-install-archive \
     -DCMAKE_C_COMPILER_WORKS=TRUE \
     -DCMAKE_CXX_COMPILER_WORKS=TRUE \
