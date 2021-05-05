@@ -491,7 +491,7 @@ package-invoke-builder dnf-cross 4
 unset DNF
 
 # AI SDK build
-category-invoke-builder ai-sdk-cross
+package-invoke-category-builder ai-sdk-cross
 
 # swig build
 package-invoke-builder swig-cross 4

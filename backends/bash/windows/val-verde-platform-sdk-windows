@@ -25,13 +25,13 @@ package-invoke-builder libcxx-bootstrap 13
 package-invoke-builder winpthreads-cross 6
 
 # windows llvm dependencies
-category-invoke-builder llvm-dependencies-windows
+package-invoke-category-builder llvm-dependencies-windows
 
 # windows swift tools build
-category-invoke-builder swift-tools-windows
+package-invoke-category-builder swift-tools-windows
 
 # windows swift sdk build
-category-invoke-builder swift-sdk-windows
+package-invoke-category-builder swift-sdk-windows
 
 # windows go build
 package-invoke-builder go-cross 1
@@ -40,10 +40,10 @@ package-invoke-builder go-cross 1
 # package-invoke-builder ruby-cross 3
 
 # windows graphics sdk build
-category-invoke-builder graphics-sdk-cross
+package-invoke-category-builder graphics-sdk-cross
 
 # wine build
 package-invoke-builder wine-cross 6
 
 # windows blockchain sdk build
-category-invoke-builder blockchain-sdk-cross
+package-invoke-category-builder blockchain-sdk-cross

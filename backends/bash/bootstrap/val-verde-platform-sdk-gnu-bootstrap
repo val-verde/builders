@@ -26,7 +26,7 @@ ${CHMOD} +x ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang 
             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-ml64
 
 # libcxx and llvm bootstrap build
-category-invoke-builder llvm-bootstrap-builder
+package-invoke-category-builder llvm-bootstrap-builder
 
 # post llvm bootstrap build
-category-invoke-builder bootstrap-builder
+package-invoke-category-builder bootstrap-builder
