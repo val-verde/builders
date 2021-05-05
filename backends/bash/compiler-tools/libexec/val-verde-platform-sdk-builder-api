@@ -61,7 +61,8 @@ function package-invoke-builder() {
 function parse-builder-args() {
     if [ ${1##*-} == 'cross' ] \
        || [[ ${1##*-} == *"bootstrap"* ]] \
-       || [[ ${1##*-} == *"musl"* ]]; then
+       || [[ ${1##*-} == *"musl"* ]] \
+       || [[ ${1##*-} == *"android"* ]]; then
         export SOURCE_PACKAGE_NAME=${1%-*}
     else
         export SOURCE_PACKAGE_NAME=$1
