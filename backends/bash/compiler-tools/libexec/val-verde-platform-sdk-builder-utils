@@ -259,10 +259,8 @@ function export-compiler-environment() {
         GOHOSTOS=windows
     fi
 
-    if [ "${FORTIFY_SOURCE_LEVEL}" != "0" ]; then
-        FORTIFY_CFLAGS="-D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL}"
-        FORTIFY_SWIFTCFLAGS="-Xcc -D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL}"
-    fi
+    FORTIFY_CFLAGS="-D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL}"
+    FORTIFY_SWIFTCFLAGS="-Xcc -D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL}"
 
     if [ -z "${DISABLE_FPIC}" ] &&
        [ "${HOST_OS}" != "mingw32" ]; then
