@@ -6,16 +6,32 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # windows llvm build
-package-invoke-builder llvm-project-windows
+ENABLE_STAGE_ROOT_BUILD=TRUE \
+package-invoke-builder llvm-project-windows 13 no-install
+
+# remove libcxx, libcxxabi and libunwind as they are superceded by llvm-project.
+PACKAGES_TO_MANAGE=( 'libcxx-13' 'HOST' )
+
+PACKAGE_ACTION=UNINSTALL \
+deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
+
+# install llvm for host
+PACKAGES_TO_MANAGE=( 'llvm-project-13' 'HOST')
+
+PACKAGE_ACTION=INSTALL \
+deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 
 # souper build
-package-invoke-builder souper-cross
+package-invoke-builder souper-cross 1
 
 # windows cmark build
-package-invoke-builder swift-cmark-cross
+ENABLE_STAGE_ROOT_BUILD=TRUE \
+package-invoke-builder swift-cmark-cross 5 none
 
 # windows swift build
-package-invoke-builder swift-windows
+ENABLE_STAGE_ROOT_BUILD=TRUE \
+package-invoke-builder swift-windows 5
 
 # windows lldb build
-package-invoke-builder swift-lldb-windows
+ENABLE_STAGE_ROOT_BUILD=TRUE \
+package-invoke-builder swift-lldb-windows 5

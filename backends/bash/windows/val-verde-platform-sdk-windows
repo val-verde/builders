@@ -10,19 +10,19 @@ export \
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # windows mingw-headers build
-package-invoke-builder mingw-w64-headers
+package-invoke-builder mingw-w64-headers 6
 
 # windows mingw-crt build
-package-invoke-builder mingw-w64-crt
+package-invoke-builder mingw-w64-crt 6
 
 # windows compiler-rt build (for host)
-package-invoke-builder compiler-rt-cross
+package-invoke-builder compiler-rt-cross 13
 
 # windows libcxx build
-package-invoke-builder libcxx-bootstrap
+package-invoke-builder libcxx-bootstrap 13
 
 # windows mingw-winpthreads build
-package-invoke-builder winpthreads-cross
+package-invoke-builder winpthreads-cross 6
 
 # windows llvm dependencies
 category-invoke-builder llvm-dependencies-windows
@@ -34,16 +34,16 @@ category-invoke-builder swift-tools-windows
 category-invoke-builder swift-sdk-windows
 
 # windows go build
-package-invoke-builder go-cross
+package-invoke-builder go-cross 1
 
 # windows ruby build
-# package-invoke-builder ruby-cross
+# package-invoke-builder ruby-cross 3
 
 # windows graphics sdk build
 category-invoke-builder graphics-sdk-cross
 
 # wine build
-package-invoke-builder wine-cross
+package-invoke-builder wine-cross 6
 
 # windows blockchain sdk build
-package-invoke-builder blockchain-sdk-cross
+category-invoke-builder blockchain-sdk-cross
