@@ -18,9 +18,14 @@ ${MKDIR} -p ${INSTALL_PREFIX}/include
 package-rsync -ax \
               ${TOOLCHAIN_ROOT}/sysroot/usr/lib/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/*${SHARED_LIBRARY_SUFFIX} \
               ${TOOLCHAIN_ROOT}/sysroot/usr/lib/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/${HOST_OS_API_LEVEL}/* \
-              ${TOOLCHAIN_ROOT}/lib/gcc/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/4.9.x/*${OBJECT_FILE_SUFFIX} \
-              ${TOOLCHAIN_ROOT}/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/lib64/*${STATIC_LIBRARY_SUFFIX} \
               ${INSTALL_PREFIX}/lib/
+
+if [ "${ANDROID_NDK_VERSION}" < "r23" ]; then
+    package-rsync -ax \
+                  ${TOOLCHAIN_ROOT}/lib/gcc/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/4.9.x/*${OBJECT_FILE_SUFFIX} \
+                  ${TOOLCHAIN_ROOT}/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/lib64/*${STATIC_LIBRARY_SUFFIX} \
+                  ${INSTALL_PREFIX}/lib/
+fi
 
 ${RM} -f \
       ${INSTALL_PREFIX}/lib/libc++* \
