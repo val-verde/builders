@@ -873,6 +873,41 @@ function package-get-path() {
     fi
 }
 
+function package-go-build() {
+    package-go-tool build "${@}"
+}
+
+function package-go-get() {
+    package-go-tool get "${@}"
+}
+
+function package-go-mod() {
+    GO_TOOL_LOG_SUFFIX=${1}-${2}
+    package-go-tool mod "${@}"
+}
+
+function package-go-mod-init() {
+    package-go-mod init "${@}"
+}
+
+function package-go-mod-tidy() {
+    package-go-mod tidy "${@}"
+}
+
+function package-go-mod-vendor() {
+    package-go-mod vendor "${@}"
+}
+
+function package-go-tool() {
+    GO_STAGE_ROOT=${GO_STAGE_ROOT:-${STAGE_ROOT}}
+    GO_TOOL_LOG_SUFFIX=${GO_TOOL_LOG_SUFFIX:-${1}}
+
+    package-push-directory ${GO_STAGE_ROOT}
+        TOOL_LOG=${STAGE_ROOT}/builder-go-${GO_TOOL_LOG_SUFFIX} \
+        tool-log ${GO} "${@}"
+    package-pop-directory
+}
+
 function package-gnulib-override() {
     GNULIB_DIR=${GNULIB_DIR:-glib}
     GNULIB_ROOT=${GNULIB_ROOT:-${STAGE_ROOT}}

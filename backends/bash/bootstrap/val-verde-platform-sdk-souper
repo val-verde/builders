@@ -29,10 +29,8 @@ export KLEE_SRC_DIR=${SOURCE_ROOT_BASE}/klee-2
 export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
 
 # Configure the build components
-TOOL_LOG=${STAGE_ROOT}/builder-go-init \
-tool-log ${GO} mod init souper
-TOOL_LOG=${STAGE_ROOT}/builder-go-get \
-tool-log ${GO} get github.com/gomodule/redigo/redis
+package-go-mod init souper
+package-go-get github.com/gomodule/redigo/redis
 
 function package-install-completion-callback() {
     ${MKDIR} -p \
