@@ -29,7 +29,6 @@ COMMON_CFLAGS="\
     -Wno-unused-function \
     ${COMMON_CFLAGS} \
 " \
-DISABLE_INSTALL_DEB=TRUE \
 LIBS="\
     -lncurses \
     -lole32 \
