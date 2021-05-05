@@ -7,54 +7,71 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # android ndk headers build
-package-invoke-builder android-ndk-headers
+package-invoke-builder android-ndk-headers ${ANDROID_NDK_VERSION}
 
 # android compiler-rt build (for host)
-package-invoke-builder compiler-rt-cross
+package-invoke-builder compiler-rt-cross 13
 
 # android ndk runtime build
-package-invoke-builder android-ndk-runtime
+package-invoke-builder android-ndk-runtime ${ANDROID_NDK_VERSION}
 
 # android libcxx build
-package-invoke-builder libcxx-bootstrap
+package-invoke-builder libcxx-bootstrap 13
 
 # android llvm dependencies build
 category-invoke-builder llvm-dependencies-android
 
 # android llvm build
-package-invoke-builder llvm-project-android
+ENABLE_STAGE_ROOT_BUILD=TRUE \
+package-invoke-builder llvm-project-android 13 no-install
+
+# remove libcxx, libcxxabi and libunwind as they are superceded by llvm-project.
+PACKAGES_TO_MANAGE=( 'libcxx-13' 'HOST' )
+
+PACKAGE_ACTION=UNINSTALL \
+deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
+
+# install llvm for host
+PACKAGES_TO_MANAGE=( 'llvm-project-13' 'HOST'
+                     'llvm-project-13-stage' 'HOST' )
+
+PACKAGE_ACTION=INSTALL \
+deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 
 # android souper build
-package-invoke-builder souper-cross
+package-invoke-builder souper-cross 1
 
 # android cmark build
-package-invoke-builder swift-cmark-cross
+ENABLE_STAGE_ROOT_BUILD=TRUE \
+package-invoke-builder swift-cmark-cross 5 none
 
 # android swift build
-package-invoke-builder swift-android
+ENABLE_STAGE_ROOT_BUILD=TRUE \
+package-invoke-builder swift-android 5
 
 # android lldb build
-package-invoke-builder swift-lldb-android
+ENABLE_STAGE_ROOT_BUILD=TRUE \
+package-invoke-builder swift-lldb-android 5
 
 # swift sdk build
 DISABLE_FORTIFY_SOURCE_LEVEL=TRUE \
 category-invoke-builder swift-sdk-cross
 
 # android go build
-package-invoke-builder go-cross
+package-invoke-builder go-cross 1
 
 # android ruby build
-package-invoke-builder ruby-cross
+package-invoke-builder ruby-cross 3
 
 # android graphics sdk build
 category-invoke-builder graphics-sdk-cross
 
 # android virtualization sdk build
-# package-invoke-builder virtualization-sdk-cross
+# category-invoke-builder virtualization-sdk-cross
 
 # android node + sdk build
-package-invoke-builder node-cross
-package-invoke-builder npm-yarn-cross
+package-invoke-builder node-cross 16
+package-invoke-builder npm-yarn-cross 1
 
 # android blockchain sdk build
-package-invoke-builder blockchain-sdk-cross
+category-invoke-builder blockchain-sdk-cross
