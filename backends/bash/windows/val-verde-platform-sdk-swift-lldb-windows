@@ -50,7 +50,7 @@ package-cmake \
     -DCURSES_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/ncurses \
     -DCURSES_LIBRARIES=`package-get-path ncursesw SHARED HOST` \
     -DLibEdit_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
-    -DLibEdit_LIBRARIES=${PACKAGE_PREFIX}/bin/${SHARED_LIBRARY_PREFIX}edit${SHARED_LIBRARY_SUFFIX} \
+    -DLibEdit_LIBRARIES=`package-get-path edit SHARED HOST` \
     -DLIBLZMA_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DLIBLZMA_LIBRARY=`package-get-path lzma SHARED HOST` \
     -DLIBXML2_INCLUDE_DIR=${PACKAGE_PREFIX}/include/libxml2 \
