@@ -595,6 +595,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "libjpeg",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "9",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "libpng",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
@@ -1816,13 +1825,6 @@
         "sourceBranchIndicator": "wget",
         "sourcePackageVersion": "1.16",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "libjpeg",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "9d",
-        "sourcePackageUrl": "https://www.ijg.org/files/jpegsrc.v${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
         "sourceType": "other",
