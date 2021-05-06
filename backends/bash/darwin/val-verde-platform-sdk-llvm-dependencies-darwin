@@ -111,6 +111,9 @@ package-invoke-builder file-cross
 # gnulib build
 package-invoke-builder gnulib-cross
 
+# libedit build
+package-invoke-builder libedit-cross
+
 # pcre build
 package-invoke-builder pcre-cross
 
@@ -125,9 +128,6 @@ package-invoke-builder isl-cross
 
 # libev build
 package-invoke-builder libev-cross
-
-# libedit build
-package-invoke-builder libedit-cross
 
 # gdbm build
 CFLAGS="\

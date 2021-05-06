@@ -182,6 +182,9 @@ unset FILE
 package-invoke-builder perl-cross
 unset PERL
 
+# libedit build
+package-invoke-builder libedit-cross
+
 # pcre build
 package-invoke-builder pcre-cross
 
@@ -199,9 +202,6 @@ package-invoke-builder libaio-cross
 
 # libev build
 package-invoke-builder libev-cross
-
-# libedit build
-package-invoke-builder libedit-cross
 
 # gdbm build
 CFLAGS="\
