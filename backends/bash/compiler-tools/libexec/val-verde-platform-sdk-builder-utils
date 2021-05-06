@@ -1089,6 +1089,18 @@ function package-invoke-archive-install() {
     deb-package-install
 }
 
+function package-fix-symlinks() {
+    fileList=( $(find ${INSTALL_PREFIX}/bin -lname "${INSTALL_ROOT}*") )
+    fileCount=${#fileList[@]}
+
+    for file in `seq 0 $(($fileCount - 1))`; do
+        fileName=${fileList[file]}
+        fileTarget=$(readlink -f $fileName)
+        newTarget=$(echo $fileTarget | sed "s|${PACKAGE_ROOT}||g")
+        ${LN} -sf $newTarget $fileName
+    done
+}
+
 # package-get-path <name> <EXECUTABLE|SHARED|STATIC>
 function package-get-filename() {
     NAME=${1}
