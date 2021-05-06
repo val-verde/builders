@@ -465,6 +465,9 @@ function generate-compiler-tools() {
     export CXXLDFLAGS="-O${OPTIMIZATION_LEVEL}"
     export LD=${GENERATED_BINDIR}/${TOOL_PREFIX}-ld
     export LDFLAGS="-O${LINKER_OPTIMIZATION_LEVEL}"
+    export OBJC=${CC}
+    export OBJCPP=${CPP}
+    export OBJCXX=${CXX}
 
     if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
         export CCLDFLAGS=`${ECHO} "\
