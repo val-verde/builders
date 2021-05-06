@@ -49,6 +49,12 @@ function deb-package-mgmt() {
         SYSTEM_OS_API=${SYSTEM_TYPE}_OS_API_LEVEL
         SYSTEM_ARCH=${SYSTEM_TYPE}_ARCH
         PKG_SUFFIX=${!SYSTEM_OS}${!SYSTEM_OS_API}-${!SYSTEM_ARCH}
+
+        if [[ "${PKG_NAME}"  == *"stage"* ]]; then
+            PKG_NAME=${PKG_NAME%-*}
+            PKG_SUFFIX=${PKG_SUFFIX}-stage
+        fi
+
         PKG_PREFIX=${PACKAGE_BASE_NAME}-${PKG_NAME}
         PACKAGE_FILE_NAME=${PKG_PREFIX}-${PKG_SUFFIX}
         DEB_NAME=${DEB_PATH}/${PACKAGE_FILE_NAME}.deb
