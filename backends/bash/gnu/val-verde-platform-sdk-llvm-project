@@ -24,13 +24,13 @@ EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;flang;libclc;mlir;openmp;par
 
 # Invoke one-shot template for cmake/install
 function package-install-completion-callback() {
-    ${LN} -sf \
-          lld \
-          ${STAGE_ROOT}/bin/ld64.lld
     package-rsync -ax \
+                  ${STAGE_ROOT}/bin/dsymutil \
+                  ${STAGE_ROOT}/bin/ld64.lld* \
                   ${STAGE_ROOT}/bin/llvm-as* \
                   ${STAGE_ROOT}/bin/llvm-dlltool* \
                   ${STAGE_ROOT}/bin/llvm-install-name-tool* \
+                  ${STAGE_ROOT}/bin/llvm-libtool-darwin* \
                   ${STAGE_ROOT}/bin/llvm-link* \
                   ${STAGE_ROOT}/bin/llvm-lipo* \
                   ${STAGE_ROOT}/bin/llvm-mt* \

@@ -23,6 +23,34 @@ EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;clang-tools-extra;libclc;mli
 
 # Invoke one-shot template for cmake/install
 function package-install-completion-callback() {
+    package-rsync -ax \
+                  ${STAGE_ROOT}/bin/dsymutil \
+                  ${STAGE_ROOT}/bin/ld64.lld* \
+                  ${STAGE_ROOT}/bin/llvm-as* \
+                  ${STAGE_ROOT}/bin/llvm-dlltool* \
+                  ${STAGE_ROOT}/bin/llvm-install-name-tool* \
+                  ${STAGE_ROOT}/bin/llvm-libtool-darwin* \
+                  ${STAGE_ROOT}/bin/llvm-link* \
+                  ${STAGE_ROOT}/bin/llvm-lipo* \
+                  ${STAGE_ROOT}/bin/llvm-mt* \
+                  ${STAGE_ROOT}/bin/llvm-pdbutil* \
+                  ${STAGE_ROOT}/bin/llvm-readelf* \
+                  ${STAGE_ROOT}/bin/llvm-readobj* \
+                  ${INSTALL_PREFIX}/bin/
+
+    CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
+    DST_CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
+    DST_SDK_PLATFORM_DIR=${DST_SDK_PLATFORM_DIR:-windows}
+    ${LN} -sf \
+          ${CLANG_RT_LIB} \
+          ${INSTALL_PREFIX}/lib/clang/13.0.0/lib/${DST_SDK_PLATFORM_DIR}/${DST_CLANG_RT_LIB}
+
+    # remove libcxx as it is superceded by llvm-project
+    HOST_PROCESSOR=`${ECHO} ${HOST_PROCESSOR} | ${TR} _ -`
+    PACKAGES_TO_MANAGE=( 'libcxx-13' 'HOST' )
+
+    PACKAGE_ACTION=UNINSTALL \
+    deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 }
 
 function tool-install-invocation() {
@@ -214,32 +242,6 @@ package-cmake-install-archive \
 
 # Build the components
 
-${LN} -sf lld.exe \
-          ${STAGE_ROOT}/bin/ld64.lld.exe
-package-rsync -ax \
-              ${STAGE_ROOT}/bin/llvm-as* \
-              ${STAGE_ROOT}/bin/llvm-dlltool* \
-              ${STAGE_ROOT}/bin/llvm-install-name-tool* \
-              ${STAGE_ROOT}/bin/llvm-link* \
-              ${STAGE_ROOT}/bin/llvm-lipo* \
-              ${STAGE_ROOT}/bin/llvm-mt* \
-              ${STAGE_ROOT}/bin/llvm-pdbutil* \
-              ${STAGE_ROOT}/bin/llvm-readelf* \
-              ${STAGE_ROOT}/bin/llvm-readobj* \
-              ${INSTALL_PREFIX}/bin/
-
-CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
-DST_CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
-DST_SDK_PLATFORM_DIR=${DST_SDK_PLATFORM_DIR:-windows}
-${LN} -sf ${CLANG_RT_LIB} \
-          ${INSTALL_PREFIX}/lib/clang/13.0.0/lib/${DST_SDK_PLATFORM_DIR}/${DST_CLANG_RT_LIB}
-
-# remove libcxx, libcxxabi and libunwind as they are superceded by llvm-project.
-HOST_PROCESSOR=`${ECHO} ${HOST_PROCESSOR} | ${TR} _ -`
-PACKAGES_TO_MANAGE=( 'libcxx-13' 'HOST' )
-
-PACKAGE_ACTION=UNINSTALL \
-deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 
 # Build and install the package
 package-invoke-archive-install

@@ -16,13 +16,13 @@ CUDA_GPU_SECONDARY_ARCH=35
 
 # Invoke one-shot template for cmake/install
 function package-install-completion-callback() {
-    ${LN} -sf \
-          lld \
-          ${STAGE_ROOT}/bin/ld64.lld
     package-rsync -ax \
+                  ${STAGE_ROOT}/bin/dsymutil \
+                  ${STAGE_ROOT}/bin/ld64.lld* \
                   ${STAGE_ROOT}/bin/llvm-as* \
                   ${STAGE_ROOT}/bin/llvm-dlltool* \
                   ${STAGE_ROOT}/bin/llvm-install-name-tool* \
+                  ${STAGE_ROOT}/bin/llvm-libtool-darwin* \
                   ${STAGE_ROOT}/bin/llvm-link* \
                   ${STAGE_ROOT}/bin/llvm-lipo* \
                   ${STAGE_ROOT}/bin/llvm-mt* \
@@ -31,7 +31,7 @@ function package-install-completion-callback() {
                   ${STAGE_ROOT}/bin/llvm-readobj* \
                   ${INSTALL_PREFIX}/bin/
 
-    # remove libcxx as it is superceded by llvm-project.
+    # remove libcxx as it is superceded by llvm-project
     HOST_PROCESSOR=`${ECHO} ${HOST_PROCESSOR} | ${TR} _ -`
     PACKAGES_TO_MANAGE=( 'libcxx-13' 'HOST' )
 
