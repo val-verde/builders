@@ -296,6 +296,7 @@ function export-compiler-environment() {
             ${LDFLAGS} \
         "
         GOOS=darwin
+        export MACOSX_DEPLOYMENT_TARGET=${HOST_OS_API_LEVEL}
     elif [ "${HOST_OS}" = "musl" ]; then
         COMMON_CFLAGS="\
             -D_ALL_SOURCE=1 \
