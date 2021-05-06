@@ -15,6 +15,9 @@ if [ "${SOURCE_PACKAGE_NAME}" != "" ]; then
     export STAGE_ROOT=${STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_PACKAGE_NAME}}
     export SOURCE_ROOT=${SOURCE_ROOT:-${SOURCE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}}
 
+    # package build variables
+    export NUM_PROCESSORS_ARGS=${NUM_PROCESSORS_ARGS:-'-j'}
+
     # pre-build cleanup
     ${RM} -rf ${INSTALL_PREFIX}/*
 
@@ -668,7 +671,7 @@ function tool-build() {
         ${ECHO} -e "        Time Started: \e[4m$(date)\e[0m"
 
         TOOL_LOG=${STAGE_ROOT}/builder-compile \
-        tool-log ${TOOL} -j${NUM_PROCESSORS} \
+        tool-log ${TOOL} ${NUM_PROCESSORS_ARGS}${NUM_PROCESSORS} \
                         "${@}"
 
         ${ECHO} -e "        Time Completed: \e[4m$(date)\e[0m"
