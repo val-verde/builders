@@ -12,6 +12,11 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 export-compiler-environment
 generate-compiler-tools
 
+# Invoke one-shot template for post installation steps
+function package-install-completion-callback() {
+    package-fix-symlinks
+}
+
 # Configure the build components
 ${CHMOD} +x ${SOURCE_ROOT}/configure
 ${MKDIR} -p ${STAGE_ROOT}/build
@@ -115,3 +120,6 @@ tool-log ${MAKE} \
 
 # Build and install the package
 package-invoke-archive-install
+
+# Adjust symlinks post installation
+package-install-completion-callback
