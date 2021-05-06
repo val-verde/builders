@@ -42,13 +42,9 @@ if [ "${HOST_KERNEL}" = "linux" ] &&
 fi
 
 if [ "${HOST_OS}" = "android" ]; then
-    CFLAGS="\
+    COMMON_CFLAGS="\
         -DANDROID \
-        ${CFLAGS} \
-    "
-    CXXFLAGS="\
-        -DANDROID \
-        ${CXXFLAGS} \
+        ${COMMON_CFLAGS} \
     "
     CMAKE_ANDROID_DEFINE_CMD="-DANDROID=TRUE"
 elif [ "${HOST_OS}" = "mingw32" ]; then
@@ -57,7 +53,13 @@ elif [ "${HOST_OS}" = "mingw32" ]; then
     CMAKE_ASM_FLAGS_CMD="-DCMAKE_ASM_FLAGS_RELEASE="
 fi
 
-if [ "${HOST_OS}" != "gnu" ]; then
+if [ "${HOST_OS}" = "macos" ]; then
+    export COMMON_LDFLAGS="\
+        -framework Foundation \
+        -liconv \
+        ${COMMON_LDFLAGS} \
+    "
+elif [ "${HOST_OS}" != "gnu" ]; then
     export COMMON_LDFLAGS="\
         -liconv \
         ${COMMON_LDFLAGS} \
