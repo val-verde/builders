@@ -109,11 +109,10 @@ package-invoke-builder ninja-cross
 # windows file build
 # package-invoke-builder file-cross
 
+# windows editline build
+package-invoke-builder wineditline-cross
+
 # windows pcre build
-CXXFLAGS="\
-    -lclang_rt.builtins-x86_64 \
-    ${CXXFLAGS} \
-" \
 package-invoke-builder pcre-cross
 
 # windows mpfr build
@@ -124,9 +123,6 @@ package-invoke-builder mpc-cross
 
 # windows isl build
 # package-invoke-builder isl-cross
-
-# windows editline build
-package-invoke-builder wineditline-cross
 
 # windows tcl build
 package-invoke-builder tcl-cross

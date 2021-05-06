@@ -111,6 +111,9 @@ package-invoke-builder file-cross
 # android gnulib build
 package-invoke-builder gnulib-cross
 
+# android libedit build
+package-invoke-builder libedit-cross
+
 # android pcre build
 package-invoke-builder pcre-cross
 
@@ -125,9 +128,6 @@ package-invoke-builder isl-cross
 
 # android libev build
 package-invoke-builder libev-cross
-
-# android libedit build
-package-invoke-builder libedit-cross
 
 # android gdbm build
 CFLAGS="\
