@@ -141,6 +141,7 @@ function export-compiler-environment() {
         export LD=${LD:-${BINDIR}/ld.lld}
     fi
 
+    export LIBTOOL_DARWIN=${LIBTOOL_DARWIN:-${BINTOOLS_PATH_PREFIX}libtool-darwin}
     export LIPO=${LIPO:-${BINTOOLS_PATH_PREFIX}lipo}
     export MAKE=${MAKE:-${BINDIR}/make}
     export MAKEINFO=${MAKEINFO:-${BINDIR}/true}
@@ -641,6 +642,7 @@ function package-cmake-invocation() {
            [ "${HOST_OS}" = "musl" ]; then
             SYSTEM_NAME=${SYSTEM_NAME:-Linux}
         elif [ "${HOST_OS}" = "macos" ]; then
+            CMAKE_LIBTOOL=${LIBTOOL_DARWIN}
             SYSTEM_NAME=${SYSTEM_NAME:-Darwin}
         elif [ "${HOST_OS}" = "mingw32" ]; then
             SYSTEM_NAME=${SYSTEM_NAME:-Windows}
@@ -694,6 +696,7 @@ function package-cmake-invocation() {
         -DCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO= \
         -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} \
         -DCMAKE_INSTALL_NAME_TOOL=${INSTALL_NAME_TOOL} \
+        -DCMAKE_LIBTOOL=${CMAKE_LIBTOOL} \
         -DCMAKE_LINKER=${LD} \
         -DCMAKE_LIPO=${LIPO} \
         -DCMAKE_MAKE_PROGRAM=${NINJA} \
