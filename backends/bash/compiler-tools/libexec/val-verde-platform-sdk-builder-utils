@@ -547,8 +547,10 @@ function tool-install() {
 }
 
 function tool-install-default-invocation() {
+    NUM_PROCESSORS_ARGS=${NUM_PROCESSOR_ARGS:-"-j"}
+
     TOOL_LOG=${STAGE_ROOT}/builder-installation \
-    tool-log ${TOOL} -j${NUM_PROCESSORS} \
+    tool-log ${TOOL} ${NUM_PROCESSORS_ARGS}${NUM_PROCESSORS} \
                      ${INSTALL_TARGET:-install} \
                      ${DESTDIR_CMD} \
                      "${@}"
