@@ -16,19 +16,6 @@ generate-compiler-tools
 ${CHMOD} +x ${SOURCE_ROOT}/configure
 ${MKDIR} -p ${STAGE_ROOT}/build
 
-cd ${STAGE_ROOT}/build
-BUILD_CFLAGS=`${ECHO} "\
-    -I${BUILD_PACKAGE_PREFIX}/include \
-    -L${BUILD_PACKAGE_PREFIX}/lib \
-" | ${XARGS}`
-BUILD_CXXFLAGS=`${ECHO} "\
-    ${BUILD_CFLAGS} \
-    -stdlib++-isystem ${BUILD_PACKAGE_PREFIX}/include/c++/v1 \
-" | ${XARGS}`
-
-create-host-tool ${BUILD_CC} BUILD_CFLAGS ${STAGE_ROOT}/build-clang
-create-host-tool ${BUILD_CC}++ BUILD_CXXFLAGS ${STAGE_ROOT}/build-clang++
-
 HOST_ASFLAGS=${ASFLAGS}
 HOST_CFLAGS=${CFLAGS}
 HOST_CXXFLAGS=${CXXFLAGS}
@@ -37,23 +24,23 @@ HOST_LDFLAGS=${LDFLAGS}
 export RM=${BINDIR}/rm
 unset \
     ASFLAGS \
-    BUILD_CC \
     CFLAGS \
     CXXFLAGS \
     LDFLAGS \
     UNZIP \
     ZIP
 
+cd ${STAGE_ROOT}/build
 TOOL_LOG=${STAGE_ROOT}/builder-invocation
 tool-log ${SOURCE_ROOT}/configure \
     AR=${AR} \
     BASH=${BASH} \
-    BUILD_AR=${AR} \
-    BUILD_CC=${STAGE_ROOT}/build-clang \
-    BUILD_CXX=${STAGE_ROOT}/build-clang++ \
-    BUILD_NM=${NM} \
-    BUILD_OBJCOPY=${OBJCOPY} \
-    BUILD_STRIP=${STRIP} \
+    BUILD_AR=${BUILD_AR} \
+    BUILD_CC=${BUILD_CC} \
+    BUILD_CXX=${BUILD_CXX} \
+    BUILD_NM=${BUILD_NM} \
+    BUILD_OBJCOPY=${BUILD_OBJCOPY} \
+    BUILD_STRIP=${BUILD_STRIP} \
     AWK=${GAWK} \
     CAT=${CAT} \
     CHMOD=${CHMOD} \

@@ -101,23 +101,23 @@ DISABLED_WARNING_CFLAGS=`${ECHO} "\
 
 export AR_host=${AR_host:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar}
 export AR_target=${AR}
-export AS_host=${AS_host:-${BUILD_PACKAGE_PREFIX}/bin/clang}
+export AS_host=${AS_host:-${BUILD_CC}
 export AS_target=${AS}
-export CC_host=${CC_host:-${BUILD_PACKAGE_PREFIX}/bin/clang}
+export CC_host=${CC_host:-${BUILD_CC}
 export CC_target=${CC}
 export CFLAGS_host=`${ECHO} "\
     --sysroot=${BUILD_PACKAGE_PREFIX}/.. \
     ${DISABLED_WARNING_CFLAGS} \
 " | ${XARGS}`
 export CFLAGS=`${ECHO} ${CFLAGS} | ${XARGS}`
-export CPP_host=${CPP_host:-"${BUILD_PACKAGE_PREFIX}/bin/clang -E"}
+export CPP_host=${CPP_host:-${BUILD_CPP}}
 export CPP_target=${CPP}
 export CPPFLAGS_host=`${ECHO} "\
     --sysroot=${BUILD_PACKAGE_PREFIX}/.. \
     ${DISABLED_WARNING_CFLAGS} \
 " | ${XARGS}`
 export CPPFLAGS=`${ECHO} ${CPPFLAGS} | ${XARGS}`
-export CXX_host=${CXX_host:-"${BUILD_PACKAGE_PREFIX}/bin/clang++ --sysroot=${BUILD_PACKAGE_PREFIX}/.."}
+export CXX_host=${CXX_host:-"${BUILD_CXX} --sysroot=${BUILD_PACKAGE_PREFIX}/.."}
 export CXX_target=${CXX}
 export CXXFLAGS_host=`${ECHO} "\
     --sysroot=${BUILD_PACKAGE_PREFIX}/.. \

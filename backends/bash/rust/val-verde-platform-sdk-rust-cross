@@ -42,19 +42,6 @@ else
     HOST_TRIPLE=${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS}
 fi
 
-BUILD_CFLAGS=`${ECHO} "\
-    -I${BUILD_PACKAGE_PREFIX}/include \
-    ${BUILD_CFLAGS} \
-" | ${XARGS}`
-BUILD_CXXFLAGS=`${ECHO} "\
-    -I${BUILD_PACKAGE_PREFIX}/include \
-    ${BUILD_CXXFLAGS} \
-" | ${XARGS}`
-BUILD_LD=${SOURCE_ROOT}/host-ld-clang \
-BUILD_LDFLAGS=`${ECHO} "\
-    -L${BUILD_PACKAGE_PREFIX}/lib \
-    ${BUILD_LDFLAGS} \
-" | ${XARGS}`
 CARGO=${BINDIR}/cargo
 FILECHECK=${LLVM_NATIVE_STAGE_ROOT}/bin/FileCheck
 LD=${CCLD}
