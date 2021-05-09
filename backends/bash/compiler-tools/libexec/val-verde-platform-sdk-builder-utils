@@ -136,8 +136,6 @@ function export-compiler-environment() {
     export F77=${F77:-${FLANG}}
     export FC=${FC:-${FLANG}}
     export FORTRAN=${FORTRAN:-${FLANG}}
-    export GO=${GO:-${BINDIR}/go}
-    export GOROOT=${GOROOT:-${BUILD_PACKAGE_PREFIX}/go}
     export INSTALL_NAME_TOOL=${INSTALL_NAME_TOOL:-${BINTOOLS_PATH_PREFIX}install-name-tool}
 
     if [ "${HOST_OS}" = "macos" ]; then
@@ -176,18 +174,6 @@ function export-compiler-environment() {
     export STRIP=${STRIP:-${BINTOOLS_PATH_PREFIX}strip}
     export SWIFTC=${SWIFTC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc}
     export WINDRES=${RC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-rc}
-
-    if [ "${BUILD_PROCESSOR}" = "aarch64" ]; then
-        GOHOSTARCH=arm64
-    elif [ "${BUILD_PROCESSOR}" = "x86_64" ]; then
-        GOHOSTARCH=amd64
-    fi
-
-    if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
-        GOARCH=arm64
-    elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
-        GOARCH=amd64
-    fi
 
     if [ -z "${DISABLE_UNUSED_ARGUMENTS}" ]; then
         COMMON_CFLAGS="\
@@ -257,15 +243,6 @@ function export-compiler-environment() {
         "
     fi
 
-    if [ "${BUILD_OS}" = "android" ]; then
-        GOHOSTOS=android
-    elif [ "${BUILD_OS}" = "gnu" ] ||
-         [ "${BUILD_OS}" = "musl" ]; then
-        GOHOSTOS=linux
-    elif [ "${BUILD_OS}" = "mingw32" ]; then
-        GOHOSTOS=windows
-    fi
-
     if [ -z "${DISABLE_FORTIFY_SOURCE_LEVEL}" ]; then
         FORTIFY_SOURCE_LEVEL=${FORTIFY_SOURCE_LEVEL:-2}
         FORTIFY_CFLAGS="-D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL}"
@@ -284,7 +261,6 @@ function export-compiler-environment() {
             ${FPIC_CFLAG} \
             ${COMMON_CFLAGS} \
         "
-        GOOS=android
         SWIFTCFLAGS="\
             ${FORTIFY_SWIFTCFLAGS} \
             ${SWIFTCFLAGS} \
@@ -295,7 +271,6 @@ function export-compiler-environment() {
             ${FPIC_CFLAG} \
             ${COMMON_CFLAGS} \
         "
-        GOOS=linux
     elif [ "${HOST_OS}" = "macos" ]; then
         COMMON_CFLAGS="\
             -Wl,-platform_version,${HOST_OS},${HOST_OS_API_LEVEL},${HOST_OS_API_LEVEL} \
@@ -305,7 +280,6 @@ function export-compiler-environment() {
             -platform_version ${HOST_OS} ${HOST_OS_API_LEVEL} ${HOST_OS_API_LEVEL} \
             ${LDFLAGS} \
         "
-        GOOS=darwin
         export MACOSX_DEPLOYMENT_TARGET=${HOST_OS_API_LEVEL}
     elif [ "${HOST_OS}" = "musl" ]; then
         COMMON_CFLAGS="\
@@ -314,8 +288,6 @@ function export-compiler-environment() {
             ${FPIC_CFLAG} \
             ${COMMON_CFLAGS} \
         "
-        GO_LDSO=/lib/ld-${HOST_OS}-${HOST_PROCESSOR}.so.1
-        GOOS=linux
         SWIFTCFLAGS="\
             -Xcc -D_ALL_SOURCE=1 \
             ${FORTIFY_SWIFTCFLAGS} \
@@ -327,7 +299,6 @@ function export-compiler-environment() {
             ${FORTIFY_CFLAGS} \
             ${COMMON_CFLAGS} \
         "
-        GOOS=windows
         SWIFTCFLAGS="\
             ${FORTIFY_SWIFTCFLAGS} \
             ${SWIFTCFLAGS} \
@@ -408,6 +379,26 @@ function export-compiler-environment() {
         ${OPTIMIZATION_FLAGS} \
         ${CXXFLAGS} \
     " | ${XARGS}`
+    export LDFLAGS=`${ECHO} "\
+        ${LDFLAGS} \
+    " | ${XARGS}`
+    export LIBS=`${ECHO} "\
+        ${LIBS} \
+    " | ${XARGS}`
+    export LIBTOOLFLAGS=`${ECHO} "\
+        ${LIBTOOLFLAGS} \
+    " | ${XARGS}`
+    export SWIFTCFLAGS=`${ECHO} "\
+        -resource-dir ${PACKAGE_PREFIX}/lib/swift \
+        -Xcc -pipe \
+        -Xcc -stdlib++-isystem -Xcc ${CXX_INCLUDE_DIR} \
+        ${SWIFTCFLAGS} \
+    " | ${XARGS}`
+
+    export-compiler-environment-for-go
+}
+
+function export-compiler-environment-for-go() {
     export CGO_ENABLED=${CGO_ENABLED:-1}
     export CGO_CFLAGS=`${ECHO} "\
         -O${OPTIMIZATION_LEVEL} \
@@ -425,26 +416,46 @@ function export-compiler-environment() {
         -O${LINKER_OPTIMIZATION_LEVEL} \
         ${CCLDFLAGS} \
     " | ${XARGS}`
-    export GO_LDSO=${GO_LDSO}
-    export GOARCH=${GOARCH}
-    export GOHOSTARCH=${GOHOSTARCH}
-    export GOHOSTOS=${GOHOSTOS}
-    export GOOS=${GOOS}
-    export LDFLAGS=`${ECHO} "\
-        ${LDFLAGS} \
-    " | ${XARGS}`
-    export LIBS=`${ECHO} "\
-        ${LIBS} \
-    " | ${XARGS}`
-    export LIBTOOLFLAGS=`${ECHO} "\
-        ${LIBTOOLFLAGS} \
-    " | ${XARGS}`
-    export SWIFTCFLAGS=`${ECHO} "\
-        -resource-dir ${PACKAGE_PREFIX}/lib/swift \
-        -Xcc -pipe \
-        -Xcc -stdlib++-isystem -Xcc ${CXX_INCLUDE_DIR} \
-        ${SWIFTCFLAGS} \
-    " | ${XARGS}`
+    export GO=${GO:-${BINDIR}/go}
+    export GOROOT=${GOROOT:-${BUILD_PACKAGE_PREFIX}/go}
+
+    if [ "${BUILD_PROCESSOR}" = "aarch64" ]; then
+        export GOHOSTARCH=arm64
+    elif [ "${BUILD_PROCESSOR}" = "x86_64" ]; then
+        export GOHOSTARCH=amd64
+    fi
+
+    if [ "${BUILD_OS}" = "android" ]; then
+        export GOHOSTOS=android
+    elif [ "${BUILD_OS}" = "gnu" ] ||
+         [ "${BUILD_OS}" = "musl" ]; then
+        export GOHOSTOS=linux
+    elif [ "${BUILD_OS}" = "macos" ]; then
+        export GOHOSTOS=darwin
+    elif [ "${BUILD_OS}" = "mingw32" ]; then
+        export GOHOSTOS=windows
+    fi
+
+    if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+        export GOARCH=arm64
+    elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+        export GOARCH=amd64
+    fi
+
+    if [ "${HOST_OS}" = "android" ]; then
+        export GOOS=android
+    elif [ "${HOST_OS}" = "gnu" ] ||
+         [ "${HOST_OS}" = "musl" ]; then
+        export GOOS=linux
+    elif [ "${HOST_OS}" = "macos" ]; then
+        export GOOS=darwin
+    elif [ "${HOST_OS}" = "mingw32" ]; then
+        export GOOS=windows
+    fi
+
+    if [ "${HOST_OS}" = "musl" ]; then
+        export GO_LDSO=/lib/ld-${HOST_OS}-${HOST_PROCESSOR}.so.1
+    fi
 }
 
 function generate-compiler-tools() {
