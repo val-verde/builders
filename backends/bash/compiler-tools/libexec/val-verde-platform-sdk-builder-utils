@@ -96,10 +96,18 @@ PKG_CONFIG_PATH=\"${!host_pkg_config_path}\" exec ${PKG_CONFIG} \"\${@}\"
 }
 
 function export-compiler-environment() {
-    if [ -n "${BUILD_CC}" ]; then
+    if [ -n "${EXPORTED_COMPILER_ENVIRONMENT}" ]; then
         return
     fi
 
+    export-compiler-environment-for-build-tools
+    export-compiler-environment-for-c-and-cxx
+    export-compiler-environment-for-go
+    export-compiler-environment-for-swift
+    EXPORTED_COMPILER_ENVIRONMENT=TRUE
+}
+
+function export-compiler-environment-for-c-and-cxx() {
     BINTOOLS_PREFIX=${BINTOOLS_PREFIX:-llvm-}
     BINTOOLS_PATH_PREFIX=${BINDIR}/${BINTOOLS_PREFIX}
     CXX_INCLUDE_DIR=${CXX_INCLUDE_DIR:-${PACKAGE_PREFIX}/include/c++/v1}
@@ -107,11 +115,6 @@ function export-compiler-environment() {
 
     export CLANG=${CLANG:-sclang}
     export FLANG=${FLANG:-${BINDIR}/flang}
-    export ACLOCAL_PATH=${PACKAGE_PREFIX}/share/aclocal
-
-    if [ "${SYSROOT}" = "/" ]; then
-        export ACLOCAL_PATH=${ACLOCAL_PATH}:/usr/share/aclocal
-    fi
 
     export AR=${AR:-${BINTOOLS_PATH_PREFIX}ar}
     export AS=${CC:-${BINDIR}/${CLANG}}
@@ -127,7 +130,6 @@ function export-compiler-environment() {
 
     export CC=${CC:-${BINDIR}/${CLANG}}
     export CCLD=${CCLD:-${CC}}
-    export CMAKE=${CMAKE:-${BINDIR}/cmake}
     export CPP=${CPP:-${CC}-cpp}
     export CXX=${CXX:-${CC}++}
     export CXXFILT=${CXXFILT:-${BINTOOLS_PATH_PREFIX}cxxfilt}
@@ -146,25 +148,13 @@ function export-compiler-environment() {
 
     export LIBTOOL_DARWIN=${LIBTOOL_DARWIN:-${BINTOOLS_PATH_PREFIX}libtool-darwin}
     export LIPO=${LIPO:-${BINTOOLS_PATH_PREFIX}lipo}
-    export MAKE=${MAKE:-${BINDIR}/make}
     export MANIFEST_TOOL=${MANIFEST_TOOL:-${BINTOOLS_PATH_PREFIX}mt}
-    export MESON=${MESON:-${BINDIR}/meson}
-    export NINJA=${NINJA:-${BINDIR}/ninja}
     export NM=${NM:-${BINTOOLS_PATH_PREFIX}nm}
-    export NODE=${NODE:-${BINDIR}/node}
     export OBJC=${OBJC:-${CC}}
     export OBJCOPY=${OBJCOPY:-${BINTOOLS_PATH_PREFIX}objcopy}
     export OBJCPP=${OBJCPP:-${CPP}}
     export OBJCXX=${OBJCXX:-${CXX}}
     export OBJDUMP=${OBJDUMP:-${BINTOOLS_PATH_PREFIX}objdump}
-    export PKG_CONFIG=${PKG_CONFIG:-${BINDIR}/pkg-config}
-    export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-${PACKAGE_PREFIX}/lib/pkgconfig:${PACKAGE_PREFIX}/share/pkgconfig}
-
-    if [ "${SYSROOT}" = "/" ]; then
-        export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:/usr/lib/${BUILD_TRIPLE}/pkgconfig:/usr/share/pkgconfig
-    fi
-
-    export PYTHON=${PYTHON:-${BINDIR}/python}
     export RANLIB=${RANLIB:-${BINTOOLS_PATH_PREFIX}ranlib}
     export RC=${RC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-rc}
     export READELF=${READELF:-${BINTOOLS_PATH_PREFIX}readelf}
@@ -360,9 +350,28 @@ function export-compiler-environment() {
     export LIBS=`${ECHO} "\
         ${LIBS} \
     " | ${XARGS}`
+}
 
-    export-compiler-environment-for-go
-    export-compiler-environment-for-swift
+function export-compiler-environment-for-build-tools() {
+{
+    export ACLOCAL_PATH=${PACKAGE_PREFIX}/share/aclocal
+
+    if [ "${SYSROOT}" = "/" ]; then
+        export ACLOCAL_PATH=${ACLOCAL_PATH}:/usr/share/aclocal
+    fi
+
+    export CMAKE=${CMAKE:-${BINDIR}/cmake}
+    export MAKE=${MAKE:-${BINDIR}/make}
+    export MESON=${MESON:-${BINDIR}/meson}
+    export NINJA=${NINJA:-${BINDIR}/ninja}
+    export NODE=${NODE:-${BINDIR}/node}
+    export PKG_CONFIG=${PKG_CONFIG:-${BINDIR}/pkg-config}
+    export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-${PACKAGE_PREFIX}/lib/pkgconfig:${PACKAGE_PREFIX}/share/pkgconfig}
+
+    if [ "${SYSROOT}" = "/" ]; then
+        export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:/usr/lib/${BUILD_TRIPLE}/pkgconfig:/usr/share/pkgconfig
+    fi
+    export PYTHON=${PYTHON:-${BINDIR}/python}
 }
 
 function export-compiler-environment-for-go() {
