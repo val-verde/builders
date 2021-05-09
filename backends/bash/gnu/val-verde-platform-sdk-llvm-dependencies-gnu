@@ -9,6 +9,7 @@ export \
     AUTOGEN=/usr/bin/autogen \
     AUTORECONF=/usr/bin/autoreconf \
     AUTOUPDATE=/usr/bin/autoupdate \
+    BASENAME=/usr/bin/basename \
     BASH=/usr/bin/bash \
     BISON=/usr/bin/bison \
     CHMOD=/usr/bin/chmod \
@@ -425,6 +426,7 @@ unset TAR
 # coreutils build
 package-invoke-builder coreutils-cross
 unset \
+    BASENAME \
     CHMOD \
     CP \
     CUT \

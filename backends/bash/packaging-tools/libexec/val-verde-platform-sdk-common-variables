@@ -33,6 +33,7 @@ export APT=${APT:-${BINDIR}/apt}
 export AUTOGEN=${AUTOGEN:-${BINDIR}/autogen}
 export AUTORECONF=${AUTORECONF:-${BINDIR}/autoreconf}
 export AUTOUPDATE=${AUTOUPDATE:-${BINDIR}/autoupdate}
+export BASENAME=${BASENAME:-${BINDIR}/basename}
 export BASH=${BASH:-${BINDIR}/bash}
 export BISON=${BISON:-${BINDIR}/bison}
 export CAT=${CAT:-${BINDIR}/cat}

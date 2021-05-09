@@ -534,7 +534,7 @@ function tool-install() {
     ${ECHO} -e "                   \e[31m${STAGE_ROOT}/builder-installation-stderr.log\e[0m"
     ${ECHO} -e "        Time Started: \e[4m$(date)\e[0m"
 
-    if [ "${TOOL}" = "${MAKE}" ]; then
+    if [ "`${BASENAME} ${TOOL}`" = "make" ]; then
         DESTDIR_CMD="DESTDIR=${DESTDIR}"
     else
         export DESTDIR=${DESTDIR}
