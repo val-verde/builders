@@ -108,6 +108,11 @@ function export-compiler-environment() {
     export CLANG=${CLANG:-sclang}
     export FLANG=${FLANG:-${BINDIR}/flang}
     export ACLOCAL_PATH=${PACKAGE_PREFIX}/share/aclocal
+
+    if [ "${SYSROOT}" = "/" ]; then
+        export ACLOCAL_PATH=${ACLOCAL_PATH}:/usr/share/aclocal
+    fi
+
     export AR=${AR:-${BINTOOLS_PATH_PREFIX}ar}
     export AS=${CC:-${BINDIR}/${CLANG}}
     export BUILD_AS=${BUILD_AS:-${BINDIR}/${CLANG}}
@@ -157,6 +162,11 @@ function export-compiler-environment() {
     export OBJDUMP=${OBJDUMP:-${BINTOOLS_PATH_PREFIX}objdump}
     export PKG_CONFIG=${PKG_CONFIG:-${BINDIR}/pkg-config}
     export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-${PACKAGE_PREFIX}/lib/pkgconfig:${PACKAGE_PREFIX}/share/pkgconfig}
+
+    if [ "${SYSROOT}" = "/" ]; then
+        export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:/usr/lib/${BUILD_TRIPLE}/pkgconfig:/usr/share/pkgconfig
+    fi
+
     export PYTHON=${PYTHON:-${BINDIR}/python}
     export RANLIB=${RANLIB:-${BINTOOLS_PATH_PREFIX}ranlib}
     export RC=${RC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-rc}
@@ -217,6 +227,7 @@ function export-compiler-environment() {
             -sdk ${SYSROOT} \
             ${SWIFTCFLAGS} \
         "
+    fi
 
 	if [ -z "${DISABLE_COMPILER_TARGET}" ]; then
             COMMON_CFLAGS="\
@@ -224,10 +235,6 @@ function export-compiler-environment() {
                 ${COMMON_CFLAGS} \
             "
 	fi
-    else
-        export ACLOCAL_PATH=${ACLOCAL_PATH}:/usr/share/aclocal
-        export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:/usr/lib/${BUILD_TRIPLE}/pkgconfig:/usr/share/pkgconfig
-    fi
 
     if [ "${SYSROOT}${PACKAGE_USR_PREFIX}" != "${PACKAGE_PREFIX}" ]; then
         COMMON_CFLAGS="\
