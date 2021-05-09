@@ -310,8 +310,8 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         LLVM_POLLY_CFLAG="-mllvm -polly"
     fi
 
-    if [ -z "${ENABLE_LLVM_VERIFIER}" ]; then
-        DISABLE_LLVM_VERIFIER_CFLAG="-disable-verify"
+    if [ -n "${DISABLE_LLVM_VERIFIER}" ]; then
+        DISABLE_LLVM_VERIFIER_CFLAG="-Xclang -disable-llvm-verifier"
     fi
 
     if [ -n "${!VARIANT_ARCH_VECTOR_SIZE}" ]; then
@@ -349,7 +349,6 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         ${FPIC_CFLAG} \
         ${OPTIMIZATION_FLAGS} \
         ${FORTIFY_CFLAGS} \
-        ${PACKAGE_PREFIX_LIBDIR_CFLAG} \
         ${LLVM_FORCE_VECTOR_WIDTH_CFLAG} \
         ${FLTO_CFLAG} \
         ${LLVM_POLLY_CFLAG} \
@@ -359,6 +358,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     "
     export ${TOOL_COMMON_LDFLAGS}="\
         ${SYSROOT_CFLAG} \
+        ${PACKAGE_PREFIX_LIBDIR_CFLAG} \
         ${!TOOL_COMMON_LDFLAGS} \
     "
 
@@ -1346,6 +1346,10 @@ function package-swift-build() {
         POLLY_SWIFTCFLAG="-Xllvm\", \"-polly"
     fi
 
+    if [ -n "${DISABLE_LLVM_VERIFIER}" ]; then
+        DISABLE_LLVM_VERIFIER_CFLAG="-Xclang\", \"-disable-llvm-verifier"
+    fi
+
     if [ -z "${DISABLE_STRIP}" ] &&
        [ "${HOST_OS}" != "macos" ]; then
         STRIP_LDFLAG="-s"
@@ -1417,8 +1421,8 @@ function package-swift-build() {
         \"extra-cpp-flags\": [ \n\
         ], \n\
         \"extra-linker-flags\": [ \n\
-            \"-disable-verify\", \n\
             \"-O${LINKER_OPTIMIZATION_LEVEL}\", \n\
+            \"${DISABLE_LLVM_VERIFIER_CFLAG}\", \n\
             \"${FLTO_CFLAG}\", \n\
             \"${STRIP_LDFLAG}\", \n\
         ], \n\
