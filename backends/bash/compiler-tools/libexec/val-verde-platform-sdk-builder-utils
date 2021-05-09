@@ -147,7 +147,6 @@ function export-compiler-environment() {
     export LIBTOOL_DARWIN=${LIBTOOL_DARWIN:-${BINTOOLS_PATH_PREFIX}libtool-darwin}
     export LIPO=${LIPO:-${BINTOOLS_PATH_PREFIX}lipo}
     export MAKE=${MAKE:-${BINDIR}/make}
-    export MAKEINFO=${MAKEINFO:-${BINDIR}/true}
     export MANIFEST_TOOL=${MANIFEST_TOOL:-${BINTOOLS_PATH_PREFIX}mt}
     export MESON=${MESON:-${BINDIR}/meson}
     export NINJA=${NINJA:-${BINDIR}/ninja}
@@ -172,7 +171,6 @@ function export-compiler-environment() {
     export SIZE=${SIZE:-${BINTOOLS_PATH_PREFIX}size}
     export STRINGS=${STRINGS:-${BINTOOLS_PATH_PREFIX}strings}
     export STRIP=${STRIP:-${BINTOOLS_PATH_PREFIX}strip}
-    export SWIFTC=${SWIFTC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc}
     export WINDRES=${RC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-rc}
 
     if [ -z "${DISABLE_UNUSED_ARGUMENTS}" ]; then
@@ -209,18 +207,14 @@ function export-compiler-environment() {
             --sysroot=${SYSROOT} \
             ${LDFLAGS} \
         "
-        SWIFTCFLAGS="\
-            -sdk ${SYSROOT} \
-            ${SWIFTCFLAGS} \
-        "
     fi
 
-	if [ -z "${DISABLE_COMPILER_TARGET}" ]; then
-            COMMON_CFLAGS="\
-                --target=${HOST_TRIPLE} \
-                ${COMMON_CFLAGS} \
-            "
-	fi
+    if [ -z "${DISABLE_COMPILER_TARGET}" ]; then
+        COMMON_CFLAGS="\
+            --target=${HOST_TRIPLE} \
+            ${COMMON_CFLAGS} \
+        "
+    fi
 
     if [ "${SYSROOT}${PACKAGE_USR_PREFIX}" != "${PACKAGE_PREFIX}" ]; then
         COMMON_CFLAGS="\
@@ -236,17 +230,11 @@ function export-compiler-environment() {
             -L${PACKAGE_PREFIX}/lib \
             ${LDFLAGS} \
         "
-        SWIFTCFLAGS="\
-            -I${PACKAGE_PREFIX}/include \
-            -L${PACKAGE_PREFIX}/lib \
-            ${SWIFTCFLAGS} \
-        "
     fi
 
     if [ -z "${DISABLE_FORTIFY_SOURCE_LEVEL}" ]; then
         FORTIFY_SOURCE_LEVEL=${FORTIFY_SOURCE_LEVEL:-2}
         FORTIFY_CFLAGS="-D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL}"
-        FORTIFY_SWIFTCFLAGS="-Xcc -D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL}"
     fi
 
     if [ -z "${DISABLE_FPIC}" ] &&
@@ -260,10 +248,6 @@ function export-compiler-environment() {
             ${FORTIFY_CFLAGS} \
             ${FPIC_CFLAG} \
             ${COMMON_CFLAGS} \
-        "
-        SWIFTCFLAGS="\
-            ${FORTIFY_SWIFTCFLAGS} \
-            ${SWIFTCFLAGS} \
         "
     elif [ "${HOST_OS}" = "gnu" ]; then
         COMMON_CFLAGS="\
@@ -288,20 +272,11 @@ function export-compiler-environment() {
             ${FPIC_CFLAG} \
             ${COMMON_CFLAGS} \
         "
-        SWIFTCFLAGS="\
-            -Xcc -D_ALL_SOURCE=1 \
-            ${FORTIFY_SWIFTCFLAGS} \
-            ${SWIFTCFLAGS} \
-        "
     elif [ "${HOST_OS}" = "mingw32" ]; then
         COMMON_CFLAGS="\
             -fno-builtin-stpcpy \
             ${FORTIFY_CFLAGS} \
             ${COMMON_CFLAGS} \
-        "
-        SWIFTCFLAGS="\
-            ${FORTIFY_SWIFTCFLAGS} \
-            ${SWIFTCFLAGS} \
         "
     fi
 
@@ -385,17 +360,9 @@ function export-compiler-environment() {
     export LIBS=`${ECHO} "\
         ${LIBS} \
     " | ${XARGS}`
-    export LIBTOOLFLAGS=`${ECHO} "\
-        ${LIBTOOLFLAGS} \
-    " | ${XARGS}`
-    export SWIFTCFLAGS=`${ECHO} "\
-        -resource-dir ${PACKAGE_PREFIX}/lib/swift \
-        -Xcc -pipe \
-        -Xcc -stdlib++-isystem -Xcc ${CXX_INCLUDE_DIR} \
-        ${SWIFTCFLAGS} \
-    " | ${XARGS}`
 
     export-compiler-environment-for-go
+    export-compiler-environment-for-swift
 }
 
 function export-compiler-environment-for-go() {
@@ -456,6 +423,53 @@ function export-compiler-environment-for-go() {
     if [ "${HOST_OS}" = "musl" ]; then
         export GO_LDSO=/lib/ld-${HOST_OS}-${HOST_PROCESSOR}.so.1
     fi
+}
+
+function export-compiler-environment-for-swift() {
+    if [ "${SYSROOT}" != "/" ]; then
+        SWIFTCFLAGS="\
+            -sdk ${SYSROOT} \
+            ${SWIFTCFLAGS} \
+        "
+    fi
+
+    if [ -z "${DISABLE_FORTIFY_SOURCE_LEVEL}" ]; then
+        for FORTIFY_CFLAG in ${FORTIFY_CFLAGS}; do
+            FORTIFY_SWIFTCFLAGS="-Xcc ${FORTIFY_CFLAG} ${FORTIFY_SWIFTCFLAGS}"
+        done
+    fi
+
+    if [ "${HOST_OS}" = "macos" ]; then
+        SWIFTCFLAGS="\
+            -Xcc -D_ALL_SOURCE=1 \
+            -Xlinker -Wl,-platform_version,${HOST_OS},${HOST_OS_API_LEVEL},${HOST_OS_API_LEVEL} \
+            ${FORTIFY_SWIFTCFLAGS} \
+            ${SWIFTCFLAGS} \
+        "
+    elif [ "${HOST_OS}" = "musl" ]; then
+        SWIFTCFLAGS="\
+            -Xcc -D_ALL_SOURCE=1 \
+            ${SWIFTCFLAGS} \
+        "
+    fi
+
+    if [ "${SYSROOT}${PACKAGE_USR_PREFIX}" != "${PACKAGE_PREFIX}" ]; then
+        SWIFTCFLAGS="\
+            -I${PACKAGE_PREFIX}/include \
+            -L${PACKAGE_PREFIX}/lib \
+            ${SWIFTCFLAGS} \
+        "
+    fi
+
+    export SWIFTC=${SWIFTC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc}
+    export SWIFTCFLAGS=`${ECHO} "\
+        -resource-dir ${PACKAGE_PREFIX}/lib/swift \
+        -O${SWIFT_OPTIMIZATION_LEVEL} \
+        -Xcc -pipe \
+        -Xcc -stdlib++-isystem -Xcc ${CXX_INCLUDE_DIR} \
+        ${FORTIFY_SWIFTCFLAGS} \
+        ${SWIFTCFLAGS} \
+    " | ${XARGS}`
 }
 
 function generate-compiler-tools() {
