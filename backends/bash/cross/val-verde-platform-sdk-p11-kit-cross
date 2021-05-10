@@ -10,7 +10,7 @@ export SOURCE_PACKAGE_VERSION=0
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for meson/install
-if [ "${HOST_OS}" = "gnu" ]; then
+if [ -z "${DISABLE_SYSTEMD}" ]; then
     FEATURE_SYSTEMD=enabled
 else
     FEATURE_SYSTEMD=disabled
