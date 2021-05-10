@@ -133,6 +133,8 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     BINTOOLS_PREFIX=${BINTOOLS_PREFIX:-llvm-}
     BINTOOLS_PATH_PREFIX=${BINDIR}/${BINTOOLS_PREFIX}
     ENV_PREFIX=
+    LINKER_OPTIMIZATION_LEVEL=${LINKER_OPTIMIZATION_LEVEL:-2}
+    OPTIMIZATION_LEVEL=${OPTIMIZATION_LEVEL:-z}
     VARIANT=${1}
     VARIANT_ARCH=${VARIANT}_ARCH
     VARIANT_ARCH_VECTOR_SIZE=${VARIANT}_ARCH_VECTOR_SIZE
@@ -257,7 +259,8 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     # CFLAG import paths
 
     if [ "${SYSROOT}" != "/" ]; then
-        SYSROOT_CFLAG="--sysroot=${SYSROOT}"
+        TARGET_SYSROOT_VAR=${ENV_VAR}SYSROOT
+        SYSROOT_CFLAG="--sysroot=${!TARGET_SYSROOT_VAR}"
     fi
 
     if [ "${SYSROOT}${PACKAGE_USR_PREFIX}" != "${PACKAGE_PREFIX}" ]; then
@@ -301,6 +304,9 @@ function export-compiler-environment-for-c-and-cxx-variant() {
 
     # CFLAG code generation
 
+    OPTIMIZATION_CFLAG="-O${OPTIMIZATION_LEVEL}"
+    OPTIMIZATION_LDFLAG="-O${OPTIMIZATION_LEVEL}"
+
     if [ -n "${ENABLE_FLTO}" ]; then
         FLTO_OPTION=`${ECHO} ${ENABLE_FLTO} | ${TR} '[:upper:]' '[:lower:]'`
         FLTO_CFLAG="-flto=${FLTO_OPTION}"
@@ -325,6 +331,14 @@ function export-compiler-environment-for-c-and-cxx-variant() {
 
     if [ -z "${DISABLE_RTLIB}" ]; then
         RTLIB_CFLAG="-rtlib=${RTLIB} "
+    fi
+
+    if [ "${!VARIANT_OS}" = "macos" ]; then
+        DISABLE_STRIP=TRUE
+    fi
+
+    if [ -z "${DISABLE_STRIP}" ]; then
+        STRIP_CFLAG="-s"
     fi
 
     TOOL_COMMON_CFLAGS=${ENV_PREFIX}COMMON_CFLAGS
@@ -359,12 +373,15 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     export ${TOOL_COMMON_LDFLAGS}="\
         ${SYSROOT_CFLAG} \
         ${PACKAGE_PREFIX_LIBDIR_CFLAG} \
+        ${OPTIMIZATION_LDFLAG} \
+        ${STRIP_CFLAG} \
         ${!TOOL_COMMON_LDFLAGS} \
     "
 
     export ${TOOL_CFLAGS}="`${ECHO} "\
         ${PIPE_CFLAG} \
-        ${COMMON_CFLAGS} \
+        ${!TOOL_COMMON_CFLAGS} \
+        ${OPTIMIZATION_CFLAG} \
         ${!TOOL_CFLAGS} \
     " | ${XARGS}`"
     export ${TOOL_ASFLAGS}="`${ECHO} "\
@@ -529,8 +546,6 @@ function generate-compiler-tools-variant() {
     fi
 
     GENERATED_BINDIR=${GENERATED_BINDIR:-${STAGE_ROOT}}
-    LINKER_OPTIMIZATION_LEVEL=${LINKER_OPTIMIZATION_LEVEL:-2}
-    OPTIMIZATION_LEVEL=${OPTIMIZATION_LEVEL:-z}
     TOOL_PREFIX=`${ECHO} ${VARIANT} | ${TR} '[:upper:]' '[:lower:]'`
 
     TOOL_AS=${ENV_PREFIX}AS
@@ -548,8 +563,11 @@ function generate-compiler-tools-variant() {
     TOOL_LD=${ENV_PREFIX}LD
     TOOL_LDFLAGS=${ENV_PREFIX}LDFLAGS
     TOOL_OBJC=${ENV_PREFIX}OBJC
+    TOOL_OBJCFLAGS=${ENV_PREFIX}OBJCFLAGS
     TOOL_OBJCPP=${ENV_PREFIX}OBJCPP
+    TOOL_OBJCPPFLAGS=${ENV_PREFIX}OBJCPPFLAGS
     TOOL_OBJCXX=${ENV_PREFIX}OBJCXX
+    TOOL_OBJCXXFLAGS=${ENV_PREFIX}OBJCXXFLAGS
 
     create-host-tool ${!TOOL_AS} ${ENV_PREFIX}ASFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-as-clang
     create-host-tool ${!TOOL_CC} ${ENV_PREFIX}CFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang
@@ -560,36 +578,25 @@ function generate-compiler-tools-variant() {
     create-host-tool ${!TOOL_LD} ${ENV_PREFIX}LDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld
 
     export ${TOOL_AS}=${GENERATED_BINDIR}/${TOOL_PREFIX}-as-clang
-    export ${TOOL_ASFLAGS}="-O${OPTIMIZATION_LEVEL}"
+    export ${TOOL_ASFLAGS}="${OPTIMIZATION_CFLAG}"
     export ${TOOL_CC}=${GENERATED_BINDIR}/${TOOL_PREFIX}-clang
-    export ${TOOL_CFLAGS}="-O${OPTIMIZATION_LEVEL}"
+    export ${TOOL_CFLAGS}="${OPTIMIZATION_CFLAG}"
     export ${TOOL_CCLD}=${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang
-    export ${TOOL_CCLDFLAGS}="-O${LINKER_OPTIMIZATION_LEVEL}"
+    export ${TOOL_CCLDFLAGS}="${OPTIMIZATION_LDFLAG} ${STRIP_CFLAG}"
     export ${TOOL_CPP}=${!TOOL_CC}-cpp
-    export ${TOOL_CPPFLAGS}="-O${OPTIMIZATION_LEVEL}"
+    unset ${TOOL_CPPFLAGS}=
     export ${TOOL_CXX}=${!TOOL_CC}++
-    export ${TOOL_CXXFLAGS}="-O${OPTIMIZATION_LEVEL}"
+    export ${TOOL_CXXFLAGS}="${OPTIMIZATION_CFLAG}"
     export ${TOOL_CXXLD}=${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang++
-    export ${TOOL_CXXLDFLAGS}="-O${OPTIMIZATION_LEVEL}"
+    export ${TOOL_CXXLDFLAGS}="${OPTIMIZATION_LDFLAG} ${STRIP_CFLAG}"
     export ${TOOL_LD}=${GENERATED_BINDIR}/${TOOL_PREFIX}-ld
-    export ${TOOL_LDFLAGS}="-O${LINKER_OPTIMIZATION_LEVEL}"
+    export ${TOOL_LDFLAGS}="${OPTIMIZATION_LDFLAG} ${STRIP_CFLAG}"
     export ${TOOL_OBJC}=${!TOOL_CC}
+    export ${TOOL_OBJCFLAGS}="${OPTIMIZATION_CFLAG}"
     export ${TOOL_OBJCPP}=${!TOOL_CPP}
+    unset ${TOOL_OBJCPPFLAGS}=
     export ${TOOL_OBJCXX}=${!TOOL_CXX}
-
-    if [ "${!VARIANT_OS}" = "macos" ]; then
-        DISABLE_STRIP=TRUE
-    fi
-
-    if [ -z "${DISABLE_STRIP}" ]; then
-        STRIP_CFLAG="-s"
-    fi
-
-    TOOL_LDFLAGS=${ENV_PREFIX}LDFLAGS
-    export ${ENV_PREFIX}LDFLAGS="`${ECHO} "\
-        ${STRIP_CFLAG}\
-        ${!TOOL_LDFLAGS} \
-    " | ${XARGS}`"
+    export ${TOOL_OBJCXXFLAGS}="${OPTIMIZATION_CFLAG}"
 }
 
 function get-rust-build-deps() {

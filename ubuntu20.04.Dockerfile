@@ -66,7 +66,8 @@ COPY backends/bash/compiler-tools/libexec/* \
 COPY backends/bash/bootstrap \
      /sources/
 
-RUN HOST_ARCH=${BUILD_ARCH} \
+RUN BUILD_SYSROOT=/ \
+    HOST_ARCH=${BUILD_ARCH} \
     HOST_CPU=${BUILD_CPU} \
     HOST_KERNEL=${BUILD_KERNEL} \
     HOST_OS=${BUILD_OS} \
