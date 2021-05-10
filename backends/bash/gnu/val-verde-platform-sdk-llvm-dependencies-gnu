@@ -501,6 +501,7 @@ package-invoke-builder gtk-doc-cross
 package-invoke-builder libtasn1-cross
 
 # p11-kit build
+DISABLE_SYSTEMD=TRUE \
 package-invoke-builder p11-kit-cross
 
 # nettle build
@@ -535,6 +536,9 @@ package-invoke-builder cups-cross
 
 # systemd build
 package-invoke-builder systemd
+
+# p11-kit build
+package-invoke-builder p11-kit-cross
 
 # util-linux build (with python and systemd support)
 package-invoke-builder util-linux-cross

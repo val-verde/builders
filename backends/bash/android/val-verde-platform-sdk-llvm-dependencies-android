@@ -382,6 +382,7 @@ package-invoke-builder libxslt-cross
 package-invoke-builder libtasn1-cross
 
 # android p11-kit build
+DISABLE_SYSTEMD=TRUE \
 package-invoke-builder p11-kit-cross
 
 # android nettle build
