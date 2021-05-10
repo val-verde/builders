@@ -458,12 +458,6 @@ unset DPKG
 package-invoke-builder rsync-cross
 unset RSYNC
 
-# systemd build
-package-invoke-builder systemd
-
-# lvm2 build
-package-invoke-builder lvm2-cross
-
 # lua build
 package-invoke-builder lua-cross
 
@@ -538,6 +532,12 @@ package-invoke-builder pkg-config-cross
 
 # cups build
 package-invoke-builder cups-cross
+
+# systemd build
+package-invoke-builder systemd
+
+# lvm2 build
+package-invoke-builder lvm2-cross
 
 # apt build
 package-invoke-builder apt-cross
