@@ -9,7 +9,7 @@ export SOURCE_PACKAGE_VERSION=1
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-# Configure the build components
+# Invoke one-shot template for stage/configure/install
 if [ "${HOST_OS}" = "gnu" ]; then
     export CFLAGS=`${ECHO} "\
         -D_IO_ftrylockfile=1 \
@@ -18,9 +18,4 @@ if [ "${HOST_OS}" = "gnu" ]; then
     " | ${XARGS}`
 fi
 
-mkdir -p ${STAGE_ROOT}/bin
-create-host-tool ${BINDIR}/true NOFLAGS ${STAGE_ROOT}/bin/help2man
-
-# Invoke one-shot template for stage/configure/install
-PATH=${STAGE_ROOT}/bin:$PATH \
 package-stage-configure-install-archive
