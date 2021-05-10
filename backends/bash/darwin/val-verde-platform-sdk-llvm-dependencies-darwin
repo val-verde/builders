@@ -325,9 +325,6 @@ package-invoke-builder bison-cross
 # jq build
 package-invoke-builder jq-cross
 
-# strace build
-# package-invoke-builder strace-cross
-
 # fontconfig build
 package-invoke-builder fontconfig-cross
 
@@ -379,6 +376,9 @@ package-invoke-builder libmicrohttpd-cross
 
 # elfutils build
 # package-invoke-builder elfutils-cross
+
+# strace build
+# package-invoke-builder strace-cross
 
 # glib build
 package-invoke-builder glib-cross
