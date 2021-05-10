@@ -341,17 +341,6 @@ package-invoke-builder bison-cross
 # android jq build
 package-invoke-builder jq-cross
 
-# android strace build
-# if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
-#     package-invoke-builder strace-cross
-# else
-#     CFLAGS="\
-#         -Dfputs_unlocked=fputs \
-#         ${CFLAGS} \
-#     " \
-#     package-invoke-builder strace-cross
-# fi
-
 # android fontconfig build
 package-invoke-builder fontconfig-cross
 
@@ -405,15 +394,22 @@ package-invoke-builder gnutls-cross
 package-invoke-builder libmicrohttpd-cross
 
 # android elfutils build
-CFLAGS="\
+COMMON_CFLAGS="\
     -lintl \
-    ${CFLAGS} \
-" \
-CXXFLAGS="\
-    -lintl \
-    ${CXXFLAGS} \
+    ${COMMON_CFLAGS} \
 " \
 package-invoke-builder elfutils-cross
+
+# android strace build
+# if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
+#     package-invoke-builder strace-cross
+# else
+#     COMMON_CFLAGS="\
+#         -Dfputs_unlocked=fputs \
+#         ${COMMON_CFLAGS} \
+#     " \
+#     package-invoke-builder strace-cross
+# fi
 
 # android glib build
 package-invoke-builder glib-cross
