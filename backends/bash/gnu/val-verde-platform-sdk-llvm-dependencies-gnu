@@ -536,6 +536,9 @@ package-invoke-builder cups-cross
 # systemd build
 package-invoke-builder systemd
 
+# util-linux build (with python and systemd support)
+package-invoke-builder util-linux-cross
+
 # lvm2 build
 package-invoke-builder lvm2-cross
 
