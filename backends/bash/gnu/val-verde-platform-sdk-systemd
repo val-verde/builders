@@ -26,5 +26,21 @@ function package-install-completion-callback() {
 
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-meson-install-archive \
+    -Dapparmor=false \
+    -Daudit=false \
+    -Dbzip2=false \
+    -Delfutils=false \
+    -Dgcrypt=true \
+    -Dglib=true \
+    -Dgnutls=true \
+    -Dlibcurl=true \
+    -Dlz4=true \
+    -Dmicrohttp=true \
+    -Dopenssl=true \
+    -Dp11kit=true \
     -Drootprefix=${PACKAGE_PREFIX} \
-    -Dtests=false
+    -Dseccomp=false \
+    -Dselinux=false \
+    -Dtests=false \
+    -Dzlib=true \
+    -Dzstd=true

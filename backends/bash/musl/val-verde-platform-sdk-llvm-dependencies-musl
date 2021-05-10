@@ -365,9 +365,6 @@ package-invoke-builder dpkg-cross
 # rsync build
 package-invoke-builder rsync-cross
 
-# systemd build
-# package-invoke-builder systemd
-
 # lua build
 package-invoke-builder lua-cross
 
@@ -430,6 +427,12 @@ package-invoke-builder cups-cross
 
 # apt build
 package-invoke-builder apt-cross
+
+# systemd build
+# package-invoke-builder systemd
+
+# lvm2 build
+# package-invoke-builder lvm2
 
 # popt build
 package-invoke-builder popt-cross
