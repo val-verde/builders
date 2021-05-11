@@ -101,9 +101,9 @@ DISABLED_WARNING_CFLAGS=`${ECHO} "\
 
 export AR_host=${AR_host:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar}
 export AR_target=${AR}
-export AS_host=${AS_host:-${BUILD_CC}
+export AS_host=${AS_host:-${BUILD_AS}}
 export AS_target=${AS}
-export CC_host=${CC_host:-${BUILD_CC}
+export CC_host=${CC_host:-${BUILD_CC}}
 export CC_target=${CC}
 export CFLAGS_host=`${ECHO} "\
     --sysroot=${BUILD_PACKAGE_PREFIX}/.. \
@@ -117,23 +117,21 @@ export CPPFLAGS_host=`${ECHO} "\
     ${DISABLED_WARNING_CFLAGS} \
 " | ${XARGS}`
 export CPPFLAGS=`${ECHO} ${CPPFLAGS} | ${XARGS}`
-export CXX_host=${CXX_host:-"${BUILD_CXX} --sysroot=${BUILD_PACKAGE_PREFIX}/.."}
+export CXX_host=${CXX_host:-${BUILD_CXX}}
 export CXX_target=${CXX}
 export CXXFLAGS_host=`${ECHO} "\
-    --sysroot=${BUILD_PACKAGE_PREFIX}/.. \
     ${DISABLED_WARNING_CFLAGS} \
+    ${BUILD_CXXFLAGS} \
 " | ${XARGS}`
 export CXXFLAGS=`${ECHO} "\
     ${DISABLED_WARNING_CFLAGS} \
     ${CXXFLAGS} \
 " | ${XARGS}`
-LDFLAGS_host=`${ECHO} "\
-    --sysroot=${BUILD_PACKAGE_PREFIX}/.. \
-" | ${XARGS}`
+LDFLAGS_host=`${ECHO} ${BUILD_LDFLAGS} | ${XARGS}`
 export LDFLAGS=`${ECHO} ${LDFLAGS} | ${XARGS}`
-export LINK="${LD_host:-${BUILD_PACKAGE_PREFIX}/bin/clang++} ${LDFLAGS_host}"
-export LINK_target="${CXXLD}"
-export RANLIB_host=${RANLIB_host:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib}
+export LINK=${LD_host:-${BUILD_CXXLD}}
+export LINK_target=${CXXLD}
+export RANLIB_host=${RANLIB_host:-${BUILD_RANLIB}}
 export RANLIB_target=${RANLIB}
 
 ${STAGE_ROOT}/configure \
