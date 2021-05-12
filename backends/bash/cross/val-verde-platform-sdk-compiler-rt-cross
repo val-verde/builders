@@ -63,8 +63,9 @@ elif [ "${HOST_OS}" = "mingw32" ]; then
     "
 elif [ "${HOST_OS}" = "musl" ]; then
     CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
+    ${ECHO} "#define printf(...)" > ${STAGE_ROOT}/dummy-printf.h
     COMMON_CFLAGS="\
-        -Dprintf\\\(...\\\)= \
+        -include ${STAGE_ROOT}/dummy-printf.h \
         ${COMMON_CFLAGS} \
     "
 elif [ "${HOST_OS}" = "wasi" ]; then
@@ -95,7 +96,7 @@ package-cmake-install-archive \
     -DCMAKE_C_COMPILER_WORKS=TRUE \
     -DCMAKE_CXX_COMPILER_WORKS=TRUE \
     -DCMAKE_SIZEOF_VOID_P=${SIZEOF_VOID_P} \
-    -DCOMPILER_RT_BUILD_LIBFUZZER=TRUE \
+    -DCOMPILER_RT_BUILD_LIBFUZZER=FALSE \
     -DCOMPILER_RT_BUILD_MEMPROF=FALSE \
     -DCOMPILER_RT_BUILD_PROFILE=FALSE \
     -DCOMPILER_RT_BUILD_SANITIZERS=FALSE \
