@@ -2,6 +2,7 @@
 
 set -e
 
+export BUILD_SYSROOT=/
 export SYSROOT=/
 
 export \
@@ -83,7 +84,8 @@ package-invoke-builder autoconf-archive-cross
 # glibc runtime build
 CC=/usr/bin/gcc \
 package-invoke-builder glibc-runtime
-unset SYSROOT
+unset BUILD_SYSROOT \
+      SYSROOT
 
 # zlib build
 package-invoke-builder zlib-cross

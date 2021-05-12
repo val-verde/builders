@@ -230,7 +230,12 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     export ${TOOL_STRIP}=${!TOOL_STRIP:-${BINTOOLS_PATH_PREFIX}strip}
     export ${TOOL_WINDRES}=${!TOOL_RC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-rc}
 
-    CXX_INCLUDE_DIR=${CXX_INCLUDE_DIR:-${PACKAGE_PREFIX}/include/c++/v1}
+    CXX_INCLUDE_DIR_VAR=${ENV_PREFIX}CXX_INCLUDE_DIR
+    CXX_INCLUDE_DIR_VAR_VALUE=${!CXX_INCLUDE_DIR_VAR}
+    PACKAGE_PREFIX_VAR=${ENV_PREFIX}PACKAGE_PREFIX
+
+    export ${CXX_INCLUDE_DIR_VAR}=${CXX_INCLUDE_DIR_VAR_VALUE:-${!PACKAGE_PREFIX_VAR}/include/c++/v1}
+
     CXX_STDLIB=${CXX_STDLIB:-libc++}
     OPTIMIZATION_FLAGS=${OPTIMIZATION_FLAGS:-"-DNDEBUG"}
     PIPE_CFLAG="-pipe"
@@ -267,17 +272,21 @@ function export-compiler-environment-for-c-and-cxx-variant() {
 
     # CFLAG import paths
 
-    if [ "${SYSROOT}" != "/" ]; then
-        TARGET_SYSROOT_VAR=${ENV_VAR}SYSROOT
+    TARGET_SYSROOT_VAR=${ENV_PREFIX}SYSROOT
+
+    if [ "${!TARGET_SYSROOT_VAR}" != "/" ]; then
         SYSROOT_CFLAG="--sysroot=${!TARGET_SYSROOT_VAR}"
     else
         SYSROOT_CFLAG=
     fi
 
-    if [ "${SYSROOT}${PACKAGE_USR_PREFIX}" != "${PACKAGE_PREFIX}" ]; then
-        ISYSTEM_CFLAG="-isystem ${PACKAGE_PREFIX}/include"
-        PACKAGE_PREFIX_LIBDIR_CFLAG="-L${PACKAGE_PREFIX}/lib"
+    PACKAGE_USR_PREFIX_VAR=${ENV_PREFIX}PACKAGE_USR_PREFIX
+
+    if [ "${!TARGET_SYSROOT_VAR}${!PACKAGE_USR_PREFIX_VAR}" != "${!PACKAGE_PREFIX_VAR}" ]; then
+        ISYSTEM_CFLAG="-isystem ${!PACKAGE_PREFIX_VAR}/include"
+        PACKAGE_PREFIX_LIBDIR_CFLAG="-L${!PACKAGE_PREFIX_VAR}/lib"
     else
+        ISYSTEM_CFLAG=
         PACKAGE_PREFIX_LIBDIR_CFLAG=
     fi
 
@@ -288,7 +297,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     fi
 
     if [ -z "${DISABLE_CXX_INCLUDE}" ]; then
-        STDLIBXX_ISYSTEM_CXXFLAG="-stdlib++-isystem ${CXX_INCLUDE_DIR}"
+        STDLIBXX_ISYSTEM_CXXFLAG="-stdlib++-isystem ${!CXX_INCLUDE_DIR_VAR}"
     else
         STDLIBXX_ISYSTEM_CXXFLAG=
     fi
@@ -804,6 +813,9 @@ function package-cmake-invocation() {
     AS_COMPILER_ID=${AS_COMPILER_ID:-Clang}
     CXX_STANDARD=${CXX_STANDARD:-20}
 
+    unset BUILD_LDFLAGS \
+          LDFLAGS
+
     TOOL_LOG=${STAGE_ROOT}/builder-invocation \
     tool-log ${CMAKE} \
         -G Ninja \
@@ -930,6 +942,16 @@ function package-configure() {
 function package-configure-invocation() {
     CONFIGURE_HOST_TRIPLE=${CONFIGURE_HOST_TRIPLE:-${HOST_TRIPLE}}
 
+    AS_FOR_BUILD=${BUILD_ASFLAGS} \
+    ASFLAGS_FOR_BUILD=${BUILD_ASFLAGS} \
+    CC_FOR_BUILD=${BUILD_CC} \
+    CFLAGS_FOR_BUILD=${BUILD_CFLAGS} \
+    CPP_FOR_BUILD=${BUILD_CPP} \
+    CPPFLAGS_FOR_BUILD=${BUILD_CPPFLAGS} \
+    CXX_FOR_BUILD=${BUILD_CXX} \
+    CXXFLAGS_FOR_BUILD=${BUILD_CXXFLAGS} \
+    LD_FOR_BUILD=${BUILD_LD} \
+    LDFLAGS_FOR_BUILD=${BUILD_LDFLAGS} \
     TOOL_LOG=${STAGE_ROOT}/builder-invocation \
     tool-log "${@}" \
         --build=${BUILD_TRIPLE} \

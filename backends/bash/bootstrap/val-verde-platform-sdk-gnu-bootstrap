@@ -5,7 +5,9 @@ set -e
 # Source package build helper functions
 export \
     BINDIR=/usr/bin \
-    C_COMPILER=clang
+    BUILD_SYSROOT=/ \
+    C_COMPILER=clang \
+    SYSROOT=/
 
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
