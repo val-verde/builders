@@ -176,6 +176,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     TOOL_FORTRAN=${ENV_PREFIX}FORTRAN
     TOOL_INSTALL_NAME_TOOL=${ENV_PREFIX}INSTALL_NAME_TOOL
     TOOL_LD=${ENV_PREFIX}LD
+    TOOL_LIBTOOL=${ENV_PREFIX}LIBTOOL
     TOOL_LIBTOOL_DARWIN=${ENV_PREFIX}LIBTOOL_DARWIN
     TOOL_LIPO=${ENV_PREFIX}LIPO
     TOOL_MANIFEST_TOOL=${ENV_PREFIX}MANIFEST_TOOL
@@ -213,6 +214,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         export ${TOOL_LD}=${!TOOL_LD:-${BINDIR}/ld.lld}
     fi
 
+    export ${TOOL_LIBTOOL}=${!TOOL_LIBTOOL:-${BINDIR}/libtool}
     export ${TOOL_LIBTOOL_DARWIN}=${!TOOL_LIBTOOL_DARWIN:-${BINTOOLS_PATH_PREFIX}libtool-darwin}
     export ${TOOL_LIPO}=${!TOOL_LIPO:-${BINTOOLS_PATH_PREFIX}lipo}
     export ${TOOL_MANIFEST_TOOL}=${!TOOL_MANIFEST_TOOL:-${BINTOOLS_PATH_PREFIX}mt}
