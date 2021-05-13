@@ -15,6 +15,7 @@ package-invoke-builder musl-headers
 package-invoke-builder compiler-rt-cross
 
 # musl libc build
+DISABLE_FORTIFY_SOURCE_LEVEL=TRUE \
 package-invoke-builder musl-libc
 
 # libcxx build
