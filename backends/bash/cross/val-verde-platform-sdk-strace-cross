@@ -10,6 +10,11 @@ export SOURCE_PACKAGE_VERSION=5
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for bootstrap/configure/install
+BUILD_COMMON_CFLAGS="\
+    -Wno-macro-redefined \
+    -Wno-unused-command-line-argument \
+    ${BUILD_COMMON_CFLAGS} \
+" \
 COMMON_CFLAGS="\
     -Wno-macro-redefined \
     -Wno-unused-command-line-argument \
