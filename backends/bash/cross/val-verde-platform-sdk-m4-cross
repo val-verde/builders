@@ -18,4 +18,8 @@ if [ "${HOST_OS}" = "gnu" ]; then
     " | ${XARGS}`
 fi
 
+if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+    export HELP2MAN=${BINDIR}/true
+fi
+
 package-stage-configure-install-archive
