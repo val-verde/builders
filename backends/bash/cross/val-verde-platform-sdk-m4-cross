@@ -18,4 +18,6 @@ if [ "${HOST_OS}" = "gnu" ]; then
     " | ${XARGS}`
 fi
 
+DISABLE_TOOL_BUILD=TRUE \
+INSTALL_TARGET="HELP2MAN=`package-get-path true EXECUTABLE BUILD` install" \
 package-stage-configure-install-archive
