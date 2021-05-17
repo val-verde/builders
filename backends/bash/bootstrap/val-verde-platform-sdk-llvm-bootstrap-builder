@@ -26,7 +26,7 @@ package-invoke-builder glibc-interface 2
 # libcxx bootstrap build
 DISABLE_CXX_INCLUDE=TRUE \
 DISABLE_CXX_STDLIB=TRUE \
-package-invoke-builder libcxx-bootstrap 13 none
+package-invoke-builder libcxx-bootstrap 13
 
 # cmake bootstrap build
 package-invoke-builder cmake 3
