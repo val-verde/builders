@@ -10,4 +10,5 @@ export SOURCE_PACKAGE_VERSION=1
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for meson/install
-package-meson-install-archive
+package-meson-install-archive \
+    -Dlibelf=disabled

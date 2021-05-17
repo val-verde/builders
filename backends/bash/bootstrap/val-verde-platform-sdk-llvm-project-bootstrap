@@ -9,8 +9,7 @@ export SOURCE_PACKAGE_VERSION=13
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-export DEPENDS="libz3-4 (>= 4.8.7-4build1), libelf1 (>= 0.176-1.1build1)"
-
+COMPILER_RT_SANITIZERS_TO_BUILD="asan;cfi;dfsan;gwp_asan;hwasan;msan;safestack;scudo;tsan;ubsan_minimal"
 CUDA_GPU_PRIMARY_ARCH=61
 CUDA_GPU_SECONDARY_ARCH=35
 
