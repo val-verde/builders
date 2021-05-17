@@ -15,10 +15,6 @@ apt install -y \
     gawk \
     git \
     jq \
-    libelf-dev \
-    libffi-dev \
-    libxml2-dev \
-    libz3-dev \
     lld \
     llvm \
     make \
@@ -31,8 +27,6 @@ apt install -y \
     python3-six \
     rsync \
     ssh \
-    uuid-dev \
-    unzip \
-    zlib1g-dev
+    unzip
 apt autoremove -y
 apt clean -y

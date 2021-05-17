@@ -71,6 +71,12 @@ package-invoke-builder openjdk-bootstrap
 # rust bootstrap build
 package-invoke-builder rust-bootstrap
 
+# zlib bootstrap build
+package-invoke-builder zlib
+
+# libffi bootstrap build
+package-invoke-builder libffi
+
 # glib bootstrap build
 package-invoke-builder glib
 

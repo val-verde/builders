@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=libffi
+export SOURCE_PACKAGE_VERSION=3
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for configure/install
+if [ "${HOST_OS}" = "macos" ] ||
+   [ "${HOST_OS}" = "mingw32" ]; then
+    ENABLE_OR_DISABLE_SYMVERS=disable
+else
+    ENABLE_OR_DISABLE_SYMVERS=enable
+fi
+
+package-configure-install-archive \
+    --disable-static \
+    --enable-shared \
+    --${ENABLE_OR_DISABLE_SYMVERS}-symvers
