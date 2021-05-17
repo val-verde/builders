@@ -5,9 +5,7 @@ set -e
 # Source package build helper functions
 export \
     BINDIR=/usr/bin \
-    BUILD_SYSROOT=/ \
-    C_COMPILER=clang \
-    SYSROOT=/
+    C_COMPILER=clang
 
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
@@ -24,11 +22,17 @@ ${CHMOD} +x ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang 
             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-rc \
             ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc
 
-# libcxx bootstrap build
-package-invoke-builder libcxx-bootstrap
-
 # cuda bootstrap build
 package-invoke-builder cuda-bootstrap
+
+# kernel-headers bootstrap build
+package-invoke-builder kernel-headers
+
+# glibc-interface bootstrap build
+package-invoke-builder glibc-interface
+
+# libcxx bootstrap build
+package-invoke-builder libcxx-bootstrap
 
 # llvm bootstrap build
 package-invoke-builder llvm-project-bootstrap

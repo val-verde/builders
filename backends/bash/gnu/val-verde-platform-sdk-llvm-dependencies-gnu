@@ -2,9 +2,6 @@
 
 set -e
 
-export BUILD_SYSROOT=/
-export SYSROOT=/
-
 export \
     APT=/usr/bin/apt \
     AUTOGEN=/usr/bin/autogen \
@@ -84,8 +81,6 @@ package-invoke-builder autoconf-archive-cross
 # glibc runtime build
 CC=/usr/bin/gcc \
 package-invoke-builder glibc-runtime
-unset BUILD_SYSROOT \
-      SYSROOT
 
 # zlib build
 package-invoke-builder zlib-cross
