@@ -12,6 +12,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 COMPILER_RT_SANITIZERS_TO_BUILD="asan;cfi;dfsan;gwp_asan;hwasan;msan;safestack;scudo;tsan;ubsan_minimal"
 CUDA_GPU_PRIMARY_ARCH=61
 CUDA_GPU_SECONDARY_ARCH=35
+COMPILER_RT_SANITIZERS_TO_BUILD="asan;cfi;dfsan;gwp_asan;hwasan;msan;safestack;scudo;tsan;ubsan_minimal"
 
 # Invoke one-shot template for cmake/install
 function package-install-completion-callback() {
@@ -90,6 +91,7 @@ package-cmake-install-archive \
     -DCOMPILER_RT_HAS_LIBSTDCXX=FALSE \
     -DCOMPILER_RT_HAS_NODEFAULTLIBS_FLAG=FALSE \
     -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
+    -DCOMPILER_RT_SANITIZERS_TO_BUILD=${COMPILER_RT_SANITIZER_TO_BUILD} \
     -DCUDA_NVCC_EXECUTABLE=${BINDIR}/clang \
     -DDEFAULT_SYSROOT=${BINDIR} \
     -DENABLE_EXPERIMENTAL_NEW_PASS_MANAGER=TRUE \
