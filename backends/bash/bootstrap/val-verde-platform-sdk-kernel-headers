@@ -10,7 +10,6 @@ export SOURCE_PACKAGE_VERSION=5
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export-compiler-environment
-generate-compiler-tools
 
 # Configure the build components
 ARCH=${HOST_PROCESSOR}
@@ -24,9 +23,6 @@ make-build \
     -C ${SOURCE_ROOT} \
     ARCH=${ARCH} \
     HOSTCC=${CC} \
-    HOSTCFLAGS=${CFLAGS} \
-    HOSTCXX=${CXX} \
-    HOSTCXXFLAGS=${CXXFLAGS} \
     INSTALL_HDR_PATH=${INSTALL_PREFIX} \
     defconfig \
     headers_install
