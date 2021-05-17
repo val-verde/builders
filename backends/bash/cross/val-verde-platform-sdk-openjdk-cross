@@ -110,5 +110,8 @@ tool-log ${MAKE} \
     INSTALL_PREFIX=${INSTALL_PREFIX} \
     install
 
+# Adjust symlinks post installation
+package-fix-symlinks
+
 # Build and install the package
 package-invoke-archive-install
