@@ -1341,6 +1341,18 @@ function package-configure-tool-invocation() {
         "${@}"
 }
 
+function package-fix-symlinks() {
+    fileList=( $(${FIND} ${INSTALL_PREFIX}/bin -lname "${INSTALL_ROOT}*") )
+    fileCount=${#fileList[@]}
+
+    for file in `seq 0 $(($fileCount - 1))`; do
+        fileName=${fileList[file]}
+        fileTarget=$(readlink -f $fileName)
+        newTarget=$(${ECHO} $fileTarget | ${SED} "s|${INSTALL_ROOT}||g")
+        ${LN} -sf $newTarget $fileName
+    done
+}
+
 function package-install() {
     PACKAGE_INSTALL_STAGE_ROOT=${PACKAGE_INSTALL_STAGE_ROOT:-${STAGE_ROOT}}
 
