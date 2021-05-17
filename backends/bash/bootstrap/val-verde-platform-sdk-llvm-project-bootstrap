@@ -30,13 +30,6 @@ function package-install-completion-callback() {
                   ${STAGE_ROOT}/bin/llvm-windres* \
                   ${STAGE_ROOT}/bin/opt* \
                   ${INSTALL_PREFIX}/bin/
-
-    # remove libcxx as it is superceded by llvm-project
-    HOST_PROCESSOR=`${ECHO} ${HOST_PROCESSOR} | ${TR} _ -`
-    PACKAGES_TO_MANAGE=( 'libcxx-13' 'HOST' )
-
-    PACKAGE_ACTION=UNINSTALL \
-    deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 }
 
 LLVM_TARGETS_TO_BUILD="NVPTX;WebAssembly"
