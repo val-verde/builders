@@ -4,9 +4,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 WORKDIR /sources
 
-ENV OS_VER=20.04
-
-COPY ubuntu${OS_VER} \
+COPY ubuntu \
      /sources/
 RUN bash install-host-packages
 

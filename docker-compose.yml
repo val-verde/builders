@@ -3,10 +3,10 @@ version: '3.5'
 services: 
     ubuntu-builder:
         container_name: ubuntu-builder
-        image: openvalverde/ubuntu20.04-deb-images:val-verde-compilers-1.0.0
+        image: openvalverde/ubuntu-deb-images:val-verde-compilers-1.0.0
         build: 
             context: ./
-            dockerfile: ubuntu20.04.Dockerfile
+            dockerfile: ubuntu.Dockerfile
             args:
                 - PACKAGE_BASE_NAME=val-verde
                 - PACKAGE_ROOT=/opt
