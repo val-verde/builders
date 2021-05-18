@@ -26,6 +26,7 @@ function package-install-completion-callback() {
                   ${STAGE_ROOT}/bin/llvm-link* \
                   ${STAGE_ROOT}/bin/llvm-lipo* \
                   ${STAGE_ROOT}/bin/llvm-mt* \
+                  ${STAGE_ROOT}/bin/llvm-otool* \
                   ${STAGE_ROOT}/bin/llvm-pdbutil* \
                   ${STAGE_ROOT}/bin/llvm-readelf* \
                   ${STAGE_ROOT}/bin/llvm-readobj* \
