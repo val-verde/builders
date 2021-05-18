@@ -26,6 +26,7 @@ ${CHMOD} +x ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang 
 package-invoke-builder cuda-bootstrap
 
 # kernel-headers bootstrap build
+BUILD_SYSROOT=/ \
 package-invoke-builder kernel-headers
 
 # glibc-interface bootstrap build

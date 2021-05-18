@@ -22,12 +22,28 @@ fi
 cd ${STAGE_ROOT}
 make-build \
     -C ${SOURCE_ROOT} \
+    AR=${AR} \
     ARCH=${ARCH} \
-    HOSTCC=${CC} \
-    HOSTCFLAGS=${CFLAGS} \
-    HOSTCXX=${CXX} \
-    HOSTCXXFLAGS=${CXXFLAGS} \
+    CC=${CC} \
+    CFLAGS=${CFLAGS} \
+    CXX=${CXX} \
+    CXXFLAGS=${CXXFLAGS} \
+    HOSTAR=${AR} \
+    HOSTCC=${BUILD_CC} \
+    HOSTCFLAGS=${BUILD_CFLAGS} \
+    HOSTCXX=${BUILD_CXX} \
+    HOSTCXXFLAGS=${BUILD_CXXFLAGS} \
+    HOSTLD=${BUILD_LD} \
+    HOSTLDFLAGS=${BUILD_LDFLAGS} \
     INSTALL_HDR_PATH=${INSTALL_PREFIX} \
+    LD=${LD} \
+    LDFLAGS=${LDFLAGS} \
+    NM=${NM} \
+    OBJCOPY=${OBJCOPY} \
+    OBJDUMP=${OBJDUMP} \
+    RANLIB=${RANLIB} \
+    READELF=${READELF} \
+    STRIP=${STRIP} \
     defconfig \
     headers_install
 
