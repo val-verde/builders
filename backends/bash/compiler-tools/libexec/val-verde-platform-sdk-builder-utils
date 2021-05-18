@@ -120,13 +120,15 @@ function export-compiler-environment-for-build-tools() {
     export MESON=${MESON:-${BINDIR}/meson}
     export NINJA=${NINJA:-${BINDIR}/ninja}
     export NODE=${NODE:-${BINDIR}/node}
+    export PYTHON=${PYTHON:-${BINDIR}/python}
+
     export PKG_CONFIG=${PKG_CONFIG:-${BINDIR}/pkg-config}
     export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-${PACKAGE_PREFIX}/lib/pkgconfig:${PACKAGE_PREFIX}/share/pkgconfig}
+    export BUILD_PKG_CONFIG_PATH=${BUILD_PKG_CONFIG_PATH:-${BUILD_PACKAGE_PREFIX}/lib/pkgconfig:${BUILD_PACKAGE_PREFIX}/share/pkgconfig}
 
     if [ "${SYSROOT}" = "/" ]; then
         export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:/usr/lib/${BUILD_TRIPLE}/pkgconfig:/usr/share/pkgconfig
     fi
-    export PYTHON=${PYTHON:-${BINDIR}/python}
 }
 
 function export-compiler-environment-for-c-and-cxx-variant() {
@@ -845,6 +847,7 @@ function package-cmake-toolchain-file-for-variant() {
     TOOL_OBJCPP=${ENV_PREFIX}OBJCPP
     TOOL_OBJCXX=${ENV_PREFIX}OBJCXX
     TOOL_OBJCXXFLAGS=${ENV_PREFIX}OBJCXXFLAGS
+    TOOL_PKG_CONFIG_PATH=${ENV_PREFIX}PKG_CONFIG_PATH
     TOOL_SWIFTCFLAGS=${ENV_PREFIX}SWIFTCFLAGS
 
     CMAKE_LIBTOOL=${!TOOL_LIBTOOL}
@@ -855,6 +858,7 @@ function package-cmake-toolchain-file-for-variant() {
            [ "${HOST_OS}" = "musl" ]; then
             SYSTEM_NAME=${SYSTEM_NAME:-Linux}
         elif [ "${HOST_OS}" = "macos" ]; then
+            CMAKE_LIBTOOL=${!TOOL_LIBTOOL_DARWIN}
             SYSTEM_NAME=${SYSTEM_NAME:-Darwin}
         elif [ "${HOST_OS}" = "mingw32" ]; then
             SYSTEM_NAME=${SYSTEM_NAME:-Windows}
@@ -941,7 +945,7 @@ set(CMAKE_OBJCXX_FLAGS_RELWITHDEBINFO \"\" CACHE STRING \"\")
 set(CMAKE_OBJCXX_LINK_EXECUTABLE \"${!TOOL_CXXLD} <FLAGS> <CMAKE_CXX_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>\" CACHE STRING \"\")
 set(CMAKE_OBJCXX_STANDARD ${CXX_STANDARD} CACHE STRING \"\")
 set(CMAKE_OBJDUMP ${OBJDUMP} CACHE STRING \"\")
-set(CMAKE_PREFIX_PATH ${PKG_CONFIG_PATH} CACHE STRING \"\")
+set(CMAKE_PREFIX_PATH ${!TOOL_PKG_CONFIG_PATH} CACHE STRING \"\")
 set(CMAKE_RANLIB ${RANLIB} CACHE STRING \"\")
 set(CMAKE_RC_COMPILER ${RC} CACHE STRING \"\")
 set(CMAKE_READELF ${READELF} CACHE STRING \"\")
@@ -1242,11 +1246,7 @@ function package-meson-build-invocation() {
     if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
         MESON_BUILD_CONFIG=cross
 
-        BUILD_CFLAGS="-I${BUILD_PACKAGE_PREFIX}/include"
         BUILD_CMAKE_PREFIXES="${BUILD_PACKAGE_PREFIX}/lib/cmake:${BUILD_PACKAGE_PREFIX}/lib/pkgconfig:${BUILD_PACKAGE_PREFIX}/share/pkgconfig"
-        BUILD_CXXFLAGS="-I${BUILD_PACKAGE_PREFIX}/include"
-        BUILD_LDFLAGS="-L${BUILD_PACKAGE_PREFIX}/lib"
-        BUILD_PKG_CONFIG_PATH="${BUILD_PACKAGE_PREFIX}/lib/pkgconfig:${BUILD_PACKAGE_PREFIX}/share/pkgconfig"
 
         BUILD_C_ARGS=`${ECHO} [\'${BUILD_CFLAGS}\'] | ${SED} "s/ /','/g"`
         BUILD_C_LINK_ARGS=`${ECHO} [\'${BUILD_LDFLAGS}\'] | ${SED} "s/ /','/g"`
@@ -1254,10 +1254,26 @@ function package-meson-build-invocation() {
         BUILD_CPP_ARGS=`${ECHO} [\'${BUILD_CXXFLAGS}\'] | ${SED} "s/ /','/g"`
         BUILD_CPP_LINK_ARGS=`${ECHO} [\'${BUILD_LDFLAGS}\'] | ${SED} "s/ /','/g"`
 
+        export AR_FOR_BUILD=${BUILD_AR}
+        export AS_FOR_BUILD=${BUILD_AS}
+        export ASFLAGS_FOR_BUILD=${BUILD_ASFLAGS}
         export CC_FOR_BUILD=${BUILD_CC}
+        export CFLAGS_FOR_BUILD=${BUILD_CFLAGS}
+        export CPP_FOR_BUILD=${BUILD_CPP}
+        export CPPFLAGS_FOR_BUILD=${BUILD_CPPFLAGS}
         export CXX_FOR_BUILD=${BUILD_CXX}
+        export CXXFLAGS_FOR_BUILD=${BUILD_CXXFLAGS}
         export CMAKE_FOR_BUILD=${CMAKE}
         export CMAKE_PREFIX_PATH_FOR_BUILD=`${ECHO} ${BUILD_CMAKE_PREFIXES} | ${TR} ":" ";"`
+        export LD_FOR_BUILD=${BUILD_LD}
+        export LDFLAGS_FOR_BUILD=${BUILD_LDFLAGS}
+        export NM_FOR_BUILD=${BUILD_NM}
+        export OBJCOPY_FOR_BUILD=${BUILD_OBJCOPY}
+        export OBJDUMP_FOR_BUILD=${BUILD_OBJDUMP}
+        export RANLIB_FOR_BUILD=${BUILD_RANLIB}
+        export READELF_FOR_BUILD=${BUILD_READELF}
+        export STRIP_FOR_BUILD=${BUILD_STRIP}
+        export STRINGS_FOR_BUILD=${BUILD_STRINGS}
 
         create-indirect-pkg-config BUILD_PKG_CONFIG_PATH ${STAGE_ROOT}/build-pkgconfig
 
