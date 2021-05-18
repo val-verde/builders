@@ -40,12 +40,9 @@ package-invoke-builder llvm-project-bootstrap
 
 # remove host compiler and libraries as it is superceded by bootstrapped clang
 package-apt-remove \
-    clang \
-    libc++-dev \
-    libc++1 \
-    libunwind-dev \
-    lld \
-    llvm
+    clang* \
+    libllvm* \
+    lld*
 
 export \
     AR=${BUILD_PACKAGE_PREFIX}/bin/llvm-ar \

@@ -4,19 +4,27 @@ set -e
 
 apt update
 apt dist-upgrade -y
+apt install lsb-release -y
+
+VERSION=`lsb_release -rs`
+
+if [[ "${VERSION}" < "20.10" ]]; then
+    LLVM_VERSION_SUFFIX=-11
+fi
+
 apt install -y \
     autoconf \
     bison \
     build-essential \
     ca-certificates \
-    clang \
+    clang${LLVM_VERSION_SUFFIX} \
     cmake \
     flex \
     gawk \
     git \
     jq \
-    lld \
-    llvm \
+    lld${LLVM_VERSION_SUFFIX} \
+    llvm${LLVM_VERSION_SUFFIX} \
     make \
     meson \
     ninja-build \
@@ -30,3 +38,16 @@ apt install -y \
     unzip
 apt autoremove -y
 apt clean -y
+
+if [[ "${VERSION}" < "20.10" ]]; then
+    update-alternatives --install /usr/bin/clang clang /usr/bin/clang${LLVM_VERSION_SUFFIX} 100
+    update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++${LLVM_VERSION_SUFFIX} 100
+    update-alternatives --install /usr/bin/ld.lld ld.lld /usr/bin/ld.lld${LLVM_VERSION_SUFFIX} 100
+    update-alternatives --install /usr/bin/llvm-ar llvm-ar /usr/bin/llvm-ar${LLVM_VERSION_SUFFIX} 100
+    update-alternatives --install /usr/bin/llvm-objcopy llvm-objcopy /usr/bin/llvm-objcopy${LLVM_VERSION_SUFFIX} 100
+    update-alternatives --install /usr/bin/llvm-objdump llvm-objdump /usr/bin/llvm-objdump${LLVM_VERSION_SUFFIX} 100
+    update-alternatives --install /usr/bin/llvm-nm llvm-nm /usr/bin/llvm-nm${LLVM_VERSION_SUFFIX} 100
+    update-alternatives --install /usr/bin/llvm-ranlib llvm-ranlib /usr/bin/llvm-ranlib${LLVM_VERSION_SUFFIX} 100
+    update-alternatives --install /usr/bin/llvm-readelf llvm-readelf /usr/bin/llvm-readelf${LLVM_VERSION_SUFFIX} 100
+    update-alternatives --install /usr/bin/llvm-strip llvm-strip /usr/bin/llvm-strip${LLVM_VERSION_SUFFIX} 100
+fi

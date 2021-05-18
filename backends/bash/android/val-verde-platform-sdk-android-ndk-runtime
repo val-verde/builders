@@ -21,7 +21,7 @@ package-rsync -ax \
               ${TOOLCHAIN_ROOT}/sysroot/usr/lib/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/${HOST_OS_API_LEVEL}/* \
               ${INSTALL_PREFIX}/lib/
 
-if [ "${ANDROID_NDK_VERSION}" < "r23" ]; then
+if [[ "${ANDROID_NDK_VERSION}" < "r23" ]]; then
     package-rsync -ax \
                   ${TOOLCHAIN_ROOT}/lib/gcc/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/4.9.x/*${OBJECT_FILE_SUFFIX} \
                   ${TOOLCHAIN_ROOT}/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/lib64/*${STATIC_LIBRARY_SUFFIX} \
