@@ -1233,6 +1233,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "swift-crypto",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "5",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "swift-doc",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "5",

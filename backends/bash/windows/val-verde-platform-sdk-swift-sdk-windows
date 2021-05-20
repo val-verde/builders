@@ -34,15 +34,10 @@ package-invoke-builder swift-tools-support-core-windows
 package-invoke-builder yams-windows
 
 # windows swift-argument-parser build
-CFLAGS="\
+COMMON_CFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
-    ${CFLAGS} \
-" \
-CXXFLAGS="\
-    -fms-compatibility-version=19.2 \
-    -fms-extensions \
-    ${CXXFLAGS} \
+    ${COMMON_CFLAGS} \
 " \
 SWIFTCFLAGS="\
     -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
@@ -50,16 +45,23 @@ SWIFTCFLAGS="\
 " \
 package-invoke-builder swift-argument-parser-cross
 
-# windows swift-driver build
-CFLAGS="\
+# windows swift-crypto build
+COMMON_CFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
-    ${CFLAGS} \
+    ${COMMON_CFLAGS} \
 " \
-CXXFLAGS="\
+SWIFTCFLAGS="\
+    -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
+    ${SWIFTCFLAGS} \
+" \
+package-invoke-builder swift-crypto-cross
+
+# windows swift-driver build
+COMMON_CFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
-    ${CXXFLAGS} \
+    ${COMMON_CFLAGS} \
 " \
 SWIFTCFLAGS="\
     -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
@@ -68,15 +70,10 @@ SWIFTCFLAGS="\
 package-invoke-builder swift-driver-cross
 
 # windows swiftpm build
-CFLAGS="\
+COMMON_CFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
-    ${CFLAGS} \
-" \
-CXXFLAGS="\
-    -fms-compatibility-version=19.2 \
-    -fms-extensions \
-    ${CXXFLAGS} \
+    ${COMMON_CFLAGS} \
 " \
 SWIFTCFLAGS="\
     -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
@@ -89,6 +86,7 @@ PACKAGES_TO_MANAGE=( 'swift-argument-parser-5'         'BUILD' \
                      'swift-corelibs-foundation-5'     'BUILD' \
                      'swift-corelibs-libdispatch-5'    'BUILD' \
                      'swift-corelibs-xctest-5'         'BUILD' \
+                     'swift-crypto-5'                  'BUILD' \
                      'swift-driver-5'                  'BUILD' \
                      'swift-llbuild-5'                 'BUILD' \
                      'swift-package-manager-5'         'BUILD' \
@@ -98,6 +96,7 @@ PACKAGES_TO_MANAGE=( 'swift-argument-parser-5'         'BUILD' \
                      'swift-corelibs-foundation-5'     'HOST' \
                      'swift-corelibs-libdispatch-5'    'HOST' \
                      'swift-corelibs-xctest-5'         'HOST' \
+                     'swift-crypto-5'                  'HOST' \
                      'swift-driver-5'                  'HOST' \
                      'swift-llbuild-5'                 'HOST' \
                      'swift-package-manager-5'         'HOST' \
