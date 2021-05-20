@@ -239,6 +239,9 @@ package-invoke-builder glib-cross
 # windows pkg-config build
 package-invoke-builder pkg-config-cross
 
+# graphviz build
+package-invoke-builder graphviz-cross
+
 # cups build
 # package-invoke-builder cups-cross
 

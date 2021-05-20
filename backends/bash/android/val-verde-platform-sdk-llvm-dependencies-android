@@ -430,6 +430,9 @@ package-invoke-builder itstool-cross
 # android gtk-doc build
 package-invoke-builder gtk-doc-cross
 
+# android graphviz build
+package-invoke-builder graphviz-cross
+
 # android cups build
 package-invoke-builder cups-cross
 

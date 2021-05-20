@@ -494,6 +494,9 @@ package-invoke-builder itstool-cross
 # gtk-doc build
 package-invoke-builder gtk-doc-cross
 
+# graphviz build
+package-invoke-builder graphviz-cross
+
 # libtasn1 build
 package-invoke-builder libtasn1-cross
 

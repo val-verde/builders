@@ -423,6 +423,9 @@ package-invoke-builder itstool-cross
 # gtk-doc build
 package-invoke-builder gtk-doc-cross
 
+# graphviz build
+package-invoke-builder graphviz-cross
+
 # cups build
 package-invoke-builder cups-cross
 
