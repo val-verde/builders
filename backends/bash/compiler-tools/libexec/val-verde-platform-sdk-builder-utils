@@ -132,8 +132,6 @@ function export-compiler-environment-for-build-tools() {
 }
 
 function export-compiler-environment-for-c-and-cxx-variant() {
-    BINTOOLS_PREFIX=${BINTOOLS_PREFIX:-llvm-}
-    BINTOOLS_PATH_PREFIX=${BINDIR}/${BINTOOLS_PREFIX}
     LINKER_OPTIMIZATION_LEVEL=${LINKER_OPTIMIZATION_LEVEL:-2}
     OPTIMIZATION_LEVEL=${OPTIMIZATION_LEVEL:-z}
     VARIANT=${1}
@@ -163,7 +161,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         CPP_COMPILER=${CPP_COMPILER:-${C_COMPILER}-cpp}
     fi
 
-    FLANG=${FLANG:-${BINDIR}/flang}
+    FLANG=${FLANG:-`package-get-path flang EXECUTABLE BUILD`}
     TOOL_AR=${ENV_PREFIX}AR
     TOOL_AS=${ENV_PREFIX}AS
     TOOL_CC=${ENV_PREFIX}CC
@@ -196,43 +194,43 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     TOOL_STRIP=${ENV_PREFIX}STRIP
     TOOL_WINDRES=${ENV_PREFIX}WINDRES
 
-    export ${TOOL_AR}=${!TOOL_AR:-${BINTOOLS_PATH_PREFIX}ar}
-    export ${TOOL_AS}=${!TOOL_CC:-${BINDIR}/${C_COMPILER}}
-    export ${TOOL_CC}=${!TOOL_CC:-${BINDIR}/${C_COMPILER}}
-    export ${TOOL_CCLD}=${!TOOL_CCLD:-${!TOOL_CC}}
-    export ${TOOL_CPP}=${!TOOL_CPP:-${BINDIR}/${CPP_COMPILER}}
-    export ${TOOL_CXX}=${!TOOL_CXX:-${BINDIR}/${CXX_COMPILER}}
-    export ${TOOL_CXXFILT}=${!TOOL_CXXFILT:-${BINTOOLS_PATH_PREFIX}cxxfilt}
-    export ${TOOL_CXXLD}=${!TOOL_CXXLD:-${!TOOL_CXX}}
-    export ${TOOL_DLLTOOL}=${!TOOL_DLLTOOL:-${BINTOOLS_PATH_PREFIX}dlltool}
-    export ${TOOL_F77}=${!TOOL_F77:-${FLANG}}
-    export ${TOOL_FC}=${!TOOL_FC:-${FLANG}}
-    export ${TOOL_FORTRAN}=${!TOOL_FORTRAN:-${FLANG}}
-    export ${TOOL_INSTALL_NAME_TOOL}=${!TOOL_INSTALL_NAME_TOOL:-${BINTOOLS_PATH_PREFIX}install-name-tool}
+    export ${TOOL_AR}="${!TOOL_AR:-`package-get-path llvm-ar EXECUTABLE BUILD`}"
+    export ${TOOL_AS}="${!TOOL_AS:-`package-get-path ${C_COMPILER} EXECUTABLE BUILD`}"
+    export ${TOOL_CC}="${!TOOL_CC:-`package-get-path ${C_COMPILER} EXECUTABLE BUILD`}"
+    export ${TOOL_CCLD}="${!TOOL_CCLD:-${!TOOL_CC}}"
+    export ${TOOL_CPP}="${!TOOL_CPP:-`package-get-path ${CPP_COMPILER} EXECUTABLE BUILD`}"
+    export ${TOOL_CXX}="${!TOOL_CXX:-`package-get-path ${CXX_COMPILER} EXECUTABLE BUILD`}"
+    export ${TOOL_CXXFILT}="${!TOOL_CXXFILT:-`package-get-path llvm-cxxfilt EXECUTABLE BUILD`}"
+    export ${TOOL_CXXLD}="${!TOOL_CXXLD:-${!TOOL_CXX}}"
+    export ${TOOL_DLLTOOL}="${!TOOL_DLLTOOL:-`package-get-path llvm-dlltool EXECUTABLE BUILD`}"
+    export ${TOOL_F77}="${!TOOL_F77:-${FLANG}}"
+    export ${TOOL_FC}="${!TOOL_FC:-${FLANG}}"
+    export ${TOOL_FORTRAN}="${!TOOL_FORTRAN:-${FLANG}}"
+    export ${TOOL_INSTALL_NAME_TOOL}="${!TOOL_INSTALL_NAME_TOOL:-`package-get-path llvm-install-name-tool EXECUTABLE BUILD`}"
 
     if [ "${!VARIANT_OS}" = "macos" ]; then
-        export ${TOOL_LD}=${!TOOL_LD:-${BINDIR}/ld64.lld}
+        export ${TOOL_LD}="${!TOOL_LD:-`package-get-path ld64.lld EXECUTABLE BUILD`}"
     else
-        export ${TOOL_LD}=${!TOOL_LD:-${BINDIR}/ld.lld}
+        export ${TOOL_LD}="${!TOOL_LD:-`package-get-path ld.lld EXECUTABLE BUILD`}"
     fi
 
-    export ${TOOL_LIBTOOL}=${!TOOL_LIBTOOL:-${BINDIR}/libtool}
-    export ${TOOL_LIBTOOL_DARWIN}=${!TOOL_LIBTOOL_DARWIN:-${BINTOOLS_PATH_PREFIX}libtool-darwin}
-    export ${TOOL_LIPO}=${!TOOL_LIPO:-${BINTOOLS_PATH_PREFIX}lipo}
-    export ${TOOL_MANIFEST_TOOL}=${!TOOL_MANIFEST_TOOL:-${BINTOOLS_PATH_PREFIX}mt}
-    export ${TOOL_NM}=${!TOOL_NM:-${BINTOOLS_PATH_PREFIX}nm}
-    export ${TOOL_OBJC}=${!TOOL_OBJC:-${!TOOL_CC}}
-    export ${TOOL_OBJCOPY}=${!TOOL_OBJCOPY:-${BINTOOLS_PATH_PREFIX}objcopy}
-    export ${TOOL_OBJCPP}=${!TOOL_OBJCPP:-${ENV_PREFIX}${CPP}}
-    export ${TOOL_OBJCXX}=${!TOOL_OBJCXX:-${ENV_PREFIX}${CXX}}
-    export ${TOOL_OBJDUMP}=${!TOOL_OBJDUMP:-${BINTOOLS_PATH_PREFIX}objdump}
-    export ${TOOL_RANLIB}=${!TOOL_RANLIB:-${BINTOOLS_PATH_PREFIX}ranlib}
-    export ${TOOL_RC}=${!TOOL_RC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-rc}
-    export ${TOOL_READELF}=${!TOOL_READELF:-${BINTOOLS_PATH_PREFIX}readelf}
-    export ${TOOL_SIZE}=${!TOOL_SIZE:-${BINTOOLS_PATH_PREFIX}size}
-    export ${TOOL_STRINGS}=${!TOOL_STRINGS:-${BINTOOLS_PATH_PREFIX}strings}
-    export ${TOOL_STRIP}=${!TOOL_STRIP:-${BINTOOLS_PATH_PREFIX}strip}
-    export ${TOOL_WINDRES}=${!TOOL_RC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-rc}
+    export ${TOOL_LIBTOOL}="${!TOOL_LIBTOOL:-`package-get-path libtool EXECUTABLE BUILD`}"
+    export ${TOOL_LIBTOOL_DARWIN}="${!TOOL_LIBTOOL_DARWIN:-`package-get-path llvm-libtool-darwin EXECUTABLE BUILD`}"
+    export ${TOOL_LIPO}="${!TOOL_LIPO:-`package-get-path llvm-lipo EXECUTABLE BUILD`}"
+    export ${TOOL_MANIFEST_TOOL}="${!TOOL_MANIFEST_TOOL:-`package-get-path llvm-mt EXECUTABLE BUILD`}"
+    export ${TOOL_NM}="${!TOOL_NM:-`package-get-path llvm-nm EXECUTABLE BUILD`}"
+    export ${TOOL_OBJC}="${!TOOL_OBJC:-${!TOOL_CC}}"
+    export ${TOOL_OBJCOPY}="${!TOOL_OBJCOPY:-`package-get-path llvm-objcopy EXECUTABLE BUILD`}"
+    export ${TOOL_OBJCPP}="${!TOOL_OBJCPP:-${!TOOL_CPP}}"
+    export ${TOOL_OBJCXX}="${!TOOL_OBJCXX:-${!TOOL_CXX}}"
+    export ${TOOL_OBJDUMP}="${!TOOL_OBJDUMP:-`package-get-path llvm-objdump EXECUTABLE BUILD`}"
+    export ${TOOL_RANLIB}="${!TOOL_RANLIB:-`package-get-path llvm-ranlib EXECUTABLE BUILD`}"
+    export ${TOOL_RC}="${!TOOL_RC:-`package-get-path ${VAL_VERDE_GH_TEAM}-platform-sdk-rc EXECUTABLE BUILD`}"
+    export ${TOOL_READELF}="${!TOOL_READELF:-`package-get-path llvm-readelf EXECUTABLE BUILD`}"
+    export ${TOOL_SIZE}="${!TOOL_SIZE:-`package-get-path llvm-size EXECUTABLE BUILD`}"
+    export ${TOOL_STRINGS}="${!TOOL_STRINGS:-`package-get-path llvm-strings EXECUTABLE BUILD`}"
+    export ${TOOL_STRIP}="${!TOOL_STRIP:-`package-get-path llvm-strip EXECUTABLE BUILD`}"
+    export ${TOOL_WINDRES}="${!TOOL_RC:-`package-get-path ${VAL_VERDE_GH_TEAM}-platform-sdk-rc EXECUTABLE BUILD`}"
 
     CXX_INCLUDE_DIR_VAR=${ENV_PREFIX}CXX_INCLUDE_DIR
     CXX_INCLUDE_DIR_VAR_VALUE=${!CXX_INCLUDE_DIR_VAR}
@@ -493,7 +491,7 @@ function export-compiler-environment-for-go() {
         -O${LINKER_OPTIMIZATION_LEVEL} \
         ${CCLDFLAGS} \
     " | ${XARGS}`
-    export GO=${GO:-${BINDIR}/go}
+    export GO=${GO:-`package-get-path go EXECUTABLE BUILD`}
     export GOROOT=${GOROOT:-${BUILD_PACKAGE_PREFIX}/go}
 
     if [ "${BUILD_PROCESSOR}" = "aarch64" ]; then
@@ -571,7 +569,7 @@ function export-compiler-environment-for-swift() {
         "
     fi
 
-    export SWIFTC=${SWIFTC:-${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-swiftc}
+    export SWIFTC=${SWIFTC:-`package-get-path swiftc EXECUTABLE BUILD`}
     export SWIFTCFLAGS=`${ECHO} "\
         -resource-dir ${PACKAGE_PREFIX}/lib/swift \
         -O${SWIFT_OPTIMIZATION_LEVEL} \
@@ -620,13 +618,13 @@ function generate-compiler-tools-variant() {
     TOOL_OBJCXX=${ENV_PREFIX}OBJCXX
     TOOL_OBJCXXFLAGS=${ENV_PREFIX}OBJCXXFLAGS
 
-    create-host-tool ${!TOOL_AS} ${ENV_PREFIX}ASFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-as-clang
-    create-host-tool ${!TOOL_CC} ${ENV_PREFIX}CFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang
-    create-host-tool ${!TOOL_CCLD} ${ENV_PREFIX}CCLDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang
-    create-host-tool ${!TOOL_CPP} ${ENV_PREFIX}CPPFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang-cpp
-    create-host-tool ${!TOOL_CXX} ${ENV_PREFIX}CXXFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang++
-    create-host-tool ${!TOOL_CXXLD} ${ENV_PREFIX}CCLDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang++
-    create-host-tool ${!TOOL_LD} ${ENV_PREFIX}LDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld
+    create-host-tool "${!TOOL_AS}" ${ENV_PREFIX}ASFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-as-clang
+    create-host-tool "${!TOOL_CC}" ${ENV_PREFIX}CFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang
+    create-host-tool "${!TOOL_CCLD}" ${ENV_PREFIX}CCLDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang
+    create-host-tool "${!TOOL_CPP}" ${ENV_PREFIX}CPPFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang-cpp
+    create-host-tool "${!TOOL_CXX}" ${ENV_PREFIX}CXXFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang++
+    create-host-tool "${!TOOL_CXXLD}" ${ENV_PREFIX}CCLDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang++
+    create-host-tool "${!TOOL_LD}" ${ENV_PREFIX}LDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld
 
     export ${TOOL_AS}=${GENERATED_BINDIR}/${TOOL_PREFIX}-as-clang
     export ${TOOL_ASFLAGS}="${OPTIMIZATION_CFLAG}"
@@ -1134,7 +1132,11 @@ function package-get-path() {
     RESULT=${PACKAGE_PREFIX}/${SUBDIR}
 
     if [ "${VARIANT}" = "BUILD" ]; then
-        RESULT=${BUILD_PACKAGE_PREFIX}/${SUBDIR}
+        if [ "${TYPE}" = "EXECUTABLE" ]; then
+            RESULT=${BINDIR:-${BUILD_PACKAGE_PREFIX}/${SUBDIR}}
+        else
+            RESULT=${BUILD_PACKAGE_PREFIX}/${SUBDIR}
+        fi
     fi
 
     RESULT=${RESULT}/`package-get-filename ${NAME} ${TYPE}`
