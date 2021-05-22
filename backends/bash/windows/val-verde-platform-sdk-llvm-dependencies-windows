@@ -227,6 +227,9 @@ package-invoke-builder lua-cross
 # windows wget build
 package-invoke-builder wget-cross
 
+# windows unbound build
+package-invoke-builder unbound-cross
+
 # windows libmicrohttpd build
 package-invoke-builder libmicrohttpd-cross
 

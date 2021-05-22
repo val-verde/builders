@@ -510,6 +510,9 @@ package-invoke-builder nettle-cross
 # gnutls build
 package-invoke-builder gnutls-cross
 
+# unbound build
+package-invoke-builder unbound-cross
+
 # libmicrohttpd build
 package-invoke-builder libmicrohttpd-cross
 

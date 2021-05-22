@@ -10,10 +10,11 @@ export SOURCE_PACKAGE_VERSION=1
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for stage/configure/install
-CFLAGS="\
+COMMON_CFLAGS="\
     -pthread \
-    ${CFLAGS} \
+    ${COMMON_CFLAGS} \
 " \
+DISABLE_AUTOUPDATE=TRUE \
 package-stage-configure-install-archive \
     --disable-static \
     --enable-shared \
