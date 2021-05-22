@@ -639,7 +639,7 @@ function generate-compiler-tools-variant() {
     export ${TOOL_CXXLD}=${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang++
     export ${TOOL_CXXLDFLAGS}="${OPTIMIZATION_LDFLAG} ${STRIP_CFLAG}"
     export ${TOOL_LD}=${GENERATED_BINDIR}/${TOOL_PREFIX}-ld
-    export ${TOOL_LDFLAGS}="${OPTIMIZATION_LDFLAG} ${STRIP_CFLAG}"
+    export ${TOOL_LDFLAGS}="${PACKAGE_PREFIX_LIBDIR_CFLAG} ${OPTIMIZATION_LDFLAG} ${STRIP_CFLAG}"
     export ${TOOL_OBJC}=${!TOOL_CC}
     export ${TOOL_OBJCFLAGS}="${OPTIMIZATION_CFLAG}"
     export ${TOOL_OBJCPP}=${!TOOL_CPP}
