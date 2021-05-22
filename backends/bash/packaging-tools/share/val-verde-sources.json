@@ -1047,7 +1047,7 @@
         "sourceType": "git",
         "sourcePackageName": "qemu",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "5",
+        "sourcePackageVersion": "6",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
