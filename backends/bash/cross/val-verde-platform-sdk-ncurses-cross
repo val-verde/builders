@@ -46,7 +46,7 @@ package-configure-install-archive \
     --with-cxx-shared \
     --with-install-prefix=${INSTALL_ROOT}/ \
     --with-pkg-config=${PKG_CONFIG} \
-    --with-pkg-config-libdir="${PKG_CONFIG_PATH}" \
+    --with-pkg-config-libdir=${PACKAGE_PREFIX}/lib/pkgconfig \
     --with-shared \
     --with-tic-path=${TIC} \
     --with-ticlib \
