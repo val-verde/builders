@@ -15,10 +15,13 @@ export DEPENDS="\
 "
 
 # Invoke one-shot template for stage/configure/install
-if [ "${HOST_OS}" = "macos" ]; then
+DEFAULT_VISIBILITY_HIDDEN=yes
+WITH_INCLUDED_GETTEXT=yes
+
+if [ "${HOST_OS}" = "gnu" ]; then
+    WITH_INCLUDED_GETTEXT=no
+elif [ "${HOST_OS}" = "macos" ]; then
     DEFAULT_VISIBILITY_HIDDEN=no
-else
-    DEFAULT_VISIBILITY_HIDDEN=yes
 fi
 
 LIBS="\
@@ -26,4 +29,5 @@ LIBS="\
     ${LIBS} \
 " \
 package-stage-configure-install-archive \
-    gl_cv_cc_visibility=${DEFAULT_VISIBILITY_HIDDEN}
+    gl_cv_cc_visibility=${DEFAULT_VISIBILITY_HIDDEN} \
+    --with-included-gettext=${WITH_INCLUDED_GETTEXT}
