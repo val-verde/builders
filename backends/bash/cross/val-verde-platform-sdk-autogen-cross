@@ -12,11 +12,11 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 export DEPENDS="${PACKAGE_BASE_NAME}-guile-3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 
 # Invoke one-shot template for stage/configure/install
-CFLAGS="\
+COMMON_CFLAGS="\
     -Wno-format \
     -Wno-missing-field-initializers \
     -Wno-unknown-warning-option \
-    ${CFLAGS} \
+    ${COMMON_CFLAGS} \
 " \
 COLUMNS=${COLUMNS:-${BINDIR}/columns} \
 DISABLE_AUTOUPDATE=TRUE \
