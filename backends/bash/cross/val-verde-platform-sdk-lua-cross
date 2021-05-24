@@ -42,6 +42,8 @@ make-build \
     AR="${AR} ${ARFLAGS}" \
     CC="${CC}" \
     CFLAGS="${CFLAGS}" \
+    LD="${CCLD}" \
+    LDFLAGS="${CCLDFLAGS}" \
     MYCFLAGS="${MYCFLAGS}" \
     MYLDFLAGS="${MYLDFLAGS}" \
     MYLIBS="${MYLIBS}" \
