@@ -17,11 +17,15 @@ export DEPENDS="\
 
 # Invoke one-shot template for stage/configure/installs
 if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
-    ARGP_LIB="-largp"
     I386_GENDIR_ROOT=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/build/libcpu
 else
-    ARGP_LIB="yes"
     I386_GENDIR_ROOT=.
+fi
+
+if [ "${HOST_OS}" = "gnu" ]; then
+    ARGP_LIB="yes"
+else
+    ARGP_LIB="-largp"
 fi
 
 DISABLED_WARNINGS="\
@@ -36,13 +40,9 @@ DISABLED_WARNINGS="\
     -Wno-xor-used-as-pow \
 "
 
-CFLAGS="\
+COMMOM_CFLAGS="\
     ${DISABLED_WARNINGS} \
-    ${CFLAGS} \
-" \
-CXXFLAGS="\
-    ${DISABLED_WARNINGS} \
-    ${CXXFLAGS} \
+    ${COMMON_CFLAGS} \
 " \
 I386_GENDIR_ROOT=${I386_GENDIR_ROOT} \
 RPATH_COMPONENTS="\
