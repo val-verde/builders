@@ -28,7 +28,8 @@ make-install \
     AR=${AR} \
     CC=${CC} \
     CFLAGS="${CFLAGS}" \
-    LDFLAGS="${LDFLAGS}" \
+    LD=${CCLD} \
+    LDFLAGS="${CCLDFLAGS}" \
     PREFIX=${INSTALL_PREFIX} \
     RANLIB=${RANLIB}
 
