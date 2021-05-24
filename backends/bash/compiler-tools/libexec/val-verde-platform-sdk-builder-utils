@@ -366,14 +366,6 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         LLVM_FORCE_VECTOR_WIDTH_CFLAG=
     fi
 
-    if [ "${!VARIANT_OS}" = "macos" ]; then
-        LINKER_PLATFORM_CFLAG="-Wl,-platform_version,${HOST_OS},${HOST_OS_API_LEVEL},${HOST_OS_API_LEVEL}"
-        LINKER_PLATFORM_LDFLAG="-platform_version ${HOST_OS} ${HOST_OS_API_LEVEL} ${HOST_OS_API_LEVEL}"
-    else
-        LINKER_PLATFORM_CFLAG=
-        LINKER_PLATFORM_LDFLAG=
-    fi
-
     if [ -z "${DISABLE_RTLIB}" ]; then
         RTLIB_CFLAG="-rtlib=${RTLIB} "
     else
@@ -439,12 +431,12 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     export ${TOOL_CCLDFLAGS}="`${ECHO} "\
         ${!TOOL_CFLAGS} \
         ${RTLIB_CFLAG} \
-        ${COMMON_LDFLAGS} \
-        ${LINKER_PLATFORM_CFLAG} \
+        ${!TOOL_COMMON_LDFLAGS} \
         ${!TOOL_CCLDFLAGS} \
     " | ${XARGS}`"
     export ${TOOL_CPPFLAGS}="`${ECHO} "\
-        ${COMMON_CFLAGS} \
+        ${!TOOL_COMMON_CFLAGS} \
+        ${OPTIMIZATION_CFLAG} \
         ${!TOOL_CPPFLAGS} \
     " | ${XARGS}`"
     export ${TOOL_CXXFLAGS}="`${ECHO} "\
@@ -458,10 +450,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         ${!TOOL_CXXLDFLAGS} \
     " | ${XARGS}`"
     export ${TOOL_LDFLAGS}="`${ECHO} "\
-        ${SYSROOT_CFLAG} \
-        ${PACKAGE_PREFIX_LIBDIR_CFLAG} \
-        ${FLTO_CFLAG} \
-        ${LINKER_PLATFORM_LDFLAG} \
+        ${!TOOL_COMMON_LDFLAGS} \
         ${!TOOL_LDFLAGS} \
     " | ${XARGS}`"
     export ${TOOL_LIBS}="`${ECHO} "\
@@ -631,15 +620,15 @@ function generate-compiler-tools-variant() {
     export ${TOOL_CC}=${GENERATED_BINDIR}/${TOOL_PREFIX}-clang
     export ${TOOL_CFLAGS}="${OPTIMIZATION_CFLAG}"
     export ${TOOL_CCLD}=${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang
-    export ${TOOL_CCLDFLAGS}="${OPTIMIZATION_LDFLAG} ${STRIP_CFLAG}"
+    export ${TOOL_CCLDFLAGS}="${PACKAGE_PREFIX_LIBDIR_CFLAG} ${OPTIMIZATION_LDFLAG} ${STRIP_CFLAG}"
     export ${TOOL_CPP}=${!TOOL_CC}-cpp
     unset ${TOOL_CPPFLAGS}=
     export ${TOOL_CXX}=${!TOOL_CC}++
     export ${TOOL_CXXFLAGS}="${OPTIMIZATION_CFLAG}"
     export ${TOOL_CXXLD}=${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang++
-    export ${TOOL_CXXLDFLAGS}="${OPTIMIZATION_LDFLAG} ${STRIP_CFLAG}"
+    export ${TOOL_CXXLDFLAGS}="${PACKAGE_PREFIX_LIBDIR_CFLAG} ${OPTIMIZATION_LDFLAG} ${STRIP_CFLAG}"
     export ${TOOL_LD}=${GENERATED_BINDIR}/${TOOL_PREFIX}-ld
-    export ${TOOL_LDFLAGS}="${PACKAGE_PREFIX_LIBDIR_CFLAG} ${OPTIMIZATION_LDFLAG} ${STRIP_CFLAG} ${LINKER_PLATFORM_LDFLAG}"
+    export ${TOOL_LDFLAGS}="${PACKAGE_PREFIX_LIBDIR_CFLAG} ${OPTIMIZATION_LDFLAG} ${STRIP_CFLAG}"
     export ${TOOL_OBJC}=${!TOOL_CC}
     export ${TOOL_OBJCFLAGS}="${OPTIMIZATION_CFLAG}"
     export ${TOOL_OBJCPP}=${!TOOL_CPP}
