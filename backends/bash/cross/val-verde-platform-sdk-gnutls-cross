@@ -21,9 +21,9 @@ export DEPENDS="\
 
 # Invoke one-shot template for bootstrap/configure/install
 BOOTSTRAP_FILE=bootstrap \
-CFLAGS="\
+COMMON_CFLAGS="\
     -UNDEBUG \
-    ${CFLAGS} \
+    ${COMMON_CFLAGS} \
 " \
 DISABLE_AUTOUPDATE=TRUE \
 package-bootstrap-configure-install-archive \
