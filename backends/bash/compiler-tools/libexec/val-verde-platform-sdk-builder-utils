@@ -1063,7 +1063,7 @@ function package-configure-tool-invocation() {
     fi
 
     package-${CONFIGURE_TOOL}-invocation \
-        ${@}
+        "${@}"
 }
 
 function package-install() {
