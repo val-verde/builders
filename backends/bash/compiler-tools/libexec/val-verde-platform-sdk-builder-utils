@@ -416,7 +416,6 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         ${FLTO_CFLAG} \
         ${LLVM_POLLY_CFLAG} \
         ${DISABLE_LLVM_VERIFIER_CFLAG} \
-        ${LINKER_PLATFORM_CFLAG} \
         ${!TOOL_COMMON_CFLAGS} \
     "
     export ${TOOL_COMMON_LDFLAGS}="\
@@ -441,6 +440,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         ${!TOOL_CFLAGS} \
         ${RTLIB_CFLAG} \
         ${COMMON_LDFLAGS} \
+        ${LINKER_PLATFORM_CFLAG} \
         ${!TOOL_CCLDFLAGS} \
     " | ${XARGS}`"
     export ${TOOL_CPPFLAGS}="`${ECHO} "\
@@ -639,7 +639,7 @@ function generate-compiler-tools-variant() {
     export ${TOOL_CXXLD}=${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang++
     export ${TOOL_CXXLDFLAGS}="${OPTIMIZATION_LDFLAG} ${STRIP_CFLAG}"
     export ${TOOL_LD}=${GENERATED_BINDIR}/${TOOL_PREFIX}-ld
-    export ${TOOL_LDFLAGS}="${PACKAGE_PREFIX_LIBDIR_CFLAG} ${OPTIMIZATION_LDFLAG} ${STRIP_CFLAG}"
+    export ${TOOL_LDFLAGS}="${PACKAGE_PREFIX_LIBDIR_CFLAG} ${OPTIMIZATION_LDFLAG} ${STRIP_CFLAG} ${LINKER_PLATFORM_LDFLAG}"
     export ${TOOL_OBJC}=${!TOOL_CC}
     export ${TOOL_OBJCFLAGS}="${OPTIMIZATION_CFLAG}"
     export ${TOOL_OBJCPP}=${!TOOL_CPP}
