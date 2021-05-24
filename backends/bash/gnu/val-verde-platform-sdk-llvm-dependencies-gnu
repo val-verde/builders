@@ -204,10 +204,6 @@ package-invoke-builder libaio-cross
 package-invoke-builder libev-cross
 
 # gdbm build
-CFLAGS="\
-    -fcommon \
-    ${CFLAGS} \
-" \
 package-invoke-builder gdbm-cross
 
 # libdb build

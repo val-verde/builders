@@ -130,10 +130,6 @@ package-invoke-builder isl-cross
 package-invoke-builder libev-cross
 
 # android gdbm build
-CFLAGS="\
-    -fcommon \
-    ${CFLAGS} \
-" \
 package-invoke-builder gdbm-cross
 
 # android libdb build
