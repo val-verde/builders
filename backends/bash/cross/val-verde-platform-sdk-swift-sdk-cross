@@ -20,38 +20,38 @@ PACKAGES_TO_MANAGE=( 'swift-argument-parser-5'         'BUILD' \
 PACKAGE_ACTION=UNINSTALL \
 deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 
-# musl libdispatch build
+# libdispatch build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-corelibs-libdispatch-cross 5 no-install
 
-# musl foundation build
+# foundation build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-corelibs-foundation-cross 5 no-install
 
-# musl xctest build
+# xctest build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-corelibs-xctest-cross 5 no-install
 
-# musl llbuild build
+# llbuild build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-llbuild-cross 5 no-install
 
-# musl swift tools support core build
+# swift tools support core build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-tools-support-core-cross 5 no-install
 
-# musl yams build
+# yams build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder yams-cross 3 no-install
 
-# musl swift argument parser build
+# swift argument parser build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-argument-parser-cross 5 no-install
 
 # swift crypto build
 package-invoke-builder swift-crypto-cross 5 no-install
 
-# musl swift driver build
+# swift driver build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-driver-cross 5 no-install
 
