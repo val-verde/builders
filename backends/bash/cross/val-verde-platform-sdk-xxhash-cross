@@ -16,10 +16,10 @@ generate-compiler-tools
 copy-source-to-staging
 
 # Build the components
+SYSTEM=Linux
+
 if [ "${HOST_OS}" = "macos" ]; then
-    UNAME=Darwin
-else
-    UNAME=`uname`
+    SYSTEM=Darwin
 fi
 
 cd ${STAGE_ROOT}
@@ -28,10 +28,10 @@ make-install \
     CC=${CC} \
     CFLAGS="${CFLAGS}" \
     LD=${CCLD} \
-    LDFLAGS="${CCLDFLAGS}" \
+    LDFLAGS="-shared ${CCLDFLAGS}" \
     PREFIX=${PACKAGE_PREFIX} \
     RANLIB=${RANLIB} \
-    UNAME=${UNAME}
+    UNAME=${SYSTEM}
 
 # Build and install the package
 package-invoke-archive-install
