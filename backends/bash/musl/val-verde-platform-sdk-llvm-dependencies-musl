@@ -138,7 +138,6 @@ package-invoke-builder libev-cross
 package-invoke-builder gdbm-cross
 
 # libdb build
-CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-gnu" \
 package-invoke-builder libdb-cross
 
 # tcl build
