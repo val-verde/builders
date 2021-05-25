@@ -251,6 +251,12 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         UNUSED_ARGUMENTS_CFLAG=
     fi
 
+    if [ "${!VARIANT_OS}" = "macos" ]; then
+        FUSE_LD_CFLAG="-fuse-ld=lld"
+    else
+        FUSE_LD_CFLAG=
+    fi
+
     # CFLAG target definitions
 
     if [ -z "${DISABLE_COMPILER_TARGET}" ]; then
@@ -419,6 +425,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     "
 
     export ${TOOL_CFLAGS}="`${ECHO} "\
+        ${FUSE_LD_CFLAG} \
         ${PIPE_CFLAG} \
         ${!TOOL_COMMON_CFLAGS} \
         ${OPTIMIZATION_CFLAG} \
