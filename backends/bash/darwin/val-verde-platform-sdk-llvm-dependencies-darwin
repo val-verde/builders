@@ -417,7 +417,7 @@ package-invoke-builder popt-cross
 package-invoke-builder swig-cross
 
 # openjdk build
-package-invoke-builder openjdk-cross
+# package-invoke-builder openjdk-cross
 
 # z3 build
 package-invoke-builder z3-cross
