@@ -401,7 +401,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     TOOL_LIBS=${ENV_PREFIX}LIBS
 
     export ${TOOL_COMMON_CFLAGS}="\
-        ${UNUSED_ARGUMENTS_CFLAGS} \
+        ${UNUSED_ARGUMENTS_CFLAG} \
         ${TARGET_CFLAG} \
         ${MARCH_CFLAG} \
         ${MTUNE_CFLAG} \
