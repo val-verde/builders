@@ -342,10 +342,6 @@ package-invoke-builder coreutils-cross
 package-invoke-builder findutils-cross
 
 # android dpkg build
-LIBS="\
-    -lobstack \
-    ${LIBS} \
-" \
 package-invoke-builder dpkg-cross
 
 # android rsync build

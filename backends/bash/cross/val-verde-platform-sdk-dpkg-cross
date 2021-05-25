@@ -40,10 +40,7 @@ elif [ "${HOST_OS}" = "musl" ]; then
 fi
 
 CONFIGURE_HOST_TRIPLE=${HOST_PROCESSOR}-${CONFIGURE_HOST_KERNEL}-gnu \
-CXXFLAGS="\
-    -std=c++14 \
-    ${CXXFLAGS} \
-" \
+CXX_STANDARD=14 \
 TAR=tar \
 BOOTSTRAP_FILE=./autogen \
 package-bootstrap-configure-install-archive \
