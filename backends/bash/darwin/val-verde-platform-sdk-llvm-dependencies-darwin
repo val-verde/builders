@@ -166,10 +166,6 @@ package-invoke-builder autogen-cross
 # package-invoke-builder indent-cross
 
 # util-linux build
-COMMON_CFLAGS="\
-    -lintl \
-    ${COMMON_CFLAGS} \
-" \
 DISABLE_PYTHON=TRUE \
 DISABLE_SYSTEMD=TRUE \
 package-invoke-builder util-linux-cross
