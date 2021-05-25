@@ -557,7 +557,7 @@ function export-compiler-environment-for-swift() {
         "
     fi
 
-    if [ "${SYSROOT}${PACKAGE_USR_PREFIX}" != "${PACKAGE_PREFIX}" ]; then
+    if [ "${SYSROOT}${!PACKAGE_USR_PREFIX_VAR}" != "${PACKAGE_PREFIX}" ]; then
         SWIFTCFLAGS="\
             -I${PACKAGE_PREFIX}/include \
             -L${PACKAGE_PREFIX}/lib \
