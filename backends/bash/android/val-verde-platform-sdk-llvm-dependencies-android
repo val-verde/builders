@@ -424,10 +424,6 @@ package-invoke-builder apt-cross
 package-invoke-builder popt-cross
 
 # android rpm build
-LIBS="\
-    -lintl \
-    ${LIBS} \
-" \
 package-invoke-builder rpm-cross
 
 # android dnf build

@@ -15,6 +15,14 @@ export DEPENDS="\
 "
 
 # Invoke one-shot template for configure/install
+if [ "${HOST_OS}" = "android" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    LIBS="\
+        -lintl \
+        ${LIBS} \
+    "
+fi
+
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 CONFIGURE_FILE=autogen.sh \
 DISABLE_AUTOUPDATE=TRUE \
