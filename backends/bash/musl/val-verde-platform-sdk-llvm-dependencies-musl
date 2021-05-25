@@ -177,27 +177,9 @@ DISABLE_SYSTEMD=TRUE \
 package-invoke-builder util-linux-cross
 
 # attr build
-COMMON_CFLAGS="\
-    -include ${PACKAGE_PREFIX}/include/sys/cdefs.h \
-    ${COMMON_CFLAGS} \
-" \
-CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-linux" \
-LIBS="\
-    -lintl \
-    ${LIBS} \
-" \
 package-invoke-builder attr-cross
 
 # acl build
-COMMON_CFLAGS="\
-    -include ${PACKAGE_PREFIX}/include/sys/cdefs.h \
-    ${COMMON_CFLAGS} \
-" \
-CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-linux" \
-LIBS="\
-    -lintl \
-    ${LIBS} \
-" \
 package-invoke-builder acl-cross
 
 # libarchive build

@@ -171,19 +171,9 @@ DISABLE_SYSTEMD=TRUE \
 package-invoke-builder util-linux-cross
 
 # android attr build
-COMMON_CFLAGS="\
-    -lintl \
-    -D__THROW= \
-    ${COMMON_CFLAGS} \
-" \
 package-invoke-builder attr-cross
 
 # android acl build
-COMMON_CFLAGS="\
-    -lintl \
-    -D__THROW= \
-    ${COMMON_CFLAGS} \
-" \
 package-invoke-builder acl-cross
 
 # android libarchive build

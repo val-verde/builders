@@ -10,5 +10,25 @@ export SOURCE_PACKAGE_VERSION=2
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for configure/install
+if [ "${HOST_OS}" = "android" ]; then
+    COMMON_CFLAGS="\
+        -lintl \
+        ${COMMON_CFLAGS} \
+    "
+    LIBS="\
+        -lintl \
+        ${LIBS} \
+    "
+elif [ "${HOST_OS}" = "musl" ]; then
+    COMMON_CFLAGS="\
+        -include ${PACKAGE_PREFIX}/include/sys/cdefs.h \
+        ${COMMON_CFLAGS} \
+    "
+    LIBS="\
+        -lintl \
+        ${LIBS} \
+    "
+fi
+
 BOOTSTRAP_FILE=./autogen.sh \
 package-bootstrap-configure-install-archive
