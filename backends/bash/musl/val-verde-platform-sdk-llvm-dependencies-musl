@@ -6,11 +6,9 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # autoconf build
-CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-gnu" \
 package-invoke-builder autoconf-cross
 
 # automake build
-CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-gnu" \
 package-invoke-builder automake-cross
 
 # autoconf-archive build
