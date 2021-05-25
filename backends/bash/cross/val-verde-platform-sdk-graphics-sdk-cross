@@ -31,11 +31,13 @@ fi
 # glslang build
 package-invoke-builder glslang-cross
 
-# vulkan tools build
-package-invoke-builder vulkan-tools-cross
+if [ "${HOST_OS}" != "macos" ]; then
+    # vulkan tools build
+    package-invoke-builder vulkan-tools-cross
 
-# vulkan validation layers build
-package-invoke-builder vulkan-validation-layers-cross
+    # vulkan validation layers build
+    package-invoke-builder vulkan-validation-layers-cross
+fi
 
 if [ "${HOST_OS}" = "gnu" ] ||
    [ "${HOST_OS}" = "musl" ]; then
