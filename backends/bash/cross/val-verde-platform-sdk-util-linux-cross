@@ -33,8 +33,10 @@ if [ "${HOST_OS}" = "macos" ]; then
         ${COMMON_CFLAGS} \
     "
     ENABLE_OR_DISABLE_LIBMOUNT=disable
+    ENABLE_OR_DISABLE_LIBUUID=disable
 else
     ENABLE_OR_DISABLE_LIBMOUNT=enable
+    ENABLE_OR_DISABLE_LIBUUID=enable
 fi
 
 DISABLE_AUTOUPDATE=TRUE \
@@ -56,5 +58,6 @@ package-configure-install-archive \
     --enable-shared \
     --with-ncursesw \
     --${ENABLE_OR_DISABLE_LIBMOUNT}-libmount \
+    --${ENABLE_OR_DISABLE_LIBUUID}-libuuid \
     --${ENABLE_OR_DISABLE_PYTHON}-python \
     --${ENABLE_OR_DISABLE_SYSTEMD}-systemd
