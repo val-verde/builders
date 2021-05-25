@@ -76,11 +76,27 @@ FROM gnu_bootstrap_builder AS platform_independent_package_builders
 
 # platform sdk package build scripts
 COPY backends/bash/cross \
-     backends/bash/gnu \
      /sources/
 
+# webassembly build
+FROM platform_independent_package_builders AS webassembly_builder
+
+COPY backends/bash/webassembly \
+     /sources/
+
+RUN HOST_ARCH=wasm32 \
+    HOST_CPU=wasm32 \
+    HOST_KERNEL=unknown \
+    HOST_OS=wasi \
+    HOST_OS_API_LEVEL= \
+    HOST_PROCESSOR=wasm32 \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-webassembly
+
 # gnu build
-FROM platform_independent_package_builders AS gnu_builder
+FROM webassembly_builder AS gnu_builder
+
+COPY backends/bash/gnu \
+     /sources/
 
 RUN HOST_ARCH=${BUILD_ARCH} \
     HOST_CPU=${BUILD_CPU} \
@@ -135,22 +151,8 @@ RUN HOST_ARCH=armv8-a \
     HOST_PROCESSOR=aarch64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-musl
 
-# webassembly build
-FROM musl_builder AS webassembly_builder
-
-COPY backends/bash/webassembly \
-     /sources/
-
-RUN HOST_ARCH=wasm32 \
-    HOST_CPU=wasm32 \
-    HOST_KERNEL=unknown \
-    HOST_OS=wasi \
-    HOST_OS_API_LEVEL= \
-    HOST_PROCESSOR=wasm32 \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-webassembly
-
 # android build
-FROM webassembly_builder AS android_builder
+FROM musl_builder AS android_builder
 
 # android package builders
 COPY backends/bash/android \
