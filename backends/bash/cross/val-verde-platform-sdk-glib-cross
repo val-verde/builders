@@ -32,6 +32,14 @@ if [ "${HOST_OS}" != "mingw32" ]; then
     "
 fi
 
+if [ "${HOST_OS}" = "android" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    COMMON_CFLAGS="\
+        -lintl \
+        ${COMMON_CFLAGS} \
+    "
+fi
+
 # Invoke one-shot template for meson/install
 package-meson-install-archive \
     -Diconv=${ICONV_LIB} \
