@@ -176,9 +176,13 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     TOOL_CXXFILT=${ENV_PREFIX}CXXFILT
     TOOL_CXXLD=${ENV_PREFIX}CXXLD
     TOOL_DLLTOOL=${ENV_PREFIX}DLLTOOL
-    TOOL_F77=${ENV_PREFIX}F77
-    TOOL_FC=${ENV_PREFIX}FC
-    TOOL_FORTRAN=${ENV_PREFIX}FORTRAN
+
+    if [ -n "${ENABLE_FORTRAN}" ]; then
+        TOOL_F77=${ENV_PREFIX}F77
+        TOOL_FC=${ENV_PREFIX}FC
+        TOOL_FORTRAN=${ENV_PREFIX}FORTRAN
+    fi
+
     TOOL_INSTALL_NAME_TOOL=${ENV_PREFIX}INSTALL_NAME_TOOL
     TOOL_LD=${ENV_PREFIX}LD
     TOOL_LIBTOOL=${ENV_PREFIX}LIBTOOL
@@ -208,9 +212,13 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     export ${TOOL_CXXFILT}="${!TOOL_CXXFILT:-`package-get-path llvm-cxxfilt EXECUTABLE BUILD`}"
     export ${TOOL_CXXLD}="${!TOOL_CXXLD:-${!TOOL_CXX}}"
     export ${TOOL_DLLTOOL}="${!TOOL_DLLTOOL:-`package-get-path llvm-dlltool EXECUTABLE BUILD`}"
-    export ${TOOL_F77}="${!TOOL_F77:-${FLANG}}"
-    export ${TOOL_FC}="${!TOOL_FC:-${FLANG}}"
-    export ${TOOL_FORTRAN}="${!TOOL_FORTRAN:-${FLANG}}"
+
+    if [ -n "${ENABLE_FORTRAN}" ]; then
+        export ${TOOL_F77}="${!TOOL_F77:-${FLANG}}"
+        export ${TOOL_FC}="${!TOOL_FC:-${FLANG}}"
+        export ${TOOL_FORTRAN}="${!TOOL_FORTRAN:-${FLANG}}"
+    fi
+
     export ${TOOL_INSTALL_NAME_TOOL}="${!TOOL_INSTALL_NAME_TOOL:-`package-get-path llvm-install-name-tool EXECUTABLE BUILD`}"
 
     if [ "${!VARIANT_OS}" = "macos" ]; then
