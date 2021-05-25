@@ -105,6 +105,11 @@ function export-compiler-environment() {
     export-compiler-environment-for-c-and-cxx-variant HOST
     export-compiler-environment-for-go
     export-compiler-environment-for-swift
+
+    if [ "${HOST_OS}" = "macos" ]; then
+        export MACOSX_DEPLOYMENT_TARGET=${HOST_OS_API_LEVEL}
+    fi
+
     EXPORTED_COMPILER_ENVIRONMENT=TRUE
 }
 
@@ -463,10 +468,6 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     export ${TOOL_LIBS}="`${ECHO} "\
         ${!TOOL_LIBS} \
     " | ${XARGS}`"
-
-    if [ "${!VARIANT_OS}" = "macos" ]; then
-        export MACOSX_DEPLOYMENT_TARGET=${!VARIANT_OS_API_LEVEL}
-    fi
 }
 
 function export-compiler-environment-for-go() {
