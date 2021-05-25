@@ -380,10 +380,6 @@ package-invoke-builder unbound-cross
 package-invoke-builder libmicrohttpd-cross
 
 # android elfutils build
-COMMON_CFLAGS="\
-    -lintl \
-    ${COMMON_CFLAGS} \
-" \
 package-invoke-builder elfutils-cross
 
 # android strace build
