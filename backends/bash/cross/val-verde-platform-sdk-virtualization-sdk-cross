@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
+
+# spice-protocol build
+package-invoke-builder spice-protocol-cross
+
+# spice build
+package-invoke-builder spice-cross
+
+# qemu build
+package-invoke-builder qemu-cross

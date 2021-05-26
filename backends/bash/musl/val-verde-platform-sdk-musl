@@ -37,6 +37,9 @@ package-invoke-builder go-cross
 # graphics sdk build
 category-invoke-builder graphics-sdk-cross
 
+# virtualization sdk build
+package-invoke-builder virtualization-sdk-cross
+
 # node + sdk build
 package-invoke-builder node-cross
 package-invoke-builder npm-yarn-cross
