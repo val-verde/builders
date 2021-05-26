@@ -1,0 +1,50 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=boost
+export SOURCE_PACKAGE_VERSION=1
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+copy-source-to-staging
+
+# Invoke one-shot template for cmake/install
+cd ${STAGE_ROOT}
+
+TOOL_LOG=${STAGE_ROOT}/builder-bootstrap \
+tool-log ${BASH} ${SOURCE_ROOT}/bootstrap.sh
+
+BOOST_CONTEXT_ABI=sysv
+BOOST_FIBER_NUMA_TARGET_OS=none
+BOOST_LOCALE_ENABLE_POSIX=FALSE
+BOOST_PROCESSOR=${HOST_PROCESSOR}
+
+if [ "${BOOST_PROCESSOR}" = "aarch64" ]; then
+    BOOST_CONTEXT_ABI=aapcs
+    BOOST_PROCESSOR=arm64
+fi
+
+if [ "${HOST_OS}" = "musl" ] ||
+   [ "${HOST_OS}" = "gnu" ]; then
+    BOOST_FIBER_NUMA_TARGET_OS=linux
+    BOOST_LOCALE_ENABLE_POSIX=TRUE
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    BOOST_CONTEXT_ABI=ms
+    BOOST_FIBER_NUMA_TARGET_OS=windows
+fi
+
+CMAKE_CONFIGURE_ROOT=${STAGE_ROOT} \
+package-cmake-install-archive \
+    -DBOOST_CONTEXT_ABI=${BOOST_CONTEXT_ABI} \
+    -DBOOST_CONTEXT_ARCHITECTURE=${BOOST_PROCESSOR} \
+    -DBOOST_ENABLE_CMAKE=TRUE \
+    -DBOOST_FIBER_NUMA_TARGET_OS=${BOOST_FIBER_NUMA_TARGET_OS} \
+    -DBOOST_LOCALE_ENABLE_POSIX=${BOOST_LOCALE_ENABLE_POSIX} \
+    -DBOOST_INSTALL_LAYOUT=system \
+    -DLIBLZMA_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DLIBLZMA_LIBRARY=`package-get-path lzma SHARED HOST` \
+    -DZSTD_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZSTD_LIBRARY=`package-get-path zstd SHARED HOST`

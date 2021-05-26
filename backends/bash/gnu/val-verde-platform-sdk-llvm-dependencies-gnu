@@ -583,6 +583,9 @@ package-invoke-builder vim-cross
 package-invoke-builder cmake-cross
 unset CMAKE
 
+# boost build
+package-invoke-builder boost-cross
+
 # android patch elf
 package-invoke-builder android-patch-elf-cross
 

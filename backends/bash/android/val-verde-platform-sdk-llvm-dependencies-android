@@ -447,6 +447,9 @@ package-invoke-builder vim-cross
 # android cmake build
 package-invoke-builder cmake-cross
 
+# android boost build
+package-invoke-builder boost-cross
+
 # android patch elf
 package-invoke-builder android-patch-elf-cross
 
