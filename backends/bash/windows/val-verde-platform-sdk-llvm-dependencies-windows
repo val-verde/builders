@@ -260,6 +260,9 @@ package-invoke-builder cmake-cross
 # windows boost build
 package-invoke-builder boost-cross
 
+# windows cereal build
+package-invoke-builder cereal-cross
+
 # windows android patch elf build
 # package-invoke-builder android-patch-elf-cross
 

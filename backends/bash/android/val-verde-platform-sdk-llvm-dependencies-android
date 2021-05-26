@@ -450,6 +450,9 @@ package-invoke-builder cmake-cross
 # android boost build
 package-invoke-builder boost-cross
 
+# android cereal build
+package-invoke-builder cereal-cross
+
 # android patch elf
 package-invoke-builder android-patch-elf-cross
 
