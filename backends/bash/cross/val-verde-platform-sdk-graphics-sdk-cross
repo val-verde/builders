@@ -11,6 +11,9 @@ package-invoke-builder spirv-headers-cross
 # spirv tools build
 package-invoke-builder spirv-tools-cross
 
+# spirv cross build
+package-invoke-builder spirv-cross-cross
+
 if [ "${HOST_OS}" = "android" ]; then
     # khr headers build
     package-invoke-builder khr-headers-cross
