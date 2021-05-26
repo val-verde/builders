@@ -23,7 +23,7 @@ package-invoke-builder llvm-dependencies-darwin
 package-invoke-builder go-cross
 
 # graphics sdk build
-# package-invoke-builder graphics-sdk-cross
+package-invoke-builder graphics-sdk-cross
 
 # virtualization sdk build
 package-invoke-builder virtualization-sdk-cross
