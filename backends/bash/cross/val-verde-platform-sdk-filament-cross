@@ -28,6 +28,8 @@ function package-install-completion-callback() {
                       ${STAGE_ROOT}/ImportExecutables-${BUILD_TYPE}.cmake \
                       ${INSTALL_PREFIX}/lib/cmake/${SOURCE_PACKAGE_NAME}.cmake
     fi
+
+    ${RM} ${INSTALL_PREFIX}/lib/libvulkan*
 }
 
 if [ "${BUILD_TRIPLE}" != ${HOST_TRIPLE} ]; then
@@ -88,6 +90,7 @@ package-cmake-install-archive \
     -DPYTHON_EXECUTABLE=${PYTHON} \
     -DSPIRV_WERROR=FALSE \
     -DUSE_STATIC_LIBCXX=FALSE \
+    -DVulkan_LIBRARY=`package-get-path vulkan SHARED HOST` \
     "${CMAKE_ANDROID_DEFINE_CMD}" \
     "${CMAKE_ASM_COMPILER_CMD}" \
     "${CMAKE_ASM_COMPILER_ID_CMD}" \
