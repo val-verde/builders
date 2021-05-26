@@ -60,6 +60,9 @@ if [ "${HOST_OS}" = "gnu" ] ||
     package-invoke-builder mesa-demos-cross
 fi
 
+# libepoxy build
+package-invoke-builder libepoxy-cross
+
 # sdl build
 DXSDK_DIR=${SYSROOT} \
 package-invoke-builder sdl-cross
