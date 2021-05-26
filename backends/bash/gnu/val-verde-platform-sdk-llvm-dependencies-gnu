@@ -471,6 +471,9 @@ package-invoke-builder cython-cross
 # pygments build
 package-invoke-builder pygments-cross
 
+# pygments build
+package-invoke-builder pyparsing-cross
+
 # numpy build
 package-invoke-builder numpy-cross
 
