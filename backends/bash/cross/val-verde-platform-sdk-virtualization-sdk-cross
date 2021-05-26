@@ -6,10 +6,10 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # spice-protocol build
-package-invoke-builder spice-protocol-cross
+package-invoke-builder spice-protocol-cross 0
 
 # spice build
-package-invoke-builder spice-cross
+package-invoke-builder spice-cross 0
 
 if [ "${HOST_OS}" = "android" ] ||
    [ "${HOST_OS}" = "gnu" ] ||
@@ -20,4 +20,4 @@ if [ "${HOST_OS}" = "android" ] ||
 fi
 
 # qemu build
-package-invoke-builder qemu-cross
+package-invoke-builder qemu-cross 6
