@@ -17,5 +17,7 @@ if [ "${HOST_OS}" = "android" ]; then
 fi
 
 package-cmake-install-archive \
+    -DBUILD_SHARED_LIBS=TRUE \
+    -DBUILD_TESTING=FALSE \
     -DPYTHON_EXECUTABLE=${PYTHON} \
     "${CMAKE_ANDROID_DEFINE_CMD}"
