@@ -520,10 +520,10 @@ package-invoke-builder cmake-cross 3
 package-invoke-builder protobuf-cross 3
 
 # boost build
-package-invoke-builder boost-cross
+package-invoke-builder boost-cross 1
 
 # cereal build
-package-invoke-builder cereal-cross
+package-invoke-builder cereal-cross 1
 
 # libobjc2 build
 package-invoke-builder libobjc2-cross
