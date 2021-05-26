@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=moltenvk
+export SOURCE_PACKAGE_VERSION=1
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for cmake/install
+SPIRV_CROSS_LIBRARIES="\
+`package-get-path glslang SHARED HOST`;\
+`package-get-path spirv-cross-c STATIC HOST`;\
+`package-get-path spirv-cross-core STATIC HOST`;\
+`package-get-path spirv-cross-glsl STATIC HOST`;\
+`package-get-path spirv-cross-msl STATIC HOST`;\
+`package-get-path spirv-cross-reflect STATIC HOST`;\
+`package-get-path SPIRV SHARED HOST`;\
+`package-get-path SPIRV-Tools-shared SHARED HOST`;\
+"
+#SPIRV_CROSS_LIBRARIES="`${ECHO} ${SPIRV_CROSS_LIBRARIES} | ${XARGS}`"
+package-cmake-install-archive \
+    -DSPIRV_CROSS_INCLUDE_DIR=${PACKAGE_PREFIX}/include/spirv_cross \
+    -DSPIRV_CROSS_LIBRARIES="${SPIRV_CROSS_LIBRARIES}"
