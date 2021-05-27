@@ -3,6 +3,7 @@
 set -e
 
 # Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # remove host foundation and libdispatch to avoid module collisions
@@ -11,25 +12,34 @@ PACKAGES_TO_MANAGE=( 'swift-corelibs-foundation-5'     'BUILD' \
                      'swift-corelibs-libdispatch-5'    'BUILD' )
 deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 
-# llbuild build
+# musl libdispatch build
+package-invoke-builder swift-corelibs-libdispatch-cross
+
+# musl foundation build
+package-invoke-builder swift-corelibs-foundation-cross
+
+# musl xctest build
+package-invoke-builder swift-corelibs-xctest-cross
+
+# musl llbuild build
 package-invoke-builder swift-llbuild-cross
 
-# swift tools support core build
+# musl swift tools support core build
 package-invoke-builder swift-tools-support-core-cross
 
-# yams build
+# musl yams build
 package-invoke-builder yams-cross
 
-# swift argument parser build
+# musl swift argument parser build
 package-invoke-builder swift-argument-parser-cross
 
-# swift crypto build
+# musl swift crypto build
 package-invoke-builder swift-crypto-cross
 
-# swift driver build
+# musl swift driver build
 package-invoke-builder swift-driver-cross
 
-# swift package manager build
+# musl swift package manager build
 package-invoke-builder swift-package-manager-cross
 
 # reinstall swiftpm for build and host
@@ -56,23 +66,23 @@ PACKAGES_TO_MANAGE=( 'swift-argument-parser-5'         'BUILD' \
                      'yams-3'                          'HOST' )
 deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 
-# swift-syntax build
+# musl swift-syntax build
 package-invoke-builder swift-syntax-cross
 
-# swift-format build
+# musl swift-format build
 package-invoke-builder swift-format-cross
 
-# swift-doc build
+# musl swift-doc build
 package-invoke-builder swift-doc-cross
 
-# sourcekit-lsp build
+# musl sourcekit-lsp build
 package-invoke-builder sourcekit-lsp-cross
 
-# baikonur build
+# musl baikonur build
 package-invoke-builder baikonur-cross
 
-# pythonkit build
+# musl pythonkit build
 package-invoke-builder pythonkit-cross
 
-# swift tensorflows apis build
+# musl swift tensorflows apis build
 # package-invoke-builder swift-tensorflow-apis

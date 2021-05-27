@@ -21,6 +21,13 @@ if [ "${HOST_OS}" = "android" ]; then
 fi
 
 # Configure the build components
+if [ "${HOST_OS}" = "musl" ]; then
+    SWIFTCFLAGS="\
+        -DUSE_MUSL_LIBC \
+        ${SWIFTCFLAGS} \
+    "
+fi
+
 DISABLE_INSTALL_DEB=TRUE \
 package-cmake-install-archive \
     -Ddispatch_DIR=${STAGE_ROOT_BASE}/swift-corelibs-libdispatch-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \

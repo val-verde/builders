@@ -17,13 +17,13 @@ package-invoke-builder llvm-dependencies-darwin
 # package-invoke-builder swift-tools-darwin
 
 # swift sdk build
-# package-invoke-builder swift-sdk-darwin
+# category-invoke-builder swift-sdk-cross
 
 # go build
 package-invoke-builder go-cross
 
 # graphics sdk build
-package-invoke-builder graphics-sdk-cross
+category-invoke-builder graphics-sdk-cross
 
 # virtualization sdk build
 package-invoke-builder virtualization-sdk-cross

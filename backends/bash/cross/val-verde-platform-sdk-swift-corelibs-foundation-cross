@@ -38,6 +38,14 @@ else
     SDK=${HOST_OS}
 fi
 
+if [ "${HOST_OS}" = "musl" ]; then
+    SWIFTCFLAGS="\
+        -lfts \
+        -DNO_BACKTRACE \
+        ${SWIFTCFLAGS} \
+    "
+fi
+
 COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
 DISABLE_INSTALL_DEB=TRUE \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \

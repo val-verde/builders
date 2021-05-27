@@ -30,6 +30,13 @@ function package-install-completion-callback() {
                   ${INSTALL_PREFIX}/
 }
 
+if [ "${HOST_OS}" = "musl" ]; then
+    SWIFTCFLAGS="\
+        -DUSE_MUSL_LIBC \
+        ${SWIFTCFLAGS} \
+    "
+fi
+
 DISABLE_INSTALL_DEB=TRUE \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-cmake-install-archive \
