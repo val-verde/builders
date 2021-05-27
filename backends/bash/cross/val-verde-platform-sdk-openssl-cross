@@ -48,7 +48,7 @@ tool-log ${SOURCE_ROOT}/Configure \
     --libdir=${PACKAGE_PREFIX}/lib \
     --openssldir=${OPENSSL_DIR} \
     --prefix=${PACKAGE_PREFIX} \
-    "${OPENSSL_DEFINES}" \
+    ${OPENSSL_DEFINES} \
     ${OPENSSL_TARGET}
 
 # Build the components

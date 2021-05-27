@@ -92,8 +92,8 @@ package-cmake-install-archive \
     -DSPIRV_WERROR=FALSE \
     -DUSE_STATIC_LIBCXX=FALSE \
     -DVulkan_LIBRARY=`package-get-path vulkan SHARED HOST` \
-    "${CMAKE_ANDROID_DEFINE_CMD}" \
-    "${CMAKE_ASM_COMPILER_CMD}" \
-    "${CMAKE_ASM_COMPILER_ID_CMD}" \
-    "${CMAKE_ASM_FLAGS_CMD}" \
-    "${CMAKE_BLUEGL_ARCH_CMD}"
+    ${CMAKE_ANDROID_DEFINE_CMD} \
+    ${CMAKE_ASM_COMPILER_CMD} \
+    ${CMAKE_ASM_COMPILER_ID_CMD} \
+    ${CMAKE_ASM_FLAGS_CMD} \
+    ${CMAKE_BLUEGL_ARCH_CMD}

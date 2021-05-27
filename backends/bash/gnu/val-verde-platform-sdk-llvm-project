@@ -69,6 +69,8 @@ fi
 # libLLVM.so is referenced by interim build tools
 export LD_LIBRARY_PATH=${STAGE_ROOT}/lib:${LD_LIBRARY_PATH}
 
+export-compiler-environment
+
 CUDA_COMPILER=${STAGE_ROOT}/host-nvcc
 NVCC=${BINDIR}/sclang
 NVCCFLAGS=`${ECHO} "\
@@ -76,6 +78,7 @@ NVCCFLAGS=`${ECHO} "\
     --sysroot=${SYSROOT} \
 " | ${XARGS}`
 
+CROSS_TOOLCHAIN_FLAGS_NATIVE="`package-cmake-invocation-arguments-for-variant BUILD`"
 create-host-tool ${NVCC} NVCCFLAGS ${CUDA_COMPILER}
 
 CMAKE_CONFIGURE_ROOT=${SOURCE_ROOT}/llvm \
@@ -117,7 +120,7 @@ package-cmake-install-archive \
     -DCOMPILER_RT_HAS_NODEFAULTLIBS_FLAG=FALSE \
     -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
     -DCOMPILER_RT_SANITIZERS_TO_BUILD=${COMPILER_RT_SANITIZER_TO_BUILD} \
-    -DCROSS_TOOLCHAIN_FLAGS_NATIVE="-DCMAKE_TOOLCHAIN_FILE=${STAGE_ROOT}/build-cmake-toolchain.cmake" \
+    -DCROSS_TOOLCHAIN_FLAGS_NATIVE="${CROSS_TOOLCHAIN_FLAGS_NATIVE}" \
     -DCUDA_DRIVER_LIBRARY=${CUDA_RUNTIME_LIBRARY} \
     -DCUDA_HOST_COMPILER=${CUDA_COMPILER} \
     -DCUDA_NVCC_EXECUTABLE=${CUDA_COMPILER} \
@@ -250,4 +253,4 @@ package-cmake-install-archive \
     -DZ3_RETURNCODE__TRYRUN_OUTPUT=4.8.10 \
     -DZLIB_INCLUDE_DIR=${BUILD_PACKAGE_PREFIX}/include \
     -DZLIB_LIBRARY_RELEASE=`package-get-path z SHARED HOST` \
-    "${LIBC_CMD}"
+    ${LIBC_CMD}

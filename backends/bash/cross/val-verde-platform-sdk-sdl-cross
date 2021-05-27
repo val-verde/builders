@@ -33,4 +33,4 @@ CMAKE_STAGE_ROOT=${STAGE_ROOT}/build
 ${MKDIR} -p ${CMAKE_STAGE_ROOT}
 
 package-cmake-install-archive \
-    "${PLATFORM_CMD}"
+    ${PLATFORM_CMD}

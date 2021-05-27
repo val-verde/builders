@@ -54,5 +54,5 @@ package-cmake-install-archive \
     -DGLSLANG_VALIDATOR=${BUILD_PACKAGE_PREFIX}/bin/glslangValidator \
     -DPKG_CONFIG_EXECUTABLE=${PKG_CONFIG} \
     -DVulkan_LIBRARY=${PACKAGE_PREFIX}/lib/libvulkan${LIB_VERSION_SUFFIX}.${LIB_SUFFIX} \
-    "${CMAKE_ANDROID_DEFINE_CMD}" \
-    "${CMAKE_XCB_CMD}"
+    ${CMAKE_ANDROID_DEFINE_CMD} \
+    ${CMAKE_XCB_CMD}

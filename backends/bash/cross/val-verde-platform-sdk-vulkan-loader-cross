@@ -32,4 +32,4 @@ package-cmake-install-archive \
     -DPKG_CONFIG_EXECUTABLE=${PKG_CONFIG} \
     -DVulkanHeaders_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DVulkanRegistry_DIR=${PACKAGE_PREFIX}/share/vulkan/registry \
-    "${CMAKE_ANDROID_DEFINE_CMD}"
+    ${CMAKE_ANDROID_DEFINE_CMD}
