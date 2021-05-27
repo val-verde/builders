@@ -86,7 +86,7 @@ package-invoke-builder sourcekit-lsp-cross
 package-invoke-builder baikonur-cross
 
 # pythonkit build
-package-invoke-builder pythonkit
+package-invoke-builder pythonkit-cross
 
 # swift tensorflows apis build
 # package-invoke-builder swift-tensorflow-apis
