@@ -1055,9 +1055,9 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "pygments",
-        "sourceBranchIndicator": "master",
+        "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2",
-        "sourcePackageUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}.git"
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
         "retainSource": "false",
