@@ -292,7 +292,7 @@ package-invoke-builder freetype2-cross
 package-invoke-builder wayland-protocols-cross
 
 # mesa-drm build
-# package-invoke-builder mesa-drm-cross
+package-invoke-builder mesa-drm-cross
 
 # opencl headers build
 package-invoke-builder opencl-headers-cross

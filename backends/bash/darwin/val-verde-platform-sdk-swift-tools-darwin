@@ -15,8 +15,8 @@ package-invoke-builder souper-cross
 package-invoke-builder swift-cmark
 
 # swift build
-package-invoke-builder swift-darwin
+# package-invoke-builder swift-darwin
 
 # lldb build
-package-invoke-builder swift-lldb-darwin
+# package-invoke-builder swift-lldb-darwin
 

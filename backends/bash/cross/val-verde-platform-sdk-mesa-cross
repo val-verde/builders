@@ -9,35 +9,62 @@ export SOURCE_PACKAGE_VERSION=21
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
+COMMON_CFLAGS="\
+    -I${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/tools/clang/include \
+    -I${SOURCE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}/clang/include \
+    ${COMMON_CFLAGS} \
+" \
 export-compiler-environment
 
 export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
 
 # Invoke one-shot template for meson/install
-GALLIUM_DRIVERS="freedreno,iris,lima,panfrost,nouveau,radeonsi,svga,swrast,v3d,vc4,virgl,zink"
+if [ "${HOST_OS}" = "android" ] ||
+   [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    GALLIUM_DRIVERS="freedreno,iris,lima,panfrost,nouveau,radeonsi,svga,swrast,v3d,vc4,virgl,zink"
+    HARDWARE_DRIVERS_ENABLED=true
+    HARDWARE_PLATFORMS="wayland,x11"
+    OPENCL_MODE=icd
+    VULKAN_DRIVERS="amd,broadcom,freedreno,intel,swrast"
+else
+    GALLIUM_DRIVERS="swrast,zink"
+    HARDWARE_DRIVERS_ENABLED=false
+    HARDWARE_PLATFORMS="x11"
+    OPENCL_MODE=disabled
+    VULKAN_DRIVERS="swrast"
+fi
 
-CXXFLAGS="\
-    -L${PACKAGE_PREFIX}/lib \
-    ${CXXFLAGS} \
-" \
+if [ "${HOST_OS}" = "macos" ]; then
+    DISABLE_UNDEFINED=false
+else
+    DISABLE_UNDEFINED=true
+fi
+
 MESON_EXTRA_BINARIES="\
 llvm-config = '${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config'
 " \
 package-meson-install-archive \
+    -Db_lundef=${DISABLE_UNDEFINED} \
     -Ddri-drivers= \
-    -Ddri3=true \
+    -Ddri3=enabled \
+    -Degl=enabled \
     -Dgallium-drivers="${GALLIUM_DRIVERS}" \
     -Dgallium-nine=true \
-    -Dgallium-opencl=disabled \
-    -Dglvnd=false \
+    -Dgallium-opencl=${OPENCL_MODE} \
+    -Dgles1=true \
+    -Dgles2=true \
+    -Dglvnd=true \
     -Dglx=dri \
+    -Dglx-direct=true \
     -Dllvm=enabled \
     -Dopencl-native=true \
     -Dopencl-spirv=true \
-    -Dplatforms="wayland,x11" \
+    -Dplatforms="${HARDWARE_PLATFORMS}" \
     -Dprefix=${PACKAGE_PREFIX} \
     -Dosmesa=true \
     -Dshared-llvm=enabled \
     -Dshared-swr=true \
-    -Dvulkan-drivers="amd,broadcom,freedreno,intel,swrast" \
+    -Dvulkan-drivers=${VULKAN_DRIVERS} \
+    -Dvulkan-layers="device-select,intel-nullhw" \
     -Dzstd=enabled

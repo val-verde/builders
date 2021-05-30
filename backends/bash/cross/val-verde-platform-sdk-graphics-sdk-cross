@@ -46,10 +46,14 @@ fi
 package-invoke-builder vulkan-validation-layers-cross
 
 if [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "macos" ] ||
    [ "${HOST_OS}" = "musl" ]; then
     # mesa build
     package-invoke-builder mesa-cross
+fi
 
+if [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
     # mesa glu build
     package-invoke-builder mesa-glu-cross
 

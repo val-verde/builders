@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=virglrenderer
+export SOURCE_PACKAGE_VERSION=0
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for meson/install
+ENABLE_VENUS=false
+
+if [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    ENABLE_VENUS=true
+fi
+
+package-meson-install-archive \
+    -Dvenus-experimental=${ENABLE_VENUS} \
+    -Dvenus-validate=${ENABLE_VENUS}

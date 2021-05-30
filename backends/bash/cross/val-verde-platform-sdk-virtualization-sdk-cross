@@ -11,5 +11,12 @@ package-invoke-builder spice-protocol-cross
 # spice build
 package-invoke-builder spice-cross
 
+if [ "${HOST_OS}" = "android" ] ||
+   [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    # virglrenderer build
+    package-invoke-builder virglrenderer-cross
+fi
+
 # qemu build
 package-invoke-builder qemu-cross

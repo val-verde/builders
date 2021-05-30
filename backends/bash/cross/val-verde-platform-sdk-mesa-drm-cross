@@ -10,19 +10,27 @@ export SOURCE_PACKAGE_VERSION=2
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for meson/install
+if [ "${HOST_OS}" = "android" ] ||
+   [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    HARDWARE_DRIVERS_ENABLED=true
+else
+    HARDWARE_DRIVERS_ENABLED=false
+fi
+
 package-meson-install-archive \
-    -Damdgpu=true \
+    -Damdgpu=${HARDWARE_DRIVERS_ENABLED} \
     -Dbuild-tests=false \
     -Dcairo-tests=false \
-    -Detnaviv=true \
-    -Dexynos=true \
-    -Dfreedreno=true \
+    -Detnaviv=${HARDWARE_DRIVERS_ENABLED} \
+    -Dexynos=${HARDWARE_DRIVERS_ENABLED} \
+    -Dfreedreno=${HARDWARE_DRIVERS_ENABLED} \
     -Dinstall-test-programs=false \
-    -Dintel=true \
-    -Dlibkms=true \
-    -Domap=true \
-    -Dnouveau=true \
-    -Dradeon=true \
-    -Dtegra=true \
-    -Dvivante=true \
-    -Dvmwgfx=true
+    -Dintel=${HARDWARE_DRIVERS_ENABLED} \
+    -Dlibkms=${HARDWARE_DRIVERS_ENABLED} \
+    -Domap=${HARDWARE_DRIVERS_ENABLED} \
+    -Dnouveau=${HARDWARE_DRIVERS_ENABLED} \
+    -Dradeon=${HARDWARE_DRIVERS_ENABLED} \
+    -Dtegra=${HARDWARE_DRIVERS_ENABLED} \
+    -Dvivante=${HARDWARE_DRIVERS_ENABLED} \
+    -Dvmwgfx=${HARDWARE_DRIVERS_ENABLED}

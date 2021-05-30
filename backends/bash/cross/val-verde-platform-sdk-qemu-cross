@@ -18,6 +18,7 @@ ENABLE_OR_DISABLE_KVM=enable
 ENABLE_OR_DISABLE_LIBUDEV=disable
 ENABLE_OR_DISABLE_OPENGL=enable
 ENABLE_OR_DISABLE_SDL=enable
+ENABLE_OR_DISABLE_VIRGLRENDERER=enable
 TARGET_LIST=`${ECHO} "\
     aarch64-softmmu \
     arm-softmmu \
@@ -48,12 +49,11 @@ elif [ "${HOST_OS}" = "gnu" ]; then
         ${TARGET_LIST} \
     " | ${XARGS}`
 elif [ "${HOST_OS}" = "macos" ]; then
-    ENABLE_OR_DISABLE_COCOA=enable
     ENABLE_OR_DISABLE_GNUTLS=disable
     ENABLE_OR_DISABLE_HVF=enable
     ENABLE_OR_DISABLE_KVM=disable
     ENABLE_OR_DISABLE_OPENGL=disable
-    ENABLE_OR_DISABLE_SDL=disable
+    ENABLE_OR_DISABLE_VIRGLRENDERER=disable
 fi
 
 if [ "${HOST_PROCESSOR}" = "x86_64" ]; then
@@ -100,7 +100,8 @@ package-configure-invocation \
     --${ENABLE_OR_DISABLE_LIBUDEV}-libudev \
     --${ENABLE_OR_DISABLE_OPENGL}-opengl \
     --${ENABLE_OR_DISABLE_SDL}-sdl \
-    --${ENABLE_OR_DISABLE_SDL}-sdl-image
+    --${ENABLE_OR_DISABLE_SDL}-sdl-image \
+    --${ENABLE_OR_DISABLE_VIRGLRENDERER}-virglrenderer
 
 TOOL=${NINJA} \
 package-install
