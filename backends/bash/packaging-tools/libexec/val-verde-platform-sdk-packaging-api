@@ -89,7 +89,7 @@ function tar-package-build() {
 }
 
 function trigger-source-package-install() {
-    SOURCE_FILES=${SOURCE_DEB_PATH}/*
+    SOURCE_FILES=${SOURCE_ARCHIVE_PATH}/*
 
     for src_file in ${SOURCE_FILES}; do
         ${ECHO} -e "Installing Source Package: ${src_file}"
