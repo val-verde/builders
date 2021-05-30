@@ -37,7 +37,7 @@ function deb-package-install() {
 
 function generate-control-file() {
     ARCHIVE_ROOT=${TEMP_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
-    TEMPLATE_ROOT=${TEMPLATE_ROOT:-/usr/share/${VAL_VERDE_GH_TEAM}}
+    TEMPLATE_ROOT=${TEMPLATE_ROOT:-/usr/share/${VAL_VERDE_GH_TEAM}/deb}
 
     # Template definition
     DEBIAN_ROOT=${ARCHIVE_ROOT}/DEBIAN
