@@ -134,6 +134,30 @@ function export-compiler-environment-for-build-tools() {
     if [ "${SYSROOT}" = "/" ]; then
         export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:/usr/lib/${BUILD_TRIPLE}/pkgconfig:/usr/share/pkgconfig
     fi
+
+    if [ "${BUILD_OS}" = "android" ] ||
+       [ "${BUILD_OS}" = "gnu" ] ||
+       [ "${BUILD_OS}" = "musl" ]; then
+        BUILD_SYSTEM_NAME=${BUILD_SYSTEM_NAME:-Linux}
+    elif [ "${BUILD_OS}" = "macos" ]; then
+        BUILD_SYSTEM_NAME=${BUILD_SYSTEM_NAME:-Darwin}
+    elif [ "${BUILD_OS}" = "mingw32" ]; then
+        BUILD_SYSTEM_NAME=${BUILD_SYSTEM_NAME:-Windows}
+    elif [ "${BUILD_OS}" = "wasi" ]; then
+        BUILD_SYSTEM_NAME=${BUILD_SYSTEM_NAME:-Fuchsia}
+    fi
+
+    if [ "${HOST_OS}" = "android" ] ||
+       [ "${HOST_OS}" = "gnu" ] ||
+       [ "${HOST_OS}" = "musl" ]; then
+        SYSTEM_NAME=${SYSTEM_NAME:-Linux}
+    elif [ "${HOST_OS}" = "macos" ]; then
+        SYSTEM_NAME=${SYSTEM_NAME:-Darwin}
+    elif [ "${HOST_OS}" = "mingw32" ]; then
+        SYSTEM_NAME=${SYSTEM_NAME:-Windows}
+    elif [ "${HOST_OS}" = "wasi" ]; then
+        SYSTEM_NAME=${SYSTEM_NAME:-Fuchsia}
+    fi
 }
 
 function export-compiler-environment-for-c-and-cxx-variant() {
