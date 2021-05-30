@@ -96,12 +96,12 @@ function prepare-source-base() {
     export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources/${PACKAGE_NAME} \
            INSTALL_ROOT=${TEMP_ROOT_BASE}/${PACKAGE_NAME}-sources \
            STAGE_ROOT=${STAGE_ROOT_BASE}/${PACKAGE_NAME} \
-           DEB_PATH=${SOURCE_DEB_PATH}
+           DEB_PATH=${SOURCE_ARCHIVE_PATH}
     
     export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX}
 
     # Check if the source deb exists
-    SEARCH_PATH=${SOURCE_DEB_PATH} \
+    SEARCH_PATH=${SOURCE_ARCHIVE_PATH} \
     SEARCH_INPUT=${PACKAGE_NAME} \
     SEARCH_EXTENSION=deb \
     tool-check
