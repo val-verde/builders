@@ -41,22 +41,21 @@ COPY backends/bash/deb-templates \
 COPY backends/bash/packaging-tools \
      /sources/packaging-tools/
 
+# upstream source package build
+FROM ubuntu AS sources_builder
+
 COPY /source-debs/ \
      ${SOURCE_DEB_PATH}
+COPY backends/bash/sources \
+     /sources/
+
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sources-builder
 
 COPY /build-debs/ \
      ${BUILD_DEB_PATH}
 
 COPY /toolchain-debs/ \
      ${TOOLCHAIN_DEB_PATH}
-
-# upstream source package build
-FROM ubuntu AS sources_builder
-
-COPY backends/bash/sources \
-     /sources/
-
-RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sources-builder
 
 # bootstrap binaries build
 FROM sources_builder AS binaries_builder
