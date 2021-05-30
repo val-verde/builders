@@ -25,20 +25,6 @@ EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;libclc;mlir;openmp;parallel-
 
 # Invoke one-shot template for cmake/install
 function package-install-completion-callback() {
-    INSTALL_TARGET="tools/clang/install" \
-    tool-install
-
-    INSTALL_TARGET="projects/compiler-rt/install tools/lld/install tools/mlir/install" \
-    tool-install
-
-    NUM_PROCESSORS=`awk '/MemTotal/ { printf "%d", $2/(1024*1024*5) }' /proc/meminfo` \
-    INSTALL_TARGET=tools/flang/install \
-    tool-install
-
-    tool-install
-}
-
-function tool-install-invocation() {
     package-rsync -ax \
                   ${STAGE_ROOT}/bin/dsymutil \
                   ${STAGE_ROOT}/bin/ld64.lld* \
@@ -60,6 +46,20 @@ function tool-install-invocation() {
 
     PACKAGE_ACTION=UNINSTALL \
     deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
+}
+
+function tool-install-invocation() {
+    INSTALL_TARGET="tools/clang/install" \
+    tool-install
+
+    INSTALL_TARGET="projects/compiler-rt/install tools/lld/install tools/mlir/install" \
+    tool-install
+
+    NUM_PROCESSORS=`awk '/MemTotal/ { printf "%d", $2/(1024*1024*5) }' /proc/meminfo` \
+    INSTALL_TARGET=tools/flang/install \
+    tool-install
+
+    tool-install
 }
 
 if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
