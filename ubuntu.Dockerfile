@@ -37,8 +37,8 @@ RUN mkdir -p ${RELEASE_DEB_PATH} \
              ${BOOTSTRAP_DEB_PATH}
 
 # platform sdk tool wrapper scripts and templates
-COPY backends/bash/deb-templates \
-     /sources/deb-templates/
+COPY backends/bash/archive-templates \
+     /sources/archive-templates/
 COPY backends/bash/packaging-tools \
      /sources/packaging-tools/
 
