@@ -21,14 +21,13 @@ package-rsync -ax \
               /sources/packaging-tools/* \
               ${INSTALL_ROOT}/usr/
 package-rsync -ax \
-              /sources/deb-templates/* \
+              /sources/archive-templates/* \
               ${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM}/
 
 # Package debs
 BASE_DIRECTORY=${INSTALL_ROOT}/usr \
-TEMPLATE_ROOT=${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM} \
-deb-package-build
-deb-package-install
+TEMPLATE_ROOT=${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM}/deb \
+packaging-archive-build-install
 
 # Fetch sources
 bash /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-packages
