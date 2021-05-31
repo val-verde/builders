@@ -6,6 +6,14 @@ set -e
 export CONFIGURE_HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${DARWIN_OS}${DARWIN_OS_API_LEVEL}
 export SYSROOT=${SOURCE_ROOT_BASE}/macosx-${HOST_OS_API_LEVEL}
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+PACKAGE_ACTION=UNINSTALL
+PACKAGES_TO_MANAGE=( 'compiler-rt-13' 'BUILD' )
+deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
+
+# compiler-rt build
+package-invoke-builder compiler-rt-cross
 
 # libcxx build
 package-invoke-builder libcxx-bootstrap

@@ -69,20 +69,20 @@ fi
 # libLLVM.so is referenced by interim build tools
 export LD_LIBRARY_PATH=${STAGE_ROOT}/lib:${LD_LIBRARY_PATH}
 
-export-compiler-environment
-
 CUDA_COMPILER=${STAGE_ROOT}/host-nvcc
+CXX_STANDARD=17
 NVCC=${BINDIR}/sclang
 NVCCFLAGS=`${ECHO} "\
     --cuda-path=${SYSROOT} \
     --sysroot=${SYSROOT} \
 " | ${XARGS}`
 
-CROSS_TOOLCHAIN_FLAGS_NATIVE="`package-cmake-invocation-arguments-for-variant BUILD`"
+export-compiler-environment
+
+CROSS_TOOLCHAIN_FLAGS_NATIVE=`package-cmake-invocation-arguments-for-variant BUILD`
 create-host-tool ${NVCC} NVCCFLAGS ${CUDA_COMPILER}
 
 CMAKE_CONFIGURE_ROOT=${SOURCE_ROOT}/llvm \
-CXX_STANDARD=17 \
 DISABLE_TOOL_BUILD=TRUE \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 TOOL_INSTALL_INVOCATION=tool-install-invocation \
@@ -128,6 +128,8 @@ package-cmake-install-archive \
     -DCUDA_TOOLKIT_INCLUDE=${PACKAGE_PREFIX}/include \
     -DCUDA_VERSION=11.2 \
     -DDARWIN_macosx_OVERRIDE_SDK_VERSION=11 \
+    -DDARWIN_osx_BUILTIN_ARCHS="arm64;x86_64" \
+    -DDARWIN_osx_BUILTIN_MIN_VER=11 \
     -DDARWIN_osx_SYSROOT=${SOURCE_ROOT_BASE}/macosx-11 \
     -DDEFAULT_SYSROOT=${SYSROOT} \
     -DENABLE_EXPERIMENTAL_NEW_PASS_MANAGER=TRUE \
@@ -242,8 +244,9 @@ package-cmake-install-archive \
     -DLLVM_USE_RELATIVE_PATHS_IN_FILES=TRUE \
     -DLLVM_VERSION_SUFFIX="-${PACKAGE_BASE_NAME}" \
     -DLLVM_Z3_INSTALL_DIR=${BUILD_PACKAGE_PREFIX} \
-    -DMLIR_CUDA_RUNNER_ENABLED=TRUE \
-    -DMLIR_VULKAN_RUNNER_ENABLED=TRUE \
+    -DMLIR_ENABLE_CUDA_RUNNER=TRUE \
+    -DMLIR_ENABLE_SPIRV_CPU_RUNNER=TRUE \
+    -DMLIR_ENABLE_VULKAN_RUNNER=TRUE \
     -DPython3_EXECUTABLE=${PYTHON} \
     -DPOLLY_ENABLE_GPGPU_CODEGEN=TRUE \
     -DSANITIZER_CXX_ABI=libc++ \

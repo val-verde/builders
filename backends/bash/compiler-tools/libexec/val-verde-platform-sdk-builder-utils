@@ -1618,7 +1618,7 @@ function package-swift-build() {
     fi
 
     if [ "${HOST_OS}" != "mingw32" ]; then
-        TARGET=${TARGET:-${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}}
+        TARGET=${TARGET:-${HOST_4_TRIPLE}}
     else
         TARGET=${TARGET:-${HOST_PROCESSOR}-unknown-windows-gnu}
     fi

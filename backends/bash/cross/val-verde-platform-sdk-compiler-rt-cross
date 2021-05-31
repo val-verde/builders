@@ -53,7 +53,8 @@ function package-install-completion-callback() {
 }
 
 if [ "${HOST_OS}" = "macos" ]; then
-    CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
+    CLANG_RT_LIB=`package-get-filename clang_rt.osx STATIC`
+    DST_CLANG_RT_LIB=`package-get-filename clang_rt.osx STATIC`
 elif [ "${HOST_OS}" = "mingw32" ]; then
     CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
     DST_CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
@@ -110,5 +111,9 @@ package-cmake-install-archive \
     -DCOMPILER_RT_HAS_LIBSTDCXX=FALSE \
     -DCOMPILER_RT_HAS_NODEFAULTLIBS_FLAG=FALSE \
     -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
+    -DDARWIN_macosx_OVERRIDE_SDK_VERSION=11 \
+    -DDARWIN_osx_BUILTIN_ARCHS="arm64;arm64e;x86_64" \
+    -DDARWIN_osx_BUILTIN_MIN_VER=11 \
+    -DDARWIN_osx_SYSROOT=${SOURCE_ROOT_BASE}/macosx-11 \
     -DLLVM_CONFIG_PATH=${LLVM_CONFIG_PATH} \
     -DPython3_EXECUTABLE=${PYTHON}
