@@ -246,12 +246,12 @@ function export-compiler-environment-for-c-and-cxx-variant() {
 
     if [ "${!VARIANT_OS}" = "macos" ]; then
         export ${TOOL_LD}="${!TOOL_LD:-`package-get-path ld64.lld EXECUTABLE BUILD`}"
+        export ${TOOL_LIBTOOL}="${!TOOL_LIBTOOL:-`package-get-path llvm-libtool-darwin EXECUTABLE BUILD`}"
     else
         export ${TOOL_LD}="${!TOOL_LD:-`package-get-path ld.lld EXECUTABLE BUILD`}"
+        export ${TOOL_LIBTOOL}="${!TOOL_LIBTOOL:-`package-get-path libtool EXECUTABLE HOST`}"
     fi
 
-    export ${TOOL_LIBTOOL}="${!TOOL_LIBTOOL:-`package-get-path libtool EXECUTABLE BUILD`}"
-    export ${TOOL_LIBTOOL_DARWIN}="${!TOOL_LIBTOOL_DARWIN:-`package-get-path llvm-libtool-darwin EXECUTABLE BUILD`}"
     export ${TOOL_LIPO}="${!TOOL_LIPO:-`package-get-path llvm-lipo EXECUTABLE BUILD`}"
     export ${TOOL_MANIFEST_TOOL}="${!TOOL_MANIFEST_TOOL:-`package-get-path llvm-mt EXECUTABLE BUILD`}"
     export ${TOOL_NM}="${!TOOL_NM:-`package-get-path llvm-nm EXECUTABLE BUILD`}"
