@@ -1,0 +1,26 @@
+Name:       PACKAGE_NAME
+Version:    1.0
+Release:    1
+Summary:    PACKAGE_NAME source rpm
+License:    Apache
+BuildArch:  BUILD_PROCESSOR
+Source: ARCHIVE_ROOT/SOURCES/PACKAGE_NAME.tar.gz
+
+%description
+PACKAGE_NAME source rpm for SYSTEM_ARCH
+
+%prep
+%setup -c -n PACKAGE_NAME-%{version}
+
+%build
+
+%install
+mkdir -p ARCHIVE_ROOT/BUILDROOT/PACKAGE_NAME-VERSION-RELEASE.BUILD_PROCESSOR
+cp -r RPM_PACKAGE_NAME/BUILD/PACKAGE_NAME-VERSION/* RPM_PACKAGE_NAME/BUILDROOT/PACKAGE_NAME-VERSION-RELEASE.BUILD_PROCESSOR/
+
+%files
+
+%clean
+rm -rf RPM_PACKAGE_NAME/BUILDROOT/*
+
+%changelog
