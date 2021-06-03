@@ -29,7 +29,7 @@ package-invoke-category-builder llvm-dependencies-musl
 package-invoke-category-builder swift-tools-musl
 
 # swift sdk build
-package-invoke-category-builder swift-sdk-musl
+package-invoke-category-builder swift-sdk-cross
 
 # go build
 package-invoke-builder go-cross 1
