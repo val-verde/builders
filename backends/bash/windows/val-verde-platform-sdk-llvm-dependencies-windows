@@ -175,7 +175,7 @@ package-invoke-builder libssh2-cross 1
 package-invoke-builder curl-cross 7
 
 # windows apple-mig build
-package-invoke-builder apple-mig-cross
+package-invoke-builder apple-mig-cross 121
 
 # windows libuv build
 package-invoke-builder libuv-cross 1
@@ -214,7 +214,7 @@ package-invoke-builder lua-cross 5
 package-invoke-builder wget-cross 1
 
 # windows unbound build
-package-invoke-builder unbound-cross
+package-invoke-builder unbound-cross 1
 
 # windows libmicrohttpd build
 package-invoke-builder libmicrohttpd-cross 0

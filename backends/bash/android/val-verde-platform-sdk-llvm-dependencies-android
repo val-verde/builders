@@ -198,7 +198,7 @@ package-invoke-builder libssh2-cross 1
 package-invoke-builder curl-cross 7
 
 # android apple-mig build
-package-invoke-builder apple-mig-cross
+package-invoke-builder apple-mig-cross 121
 
 # alsa-lib build
 package-invoke-builder alsa-lib-cross 1
@@ -284,7 +284,7 @@ package-invoke-builder libtasn1-cross 4
 
 # android p11-kit build
 DISABLE_SYSTEMD=TRUE \
-package-invoke-builder p11-kit-cross
+package-invoke-builder p11-kit-cross 0
 
 # android dbus build
 package-invoke-builder dbus-cross 1
@@ -297,7 +297,7 @@ package-invoke-builder util-linux-cross 2
 package-invoke-builder nettle-cross 3
 
 # android unbound build
-package-invoke-builder unbound-cross
+package-invoke-builder unbound-cross 1
 
 # android gnutls build
 package-invoke-builder gnutls-cross 3
@@ -310,13 +310,13 @@ package-invoke-builder elfutils-cross 0
 
 # android strace build
 if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
-    package-invoke-builder strace-cross
+    package-invoke-builder strace-cross 5
 else
     COMMON_CFLAGS="\
         -Dfputs_unlocked=fputs \
         ${COMMON_CFLAGS} \
     " \
-    package-invoke-builder strace-cross
+    package-invoke-builder strace-cross 5
 fi
 
 # android glib build

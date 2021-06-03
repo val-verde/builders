@@ -286,7 +286,7 @@ unset CURL
 package-invoke-builder libndp-cross
 
 # apple-mig build
-package-invoke-builder apple-mig-cross
+package-invoke-builder apple-mig-cross 121
 
 # alsa-lib build
 package-invoke-builder alsa-lib-cross 1
