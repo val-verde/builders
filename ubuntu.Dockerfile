@@ -19,6 +19,7 @@ ENV PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME} \
     VAL_VERDE_GH_TEAM=${VAL_VERDE_GH_TEAM} \
     ANDROID_NDK_VERSION=r22b \
     BUILD_DEB_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/build-debs \
+    MACOS_VERSION=11 \
     SOURCE_DEB_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/source-debs
 
 ENV BUILD_ARCH=skylake \
@@ -117,7 +118,18 @@ RUN DARWIN_OS=darwin \
     HOST_CPU=haswell \
     HOST_KERNEL=apple \
     HOST_OS=macos \
-    HOST_OS_API_LEVEL=11 \
+    HOST_OS_API_LEVEL=${MACOS_VERSION} \
+    HOST_PROCESSOR=x86_64 \
+    SYSROOT=${SOURCE_ROOT_BASE}/macosx-${MACOS_VERSION} \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt-cross
+
+RUN DARWIN_OS=darwin \
+    DARWIN_OS_API_LEVEL=20 \
+    HOST_ARCH=haswell \
+    HOST_CPU=haswell \
+    HOST_KERNEL=apple \
+    HOST_OS=macos \
+    HOST_OS_API_LEVEL=${MACOS_VERSION} \
     HOST_PROCESSOR=x86_64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-darwin || true
 
@@ -127,7 +139,7 @@ RUN DARWIN_OS=darwin \
     HOST_CPU=apple-m1 \
     HOST_KERNEL=apple \
     HOST_OS=macos \
-    HOST_OS_API_LEVEL=11 \
+    HOST_OS_API_LEVEL=${MACOS_VERSION} \
     HOST_PROCESSOR=aarch64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-darwin || true
 
