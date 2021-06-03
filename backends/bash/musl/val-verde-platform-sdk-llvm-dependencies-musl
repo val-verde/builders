@@ -351,7 +351,7 @@ package-invoke-builder cups-cross 2
 package-invoke-builder apt-cross 2
 
 # lvm2 build
-# package-invoke-builder lvm2
+# package-invoke-builder lvm2 2
 
 # popt build
 package-invoke-builder popt-cross 1
