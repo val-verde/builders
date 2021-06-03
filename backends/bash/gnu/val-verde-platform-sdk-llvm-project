@@ -21,7 +21,7 @@ COMPILER_RT_SANITIZERS_TO_BUILD="asan;cfi;dfsan;gwp_asan;hwasan;msan;safestack;s
 CUDA_GPU_PRIMARY_ARCH=61
 CUDA_GPU_SECONDARY_ARCH=35
 CUDA_RUNTIME_LIBRARY=${PACKAGE_PREFIX}/lib/stubs/libcuda.so
-EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;flang;libclc;mlir;openmp;parallel-libs;polly;pstl"}
+EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;flang;mlir;openmp;parallel-libs;polly;pstl"}
 
 # Invoke one-shot template for cmake/install
 function package-install-completion-callback() {
