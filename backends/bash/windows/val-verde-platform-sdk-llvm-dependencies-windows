@@ -163,6 +163,9 @@ package-invoke-builder libssh2-cross
 # windows curl build
 package-invoke-builder curl-cross
 
+# windows apple-mig build
+package-invoke-builder apple-mig-cross
+
 # windows xorg-macros build
 package-invoke-builder xorg-macros-cross
 

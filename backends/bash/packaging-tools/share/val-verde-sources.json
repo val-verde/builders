@@ -30,6 +30,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "apple-mig",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "121",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "android-ndk-patches",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",

@@ -185,6 +185,9 @@ package-invoke-builder libssh2-cross
 # android curl build
 package-invoke-builder curl-cross
 
+# android apple-mig build
+package-invoke-builder apple-mig-cross
+
 # android xorg-macros build
 package-invoke-builder xorg-macros-cross
 

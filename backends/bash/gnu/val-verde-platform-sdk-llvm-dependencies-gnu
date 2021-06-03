@@ -261,6 +261,9 @@ package-invoke-builder libssh2-cross
 package-invoke-builder curl-cross
 unset CURL
 
+# apple-mig build
+package-invoke-builder apple-mig-cross
+
 # xorg-macros build
 package-invoke-builder xorg-macros-cross
 
