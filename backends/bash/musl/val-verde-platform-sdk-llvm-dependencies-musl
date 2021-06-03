@@ -275,6 +275,18 @@ package-invoke-builder xorg-libxshmfence-cross
 # xorg-libxxf86vm build
 package-invoke-builder xorg-libxxf86vm-cross
 
+# xorg-font-util-cross build
+package-invoke-builder xorg-font-util-cross
+
+# libfontenc build
+package-invoke-builder libfontenc-cross
+
+# libxfont-cross build
+package-invoke-builder libxfont-cross
+
+# libxdmcp build
+package-invoke-builder libxdmcp-cross
+
 # libjpeg build
 package-invoke-builder libjpeg-cross
 

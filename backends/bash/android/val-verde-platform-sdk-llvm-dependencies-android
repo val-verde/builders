@@ -272,6 +272,18 @@ package-invoke-builder xorg-libxshmfence-cross
 # android xorg-libxxf86vm build
 package-invoke-builder xorg-libxxf86vm-cross
 
+# android xorg-font-util-cross build
+package-invoke-builder xorg-font-util-cross
+
+# android libfontenc build
+package-invoke-builder libfontenc-cross
+
+# android libxfont-cross build
+package-invoke-builder libxfont-cross
+
+# android libxdmcp build
+package-invoke-builder libxdmcp-cross
+
 # android libjpeg build
 package-invoke-builder libjpeg-cross
 
