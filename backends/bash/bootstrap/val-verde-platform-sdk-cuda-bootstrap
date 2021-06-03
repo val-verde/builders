@@ -9,10 +9,9 @@ export SOURCE_PACKAGE_VERSION=11
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-CUDA_PACKAGE_VERSION=11.3.0
 CUDA_HOST_PROCESSOR=${HOST_PROCESSOR}
 NVIDIA_DRIVER_VERSION=465.19.01
-PACKAGE_URL=https://developer.download.nvidia.com/compute/${SOURCE_PACKAGE_NAME}/${CUDA_PACKAGE_VERSION}/local_installers
+PACKAGE_URL=https://developer.download.nvidia.com/compute/${SOURCE_PACKAGE_NAME}/${CUDA_VERSION}/local_installers
 
 # Configure the build components
 if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
@@ -20,7 +19,7 @@ if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
     PACKAGE_FILENAME_SUFFIX=_${CUDA_HOST_PROCESSOR}
 fi
 
-PACKAGE_FILENAME=${SOURCE_PACKAGE_NAME}_${CUDA_PACKAGE_VERSION}_${NVIDIA_DRIVER_VERSION}_${HOST_KERNEL}${PACKAGE_FILENAME_SUFFIX}.run
+PACKAGE_FILENAME=${SOURCE_PACKAGE_NAME}_${CUDA_VERSION}_${NVIDIA_DRIVER_VERSION}_${HOST_KERNEL}${PACKAGE_FILENAME_SUFFIX}.run
 package-wget -c ${PACKAGE_URL}/${PACKAGE_FILENAME} \
              -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}.run
 
