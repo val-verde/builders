@@ -275,15 +275,6 @@ package-invoke-builder xorg-libxshmfence-cross
 # android xorg-libxxf86vm build
 package-invoke-builder xorg-libxxf86vm-cross
 
-# android xorg-font-util-cross build
-package-invoke-builder xorg-font-util-cross
-
-# android libfontenc build
-package-invoke-builder libfontenc-cross
-
-# android libxfont-cross build
-package-invoke-builder libxfont-cross
-
 # android libxdmcp build
 package-invoke-builder libxdmcp-cross
 
@@ -306,6 +297,15 @@ package-invoke-builder harfbuzz-cross
 # android freetype2 build
 package-invoke-builder freetype2-cross
 
+# android xorg-font-util-cross build
+package-invoke-builder xorg-font-util-cross
+
+# android libfontenc build
+package-invoke-builder libfontenc-cross
+
+# android libxfont-cross build
+package-invoke-builder libxfont-cross
+
 # android wayland build
 package-invoke-builder wayland-cross
 
@@ -320,6 +320,9 @@ package-invoke-builder opencl-headers-cross
 
 # android opencl icd loader build
 package-invoke-builder opencl-icd-loader-cross
+
+# android libglvnd build
+package-invoke-builder libglvnd-cross
 
 # android vulkan headers build
 package-invoke-builder vulkan-headers-cross

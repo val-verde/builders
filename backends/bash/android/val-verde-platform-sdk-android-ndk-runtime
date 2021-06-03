@@ -32,7 +32,9 @@ ${RM} -f \
       ${INSTALL_PREFIX}/lib/libc++* \
       ${INSTALL_PREFIX}/lib/libintl* \
       ${INSTALL_PREFIX}/lib/libvulkan* \
-      ${INSTALL_PREFIX}/lib/libz.*
+      ${INSTALL_PREFIX}/lib/libz.* \
+      ${INSTALL_PREFIX}/lib/libEGL* \
+      ${INSTALL_PREFIX}/lib/libGLES*
 
 # Build and install the package
 package-invoke-archive-install
