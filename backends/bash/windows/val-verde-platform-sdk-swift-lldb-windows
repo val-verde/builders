@@ -72,6 +72,8 @@ package-cmake-install-archive \
     -DLLVM_LINK_LLVM_DYLIB=FALSE \
     -DLLVM_MAIN_INCLUDE_DIR=${LLVM_SOURCE_ROOT}/llvm/include \
     -DLLVM_TABLEGEN=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-tblgen \
+    -DLUA_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DLUA_LIBRARY=`package-get-path lua STATIC HOST` \
     -DNATIVE_Clang_DIR=${LLVM_NATIVE_STAGE_ROOT}/lib/cmake/clang \
     -DNATIVE_LLVM_DIR=${LLVM_NATIVE_STAGE_ROOT}/lib/cmake/lib \
     -DPython3_EXECUTABLE=${PYTHON} \

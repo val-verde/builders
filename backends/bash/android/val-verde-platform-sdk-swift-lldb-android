@@ -49,9 +49,11 @@ package-cmake-install-archive \
     -DLibEdit_LIBRARIES=`package-get-path edit SHARED HOST` \
     -DLIBLZMA_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DLIBLZMA_LIBRARY=`package-get-path lzma SHARED HOST` \
+    -DLIBLZMA_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DLIBLZMA_LIBRARY=`package-get-path lzma SHARED HOST` \
     -DLIBXML2_INCLUDE_DIR=${PACKAGE_PREFIX}/include/libxml2 \
     -DLIBXML2_LIBRARY=`package-get-path xml2 SHARED HOST` \
-    -DLLDB_ENABLE_PYTHON=TRUE \
+    -DLLDB_ENABLE_PYTHON=FALSE \
     -DLLDB_ENABLE_SWIFT_SUPPORT=TRUE \
     -DLLDB_ENABLE_WERROR=FALSE \
     -DLLDB_INCLUDE_TESTS=FALSE \
@@ -73,6 +75,8 @@ package-cmake-install-archive \
     -DLLVM_LINK_LLVM_DYLIB=TRUE \
     -DLLVM_MAIN_INCLUDE_DIR=${LLVM_SOURCE_ROOT}/llvm/include \
     -DLLVM_TABLEGEN=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-tblgen \
+    -DLUA_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DLUA_LIBRARY=`package-get-path lua STATIC HOST` \
     -DNATIVE_Clang_DIR=${LLVM_NATIVE_STAGE_ROOT}/lib/cmake/clang \
     -DNATIVE_LLVM_DIR=${LLVM_NATIVE_STAGE_ROOT}/lib/cmake/lib \
     -DPython3_EXECUTABLE=${PYTHON} \
