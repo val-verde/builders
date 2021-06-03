@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=xorg-xserver
+export SOURCE_PACKAGE_VERSION=1
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for meson/install
+ENABLE_LOGIND=false
+ENABLE_UDEV=false
+
+if [ "${HOST_OS}" = "gnu" ]; then
+    ENABLE_UDEV=true
+fi
+
+MIGCC=${STAGE_ROOT}/host-clang \
+package-meson-install-archive \
+    -Dsecure-rpc=false \
+    -Dsystemd_logind=${ENABLE_LOGIND} \
+    -Dudev=${ENABLE_UDEV} \
+    -Dudev_kms=${ENABLE_UDEV}

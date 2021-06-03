@@ -58,6 +58,16 @@ if [ "${HOST_OS}" = "gnu" ] ||
     package-invoke-builder mesa-cross
 fi
 
+# libepoxy build
+package-invoke-builder libepoxy-cross
+
+if [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "macos" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    # xorg-xserver build
+    package-invoke-builder xorg-xserver-cross
+fi
+
 if [ "${HOST_OS}" = "gnu" ] ||
    [ "${HOST_OS}" = "musl" ]; then
     # mesa glu build
@@ -69,9 +79,6 @@ if [ "${HOST_OS}" = "gnu" ] ||
     # mesa demos build
     package-invoke-builder mesa-demos-cross
 fi
-
-# libepoxy build
-package-invoke-builder libepoxy-cross
 
 # sdl build
 DXSDK_DIR=${SYSROOT} \
