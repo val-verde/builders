@@ -6,7 +6,8 @@ set -e
 BASE_DIRECTORY=${BASE_DIRECTORY:-$(${ECHO} "${PACKAGE_ROOT}" | ${CUT} -d "/" -f2)}
 DEB_PATH=${DEB_PATH:-${RELEASE_DEB_PATH}}
 VERSION=${VERSION:='1.0.0'}
-ARCHIVE_TYPE=$(${ECHO} "${PACKAGING_ARCHIVE_TYPE}" | ${TR} '[:upper:]' '[:lower:]')
+ARCHIVE_TYPE=${ARCHIVE_TYPE:-$(${ECHO} "${PACKAGING_ARCHIVE_TYPE}" | ${TR} '[:upper:]' '[:lower:]')}
+RELEASE=${RELEASE:='1'}
 
 function packaging-archive-build-install() {
     # Build the package
@@ -45,8 +46,8 @@ function deb-package-install() {
 }
 
 function generate-control-file() {
-    ARCHIVE_ROOT=${TEMP_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
     TEMPLATE_ROOT=${TEMPLATE_ROOT:-/usr/share/${VAL_VERDE_GH_TEAM}/deb}
+    ARCHIVE_ROOT=${TEMP_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
 
     # Template definition
     DEBIAN_ROOT=${ARCHIVE_ROOT}/DEBIAN
@@ -70,6 +71,57 @@ function generate-control-file() {
             s|SOURCE_PACKAGE_VERSION|${SOURCE_PACKAGE_VERSION}|g" \
             ${TEMPLATE_ROOT}/changelog.in \
             > ${DEBIAN_ROOT}/changelog
+}
+
+function generate-spec-file() {
+    TEMPLATE_ROOT=${TEMPLATE_ROOT:-/usr/share/${VAL_VERDE_GH_TEAM}/rpm}
+    ARCHIVE_ROOT=${TEMP_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+
+    ${SED} "s|ARCHIVE_ROOT|${ARCHIVE_ROOT}|g; \
+            s|BUILD_PROCESSOR|${BUILD_PROCESSOR}|g; \
+            s|PACKAGE_NAME|${PACKAGE_NAME}|g; \
+            s|RELEASE|${RELEASE}|g; \
+            s|SYSTEM_ARCH|${PACKAGE_ARCH}|g; \
+            s|VERSION|${VERSION}|g" \
+            ${TEMPLATE_ROOT}/spec.in \
+            > ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
+}
+
+function rpm-package-build() {
+    ARCHIVE_ROOT=${TEMP_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+
+    if [ -z "${DISABLE_BUILD_RPM}" ]; then
+        package-push-directory ${INSTALL_ROOT}
+            ${RM} -r ${ARCHIVE_ROOT}
+            ${MKDIR} -p ${ARCHIVE_ROOT} \
+                ${ARCHIVE_ROOT}/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS} \
+                ${ARCHIVE_ROOT}/SOURCES/${PACKAGE_NAME}
+
+            package-rsync -ax \
+                        ${BASE_DIRECTORY} \
+                        ${ARCHIVE_ROOT}/SOURCES/${PACKAGE_NAME}
+            
+            package-tar zvcfP ${ARCHIVE_ROOT}/SOURCES/${PACKAGE_NAME}.tar.gz .
+
+            generate-spec-file "${PACKAGE_NAME}"
+
+            FILELIST="\
+            $(${FIND} ${ARCHIVE_ROOT}/SOURCES/ -type f -name "*" '!' -name '*.tar.gz' -not -path '*/\.' | sort | \
+            ${SED} "s|${ARCHIVE_ROOT}/SOURCES/${PACKAGE_NAME}||g") \
+            "
+            ${SED} -i "s|%files|%files\n$(echo $FILELIST)|g" ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
+
+            ${SED} -i "s| /opt|\n/opt|g" ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
+
+            rpmbuild --define "_topdir ${ARCHIVE_ROOT}" -ba ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
+
+            # package-rpm-build ${ARCHIVE_ROOT}
+
+            ${MV} ${ARCHIVE_ROOT}/RPMS/noarch/${PACKAGE_NAME}.rpm \
+                  ${RPM_PATH}/${PACKAGE_NAME}.rpm
+            ${RM} -rf ${ARCHIVE_ROOT}
+        package-pop-directory
+    fi
 }
 
 function tar-package-build() {
