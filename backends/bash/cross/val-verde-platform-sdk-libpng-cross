@@ -11,4 +11,5 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for cmake/install
 package-cmake-install-archive \
-    -DAWK=${GAWK}
+    -DAWK=${GAWK} \
+    -DPNG_ARM_NEON=on
