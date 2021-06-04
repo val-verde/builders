@@ -46,14 +46,12 @@ function package-install-completion-callback() {
 
     if [ "${HOST_OS}" = "mingw32" ]; then
         package-rsync -ax \
-                      libsouperCodegen${SHARED_LIBRARY_SUFFIX} \
                       libsouperPass${SHARED_LIBRARY_SUFFIX} \
                       libsouperPassProfileAll${SHARED_LIBRARY_SUFFIX} \
                       ${INSTALL_PREFIX}/bin/
     fi
 
     package-rsync -ax \
-                  libsouperCodegen${SHARED_LIBRARY_SUFFIX} \
                   libsouperPass${SHARED_LIBRARY_SUFFIX} \
                   libsouperPassProfileAll${SHARED_LIBRARY_SUFFIX} \
                   ${INSTALL_PREFIX}/lib/
