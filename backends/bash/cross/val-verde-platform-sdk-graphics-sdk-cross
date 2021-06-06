@@ -61,6 +61,11 @@ fi
 # libepoxy build
 package-invoke-builder libepoxy-cross
 
+if [ "${HOST_OS}" = "macos" ]; then
+    # libapplewm build
+    package-invoke-builder libapplewm-cross
+fi
+
 if [ "${HOST_OS}" = "gnu" ] ||
    [ "${HOST_OS}" = "macos" ] ||
    [ "${HOST_OS}" = "musl" ]; then
