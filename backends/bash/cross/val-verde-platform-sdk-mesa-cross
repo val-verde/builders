@@ -16,7 +16,11 @@ COMMON_CFLAGS="\
 " \
 export-compiler-environment
 
-export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
+LLVM_STAGE_ROOT=${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+
+if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+    LLVM_STAGE_ROOT=${LLVM_STAGE_ROOT}/NATIVE
+fi
 
 # Invoke one-shot template for meson/install
 if [ "${HOST_OS}" = "android" ] ||
@@ -31,7 +35,7 @@ else
     GALLIUM_DRIVERS="swrast,zink"
     HARDWARE_DRIVERS_ENABLED=false
     HARDWARE_PLATFORMS="x11"
-    OPENCL_MODE=disabled
+    OPENCL_MODE=icd
     VULKAN_DRIVERS="swrast"
 fi
 
@@ -41,9 +45,10 @@ else
     DISABLE_UNDEFINED=true
 fi
 
-MESON_EXTRA_BINARIES="\
-llvm-config = '${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config'
+iaMESON_EXTRA_BINARIES="\
+llvm-config = '${LLVM_STAGE_ROOT}/bin/llvm-config'
 " \
+iaPATH=${LLVM_STAGE_ROOT}/bin:${PATH} \
 package-meson-install-archive \
     -Db_lundef=${DISABLE_UNDEFINED} \
     -Ddri-drivers= \
@@ -58,13 +63,14 @@ package-meson-install-archive \
     -Dglx=dri \
     -Dglx-direct=true \
     -Dllvm=enabled \
-    -Dopencl-native=true \
+    -Dopencl-native=${HARDWARE_DRIVERS_ENABLED} \
     -Dopencl-spirv=true \
     -Dplatforms="${HARDWARE_PLATFORMS}" \
     -Dprefix=${PACKAGE_PREFIX} \
     -Dosmesa=true \
     -Dshared-llvm=enabled \
     -Dshared-swr=true \
+    -Dskip-llvm-config=true \
     -Dvulkan-drivers=${VULKAN_DRIVERS} \
     -Dvulkan-layers="device-select,intel-nullhw" \
     -Dzstd=enabled
