@@ -9,6 +9,18 @@ export SOURCE_PACKAGE_VERSION=5
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
+COMMON_LDFLAGS="\
+    -lswiftCoreFoundation \
+    -lswiftCoreGraphics \
+    -lswiftDispatch \
+    -lswiftFoundation \
+    -lswiftIOKit \
+    -lswiftObjectiveC \
+    -lswiftXPC \
+    -framework Foundation \
+    -L${SYSROOT}/usr/lib/swift \
+    ${COMMON_LDFLAGS} \
+" \
 export-compiler-environment
 
 export DEPENDS="\
@@ -16,7 +28,6 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-libedit-20210714-3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-libxml2-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-llvm-project-13-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-python-3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-util-linux-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 export LLVM_SOURCE_ROOT=${SOURCE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}
@@ -26,16 +37,9 @@ USE_NEWPM=${USE_NEWPM:-TRUE}
 
 # Invoke one-shot template for cmake/install
 function package-install-completion-callback() {
-    ${SED} -i \
-           's/\/usr/\.\.\/\.\.\/\.\.\/\.\./g' \
-           ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/${HOST_PROCESSOR}/glibc.modulemap
-
-    ${MV} ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/*.swift* \
-          ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/${HOST_PROCESSOR}/
-
     COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
     RPATH_COMPONENTS="\
-        ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/${SHARED_LIBRARY_PREFIX}*${SHARED_LIBRARY_SUFFIX} \
+        ${INSTALL_PREFIX}/lib/swift/${HOST_OS}x/${SHARED_LIBRARY_PREFIX}*${SHARED_LIBRARY_SUFFIX} \
     " \
     rpath-fixup
 }
@@ -104,9 +108,6 @@ package-cmake-install-archive \
     -DSWIFT_INCLUDE_DOCS=FALSE \
     -DSWIFT_INCLUDE_TESTS=TRUE \
     -DSWIFT_LIPO=${LIPO} \
-    -DSWIFT_SDK_OSX_ARCHITECTURES=${SWIFT_SDK_ARCH} \
-    -DSWIFT_SDK_OSX_PATH=${SYSROOT} \
-    -DSWIFT_SDK_OSX_ARCH_${SWIFT_SDK_ARCH}_PATH=${SYSROOT} \
     -DSWIFT_NATIVE_CLANG_TOOLS_PATH=${BUILD_PACKAGE_PREFIX}/bin \
     -DSWIFT_NATIVE_LLVM_TOOLS_PATH=${BUILD_PACKAGE_PREFIX}/bin \
     -DSWIFT_NATIVE_SWIFT_TOOLS_PATH=${BUILD_PACKAGE_PREFIX}/bin \
@@ -115,6 +116,9 @@ package-cmake-install-archive \
     -DSWIFT_PATH_TO_LIBDISPATCH_SOURCE=${SOURCE_ROOT_BASE}/swift-corelibs-libdispatch-${SOURCE_PACKAGE_VERSION} \
     -DSWIFT_PRIMARY_VARIANT_ARCH=${SWIFT_SDK_ARCH} \
     -DSWIFT_PRIMARY_VARIANT_SDK=OSX \
+    -DSWIFT_SDK_OSX_ARCHITECTURES=${SWIFT_SDK_ARCH} \
+    -DSWIFT_SDK_OSX_PATH=${SYSROOT} \
+    -DSWIFT_SDK_OSX_ARCH_${SWIFT_SDK_ARCH}_PATH=${SYSROOT} \
     -DSWIFT_STDLIB_ASSERTIONS=FALSE \
     -DSWIFT_TOOL_COMPLETE_TEST_BUILD=FALSE \
     -DSWIFT_TOOL_LLDB_MODULEIMPORT_TEST_BUILD=FALSE \
