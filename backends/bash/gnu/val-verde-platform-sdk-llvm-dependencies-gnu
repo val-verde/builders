@@ -486,6 +486,9 @@ package-invoke-builder libxml2-cross
 # cython build
 package-invoke-builder cython-cross
 
+# pybind11 build
+package-invoke-builder pybind11-cross
+
 # pygments build
 package-invoke-builder pygments-cross
 
