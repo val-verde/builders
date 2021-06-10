@@ -13,10 +13,10 @@ export DEPENDS="${PACKAGE_BASE_NAME}-ncurses-6-${HOST_OS}${HOST_OS_API_LEVEL}-${
 
 # Invoke one-shot template for cmake/install
 function package-install-completion-callback() {
-    ${MV} ${INSTALL_ROOT}${SOURCE_ROOT}/src/bin \
-        ${INSTALL_ROOT}${SOURCE_ROOT}/src/include \
-        ${INSTALL_ROOT}${SOURCE_ROOT}/src/lib \
-        ${INSTALL_PREFIX}/
+    ${MV} ${INSTALL_ROOT}${SOURCE_ROOT}/bin \
+          ${INSTALL_ROOT}${SOURCE_ROOT}/include \
+          ${INSTALL_ROOT}${SOURCE_ROOT}/lib \
+          ${INSTALL_PREFIX}/
     ${RM} -rf ${INSTALL_ROOT}${SOURCE_ROOT_BASE}
 }
 
@@ -27,4 +27,5 @@ COMMON_CFLAGS="\
 " \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-cmake-install-archive \
-    -DCMAKE_POSITION_INDEPENDENT_CODE=FALSE
+    -DCMAKE_POSITION_INDEPENDENT_CODE=FALSE \
+    -DLIB_SUFFIX=
