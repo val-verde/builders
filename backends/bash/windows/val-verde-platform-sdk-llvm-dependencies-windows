@@ -178,6 +178,18 @@ package-invoke-builder xcb-proto-cross
 # windows xcb-pthread-stubs build
 package-invoke-builder xcb-pthread-stubs-cross
 
+# windows libxau build
+package-invoke-builder xorg-libxau-cross
+
+# windows libxcb build
+package-invoke-builder xcb-libxcb-cross
+
+# windows pixman build
+package-invoke-builder pixman-cross
+
+# xorg-libxtrans build
+package-invoke-builder xorg-libxtrans-cross
+
 # windows libuv build
 package-invoke-builder libuv-cross
 
