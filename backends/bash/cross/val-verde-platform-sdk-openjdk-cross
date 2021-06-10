@@ -109,6 +109,7 @@ tool-log ${SOURCE_ROOT}/configure \
 # Build the components
 TOOL_LOG=${STAGE_ROOT}/builder-installation
 tool-log ${MAKE} \
+    JAVA_WARNINGS_ARE_ERRORS= \
     JOBS=${NUM_PROCESSORS} \
     INSTALL_PREFIX=${INSTALL_PREFIX} \
     install
