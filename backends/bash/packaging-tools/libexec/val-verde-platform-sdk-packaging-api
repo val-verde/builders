@@ -3,11 +3,13 @@
 set -e
 
 # builder configuration defaults
+ARCHIVE_TYPE=${ARCHIVE_TYPE:-$(${ECHO} "${PACKAGING_ARCHIVE_TYPE}" | ${TR} '[:upper:]' '[:lower:]')}
 BASE_DIRECTORY=${BASE_DIRECTORY:-$(${ECHO} "${PACKAGE_ROOT}" | ${CUT} -d "/" -f2)}
 DEB_PATH=${DEB_PATH:-${RELEASE_DEB_PATH}}
-VERSION=${VERSION:='1.0.0'}
-ARCHIVE_TYPE=${ARCHIVE_TYPE:-$(${ECHO} "${PACKAGING_ARCHIVE_TYPE}" | ${TR} '[:upper:]' '[:lower:]')}
+PACKAGE_INSTALL_BASE=${PACKAGE_INSTALL_BASE:-${BASE_DIRECTORY}}
 RELEASE=${RELEASE:='1'}
+TARGETS=${TARGETS:-install}
+VERSION=${VERSION:='1.0.0'}
 
 function packaging-archive-build-install() {
     # Build the package
@@ -106,18 +108,19 @@ function rpm-package-build() {
             generate-spec-file "${PACKAGE_NAME}"
 
             FILELIST="\
-            $(${FIND} ${ARCHIVE_ROOT}/SOURCES/ -type f -name "*" '!' -name '*.tar.gz' -not -path '*/\.' | sort | \
+            $(${FIND} ${ARCHIVE_ROOT}/SOURCES/ -type f -name "*" '!' -name '*.tar.gz' | \
             ${SED} "s|${ARCHIVE_ROOT}/SOURCES/${PACKAGE_NAME}||g") \
             "
-            ${SED} -i "s|%files|%files\n$(echo $FILELIST)|g" ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
 
-            ${SED} -i "s| /opt|\n/opt|g" ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
+            ${SED} -i "s|%files|%files\n$(${ECHO} ${FILELIST})|g" ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
 
-            rpmbuild --define "_topdir ${ARCHIVE_ROOT}" -ba ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
+            ${SED} -i "s| /${PACKAGE_INSTALL_BASE}|\n${PACKAGE_INSTALL_BASE}|g" ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
+
+            rpmbuild --quiet --define "_topdir ${ARCHIVE_ROOT}" -ba ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
 
             # package-rpm-build ${ARCHIVE_ROOT}
 
-            ${MV} ${ARCHIVE_ROOT}/RPMS/noarch/${PACKAGE_NAME}.rpm \
+            ${MV} ${ARCHIVE_ROOT}/RPMS/${BUILD_PROCESSOR}/${PACKAGE_NAME}.rpm \
                   ${RPM_PATH}/${PACKAGE_NAME}.rpm
             ${RM} -rf ${ARCHIVE_ROOT}
         package-pop-directory
