@@ -28,14 +28,18 @@ CONFIGURE_HOST_KERNEL=${HOST_KERNEL}
 
 if [ "${HOST_OS}" = "android" ]; then
     ADMIN_DIR=/data/local/tmp
+    COMMON_CFLAGS="\
+        -lobstack \
+        ${COMMON_CFLAGS} \
+    "
     CONFIGURE_HOST_KERNEL=unknown
 elif [ "${HOST_OS}" = "mingw32" ]; then
     ADMIN_DIR=/
     CONFIGURE_HOST_KERNEL=unknown
 elif [ "${HOST_OS}" = "musl" ]; then
-    CFLAGS="\
+    COMMON_CFLAGS="\
         -lobstack \
-        ${CFLAGS} \
+        ${COMMON_CFLAGS} \
     "
 fi
 
