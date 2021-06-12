@@ -3,7 +3,7 @@
 set -e
 export BINDIR=/usr/bin
 source /sources/packaging-tools/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
+source /sources/packaging-tools/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
 
 ${MKDIR} -p ${TAR_ROOT_BASE}
 tar-package-build "$@"
