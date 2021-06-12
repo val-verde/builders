@@ -117,18 +117,26 @@ function rpm-package-build() {
 
             ${SED} -i "s|%files|%files\n$(${ECHO} ${FILELIST})|g" ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
 
-            ${SED} -i "s| /${PACKAGE_INSTALL_BASE}|\n${PACKAGE_INSTALL_BASE}|g" ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
+            ${SED} -i "s| ${PACKAGE_INSTALL_BASE}|\n${PACKAGE_INSTALL_BASE}|g" ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
 
             rpmbuild --quiet --define "_topdir ${ARCHIVE_ROOT}" -ba ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
 
             # package-rpm-build ${ARCHIVE_ROOT}
 
             ${MV} ${ARCHIVE_ROOT}/RPMS/${BUILD_PROCESSOR}/${PACKAGE_NAME}.rpm \
-                  ${RPM_PATH}/${PACKAGE_NAME}.rpm
+                  ${SOURCE_ARCHIVE_PATH}/${PACKAGE_NAME}.rpm
             ${RM} -rf ${ARCHIVE_ROOT}
         package-pop-directory
     fi
 }
+
+function rpm-package-install() {
+    if [ -z "${DISABLE_INSTALL_RPM}" ]; then
+        rpm -i ${SOURCE_ARCHIVE_PATH}/${PACKAGE_NAME}.rpm
+        # package-rpm-install ${RPM_PATH}/${PACKAGE_NAME}.rpm
+    fi
+}
+
 
 function tar-package-build() {
     SOURCE_PACKAGE_NAME=$1
