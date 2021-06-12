@@ -36,7 +36,8 @@ if [ "${HOST_OS}" = "gnu" ] ||
    [ "${HOST_OS}" = "macos" ] ||
    [ "${HOST_OS}" = "musl" ]; then
     # libclc build
-    package-invoke-builder libclc-cross
+    ENABLE_STAGE_ROOT_BUILD=TRUE \
+    package-invoke-builder libclc-cross 13
 
     # mesa build
     package-invoke-builder mesa-cross 21
@@ -47,12 +48,12 @@ if [ "${HOST_OS}" = "android" ] ||
    [ "${HOST_OS}" = "macos" ] ||
    [ "${HOST_OS}" = "musl" ]; then
     # libepoxy build
-    package-invoke-builder libepoxy-cross
+    package-invoke-builder libepoxy-cross 1
 fi
 
 if [ "${HOST_OS}" = "macos" ]; then
     # libapplewm build
-    package-invoke-builder libapplewm-cross
+    package-invoke-builder libapplewm-cross 1
 fi
 
 if [ "${HOST_OS}" = "gnu" ] ||
