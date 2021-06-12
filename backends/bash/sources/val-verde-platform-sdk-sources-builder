@@ -25,7 +25,9 @@ package-rsync -ax \
               ${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM}/
 
 # Package debs
+ARCHIVE_TYPE=${PACKAGING_ARCHIVE_TYPE} \
 BASE_DIRECTORY=${INSTALL_ROOT}/usr \
+PACKAGE_INSTALL_BASE=/usr \
 TEMPLATE_ROOT=${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM}/deb \
 packaging-archive-build-install
 
