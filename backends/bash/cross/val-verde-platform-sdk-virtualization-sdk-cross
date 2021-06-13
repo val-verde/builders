@@ -16,7 +16,7 @@ if [ "${HOST_OS}" = "android" ] ||
    [ "${HOST_OS}" = "macos" ] ||
    [ "${HOST_OS}" = "musl" ]; then
     # virglrenderer build
-    package-invoke-builder virglrenderer-cross
+    package-invoke-builder virglrenderer-cross 0
 fi
 
 # qemu build
