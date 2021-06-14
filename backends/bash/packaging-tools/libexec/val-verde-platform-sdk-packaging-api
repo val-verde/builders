@@ -26,7 +26,7 @@ function deb-package-build() {
     ARCHIVE_ROOT=${TEMP_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
     TEMPLATE_ROOT=${TEMPLATE_ROOT:-${TEMPLATE_ROOT_BASE}/deb}
 
-    if [ -z "${DISABLE_BUILD_DEB}" ]; then
+    if [ -z "${DISABLE_BUILD_ARCHIVE}" ]; then
         package-push-directory ${INSTALL_ROOT}
             ${RM} -rf ${ARCHIVE_ROOT}
             ${MKDIR} -p ${ARCHIVE_ROOT}
@@ -46,7 +46,7 @@ function deb-package-build() {
 }
 
 function deb-package-install() {
-    if [ -z "${DISABLE_INSTALL_DEB}" ]; then
+    if [ -z "${DISABLE_INSTALL_ARCHIVE}" ]; then
         package-dpkg-install ${!ARCHIVE_PATH}/${PACKAGE_NAME}.deb
     fi
 }
