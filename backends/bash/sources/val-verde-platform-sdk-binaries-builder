@@ -3,7 +3,7 @@
 set -e
 
 export BINDIR=/usr/bin \
-    DEB_PATH=${BOOTSTRAP_DEB_PATH}
+    ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH}
 
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 

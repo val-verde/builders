@@ -158,7 +158,7 @@ package-invoke-builder gmp-cross 6
 package-invoke-builder ncurses-cross 6
 
 # gettext build (without libxml2 and xz)
-DEB_PATH=${BOOTSTRAP_DEB_PATH} \
+ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
 package-invoke-builder gettext-cross 0 bootstrap-only
 unset GETTEXT
 
@@ -173,7 +173,7 @@ package-invoke-builder xz-cross 5
 unset XZ
 
 # libxml2 build
-DEB_PATH=${BOOTSTRAP_DEB_PATH} \
+ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
 package-invoke-builder libxml2-cross 2 bootstrap-only
 
 # gettext build
@@ -283,7 +283,7 @@ package-invoke-builder libgcrypt-cross 1
 package-invoke-builder indent-cross 2
 
 # util-linux build
-DEB_PATH=${BOOTSTRAP_DEB_PATH} \
+ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
 package-invoke-builder util-linux-cross 2 bootstrap-only
 
 # attr build
@@ -424,22 +424,22 @@ unset WGET
 
 if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
     # python bootstrap build (with pip)
-    DEB_PATH=${BOOTSTRAP_DEB_PATH} \
+    ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
     ENABLE_PIP=TRUE \
     ENABLE_STAGE_ROOT_BUILD=TRUE \
     package-invoke-builder python-cross 3
     unset PYTHON
 
     # python-setuptools build
-    DISABLE_INSTALL_DEB=TRUE \
+    DISABLE_INSTALL_ARCHIVE=TRUE \
     package-invoke-builder python-setuptools-cross 60
 
     # python-pip build
-    DISABLE_INSTALL_DEB=TRUE \
+    DISABLE_INSTALL_ARCHIVE=TRUE \
     package-invoke-builder python-pip-cross 21
 
     # python build (without pip)
-    DISABLE_INSTALL_DEB=TRUE \
+    DISABLE_INSTALL_ARCHIVE=TRUE \
     ENABLE_STAGE_ROOT_BUILD=TRUE \
     package-invoke-builder python-cross 3
 
@@ -497,7 +497,7 @@ package-invoke-builder gtk-doc-cross 1
 package-invoke-builder libtasn1-cross 4
 
 # p11-kit build
-DEB_PATH=${BOOTSTRAP_DEB_PATH} \
+ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
 DISABLE_SYSTEMD=TRUE \
 package-invoke-builder p11-kit-cross 0
 

@@ -41,11 +41,11 @@ package-invoke-builder autoconf-archive 2021
 
 # glibc-interface bootstrap phase 1
 
-export DEB_PATH_BASE=${BOOTSTRAP_DEB_PATH}/glibc-2-bootstrap
+export ARCHIVE_PATH_BASE=${BOOTSTRAP_ARCHIVE_PATH}/glibc-2-bootstrap
 export ENABLE_BOOTSTRAP=TRUE
 
-export DEB_PATH=${DEB_PATH_BASE}/phase-1
-${MKDIR} -p ${DEB_PATH}
+export ARCHIVE_PATH=${ARCHIVE_PATH_BASE}/phase-1
+${MKDIR} -p ${ARCHIVE_PATH}
 
 if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
     # help2man bootstrap build
@@ -83,14 +83,14 @@ package-invoke-builder glibc-interface-bootstrap 2 bootstrap-only
 
 # glibc-interface bootstrap phase 2
 
-export DEB_PATH=${DEB_PATH_BASE}/phase-2
-${MKDIR} -p ${DEB_PATH}
+export ARCHIVE_PATH=${ARCHIVE_PATH_BASE}/phase-2
+${MKDIR} -p ${ARCHIVE_PATH}
 
 # gcc bootstrap build (gcc + libgcc only)
 package-invoke-builder cross-gcc 11 bootstrap-only
 
 unset ENABLE_BOOTSTRAP
-export DEB_PATH=${BOOTSTRAP_DEB_PATH}
+export ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH}
 
 # glibc-interface bootstrap build
 package-invoke-builder glibc-interface-bootstrap 2
