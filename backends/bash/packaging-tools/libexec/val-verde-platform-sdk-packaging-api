@@ -13,39 +13,39 @@ function packaging-archive-build-install() {
     TEMPLATE_ROOT=${TEMPLATE_ROOT_BASE}/${PACKAGE_ARCHIVE_CLASS}
 
     # Build the package
-    ${PACKAGE_ARCHIVE_CLASS}-package-build
+    if [ -z "${DISABLE_BUILD_ARCHIVE}" ]; then
+        ${PACKAGE_ARCHIVE_CLASS}-package-build
+    fi
 
     # Install the package
-    ${PACKAGE_ARCHIVE_CLASS}-package-install
+    if [ -z "${DISABLE_INSTALL_ARCHIVE}" ]; then
+        ${PACKAGE_ARCHIVE_CLASS}-package-install
+    fi
 }
 
 function deb-package-build() {
     ARCHIVE_ROOT=${TEMP_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
     TEMPLATE_ROOT=${TEMPLATE_ROOT:-${TEMPLATE_ROOT_BASE}/deb}
 
-    if [ -z "${DISABLE_BUILD_ARCHIVE}" ]; then
-        package-push-directory ${INSTALL_ROOT}
-            ${RM} -rf ${ARCHIVE_ROOT}
-            ${MKDIR} -p ${ARCHIVE_ROOT}
-            package-rsync -ax \
-                        ${BASE_DIRECTORY} \
-                        ${ARCHIVE_ROOT}/
+    package-push-directory ${INSTALL_ROOT}
+        ${RM} -rf ${ARCHIVE_ROOT}
+        ${MKDIR} -p ${ARCHIVE_ROOT}
+        package-rsync -ax \
+                    ${BASE_DIRECTORY} \
+                    ${ARCHIVE_ROOT}/
 
-            TEMPLATE_ROOT=${TEMPLATE_ROOT} \
-            generate-control-file "${PACKAGE_NAME}"
-            package-dpkg-build ${ARCHIVE_ROOT}
+        TEMPLATE_ROOT=${TEMPLATE_ROOT} \
+        generate-control-file "${PACKAGE_NAME}"
+        package-dpkg-build ${ARCHIVE_ROOT}
 
-            ${MV} ${ARCHIVE_ROOT}/../${PACKAGE_NAME}.deb \
-                  ${ARCHIVE_PATH}/${PACKAGE_NAME}.deb
-            ${RM} -rf ${ARCHIVE_ROOT}
-        package-pop-directory
-    fi
+        ${MV} ${ARCHIVE_ROOT}/../${PACKAGE_NAME}.deb \
+                ${ARCHIVE_PATH}/${PACKAGE_NAME}.deb
+        ${RM} -rf ${ARCHIVE_ROOT}
+    package-pop-directory
 }
 
 function deb-package-install() {
-    if [ -z "${DISABLE_INSTALL_ARCHIVE}" ]; then
-        package-dpkg-install ${ARCHIVE_PATH}/${PACKAGE_NAME}.deb
-    fi
+    package-dpkg-install ${ARCHIVE_PATH}/${PACKAGE_NAME}.deb
 }
 
 function generate-control-file() {
@@ -92,46 +92,42 @@ function rpm-package-build() {
     ARCHIVE_ROOT=${TEMP_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
     TEMPLATE_ROOT=${TEMPLATE_ROOT:-${TEMPLATE_ROOT_BASE}/rpm}
 
-    if [ -z "${DISABLE_BUILD_ARCHIVE}" ]; then
-        package-push-directory ${INSTALL_ROOT}
-            ${RM} -r ${ARCHIVE_ROOT}
-            ${MKDIR} -p ${ARCHIVE_ROOT} \
-                ${ARCHIVE_ROOT}/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS} \
-                ${ARCHIVE_ROOT}/SOURCES/${PACKAGE_NAME}
+    package-push-directory ${INSTALL_ROOT}
+        ${RM} -rf ${ARCHIVE_ROOT}
+        ${MKDIR} -p ${ARCHIVE_ROOT} \
+            ${ARCHIVE_ROOT}/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS} \
+            ${ARCHIVE_ROOT}/SOURCES/${PACKAGE_NAME}
 
-            package-rsync -ax \
-                        ${BASE_DIRECTORY} \
-                        ${ARCHIVE_ROOT}/SOURCES/${PACKAGE_NAME}
-            
-            package-tar zvcfP ${ARCHIVE_ROOT}/SOURCES/${PACKAGE_NAME}.tar.gz .
+        package-rsync -ax \
+                    ${BASE_DIRECTORY} \
+                    ${ARCHIVE_ROOT}/SOURCES/${PACKAGE_NAME}
+        
+        package-tar zvcfP ${ARCHIVE_ROOT}/SOURCES/${PACKAGE_NAME}.tar.gz .
 
-            generate-spec-file "${PACKAGE_NAME}"
+        generate-spec-file "${PACKAGE_NAME}"
 
-            FILELIST="\
-            $(${FIND} ${ARCHIVE_ROOT}/SOURCES/ -type f -name "*" '!' -name '*.tar.gz' | \
-            ${SED} "s|${ARCHIVE_ROOT}/SOURCES/${PACKAGE_NAME}||g") \
-            "
+        FILELIST="\
+        $(${FIND} ${ARCHIVE_ROOT}/SOURCES/ -type f -name "*" '!' -name '*.tar.gz' | \
+        ${SED} "s|${ARCHIVE_ROOT}/SOURCES/${PACKAGE_NAME}||g") \
+        "
 
-            ${SED} -i "s|%files|%files\n$(${ECHO} ${FILELIST})|g" ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
+        ${SED} -i "s|%files|%files\n$(${ECHO} ${FILELIST})|g" ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
 
-            ${SED} -i "s| ${PACKAGE_INSTALL_BASE}|\n${PACKAGE_INSTALL_BASE}|g" ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
+        ${SED} -i "s| ${PACKAGE_INSTALL_BASE}|\n${PACKAGE_INSTALL_BASE}|g" ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
 
-            rpmbuild --quiet --define "_topdir ${ARCHIVE_ROOT}" -ba ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
+        rpmbuild --quiet --define "_topdir ${ARCHIVE_ROOT}" -ba ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
 
-            # package-rpm-build ${ARCHIVE_ROOT}
+        # package-rpm-build ${ARCHIVE_ROOT}
 
-            ${MV} ${ARCHIVE_ROOT}/RPMS/${BUILD_PROCESSOR}/${PACKAGE_NAME}.rpm \
-                  ${ARCHIVE_PATH}/${PACKAGE_NAME}.rpm
-            ${RM} -rf ${ARCHIVE_ROOT}
-        package-pop-directory
-    fi
+        ${MV} ${ARCHIVE_ROOT}/RPMS/${BUILD_PROCESSOR}/${PACKAGE_NAME}.rpm \
+                ${ARCHIVE_PATH}/${PACKAGE_NAME}.rpm
+        ${RM} -rf ${ARCHIVE_ROOT}
+    package-pop-directory
 }
 
 function rpm-package-install() {
-    if [ -z "${DISABLE_INSTALL_ARCHIVE}" ]; then
-        rpm -i ${ARCHIVE_PATH}/${PACKAGE_NAME}.rpm
-        # package-rpm-install ${RPM_PATH}/${PACKAGE_NAME}.rpm
-    fi
+    rpm -i ${ARCHIVE_PATH}/${PACKAGE_NAME}.rpm
+    # package-rpm-install ${RPM_PATH}/${PACKAGE_NAME}.rpm
 }
 
 
@@ -163,8 +159,10 @@ function tar-package-build() {
 function trigger-source-package-install() {
     SOURCE_FILES=${SOURCE_ARCHIVE_PATH}/*
 
-    for src_file in ${SOURCE_FILES}; do
-        ${ECHO} -e "Installing Source Package: ${src_file}"
-        package-dpkg-install ${src_file}
-    done
+    if [ "${PACKAGE_ARCHIVE_CLASS}" = "deb" ]; then
+        for src_file in ${SOURCE_FILES}; do
+            ${ECHO} -e "Installing Source Package: ${src_file}"
+            package-dpkg-install ${src_file}
+        done
+    fi
 }
