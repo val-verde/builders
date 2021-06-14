@@ -313,6 +313,14 @@ function package-pop-directory() {
     popd ${@} > /dev/null
 }
 
+function package-rpm-build() {
+    ${RPM}build "${@}"
+}
+
+function package-rpm-install() {
+    ${RPM} -i "${@}"
+}
+
 function package-rsync() {
     ${RSYNC} ${@} > ${STAGE_ROOT}/builder-rsync.log
 }
