@@ -115,9 +115,7 @@ function rpm-package-build() {
 
         ${SED} -i "s| ${PACKAGE_INSTALL_BASE}|\n${PACKAGE_INSTALL_BASE}|g" ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
 
-        rpmbuild --quiet --define "_topdir ${ARCHIVE_ROOT}" -ba ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
-
-        # package-rpm-build ${ARCHIVE_ROOT}
+        package-rpm-build --quiet --define "_topdir ${ARCHIVE_ROOT}" -ba ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
 
         ${MV} ${ARCHIVE_ROOT}/RPMS/${BUILD_PROCESSOR}/${PACKAGE_NAME}.rpm \
                 ${ARCHIVE_PATH}/${PACKAGE_NAME}.rpm
@@ -126,8 +124,7 @@ function rpm-package-build() {
 }
 
 function rpm-package-install() {
-    rpm -i ${ARCHIVE_PATH}/${PACKAGE_NAME}.rpm
-    # package-rpm-install ${RPM_PATH}/${PACKAGE_NAME}.rpm
+    package-rpm-install ${ARCHIVE_PATH}/${PACKAGE_NAME}.rpm
 }
 
 
