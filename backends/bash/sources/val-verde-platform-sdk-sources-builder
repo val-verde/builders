@@ -28,7 +28,7 @@ package-rsync -ax \
 ARCHIVE_TYPE=${PACKAGING_ARCHIVE_TYPE} \
 BASE_DIRECTORY=${INSTALL_ROOT}/usr \
 PACKAGE_INSTALL_BASE=/usr \
-TEMPLATE_ROOT=${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM}/deb \
+TEMPLATE_ROOT_BASE=${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM} \
 packaging-archive-build-install
 
 # Fetch sources
