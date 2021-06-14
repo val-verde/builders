@@ -8,6 +8,7 @@ services:
             context: ./
             dockerfile: ubuntu.Dockerfile
             args:
+                - PACKAGE_ARCHIVE_CLASS=deb
                 - PACKAGE_BASE_NAME=val-verde
                 - PACKAGE_ROOT=/opt
                 - VAL_VERDE_GH_TEAM=val-verde

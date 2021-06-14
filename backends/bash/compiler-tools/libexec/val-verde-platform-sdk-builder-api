@@ -73,7 +73,7 @@ function package-invoke-builder() {
 
     SEARCH_PATH=${DEB_PATH} \
     SEARCH_INPUT=${PACKAGE_NAME} \
-    SEARCH_EXTENSION=deb \
+    SEARCH_EXTENSION=${PACKAGE_ARCHIVE_CLASS} \
     tool-check
 
     if [ ${FILE_EXISTS} == 'true' ]; then
