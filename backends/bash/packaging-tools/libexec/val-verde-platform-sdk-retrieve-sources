@@ -3,6 +3,7 @@
 set -e
 
 DEB_PATH=${SOURCE_ARCHIVE_PATH}
+ARCHIVE_PATH=DEB_PATH
 
 # Source deb packaging helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
@@ -102,6 +103,7 @@ function fetch-sources() {
         ${ECHO} -e "    Vendor: \e[1m${PACKAGE_BASE_NAME}\e[0m"
         ${ECHO} -e "    Email: \e[4m${EMAIL_ID}\e[0m"
         ${ECHO} -e "    Sources File: \e[31m${SOURCE_FILE}\e[0m"
+        ${ECHO} -e "    Archive Path: \e[31m${SOURCE_ARCHIVE_PATH}\e[0m"
 
         # Fetch git upstream sources
         ${GIT} config \

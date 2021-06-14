@@ -48,7 +48,7 @@ function package-invoke-archive-action() {
 
         PKG_PREFIX=${PACKAGE_BASE_NAME}-${PKG_NAME}
         PACKAGE_FILE_NAME=${PKG_PREFIX}-${PKG_SUFFIX}
-        DEB_NAME=${DEB_PATH}/${PACKAGE_FILE_NAME}.deb
+        DEB_NAME=${ARCHIVE_PATH}/${PACKAGE_FILE_NAME}.deb
         QUALIFIED_FILE_NAME="${QUALIFIED_FILE_NAME} ${PACKAGE_FILE_NAME}"
         QUALIFIED_DEB="${QUALIFIED_DEB} ${DEB_NAME}"
     done

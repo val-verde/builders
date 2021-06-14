@@ -3,17 +3,15 @@
 set -e
 
 # builder configuration defaults
-ARCHIVE_TYPE=${ARCHIVE_TYPE:-$(${ECHO} "${PACKAGING_ARCHIVE_TYPE}" | ${TR} '[:upper:]' '[:lower:]')}
+ARCHIVE_PATH=${ARCHIVE_PATH:-$(${ECHO} ${PACKAGING_ARCHIVE_TYPE}_PATH)}
+ARCHIVE_TYPE=${ARCHIVE_TYPE:-$(${ECHO} "${PACKAGING_ARCHIVE_TYPE}")}
 BASE_DIRECTORY=${BASE_DIRECTORY:-$(${ECHO} "${PACKAGE_ROOT}" | ${CUT} -d "/" -f2)}
-DEB_PATH=${DEB_PATH:-${RELEASE_DEB_PATH}}
 PACKAGE_INSTALL_BASE=${PACKAGE_INSTALL_BASE:-${BASE_DIRECTORY}}
 RELEASE=${RELEASE:='1'}
 TEMPLATE_ROOT_BASE=${TEMPLATE_ROOT_BASE:-/usr/share/${VAL_VERDE_GH_TEAM}}
-TARGETS=${TARGETS:-install}
 VERSION=${VERSION:='1.0.0'}
 
 function packaging-archive-build-install() {
-    ARCHIVE_TYPE=${ARCHIVE_TYPE:-$(${ECHO} "${PACKAGING_ARCHIVE_TYPE}")}
     ARCHIVE_TYPE=$(${ECHO} ${ARCHIVE_TYPE} | ${TR} '[:upper:]' '[:lower:]')
     TEMPLATE_ROOT=${TEMPLATE_ROOT_BASE}/${ARCHIVE_TYPE}
 
@@ -26,7 +24,7 @@ function packaging-archive-build-install() {
 
 function deb-package-build() {
     ARCHIVE_ROOT=${TEMP_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
-    TEMPLATE_ROOT=${TEMPLATE_ROOT:-${TEMPLATE_ROOT_BASE}/deb} \
+    TEMPLATE_ROOT=${TEMPLATE_ROOT:-${TEMPLATE_ROOT_BASE}/deb}
 
     if [ -z "${DISABLE_BUILD_DEB}" ]; then
         package-push-directory ${INSTALL_ROOT}
@@ -41,7 +39,7 @@ function deb-package-build() {
             package-dpkg-build ${ARCHIVE_ROOT}
 
             ${MV} ${ARCHIVE_ROOT}/../${PACKAGE_NAME}.deb \
-                  ${DEB_PATH}/${PACKAGE_NAME}.deb
+                  ${!ARCHIVE_PATH}/${PACKAGE_NAME}.deb
             ${RM} -rf ${ARCHIVE_ROOT}
         package-pop-directory
     fi
@@ -49,7 +47,7 @@ function deb-package-build() {
 
 function deb-package-install() {
     if [ -z "${DISABLE_INSTALL_DEB}" ]; then
-        package-dpkg-install ${DEB_PATH}/${PACKAGE_NAME}.deb
+        package-dpkg-install ${!ARCHIVE_PATH}/${PACKAGE_NAME}.deb
     fi
 }
 
