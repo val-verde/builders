@@ -8,12 +8,14 @@ BASE_DIRECTORY=${BASE_DIRECTORY:-$(${ECHO} "${PACKAGE_ROOT}" | ${CUT} -d "/" -f2
 DEB_PATH=${DEB_PATH:-${RELEASE_DEB_PATH}}
 PACKAGE_INSTALL_BASE=${PACKAGE_INSTALL_BASE:-${BASE_DIRECTORY}}
 RELEASE=${RELEASE:='1'}
+TEMPLATE_ROOT_BASE=${TEMPLATE_ROOT_BASE:-/usr/share/${VAL_VERDE_GH_TEAM}}
 TARGETS=${TARGETS:-install}
 VERSION=${VERSION:='1.0.0'}
 
 function packaging-archive-build-install() {
     ARCHIVE_TYPE=${ARCHIVE_TYPE:-$(${ECHO} "${PACKAGING_ARCHIVE_TYPE}")}
     ARCHIVE_TYPE=$(${ECHO} ${ARCHIVE_TYPE} | ${TR} '[:upper:]' '[:lower:]')
+    TEMPLATE_ROOT=${TEMPLATE_ROOT_BASE}/${ARCHIVE_TYPE}
 
     # Build the package
     ${ARCHIVE_TYPE}-package-build
@@ -24,6 +26,7 @@ function packaging-archive-build-install() {
 
 function deb-package-build() {
     ARCHIVE_ROOT=${TEMP_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+    TEMPLATE_ROOT=${TEMPLATE_ROOT:-${TEMPLATE_ROOT_BASE}/deb} \
 
     if [ -z "${DISABLE_BUILD_DEB}" ]; then
         package-push-directory ${INSTALL_ROOT}
@@ -51,7 +54,6 @@ function deb-package-install() {
 }
 
 function generate-control-file() {
-    TEMPLATE_ROOT=${TEMPLATE_ROOT:-/usr/share/${VAL_VERDE_GH_TEAM}/deb}
     ARCHIVE_ROOT=${TEMP_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
 
     # Template definition
@@ -79,7 +81,6 @@ function generate-control-file() {
 }
 
 function generate-spec-file() {
-    TEMPLATE_ROOT=${TEMPLATE_ROOT:-/usr/share/${VAL_VERDE_GH_TEAM}/rpm}
     ARCHIVE_ROOT=${TEMP_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
 
     ${SED} "s|ARCHIVE_ROOT|${ARCHIVE_ROOT}|g; \
@@ -94,6 +95,7 @@ function generate-spec-file() {
 
 function rpm-package-build() {
     ARCHIVE_ROOT=${TEMP_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+    TEMPLATE_ROOT=${TEMPLATE_ROOT:-${TEMPLATE_ROOT_BASE}/rpm}
 
     if [ -z "${DISABLE_BUILD_RPM}" ]; then
         package-push-directory ${INSTALL_ROOT}
