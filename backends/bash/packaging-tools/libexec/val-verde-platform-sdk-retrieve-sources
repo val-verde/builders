@@ -41,8 +41,9 @@ function build-install-git-source-package() {
             fi
         package-pop-directory
 
-        # Build the source deb package
-        deb-package-build
+        # Build the source archive package
+        DISABLE_INSTALL_ARCHIVE=TRUE \
+        packaging-archive-build-install
 
         # Clean up
         ${RM} -rf ${INSTALL_ROOT}
@@ -66,8 +67,9 @@ function build-install-other-source-package() {
         # Extract source package from tar ball
         untar-tar-balls
 
-        # Build the source deb package
-        deb-package-build
+        # Build the source archive package
+        DISABLE_INSTALL_ARCHIVE=TRUE \
+        packaging-archive-build-install
 
         # Clean up
         ${RM} -rf ${INSTALL_ROOT}
