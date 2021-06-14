@@ -5,7 +5,7 @@ set -e
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
-export DEB_PATH=${BOOTSTRAP_DEB_PATH}
+export ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH}
 
 # builder-tools build
 if [ "${BUILD_PROCESSOR}" = "${HOST_PROCESSOR}" ] &&

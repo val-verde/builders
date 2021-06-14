@@ -85,7 +85,7 @@ package-invoke-builder gmp-cross 6
 package-invoke-builder ncurses-cross 6
 
 # gettext build (without libxml2 and xz)
-DEB_PATH=${BOOTSTRAP_DEB_PATH} \
+ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
 package-invoke-builder gettext-cross 0 bootstrap-only
 
 # gzip build
@@ -95,7 +95,7 @@ package-invoke-builder gzip-cross 1
 package-invoke-builder xz-cross 5
 
 # libxml2 build
-DEB_PATH=${BOOTSTRAP_DEB_PATH} \
+ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
 package-invoke-builder libxml2-cross 2 bootstrap-only
 
 # gettext build
@@ -181,7 +181,7 @@ package-invoke-builder libgcrypt-cross 1
 package-invoke-builder indent-cross 2
 
 # util-linux build
-DEB_PATH=${BOOTSTRAP_DEB_PATH} \
+ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
 package-invoke-builder util-linux-cross 2 bootstrap-only
 
 # attr build
