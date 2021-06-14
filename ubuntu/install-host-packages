@@ -32,6 +32,7 @@ apt install -y \
     python3 \
     python3-distutils \
     python3-six \
+    rpm \
     rsync \
     ruby \
     ssh \
