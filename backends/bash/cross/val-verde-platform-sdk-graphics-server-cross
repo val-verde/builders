@@ -179,7 +179,7 @@ package-invoke-builder vulkan-loader-cross 1
 package-invoke-builder brotli-cross 1
 
 # freetype2 build
-DEB_PATH=${BOOTSTRAP_DEB_PATH} \
+ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
 package-invoke-builder freetype2-cross 2 bootstrap-only
 
 # fontconfig build
