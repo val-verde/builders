@@ -106,14 +106,7 @@ function rpm-package-build() {
 
         generate-spec-file "${PACKAGE_NAME}"
 
-        FILELIST="\
-        $(${FIND} ${ARCHIVE_ROOT}/SOURCES/ -type f -name "*" '!' -name '*.tar.gz' | \
-        ${SED} "s|${ARCHIVE_ROOT}/SOURCES/${PACKAGE_NAME}||g") \
-        "
-
-        ${SED} -i "s|%files|%files\n$(${ECHO} ${FILELIST})|g" ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
-
-        ${SED} -i "s| ${PACKAGE_INSTALL_BASE}|\n${PACKAGE_INSTALL_BASE}|g" ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
+        ${SED} -i "s|%files|%files\n/${PACKAGE_INSTALL_BASE}/*|g" ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
 
         package-rpm-build --quiet --define "_topdir ${ARCHIVE_ROOT}" -ba ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
 
