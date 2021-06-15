@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -e
+
+yum -y update
+yum -y upgrade
+yum -y install redhat-lsb
+
+yum -y install \
+    apt \
+    autoconf \
+    bison \
+    bzip2 \
+    ca-certificates \
+    clang \
+    cmake \
+    dpkg \
+    flex \
+    gawk \
+    git \
+    jq \
+    libnsl \
+    lld \
+    llvm \
+    make \
+    meson \
+    ninja-build \
+    patchelf \
+    pkg-config \
+    python3 \
+    python3-distutils-extra \
+    python3-six \
+    rsync \
+    openssh-clients \
+    unzip \
+    wget
+
+update-alternatives --install /usr/bin/ld.lld ld.lld /usr/bin/lld 100
