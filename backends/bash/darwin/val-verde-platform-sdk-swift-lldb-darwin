@@ -15,7 +15,6 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-llvm-project-13-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-lua-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-ncurses-6-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-python-3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-swift-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-swig-4-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-xz-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
@@ -34,11 +33,6 @@ COMMON_CFLAGS="\
     ${COMMON_CFLAGS} \
 " \
 CXX_STANDARD=17 \
-RPATH_COMPONENTS="\
-    ${INSTALL_PREFIX}/bin/lldb \
-    ${INSTALL_PREFIX}/bin/repl_swift \
-    ${INSTALL_PREFIX}/lib/${SHARED_LIBRARY_PREFIX}lldb${SHARED_LIBRARY_SUFFIX} \
-" \
 package-cmake-install-archive \
     -DClang_DIR=${LLVM_STAGE_ROOT}/lib/cmake/clang \
     -DCLANG_LINK_CLANG_DYLIB=TRUE \
@@ -51,7 +45,7 @@ package-cmake-install-archive \
     -DLIBLZMA_LIBRARY=`package-get-path lzma SHARED HOST` \
     -DLIBXML2_INCLUDE_DIR=${PACKAGE_PREFIX}/include/libxml2 \
     -DLIBXML2_LIBRARY=`package-get-path xml2 SHARED HOST` \
-    -DLLDB_ENABLE_PYTHON=TRUE \
+    -DLLDB_ENABLE_PYTHON=FALSE \
     -DLLDB_ENABLE_SWIFT_SUPPORT=TRUE \
     -DLLDB_ENABLE_WERROR=FALSE \
     -DLLDB_INCLUDE_TESTS=FALSE \
