@@ -147,12 +147,14 @@ function tar-package-build() {
 }
 
 function trigger-source-package-install() {
-    SOURCE_FILES=${SOURCE_ARCHIVE_PATH}/*
+    SOURCE_FILES=$( $(${FIND} -name ${SOURCE_ARCHIVE_PATH}/*.${PACKAGE_ARCHIVE_CLASS}) )
 
-    if [ "${PACKAGE_ARCHIVE_CLASS}" = "deb" ]; then
-        for src_file in ${SOURCE_FILES}; do
-            ${ECHO} -e "Installing Source Package: ${src_file}"
+    for src_file in "${#SOURCE_FILES[@]}"; do
+        ${ECHO} -e "Installing Source ${PACKAGE_ARCHIVE_CLASS} Package: ${src_file}"
+        if [ "${PACKAGE_ARCHIVE_CLASS}" = "deb" ]; then
             package-dpkg-install ${src_file}
-        done
-    fi
+        elif [ "${PACKAGE_ARCHIVE_CLASS}" = "rpm" ]; then
+            package-rpm-install ${src_file}
+        fi
+    done
 }
