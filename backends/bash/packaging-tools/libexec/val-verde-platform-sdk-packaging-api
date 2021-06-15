@@ -130,7 +130,7 @@ function tar-package-build() {
     INSTALL_ROOT=${TEMP_ROOT_BASE}/${PACKAGE_NAME}-tar-archives
     INSTALL_PREFIX=${INSTALL_ROOT}/${PACKAGE_NAME}
 
-    ${MKDIR} -p ${INSTALL_PREFIX}
+    ${MKDIR} -p ${TAR_ROOT_BASE} ${INSTALL_PREFIX}
 
     package-push-directory ${INSTALL_ROOT}
         package-wget -c ${PACKAGE_URL} \
@@ -144,6 +144,10 @@ function tar-package-build() {
     package-pop-directory
 
     ${RM} -r ${INSTALL_ROOT}
+}
+
+function tar-package-install() {
+    package-tar -xzf ${TAR_ROOT_BASE}/${PACKAGE_NAME}.tar
 }
 
 function trigger-source-package-install() {
