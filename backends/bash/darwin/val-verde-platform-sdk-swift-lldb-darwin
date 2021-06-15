@@ -28,6 +28,8 @@ export SWIFT_NATIVE_STAGE_ROOT=${SWIFT_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/swi
 export SWIFT_STAGE_ROOT=${STAGE_ROOT_BASE}/swift-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
 # Invoke one-shot template for cmake/install
+export-compiler-environment
+
 COMMON_CFLAGS="\
     -Wno-register \
     ${COMMON_CFLAGS} \
@@ -36,6 +38,8 @@ CXX_STANDARD=17 \
 package-cmake-install-archive \
     -DClang_DIR=${LLVM_STAGE_ROOT}/lib/cmake/clang \
     -DCLANG_LINK_CLANG_DYLIB=TRUE \
+    -DCMAKE_ASM-ATT_COMPILER=${AS} \
+    -DCMAKE_ASM-ATT_FLAGS="${ASFLAGS}" \
     -DCMAKE_EXE_LINKER_FLAGS="-O2" \
     -DCURSES_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/ncurses \
     -DCURSES_LIBRARIES=`package-get-path ncursesw SHARED HOST` \
