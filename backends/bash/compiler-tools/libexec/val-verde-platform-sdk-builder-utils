@@ -612,7 +612,6 @@ function export-compiler-environment-for-swift() {
     if [ "${HOST_OS}" = "macos" ]; then
         SWIFTCFLAGS="\
             -Xcc -D_ALL_SOURCE=1 \
-            -Xlinker -Wl,-platform_version,${HOST_OS},${HOST_OS_API_LEVEL},${HOST_OS_API_LEVEL} \
             ${FORTIFY_SWIFTCFLAGS} \
             ${SWIFTCFLAGS} \
         "
