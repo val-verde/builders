@@ -2,16 +2,17 @@
 
 set -e
 
+DISTRO=${DISTRO:-ubuntu}
 PACKAGE_ARCHIVE_CLASS=${PACKAGE_ARCHIVE_CLASS:-deb}
 PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME:-val-verde}
 PACKAGE_ROOT=${PACKAGE_ROOT:-/opt}
 
 variantArrayCount=$((${#variantArray[@]} / 3))
 prefix='openvalverde'
-packageType='deb-images'
+packageType="${PACKAGE_ARCHIVE_CLASS}-images"
 tag='val-verde-compilers'
 version='1.0.0'
-target=ubuntu
+target="${DISTRO}"
 buildArgs=`echo "\
     --build-arg PACKAGE_ARCHIVE_CLASS=${PACKAGE_ARCHIVE_CLASS} \
     --build-arg PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME} \
@@ -19,4 +20,4 @@ buildArgs=`echo "\
     --build-arg VAL_VERDE_GH_TEAM=val-verde \
 " | xargs`
 
-docker build -f ubuntu.Dockerfile -t $prefix/$target-$packageType:$tag-$version $buildArgs .
+docker build -f ${DISTRO}.Dockerfile -t $prefix/$target-$packageType:$tag-$version $buildArgs .
