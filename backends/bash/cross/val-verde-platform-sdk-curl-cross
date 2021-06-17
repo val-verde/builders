@@ -16,6 +16,10 @@ export DEPENDS="\
 "
 
 # Invoke one-shot template for cmake/install
+if [ "${HOST_OS}" = "android" ]; then
+    CMAKE_ANDROID_DEFINE_CMD="-DANDROID=1"
+fi
+
 package-cmake-install-archive \
     -DBUILD_SHARED_LIBS=TRUE \
     -DBUILD_TESTING=FALSE \
@@ -23,4 +27,5 @@ package-cmake-install-archive \
     -DHAVE_POLL_FINE_EXITCODE=0 \
     -DHAVE_POLL_FINE_EXITCODE__TRYRUN_OUTPUT=1 \
     -DLIBSSH2_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DLIBSSH2_LIBRARY=`package-get-path ssh2 SHARED HOST`
+    -DLIBSSH2_LIBRARY=`package-get-path ssh2 SHARED HOST` \
+    ${CMAKE_ANDROID_DEFINE_CMD}
