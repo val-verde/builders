@@ -1467,15 +1467,6 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
-        "sourcePackageName": "swift-llbuild",
-        "sourceBranchIndicator": "android",
-        "sourcePackageVersion": "5",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
-    },
-    {
-        "retainSource": "false",
-        "depth": "1",
-        "sourceType": "git",
         "sourcePackageName": "swift-package-manager",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "5",
