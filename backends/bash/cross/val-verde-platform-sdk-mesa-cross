@@ -10,6 +10,7 @@ export SOURCE_PACKAGE_VERSION=21
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 COMMON_CFLAGS="\
+    -D__USE_GNU \
     -I${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/tools/clang/include \
     -I${SOURCE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}/clang/include \
     ${COMMON_CFLAGS} \
@@ -26,7 +27,7 @@ fi
 if [ "${HOST_OS}" = "android" ] ||
    [ "${HOST_OS}" = "gnu" ] ||
    [ "${HOST_OS}" = "musl" ]; then
-    GALLIUM_DRIVERS="freedreno,iris,lima,panfrost,nouveau,radeonsi,svga,swrast,v3d,vc4,virgl,zink"
+    GALLIUM_DRIVERS="asahi,crocus,freedreno,iris,lima,panfrost,nouveau,radeonsi,svga,swrast,tegra,v3d,vc4,virgl,zink"
     HARDWARE_DRIVERS_ENABLED=true
     HARDWARE_PLATFORMS="wayland,x11"
     OPENCL_MODE=icd
@@ -45,10 +46,6 @@ else
     DISABLE_UNDEFINED=true
 fi
 
-iaMESON_EXTRA_BINARIES="\
-llvm-config = '${LLVM_STAGE_ROOT}/bin/llvm-config'
-" \
-iaPATH=${LLVM_STAGE_ROOT}/bin:${PATH} \
 package-meson-install-archive \
     -Db_lundef=${DISABLE_UNDEFINED} \
     -Ddri-drivers= \
