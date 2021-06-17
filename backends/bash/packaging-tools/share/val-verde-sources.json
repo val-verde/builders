@@ -1512,15 +1512,6 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
-        "sourcePackageName": "swift-tools-support-core",
-        "sourceBranchIndicator": "android",
-        "sourcePackageVersion": "5",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
-    },
-    {
-        "retainSource": "false",
-        "depth": "1",
-        "sourceType": "git",
         "sourcePackageName": "systemd",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "248",
