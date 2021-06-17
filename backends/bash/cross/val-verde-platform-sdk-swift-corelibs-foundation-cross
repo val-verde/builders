@@ -28,9 +28,11 @@ function package-install-completion-callback() {
     fi
 }
 
-if [ "${HOST_OS}" = "android" ] ||
-   [ "${HOST_OS}" = "gnu" ] ||
-   [ "${HOST_OS}" = "musl" ]; then
+if [ "${HOST_OS}" = "android" ]; then
+    CMAKE_ANDROID_DEFINE_CMD="-DANDROID=1"
+    SDK="linux"
+elif [ "${HOST_OS}" = "gnu" ] ||
+     [ "${HOST_OS}" = "musl" ]; then
     SDK="linux"
 elif [ "${HOST_OS}" = "mingw32" ]; then
     SDK="windows"
@@ -64,4 +66,5 @@ package-cmake-install-archive \
     -DLIBXML2_LIBRARY=`package-get-path xml2 SHARED HOST` \
     -DOPENSSL_CRYPTO_LIBRARY=`package-get-path crypto SHARED HOST` \
     -DOPENSSL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DOPENSSL_SSL_LIBRARY=`package-get-path ssl SHARED HOST`
+    -DOPENSSL_SSL_LIBRARY=`package-get-path ssl SHARED HOST` \
+    ${CMAKE_ANDROID_DEFINE_CMD}
