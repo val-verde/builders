@@ -4,13 +4,16 @@ Release:    1
 Summary:    PACKAGE_NAME source rpm
 License:    Apache
 BuildArch:  BUILD_PROCESSOR
-Source: ARCHIVE_ROOT/SOURCES/PACKAGE_NAME.tar.gz
 
 %description
 PACKAGE_NAME source rpm for SYSTEM_ARCH
 
 %prep
-%setup -c -n PACKAGE_NAME-%{version}
+cd ARCHIVE_ROOT/BUILD
+rm -rf PACKAGE_NAME-%{version}
+cp -rf ARCHIVE_ROOT/SOURCES/PACKAGE_NAME ./PACKAGE_NAME-%{version}
+cd PACKAGE_NAME-%{version}
+/usr/bin/chmod -Rf a+rX,u+w,g-w,o-w .
 
 %build
 
