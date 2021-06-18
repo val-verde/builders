@@ -52,15 +52,16 @@ function package-invoke-builder() {
 
     unset DISABLE_BUILD_DEB \
           DISABLE_INSTALL_DEB \
-          PACKAGE_NAME \
-          QUALIFIED_PACKAGE_NAME \
           SOURCE_PACKAGE_NAME \
-          SOURCE_PACKAGE_VERSION
+          SOURCE_PACKAGE_VERSION \
+          PACKAGE_NAME \
+          QUALIFIED_PACKAGE_NAME
 }
 
 function parse-builder-args() {
     if [ ${1##*-} == 'cross' ] \
        || [[ ${1##*-} == *"bootstrap"* ]] \
+       || [[ ${1##*-} == *"darwin"* ]] \
        || [[ ${1##*-} == *"musl"* ]] \
        || [[ ${1##*-} == *"android"* ]] \
        || [[ ${1##*-} == *"windows"* ]]; then
