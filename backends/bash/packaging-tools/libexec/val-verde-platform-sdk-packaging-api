@@ -41,6 +41,8 @@ function deb-package-build() {
                 ${ARCHIVE_PATH}/${PACKAGE_NAME}.deb
         ${RM} -rf ${ARCHIVE_ROOT}
     package-pop-directory
+
+    ${RM} -rf ${ARCHIVE_ROOT_BASE}
 }
 
 function deb-package-install() {
@@ -111,6 +113,8 @@ function rpm-package-build() {
                 ${ARCHIVE_PATH}/${PACKAGE_NAME}.rpm
         ${RM} -rf ${ARCHIVE_ROOT}
     package-pop-directory
+
+    ${RM} -rf ${ARCHIVE_ROOT_BASE}
 }
 
 function rpm-package-install() {
