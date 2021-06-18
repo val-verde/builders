@@ -29,6 +29,7 @@ package-cmake-install-archive \
     -DSPIRV_TOOLS_LIB=`package-get-path SPIRV-Tools STATIC HOST` \
     -DSPIRV_TOOLS_OPT_SEARCH_PATH=${PACKAGE_PREFIX} \
     -DSPIRV_TOOLS_OPT_LIB=`package-get-path SPIRV-Tools-opt STATIC HOST` \
+    -DUSE_ROBIN_HOOD_HASHING=FALSE \
     -DVulkanHeaders_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DVulkanRegistry_DIR=${PACKAGE_PREFIX}/share/vulkan/registry \
     ${CMAKE_XCB_CMD}
