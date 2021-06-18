@@ -315,11 +315,11 @@ function package-pop-directory() {
 }
 
 function package-rpm-build() {
-    ${RPM}build "${@}"
+    ${RPM}build "${@}" > ${STAGE_ROOT}/builder-rpm-build.log
 }
 
 function package-rpm-install() {
-    ${RPM} -ivh "${@}"
+    ${RPM} -ivh "${@}" > ${STAGE_ROOT}/builder-rpm-install.log
 }
 
 function package-rsync() {
