@@ -20,6 +20,7 @@ PACKAGE_USR_PREFIX=${PACKAGE_USR_PREFIX:-usr}
 
 # global package configuration variables
 PACKAGE_ARCH=all
+ARCHIVE_ROOT_BASE=${TEMP_ROOT_BASE}/archiving
 
 # 'build' configuration
 export BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}
@@ -318,7 +319,7 @@ function package-rpm-build() {
 }
 
 function package-rpm-install() {
-    ${RPM} -i "${@}"
+    ${RPM} -ivh "${@}"
 }
 
 function package-rsync() {
