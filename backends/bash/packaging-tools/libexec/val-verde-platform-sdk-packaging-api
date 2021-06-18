@@ -3,6 +3,7 @@
 set -e
 
 # builder configuration defaults
+ARCHIVE_ROOT_BASE=${TEMP_ROOT_BASE}/archiving
 BASE_DIRECTORY=${BASE_DIRECTORY:-$(${ECHO} "${PACKAGE_ROOT}" | ${CUT} -d "/" -f2)}
 PACKAGE_INSTALL_BASE=${PACKAGE_INSTALL_BASE:-${BASE_DIRECTORY}}
 RELEASE=${RELEASE:='1'}
@@ -24,7 +25,7 @@ function packaging-archive-build-install() {
 }
 
 function deb-package-build() {
-    ARCHIVE_ROOT=${TEMP_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+    ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
     TEMPLATE_ROOT=${TEMPLATE_ROOT:-${TEMPLATE_ROOT_BASE}/deb}
 
     package-push-directory ${INSTALL_ROOT}
@@ -49,10 +50,10 @@ function deb-package-install() {
 }
 
 function generate-control-file() {
-    ARCHIVE_ROOT=${TEMP_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+    ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
 
     # Template definition
-    DEBIAN_ROOT=${ARCHIVE_ROOT}/DEBIAN
+    DEBIAN_ROOT=${ARCHIVE_ROOT_BASE}/DEBIAN
 
     ${MKDIR} -p ${DEBIAN_ROOT}
     ${ECHO} 10 \
@@ -76,7 +77,7 @@ function generate-control-file() {
 }
 
 function generate-spec-file() {
-    ARCHIVE_ROOT=${TEMP_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+    ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
 
     ${SED} "s|ARCHIVE_ROOT|${ARCHIVE_ROOT}|g; \
             s|BUILD_PROCESSOR|${BUILD_PROCESSOR}|g; \
@@ -89,7 +90,7 @@ function generate-spec-file() {
 }
 
 function rpm-package-build() {
-    ARCHIVE_ROOT=${TEMP_ROOT_BASE}/archiving/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+    ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
     TEMPLATE_ROOT=${TEMPLATE_ROOT:-${TEMPLATE_ROOT_BASE}/rpm}
 
     package-push-directory ${INSTALL_ROOT}
@@ -102,8 +103,6 @@ function rpm-package-build() {
                     ${BASE_DIRECTORY} \
                     ${ARCHIVE_ROOT}/SOURCES/${PACKAGE_NAME}
         
-        package-tar zvcfP ${ARCHIVE_ROOT}/SOURCES/${PACKAGE_NAME}.tar.gz .
-
         generate-spec-file "${PACKAGE_NAME}"
 
         ${SED} -i "s|%files|%files\n/${PACKAGE_INSTALL_BASE}/*|g" ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
