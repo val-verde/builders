@@ -48,13 +48,6 @@ function package-install-completion-callback() {
     ${LN} -sf \
           ${CLANG_RT_LIB} \
           ${INSTALL_PREFIX}/lib/clang/13.0.0/lib/${DST_SDK_PLATFORM_DIR}/${DST_CLANG_RT_LIB}
-
-    # remove libcxx as it is superceded by llvm-project
-    HOST_PROCESSOR=`${ECHO} ${HOST_PROCESSOR} | ${TR} _ -`
-    PACKAGES_TO_MANAGE=( 'libcxx-13' 'HOST' )
-
-    PACKAGE_ACTION=UNINSTALL \
-    deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 }
 
 function tool-install-invocation() {
