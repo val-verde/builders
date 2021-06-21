@@ -16,9 +16,19 @@ else
     ENABLE_OR_DISABLE_GLIB=enabled
 fi
 
+if [ "${HOST_OS}" = "macos" ]; then
+    ENABLE_OR_DISABLE_CORETEXT=enabled
+else
+    ENABLE_OR_DISABLE_CORETEXT=disabled
+fi
+
 package-meson-install-archive \
+    -Dcairo=enabled \
+    -Dcoretext=${ENABLE_OR_DISABLE_CORETEXT} \
     -Ddocs=disabled \
+    -Dfreetype=enabled \
     -Dglib=${ENABLE_OR_DISABLE_GLIB} \
     -Dgobject=${ENABLE_OR_DISABLE_GLIB} \
+    -Dgraphite=enabled \
     -Dintrospection=${ENABLE_OR_DISABLE_GLIB} \
     -Dtests=disabled

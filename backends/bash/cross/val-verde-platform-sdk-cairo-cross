@@ -1,0 +1,32 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=cairo
+export SOURCE_PACKAGE_VERSION=1
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for meson/install
+GL_BACKEND=gl
+
+if [ "${HOST_OS}" = "android" ]; then
+    GL_BACKEND=glesv3
+fi
+
+MESON_EXTRA_PROPERTIES="
+ipc_rmid_deferred_release=false
+"
+
+package-meson-install-archive \
+    -Dfontconfig=enabled \
+    -Dfreetype=enabled \
+    -Dgl-backend=${GL_BACKEND} \
+    -Dglesv2=enabled \
+    -Dglesv3=enabled \
+    -Dpng=enabled \
+    -Dsymbol-lookup=disabled \
+    -Dtests=disabled \
+    -Dzlib=enabled

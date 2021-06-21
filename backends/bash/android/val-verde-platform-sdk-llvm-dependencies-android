@@ -291,6 +291,12 @@ package-invoke-builder brotli-cross
 DISABLE_HARFBUZZ=TRUE \
 package-invoke-builder freetype2-cross
 
+# android cairo build
+package-invoke-builder cairo-cross
+
+# android graphite2 build
+package-invoke-builder graphite2-cross
+
 # android harfbuzz build
 package-invoke-builder harfbuzz-cross
 
