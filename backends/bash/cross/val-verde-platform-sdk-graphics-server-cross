@@ -1,0 +1,151 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
+
+# xorg-macros build
+package-invoke-builder xorg-macros-cross
+
+# xorgproto build
+package-invoke-builder xorg-xorgproto-cross
+
+# xcb-proto build
+package-invoke-builder xcb-proto-cross
+
+# xcb-pthread-stubs build
+package-invoke-builder xcb-pthread-stubs-cross
+
+# libxau build
+package-invoke-builder xorg-libxau-cross
+
+# pixman build
+package-invoke-builder pixman-cross
+
+if [ "${HOST_OS}" != "macos" ] &&
+   [ "${HOST_OS}" != "mingw32" ]; then
+    # xorg-libpciaccess build
+    package-invoke-builder xorg-libpciaccess-cross
+fi
+
+# xorg-libxtrans build
+package-invoke-builder xorg-libxtrans-cross
+
+if [ "${HOST_OS}" != "mingw32" ]; then
+    # libxdmcp build
+    package-invoke-builder libxdmcp-cross
+
+    # libxcb build
+    package-invoke-builder xcb-libxcb-cross
+
+    # libx11 build
+    package-invoke-builder libx11-cross
+
+    # libxext build
+    package-invoke-builder libxext-cross
+
+    # xorg-libxrender build
+    package-invoke-builder xorg-libxrender-cross
+
+    # xorg-libxfixes build
+    package-invoke-builder xorg-libxfixes-cross
+
+    # xorg-libxi build
+    package-invoke-builder xorg-libxi-cross
+
+    # xorg-libice build
+    package-invoke-builder xorg-libice-cross
+
+    # xorg-libsm build
+    package-invoke-builder xorg-libsm-cross
+
+    # xorg-libxt build
+    package-invoke-builder xorg-libxt-cross
+
+    # xorg-libxtst build
+    package-invoke-builder xorg-libxtst-cross
+
+    # xorg-libxrandr build
+    package-invoke-builder xorg-libxrandr-cross
+
+    # xorg-xinput build
+    # package-invoke-builder xorg-xinput-cross
+
+    # xorg-libxkbfile build
+    package-invoke-builder xorg-libxkbfile-cross
+
+    # xorg-libxshmfence build
+    package-invoke-builder xorg-libxshmfence-cross
+
+    # xorg-libxxf86vm build
+    package-invoke-builder xorg-libxxf86vm-cross
+fi
+
+# libjpeg build
+package-invoke-builder libjpeg-cross
+
+# libpng build
+package-invoke-builder libpng-cross
+
+if [ "${HOST_OS}" != "macos" ] &&
+   [ "${HOST_OS}" != "mingw32" ]; then
+    # wayland build
+    package-invoke-builder wayland-cross
+
+    # wayland-protocols build
+    package-invoke-builder wayland-protocols-cross
+fi
+
+if [ "${HOST_OS}" != "mingw32" ]; then
+    # mesa-drm build
+    package-invoke-builder mesa-drm-cross
+fi
+
+# opencl headers build
+package-invoke-builder opencl-headers-cross
+
+# opencl icd loader build
+package-invoke-builder opencl-icd-loader-cross
+
+# libglvnd build
+package-invoke-builder libglvnd-cross
+
+# vulkan headers build
+package-invoke-builder vulkan-headers-cross
+
+# vulkan loader build
+package-invoke-builder vulkan-loader-cross
+
+# brotli build
+package-invoke-builder brotli-cross
+
+# freetype2 build
+DISABLE_HARFBUZZ=TRUE \
+package-invoke-builder freetype2-cross
+
+# fontconfig build
+package-invoke-builder fontconfig-cross
+
+# cairo build
+package-invoke-builder cairo-cross
+
+# graphite2 build
+package-invoke-builder graphite2-cross
+
+# harfbuzz build
+package-invoke-builder harfbuzz-cross
+
+# freetype2 build
+package-invoke-builder freetype2-cross
+
+if [ "${HOST_OS}" != "mingw32" ]; then
+    # xorg-font-util-cross build
+    package-invoke-builder xorg-font-util-cross
+
+    # libfontenc build
+    package-invoke-builder libfontenc-cross
+
+    # libxfont-cross build
+    package-invoke-builder libxfont-cross
+fi

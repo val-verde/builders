@@ -188,51 +188,6 @@ package-invoke-builder curl-cross
 # android apple-mig build
 package-invoke-builder apple-mig-cross
 
-# android xorg-macros build
-package-invoke-builder xorg-macros-cross
-
-# android xorgproto build
-package-invoke-builder xorg-xorgproto-cross
-
-# android xcb-proto build
-package-invoke-builder xcb-proto-cross
-
-# android xcb-pthread-stubs build
-package-invoke-builder xcb-pthread-stubs-cross
-
-# android libxau build
-package-invoke-builder xorg-libxau-cross
-
-# android libxcb build
-package-invoke-builder xcb-libxcb-cross
-
-# android pixman build
-package-invoke-builder pixman-cross
-
-# android xorg-libpciaccess build
-package-invoke-builder xorg-libpciaccess-cross
-
-# android xorg-libxtrans build
-package-invoke-builder xorg-libxtrans-cross
-
-# android libx11 build
-package-invoke-builder libx11-cross
-
-# android libxext build
-package-invoke-builder libxext-cross
-
-# android xorg-libxrender build
-package-invoke-builder xorg-libxrender-cross
-
-# android xorg-libxfixes build
-package-invoke-builder xorg-libxfixes-cross
-
-# android xorg-libxi build
-package-invoke-builder xorg-libxi-cross
-
-# android xorg-libice build
-package-invoke-builder xorg-libice-cross
-
 # alsa-lib build
 package-invoke-builder alsa-lib-cross
 
@@ -251,91 +206,6 @@ package-invoke-builder openssh-portable-cross
 # android bash build
 package-invoke-builder bash-cross
 
-# android xorg-libsm build
-package-invoke-builder xorg-libsm-cross
-
-# android xorg-libxt build
-package-invoke-builder xorg-libxt-cross
-
-# android xorg-libxtst build
-package-invoke-builder xorg-libxtst-cross
-
-# android xorg-libxrandr build
-package-invoke-builder xorg-libxrandr-cross
-
-# android xorg-xinput build
-# package-invoke-builder xorg-xinput-cross
-
-# android xorg-libxkbfile build
-package-invoke-builder xorg-libxkbfile-cross
-
-# android xorg-libxshmfence build
-package-invoke-builder xorg-libxshmfence-cross
-
-# android xorg-libxxf86vm build
-package-invoke-builder xorg-libxxf86vm-cross
-
-# android libxdmcp build
-package-invoke-builder libxdmcp-cross
-
-# android libjpeg build
-package-invoke-builder libjpeg-cross
-
-# android libpng build
-package-invoke-builder libpng-cross
-
-# android brotli build
-package-invoke-builder brotli-cross
-
-# android freetype2 build
-DISABLE_HARFBUZZ=TRUE \
-package-invoke-builder freetype2-cross
-
-# android cairo build
-package-invoke-builder cairo-cross
-
-# android graphite2 build
-package-invoke-builder graphite2-cross
-
-# android harfbuzz build
-package-invoke-builder harfbuzz-cross
-
-# android freetype2 build
-package-invoke-builder freetype2-cross
-
-# android xorg-font-util-cross build
-package-invoke-builder xorg-font-util-cross
-
-# android libfontenc build
-package-invoke-builder libfontenc-cross
-
-# android libxfont-cross build
-package-invoke-builder libxfont-cross
-
-# android wayland build
-package-invoke-builder wayland-cross
-
-# android wayland-protocols build
-package-invoke-builder wayland-protocols-cross
-
-# android mesa-drm build
-package-invoke-builder mesa-drm-cross
-
-# android opencl headers build
-package-invoke-builder opencl-headers-cross
-
-# android opencl icd loader build
-package-invoke-builder opencl-icd-loader-cross
-
-# android libglvnd build
-package-invoke-builder libglvnd-cross
-
-# android vulkan headers build
-package-invoke-builder vulkan-headers-cross
-
-# android vulkan loader build
-package-invoke-builder vulkan-loader-cross
-
 # android grep build
 package-invoke-builder grep-cross
 
@@ -350,9 +220,6 @@ package-invoke-builder bison-cross
 
 # android jq build
 package-invoke-builder jq-cross
-
-# android fontconfig build
-package-invoke-builder fontconfig-cross
 
 # android tar build
 if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
@@ -428,6 +295,9 @@ package-invoke-builder libsecret-cross
 
 # android pkg-config build
 package-invoke-builder pkg-config-cross
+
+# android graphics server build
+package-invoke-builder graphics-server-cross
 
 # android itstool build
 package-invoke-builder itstool-cross

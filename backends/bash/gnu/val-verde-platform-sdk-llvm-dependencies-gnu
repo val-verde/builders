@@ -264,51 +264,6 @@ unset CURL
 # apple-mig build
 package-invoke-builder apple-mig-cross
 
-# xorg-macros build
-package-invoke-builder xorg-macros-cross
-
-# xorgproto build
-package-invoke-builder xorg-xorgproto-cross
-
-# xcb-proto build
-package-invoke-builder xcb-proto-cross
-
-# xcb-pthread-stubs build
-package-invoke-builder xcb-pthread-stubs-cross
-
-# libxau build
-package-invoke-builder xorg-libxau-cross
-
-# libxcb build
-package-invoke-builder xcb-libxcb-cross
-
-# pixman build
-package-invoke-builder pixman-cross
-
-# xorg-libpciaccess build
-package-invoke-builder xorg-libpciaccess-cross
-
-# xorg-libxtrans build
-package-invoke-builder xorg-libxtrans-cross
-
-# libx11 build
-package-invoke-builder libx11-cross
-
-# libxext build
-package-invoke-builder libxext-cross
-
-# xorg-libxrender build
-package-invoke-builder xorg-libxrender-cross
-
-# xorg-libxfixes build
-package-invoke-builder xorg-libxfixes-cross
-
-# xorg-libxi build
-package-invoke-builder xorg-libxi-cross
-
-# xorg-libice build
-package-invoke-builder xorg-libice-cross
-
 # alsa-lib build
 package-invoke-builder alsa-lib-cross
 
@@ -329,91 +284,6 @@ unset SSH
 package-invoke-builder bash-cross
 unset BASH
 
-# xorg-libsm build
-package-invoke-builder xorg-libsm-cross
-
-# xorg-libxt build
-package-invoke-builder xorg-libxt-cross
-
-# xorg-libxtst build
-package-invoke-builder xorg-libxtst-cross
-
-# xorg-libxrandr build
-package-invoke-builder xorg-libxrandr-cross
-
-# xorg-xinput build
-# package-invoke-builder xorg-xinput-cross
-
-# xorg-libxkbfile build
-package-invoke-builder xorg-libxkbfile-cross
-
-# xorg-libxshmfence build
-package-invoke-builder xorg-libxshmfence-cross
-
-# xorg-libxxf86vm build
-package-invoke-builder xorg-libxxf86vm-cross
-
-# libjpeg build
-package-invoke-builder libjpeg-cross
-
-# libpng build
-package-invoke-builder libpng-cross
-
-# brotli build
-package-invoke-builder brotli-cross
-
-# freetype2 build
-DISABLE_HARFBUZZ=TRUE \
-package-invoke-builder freetype2-cross
-
-# cairo build
-package-invoke-builder cairo-cross
-
-# graphite2 build
-package-invoke-builder graphite2-cross
-
-# harfbuzz build
-package-invoke-builder harfbuzz-cross
-
-# freetype2 build
-package-invoke-builder freetype2-cross
-
-# xorg-font-util-cross build
-package-invoke-builder xorg-font-util-cross
-
-# libfontenc build
-package-invoke-builder libfontenc-cross
-
-# libxfont-cross build
-package-invoke-builder libxfont-cross
-
-# libxdmcp build
-package-invoke-builder libxdmcp-cross
-
-# wayland build
-package-invoke-builder wayland-cross
-
-# wayland-protocols build
-package-invoke-builder wayland-protocols-cross
-
-# mesa-drm build
-package-invoke-builder mesa-drm-cross
-
-# opencl headers build
-package-invoke-builder opencl-headers-cross
-
-# opencl icd loader build
-package-invoke-builder opencl-icd-loader-cross
-
-# libglvnd build
-package-invoke-builder libglvnd-cross
-
-# vulkan headers build
-package-invoke-builder vulkan-headers-cross
-
-# vulkan loader build
-package-invoke-builder vulkan-loader-cross
-
 # grep build
 package-invoke-builder grep-cross
 unset GREP
@@ -431,9 +301,6 @@ package-invoke-builder flex-cross
 
 # jq build
 package-invoke-builder jq-cross
-
-# fontconfig build
-package-invoke-builder fontconfig-cross
 
 # tar build
 package-invoke-builder tar-cross
@@ -562,6 +429,9 @@ package-invoke-builder libsecret-cross
 
 # pkg-config build
 package-invoke-builder pkg-config-cross
+
+# graphics server build
+package-invoke-builder graphics-server-cross
 
 # cups build
 package-invoke-builder cups-cross

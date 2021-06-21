@@ -166,69 +166,8 @@ package-invoke-builder curl-cross
 # windows apple-mig build
 package-invoke-builder apple-mig-cross
 
-# windows xorg-macros build
-package-invoke-builder xorg-macros-cross
-
-# windows xorgproto build
-package-invoke-builder xorg-xorgproto-cross
-
-# windows xcb-proto build
-package-invoke-builder xcb-proto-cross
-
-# windows xcb-pthread-stubs build
-package-invoke-builder xcb-pthread-stubs-cross
-
-# windows libxau build
-package-invoke-builder xorg-libxau-cross
-
-# windows libxcb build
-package-invoke-builder xcb-libxcb-cross
-
-# windows pixman build
-package-invoke-builder pixman-cross
-
-# xorg-libxtrans build
-package-invoke-builder xorg-libxtrans-cross
-
 # windows libuv build
 package-invoke-builder libuv-cross
-
-# libjpeg build
-package-invoke-builder libjpeg-cross
-
-# libpng build
-package-invoke-builder libpng-cross
-
-# brotli build
-package-invoke-builder brotli-cross
-
-# freetype2 build
-DISABLE_HARFBUZZ=TRUE \
-package-invoke-builder freetype2-cross
-
-# cairo build
-package-invoke-builder cairo-cross
-
-# graphite2 build
-package-invoke-builder graphite2-cross
-
-# harfbuzz build
-package-invoke-builder harfbuzz-cross
-
-# freetype2 build
-package-invoke-builder freetype2-cross
-
-# windows opencl headers build
-package-invoke-builder opencl-headers-cross
-
-# windows opencl icd loader build
-package-invoke-builder opencl-icd-loader-cross
-
-# windows vulkan headers build
-package-invoke-builder vulkan-headers-cross
-
-# windows vulkan loader build
-package-invoke-builder vulkan-loader-cross
 
 # windows grep build
 package-invoke-builder grep-cross
@@ -262,6 +201,9 @@ package-invoke-builder glib-cross
 
 # windows pkg-config build
 package-invoke-builder pkg-config-cross
+
+# windows graphics server build
+package-invoke-builder graphics-server-cross
 
 # graphviz build
 package-invoke-builder graphviz-cross
