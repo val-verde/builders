@@ -26,7 +26,6 @@ ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder llvm-project-android 13 no-install
 
 # remove libcxx, libcxxabi and libunwind as they are superceded by llvm-project.
-HOST_PROCESSOR=`${ECHO} ${HOST_PROCESSOR} | ${TR} _ -`
 PACKAGES_TO_MANAGE=( 'libcxx-13' 'HOST' )
 
 PACKAGE_ACTION=UNINSTALL \

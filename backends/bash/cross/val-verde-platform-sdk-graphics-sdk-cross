@@ -4,7 +4,6 @@ set -e
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # spirv headers build
 package-invoke-builder spirv-headers-cross 1
