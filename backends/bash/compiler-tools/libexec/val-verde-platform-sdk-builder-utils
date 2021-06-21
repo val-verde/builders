@@ -212,6 +212,8 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     TOOL_LIBTOOL=${ENV_PREFIX}LIBTOOL
     TOOL_LIPO=${ENV_PREFIX}LIPO
     TOOL_MANIFEST_TOOL=${ENV_PREFIX}MANIFEST_TOOL
+    TOOL_MIGCC=${ENV_PREFIX}MIGCC
+    TOOL_MIGCOM=${ENV_PREFIX}MIGCOM
     TOOL_NM=${ENV_PREFIX}NM
     TOOL_OBJC=${ENV_PREFIX}OBJC
     TOOL_OBJCOPY=${ENV_PREFIX}OBJCOPY
@@ -500,6 +502,14 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     export ${TOOL_LIBS}="`${ECHO} "\
         ${!TOOL_LIBS} \
     " | ${XARGS}`"
+
+    if [ "${!VARIANT_OS}" = "macos" ]; then
+        TOOL_PREFIX=`${ECHO} ${VARIANT} | ${TR} '[:upper:]' '[:lower:]'`
+        create-host-tool "${!TOOL_CC}" ${ENV_PREFIX}CFLAGS ${STAGE_ROOT}/${TOOL_PREFIX}-migcc
+
+        export ${TOOL_MIGCC}="${!TOOL_MIGCC:-${STAGE_ROOT}/${TOOL_PREFIX}-migcc}"
+        export ${TOOL_MIGCOM}="${!TOOL_MIGCOM:-`package-get-path ../libexec/migcom EXECUTABLE BUILD`}"
+    fi
 }
 
 function export-compiler-environment-for-go() {
