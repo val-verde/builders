@@ -57,6 +57,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "antlr",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "4",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "apt",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2",
@@ -120,18 +129,18 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
-        "sourcePackageName": "boost",
+        "sourcePackageName": "bionic-libc",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1",
+        "sourcePackageVersion": "0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
-        "sourcePackageName": "bionic-libc",
+        "sourcePackageName": "boost",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "0",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -2066,6 +2075,15 @@
         "sourcePackageName": "texinfo",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "6",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "toml",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
