@@ -5,5 +5,14 @@ set -e
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
+# toml build
+package-invoke-builder toml-cross 1
+
+# antlr build
+# package-invoke-builder antlr-cross 4
+
+# toml build
+# package-invoke-builder cvc4-cross 1
+
 # solidity build
-package-invoke-builder solidity-cross
+package-invoke-builder solidity-cross 0
