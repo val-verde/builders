@@ -452,7 +452,7 @@ package-invoke-builder libsecret-cross 0
 package-invoke-builder pkg-config-cross 0
 
 # graphics server build
-package-invoke-builder graphics-server-cross
+package-invoke-category-builder graphics-server-cross
 
 # cups build
 package-invoke-builder cups-cross 2

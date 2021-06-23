@@ -332,7 +332,7 @@ package-invoke-builder libsecret-cross 0
 package-invoke-builder pkg-config-cross 0
 
 # android graphics server build
-package-invoke-builder graphics-server-cross
+package-invoke-category-builder graphics-server-cross
 
 # android itstool build
 package-invoke-builder itstool-cross 2
