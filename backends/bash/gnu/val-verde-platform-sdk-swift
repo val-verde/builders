@@ -32,6 +32,8 @@ function package-install-completion-callback() {
     rpath-fixup
 }
 
+SWIFT_SDK_ARCH=`${ECHO} ${HOST_PROCESSOR} | ${TR} - _`
+
 CXX_STANDARD=17 \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 RPATH_COMPONENTS="\
