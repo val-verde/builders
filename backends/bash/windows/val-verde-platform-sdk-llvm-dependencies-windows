@@ -229,7 +229,7 @@ package-invoke-builder glib-cross 1
 package-invoke-builder pkg-config-cross 0
 
 # windows graphics server build
-package-invoke-builder graphics-server-cross
+package-invoke-category-builder graphics-server-cross
 
 # graphviz build
 package-invoke-builder graphviz-cross 2
