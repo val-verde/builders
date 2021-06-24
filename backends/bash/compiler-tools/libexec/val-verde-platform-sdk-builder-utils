@@ -1321,7 +1321,6 @@ function package-meson-build-invocation() {
     BACKEND=${BACKEND:-ninja}
     BUILD_TYPE=${BUILD_TYPE:-custom}
     CONFIG_FILE=${STAGE_ROOT}/build-config.txt
-    CXX_STANDARD=${CXX_STANDARD:-none}
     DEBUG=${DEBUG:-false}
     ENDIAN=${ENDIAN:-little}
     BUILD_SYSTEM=${BUILD_OS}
@@ -1347,6 +1346,13 @@ function package-meson-build-invocation() {
     fi
 
     MESON_BUILD_CONFIG=native
+
+    if [ -n "${CXX_STANDARD}" ]; then
+        MESON_CXX_STANDARD=c++${CXX_STANDARD}
+    else
+        MESON_CXX_STANDARD=none
+    fi
+
     HOST_CMAKE_PREFIXES="${PACKAGE_PREFIX}/lib/cmake:${PKG_CONFIG_PATH}"
     HOST_C_ARGS=`${ECHO} [\'${CFLAGS}\'] | ${SED} "s/ /','/g"`
     HOST_C_LINK_ARGS=`${ECHO} [\'${LDFLAGS}\'] | ${SED} "s/ /','/g"`
@@ -1393,123 +1399,91 @@ function package-meson-build-invocation() {
         export PKG_CONFIG_FOR_BUILD=${STAGE_ROOT}/build-pkgconfig
     fi
 
-    ${ECHO} "\
+    if [ -n "${MESON_EXTRA_BINARIES}" ]; then
+        ${ECHO} "\
 [binaries]
 ${MESON_EXTRA_BINARIES}
+" > ${CONFIG_FILE}
+    fi
+
+    if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+        MESON_EXTRA_PROPERTIES="
+needs_exe_wrapper = true
+${MESON_EXTRA_PROPERTIES}
+"
+
+        ${ECHO} "\
+[build_machine]
+ar='${AR}'
+backend='${BACKEND}'
+buildtype='${BUILD_TYPE}'
+c='${CC_FOR_BUILD}'
+c_args=${BUILD_C_ARGS}
+c_ld='${BINDIR}/ld.lld'
+c_link_args=${BUILD_C_LINK_ARGS}
+cmake='${CMAKE}'
+cmake_prefix_path=${BUILD_CMAKE_PREFIX_PATH}
+cpp='${CXX_FOR_BUILD}'
+cpp_args=${BUILD_CPP_ARGS}
+cpp_ld='${BINDIR}/ld.lld'
+cpp_link_args=${BUILD_CPP_LINK_ARGS}
+cpp_std='${MESON_CXX_STANDARD}'
+cpu='${BUILD_ARCH}'
+cpu_family='${BUILD_PROCESSOR}'
+debug='${DEBUG}'
+endian='${ENDIAN}'
+objc='${CC_FOR_BUILD}'
+objcpp='${CXX_FOR_BUILD}'
+optimization='${OPTIMIZATION_LEVEL}'
+pkgconfig='${STAGE_ROOT}/build-pkg-config'
+pkgconfigpath=''
+python='${PYTHON}'
+nm='${NM}'
+ranlib='${RANLIB}'
+strip='${STRIP}'
+strings='${STRINGS}'
+system='${BUILD_SYSTEM}'
+windres='${WINDRES}'
+" >> ${CONFIG_FILE}
+    fi
+
+    ${ECHO} "\
+
+[host_machine]
+ar='${AR}'
+backend='${BACKEND}'
+buildtype='${BUILD_TYPE}'
+c='${CC}'
+c_args=${HOST_C_ARGS}
+c_ld='${LD}'
+c_link_args=${HOST_C_LINK_ARGS}
+cmake='${CMAKE}'
+cmake_prefix_path=${HOST_CMAKE_PREFIX_PATH}
+cpp='${CXX}'
+cpp_args=${HOST_CPP_ARGS}
+cpp_ld='${LD}'
+cpp_link_args=${HOST_CPP_LINK_ARGS}
+cpp_std='${MESON_CXX_STANDARD}'
+cpu='${HOST_ARCH}'
+cpu_family='${HOST_PROCESSOR}'
+debug='${DEBUG}'
+endian='${ENDIAN}'
+objc='${OBJC}'
+objcpp='${OBJCPP}'
+optimization='${OPTIMIZATION_LEVEL}'
+pkgconfig='${PKG_CONFIG}'
+pkg_config_path='${PKG_CONFIG_PATH}'
+python='${PYTHON}'
+nm='${NM}'
+ranlib='${RANLIB}'
+strip='${STRIP}'
+strings='${STRINGS}'
+system='${HOST_SYSTEM}'
+windres='${WINDRES}'
 
 [properties]
 ${MESON_EXTRA_PROPERTIES}
-" > ${CONFIG_FILE}
-
-    if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
-        ${ECHO} "\
-needs_exe_wrapper = true
-
-[build_machine]
-ar = '${AR}'
-backend = '${BACKEND}'
-buildtype = '${BUILD_TYPE}'
-c = '${CC_FOR_BUILD}'
-c_args = ${BUILD_C_ARGS}
-c_ld = '${BINDIR}/ld.lld'
-c_link_args = ${BUILD_C_LINK_ARGS}
-cmake='${CMAKE}'
-cmake_prefix_path=${BUILD_CMAKE_PREFIX_PATH}
-cpp = '${CXX_FOR_BUILD}'
-cpp_args = ${BUILD_CPP_ARGS}
-cpp_ld = '${BINDIR}/ld.lld'
-cpp_link_args = ${BUILD_CPP_LINK_ARGS}
-cpp_std = c++${CXX_STANDARD}
-cpu = '${BUILD_ARCH}'
-cpu_family = '${BUILD_PROCESSOR}'
-debug = '${DEBUG}'
-endian = '${ENDIAN}'
-objc = '${CC_FOR_BUILD}'
-objcpp = '${CXX_FOR_BUILD}'
-optimization = '${OPTIMIZATION_LEVEL}'
-pkgconfig = '${STAGE_ROOT}/build-pkg-config'
-pkgconfigpath = ''
-python = '${PYTHON}'
-nm = '${NM}'
-ranlib = '${RANLIB}'
-strip = '${STRIP}'
-strings = '${STRINGS}'
-system = '${BUILD_SYSTEM}'
-windres = '${WINDRES}'
-
-[host_machine]
-        " >> ${CONFIG_FILE}
-    fi
-
-    ${ECHO} "\
-ar = '${AR}'
-backend = '${BACKEND}'
-buildtype = '${BUILD_TYPE}'
-c = '${CC}'
-c_args = ${HOST_C_ARGS}
-c_ld = '${LD}'
-c_link_args = ${HOST_C_LINK_ARGS}
-cmake='${CMAKE}'
-cmake_prefix_path=${HOST_CMAKE_PREFIX_PATH}
-cpp = '${CXX}'
-cpp_args = ${HOST_CPP_ARGS}
-cpp_ld = '${LD}'
-cpp_link_args = ${HOST_CPP_LINK_ARGS}
-cpp_std = c++${CXX_STANDARD}
-cpu = '${HOST_ARCH}'
-cpu_family = '${HOST_PROCESSOR}'
-debug = '${DEBUG}'
-endian = '${ENDIAN}'
-objc = '${OBJC}'
-objcpp = '${OBJCPP}'
-optimization = '${OPTIMIZATION_LEVEL}'
-pkgconfig = '${PKG_CONFIG}'
-pkg_config_path = '${PKG_CONFIG_PATH}'
-python = '${PYTHON}'
-nm = '${NM}'
-ranlib = '${RANLIB}'
-strip = '${STRIP}'
-strings = '${STRINGS}'
-system = '${HOST_SYSTEM}'
-windres = '${WINDRES}'
-    " >> ${CONFIG_FILE}
-
-
-    if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
-        ${ECHO} "\
-[target_machine]
-ar = '${AR}'
-backend = '${BACKEND}'
-buildtype = '${BUILD_TYPE}'
-c = '${CC}'
-c_args = ${HOST_C_ARGS}
-c_ld = '${LD}'
-c_link_args = ${HOST_C_LINK_ARGS}
-cmake='${CMAKE}'
-cmake_prefix_path=${HOST_CMAKE_PREFIX_PATH}
-cpp = '${CXX}'
-cpp_args = ${HOST_CPP_ARGS}
-cpp_ld = '${LD}'
-cpp_link_args = ${HOST_CPP_LINK_ARGS}
-cpp_std = c++${CXX_STANDARD}
-cpu = '${HOST_ARCH}'
-cpu_family = '${HOST_PROCESSOR}'
-debug = '${DEBUG}'
-endian = '${ENDIAN}'
-objc = '${OBJC}'
-objcpp = '${OBJCPP}'
-optimization = '${OPTIMIZATION_LEVEL}'
-pkgconfig = '${PKG_CONFIG}'
-pkg_config_path = '${PKG_CONFIG_PATH}'
-python = '${PYTHON}'
-nm = '${NM}'
-ranlib = '${RANLIB}'
-strip = '${STRIP}'
-strings = '${STRINGS}'
-system = '${HOST_SYSTEM}'
-windres = '${WINDRES}'
 " >> ${CONFIG_FILE}
-    fi
 
     TOOL_LOG=${STAGE_ROOT}/builder-invocation \
     tool-log ${MESON} \
