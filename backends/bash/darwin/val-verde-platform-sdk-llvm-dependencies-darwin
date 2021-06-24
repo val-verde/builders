@@ -250,6 +250,9 @@ package-invoke-builder libtasn1-cross
 DISABLE_SYSTEMD=TRUE \
 package-invoke-builder p11-kit-cross
 
+# dbus build
+package-invoke-builder dbus-cross
+
 # nettle build
 package-invoke-builder nettle-cross
 

@@ -224,6 +224,9 @@ package-invoke-builder libcap-cross
 # expat build
 package-invoke-builder expat-cross
 
+# perl-xml-parser build
+package-invoke-builder perl-xml-parser-cross
+
 # gawk build
 package-invoke-builder gawk-cross
 
@@ -260,6 +263,9 @@ package-invoke-builder libssh2-cross
 # curl build
 package-invoke-builder curl-cross
 unset CURL
+
+# libndp build
+package-invoke-builder libndp-cross
 
 # apple-mig build
 package-invoke-builder apple-mig-cross
@@ -436,11 +442,17 @@ package-invoke-builder graphics-server-cross
 # cups build
 package-invoke-builder cups-cross
 
+# intltool build
+package-invoke-builder intltool-cross
+
 # systemd build
 package-invoke-builder systemd
 
 # p11-kit build
 package-invoke-builder p11-kit-cross
+
+# dbus build
+package-invoke-builder dbus-cross
 
 # util-linux build (with python and systemd support)
 package-invoke-builder util-linux-cross
