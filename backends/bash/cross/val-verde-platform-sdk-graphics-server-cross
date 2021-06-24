@@ -98,6 +98,12 @@ if [ "${HOST_OS}" != "macos" ] &&
 fi
 
 if [ "${HOST_OS}" != "mingw32" ]; then
+    # libxkbcommon build
+    package-invoke-builder libxkbcommon-cross
+
+    # shared-mime-info build
+    package-invoke-builder shared-mime-info-cross
+
     # mesa-drm build
     package-invoke-builder mesa-drm-cross
 fi

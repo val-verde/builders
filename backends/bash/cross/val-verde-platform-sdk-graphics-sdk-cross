@@ -85,6 +85,13 @@ if [ "${HOST_OS}" = "gnu" ] ||
     package-invoke-builder mesa-demos-cross
 fi
 
+if [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "macos" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    # gtk build
+    package-invoke-builder gtk-cross
+fi
+
 # sdl build
 DXSDK_DIR=${SYSROOT} \
 package-invoke-builder sdl-cross

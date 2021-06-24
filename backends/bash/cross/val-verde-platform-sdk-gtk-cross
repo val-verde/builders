@@ -1,0 +1,43 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=gtk
+export SOURCE_PACKAGE_VERSION=4
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for meson/install
+ENABLE_OR_DISABLE_CUPS=enabled
+ENABLE_WAYLAND=true
+
+if [ "${HOST_OS}" = "macos" ] ||
+   [ "${HOST_OS}" = "mingw32" ]; then
+    ENABLE_OR_DISABLE_CUPS=disabled
+fi
+
+if [ "${HOST_OS}" = "android" ] ||
+   [ "${HOST_OS}" = "macos" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    COMMON_CFLAGS="\
+        -lintl \
+        ${COMMON_CFLAGS} \
+    "
+    ENABLE_WAYLAND=false
+fi
+
+package-meson-install-archive \
+    -Ddebug=false \
+    -Ddemos=false \
+    -Dbuild-examples=false \
+    -Dbuild-tests=false \
+    -Dmedia-gstreamer=disabled \
+    -Dgtk_doc=false \
+    -Dinstall-tests=false \
+    -Dintrospection=disabled \
+    -Dman-pages=false \
+    -Doptimization=${OPTIMIZATION_LEVEL} \
+    -Dprint-cups=${ENABLE_OR_DISABLE_CUPS} \
+    -Dwayland-backend=${ENABLE_WAYLAND}
