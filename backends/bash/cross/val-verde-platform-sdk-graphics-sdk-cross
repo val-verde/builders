@@ -81,7 +81,7 @@ if [ "${HOST_OS}" = "gnu" ] ||
    [ "${HOST_OS}" = "macos" ] ||
    [ "${HOST_OS}" = "musl" ]; then
     # gtk build
-    package-invoke-builder gtk-cross
+    package-invoke-builder gtk-cross 4
 fi
 
 if [ "${HOST_OS}" = "gnu" ] ||
