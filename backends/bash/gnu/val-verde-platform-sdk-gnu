@@ -47,3 +47,5 @@ package-invoke-builder yarn-yautja-server-cross
 # wine build
 package-invoke-builder wine-cross
 
+# blockchain sdk build
+package-invoke-builder blockchain-sdk-cross

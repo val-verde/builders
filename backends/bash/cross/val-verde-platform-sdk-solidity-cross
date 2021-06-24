@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=solidity
+export SOURCE_PACKAGE_VERSION=0
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+if [ "${HOST_OS}" = "mingw32" ]; then
+    CMAKE_STACK_PROTECTOR_CMD="-Dfstack-protector-strong=FALSE"
+fi
+
+# Invoke one-shot template for cmake/install
+CXX_STANDARD=17 \
+package-cmake-install-archive \
+    -DBoost_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DBoost_FILESYSTEM_LIBRARY=`package-get-path boost_filesystem STATIC HOST` \
+    -DBoost_LIBRARY_DIR=${PACKAGE_PREFIX}/lib \
+    -DBoost_PROGRAM_OPTIONS_LIBRARY=`package-get-path boost_program_options STATIC HOST` \
+    -DBoost_UNIT_TEST_FRAMEWORK=`package-get-path boost_unit_test_framework STATIC HOST` \
+    -DTESTS=FALSE \
+    -DUSE_CVC4=FALSE \
+    -DUSE_LD_GOLD=FALSE \
+    -DZ3_DIR=${PACKAGE_PREFIX}/lib/cmake/z3 \
+    ${CMAKE_STACK_PROTECTOR_CMD}

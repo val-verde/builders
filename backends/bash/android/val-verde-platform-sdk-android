@@ -53,5 +53,5 @@ category-invoke-builder graphics-sdk-cross
 package-invoke-builder node-cross
 package-invoke-builder npm-yarn-cross
 
-# android rust build
-# package-invoke-builder rust-cross
+# android blockchain sdk build
+package-invoke-builder blockchain-sdk-cross

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
+
+# solidity build
+package-invoke-builder solidity-cross

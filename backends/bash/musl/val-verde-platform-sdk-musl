@@ -44,5 +44,5 @@ package-invoke-builder virtualization-sdk-cross
 package-invoke-builder node-cross
 package-invoke-builder npm-yarn-cross
 
-# rust build
-# package-invoke-builder rust-cross
+# blockchain sdk build
+package-invoke-builder blockchain-sdk-cross
