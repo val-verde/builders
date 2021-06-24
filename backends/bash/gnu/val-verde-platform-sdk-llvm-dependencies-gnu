@@ -240,7 +240,7 @@ package-invoke-builder krb5-cross 1
 package-invoke-builder expat-cross 2
 
 # perl-xml-parser build
-package-invoke-builder perl-xml-parser-cross
+package-invoke-builder perl-xml-parser-cross 2
 
 # gawk build
 package-invoke-builder gawk-cross 5
@@ -283,7 +283,7 @@ package-invoke-builder curl-cross 7
 unset CURL
 
 # libndp build
-package-invoke-builder libndp-cross
+package-invoke-builder libndp-cross 1
 
 # apple-mig build
 package-invoke-builder apple-mig-cross 121
@@ -458,7 +458,7 @@ package-invoke-category-builder graphics-server-cross
 package-invoke-builder cups-cross 2
 
 # intltool build
-package-invoke-builder intltool-cross
+package-invoke-builder intltool-cross 0
 
 # systemd build
 package-invoke-builder systemd 249
@@ -467,7 +467,7 @@ package-invoke-builder systemd 249
 package-invoke-builder p11-kit-cross 0
 
 # dbus build
-package-invoke-builder dbus-cross
+package-invoke-builder dbus-cross 1
 
 # util-linux build (with python and systemd support)
 package-invoke-builder util-linux-cross 2

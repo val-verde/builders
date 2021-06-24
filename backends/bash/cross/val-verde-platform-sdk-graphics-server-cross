@@ -178,7 +178,7 @@ if [ "${HOST_OS}" != "mingw32" ]; then
 fi
 
 # graphite2 build
-package-invoke-builder graphite2-cross 2
+package-invoke-builder graphite2-cross 1
 
 # harfbuzz build
 package-invoke-builder harfbuzz-cross 2
