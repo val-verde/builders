@@ -1320,7 +1320,7 @@ function package-meson-build() {
 function package-meson-build-invocation() {
     BACKEND=${BACKEND:-ninja}
     BUILD_TYPE=${BUILD_TYPE:-custom}
-    CONFIG_FILE=${STAGE_ROOT}/build-config.txt
+    CONFIG_FILE=${STAGE_ROOT}/builder-meson.config
     DEBUG=${DEBUG:-false}
     ENDIAN=${ENDIAN:-little}
     BUILD_SYSTEM=${BUILD_OS}
