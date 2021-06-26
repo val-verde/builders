@@ -450,6 +450,15 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         STRIP_CFLAG=
     fi
 
+    if [ "${!VARIANT_OS}" = "macos" ]; then
+        HEADER_PADDING="0x40"
+        HEADERPAD_CFLAG="-Wl,-headerpad,${HEADER_PADDING}"
+        HEADERPAD_LDFLAG="-headerpad ${HEADER_PADDING}"
+    else
+        HEADERPAD_CFLAG=
+        HEADERPAD_LDFLAG=
+    fi
+
     TOOL_COMMON_CFLAGS=${ENV_PREFIX}COMMON_CFLAGS
     TOOL_COMMON_LDFLAGS=${ENV_PREFIX}COMMON_LDFLAGS
     TOOL_COMMON_CXXFLAGS=${ENV_PREFIX}COMMON_CXXFLAGS
@@ -491,6 +500,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         ${PIPE_CFLAG} \
         ${!TOOL_COMMON_CFLAGS} \
         ${OPTIMIZATION_CFLAG} \
+        ${HEADERPAD_CFLAG} \
         ${!TOOL_CFLAGS} \
     " | ${XARGS}`"
     export ${TOOL_ASFLAGS}="`${ECHO} "\
@@ -519,6 +529,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         ${!TOOL_CXXLDFLAGS} \
     " | ${XARGS}`"
     export ${TOOL_LDFLAGS}="`${ECHO} "\
+        ${HEADERPAD_LDFLAG} \
         ${!TOOL_COMMON_LDFLAGS} \
         ${!TOOL_LDFLAGS} \
     " | ${XARGS}`"
