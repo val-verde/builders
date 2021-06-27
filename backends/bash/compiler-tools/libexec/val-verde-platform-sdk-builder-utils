@@ -269,11 +269,19 @@ function export-compiler-environment-for-c-and-cxx-variant() {
 
     export ${TOOL_INSTALL_NAME_TOOL}="${!TOOL_INSTALL_NAME_TOOL:-`package-get-path llvm-install-name-tool EXECUTABLE BUILD`}"
 
+    if [ -n "${ENABLE_LD_AS_CCLD}" ]; then
+        export ${TOOL_LD}="${!TOOL_LD:-${!TOOL_CCLD}}"
+    else
+        if [ "${!VARIANT_OS}" = "macos" ]; then
+            export ${TOOL_LD}="${!TOOL_LD:-`package-get-path ld64.lld EXECUTABLE BUILD`}"
+        else
+            export ${TOOL_LD}="${!TOOL_LD:-`package-get-path ld.lld EXECUTABLE BUILD`}"
+        fi
+    fi
+
     if [ "${!VARIANT_OS}" = "macos" ]; then
-        export ${TOOL_LD}="${!TOOL_LD:-`package-get-path ld64.lld EXECUTABLE BUILD`}"
         export ${TOOL_LIBTOOL}="${!TOOL_LIBTOOL:-`package-get-path llvm-libtool-darwin EXECUTABLE BUILD`}"
     else
-        export ${TOOL_LD}="${!TOOL_LD:-`package-get-path ld.lld EXECUTABLE BUILD`}"
         export ${TOOL_LIBTOOL}="${!TOOL_LIBTOOL:-`package-get-path libtool EXECUTABLE HOST`}"
     fi
 
@@ -528,11 +536,19 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         ${STDLIB_CXXLDFLAG} \
         ${!TOOL_CXXLDFLAGS} \
     " | ${XARGS}`"
-    export ${TOOL_LDFLAGS}="`${ECHO} "\
-        ${HEADERPAD_LDFLAG} \
-        ${!TOOL_COMMON_LDFLAGS} \
-        ${!TOOL_LDFLAGS} \
-    " | ${XARGS}`"
+
+    if [ -n "${ENABLE_LD_AS_CCLD}" ]; then
+        export ${TOOL_LDFLAGS}="`${ECHO} "\
+            ${!TOOL_CCLDFLAGS} \
+        " | ${XARGS}`"
+    else
+        export ${TOOL_LDFLAGS}="`${ECHO} "\
+            ${HEADERPAD_LDFLAG} \
+            ${!TOOL_COMMON_LDFLAGS} \
+            ${!TOOL_LDFLAGS} \
+        " | ${XARGS}`"
+    fi
+
     export ${TOOL_LIBS}="`${ECHO} "\
         ${!TOOL_LIBS} \
     " | ${XARGS}`"
