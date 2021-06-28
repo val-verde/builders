@@ -354,6 +354,9 @@ package-invoke-builder boost-cross
 # cereal build
 package-invoke-builder cereal-cross
 
+# libobjc2 build
+package-invoke-builder libobjc2-cross
+
 # android patch elf
 package-invoke-builder android-patch-elf-cross
 
