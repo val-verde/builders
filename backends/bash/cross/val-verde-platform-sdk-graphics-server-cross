@@ -80,6 +80,9 @@ if [ "${HOST_OS}" != "mingw32" ]; then
 
     # xorg-libxxf86vm build
     package-invoke-builder xorg-libxxf86vm-cross
+
+    # libxinerama build
+    package-invoke-builder libxinerama-cross
 fi
 
 # libjpeg build
