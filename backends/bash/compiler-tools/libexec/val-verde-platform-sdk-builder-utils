@@ -1426,11 +1426,13 @@ function package-meson-build-invocation() {
         export PKG_CONFIG_FOR_BUILD=${STAGE_ROOT}/build-pkgconfig
     fi
 
+    ${RM} -f ${CONFIG_FILE}
+
     if [ -n "${MESON_EXTRA_BINARIES}" ]; then
         ${ECHO} "\
 [binaries]
 ${MESON_EXTRA_BINARIES}
-" > ${CONFIG_FILE}
+" >> ${CONFIG_FILE}
     fi
 
     if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
