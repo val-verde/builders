@@ -596,6 +596,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "json-c",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "jwasm",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2",
@@ -721,6 +730,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "libevdev",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "libfontenc",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
@@ -749,6 +767,24 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "libgpg-error",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "libgudev",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "libinput",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
@@ -829,9 +865,45 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "libwacom",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "libxcb-util",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "libxcb-wm",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "libxdmcp",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "xkeyboard-config",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1055,6 +1127,15 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "moltenvk",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "mtdev",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
@@ -1387,6 +1468,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "seatd",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "spice",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "0",
@@ -1507,6 +1597,15 @@
         "sourcePackageName": "strace",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "5",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "sway",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1819,6 +1918,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "wlroots",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "xcb-libxcb",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
@@ -1829,6 +1937,15 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "xcb-pthread-stubs",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "xcb-render-util",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"

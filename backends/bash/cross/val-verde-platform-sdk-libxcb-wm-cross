@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=libxcb-wm
+export SOURCE_PACKAGE_VERSION=0
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for configure/install
+CONFIGURE_FILE=autogen.sh \
+package-configure-install-archive \
+    --disable-static \
+    --enable-shared

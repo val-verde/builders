@@ -178,6 +178,15 @@ package-invoke-builder grep-cross
 # windows bison build
 package-invoke-builder bison-cross
 
+# flex build
+# package-invoke-builder flex-cross
+
+# jq build
+package-invoke-builder jq-cross
+
+# json-c build
+package-invoke-builder json-c-cross
+
 # windows findutils build
 # package-invoke-builder findutils-cross
 

@@ -215,6 +215,9 @@ package-invoke-builder bison-cross
 # jq build
 package-invoke-builder jq-cross
 
+# json-c build
+package-invoke-builder json-c-cross
+
 # tar build
 package-invoke-builder tar-cross
 

@@ -72,6 +72,9 @@ if [ "${HOST_OS}" != "mingw32" ]; then
     # xorg-libxkbfile build
     package-invoke-builder xorg-libxkbfile-cross
 
+    # xkeyboard-config build
+    package-invoke-builder xkeyboard-config-cross
+
     # xorg-libxshmfence build
     package-invoke-builder xorg-libxshmfence-cross
 
@@ -83,6 +86,15 @@ if [ "${HOST_OS}" != "mingw32" ]; then
 
     # xorg-xinput build
     package-invoke-builder xorg-xinput-cross
+
+    # libxcb-util build
+    package-invoke-builder libxcb-util-cross
+
+    # libxcb-wm build
+    package-invoke-builder libxcb-wm-cross
+
+    # xcb-render-util build
+    package-invoke-builder xcb-render-util-cross
 fi
 
 # libjpeg build

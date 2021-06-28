@@ -95,6 +95,32 @@ if [ "${HOST_OS}" = "gnu" ] ||
     package-invoke-builder gtk-cross
 fi
 
+if [ "${HOST_OS}" = "gnu" ]; then
+    # mtdev build
+    package-invoke-builder mtdev-cross
+
+    # libgudev build
+    package-invoke-builder libgudev-cross
+
+    # libwacom build
+    package-invoke-builder libwacom-cross
+
+    # libevdev build
+    package-invoke-builder libevdev-cross
+
+    # libinput build
+    package-invoke-builder libinput-cross
+
+    # seatd build
+    package-invoke-builder seatd-cross
+
+    # wlroots build
+    package-invoke-builder wlroots-cross
+
+    # sway build
+    package-invoke-builder sway-cross
+fi
+
 # sdl build
 DXSDK_DIR=${SYSROOT} \
 package-invoke-builder sdl-cross
