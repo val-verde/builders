@@ -85,6 +85,9 @@ if [ "${HOST_OS}" = "gnu" ] ||
     package-invoke-builder mesa-demos-cross
 fi
 
+# libsass build
+package-invoke-builder libsass-cross
+
 if [ "${HOST_OS}" = "gnu" ] ||
    [ "${HOST_OS}" = "macos" ] ||
    [ "${HOST_OS}" = "musl" ]; then

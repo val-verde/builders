@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=gdk-pixbuf
+export SOURCE_PACKAGE_VERSION=2
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for meson/install
+package-meson-install-archive \
+    -Ddebug=false \
+    -Djpeg=true \
+    -Dgtk_doc=false \
+    -Dinstalled_tests=false \
+    -Dintrospection=disabled \
+    -Dman=false \
+    -Doptimization=${OPTIMIZATION_LEVEL} \
+    -Dpng=true
