@@ -69,9 +69,6 @@ if [ "${HOST_OS}" != "mingw32" ]; then
     # xorg-libxrandr build
     package-invoke-builder xorg-libxrandr-cross
 
-    # xorg-xinput build
-    # package-invoke-builder xorg-xinput-cross
-
     # xorg-libxkbfile build
     package-invoke-builder xorg-libxkbfile-cross
 
@@ -83,6 +80,9 @@ if [ "${HOST_OS}" != "mingw32" ]; then
 
     # libxinerama build
     package-invoke-builder libxinerama-cross
+
+    # xorg-xinput build
+    package-invoke-builder xorg-xinput-cross
 fi
 
 # libjpeg build
