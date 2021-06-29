@@ -13,6 +13,7 @@ package-invoke-builder spice-cross
 
 if [ "${HOST_OS}" = "android" ] ||
    [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "macos" ] ||
    [ "${HOST_OS}" = "musl" ]; then
     # virglrenderer build
     package-invoke-builder virglrenderer-cross

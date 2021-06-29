@@ -51,8 +51,6 @@ elif [ "${HOST_OS}" = "gnu" ]; then
 elif [ "${HOST_OS}" = "macos" ]; then
     ENABLE_OR_DISABLE_HVF=enable
     ENABLE_OR_DISABLE_KVM=disable
-    ENABLE_OR_DISABLE_OPENGL=disable
-    ENABLE_OR_DISABLE_VIRGLRENDERER=disable
 fi
 
 if [ "${HOST_PROCESSOR}" = "x86_64" ]; then

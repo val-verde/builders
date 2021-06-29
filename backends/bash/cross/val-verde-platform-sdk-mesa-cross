@@ -54,6 +54,7 @@ package-meson-install-archive \
     -Dgallium-drivers="${GALLIUM_DRIVERS}" \
     -Dgallium-nine=true \
     -Dgallium-opencl=${OPENCL_MODE} \
+    -Dgbm=enabled \
     -Dgles1=true \
     -Dgles2=true \
     -Dglvnd=true \
