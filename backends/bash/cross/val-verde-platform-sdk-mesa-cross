@@ -31,7 +31,7 @@ if [ "${HOST_OS}" = "android" ] ||
     HARDWARE_DRIVERS_ENABLED=true
     HARDWARE_PLATFORMS="wayland,x11"
     OPENCL_MODE=icd
-    VULKAN_DRIVERS="amd,broadcom,freedreno,intel,swrast"
+    VULKAN_DRIVERS="amd,broadcom,freedreno,intel,panfrost,swrast,virtio-experimental"
 else
     GALLIUM_DRIVERS="swrast,zink"
     HARDWARE_DRIVERS_ENABLED=false
