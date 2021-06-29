@@ -20,6 +20,8 @@ elif [ "${HOST_OS}" = "gnu" ] ||
      [ "${HOST_OS}" = "musl" ]; then
     ENABLE_WAYLAND=TRUE
     ENABLE_XLIB=TRUE
+elif [ "${HOST_OS}" = "macos" ]; then
+    ENABLE_XLIB=TRUE
 fi
 
 PATH=${STAGE_ROOT_BASE}/vulkan-loader-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/loader:${PATH} \
