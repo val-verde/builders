@@ -38,6 +38,7 @@ make-build \
     INSTALL_HDR_PATH=${INSTALL_PREFIX} \
     LD=${LD} \
     LDFLAGS="${LDFLAGS}" \
+    LLVM_IAS=1 \
     NM=${NM} \
     OBJCOPY=${OBJCOPY} \
     OBJDUMP=${OBJDUMP} \
