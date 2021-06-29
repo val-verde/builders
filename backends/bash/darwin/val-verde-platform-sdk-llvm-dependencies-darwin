@@ -257,7 +257,7 @@ package-invoke-builder dbus-cross
 package-invoke-builder nettle-cross
 
 # gnutls build
-# package-invoke-builder gnutls-cross
+package-invoke-builder gnutls-cross
 
 # unbound build
 package-invoke-builder unbound-cross

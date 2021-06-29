@@ -49,7 +49,6 @@ elif [ "${HOST_OS}" = "gnu" ]; then
         ${TARGET_LIST} \
     " | ${XARGS}`
 elif [ "${HOST_OS}" = "macos" ]; then
-    ENABLE_OR_DISABLE_GNUTLS=disable
     ENABLE_OR_DISABLE_HVF=enable
     ENABLE_OR_DISABLE_KVM=disable
     ENABLE_OR_DISABLE_OPENGL=disable
