@@ -134,7 +134,8 @@ function package-apt-remove() {
 }
 
 function package-apt-tool() {
-    ${APT} ${@} > /dev/null
+    TOOL_LOG=${STAGE_ROOT}/builder-apt-${1} \
+    tool-log ${APT} ${@} > /dev/null
 }
 
 function package-dpkg-build() {
@@ -151,7 +152,8 @@ function package-dpkg-remove() {
 }
 
 function package-dpkg-tool() {
-    ${DPKG} --${@}  > ${STAGE_ROOT}/builder-dpkg-${1}.log
+    TOOL_LOG=${STAGE_ROOT}/builder-dpkg-${1} \
+    tool-log ${DPKG} --${@}
 }
 
 # package-get-filename <name> <EXECUTABLE|SHARED|STATIC> <BUILD|HOST>
@@ -296,8 +298,8 @@ function package-git-tool() {
 }
 
 function package-get-major-version() {
-    MAJOR_VERSION=`echo "${1}" | cut -d "." -f1`
-    echo ${MAJOR_VERSION}
+    MAJOR_VERSION=`${ECHO} "${SOURCE_PACKAGE_VERSION}" | ${CUT} -d "." -f1`
+    ${ECHO} ${MAJOR_VERSION}
 }
 
 function package-get-source-package-data() {
@@ -315,31 +317,38 @@ function package-pop-directory() {
 }
 
 function package-rpm-build() {
-    ${RPM}build "${@}" > ${STAGE_ROOT}/builder-rpm-build.log
+    TOOL_LOG=${STAGE_ROOT}/builder-rpm-build \
+    tool-log ${RPM}build "${@}"
 }
 
 function package-rpm-install() {
-    ${RPM} -ivh "${@}" > ${STAGE_ROOT}/builder-rpm-install.log
+    TOOL_LOG=${STAGE_ROOT}/builder-rpm-install \
+    tool-log ${RPM} -ivh "${@}"
 }
 
 function package-rsync() {
-    ${RSYNC} ${@} > ${STAGE_ROOT}/builder-rsync.log
+    TOOL_LOG=${STAGE_ROOT}/builder-rsync \
+    tool-log ${RSYNC} ${@}
 }
 
 function package-tar() {
-    ${TAR} ${@} > ${STAGE_ROOT}/builder-untar.log
+    TOOL_LOG=${STAGE_ROOT}/builder-untar \
+    tool-log ${TAR} ${@}
 }
 
 function package-unzip() {
-    ${UNZIP} ${@} > ${STAGE_ROOT}/builder-unzip.log
+    TOOL_LOG=${STAGE_ROOT}/builder-unzip \
+    tool-log ${UNZIP} ${@}
 }
 
 function package-wget() {
-    ${WGET} ${@} 2> ${STAGE_ROOT}/builder-wget.log
+    TOOL_LOG=${STAGE_ROOT}/builder-wget \
+    tool-log ${WGET} ${@}
 }
 
 function package-zip() {
-    ${ZIP} ${@} > ${STAGE_ROOT}/builder-zip.log
+    TOOL_LOG=${STAGE_ROOT}/builder-zip \
+    tool-log ${ZIP} ${@}
 }
 
 function tool-check() {
