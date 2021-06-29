@@ -75,7 +75,7 @@ if [ "${HOST_OS}" = "gnu" ] ||
 fi
 
 # libsass build
-package-invoke-builder libsass-cross
+package-invoke-builder libsass-cross 3
 
 if [ "${HOST_OS}" = "gnu" ] ||
    [ "${HOST_OS}" = "macos" ] ||
