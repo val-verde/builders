@@ -1,3 +1,4 @@
+%global __os_install_post %{nil}
 Name:       PACKAGE_NAME
 Version:    VERSION
 Release:    1
@@ -19,7 +20,7 @@ cd PACKAGE_NAME-%{version}
 
 %install
 mkdir -p ARCHIVE_ROOT/BUILDROOT/PACKAGE_NAME-%{version}-RELEASE.BUILD_PROCESSOR
-cp -r ARCHIVE_ROOT/BUILD/PACKAGE_NAME-%{version}/* ARCHIVE_ROOT/BUILDROOT/PACKAGE_NAME-%{version}-RELEASE.BUILD_PROCESSOR/
+cp -a ARCHIVE_ROOT/BUILD/PACKAGE_NAME-%{version}/* ARCHIVE_ROOT/BUILDROOT/PACKAGE_NAME-%{version}-RELEASE.BUILD_PROCESSOR/
 
 %files
 
