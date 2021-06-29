@@ -163,7 +163,7 @@ package-invoke-builder autogen-cross
 # package-invoke-builder libgcrypt-cross
 
 # indent build
-# package-invoke-builder indent-cross
+package-invoke-builder indent-cross
 
 # util-linux build
 DISABLE_PYTHON=TRUE \
@@ -228,7 +228,7 @@ package-invoke-builder findutils-cross
 # package-invoke-builder dpkg-cross
 
 # rsync build
-# package-invoke-builder rsync-cross
+package-invoke-builder rsync-cross
 
 # lua build
 package-invoke-builder lua-cross
@@ -241,7 +241,7 @@ package-invoke-builder lua-cross
 # package-invoke-builder python-cross
 
 # libxslt build
-# package-invoke-builder libxslt-cross
+package-invoke-builder libxslt-cross
 
 # libtasn1 build
 package-invoke-builder libtasn1-cross
