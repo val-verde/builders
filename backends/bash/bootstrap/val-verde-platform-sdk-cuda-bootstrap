@@ -10,7 +10,7 @@ export SOURCE_PACKAGE_VERSION=11
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 CUDA_HOST_PROCESSOR=${HOST_PROCESSOR}
-NVIDIA_DRIVER_VERSION=465.19.01
+NVIDIA_DRIVER_VERSION=470.42.01
 PACKAGE_URL=https://developer.download.nvidia.com/compute/${SOURCE_PACKAGE_NAME}/${CUDA_VERSION}/local_installers
 
 # Configure the build components
