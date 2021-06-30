@@ -55,5 +55,6 @@ package-cmake-install-archive \
     -DGLSLANG_VALIDATOR=${BUILD_PACKAGE_PREFIX}/bin/glslangValidator \
     -DPKG_CONFIG_EXECUTABLE=${PKG_CONFIG} \
     -DVulkan_LIBRARY=${PACKAGE_PREFIX}/lib/libvulkan${LIB_VERSION_SUFFIX}.${LIB_SUFFIX} \
+    -DWAYLAND_SCANNER_EXECUTABLE=`package-get-path wayland-scanner EXECUTABLE BUILD` \
     ${CMAKE_ANDROID_DEFINE_CMD} \
     ${CMAKE_XCB_CMD}
