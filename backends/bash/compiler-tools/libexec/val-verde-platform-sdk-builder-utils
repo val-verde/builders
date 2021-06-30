@@ -622,6 +622,18 @@ function export-compiler-environment-for-go() {
     fi
 }
 
+function export-compiler-environment-for-python() {
+    PYTHON_HOST_OS=${HOST_OS}
+
+    if [ "${HOST_OS}" = "musl" ]; then
+        PYTHON_HOST_OS=gnu
+    fi
+
+    export _PYTHON_HOST_PLATFORM=${HOST_KERNEL}-${HOST_PROCESSOR}
+    export _PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata__${HOST_KERNEL}_${HOST_PROCESSOR}-${HOST_KERNEL}-${PYTHON_HOST_OS}
+    export PYTHONHOME=${PACKAGE_PREFIX}:${BUILD_PACKAGE_PREFIX}
+}
+
 function export-compiler-environment-for-swift() {
     if [ "${SYSROOT}" != "/" ]; then
         SWIFTCFLAGS="\
@@ -1554,6 +1566,7 @@ function package-python-build() {
 
     export-compiler-environment
     generate-compiler-tools
+    export-compiler-environment-for-python
 
     TOOL_LOG=${STAGE_ROOT}/builder-invocation \
     tool-log ${PYTHON} ${SETUP_PY} build -b ${STAGE_ROOT} \
