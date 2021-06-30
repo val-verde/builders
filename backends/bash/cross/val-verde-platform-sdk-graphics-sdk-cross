@@ -87,28 +87,28 @@ fi
 if [ "${HOST_OS}" = "gnu" ] ||
    [ "${HOST_OS}" = "musl" ]; then
     # mtdev build
-    package-invoke-builder mtdev-cross
+    package-invoke-builder mtdev-cross 1
 
     # libgudev build
-    package-invoke-builder libgudev-cross
-
+    package-invoke-builder libgudev-cross 1
+    
     # libwacom build
-    package-invoke-builder libwacom-cross
-
+    package-invoke-builder libwacom-cross 1
+    
     # libevdev build
-    package-invoke-builder libevdev-cross
-
+    package-invoke-builder libevdev-cross 1
+    
     # libinput build
-    package-invoke-builder libinput-cross
-
+    package-invoke-builder libinput-cross 1
+    
     # seatd build
-    package-invoke-builder seatd-cross
-
+    package-invoke-builder seatd-cross 0
+    
     # wlroots build
-    package-invoke-builder wlroots-cross
-
+    package-invoke-builder wlroots-cross 0
+    
     # sway build
-    package-invoke-builder sway-cross
+    package-invoke-builder sway-cross 1
 fi
 
 # sdl build

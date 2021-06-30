@@ -327,7 +327,7 @@ package-invoke-builder flex-cross 2
 package-invoke-builder jq-cross 1
 
 # json-c build
-package-invoke-builder json-c-cross
+package-invoke-builder json-c-cross 0
 
 # tar build
 package-invoke-builder tar-cross 1

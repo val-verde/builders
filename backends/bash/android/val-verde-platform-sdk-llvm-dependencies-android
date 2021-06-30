@@ -234,7 +234,7 @@ package-invoke-builder bison-cross 3
 package-invoke-builder jq-cross 1
 
 # android json-c build
-package-invoke-builder json-c-cross
+package-invoke-builder json-c-cross 0
 
 # android tar build
 if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
