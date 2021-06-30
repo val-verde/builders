@@ -290,6 +290,9 @@ package-invoke-builder libxslt-cross
 # libtasn1 build
 package-invoke-builder libtasn1-cross
 
+# eudev build
+package-invoke-builder eudev-cross
+
 # p11-kit build
 DISABLE_SYSTEMD=TRUE \
 package-invoke-builder p11-kit-cross
@@ -348,9 +351,6 @@ package-invoke-builder cups-cross
 
 # apt build
 package-invoke-builder apt-cross
-
-# systemd build
-# package-invoke-builder systemd
 
 # lvm2 build
 # package-invoke-builder lvm2
