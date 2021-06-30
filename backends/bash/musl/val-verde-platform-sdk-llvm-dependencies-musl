@@ -257,6 +257,33 @@ else
     package-invoke-builder python-cross
 fi
 
+# libxml2 build (with python support)
+package-invoke-builder libxml2-cross
+
+# cython build
+package-invoke-builder cython-cross
+
+# pybind11 build
+package-invoke-builder pybind11-cross
+
+# pygments build
+package-invoke-builder pygments-cross
+
+# pyparsing build
+package-invoke-builder pyparsing-cross
+
+# python-six build
+package-invoke-builder python-six-cross
+
+# numpy build
+package-invoke-builder numpy-cross
+
+# mako build
+package-invoke-builder mako-cross
+
+# meson build
+package-invoke-builder meson-cross
+
 # libxslt build
 package-invoke-builder libxslt-cross
 
@@ -269,6 +296,10 @@ package-invoke-builder p11-kit-cross
 
 # dbus build
 package-invoke-builder dbus-cross
+
+# util-linux build (with python support)
+DISABLE_SYSTEMD=TRUE \
+package-invoke-builder util-linux-cross
 
 # nettle build
 package-invoke-builder nettle-cross

@@ -374,7 +374,7 @@ package-invoke-builder pybind11-cross
 # pygments build
 package-invoke-builder pygments-cross
 
-# pygments build
+# pyparsing build
 package-invoke-builder pyparsing-cross
 
 # python-six build
