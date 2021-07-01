@@ -1,4 +1,5 @@
 %global __os_install_post %{nil}
+%define _build_id_links none
 Name:       PACKAGE_NAME
 Version:    VERSION
 Release:    1
