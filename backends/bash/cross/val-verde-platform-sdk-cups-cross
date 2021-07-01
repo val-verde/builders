@@ -10,6 +10,29 @@ export SOURCE_PACKAGE_VERSION=2
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for configure/install
+function package-install-completion-callback() {
+    ${MKDIR} -p ${INSTALL_PREFIX}/lib/pkgconfig
+
+    ${ECHO} "\
+V=${SOURCE_PACKAGE_VERSION}.3.3
+R=${SOURCE_PACKAGE_VERSION}.3.3
+
+prefix=${PACKAGE_PREFIX}
+INSTALL_INC=\${prefix}/include
+INSTALL_LIB=\${prefix}/lib
+exec_prefix=\${prefix}
+libdir=\${exec_prefix}/lib
+includedir=\${prefix}/include
+
+Name: CUPS
+Description: Common UNIX printer system
+Version: \${R}
+Requires:
+Libs: -L\${libdir} -lcups
+Cflags: -I\${includedir}
+" > ${INSTALL_PREFIX}/lib/pkgconfig/cups.pc
+}
+
 if [ "${HOST_OS}" = "gnu" ]; then
     ENABLE_OR_DISABLE_SYSTEMD=enable
 else
@@ -18,6 +41,7 @@ fi
 
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 DISABLE_AUTORECONF=TRUE \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-stage-configure-install-archive \
     --disable-static \
     --enable-shared \
