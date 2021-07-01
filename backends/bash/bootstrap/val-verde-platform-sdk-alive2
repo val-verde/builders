@@ -49,8 +49,8 @@ exec_prefix=\${prefix}
 libdir=\${exec_prefix}/lib
 includedir=\${prefix}/include
 
-Name: Lua
-Description: An Extensible Extension Language
+Name: alive2
+Description: Automatic verification of LLVM optimizations
 Version: \${R}
 Requires:
 Libs: -L\${libdir} -lalive2
