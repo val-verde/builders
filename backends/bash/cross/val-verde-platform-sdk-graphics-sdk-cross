@@ -17,23 +17,6 @@ package-invoke-builder spirv-cross-cross
 # spirv llvm translator build
 package-invoke-builder spirv-llvm-translator-cross
 
-if [ "${HOST_OS}" = "android" ]; then
-    # khr headers build
-    package-invoke-builder khr-headers-cross
-
-    # opengl headers build
-    package-invoke-builder opengl-headers-cross
-fi
-
-if [ "${HOST_OS}" = "android" ] ||
-   [ "${HOST_OS}" = "mingw32" ]; then
-    # egl headers build
-    package-invoke-builder egl-headers-cross
-
-    # opengl-es headers build
-    package-invoke-builder opengl-es-headers-cross
-fi
-
 # glslang build
 package-invoke-builder glslang-cross
 
@@ -58,8 +41,13 @@ if [ "${HOST_OS}" = "gnu" ] ||
     package-invoke-builder mesa-cross
 fi
 
-# libepoxy build
-package-invoke-builder libepoxy-cross
+if [ "${HOST_OS}" = "android" ] ||
+   [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "macos" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    # libepoxy build
+    package-invoke-builder libepoxy-cross
+fi
 
 if [ "${HOST_OS}" = "macos" ]; then
     # libapplewm build

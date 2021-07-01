@@ -35,10 +35,12 @@ package-invoke-builder xorg-libxtrans-cross
 if [ "${HOST_OS}" != "mingw32" ]; then
     # libxdmcp build
     package-invoke-builder libxdmcp-cross
+fi
 
-    # libxcb build
-    package-invoke-builder xcb-libxcb-cross
+# libxcb build
+package-invoke-builder xcb-libxcb-cross
 
+if [ "${HOST_OS}" != "mingw32" ]; then
     # libx11 build
     package-invoke-builder libx11-cross
 
@@ -129,8 +131,16 @@ package-invoke-builder opencl-headers-cross
 # opencl icd loader build
 package-invoke-builder opencl-icd-loader-cross
 
-# libglvnd build
-package-invoke-builder libglvnd-cross
+if [ "${HOST_OS}" = "mingw32" ]; then
+    # egl headers build
+    package-invoke-builder egl-headers-cross
+
+    # opengl-es headers build
+    package-invoke-builder opengl-es-headers-cross
+else
+    # libglvnd build
+    package-invoke-builder libglvnd-cross
+fi
 
 # vulkan headers build
 package-invoke-builder vulkan-headers-cross
