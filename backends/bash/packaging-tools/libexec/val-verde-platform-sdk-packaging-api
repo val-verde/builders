@@ -152,14 +152,14 @@ function tar-package-install() {
 }
 
 function trigger-source-package-install() {
-    SOURCE_FILES=$( $(${FIND} -name ${SOURCE_ARCHIVE_PATH}/*.${PACKAGE_ARCHIVE_CLASS}) )
+    SOURCE_FILES=`find ${SOURCE_ARCHIVE_PATH} -name "*.${PACKAGE_ARCHIVE_CLASS}" -type f | sort`
 
-    for src_file in "${#SOURCE_FILES[@]}"; do
+    for src_file in ${SOURCE_FILES}; do
         ${ECHO} -e "Installing Source ${PACKAGE_ARCHIVE_CLASS} Package: ${src_file}"
         if [ "${PACKAGE_ARCHIVE_CLASS}" = "deb" ]; then
             package-dpkg-install ${src_file}
         elif [ "${PACKAGE_ARCHIVE_CLASS}" = "rpm" ]; then
-            package-rpm-install ${src_file}
+            package-rpm-install --nodeps ${src_file}
         fi
     done
 }
