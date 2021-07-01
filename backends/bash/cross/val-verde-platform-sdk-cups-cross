@@ -45,4 +45,9 @@ PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-stage-configure-install-archive \
     --disable-static \
     --enable-shared \
+    --localstatedir=${PACKAGE_PLATFORM_SYSROOT}/var \
+    --sysconfdir=${PACKAGE_PLATFORM_SYSROOT}/etc \
+    --with-dbusdir=${PACKAGE_PLATFORM_SYSROOT}/etc/dbus-1 \
+    --with-menudir=${PACKAGE_PREFIX}/share/applications \
+    --with-rcdir=${PACKAGE_PLATFORM_SYSROOT}/etc \
     --${ENABLE_OR_DISABLE_SYSTEMD}-systemd
