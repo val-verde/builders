@@ -31,4 +31,6 @@ package-cmake-install-archive \
     -DDBUS_LIBRARIES=`package-get-path dbus-1 SHARED HOST` \
     -DOpenGLES1_LIBRARY=`package-get-path GLESv1_CM SHARED HOST` \
     -DOpenGLES2_LIBRARY=`package-get-path GLESv2 SHARED HOST` \
+    -DWAYLAND_LIBDECOR=FALSE \
+    -DWAYLAND_SCANNER=`package-get-path wayland-scanner EXECUTABLE BUILD` \
     ${CMAKE_ANDROID_DEFINE_CMD}
