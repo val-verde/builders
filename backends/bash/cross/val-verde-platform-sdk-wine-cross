@@ -14,9 +14,17 @@ if [ "${HOST_TRIPLE}" != "${BUILD_TRIPLE}" ]; then
     CROSS_CMD="--with-wine-tools=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/build"
 fi
 
+WITH_OR_WITHOUT_UDEV=without
+
+if [ "${HOST_OS}" = "musl" ] ||
+   [ "${HOST_OS}" = "gnu" ]; then
+    WITH_OR_WITHOUT_UDEV=with
+fi
+
 DISABLE_INSTALL_DEB=TRUE \
 package-stage-configure-install-archive \
     --disable-static \
     --enable-shared \
     --enable-win64 \
-    ${CROSS_CMD}
+    ${CROSS_CMD} \
+    --${WITH_OR_WITHOUT_UDEV}-udev
