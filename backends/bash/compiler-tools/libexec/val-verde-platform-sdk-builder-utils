@@ -243,6 +243,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     TOOL_OBJCPP=${ENV_PREFIX}OBJCPP
     TOOL_OBJCXX=${ENV_PREFIX}OBJCXX
     TOOL_OBJDUMP=${ENV_PREFIX}OBJDUMP
+    TOOL_OTOOL=${ENV_PREFIX}OTOOL
     TOOL_RANLIB=${ENV_PREFIX}RANLIB
     TOOL_RC=${ENV_PREFIX}RC
     TOOL_READELF=${ENV_PREFIX}READELF
@@ -293,6 +294,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     export ${TOOL_OBJCPP}="${!TOOL_OBJCPP:-${!TOOL_CPP}}"
     export ${TOOL_OBJCXX}="${!TOOL_OBJCXX:-${!TOOL_CXX}}"
     export ${TOOL_OBJDUMP}="${!TOOL_OBJDUMP:-`package-get-path llvm-objdump EXECUTABLE BUILD`}"
+    export ${TOOL_OTOOL}="${!TOOL_OTOOL:-`package-get-path llvm-otool EXECUTABLE BUILD`}"
     export ${TOOL_RANLIB}="${!TOOL_RANLIB:-`package-get-path llvm-ranlib EXECUTABLE BUILD`}"
     export ${TOOL_RC}="${!TOOL_RC:-`package-get-path ${VAL_VERDE_GH_TEAM}-platform-sdk-rc EXECUTABLE BUILD`}"
     export ${TOOL_READELF}="${!TOOL_READELF:-`package-get-path llvm-readelf EXECUTABLE BUILD`}"
