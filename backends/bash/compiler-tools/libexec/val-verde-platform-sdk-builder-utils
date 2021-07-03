@@ -624,13 +624,17 @@ function export-compiler-environment-for-go() {
 
 function export-compiler-environment-for-python() {
     PYTHON_HOST_OS=${HOST_OS}
+    PYTHON_PLATFORM=${HOST_KERNEL}
 
-    if [ "${HOST_OS}" = "musl" ]; then
+    if [ "${HOST_OS}" = "macos" ]; then
+        PYTHON_HOST_OS="${HOST_OS}${HOST_OS_API_LEVEL}"
+        PYTHON_PLATFORM=${DARWIN_OS}
+    elif [ "${HOST_OS}" = "musl" ]; then
         PYTHON_HOST_OS=gnu
     fi
 
     export _PYTHON_HOST_PLATFORM=${HOST_KERNEL}-${HOST_PROCESSOR}
-    export _PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata__${HOST_KERNEL}_${HOST_PROCESSOR}-${HOST_KERNEL}-${PYTHON_HOST_OS}
+    export _PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata__${PYTHON_PLATFORM}_${HOST_PROCESSOR}-${HOST_KERNEL}-${PYTHON_HOST_OS}
     export PYTHONHOME=${PACKAGE_PREFIX}:${BUILD_PACKAGE_PREFIX}
 }
 

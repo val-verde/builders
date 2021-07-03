@@ -240,8 +240,35 @@ package-invoke-builder lua-cross
 # package-invoke-builder wget-cross
 
 # python build
-# _PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
-# package-invoke-builder python-cross
+_PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
+package-invoke-builder python-cross
+
+# libxml2 build (with python support)
+package-invoke-builder libxml2-cross
+
+# cython build
+package-invoke-builder cython-cross
+
+# pybind11 build
+package-invoke-builder pybind11-cross
+
+# pygments build
+package-invoke-builder pygments-cross
+
+# pyparsing build
+package-invoke-builder pyparsing-cross
+
+# python-six build
+package-invoke-builder python-six-cross
+
+# numpy build
+package-invoke-builder numpy-cross
+
+# mako build
+package-invoke-builder mako-cross
+
+# meson build
+package-invoke-builder meson-cross
 
 # libxslt build
 package-invoke-builder libxslt-cross
