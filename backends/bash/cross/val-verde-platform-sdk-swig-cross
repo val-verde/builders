@@ -23,4 +23,5 @@ PCRE_CFLAGS=`${ECHO} "\
 PCRE_LIBS="-lpcre" \
 package-bootstrap-configure-install-archive \
     --disable-static \
-    --enable-shared
+    --enable-shared \
+    --without-maximum-compile-warnings
