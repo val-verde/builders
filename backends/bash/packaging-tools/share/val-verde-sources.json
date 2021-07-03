@@ -1442,9 +1442,9 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "re2c",
-        "sourceBranchIndicator": "master",
+        "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2",
-        "sourcePackageUrl": "https://github.com/skvadrik/${SOURCE_PACKAGE_NAME}.git"
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
         "retainSource": "false",
