@@ -141,7 +141,8 @@ function package-apt-tool() {
 }
 
 function package-dpkg-build() {
-    package-dpkg-tool build "${@}"
+    ${DPKG}-deb --build -Zzstd "${@}" \
+        > ${STAGE_ROOT}/builder-dpkg.log
 }
 
 function package-dpkg-install() {
