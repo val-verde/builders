@@ -400,7 +400,7 @@ package-invoke-builder libxml2-cross 2
 package-invoke-builder libxslt-cross 1
 
 # python sdk build
-category-invoke-builder python-sdk-cross
+package-invoke-category-builder python-sdk-cross
 unset MESON
 
 # itstool build
