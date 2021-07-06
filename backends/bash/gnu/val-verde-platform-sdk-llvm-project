@@ -17,12 +17,6 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-zlib-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-COMPILER_RT_SANITIZERS_TO_BUILD="asan;cfi;dfsan;gwp_asan;hwasan;msan;safestack;scudo;tsan;ubsan_minimal"
-CUDA_GPU_PRIMARY_ARCH=61
-CUDA_GPU_SECONDARY_ARCH=35
-CUDA_RUNTIME_LIBRARY=${PACKAGE_PREFIX}/lib/stubs/libcuda.so
-EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;flang;mlir;openmp;parallel-libs;polly;pstl"}
-
 # Invoke one-shot template for cmake/install
 function package-install-completion-callback() {
     package-rsync -ax \
@@ -57,6 +51,13 @@ function tool-install-invocation() {
     tool-install
 }
 
+COMPILER_RT_SANITIZERS_TO_BUILD="asan;cfi;dfsan;gwp_asan;hwasan;msan;safestack;scudo;tsan;ubsan_minimal"
+CUDA_GPU_PRIMARY_ARCH=61
+CUDA_GPU_SECONDARY_ARCH=35
+CUDA_RUNTIME_LIBRARY=${PACKAGE_PREFIX}/lib/stubs/libcuda.so
+CXX_STANDARD=17
+EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;flang;mlir;openmp;parallel-libs;polly;pstl"}
+
 if [ -n "${ENABLE_MUSL_LIBC}" ]; then
     LIBC_CMD="-DLIBCXX_HAS_MUSL_LIBC=TRUE"
 fi
@@ -67,24 +68,21 @@ else
     COMPILER_RT_HAS_FVISIBILITY_HIDDEN_FLAG=TRUE
 fi
 
-# libLLVM.so is referenced by interim build tools
-export LD_LIBRARY_PATH=${STAGE_ROOT}/lib:${LD_LIBRARY_PATH}
+export-compiler-environment
 
+CROSS_TOOLCHAIN_FLAGS_NATIVE=`package-cmake-invocation-arguments-for-variant BUILD`
 CUDA_COMPILER=${STAGE_ROOT}/host-nvcc
-CXX_STANDARD=17
-NVCC=${BINDIR}/sclang
+NVCC=${CC}
 NVCCFLAGS=`${ECHO} "\
     --cuda-path=${SYSROOT} \
     --sysroot=${SYSROOT} \
 " | ${XARGS}`
 
-export-compiler-environment
-
-CROSS_TOOLCHAIN_FLAGS_NATIVE=`package-cmake-invocation-arguments-for-variant BUILD`
 create-host-tool ${NVCC} NVCCFLAGS ${CUDA_COMPILER}
 
 CMAKE_CONFIGURE_ROOT=${SOURCE_ROOT}/llvm \
 DISABLE_TOOL_BUILD=TRUE \
+LD_LIBRARY_PATH=${STAGE_ROOT}/lib:${LD_LIBRARY_PATH} \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 TOOL_INSTALL_INVOCATION=tool-install-invocation \
 package-cmake-install-archive \
