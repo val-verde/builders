@@ -141,7 +141,7 @@ function package-apt-tool() {
 }
 
 function package-dpkg-build() {
-    ${DPKG}-deb --build -Zzstd "${@}" \
+    ${DPKG}-deb --build -Zzstd --no-uniform-compression "${@}" \
         > ${STAGE_ROOT}/builder-dpkg.log
 }
 
