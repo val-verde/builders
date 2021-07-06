@@ -196,7 +196,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     if [ "${VARIANT}" != "HOST" ]; then
         ENV_PREFIX="${VARIANT}_"
     else
-        ENV_PREFIX=
+        unset ENV_PREFIX
     fi
 
     C_COMPILER=${C_COMPILER:-sclang}
@@ -319,13 +319,13 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     if [ -z "${DISABLE_UNUSED_ARGUMENTS}" ]; then
         UNUSED_ARGUMENTS_CFLAG="-Qunused-arguments"
     else
-        UNUSED_ARGUMENTS_CFLAG=
+        unset UNUSED_ARGUMENTS_CFLAG
     fi
 
     if [ "${!VARIANT_OS}" = "macos" ]; then
         FUSE_LD_CFLAG="-fuse-ld=lld"
     else
-        FUSE_LD_CFLAG=
+        unset FUSE_LD_CFLAG
     fi
 
     # CFLAG target definitions
@@ -334,19 +334,19 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         TARGET_CFLAG_VAR=${VARIANT}_TRIPLE
         TARGET_CFLAG="--target=${!TARGET_CFLAG_VAR}"
     else
-        TARGET_CFLAG=
+        unset TARGET_CFLAG
     fi
 
     if [ -n "${!VARIANT_ARCH}" ]; then
         MARCH_CFLAG="-march=${!VARIANT_ARCH}"
     else
-        MARCH_CFLAG=
+        unset MARCH_CFLAG
     fi
 
     if [ -n "${!VARIANT_CPU}" ]; then
         MTUNE_CFLAG="-mtune=${!VARIANT_CPU}"
     else
-        MTUNE_CFLAG=
+        unset MTUNE_CFLAG
     fi
 
     # CFLAG import paths
@@ -356,7 +356,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     if [ "${!TARGET_SYSROOT_VAR}" != "/" ]; then
         SYSROOT_CFLAG="--sysroot=${!TARGET_SYSROOT_VAR}"
     else
-        SYSROOT_CFLAG=
+        unset SYSROOT_CFLAG
     fi
 
     PACKAGE_USR_PREFIX_VAR=${ENV_PREFIX}PACKAGE_USR_PREFIX
@@ -366,20 +366,21 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         ISYSTEM_CFLAG="-isystem ${!PACKAGE_PREFIX_VAR}/include"
         PACKAGE_PREFIX_LIBDIR_CFLAG="-L${!PACKAGE_PREFIX_VAR}/lib"
     else
-        ISYSTEM_CFLAG=
-        PACKAGE_PREFIX_LIBDIR_CFLAG=
+        unset \
+            ISYSTEM_CFLAG \
+            PACKAGE_PREFIX_LIBDIR_CFLAG
     fi
 
     if [ -z "${DISABLE_CXX_STDLIB}" ]; then
         STDLIB_CXXLDFLAG="-stdlib=${CXX_STDLIB}"
     else
-        STDLIB_CXXLDFLAG=
+        unset STDLIB_CXXLDFLAG
     fi
 
     if [ -z "${DISABLE_CXX_INCLUDE}" ]; then
         STDLIBXX_ISYSTEM_CXXFLAG="-stdlib++-isystem ${!CXX_INCLUDE_DIR_VAR}"
     else
-        STDLIBXX_ISYSTEM_CXXFLAG=
+        unset STDLIBXX_ISYSTEM_CXXFLAG
     fi
 
     # CFLAG definitions: i.e. -Dxxx[=yyy]
@@ -392,13 +393,13 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     if [ -z "${DISABLE_FPIC}" ]; then
         FPIC_CFLAG="-fPIC"
     else
-        FPIC_CFLAG=
+        unset FPIC_CFLAG
     fi
 
     if [ -n "${DISABLE_BUILTIN_STRCPY}" ]; then
         BUILTIN_STRCPY_CFLAG="-fno-builtin-stpcpy"
     else
-        BUILTIN_STRCPY_CFLAG=
+        unset BUILTIN_STRCPY_CFLAG
     fi
 
     if [ -z "${DISABLE_FORTIFY_SOURCE_LEVEL}" ]; then
@@ -411,7 +412,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
             FORTIFY_CFLAGS="-D_ALL_SOURCE=1 ${FORTIFY_CFLAGS}"
         fi
     else
-        FORTIFY_CFLAGS=
+        unset FORTIFY_CFLAGS
     fi
 
     # CFLAG code generation
@@ -423,31 +424,31 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         FLTO_OPTION=`${ECHO} ${ENABLE_FLTO} | ${TR} '[:upper:]' '[:lower:]'`
         FLTO_CFLAG="-flto=${FLTO_OPTION}"
     else
-        FLTO_CFLAG=
+        unset FLTO_CFLAG
     fi
 
     if [ -z "${DISABLE_POLLY}" ]; then
         LLVM_POLLY_CFLAG="-mllvm -polly"
     else
-        LLVM_POLLY_CFLAG=
+        unset LLVM_POLLY_CFLAG
     fi
 
     if [ -n "${DISABLE_LLVM_VERIFIER}" ]; then
         DISABLE_LLVM_VERIFIER_CFLAG="-Xclang -disable-llvm-verifier"
     else
-        DISABLE_LLVM_VERIFIER_CFLAG=
+        unset DISABLE_LLVM_VERIFIER_CFLAG
     fi
 
     if [ -n "${!VARIANT_ARCH_VECTOR_SIZE}" ]; then
         LLVM_FORCE_VECTOR_WIDTH_CFLAG="-mllvm -force-vector-width=${!VARIANT_ARCH_VECTOR_SIZE}"
     else
-        LLVM_FORCE_VECTOR_WIDTH_CFLAG=
+        unset LLVM_FORCE_VECTOR_WIDTH_CFLAG
     fi
 
     if [ -z "${DISABLE_RTLIB}" ]; then
         RTLIB_CFLAG="-rtlib=${RTLIB} "
     else
-        RTLIB_CFLAG=
+        unset RTLIB_CFLAG
     fi
 
     if [ "${!VARIANT_OS}" = "macos" ]; then
@@ -457,7 +458,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     if [ -z "${DISABLE_STRIP}" ]; then
         STRIP_CFLAG="-s"
     else
-        STRIP_CFLAG=
+        unset STRIP_CFLAG
     fi
 
     if [ "${!VARIANT_OS}" = "macos" ]; then
@@ -465,8 +466,9 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         HEADERPAD_CFLAG="-Wl,-headerpad,${HEADER_PADDING}"
         HEADERPAD_LDFLAG="-headerpad ${HEADER_PADDING}"
     else
-        HEADERPAD_CFLAG=
-        HEADERPAD_LDFLAG=
+        unset \
+            HEADERPAD_CFLAG \
+            HEADERPAD_LDFLAG
     fi
 
     TOOL_COMMON_CFLAGS=${ENV_PREFIX}COMMON_CFLAGS
@@ -739,7 +741,7 @@ function generate-compiler-tools-variant() {
     export ${TOOL_CCLD}=${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang
     export ${TOOL_CCLDFLAGS}="${PACKAGE_PREFIX_LIBDIR_CFLAG} ${OPTIMIZATION_LDFLAG} ${STRIP_CFLAG}"
     export ${TOOL_CPP}=${!TOOL_CC}-cpp
-    unset ${TOOL_CPPFLAGS}=
+    unset ${TOOL_CPPFLAGS}
     export ${TOOL_CXX}=${!TOOL_CC}++
     export ${TOOL_CXXFLAGS}="${OPTIMIZATION_CFLAG}"
     export ${TOOL_CXXLD}=${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang++
@@ -749,7 +751,7 @@ function generate-compiler-tools-variant() {
     export ${TOOL_OBJC}=${!TOOL_CC}
     export ${TOOL_OBJCFLAGS}="${OPTIMIZATION_CFLAG}"
     export ${TOOL_OBJCPP}=${!TOOL_CPP}
-    unset ${TOOL_OBJCPPFLAGS}=
+    unset ${TOOL_OBJCPPFLAGS}
     export ${TOOL_OBJCXX}=${!TOOL_CXX}
     export ${TOOL_OBJCXXFLAGS}="${OPTIMIZATION_CFLAG}"
 }
