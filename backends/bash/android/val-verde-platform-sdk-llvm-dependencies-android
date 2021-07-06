@@ -254,29 +254,8 @@ package-invoke-builder python-cross
 # android libxml2 build (with python support)
 package-invoke-builder libxml2-cross
 
-# android cython build
-package-invoke-builder cython-cross
-
-# android pybind11 build
-package-invoke-builder pybind11-cross
-
-# android pygments build
-package-invoke-builder pygments-cross
-
-# android pyparsing build
-package-invoke-builder pyparsing-cross
-
-# android python-six build
-package-invoke-builder python-six-cross
-
-# android numpy build
-package-invoke-builder numpy-cross
-
-# android mako build
-package-invoke-builder mako-cross
-
-# android meson build
-package-invoke-builder meson-cross
+# android python sdk build
+category-invoke-builder python-sdk-cross
 
 # android libxslt build
 package-invoke-builder libxslt-cross
