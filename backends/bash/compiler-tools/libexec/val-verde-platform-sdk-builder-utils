@@ -199,7 +199,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         unset ENV_PREFIX
     fi
 
-    C_COMPILER=${C_COMPILER:-sclang}
+    C_COMPILER=${C_COMPILER:-clang}
     CXX_COMPILER=${CXX_COMPILER:-${C_COMPILER}++}
 
     if [ -n "${USE_GCC}" ]; then
@@ -208,6 +208,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
 
         DISABLE_COMPILER_TARGET=TRUE
         DISABLE_POLLY=TRUE
+        DISABLE_SOUPER=TRUE
         DISABLE_UNUSED_ARGUMENTS=TRUE
     else
         CPP_COMPILER=${CPP_COMPILER:-${C_COMPILER}-cpp}
@@ -427,6 +428,21 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         unset FLTO_CFLAG
     fi
 
+    LIBSOUPER=`package-get-path souperPass SHARED BUILD`
+
+    if [ -z "${DISABLE_SOUPER}" ] &&
+       [ -n "${LIBSOUPER}" ]; then
+        LIBSOUPER_CFLAGS="\
+            -Xclang -load \
+            -Xclang ${LIBSOUPER} \
+            -Xclang -mllvm -Xclang -solver-timeout=15 \
+            -Xclang -mllvm -Xclang -souper-double-check \
+            -Xclang -mllvm -Xclang -souper-external-cache \
+        "
+    else
+        unset LIBSOUPER_CFLAGS
+    fi
+
     if [ -z "${DISABLE_POLLY}" ]; then
         LLVM_POLLY_CFLAG="-mllvm -polly"
     else
@@ -493,10 +509,6 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         ${FPIC_CFLAG} \
         ${OPTIMIZATION_FLAGS} \
         ${FORTIFY_CFLAGS} \
-        ${LLVM_FORCE_VECTOR_WIDTH_CFLAG} \
-        ${FLTO_CFLAG} \
-        ${LLVM_POLLY_CFLAG} \
-        ${DISABLE_LLVM_VERIFIER_CFLAG} \
         ${!TOOL_COMMON_CFLAGS} \
     "
     export ${TOOL_COMMON_LDFLAGS}="\
@@ -513,6 +525,11 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         ${!TOOL_COMMON_CFLAGS} \
         ${OPTIMIZATION_CFLAG} \
         ${HEADERPAD_CFLAG} \
+        ${LLVM_FORCE_VECTOR_WIDTH_CFLAG} \
+        ${FLTO_CFLAG} \
+        ${LIBSOUPER_CFLAGS} \
+        ${LLVM_POLLY_CFLAG} \
+        ${DISABLE_LLVM_VERIFIER_CFLAG} \
         ${!TOOL_CFLAGS} \
     " | ${XARGS}`"
     export ${TOOL_ASFLAGS}="`${ECHO} "\
@@ -1137,7 +1154,6 @@ function package-condense-arguments() {
 
 function package-configure() {
     CONFIGURE_TOOL=configure \
-    USE_GENERATED_TOOLS=TRUE \
     package-configure-tool-invocation \
         "${@}"
 }
@@ -1573,7 +1589,6 @@ function package-python-build() {
     INSTALLED_FILE_LIST=${INSTALLED_FILE_LIST:-${STAGE_ROOT}/installed-file-list.txt}
 
     export-compiler-environment
-    generate-compiler-tools
     export-compiler-environment-for-python
 
     TOOL_LOG=${STAGE_ROOT}/builder-invocation \
@@ -1629,6 +1644,17 @@ function package-swift-build() {
     if [ -n "${HOST_ARCH_VECTOR_SIZE}" ]; then
         HOST_VECTOR_CFLAG="-mllvm\", \"-force-vector-width=${HOST_ARCH_VECTOR_SIZE}"
         HOST_VECTOR_SWIFTCFLAG="-Xllvm\", \"-force-vector-width=${HOST_ARCH_VECTOR_SIZE}"
+    fi
+
+    LIBSOUPER=`package-get-path souperPass SHARED BUILD`
+
+    if [ -z "${DISABLE_SOUPER}" ] &&
+       [ -n "${LIBSOUPER}" ]; then
+        LIBSOUPER_CFLAGS="-Xclang\", \"-load\",
+            \"-Xclang\", \"${LIBSOUPER}\",
+            \"-Xclang\", \"-mllvm\", \"-Xclang\", \"-solver-timeout=15\",
+            \"-Xclang\", \"-mllvm\", \"-Xclang\", \"-souper-double-check\",
+            \"-Xclang\", \"-mllvm\", \"-Xclang\", \"-souper-external-cache"
     fi
 
     if [ -z "${DISABLE_POLLY}" ]; then
@@ -1708,6 +1734,7 @@ function package-swift-build() {
             \"${FLTO_CFLAG}\", \n\
             \"${FPIC_CFLAG}\", \n\
             \"${HOST_VECTOR_CFLAG}\", \n\
+            \"${LIBSOUPER_CFLAGS}\", \n\
             \"${POLLY_CFLAG}\" \n\
         ], \n\
         \"extra-cpp-flags\": [ \n\

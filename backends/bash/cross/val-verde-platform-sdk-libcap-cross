@@ -9,39 +9,32 @@ export SOURCE_PACKAGE_VERSION=2
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-export-compiler-environment
-generate-compiler-tools
-
 # Configure the build components
-copy-source-to-staging
-
 cd ${STAGE_ROOT}
 
-# Build the components
-INSTALL_TARGET=`${ECHO} "\
+copy-source-to-staging
+export-compiler-environment
+make-install \
     lib=lib \
     prefix=${PACKAGE_PREFIX} \
     AR=${AR} \
     BUILD_CC=${BUILD_CC} \
+    BUILD_CFLAGS="${BUILD_CFLAGS}" \
     BUILD_COPTS="-O${OPTIMIZATION_LEVEL}" \
     BUILD_LD=${BUILD_LD} \
+    BUILD_LDFLAGS="${BUILD_CCLDFLAGS}" \
     BUILD_GPERF=${GPERF} \
     CC=${CC} \
+    CFLAGS="${CFLAGS}" \
+    GOLANG=yes \
     COPTS="-O${OPTIMIZATION_LEVEL}" \
     DYNAMIC=yes \
-    GOLANG=yes \
     INDENT=${INDENT} \
-    LD=${CCLD} \
     KERNEL_HEADERS=${PACKAGE_PREFIX}/include/uapi \
+    LD=${CCLD} \
     PSXLINKFLAGS=-pthread \
     SYSTEM_HEADERS=${PACKAGE_PREFIX}/include \
     TESTS=no \
-    install \
-" | ${XARGS}` \
-make-install \
-    BUILD_CFLAGS="${BUILD_CFLAGS}" \
-    BUILD_LDFLAGS="${BUILD_CCLDFLAGS}" \
-    CFLAGS="${CFLAGS}" \
     LDFLAGS="-shared ${CCLDFLAGS}"
 
 # Build and install the package
