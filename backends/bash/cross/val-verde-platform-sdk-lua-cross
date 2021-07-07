@@ -9,15 +9,13 @@ export SOURCE_PACKAGE_VERSION=5
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-export-compiler-environment
-generate-compiler-tools
-
 export DEPENDS="${PACKAGE_BASE_NAME}-zlib-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 
 # Configure the build components
+cd ${STAGE_ROOT}
 copy-source-to-staging
+export-compiler-environment
 
-# Build the components
 if [ "${HOST_OS}" != "macos" ] &&
    [ "${HOST_OS}" != "mingw32" ]; then
     MYCFLAGS="\
@@ -29,15 +27,12 @@ if [ "${HOST_OS}" != "macos" ] &&
 fi
 
 ARFLAGS="rc"
-MYLIBS="\
-    -lm \
-"
-
 MYCFLAGS=`${ECHO} ${MYCFLAGS} | ${XARGS}`
 MYLDFLAGS=`${ECHO} ${MYLDFLAGS} | ${XARGS}`
-MYLIBS=`${ECHO} ${MYLIBS} | ${XARGS}`
+MYLIBS=`${ECHO} "\
+    -lm \
+" | ${XARGS}`
 
-cd ${STAGE_ROOT}
 make-build \
     AR="${AR} ${ARFLAGS}" \
     CC="${CC}" \

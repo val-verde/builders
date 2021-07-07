@@ -13,9 +13,9 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 cd ${STAGE_ROOT}
 copy-source-to-staging
 export-compiler-environment
-generate-compiler-tools
 
-${PERL} ${SOURCE_ROOT}/Makefile.PL
+TOOL_LOG=builder-invocation \
+tool-log ${PERL} ${SOURCE_ROOT}/Makefile.PL
 make-install \
     AR=${AR} \
     CC=${CC} \

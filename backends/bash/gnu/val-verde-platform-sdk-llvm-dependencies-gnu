@@ -62,10 +62,6 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 # kernel headers build
 package-invoke-builder kernel-headers-cross
 
-# glibc interface build
-CC=/usr/bin/gcc \
-package-invoke-builder glibc-interface
-
 # autoconf build
 package-invoke-builder autoconf-cross
 unset \
@@ -77,6 +73,10 @@ package-invoke-builder automake-cross
 
 # autoconf-archive build
 package-invoke-builder autoconf-archive-cross
+
+# glibc interface build
+CC=/usr/bin/gcc \
+package-invoke-builder glibc-interface
 
 # glibc runtime build
 CC=/usr/bin/gcc \

@@ -9,38 +9,21 @@ export SOURCE_PACKAGE_VERSION=2
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-copy-source-to-staging
-
-# Configure the build components
-${MKDIR} -p ${STAGE_ROOT}/build
-
-cd ${STAGE_ROOT}/build
-
+# Invoke one-shot template for configure/install
+CONFIGURE_PACKAGE_PREFIX=${PACKAGE_USR_PREFIX} \
+DESTDIR=${INSTALL_PREFIX}/.. \
+DISABLE_AUTOUPDATE=TRUE \
 DISABLE_FORTIFY_SOURCE_LEVEL=TRUE \
 DISABLE_FPIC=TRUE \
+DISABLE_SOUPER=TRUE \
 HOST_ARCH= \
 HOST_CPU= \
-OPTIMIZATION_LEVEL=2 \
 USE_GCC=TRUE \
-export-compiler-environment
-generate-compiler-tools
-
-TOOL_LOG=${STAGE_ROOT}/builder-invocation \
-tool-log ${STAGE_ROOT}/configure \
+package-configure-install-archive \
     libc_cv_gcc_builtin_redirection=yes \
     libc_cv_include_x86_isa_level=no \
     --enable-cet \
     --enable-kernel=4.0 \
     --disable-sanity-checks \
     --disable-werror \
-    --libdir=/usr/lib \
-    --prefix=/usr
-
-# Build the components
-make-build
-
-DESTDIR=${INSTALL_PREFIX}/.. \
-make-install
-
-# Build and install the package
-package-invoke-archive-install
+    --libdir=/usr/lib
