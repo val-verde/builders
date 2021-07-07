@@ -1160,6 +1160,7 @@ function package-configure() {
 
 function package-configure-invocation() {
     CONFIGURE_HOST_TRIPLE=${CONFIGURE_HOST_TRIPLE:-${HOST_TRIPLE}}
+    CONFIGURE_PACKAGE_PREFIX=${CONFIGURE_PACKAGE_PREFIX:-${PACKAGE_PREFIX}}
 
     AS_FOR_BUILD=${BUILD_ASFLAGS} \
     ASFLAGS_FOR_BUILD=${BUILD_ASFLAGS} \
@@ -1175,7 +1176,7 @@ function package-configure-invocation() {
     tool-log "${@}" \
         --build=${BUILD_TRIPLE} \
         --host=${CONFIGURE_HOST_TRIPLE} \
-        --prefix=${PACKAGE_PREFIX} \
+        --prefix=${CONFIGURE_PACKAGE_PREFIX} \
         ${CONFIGURE_FLAGS}
 }
 
