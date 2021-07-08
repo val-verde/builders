@@ -9,9 +9,8 @@ export SOURCE_PACKAGE_VERSION=2
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-export-compiler-environment
-
 # Invoke one-shot template for configure/install
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 CONFIGURE_FILE=bootstrap \
+USE_GENERATED_TOOLS=TRUE \
 package-configure-install-archive

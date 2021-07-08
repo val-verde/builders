@@ -16,5 +16,6 @@ BOOTSTRAP_ARGS="\
     --gnulib-srcdir=${STAGE_ROOT}/glib \
 " \
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
+DISABLE_LIBTOOLIZE=TRUE \
 ENABLE_GNULIB_OVERRIDE=TRUE \
 package-bootstrap-configure-install-archive

@@ -14,7 +14,7 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-zlib-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Invoke one-shot template for configure/install
+# Invoke one-shot template for bootstrap/configure/install
 if [ -z "${DISABLE_PYTHON}" ]; then
     ENABLE_OR_DISABLE_PYTHON=enable
 else
@@ -39,6 +39,7 @@ else
     ENABLE_OR_DISABLE_LIBUUID=enable
 fi
 
+BOOTSTRAP_FILE=autogen.sh \
 DISABLE_AUTOUPDATE=TRUE \
 NCURSES_CFLAGS="-I${PACKAGE_PREFIX}/include" \
 NCURSES_LDFLAGS="-L`package-get-path ncursesw SHARED HOST`" \
@@ -47,7 +48,7 @@ PYTHON_CFLAGS=${PACKAGE_PREFIX}/include/python3.9 \
 PYTHON_LDFLAGS="-L`package-get-path ncursesw SHARED HOST`" \
 SYSTEMD_CFLAGS=${PACKAGE_PREFIX}/include \
 SYSTEMD_LDFLAGS="-L`package-get-path systemd SHARED HOST`" \
-package-configure-install-archive \
+package-bootstrap-configure-install-archive \
     ac_cv_func_setns=yes \
     ac_cv_func_unshare=yes \
     --disable-all-programs \

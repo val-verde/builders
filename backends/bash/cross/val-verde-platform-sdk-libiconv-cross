@@ -10,6 +10,8 @@ export SOURCE_PACKAGE_VERSION=1
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for configure/install
+DISABLE_LIBTOOLIZE=TRUE \
+USE_GENERATED_TOOLS=TRUE \
 package-configure-install-archive \
     --disable-shared \
     --enable-shared

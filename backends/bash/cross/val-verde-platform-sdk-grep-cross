@@ -9,22 +9,13 @@ export SOURCE_PACKAGE_VERSION=3
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-copy-source-to-staging
-
-# Configure the build components
+# Invoke one-shot template for bootstrap/configure/install
 if [ "${HOST_OS}" = "mingw32" ]; then
-    export CFLAGS="\
+    export COMMON_CFLAGS="\
         -pthread \
-        ${CFLAGS} \
+        ${COMMON_CFLAGS} \
     "
 fi
 
-cd ${STAGE_ROOT}
-package-bootstrap
-${SED} -i \
-       's/$GREP/$GREP_DISABLED/g' \
-       ${STAGE_ROOT}/configure
-
-# Invoke one-shot template for configure/install
-DISABLE_AUTOUPDATE=TRUE \
-package-configure-install-archive
+GREP= \
+package-bootstrap-configure-install-archive

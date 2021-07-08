@@ -15,4 +15,5 @@ if [ "${HOST_OS}" = "musl" ]; then
 fi
 
 DISABLE_AUTOUPDATE=TRUE \
-package-stage-configure-install-archive
+DISABLE_LIBTOOLIZE=TRUE \
+package-bootstrap-configure-install-archive

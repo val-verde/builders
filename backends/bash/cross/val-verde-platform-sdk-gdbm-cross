@@ -23,6 +23,6 @@ LIBS="\
     ${LIBS} \
 " \
 DISABLE_AUTOUPDATE=TRUE \
-package-configure-install-archive \
+package-stage-configure-install-archive \
     --disable-static \
     --enable-shared

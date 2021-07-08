@@ -28,7 +28,10 @@ fi
 
 ARFLAGS="rc"
 MYCFLAGS=`${ECHO} ${MYCFLAGS} | ${XARGS}`
-MYLDFLAGS=`${ECHO} ${MYLDFLAGS} | ${XARGS}`
+MYLDFLAGS=`${ECHO} "\
+    ${CCLDFLAGS} \
+    ${MYLDFLAGS} \
+" | ${XARGS}`
 MYLIBS=`${ECHO} "\
     -lm \
 " | ${XARGS}`
@@ -38,7 +41,6 @@ make-build \
     CC="${CC}" \
     CFLAGS="${CFLAGS}" \
     LD="${CCLD}" \
-    LDFLAGS="${CCLDFLAGS}" \
     MYCFLAGS="${MYCFLAGS}" \
     MYLDFLAGS="${MYLDFLAGS}" \
     MYLIBS="${MYLIBS}" \

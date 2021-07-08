@@ -40,9 +40,8 @@ else
 fi
 
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
-DISABLE_AUTORECONF=TRUE \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
-package-stage-configure-install-archive \
+package-configure-install-archive \
     --disable-static \
     --enable-shared \
     --localstatedir=${PACKAGE_PLATFORM_SYSROOT}/var \

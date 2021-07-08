@@ -32,7 +32,7 @@ ${LN} -sf \
 
 DISABLE_AUTOUPDATE=TRUE \
 INSTALL_PREFIX=${PACKAGE_PREFIX} \
-package-configure-install-archive \
+package-stage-configure-install-archive \
     --disable-termcap \
     --enable-ext-colors \
     --enable-mixed-case \

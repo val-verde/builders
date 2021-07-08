@@ -888,6 +888,7 @@ function package-bootstrap-configure-install() {
     package-push-directory ${CONFIGURE_FILE_ROOT}
         package-autoupdate
         package-gnulib-override
+        package-libtoolize
         package-bootstrap
     package-pop-directory
 
@@ -1367,9 +1368,13 @@ function package-gnulib-override() {
 }
 
 function package-libtoolize() {
-    if [ -n "${ENABLE_LIBTOOLIZE}" ]; then
+    LIBTOOLIZE=`package-get-path libtoolize EXECUTABLE BUILD`
+    LIBTOOLIZE_ARGS=${LIBTOOLIZE_ARGS:-"-fi"}
+
+    if [ -z "${DISABLE_LIBTOOLIZE}" ] &&
+       [ -n "${LIBTOOLIZE}" ]; then
         TOOL_LOG=${STAGE_ROOT}/builder-libtoolize \
-        tool-log ${BINDIR}/libtoolize "${@}"
+        tool-log ${LIBTOOLIZE} ${LIBTOOLIZE_ARGS}
     fi
 }
 
@@ -1622,7 +1627,7 @@ function package-stage-configure-install() {
     package-push-directory ${CONFIGURE_FILE_ROOT}
         package-autoupdate
         package-gnulib-override
-        package-libtoolize -ci
+        package-libtoolize
         package-autoreconf -fi
     package-pop-directory
 

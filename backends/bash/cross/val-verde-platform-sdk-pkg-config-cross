@@ -14,8 +14,8 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-zlib-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Invoke one-shot template for configure/install
-DISABLE_AUTOUPDATE=TRUE \
+# Invoke one-shot template for bootstrap/configure/install
+CONFIGURE_FILE=autogen.sh \
 package-configure-install-archive \
     ac_cv_func_posix_getgrgid_r=yes \
     ac_cv_func_posix_getpwuid_r=yes \
