@@ -10,7 +10,6 @@ export SOURCE_PACKAGE_VERSION=0
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export DEPENDS="\
-    ${PACKAGE_BASE_NAME}-libxml2-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-ncurses-6-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
@@ -24,10 +23,25 @@ elif [ "${HOST_OS}" = "macos" ]; then
     DEFAULT_VISIBILITY_HIDDEN=no
 fi
 
+if [ -n "${DISABLE_LIBXML2}" ]; then
+    LIBXML2_CMD="--with-include-libxml"
+else
+    export DEPENDS="\
+        ${PACKAGE_BASE_NAME}-libxml2-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+        ${DEPENDS} \
+    "
+fi
+
+if [ -n "${DISABLE_XZ}" ]; then
+    XZ_CMD="--without-xz"
+fi
+
 LIBS="\
     -lc++ \
     ${LIBS} \
 " \
 package-stage-configure-install-archive \
     gl_cv_cc_visibility=${DEFAULT_VISIBILITY_HIDDEN} \
-    --with-included-gettext=${WITH_INCLUDED_GETTEXT}
+    --with-included-gettext=${WITH_INCLUDED_GETTEXT} \
+    ${LIBXML2_CMD} \
+    ${XZ_CMD}

@@ -83,7 +83,9 @@ package-invoke-builder gmp-cross
 # ncurses build
 package-invoke-builder ncurses-cross
 
-# gettext build
+# gettext build (without libxml2 and xz)
+DISABLE_LIBXML2=TRUE \
+DISABLE_XZ=TRUE \
 package-invoke-builder gettext-cross
 
 # xz build
@@ -92,6 +94,9 @@ package-invoke-builder xz-cross
 # libxml2 build
 DISABLE_PYTHON=TRUE \
 package-invoke-builder libxml2-cross
+
+# gettext build
+package-invoke-builder gettext-cross
 
 # texinfo build
 # package-invoke-builder texinfo-cross

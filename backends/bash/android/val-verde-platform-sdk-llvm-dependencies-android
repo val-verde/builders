@@ -77,7 +77,9 @@ package-invoke-builder gmp-cross
 # android ncurses build
 package-invoke-builder ncurses-cross
 
-# android gettext build
+# android gettext build (without libxml2 and xz)
+DISABLE_LIBXML2=TRUE \
+DISABLE_XZ=TRUE \
 FORTIFY_SOURCE_LEVEL=0 \
 package-invoke-builder gettext-cross
 
@@ -87,6 +89,10 @@ package-invoke-builder xz-cross
 # android libxml2 build
 DISABLE_PYTHON=TRUE \
 package-invoke-builder libxml2-cross
+
+# android gettext build
+FORTIFY_SOURCE_LEVEL=0 \
+package-invoke-builder gettext-cross
 
 # android texinfo build
 # package-invoke-builder texinfo-cross
