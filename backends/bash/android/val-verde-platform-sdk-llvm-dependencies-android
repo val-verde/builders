@@ -65,13 +65,6 @@ package-invoke-builder libiconv-cross
 # android icu build
 package-invoke-builder icu4c-cross
 
-# android xz build
-package-invoke-builder xz-cross
-
-# android libxml2 build
-DISABLE_PYTHON=TRUE \
-package-invoke-builder libxml2-cross
-
 # android libunistring build
 package-invoke-builder libunistring-cross
 
@@ -87,6 +80,13 @@ package-invoke-builder ncurses-cross
 # android gettext build
 FORTIFY_SOURCE_LEVEL=0 \
 package-invoke-builder gettext-cross
+
+# android xz build
+package-invoke-builder xz-cross
+
+# android libxml2 build
+DISABLE_PYTHON=TRUE \
+package-invoke-builder libxml2-cross
 
 # android texinfo build
 # package-invoke-builder texinfo-cross

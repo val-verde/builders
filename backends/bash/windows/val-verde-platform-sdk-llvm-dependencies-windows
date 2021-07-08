@@ -65,17 +65,6 @@ package-invoke-builder libiconv-cross
 # windows icu build
 package-invoke-builder icu4c-cross
 
-# windows xz build
-package-invoke-builder xz-cross
-
-# windows libxml2 build
-COMMON_LDFLAGS="\
-    -fuse-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
-    ${COMMON_LDFLAGS} \
-" \
-DISABLE_PYTHON=TRUE \
-package-invoke-builder libxml2-cross
-
 # windows libunistring build
 package-invoke-builder libunistring-cross
 
@@ -90,6 +79,17 @@ package-invoke-builder ncurses-cross
 
 # windows gettext build
 package-invoke-builder gettext-cross
+
+# windows xz build
+package-invoke-builder xz-cross
+
+# windows libxml2 build
+COMMON_LDFLAGS="\
+    -fuse-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
+    ${COMMON_LDFLAGS} \
+" \
+DISABLE_PYTHON=TRUE \
+package-invoke-builder libxml2-cross
 
 # windows texinfo build
 # package-invoke-builder texinfo-cross
