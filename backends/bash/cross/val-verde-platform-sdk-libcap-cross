@@ -26,6 +26,10 @@ make-install \
     BUILD_GPERF=${GPERF} \
     CC=${CC} \
     CFLAGS="${CFLAGS}" \
+    CGO_CFLAGS="${CGO_CFLAGS}" \
+    CGO_CPPFLAGS="${CGO_CPPFLAGS}" \
+    CGO_CXXFLAGS="${CGO_CXXFLAGS}" \
+    CGO_LDFLAGS="${CGO_LDFLAGS}" \
     GOLANG=yes \
     COPTS="-O${OPTIMIZATION_LEVEL}" \
     DYNAMIC=yes \
