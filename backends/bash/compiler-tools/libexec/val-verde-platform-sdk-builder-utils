@@ -361,15 +361,13 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     fi
 
     PACKAGE_USR_PREFIX_VAR=${ENV_PREFIX}PACKAGE_USR_PREFIX
+    PACKAGE_PREFIX_LIBDIR_CFLAG="-L${!PACKAGE_PREFIX_VAR}/lib"
 
     if [ "${!TARGET_SYSROOT_VAR}${!PACKAGE_USR_PREFIX_VAR}" != "${!PACKAGE_PREFIX_VAR}" ] ||
        [ "${!VARIANT_OS}" = "wasi" ]; then
         ISYSTEM_CFLAG="-isystem ${!PACKAGE_PREFIX_VAR}/include"
-        PACKAGE_PREFIX_LIBDIR_CFLAG="-L${!PACKAGE_PREFIX_VAR}/lib"
     else
-        unset \
-            ISYSTEM_CFLAG \
-            PACKAGE_PREFIX_LIBDIR_CFLAG
+        unset ISYSTEM_CFLAG
     fi
 
     if [ -z "${DISABLE_CXX_STDLIB}" ]; then

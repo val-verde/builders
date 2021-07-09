@@ -14,25 +14,28 @@ cd ${STAGE_ROOT}
 copy-source-to-staging
 export-compiler-environment
 
-${SOURCE_ROOT}/Configure \
+TOOL_LOG=builder-invocation \
+tool-log ${STAGE_ROOT}/Configure \
     -d \
     -e \
     -s \
     -Dar=${AR} \
     -Das=${AS} \
     -Dcc=${CC} \
-    -Dcflags="${CFLAGS}" \
+    -Dccflags="${CFLAGS}" \
     -Dcxx=${CXX} \
     -Dcxxflags="${CXXFLAGS}" \
-    -Dld=${CCLD} \
-    -Dldflags="${CCLDFLAGS}" \
+    -Dincpth=${PACKAGE_PREFIX}/include \
+    -Dld=${LD} \
+    -Dldflags="${LDFLAGS}" \
+    -Dlibpth=${PACKAGE_PREFIX}/lib \
     -Dnm=${NM} \
     -Dprefix=${PACKAGE_PREFIX} \
     -Dranlib=${RANLIB} \
     -Dsiteprefix=${PACKAGE_PREFIX}/local \
-    -Dvendorprefix=${PACKAGE_PREFIX} \
-    > ${STAGE_ROOT}/builder-invocation.log \
-    2> ${STAGE_ROOT}/builder-invocation-stderr.log
+    -Dsysroot=${SYSROOT} \
+    -Dusrinc=${PACKAGE_PREFIX}/include \
+    -Dvendorprefix=${PACKAGE_PREFIX}
 
 # Build the components
 make-install
