@@ -10,6 +10,11 @@ export SOURCE_PACKAGE_VERSION=6
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for configure/install
+cd ${STAGE_ROOT}
+DISABLE_FORTIFY_SOURCE_LEVEL=TRUE \
+export-compiler-environment
+generate-compiler-tools
+
 ENABLE_OR_DISABLE_COCOA=disable
 ENABLE_OR_DISABLE_GNUTLS=enable
 ENABLE_OR_DISABLE_HAX=disable
@@ -57,19 +62,13 @@ if [ "${HOST_PROCESSOR}" = "x86_64" ]; then
     ENABLE_OR_DISABLE_HAX=enable
 fi
 
-export-compiler-environment
-generate-compiler-tools
-
-cd ${STAGE_ROOT}
 package-configure-invocation \
     ${SOURCE_ROOT}/configure \
     --cc="${CC}" \
     --cxx="${CXX}" \
     --cross-prefix= \
     --objcc="${OBJC}" \
-    --extra-cflags="${CFLAGS} ${CCLDFLAGS}" \
-    --extra-cxxflags="${CXXFLAGS} ${CXXLDFLAGS}" \
-    --host-cc="${BUILD_CC} ${BUILD_CCFLAGS}" \
+    --host-cc="${BUILD_CC} ${BUILD_CFLAGS}" \
     --make=${MAKE} \
     --meson=${MESON} \
     --ninja=${NINJA} \
