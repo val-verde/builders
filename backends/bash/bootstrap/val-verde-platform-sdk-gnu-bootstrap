@@ -46,16 +46,17 @@ package-apt-remove \
     lld*
 
 export \
-    AR=${BUILD_PACKAGE_PREFIX}/bin/llvm-ar \
-    CC=${BUILD_PACKAGE_PREFIX}/bin/clang \
-    CPP=${BUILD_PACKAGE_PREFIX}/bin/clang-cpp \
-    CXX=${BUILD_PACKAGE_PREFIX}/bin/clang++ \
-    LD=${BUILD_PACKAGE_PREFIX}/bin/ld.lld \
-    NM=${BUILD_PACKAGE_PREFIX}/bin/llvm-nm \
-    RANLIB=${BUILD_PACKAGE_PREFIX}/bin/llvm-ranlib \
-    READELF=${BUILD_PACKAGE_PREFIX}/bin/llvm-readelf \
-    STRINGS=${BUILD_PACKAGE_PREFIX}/bin/llvm-strings \
-    STRIP=${BUILD_PACKAGE_PREFIX}/bin/llvm-strip
+    AR=`BINDIR= package-get-path llvm-ar EXECUTABLE BUILD` \
+    CC=`BINDIR= package-get-path clang EXECUTABLE BUILD` \
+    CPP=`BINDIR= package-get-path clang-cpp EXECUTABLE BUILD` \
+    CXX=`BINDIR= package-get-path clang++ EXECUTABLE BUILD` \
+    LD=`BINDIR= package-get-path ld.lld EXECUTABLE BUILD` \
+    MAKEINFO=`package-get-path true EXECUTABLE BUILD` \
+    NM=`BINDIR= package-get-path llvm-nm EXECUTABLE BUILD` \
+    RANLIB=`BINDIR= package-get-path llvm-ranlib EXECUTABLE BUILD` \
+    READELF=`BINDIR= package-get-path llvm-readelf EXECUTABLE BUILD` \
+    STRINGS=`BINDIR= package-get-path llvm-strings EXECUTABLE BUILD` \
+    STRIP=`BINDIR= package-get-path llvm-strip EXECUTABLE BUILD`
 unset DISABLE_POLLY
 
 # bazel bootstrap build
@@ -63,7 +64,7 @@ package-invoke-builder bazel-bootstrap
 
 # go bootstrap build
 package-invoke-builder go-bootstrap
-export GO=${BUILD_PACKAGE_PREFIX}/bin/go
+export GO=`BINDIR= package-get-path go EXECUTABLE BUILD`
 
 # openjdk bootstrap build
 package-invoke-builder openjdk-bootstrap
@@ -74,6 +75,13 @@ package-invoke-builder rust-bootstrap
 # zlib bootstrap build
 package-invoke-builder zlib
 
+# help2man bootstrap build
+package-invoke-builder help2man
+export HELP2MAN=`BINDIR= package-get-path help2man EXECUTABLE BUILD`
+
+# libtool bootstrap build
+package-invoke-builder libtool
+
 # libffi bootstrap build
 package-invoke-builder libffi
 
@@ -82,9 +90,6 @@ package-invoke-builder glib
 
 # pkg-config bootstrap build
 package-invoke-builder pkg-config
-
-# help2man bootstrap build
-package-invoke-builder help2man
 
 # z3 build
 package-invoke-builder z3
