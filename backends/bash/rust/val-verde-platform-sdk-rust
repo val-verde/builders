@@ -10,17 +10,6 @@ export SOURCE_PACKAGE_VERSION=1
 
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-COMMON_CFLAGS="\
-    -DMB_LEN_MAX=16 \
-    ${COMMON_CFLAGS} \
-" \
-COMMON_LDFLAGS="\
-    -L${STAGE_ROOT}/libgcc \
-    ${COMMON_LDFLAGS} \
-" \
-export-compiler-environment
-generate-compiler-tools
-
 export DEPENDS="\
     ${PACKAGE_BASE_NAME}-llvm-project-13-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-z3-4-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
@@ -28,29 +17,42 @@ export DEPENDS="\
 export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
 
 # Configure the build components
-BUILD_TRIPLE=${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}${BUILD_OS_API_LEVEL}
-
 ${MKDIR} -p ${STAGE_ROOT}/libgcc
+
+RUST_HOST_OS=${HOST_OS}
 
 if [ "${HOST_OS}" = "gnu" ]; then
     ${LN} -sf \
           `package-get-path unwind SHARED HOST` \
           ${STAGE_ROOT}/libgcc/libgcc_s.so
+    RUST_HOST_OS=linux
 fi
 
 package-rsync -ax \
               ${SOURCE_ROOT}/${VAL_VERDE_GH_TEAM}-config.toml.in \
               ${STAGE_ROOT}/config.toml
 
+COMMON_CFLAGS="\
+    -DMB_LEN_MAX=16 \
+    ${COMMON_CFLAGS} \
+" \
+COMMON_LDFLAGS="\
+    -lclang_rt.builtins-${HOST_PROCESSOR} \
+    -L${STAGE_ROOT}/libgcc \
+    -L${PACKAGE_PREFIX}/lib/clang/13.0.0/lib/${RUST_HOST_OS} \
+    ${COMMON_LDFLAGS} \
+" \
+export-compiler-environment
+generate-compiler-tools
+
 CARGO=${BINDIR}/cargo
 FILECHECK=${LLVM_NATIVE_STAGE_ROOT}/bin/FileCheck
-LD=${CCLD}
 LLVMCONFIG=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config
 RUSTC=${BINDIR}/rustc
 RUSTFMT=${BINDIR}/rustfmt
 
 ${SED} -i "s|@@AR@@|${AR}|g" ${STAGE_ROOT}/config.toml
-${SED} -i "s|@@BUILD_TRIPLE@@|${BUILD_TRIPLE}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@BUILD_TRIPLE@@|${BUILD_4_TRIPLE}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@CARGO@@|${CARGO}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@CC@@|${CC}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@CFLAGS@@|${CFLAGS}|g" ${STAGE_ROOT}/config.toml
@@ -58,8 +60,8 @@ ${SED} -i "s|@@CXX@@|${CXX}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@CXXFLAGS@@|${CXXFLAGS}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@FILECHECK@@|${FILECHECK}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@INSTALL_PREFIX@@|${INSTALL_PREFIX}|g" ${STAGE_ROOT}/config.toml
-${SED} -i "s|@@LD@@|${LD}|g" ${STAGE_ROOT}/config.toml
-${SED} -i "s|@@LDFLAGS@@|${LDFLAGS}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@LD@@|${CCLD}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@LDFLAGS@@|${CCLDFLAGS}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@LLVMCONFIG@@|${LLVMCONFIG}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@NODE@@|${NODE}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@PYTHON@@|${PYTHON}|g" ${STAGE_ROOT}/config.toml
