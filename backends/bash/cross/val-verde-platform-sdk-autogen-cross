@@ -20,7 +20,6 @@ COMMON_CFLAGS="\
 " \
 COLUMNS=${COLUMNS:-${BINDIR}/columns} \
 DISABLE_AUTOUPDATE=TRUE \
-USE_GENERATED_TOOLS=TRUE \
 package-stage-configure-install-archive \
     ag_cv_run_strcspn=yes \
     libopts_cv_with_libregex=yes \

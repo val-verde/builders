@@ -34,7 +34,6 @@ elif [ "${HOST_OS}" = "musl" ]; then
 fi
 
 NUM_PROCESSORS=1 \
-USE_GENERATED_TOOLS=TRUE \
 package-configure-install-archive \
     ac_cv_func_getcwd=${HAS_GETCWD} \
     bash_cv_dup2_broken=no \

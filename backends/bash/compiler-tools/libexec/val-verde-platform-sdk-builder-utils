@@ -653,9 +653,13 @@ function export-compiler-environment-for-python() {
         PYTHON_HOST_OS=gnu
     fi
 
-    export _PYTHON_HOST_PLATFORM=${HOST_KERNEL}-${HOST_PROCESSOR}
-    export _PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata__${PYTHON_PLATFORM}_${HOST_PROCESSOR}-${HOST_KERNEL}-${PYTHON_HOST_OS}
-    export PYTHONHOME=${PACKAGE_PREFIX}:${BUILD_PACKAGE_PREFIX}
+    export \
+        _PYTHON_HOST_PLATFORM=${HOST_KERNEL}-${HOST_PROCESSOR} \
+        _PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata__${PYTHON_PLATFORM}_${HOST_PROCESSOR}-${HOST_KERNEL}-${PYTHON_HOST_OS} \
+        CCSHARED="${CC} -shared ${CFLAGS}" \
+        LD=${CCLD} \
+        LDSHARED="${CCLD} -shared ${CCLDFLAGS}" \
+        PYTHONHOME=${PACKAGE_PREFIX}:${BUILD_PACKAGE_PREFIX}
 }
 
 function export-compiler-environment-for-swift() {
@@ -909,6 +913,7 @@ function package-clean-texinfo-lint() {
 
 function package-cmake() {
     CONFIGURE_TOOL=cmake \
+    DISABLE_GENERATED_TOOLS=TRUE \
     package-configure-tool-invocation \
         "${@}"
 }
@@ -1220,7 +1225,7 @@ function package-configure-install-archive() {
 function package-configure-tool-invocation() {
     export-compiler-environment
 
-    if [ -n "${USE_GENERATED_TOOLS}" ]; then
+    if [ -z "${DISABLE_GENERATED_TOOLS}" ]; then
         generate-compiler-tools
     fi
 
@@ -1380,7 +1385,6 @@ function package-libtoolize() {
 
 function package-meson-build() {
     CONFIGURE_TOOL=meson-build \
-    USE_GENERATED_TOOLS=TRUE \
     package-configure-tool-invocation \
         "${@}"
 }
@@ -1594,6 +1598,11 @@ function package-python-build() {
     INSTALLED_FILE_LIST=${INSTALLED_FILE_LIST:-${STAGE_ROOT}/installed-file-list.txt}
 
     export-compiler-environment
+
+    if [ -z "${DISABLE_GENERATED_TOOLS}" ]; then
+        generate-compiler-tools
+    fi
+
     export-compiler-environment-for-python
 
     TOOL_LOG=${STAGE_ROOT}/builder-invocation \
