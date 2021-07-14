@@ -371,9 +371,9 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     fi
 
     if [ -z "${DISABLE_CXX_STDLIB}" ]; then
-        STDLIB_CXXLDFLAG="-stdlib=${CXX_STDLIB}"
+        STDLIB_CXXFLAG="-stdlib=${CXX_STDLIB}"
     else
-        unset STDLIB_CXXLDFLAG
+        unset STDLIB_CXXFLAG
     fi
 
     if [ -z "${DISABLE_CXX_INCLUDE}" ]; then
@@ -547,12 +547,13 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     " | ${XARGS}`"
     export ${TOOL_CXXFLAGS}="`${ECHO} "\
         ${!TOOL_CFLAGS} \
+        ${STDLIB_CXXFLAG} \
         ${STDLIBXX_ISYSTEM_CXXFLAG} \
         ${!TOOL_CXXFLAGS} \
     " | ${XARGS}`"
     export ${TOOL_CXXLDFLAGS}="`${ECHO} "\
         ${!TOOL_CCLDFLAGS} \
-        ${STDLIB_CXXLDFLAG} \
+        ${STDLIB_CXXFLAG} \
         ${!TOOL_CXXLDFLAGS} \
     " | ${XARGS}`"
 
