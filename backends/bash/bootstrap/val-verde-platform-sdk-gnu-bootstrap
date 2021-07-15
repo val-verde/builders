@@ -36,6 +36,9 @@ package-invoke-builder glibc-interface
 # libcxx bootstrap build
 package-invoke-builder libcxx-bootstrap
 
+# z3 build
+package-invoke-builder z3
+
 # llvm bootstrap build
 package-invoke-builder llvm-project-bootstrap
 
@@ -90,9 +93,6 @@ package-invoke-builder glib
 
 # pkg-config bootstrap build
 package-invoke-builder pkg-config
-
-# z3 build
-package-invoke-builder z3
 
 # re2c build
 package-invoke-builder re2c
