@@ -193,6 +193,9 @@ package-invoke-builder acl-cross
 # libarchive build
 package-invoke-builder libarchive-cross
 
+# libssh build
+package-invoke-builder libssh-cross
+
 # libssh2 build
 package-invoke-builder libssh2-cross
 

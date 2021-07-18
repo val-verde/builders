@@ -191,6 +191,9 @@ package-invoke-builder acl-cross
 # android libarchive build
 package-invoke-builder libarchive-cross
 
+# android libssh build
+package-invoke-builder libssh-cross
+
 # android libssh2 build
 package-invoke-builder libssh2-cross
 

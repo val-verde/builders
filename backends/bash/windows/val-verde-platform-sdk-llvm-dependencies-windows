@@ -168,6 +168,9 @@ package-invoke-builder libgpg-error-cross
 # windows libarchive build
 package-invoke-builder libarchive-cross
 
+# windows libssh build
+package-invoke-builder libssh-cross
+
 # windows libssh2 build
 package-invoke-builder libssh2-cross
 
