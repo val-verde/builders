@@ -19,16 +19,22 @@ elif [ "${HOST_OS}" = "mingw32" ]; then
 fi
 
 # Invoke one-shot template for stage/configure/install
-${MKDIR} -p ${INSTALL_PREFIX}/bin
+function package-install-completion-callback() {
+    # ${MKDIR} -p ${INSTALL_PREFIX}/bin
 
-# Extract TCL_VERSION from unix configure builder to set up tclsh symlink
-TCL_VERSION=`${GREP} -r TCL_VERSION= ${SOURCE_ROOT}/unix/configure.in | cut -d= -f2`
-${LN} -sf \
-      `package-get-filename ${SOURCE_PACKAGE_NAME}sh${TCL_VERSION} EXECUTABLE` \
-      ${INSTALL_PREFIX}/bin/`package-get-filename ${SOURCE_PACKAGE_NAME}sh EXECUTABLE`
+    # Extract TCL_VERSION from unix configure builder to set up tclsh symlink
+    TCL_VERSION=`${GREP} -r TCL_VERSION= ${SOURCE_ROOT}/unix/configure.in | ${CUT} -d= -f2`
+    ${LN} -sf \
+          `package-get-filename ${SOURCE_PACKAGE_NAME}sh${TCL_VERSION} EXECUTABLE` \
+          ${INSTALL_PREFIX}/bin/`package-get-filename ${SOURCE_PACKAGE_NAME}sh EXECUTABLE`
+
+    # Duplicated man file with perl
+    ${RM} ${INSTALL_PREFIX}/share/man/man3/Thread.3
+}
 
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 CONFIGURE_FILE_ROOT=${STAGE_ROOT}/${CONFIGURE_FILE_DIR} \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-stage-configure-install-archive \
     ac_cv_func_memmove=yes \
     tcl_cv_sys_version=${TCL_SYSTEM}
