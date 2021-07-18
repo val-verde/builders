@@ -89,11 +89,8 @@ package-invoke-builder gettext-cross
 package-invoke-builder xz-cross
 
 # windows libxml2 build
-COMMON_LDFLAGS="\
-    -fuse-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
-    ${COMMON_LDFLAGS} \
-" \
 DISABLE_PYTHON=TRUE \
+LD=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
 package-invoke-builder libxml2-cross
 
 # windows gettext build

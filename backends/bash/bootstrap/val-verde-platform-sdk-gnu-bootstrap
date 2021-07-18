@@ -6,8 +6,11 @@ set -e
 export \
     BINDIR=/usr/bin \
     C_COMPILER=clang \
-    CPP="/usr/bin/clang -E" \
-    DISABLE_POLLY=TRUE
+    CPP="/usr/bin/clang -E"
+
+export \
+    DISABLE_POLLY=TRUE \
+    USE_FUSE_LD_OVER_LD_PATH=TRUE
 
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
@@ -60,7 +63,9 @@ export \
     READELF=`BINDIR= package-get-path llvm-readelf EXECUTABLE BUILD` \
     STRINGS=`BINDIR= package-get-path llvm-strings EXECUTABLE BUILD` \
     STRIP=`BINDIR= package-get-path llvm-strip EXECUTABLE BUILD`
-unset DISABLE_POLLY
+unset \
+    DISABLE_POLLY \
+    USE_FUSE_LD_OVER_LD_PATH
 
 # bazel bootstrap build
 package-invoke-builder bazel-bootstrap

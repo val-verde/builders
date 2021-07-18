@@ -207,6 +207,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         CPP_COMPILER=${CPP_COMPILER:-cpp}
 
         DISABLE_COMPILER_TARGET=TRUE
+        DISABLE_FUSE_LD=TRUE
         DISABLE_POLLY=TRUE
         DISABLE_SOUPER=TRUE
         DISABLE_UNUSED_ARGUMENTS=TRUE
@@ -276,6 +277,8 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     else
         if [ "${!VARIANT_OS}" = "macos" ]; then
             export ${TOOL_LD}="${!TOOL_LD:-`package-get-path ld64.lld EXECUTABLE BUILD`}"
+        elif [ "${!VARIANT_OS}" = "wasi" ]; then
+            export ${TOOL_LD}="${!TOOL_LD:-`package-get-path wasm-ld EXECUTABLE BUILD`}"
         else
             export ${TOOL_LD}="${!TOOL_LD:-`package-get-path ld.lld EXECUTABLE BUILD`}"
         fi
@@ -323,10 +326,16 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         unset UNUSED_ARGUMENTS_CFLAG
     fi
 
-    if [ "${!VARIANT_OS}" = "macos" ]; then
-        FUSE_LD_CFLAG="-fuse-ld=lld"
-    else
-        unset FUSE_LD_CFLAG
+    if [ -z "${DISABLE_FUSE_LD}" ]; then
+        if [ "${!VARIANT_OS}" = "macos" ]; then
+            LD_PATH_CFLAG="-fuse-ld=lld"
+        else
+            if [ -z "${USE_FUSE_LD_OVER_LD_PATH}" ]; then
+                LD_PATH_CFLAG="--ld-path=${!TOOL_LD}"
+            else
+                LD_PATH_CFLAG="-fuse-ld=${!TOOL_LD}"
+            fi
+        fi
     fi
 
     # CFLAG target definitions
@@ -518,7 +527,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     "
 
     export ${TOOL_CFLAGS}="`${ECHO} "\
-        ${FUSE_LD_CFLAG} \
+        ${LD_PATH_CFLAG} \
         ${PIPE_CFLAG} \
         ${!TOOL_COMMON_CFLAGS} \
         ${OPTIMIZATION_CFLAG} \
