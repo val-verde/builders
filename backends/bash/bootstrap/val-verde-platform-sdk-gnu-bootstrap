@@ -45,9 +45,11 @@ package-invoke-builder z3
 # llvm bootstrap build
 package-invoke-builder llvm-project-bootstrap
 
-# remove host compiler and libraries as it is superceded by bootstrapped clang
+# remove host cmake, compiler and libraries as it is superceded by bootstrapped clang
 package-apt-remove \
     clang* \
+    cmake \
+    libclang* \
     libllvm* \
     lld*
 
