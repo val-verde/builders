@@ -39,6 +39,11 @@ package-invoke-builder glibc-interface
 # libcxx bootstrap build
 package-invoke-builder libcxx-bootstrap
 
+# cmake bootstrap build
+package-invoke-builder cmake
+
+export CMAKE=`BINDIR= package-get-path cmake EXECUTABLE BUILD`
+
 # z3 build
 package-invoke-builder z3
 

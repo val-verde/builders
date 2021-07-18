@@ -11,7 +11,6 @@ export \
     BASH=/usr/bin/bash \
     BISON=/usr/bin/bison \
     CHMOD=/usr/bin/chmod \
-    CMAKE=/usr/bin/cmake \
     CP=/usr/bin/cp \
     CURL=/usr/bin/curl \
     CUT=/usr/bin/cut \
@@ -496,7 +495,6 @@ package-invoke-builder vim-cross
 
 # cmake build
 package-invoke-builder cmake-cross
-unset CMAKE
 
 # boost build
 package-invoke-builder boost-cross
