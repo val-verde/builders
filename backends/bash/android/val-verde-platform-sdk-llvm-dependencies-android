@@ -156,6 +156,9 @@ package-invoke-builder openssl-cross
 # android libcap build
 package-invoke-builder libcap-cross
 
+# android krb5 build
+package-invoke-builder krb5-cross
+
 # android expat build
 package-invoke-builder expat-cross
 

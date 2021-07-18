@@ -144,6 +144,9 @@ package-invoke-builder c-ares-cross
 # windows openssl build
 package-invoke-builder openssl-cross
 
+# windows krb5 build
+# package-invoke-builder krb5-cross
+
 # windows expat build
 package-invoke-builder expat-cross
 
