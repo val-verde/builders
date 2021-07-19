@@ -26,6 +26,7 @@ INSTALL_TARGET=install-headers \
 make-install
 
 ${RM} -rf \
+      ${INSTALL_PREFIX}/include/crypt.h \
       ${INSTALL_PREFIX}/include/iconv.h \
       ${INSTALL_PREFIX}/include/libintl.h
 

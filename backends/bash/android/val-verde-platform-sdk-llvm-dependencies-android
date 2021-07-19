@@ -20,6 +20,9 @@ package-invoke-builder argp-standalone-cross
 # android musl obstack build
 package-invoke-builder musl-obstack
 
+# android libxcrypt build
+package-invoke-builder libxcrypt-cross
+
 # android zlib build
 package-invoke-builder zlib-cross
 

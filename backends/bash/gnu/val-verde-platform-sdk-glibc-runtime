@@ -31,8 +31,9 @@ USE_GCC=TRUE \
 package-configure-install-archive \
     libc_cv_gcc_builtin_redirection=yes \
     libc_cv_include_x86_isa_level=no \
-    --enable-cet \
-    --enable-kernel=5.0 \
+    --disable-crypt \
     --disable-sanity-checks \
     --disable-werror \
+    --enable-cet \
+    --enable-kernel=5.0 \
     --libdir=/usr/lib

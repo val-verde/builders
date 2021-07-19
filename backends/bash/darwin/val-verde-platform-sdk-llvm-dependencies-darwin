@@ -23,6 +23,9 @@ package-invoke-builder musl-fts
 # musl obstack build
 package-invoke-builder musl-obstack
 
+# libxcrypt build
+package-invoke-builder libxcrypt-cross
+
 # zlib build
 package-invoke-builder zlib-cross
 

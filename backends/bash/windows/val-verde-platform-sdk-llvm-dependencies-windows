@@ -20,6 +20,9 @@ package-invoke-builder argp-standalone-cross
 # sys-queue-h build
 package-invoke-builder sys-queue-h-cross
 
+# windows libxcrypt build
+# package-invoke-builder libxcrypt-cross
+
 # windows zlib build
 package-invoke-builder zlib-cross
 

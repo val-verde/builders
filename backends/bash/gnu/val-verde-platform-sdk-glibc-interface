@@ -11,6 +11,9 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for stage/configure/install
 function package-install-completion-callback() {
+    # remove crypt.h as it is superceded by libxcrypt
+    ${RM} -rf ${INSTALL_PREFIX}/include/crypt.h
+
     ${RM} -rf ${INSTALL_PREFIX}/../lib
     ${MV} ${INSTALL_PREFIX}/../lib64 \
           ${INSTALL_PREFIX}/glibc-interface
@@ -20,9 +23,6 @@ function package-install-completion-callback() {
     ${LN} -sf \
           ../glibc-interface/libanl.so.1 \
           ${INSTALL_PREFIX}/lib/libanl.so
-    ${LN} -sf \
-          ../glibc-interface/libcrypt.so.1 \
-          ${INSTALL_PREFIX}/lib/libcrypt.so
     ${LN} -sf \
           ../glibc-interface/libdl.so.2 \
           ${INSTALL_PREFIX}/lib/libdl.so
@@ -76,8 +76,9 @@ USE_GCC=TRUE \
 package-stage-configure-install-archive \
     libc_cv_gcc_builtin_redirection=yes \
     libc_cv_include_x86_isa_level=no \
-    --enable-cet \
-    --enable-kernel=4.0 \
+    --disable-crypt \
     --disable-sanity-checks \
     --disable-werror \
+    --enable-cet \
+    --enable-kernel=4.0 \
     --libdir=/usr/lib
