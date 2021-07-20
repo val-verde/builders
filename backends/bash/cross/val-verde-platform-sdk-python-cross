@@ -30,20 +30,18 @@ function package-install-completion-callback() {
 }
 
 COMMON_CFLAGS="\
+    --sysroot=${SYSROOT} \
     -I${PACKAGE_PREFIX}/include \
     -I${PACKAGE_PREFIX}/include/ncurses \
+    ${COMMON_CFLAGS} \
 " \
-export-compiler-environment
-
-PYTHON_CFLAGS=${CFLAGS}
-PYTHON_LDFLAGS=${LDFLAGS}
-unset \
-    CFLAGS \
-    LDFLAGS
-
+COMMON_LDFLAGS="\
+    --sysroot=${SYSROOT} \
+    -L${PACKAGE_PREFIX}/lib \
+    ${COMMON_LDFLAGS} \
+" \
 _PYTHON_PROJECT_BASE=${STAGE_ROOT} \
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
-DISABLE_GENERATED_TOOLS=TRUE \
 OPENSSL_LIBS=`${ECHO} "\
     -lcrypto \
     -lssl \
@@ -53,8 +51,6 @@ package-stage-configure-install-archive \
     ac_cv_buggy_getaddrinfo=no \
     ac_cv_file__dev_ptc=no \
     ac_cv_file__dev_ptmx=yes \
-    CFLAGS_NODIST="${PYTHON_CFLAGS}" \
-    LDFLAGS_NODIST="${PYTHON_LDFLAGS}" \
     --enable-shared \
     --with-ensurepip=yes \
     --with-openssl=${PACKAGE_PREFIX} \

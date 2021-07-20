@@ -680,9 +680,6 @@ function export-compiler-environment-for-python() {
     export \
         _PYTHON_HOST_PLATFORM=${HOST_KERNEL}-${HOST_PROCESSOR} \
         _PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata__${PYTHON_PLATFORM}_${HOST_PROCESSOR}-${HOST_KERNEL}-${PYTHON_HOST_OS} \
-        CCSHARED="${CC} -shared ${CFLAGS}" \
-        LD=${CCLD} \
-        LDSHARED="${CCLD} -shared ${CCLDFLAGS}" \
         PYTHONHOME=${PACKAGE_PREFIX}:${BUILD_PACKAGE_PREFIX}
 }
 
