@@ -72,6 +72,9 @@ export GO=`BINDIR= package-get-path go EXECUTABLE BUILD`
 # openjdk bootstrap build
 package-invoke-builder openjdk-bootstrap
 
+# maven bootstrap build
+package-invoke-builder maven-bootstrap
+
 # rust bootstrap build
 package-invoke-builder rust-bootstrap
 

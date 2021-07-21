@@ -360,6 +360,12 @@ package-invoke-builder swig-cross
 # android openjdk build
 package-invoke-builder openjdk-cross
 
+# openjdk jansi build
+package-invoke-builder jansi-cross
+
+# android maven build
+package-invoke-builder maven-cross
+
 # android z3 build
 package-invoke-builder z3-cross
 

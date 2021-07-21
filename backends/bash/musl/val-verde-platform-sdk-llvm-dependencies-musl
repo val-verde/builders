@@ -363,6 +363,12 @@ package-invoke-builder swig-cross
 # openjdk build
 package-invoke-builder openjdk-cross
 
+# jansi build
+package-invoke-builder jansi-cross
+
+# maven build
+package-invoke-builder maven-cross
+
 # z3 build
 package-invoke-builder z3-cross
 
