@@ -43,6 +43,9 @@ category-invoke-builder swift-sdk-cross
 # android go build
 package-invoke-builder go-cross
 
+# android ruby build
+package-invoke-builder ruby-cross
+
 # android graphics sdk build
 category-invoke-builder graphics-sdk-cross
 

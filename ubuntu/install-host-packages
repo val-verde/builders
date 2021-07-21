@@ -34,6 +34,7 @@ apt install -y \
     python3-distutils \
     python3-six \
     rsync \
+    ruby \
     ssh \
     unzip
 apt autoremove -y
