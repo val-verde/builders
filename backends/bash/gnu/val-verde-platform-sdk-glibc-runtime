@@ -35,4 +35,5 @@ package-configure-install-archive \
     --disable-werror \
     --enable-cet \
     --enable-kernel=5.0 \
-    --libdir=/usr/lib
+    --libdir=/usr/lib \
+    --with-headers=${PACKAGE_PREFIX}/include
