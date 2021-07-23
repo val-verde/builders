@@ -3,7 +3,7 @@
 set -e
 
 # Source package build helper functions
-export PACKAGE_USR_PREFIX=/
+export PACKAGE_USR_PREFIX=.
 export \
     APT=/usr/bin/apt \
     AUTOGEN=/usr/bin/autogen \
@@ -39,6 +39,7 @@ export \
     NINJA=/usr/bin/ninja \
     PERL=/usr/bin/perl \
     PYTHON=/usr/bin/python3 \
+    READLINK=/usr/bin/readlink \
     RM="/usr/bin/rm -f" \
     RMDIR=/usr/bin/rmdir \
     RPM=/usr/bin/rpm \

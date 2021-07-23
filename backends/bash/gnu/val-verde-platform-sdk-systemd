@@ -38,7 +38,7 @@ package-meson-install-archive \
     -Dmicrohttpd=true \
     -Dopenssl=true \
     -Dp11kit=true \
-    -Drootprefix=${PACKAGE_PREFIX} \
+    -Drootprefix=${PACKAGE_PLATFORM_SYSROOT} \
     -Dseccomp=false \
     -Dselinux=false \
     -Dtests=false \

@@ -11,6 +11,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export DEPENDS="${PACKAGE_BASE_NAME}-llvm-project-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH} (>=1.0.0)"
 export INSTALL_PREFIX=${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}
+export PACKAGE_USR_PREFIX=${BUILD_PACKAGE_USR_PREFIX}
 export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
 export SOURCE_ROOT=${SOURCE_ROOT_BASE}/llvm-project-${SOURCE_PACKAGE_VERSION}/${SOURCE_PACKAGE_NAME}
 
@@ -41,7 +42,7 @@ function package-install-completion-callback() {
     ${MKDIR} -p ${CLANG_RT_INSTALL_PREFIX}
 
     if [ "${HOST_OS}" = "linux" ] ||
-    [ "${HOST_OS}" = "musl" ]; then
+       [ "${HOST_OS}" = "musl" ]; then
         ${MV} ${CLANG_RT_SOURCE_INSTALL_PREFIX}/clang_rt.crtbegin-${HOST_PROCESSOR}.o \
               ${CLANG_RT_INSTALL_PREFIX}/
         ${MV} ${CLANG_RT_SOURCE_INSTALL_PREFIX}/clang_rt.crtend-${HOST_PROCESSOR}.o \
@@ -87,7 +88,7 @@ if [ "${HOST_PROCESSOR}" = "wasm32" ]; then
     SIZEOF_VOID_P=4
 fi
 
-CMAKE_INSTALL_PREFIX=${BUILD_PACKAGE_PREFIX} \
+CMAKE_INSTALL_PLATFORM_PREFIX=${BUILD_PACKAGE_PLATFORM_SYSROOT} \
 COMMON_CFLAGS="\
     -nostdlib \
     ${COMMON_CFLAGS} \

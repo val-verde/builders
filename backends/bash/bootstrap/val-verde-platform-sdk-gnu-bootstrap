@@ -33,6 +33,12 @@ package-invoke-builder cuda-bootstrap
 BUILD_SYSROOT=/ \
 package-invoke-builder kernel-headers
 
+# autoconf bootstrap build
+package-invoke-builder autoconf
+
+# automake bootstrap build
+package-invoke-builder automake
+
 # gcc bootstrap build
 package-invoke-builder gcc
 
@@ -96,12 +102,6 @@ package-invoke-builder maven-bootstrap
 
 # rust bootstrap build
 package-invoke-builder rust-bootstrap
-
-# autoconf bootstrap build
-package-invoke-builder autoconf
-
-# automake bootstrap build
-package-invoke-builder automake
 
 # zlib bootstrap build
 package-invoke-builder zlib

@@ -300,11 +300,11 @@ package-invoke-builder util-linux-cross
 # nettle build
 package-invoke-builder nettle-cross
 
-# gnutls build
-package-invoke-builder gnutls-cross
-
 # unbound build
 package-invoke-builder unbound-cross
+
+# gnutls build
+package-invoke-builder gnutls-cross
 
 # libmicrohttpd build
 package-invoke-builder libmicrohttpd-cross

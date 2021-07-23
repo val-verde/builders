@@ -10,6 +10,10 @@ export SOURCE_PACKAGE_VERSION=3
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for bootstrap/configure/install
+if [ "${HOST_OS}" = "android" ]; then
+    export ANDROID_API_LEVEL=${HOST_OS_API_LEVEL}
+fi
+
 BOOTSTRAP_FILE=autogen.sh \
 DISABLE_AUTOUPDATE=TRUE \
 package-bootstrap-configure-install-archive \

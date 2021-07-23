@@ -310,6 +310,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
 
     CXX_INCLUDE_DIR_VAR=${ENV_PREFIX}CXX_INCLUDE_DIR
     CXX_INCLUDE_DIR_VAR_VALUE=${!CXX_INCLUDE_DIR_VAR}
+    PACKAGE_PLATFORM_SYSROOT_VAR=${ENV_PREFIX}PACKAGE_PLATFORM_SYSROOT
     PACKAGE_PREFIX_VAR=${ENV_PREFIX}PACKAGE_PREFIX
 
     export ${CXX_INCLUDE_DIR_VAR}=${CXX_INCLUDE_DIR_VAR_VALUE:-${!PACKAGE_PREFIX_VAR}/include/c++/v1}
@@ -355,7 +356,13 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     fi
 
     if [ -n "${!VARIANT_CPU}" ]; then
-        MTUNE_CFLAG="-mtune=${!VARIANT_CPU}"
+        if [ "${HOST_PROCESSOR}" = "aarch64" ] &&
+           [ -n "${USE_GCC}" ]; then
+            CPU_AARCH64=${DEFAULT_CPU_AARCH64:-cortex-a57}
+            MTUNE_CFLAG="-mtune=${CPU_AARCH64}"
+        else
+            MTUNE_CFLAG="-mtune=${!VARIANT_CPU}"
+        fi
     else
         unset MTUNE_CFLAG
     fi
@@ -370,11 +377,10 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         unset SYSROOT_CFLAG
     fi
 
-    PACKAGE_USR_PREFIX_VAR=${ENV_PREFIX}PACKAGE_USR_PREFIX
     PACKAGE_PREFIX_LIBDIR_CFLAG_VAR=${ENV_PREFIX}PACKAGE_PREFIX_LIBDIR_CFLAG
     export ${PACKAGE_PREFIX_LIBDIR_CFLAG_VAR}="-L${!PACKAGE_PREFIX_VAR}/lib"
 
-    if [ "${!TARGET_SYSROOT_VAR}${!PACKAGE_USR_PREFIX_VAR}" != "${!PACKAGE_PREFIX_VAR}" ] ||
+    if [ "${!TARGET_SYSROOT_VAR}" != "${!PACKAGE_PLATFORM_SYSROOT_VAR}" ] ||
        [ "${!VARIANT_OS}" = "wasi" ]; then
         ISYSTEM_CFLAG="-isystem ${!PACKAGE_PREFIX_VAR}/include"
     else
@@ -712,7 +718,7 @@ function export-compiler-environment-for-swift() {
         "
     fi
 
-    if [ "${SYSROOT}${!PACKAGE_USR_PREFIX_VAR}" != "${PACKAGE_PREFIX}" ]; then
+    if [ "${SYSROOT}" != "${PACKAGE_PLATFORM_SYSROOT}" ]; then
         SWIFTCFLAGS="\
             -I${PACKAGE_PREFIX}/include \
             -L${PACKAGE_PREFIX}/lib \
@@ -944,7 +950,8 @@ function package-cmake() {
 
 function package-cmake-invocation() {
     CMAKE_CONFIGURE_ROOT=${CMAKE_CONFIGURE_ROOT:-${SOURCE_ROOT}}
-    CMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX:-${PACKAGE_PREFIX}}
+    CMAKE_INSTALL_PLATFORM_PREFIX=`${READLINK} -m ${CMAKE_INSTALL_PLATFORM_PREFIX:-${PACKAGE_PLATFORM_SYSROOT}}`
+    CMAKE_INSTALL_PREFIX=`${READLINK} -m ${CMAKE_INSTALL_PLATFORM_PREFIX}/${PACKAGE_USR_PREFIX}`
 
     DELIMITER=" " \
     DISABLE_FILTER=TRUE \
@@ -1050,6 +1057,10 @@ function package-cmake-invocation-arguments-for-variant() {
         SYSTEM_NAME_CMD="-DCMAKE_SYSTEM_NAME=${!SYSTEM_NAME_VAR}"
     fi
 
+    LOCALSTATEDIR=`${READLINK} -m ${CMAKE_INSTALL_PLATFORM_PREFIX}/var`
+    SBINDIR=`${READLINK} -m ${CMAKE_INSTALL_PLATFORM_PREFIX}/sbin`
+    SYSCONFDIR=`${READLINK} -m ${CMAKE_INSTALL_PLATFORM_PREFIX}/etc`
+
     package-condense-arguments \
 -DCMAKE_AR=\""${!TOOL_AR}"\" \
 -DCMAKE_ASM_COMPILER=\""${!TOOL_AS}"\" \
@@ -1091,7 +1102,14 @@ function package-cmake-invocation-arguments-for-variant() {
 -DCMAKE_EXE_LINKER_FLAGS_RELEASE= \
 -DCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO= \
 -DCMAKE_GENERATOR=Ninja \
+-DCMAKE_INSTALL_BINDIR=bin \
+-DCMAKE_INSTALL_DATAROOTDIR=share \
+-DCMAKE_INSTALL_INCLUDEDIR=include \
 -DCMAKE_INSTALL_LIBDIR=lib \
+-DCMAKE_INSTALL_LIBEXECDIR=libexec \
+-DCMAKE_INSTALL_LOCALSTATEDIR=${LOCALSTATEDIR} \
+-DCMAKE_INSTALL_SBINDIR=${SBINDIR} \
+-DCMAKE_INSTALL_SYSCONFDIR=${SYSCONFDIR} \
 -DCMAKE_INSTALL_NAME_TOOL=${INSTALL_NAME_TOOL} \
 -DCMAKE_LIBTOOL=${CMAKE_LIBTOOL} \
 -DCMAKE_LINKER=${!TOOL_LD} \
@@ -1190,7 +1208,18 @@ function package-configure() {
 
 function package-configure-invocation() {
     CONFIGURE_HOST_TRIPLE=${CONFIGURE_HOST_TRIPLE:-${HOST_TRIPLE}}
-    CONFIGURE_PACKAGE_PREFIX=${CONFIGURE_PACKAGE_PREFIX:-${PACKAGE_PREFIX}}
+    CONFIGURE_PACKAGE_PLATFORM_PREFIX=${CONFIGURE_PACKAGE_PLATFORM_PREFIX:-${PACKAGE_PLATFORM_SYSROOT}}
+    CONFIGURE_PACKAGE_PREFIX=${CONFIGURE_PACKAGE_PLATFORM_PREFIX}/${PACKAGE_USR_PREFIX}
+
+    BINDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}/bin`
+    DATAROOTDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}/share`
+    INCLUDEDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}/include`
+    LIBDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}/lib`
+    LIBEXECDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}/libexec`
+    LOCALSTATEDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PLATFORM_PREFIX}/var`
+    PREFIX=`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}`
+    SBINDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PLATFORM_PREFIX}/sbin`
+    SYSCONFDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PLATFORM_PREFIX}/etc`
 
     AS_FOR_BUILD=${BUILD_ASFLAGS} \
     ASFLAGS_FOR_BUILD=${BUILD_ASFLAGS} \
@@ -1206,7 +1235,15 @@ function package-configure-invocation() {
     tool-log "${@}" \
         --build=${BUILD_TRIPLE} \
         --host=${CONFIGURE_HOST_TRIPLE} \
-        --prefix=${CONFIGURE_PACKAGE_PREFIX} \
+        --bindir=${BINDIR} \
+        --datarootdir=${DATAROOTDIR} \
+        --includedir=${INCLUDEDIR} \
+        --libdir=${LIBDIR} \
+        --libexecdir=${LIBEXECDIR} \
+        --localstatedir=${LOCALSTATEDIR} \
+        --prefix=${PREFIX} \
+        --sbindir=${SBINDIR} \
+        --sysconfdir=${SYSCONFDIR} \
         ${CONFIGURE_FLAGS}
 }
 
@@ -1598,8 +1635,15 @@ ${MESON_EXTRA_PROPERTIES}
     tool-log ${MESON} \
          ${SOURCE_ROOT} \
          ${STAGE_ROOT} \
-         -Dlibdir=${PACKAGE_PREFIX}/lib \
-         -Dprefix=${PACKAGE_PREFIX} \
+         -Dbindir=${PACKAGE_USR_PREFIX}/bin \
+         -Ddatadir=${PACKAGE_USR_PREFIX}/share \
+         -Dincludedir=${PACKAGE_USR_PREFIX}/include \
+         -Dlibdir=${PACKAGE_USR_PREFIX}/lib \
+         -Dlibexecdir=${PACKAGE_USR_PREFIX}/libexec \
+         -Dlocalstatedir=var \
+         -Dprefix=${PACKAGE_PLATFORM_SYSROOT} \
+         -Dsbindir=sbin \
+         -Dsysconfdir=etc \
          --${MESON_BUILD_CONFIG}-file ${CONFIG_FILE} \
          "${@}"
 }

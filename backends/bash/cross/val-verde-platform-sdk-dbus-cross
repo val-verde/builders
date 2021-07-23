@@ -22,7 +22,7 @@ if [ "${HOST_OS}" = "gnu" ]; then
     ENABLE_SYSTEMD=TRUE
 fi
 
-CMAKE_INSTALL_PREFIX=/ \
+CMAKE_INSTALL_PLATFORM_PREFIX=/ \
 DESTDIR=${INSTALL_ROOT}${PACKAGE_PLATFORM_SYSROOT} \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-cmake-install-archive \

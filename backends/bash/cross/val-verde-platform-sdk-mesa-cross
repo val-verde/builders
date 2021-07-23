@@ -64,7 +64,6 @@ package-meson-install-archive \
     -Dopencl-native=${HARDWARE_DRIVERS_ENABLED} \
     -Dopencl-spirv=true \
     -Dplatforms="${HARDWARE_PLATFORMS}" \
-    -Dprefix=${PACKAGE_PREFIX} \
     -Dosmesa=true \
     -Dshared-llvm=enabled \
     -Dshared-swr=true \

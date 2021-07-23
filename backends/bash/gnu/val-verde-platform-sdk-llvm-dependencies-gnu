@@ -37,6 +37,7 @@ export \
     NINJA=/usr/bin/ninja \
     PERL=/usr/bin/perl \
     PYTHON=/usr/bin/python3 \
+    READLINK=/usr/bin/readlink \
     RM="/usr/bin/rm -f" \
     RMDIR=/usr/bin/rmdir \
     RPM=/usr/bin/rpm \
@@ -343,6 +344,7 @@ unset \
     LN \
     MKDIR \
     MV \
+    READLINK \
     RM \
     RMDIR \
     TEE \
@@ -409,11 +411,11 @@ package-invoke-builder p11-kit-cross
 # nettle build
 package-invoke-builder nettle-cross
 
-# gnutls build
-package-invoke-builder gnutls-cross
-
 # unbound build
 package-invoke-builder unbound-cross
+
+# gnutls build
+package-invoke-builder gnutls-cross
 
 # libmicrohttpd build
 package-invoke-builder libmicrohttpd-cross
@@ -486,6 +488,9 @@ package-invoke-builder openjdk-cross
 
 # jansi build
 package-invoke-builder jansi-cross
+
+# maven build
+package-invoke-builder maven-cross
 
 # z3 build
 package-invoke-builder z3-cross

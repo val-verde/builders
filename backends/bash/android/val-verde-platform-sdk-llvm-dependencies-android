@@ -292,11 +292,11 @@ package-invoke-builder util-linux-cross
 # android nettle build
 package-invoke-builder nettle-cross
 
-# android gnutls build
-package-invoke-builder gnutls-cross
-
 # android unbound build
 package-invoke-builder unbound-cross
+
+# android gnutls build
+package-invoke-builder gnutls-cross
 
 # android libmicrohttpd build
 package-invoke-builder libmicrohttpd-cross

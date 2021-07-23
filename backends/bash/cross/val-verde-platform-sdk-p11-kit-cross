@@ -17,5 +17,4 @@ else
 fi
 
 package-meson-install-archive \
-    -Dprefix=${PACKAGE_PREFIX} \
     -Dsystemd=${FEATURE_SYSTEMD}
