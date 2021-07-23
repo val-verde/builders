@@ -42,6 +42,7 @@ else
 fi
 
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
+DISABLE_LIBTOOLIZE=TRUE \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-configure-install-archive \
     --disable-static \
