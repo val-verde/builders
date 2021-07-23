@@ -3,8 +3,10 @@
 set -e
 
 # Source package build helper functions
-export FORTIFY_SOURCE_LEVEL=0
-export PACKAGE_USR_PREFIX=/
+export \
+    DISABLE_FORTIFY_SOURCE_LEVEL=TRUE \
+    FORTIFY_SOURCE_LEVEL=0 \
+    PACKAGE_USR_PREFIX=/
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # windows mingw-headers build
