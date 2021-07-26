@@ -2,25 +2,30 @@
 
 set -e
 
-# Set all environment vars
-export SOURCE_PACKAGE_NAME=maven
-export SOURCE_PACKAGE_VERSION=3
-
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-MAVEN_PACKAGE_VERSION=3.8.1
-
 # Configure the build components
-package-wget -c https://mirrors.ocf.berkeley.edu/apache/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/${MAVEN_PACKAGE_VERSION}/binaries/apache-${SOURCE_PACKAGE_NAME}-${MAVEN_PACKAGE_VERSION}-bin.tar.gz \
-             -O ${STAGE_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
+MAVEN_PACKAGE_LIST=/usr/share/${VAL_VERDE_GH_TEAM}-maven-binaries.json
+MAVEN_PACKAGE_COUNT=$(jq -r length ${MAVEN_PACKAGE_LIST})
 
-cd ${STAGE_ROOT}
-package-tar -zxf \
-            ${STAGE_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
-${MV} ${STAGE_ROOT}/apache-${SOURCE_PACKAGE_NAME}*/* \
+for index in `seq 0 $((${MAVEN_PACKAGE_COUNT} - 1))`; do
+    index=$index \
+    get-maven-build-deps
+
+    MAVEN_PACKAGE_URL=${MAVEN_PACKAGE_URL//'${MAVEN_PACKAGE_NAME}'/${MAVEN_PACKAGE_NAME}}
+    MAVEN_PACKAGE_URL=${MAVEN_PACKAGE_URL//'${SOURCE_PACKAGE_VERSION}'/${SOURCE_PACKAGE_VERSION}}
+    MAVEN_PACKAGE_URL=${MAVEN_PACKAGE_URL//'${MAVEN_PACKAGE_VERSION}'/${MAVEN_PACKAGE_VERSION}}
+    
+    package-wget -c ${MAVEN_PACKAGE_URL} \
+      -O ${STAGE_ROOT}/${MAVEN_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz
+    package-tar -zxf \
+      ${STAGE_ROOT}/${MAVEN_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz \
+      -C ${STAGE_ROOT}
+    ${MV} ${STAGE_ROOT}/apache-${MAVEN_PACKAGE_NAME}*/* \
       ${STAGE_ROOT}/
-${RMDIR} ${STAGE_ROOT}/apache-${SOURCE_PACKAGE_NAME}*
+    ${RMDIR} ${STAGE_ROOT}/apache-${MAVEN_PACKAGE_NAME}*
+done
 
 ${MKDIR} -p \
          ${INSTALL_PREFIX}/bin \
