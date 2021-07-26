@@ -43,10 +43,10 @@ package-cmake-install-archive \
     -DClang_DIR=${LLVM_STAGE_ROOT}/lib/cmake/clang \
     -DCLANG_LINK_CLANG_DYLIB=TRUE \
     -DCMAKE_EXE_LINKER_FLAGS="-O2" \
-    -DCURSES_CURSES_LIBRARY=`package-get-path ncursesw SHARED HOST` \
-    -DCURSES_FORM_LIBRARY=`package-get-path formw SHARED HOST` \
+    -DCURSES_CURSES_LIBRARY=`package-get-path ncurses SHARED HOST` \
+    -DCURSES_FORM_LIBRARY=`package-get-path form SHARED HOST` \
     -DCURSES_INCLUDE_PATH=${PACKAGE_PREFIX}/include/ncurses \
-    -DCURSES_NCURSES_LIBRARY=`package-get-path ncursesw SHARED HOST` \
+    -DCURSES_NCURSES_LIBRARY=`package-get-path ncurses SHARED HOST` \
     -DLibEdit_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
     -DLibEdit_LIBRARIES=`package-get-path edit SHARED HOST` \
     -DLIBLZMA_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
@@ -88,6 +88,6 @@ package-cmake-install-archive \
     -DPython3_EXECUTABLE=${PYTHON} \
     -DPython3_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/python${PYTHON_VERSION} \
     -DPython3_LIBRARIES=`package-get-path python${PYTHON_VERSION} SHARED HOST` \
-    -DPANEL_LIBRARIES=`package-get-path panelw SHARED HOST` \
+    -DPANEL_LIBRARIES=`package-get-path panel SHARED HOST` \
     -DSwift_DIR=${SWIFT_STAGE_ROOT}/lib/cmake/swift \
     -DSWIG_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/swig

@@ -17,8 +17,8 @@ else
 fi
 
 CURL_LIBRARY=`package-get-path curl SHARED HOST`
-CURSES_CURSES_LIBRARY=`package-get-path ncursesw SHARED HOST`
-CURSES_FORM_LIBRARY=`package-get-path formw SHARED HOST`
+CURSES_CURSES_LIBRARY=`package-get-path ncurses SHARED HOST`
+CURSES_FORM_LIBRARY=`package-get-path form SHARED HOST`
 EXPAT_LIBRARY=`package-get-path expat SHARED HOST`
 LibArchive_LIBRARY=`package-get-path archive SHARED HOST`
 LibUV_LIBRARY=`package-get-path uv SHARED HOST`
@@ -45,7 +45,7 @@ package-cmake-install-archive \
     -DCMAKE_USE_SYSTEM_LIBLZMA=FALSE \
     -DCMAKE_USE_SYSTEM_LIBUV=FALSE \
     -DCMAKE_USE_SYSTEM_ZLIB=FALSE \
-    -DCURSES_INCLUDE_DIR=${PACKAGE_PREFIX}/include/ncursesw \
+    -DCURSES_INCLUDE_DIR=${PACKAGE_PREFIX}/include/ncurses \
     -DCURSES_CURSES_LIBRARY=${CURSES_CURSES_LIBRARY} \
     -DCURSES_FORM_LIBRARY=${CURSES_FORM_LIBRARY} \
     -DCURSES_NCURSES_LIBRARY=${CURSES_CURSES_LIBRARY} \

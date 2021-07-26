@@ -35,7 +35,7 @@ COMMON_CFLAGS="\
 " \
 DISABLE_INSTALL_DEB=TRUE \
 LIBS="\
-    -lncursesw \
+    -lncurses \
     -lole32 \
     -luuid \
     ${LIBS} \

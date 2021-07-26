@@ -41,11 +41,11 @@ fi
 
 BOOTSTRAP_FILE=autogen.sh \
 DISABLE_AUTOUPDATE=TRUE \
-NCURSES_CFLAGS="-I${PACKAGE_PREFIX}/include" \
-NCURSES_LDFLAGS="-L`package-get-path ncursesw SHARED HOST`" \
-NCURSESW6_CONFIG=${PACKAGE_PREFIX}/bin/`package-get-filename ncursesw6-config EXECUTABLE` \
+NCURSESW_CFLAGS="-I${PACKAGE_PREFIX}/include" \
+NCURSESW_LDFLAGS="-L`package-get-path ncurses SHARED HOST`" \
+NCURSESW6_CONFIG=`package-get-path ncurses6-config SCRIPT HOST` \
 PYTHON_CFLAGS=${PACKAGE_PREFIX}/include/python3.9 \
-PYTHON_LDFLAGS="-L`package-get-path ncursesw SHARED HOST`" \
+PYTHON_LDFLAGS="-L`package-get-path ncurses SHARED HOST`" \
 SYSTEMD_CFLAGS=${PACKAGE_PREFIX}/include \
 SYSTEMD_LDFLAGS="-L`package-get-path systemd SHARED HOST`" \
 package-bootstrap-configure-install-archive \

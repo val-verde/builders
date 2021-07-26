@@ -9,34 +9,52 @@ export SOURCE_PACKAGE_VERSION=6
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-export-compiler-environment
+# Invoke one-shot template for stage/configure/install
+function package-install-completion-callback() {
+    ${LN} -sf \
+          ncurses \
+          ${INSTALL_PREFIX}/include/ncursesw
+}
 
-# Invoke one-shot template for configure/install
+function tool-install-invocation() {
+    INSTALL_TARGET="libs" \
+    tool-install
+
+    INSTALL_TARGET="install.ncurses" \
+    tool-install
+
+    INSTALL_TARGET=install \
+    tool-install
+}
+
 TIC=${TIC:-/usr/bin/tic}
 
 if [ "${HOST_OS}" = "mingw32" ]; then
+    ENABLE_OR_DISABLE_SIGWINCH=disable
     ENABLE_VERSIONED_SYMS=no
 else
+    ENABLE_OR_DISABLE_SIGWINCH=enable
     ENABLE_VERSIONED_SYMS=yes
 fi
 
-${MKDIR} -p \
-         ${INSTALL_PREFIX}/include \
-         ${INSTALL_PREFIX}/lib
-${LN} -sf \
-      ncursesw \
-      ${INSTALL_PREFIX}/include/ncurses
-${LN} -sf \
-      `package-get-filename ncursesw SHARED` \
-      ${INSTALL_PREFIX}/lib/`package-get-filename ncurses SHARED`
+COMMON_CFLAGS="\
+    -Wno-macro-redefined \
+    ${COMMON_CFLAGS} \
+" \
+export-compiler-environment
 
 DISABLE_AUTOUPDATE=TRUE \
+DISABLE_TOOL_BUILD=TRUE \
 INSTALL_PREFIX=${PACKAGE_PREFIX} \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+TOOL_INSTALL_INVOCATION=tool-install-invocation \
 package-stage-configure-install-archive \
     --disable-termcap \
     --enable-ext-colors \
+    --enable-lib-suffixes=no \
     --enable-mixed-case \
     --enable-pc-files \
+    --enable-relink \
     --enable-rpath \
     --enable-sp-funcs \
     --enable-term-driver \
@@ -45,15 +63,17 @@ package-stage-configure-install-archive \
     --with-cxx \
     --with-cxx-shared \
     --with-install-prefix=${INSTALL_ROOT}/ \
+    --with-libtool=${PACKAGE_PREFIX}/bin/libtool \
     --with-pkg-config=${PKG_CONFIG} \
     --with-pkg-config-libdir=${PACKAGE_PREFIX}/lib/pkgconfig \
+    --with-progs \
     --with-shared \
     --with-tic-path=${TIC} \
     --with-ticlib \
     --with-versioned-syms=${ENABLE_VERSIONED_SYMS} \
     --without-debug \
     --without-manpages \
-    --without-progs \
     --without-tack \
     --without-termlib \
-    --without-tests
+    --without-tests \
+    --${ENABLE_OR_DISABLE_SIGWINCH}-sigwinch
