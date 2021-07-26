@@ -117,9 +117,6 @@ fi
 # android file build
 package-invoke-builder file-cross
 
-# android gnulib build
-package-invoke-builder gnulib-cross
-
 # android libedit build
 package-invoke-builder libedit-cross
 
