@@ -837,6 +837,18 @@ function get-cuda-build-deps() {
                                     ${CUDA_PACKAGE_LIST})
 }
 
+function get-maven-build-deps() {
+    MAVEN_PACKAGE_NAME=$(jq -r --argjson id $index \
+                            '.[$id].sourcePackageName' \
+                            ${MAVEN_PACKAGE_LIST})
+    MAVEN_PACKAGE_VERSION=$(jq -r --argjson id $index \
+                            '.[$id].sourcePackageVersion' \
+                            ${MAVEN_PACKAGE_LIST})
+    MAVEN_PACKAGE_URL=$(jq -r --argjson id $index \
+                            '.[$id].upstreamUrl' \
+                            ${MAVEN_PACKAGE_LIST})
+}
+
 function get-rust-build-deps() {
     RUST_PACKAGE_NAME=$(jq -r --argjson id $index \
                                 '.[$id].sourcePackageName' \
