@@ -30,6 +30,7 @@ elif [ "${HOST_OS}" = "macos" ]; then
         OPENSSL_PROCESSOR=arm64
     fi
 elif [ "${HOST_OS}" = "mingw32" ]; then
+    OPENSSL_OS=mingw64
     OPENSSL_DIR=${PACKAGE_PREFIX}/etc/ssl
 fi
 
@@ -37,8 +38,6 @@ OPENSSL_TARGET=${OPENSSL_OS}-${OPENSSL_PROCESSOR}
 
 if [ "${HOST_OS}" = "macos" ]; then
     OPENSSL_TARGET=${OPENSSL_TARGET}-cc
-elif [ "${HOST_OS}" = "mingw32" ]; then
-    OPENSSL_TARGET=mingw64
 fi
 
 LD=${CCLD} \

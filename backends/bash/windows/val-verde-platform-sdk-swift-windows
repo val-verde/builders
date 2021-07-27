@@ -9,8 +9,6 @@ export SOURCE_PACKAGE_VERSION=5
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-export-compiler-environment
-
 export DEPENDS="\
     ${PACKAGE_BASE_NAME}-icu4c-68-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-libxml2-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
@@ -42,6 +40,8 @@ COMMON_CFLAGS="\
     -fms-extensions \
     ${COMMON_CFLAGS} \
 " \
+export-compiler-environment
+
 CXX_STANDARD=17 \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 UniversalCRTSdkDir=${SYSROOT} \

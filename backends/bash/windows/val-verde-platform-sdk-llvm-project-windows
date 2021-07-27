@@ -19,12 +19,16 @@ export DEPENDS="\
 COMPILER_RT_SANITIZERS_TO_BUILD="asan;cfi;dfsan;hwasan;msan;safestack;tsan;ubsan_minimal"
 CUDA_GPU_PRIMARY_ARCH=61
 CUDA_GPU_SECONDARY_ARCH=35
-EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;clang-tools-extra;mlir;openmp;parallel-libs;polly;pstl"}
+EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;clang-tools-extra;mlir;parallel-libs;polly;pstl"}
+
+if [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    EXTRA_PROJECTS="${EXTRA_PROJECTS};openmp"
+fi
 
 # Invoke one-shot template for cmake/install
 function package-install-completion-callback() {
     package-rsync -ax \
-                  ${STAGE_ROOT}/bin/dsymutil \
+                  ${STAGE_ROOT}/bin/dsymutil* \
                   ${STAGE_ROOT}/bin/ld64.lld* \
                   ${STAGE_ROOT}/bin/llvm-as* \
                   ${STAGE_ROOT}/bin/llvm-dlltool* \
@@ -254,6 +258,7 @@ package-cmake-install-archive \
     -DPython3_EXECUTABLE=${PYTHON} \
     -DPOLLY_ENABLE_GPGPU_CODEGEN=FALSE \
     -DSANITIZER_CXX_ABI=libc++ \
+    -DVulkan_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DZ3_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DZ3_LIBRARIES=`package-get-path z3 SHARED HOST` \
     -DZ3_RETURNCODE=0 \

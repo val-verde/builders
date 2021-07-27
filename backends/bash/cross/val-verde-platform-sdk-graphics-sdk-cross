@@ -111,7 +111,6 @@ if [ "${HOST_OS}" = "gnu" ] ||
 fi
 
 # sdl build
-DXSDK_DIR=${SYSROOT} \
 package-invoke-builder sdl-cross
 
 # sdl-image build

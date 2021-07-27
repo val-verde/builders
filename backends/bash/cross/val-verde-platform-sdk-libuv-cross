@@ -16,6 +16,11 @@ export DEPENDS="\
 # Configure the build components
 if [ "${HOST_OS}" = "android" ]; then
     FORCE_ANDROID_CMD="-DFORCE_ANDROID=TRUE"
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    COMMON_CFLAGS="\
+        -fms-extensions \
+        ${COMMON_CFLAGS} \
+    "
 fi
 
 package-cmake-install-archive \

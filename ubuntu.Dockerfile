@@ -206,6 +206,14 @@ RUN HOST_ARCH=haswell \
     HOST_PROCESSOR=x86_64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows
 
+RUN HOST_ARCH=armv8-a \
+    HOST_CPU=cortex-a57 \
+    HOST_KERNEL=w64 \
+    HOST_OS=mingw32 \
+    HOST_OS_API_LEVEL= \
+    HOST_PROCESSOR=aarch64 \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows
+
 FROM windows_builder AS rust_builder
 
 COPY backends/bash/rust \
