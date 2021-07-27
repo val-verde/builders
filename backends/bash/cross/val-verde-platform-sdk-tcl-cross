@@ -34,6 +34,7 @@ function package-install-completion-callback() {
 
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 CONFIGURE_FILE_ROOT=${STAGE_ROOT}/${CONFIGURE_FILE_DIR} \
+INSTALL_TARGET="INSTALL_ROOT=${INSTALL_ROOT} install" \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-stage-configure-install-archive \
     ac_cv_func_memmove=yes \
