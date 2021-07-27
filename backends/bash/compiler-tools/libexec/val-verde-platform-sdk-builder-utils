@@ -284,10 +284,11 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         fi
     fi
 
-    if [ "${!VARIANT_OS}" = "macos" ]; then
+    if [ -z "${USE_GNU_OVER_DARWIN_LIBTOOL}" ] &&
+       [ "${!VARIANT_OS}" = "macos" ]; then
         export ${TOOL_LIBTOOL}="${!TOOL_LIBTOOL:-`package-get-path llvm-libtool-darwin EXECUTABLE BUILD`}"
     else
-        export ${TOOL_LIBTOOL}="${!TOOL_LIBTOOL:-`package-get-path libtool EXECUTABLE HOST`}"
+        export ${TOOL_LIBTOOL}="${!TOOL_LIBTOOL:-`package-get-path libtool SCRIPT HOST`}"
     fi
 
     export ${TOOL_LIPO}="${!TOOL_LIPO:-`package-get-path llvm-lipo EXECUTABLE BUILD`}"
@@ -1302,6 +1303,9 @@ function package-get-filename() {
         EXECUTABLE_SUFFIX_VAR=${ENV_PREFIX}EXECUTABLE_SUFFIX
         RESULT=${NAME}${!EXECUTABLE_SUFFIX_VAR}
         ;;
+    SCRIPT)
+        RESULT=${NAME}
+        ;;
     SHARED)
         SHARED_LIBRARY_PREFIX_VAR=${ENV_PREFIX}SHARED_LIBRARY_PREFIX
         SHARED_LIBRARY_SUFFIX_VAR=${ENV_PREFIX}SHARED_LIBRARY_SUFFIX
@@ -1320,26 +1324,33 @@ function package-get-filename() {
     echo ${RESULT}
 }
 
-# package-get-path <name> <EXECUTABLE|SHARED|STATIC> <BUILD|HOST>
+# package-get-path <name> <EXECUTABLE|SCRIPT|SHARED|STATIC> <BUILD|HOST>
 function package-get-path() {
     NAME=${1}
     TYPE=${2}
     VARIANT=${3}
 
-    if [ "${TYPE}" = "EXECUTABLE" ]; then
+    if [ -z "${VARIANT}" ] ||
+       [ "${VARIANT}" = "HOST" ]; then
+        ENV_PREFIX=
+    else
+        ENV_PREFIX="${VARIANT}_"
+    fi
+
+    if [ "${TYPE}" = "EXECUTABLE" ] ||
+       [ "${TYPE}" = "SCRIPT" ]; then
         SUBDIR=bin
     else
         SUBDIR=lib
     fi
 
-    RESULT=${PACKAGE_PREFIX}/${SUBDIR}
+    PACKAGE_PREFIX_VAR=${ENV_PREFIX}PACKAGE_PREFIX
 
-    if [ "${VARIANT}" = "BUILD" ]; then
-        if [ "${TYPE}" = "EXECUTABLE" ]; then
-            RESULT=${BINDIR:-${BUILD_PACKAGE_PREFIX}/${SUBDIR}}
-        else
-            RESULT=${BUILD_PACKAGE_PREFIX}/${SUBDIR}
-        fi
+    if [ "${TYPE}" = "EXECUTABLE" ] &&
+       [ "${VARIANT}" = "BUILD" ]; then
+        RESULT=${BINDIR:-${!PACKAGE_PREFIX_VAR}/${SUBDIR}}
+    else
+        RESULT=${!PACKAGE_PREFIX_VAR}/${SUBDIR}
     fi
 
     RESULT=${RESULT}/`package-get-filename ${NAME} ${TYPE}`

@@ -41,6 +41,7 @@ COMMON_CFLAGS="\
     -Wno-macro-redefined \
     ${COMMON_CFLAGS} \
 " \
+USE_GNU_OVER_DARWIN_LIBTOOL=TRUE \
 export-compiler-environment
 
 DISABLE_AUTOUPDATE=TRUE \
@@ -63,7 +64,7 @@ package-stage-configure-install-archive \
     --with-cxx \
     --with-cxx-shared \
     --with-install-prefix=${INSTALL_ROOT}/ \
-    --with-libtool=${PACKAGE_PREFIX}/bin/libtool \
+    --with-libtool=${LIBTOOL} \
     --with-pkg-config=${PKG_CONFIG} \
     --with-pkg-config-libdir=${PACKAGE_PREFIX}/lib/pkgconfig \
     --with-progs \
