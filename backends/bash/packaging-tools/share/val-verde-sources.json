@@ -2273,21 +2273,21 @@
         "sourceType": "other",
         "sourcePackageName": "automake",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "1.16.3",
+        "sourcePackageVersion": "1.16.4",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
         "sourceType": "other",
         "sourcePackageName": "bash",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "5.1",
+        "sourcePackageVersion": "5.1.8",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
         "sourceType": "other",
         "sourcePackageName": "bison",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "3.7.4",
+        "sourcePackageVersion": "3.7.6",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
@@ -2301,7 +2301,7 @@
         "sourceType": "other",
         "sourcePackageName": "gdbm",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "1.18.1",
+        "sourcePackageVersion": "1.20",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
@@ -2322,7 +2322,7 @@
         "sourceType": "other",
         "sourcePackageName": "help2man",
         "sourceBranchIndicator": "wget-xz",
-        "sourcePackageVersion": "1.48.1",
+        "sourcePackageVersion": "1.48.3",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz"
     },
     {
@@ -2364,7 +2364,7 @@
         "sourceType": "other",
         "sourcePackageName": "libmicrohttpd",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "0.9.72",
+        "sourcePackageVersion": "0.9.73",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
@@ -2462,7 +2462,7 @@
         "sourceType": "other",
         "sourcePackageName": "tar",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "1.32",
+        "sourcePackageVersion": "1.34",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
