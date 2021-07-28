@@ -20,7 +20,6 @@ fi
 
 package-meson-install-archive \
     -Damdgpu=${HARDWARE_DRIVERS_ENABLED} \
-    -Dbuild-tests=false \
     -Dcairo-tests=false \
     -Detnaviv=${HARDWARE_DRIVERS_ENABLED} \
     -Dexynos=${HARDWARE_DRIVERS_ENABLED} \
@@ -32,5 +31,4 @@ package-meson-install-archive \
     -Dnouveau=${HARDWARE_DRIVERS_ENABLED} \
     -Dradeon=${HARDWARE_DRIVERS_ENABLED} \
     -Dtegra=${HARDWARE_DRIVERS_ENABLED} \
-    -Dvivante=${HARDWARE_DRIVERS_ENABLED} \
     -Dvmwgfx=${HARDWARE_DRIVERS_ENABLED}
