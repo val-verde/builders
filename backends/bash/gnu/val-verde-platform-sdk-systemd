@@ -35,7 +35,7 @@ package-meson-install-archive \
     -Dgnutls=true \
     -Dlibcurl=true \
     -Dlz4=true \
-    -Dmicrohttp=true \
+    -Dmicrohttpd=true \
     -Dopenssl=true \
     -Dp11kit=true \
     -Drootprefix=${PACKAGE_PREFIX} \
