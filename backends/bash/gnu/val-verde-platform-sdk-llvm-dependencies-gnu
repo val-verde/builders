@@ -347,15 +347,15 @@ unset \
     TEE \
     TR
 
-# less build
-package-invoke-builder less-cross
-unset LESS
-
 # findutils build
 package-invoke-builder findutils-cross
 unset \
     FIND \
     XARGS
+
+# less build
+package-invoke-builder less-cross
+unset LESS
 
 # dpkg build
 package-invoke-builder dpkg-cross

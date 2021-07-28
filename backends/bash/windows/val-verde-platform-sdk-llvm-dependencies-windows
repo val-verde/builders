@@ -201,6 +201,9 @@ package-invoke-builder json-c-cross
 # windows findutils build
 # package-invoke-builder findutils-cross
 
+# less build
+# package-invoke-builder less-cross
+
 # windows lua build
 package-invoke-builder lua-cross
 

@@ -247,6 +247,9 @@ package-invoke-builder coreutils-cross
 # android findutils build
 package-invoke-builder findutils-cross
 
+# android less build
+package-invoke-builder less-cross
+
 # android dpkg build
 package-invoke-builder dpkg-cross
 

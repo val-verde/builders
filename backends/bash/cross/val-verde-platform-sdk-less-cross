@@ -4,11 +4,10 @@ set -e
 
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=less
-export SOURCE_PACKAGE_VERSION=581
+export SOURCE_PACKAGE_VERSION=590
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for stage/configure/install
-DISABLE_AUTOUPDATE=TRUE \
 package-stage-configure-install-archive
