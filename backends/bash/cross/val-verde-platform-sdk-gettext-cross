@@ -36,11 +36,12 @@ if [ -n "${DISABLE_XZ}" ]; then
     XZ_CMD="--without-xz"
 fi
 
+BOOTSTRAP_FILE=autogen.sh \
 LIBS="\
     -lc++ \
     ${LIBS} \
 " \
-package-stage-configure-install-archive \
+package-bootstrap-configure-install-archive \
     gl_cv_cc_visibility=${DEFAULT_VISIBILITY_HIDDEN} \
     --with-included-gettext=${WITH_INCLUDED_GETTEXT} \
     ${LIBXML2_CMD} \
