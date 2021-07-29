@@ -52,10 +52,6 @@ elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
 fi
 
 CMAKE_CONFIGURE_ROOT=${SOURCE_ROOT}/llvm \
-COMMON_CFLAGS="\
-    -fuse-ld=lld \
-    ${COMMON_CFLAGS} \
-" \
 COMMON_LDFLAGS="\
     -lunwind \
     ${COMMON_LDFLAGS} \
@@ -222,4 +218,4 @@ package-cmake-install-archive \
     -DZ3_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DZ3_LIBRARIES=`package-get-path z3 SHARED HOST` \
     -DZ3_RETURNCODE=0 \
-    -DZ3_RETURNCODE__TRYRUN_OUTPUT=4.8.10
+    -DZ3_RETURNCODE__TRYRUN_OUTPUT=4.8.12
