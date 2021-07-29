@@ -90,6 +90,12 @@ package-invoke-builder maven-bootstrap
 # rust bootstrap build
 package-invoke-builder rust-bootstrap
 
+# autoconf bootstrap build
+package-invoke-builder autoconf
+
+# automake bootstrap build
+package-invoke-builder automake
+
 # zlib bootstrap build
 package-invoke-builder zlib
 
