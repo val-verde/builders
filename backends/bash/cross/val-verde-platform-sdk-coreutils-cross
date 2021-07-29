@@ -17,8 +17,14 @@ if [ "${HOST_OS}" != "macos" ] &&
     "
 fi
 
-# Invoke one-shot template for stage/configure/install
+# Invoke one-shot template for bootstrap/configure/install
+COREUTILS_NATIVE_STAGE_ROOT=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}
+
+if [ "${HOST_OS}" != "${HOST_TRIPLE}" ]; then
+    export MAKE_PRIME_LIST=${COREUTILS_NATIVE_STAGE_ROOT}/build/src/make-prime-list
+fi
+
 DISABLE_AUTOUPDATE=TRUE \
 FORCE_UNSAFE_CONFIGURE=1 \
-package-stage-configure-install-archive \
+package-bootstrap-configure-install-archive \
     --with-openssl
