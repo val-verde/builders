@@ -1802,21 +1802,21 @@
         "sourceType": "other",
         "sourcePackageName": "isl",
         "sourceBranchIndicator": "wget-bz2",
-        "sourcePackageVersion": "0.23",
+        "sourcePackageVersion": "0.24",
         "sourcePackageUrl": "http://isl.gforge.inria.fr/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.bz2"
     },
     {
         "sourceType": "other",
         "sourcePackageName": "libedit",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "20191231-3.1",
+        "sourcePackageVersion": "20210714-3.1",
         "sourcePackageUrl": "https://www.thrysoee.dk/editline/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
         "sourceType": "other",
         "sourcePackageName": "libffi",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "3.3",
+        "sourcePackageVersion": "3.4",
         "sourcePackageUrl": "https://gcc.gnu.org/pub/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
@@ -1851,7 +1851,7 @@
         "sourceType": "other",
         "sourcePackageName": "mako",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "1.1.3",
+        "sourcePackageVersion": "1.1.4",
         "sourcePackageUrl": "https://ftp.osuosl.org/pub/blfs/conglomeration/python-modules/Mako-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
@@ -1879,7 +1879,7 @@
         "sourceType": "other",
         "sourcePackageName": "pcre",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "8.44",
+        "sourcePackageVersion": "8.45",
         "sourcePackageUrl": "https://ftp.pcre.org/pub/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
@@ -1915,7 +1915,7 @@
         "sourcePackageName": "sqlite",
         "sourceBranchIndicator": "wget",
         "sourcePackageVersion": "3",
-        "sourcePackageUrl": "https://sqlite.org/2021/sqlite-autoconf-3340100.tar.gz"
+        "sourcePackageUrl": "https://sqlite.org/2021/sqlite-autoconf-3360000.tar.gz"
     },
     {
         "sourceType": "other",
@@ -1949,14 +1949,14 @@
         "sourceType": "other",
         "sourcePackageName": "util-linux",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "2.36.1",
-        "sourcePackageUrl": "https://cdn.kernel.org/pub/linux/utils/${SOURCE_PACKAGE_NAME}/v2.36/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
+        "sourcePackageVersion": "2.37.1",
+        "sourcePackageUrl": "https://cdn.kernel.org/pub/linux/utils/${SOURCE_PACKAGE_NAME}/v2.37/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
         "sourceType": "other",
         "sourcePackageName": "vim",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "8.2.2380",
+        "sourcePackageVersion": "8.2.3245",
         "sourcePackageUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}/archive/v${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
