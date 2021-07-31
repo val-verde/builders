@@ -29,6 +29,14 @@ function package-install-completion-callback() {
           ${INSTALL_PREFIX}/bin/python
 }
 
+if [ "${HOST_OS}" = "android" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    COMMON_CFLAGS="\
+        -lintl \
+        ${COMMON_CFLAGS} \
+    "
+fi
+
 COMMON_CFLAGS="\
     --sysroot=${SYSROOT} \
     -I${PACKAGE_PREFIX}/include \
