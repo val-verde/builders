@@ -329,6 +329,9 @@ package-invoke-builder json-c-cross
 package-invoke-builder tar-cross
 unset TAR
 
+# bc build
+package-invoke-builder bc-cross
+
 # coreutils build
 package-invoke-builder coreutils-cross
 unset \
