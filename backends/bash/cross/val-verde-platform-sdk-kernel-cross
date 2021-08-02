@@ -1,0 +1,68 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=kernel
+export SOURCE_PACKAGE_VERSION=5
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+export SOURCE_ROOT=${SOURCE_ROOT_BASE}/linux-${SOURCE_PACKAGE_VERSION}
+
+# Configure the build components
+DISABLE_FORTIFY_SOURCE_LEVEL=TRUE \
+DISABLE_POLLY=TRUE \
+DISABLE_SOUPER=TRUE \
+DISABLE_STRIP=TRUE \
+OPTIMIZATION_LEVEL=2 \
+export-compiler-environment
+
+ARCH=${HOST_PROCESSOR}
+
+if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+    ARCH=arm64
+fi
+
+function kernel-build() {
+make-build \
+    -C ${SOURCE_ROOT} \
+    AR=${AR} \
+    ARCH=${ARCH} \
+    CC=${CC} \
+    CFLAGS="${CFLAGS}" \
+    CXX=${CXX} \
+    CXXFLAGS="${CXXFLAGS}" \
+    HOSTAR=${AR} \
+    HOSTCC=${BUILD_CC} \
+    HOSTCFLAGS="${BUILD_CFLAGS}" \
+    HOSTCXX=${BUILD_CXX} \
+    HOSTCXXFLAGS="${BUILD_CXXFLAGS}" \
+    HOSTLD=${BUILD_LD} \
+    HOSTLDFLAGS="${BUILD_LDFLAGS}" \
+    INSTALL_HDR_PATH=${INSTALL_PREFIX} \
+    KBUILD_OUTPUT=${STAGE_ROOT} \
+    LD=${LD} \
+    LDFLAGS="${LDFLAGS}" \
+    LLVM=1 \
+    LLVM_IAS=1 \
+    NM=${NM} \
+    OBJCOPY=${OBJCOPY} \
+    OBJDUMP=${OBJDUMP} \
+    RANLIB=${RANLIB} \
+    READELF=${READELF} \
+    STRIP=${STRIP} \
+    ${@}
+}
+
+kernel-build defconfig
+
+${SED} -i \
+       "s/CONFIG_HAVE_LIVEPATCH=y/CONFIG_HAVE_LIVEPATCH=n/g" \
+       ${STAGE_ROOT}/.config
+
+kernel-build all
+kernel-build install
+
+# Build and install the package
+package-invoke-archive-install
