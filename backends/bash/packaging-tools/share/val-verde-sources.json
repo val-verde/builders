@@ -409,9 +409,9 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "gcc",
-        "sourceBranchIndicator": "master",
-        "sourcePackageVersion": "12",
-        "sourcePackageUrl": "git://${SOURCE_PACKAGE_NAME}.gnu.org/git/${SOURCE_PACKAGE_NAME}.git"
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "11",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
         "retainSource": "false",

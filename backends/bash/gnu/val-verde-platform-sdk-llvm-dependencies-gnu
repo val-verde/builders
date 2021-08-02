@@ -75,11 +75,9 @@ package-invoke-builder automake-cross
 package-invoke-builder autoconf-archive-cross
 
 # glibc interface build
-CC=/usr/bin/gcc \
 package-invoke-builder glibc-interface
 
 # glibc runtime build
-CC=/usr/bin/gcc \
 package-invoke-builder glibc-runtime
 
 # libxcrypt build

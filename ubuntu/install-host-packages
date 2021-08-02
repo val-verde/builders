@@ -23,6 +23,10 @@ apt install -y \
     gawk \
     git \
     jq \
+    libgmp-dev \
+    libisl-dev \
+    libmpc-dev \
+    libmpfr-dev \
     lld${LLVM_VERSION_SUFFIX} \
     llvm${LLVM_VERSION_SUFFIX} \
     make \

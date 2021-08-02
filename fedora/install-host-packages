@@ -18,12 +18,16 @@ yum -y install \
     flex \
     gawk \
     git \
+    gmp-devel \
+    isl-devel \
     jq \
+    libmpc-devel \
     libnsl \
     lld \
     llvm \
     make \
     meson \
+    mpfr-devel \
     ninja-build \
     patchelf \
     pkg-config \

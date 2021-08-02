@@ -33,10 +33,17 @@ package-invoke-builder cuda-bootstrap
 BUILD_SYSROOT=/ \
 package-invoke-builder kernel-headers
 
+# gcc bootstrap build
+package-invoke-builder gcc
+
 # glibc-interface bootstrap build
+CC=`BINDIR= package-get-path gcc EXECUTABLE BUILD` \
+CPP=`BINDIR= package-get-path cpp EXECUTABLE BUILD` \
 package-invoke-builder glibc-interface
 
 # libcxx bootstrap build
+DISABLE_CXX_INCLUDE=TRUE \
+DISABLE_CXX_STDLIB=TRUE \
 package-invoke-builder libcxx-bootstrap
 
 # cmake bootstrap build
