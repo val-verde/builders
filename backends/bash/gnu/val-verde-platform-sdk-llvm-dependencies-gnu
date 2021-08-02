@@ -350,6 +350,9 @@ unset \
     TEE \
     TR
 
+# ed build
+package-invoke-builder ed-cross
+
 # findutils build
 package-invoke-builder findutils-cross
 unset \
