@@ -1817,7 +1817,7 @@ function package-swift-build() {
             \"-march=${HOST_ARCH}\", \n\
             \"-mtune=${HOST_CPU}\", \n\
             \"-pipe\", \n\
-            \"-resource-dir=${PACKAGE_PREFIX}/lib/clang/13.0.0\", \n\
+            \"-resource-dir=${PACKAGE_PREFIX}/lib/clang/14.0.0\", \n\
             \"-stdlib++-isystem\", \"${PACKAGE_PREFIX}/include/c++/v1\", \n\
             \"-target\", \"${TARGET}\", \n\
             \"-I${PACKAGE_PREFIX}/lib/swift\", \n\

@@ -116,7 +116,7 @@ export NODE_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/web
 export PATH=${BUILD_PACKAGE_PREFIX}/bin:${PATH}
 export TEMPDIR=${TEMPDIR:-/tmp}
 TEMP_ROOT_BASE=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}
-export QUALIFIED_LLVM_PATH=llvm-project-13
+export QUALIFIED_LLVM_PATH=llvm-project-14
 
 # 'host' configuration
 export HOST_TRIPLE=${HOST_TRIPLE:-${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}}

@@ -4,7 +4,7 @@ set -e
 
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=compiler-rt
-export SOURCE_PACKAGE_VERSION=13
+export SOURCE_PACKAGE_VERSION=14
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
@@ -38,7 +38,7 @@ function package-install-completion-callback() {
 
     DST_SDK_PLATFORM_DIR=${DST_SDK_PLATFORM_DIR:-${SDK_PLATFORM_DIR}}
     CLANG_RT_SOURCE_INSTALL_PREFIX=${INSTALL_PREFIX}/lib/${SDK_PLATFORM_DIR}
-    CLANG_RT_INSTALL_PREFIX=${INSTALL_PREFIX}/lib/clang/13.0.0/lib/${DST_SDK_PLATFORM_DIR}
+    CLANG_RT_INSTALL_PREFIX=${INSTALL_PREFIX}/lib/clang/14.0.0/lib/${DST_SDK_PLATFORM_DIR}
     ${MKDIR} -p ${CLANG_RT_INSTALL_PREFIX}
 
     if [ "${HOST_OS}" = "linux" ] ||

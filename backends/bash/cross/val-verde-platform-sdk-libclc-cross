@@ -4,7 +4,7 @@ set -e
 
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=libclc
-export SOURCE_PACKAGE_VERSION=13
+export SOURCE_PACKAGE_VERSION=14
 export SOURCE_ROOT=${SOURCE_ROOT_BASE}/llvm-project-${SOURCE_PACKAGE_VERSION}
 
 # Source package build helper functions
