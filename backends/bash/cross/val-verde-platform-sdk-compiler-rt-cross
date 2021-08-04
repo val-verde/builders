@@ -10,6 +10,7 @@ export INSTALL_PREFIX=${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}
 export PACKAGE_USR_PREFIX=${BUILD_PACKAGE_USR_PREFIX}
 export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
 export SOURCE_ROOT=${SOURCE_ROOT_BASE}/llvm-project-${SOURCE_PACKAGE_VERSION}/${SOURCE_PACKAGE_NAME}
+CLANG_RESOURCE_VERSION=`package-get-source-package-version llvm-project`
 
 # Invoke one-shot template for cmake/install
 function package-install-completion-callback() {
@@ -34,7 +35,7 @@ function package-install-completion-callback() {
 
     DST_SDK_PLATFORM_DIR=${DST_SDK_PLATFORM_DIR:-${SDK_PLATFORM_DIR}}
     CLANG_RT_SOURCE_INSTALL_PREFIX=${INSTALL_PREFIX}/lib/${SDK_PLATFORM_DIR}
-    CLANG_RT_INSTALL_PREFIX=${INSTALL_PREFIX}/lib/clang/13.0.0/lib/${DST_SDK_PLATFORM_DIR}
+    CLANG_RT_INSTALL_PREFIX=${INSTALL_PREFIX}/lib/clang/${CLANG_RESOURCE_VERSION}/lib/${DST_SDK_PLATFORM_DIR}
     ${MKDIR} -p ${CLANG_RT_INSTALL_PREFIX}
 
     if [ "${HOST_OS}" = "linux" ] ||

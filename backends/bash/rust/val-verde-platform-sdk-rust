@@ -11,6 +11,7 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-z3-4-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
+CLANG_RESOURCE_VERSION=`package-get-source-package-version llvm-project`
 
 # Configure the build components
 ${MKDIR} -p ${STAGE_ROOT}/libgcc
@@ -35,7 +36,7 @@ COMMON_CFLAGS="\
 COMMON_LDFLAGS="\
     -lclang_rt.builtins-${HOST_PROCESSOR} \
     -L${STAGE_ROOT}/libgcc \
-    -L${PACKAGE_PREFIX}/lib/clang/13.0.0/lib/${RUST_HOST_OS} \
+    -L${PACKAGE_PREFIX}/lib/clang/${CLANG_RESOURCE_VERSION}/lib/${RUST_HOST_OS} \
     ${COMMON_LDFLAGS} \
 " \
 export-compiler-environment

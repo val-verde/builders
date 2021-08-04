@@ -45,9 +45,10 @@ function package-install-completion-callback() {
     CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
     DST_CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
     DST_SDK_PLATFORM_DIR=${DST_SDK_PLATFORM_DIR:-windows}
+    CLANG_RESOURCE_VERSION=`package-get-source-package-version llvm-project`
     ${LN} -sf \
           ${CLANG_RT_LIB} \
-          ${INSTALL_PREFIX}/lib/clang/13.0.0/lib/${DST_SDK_PLATFORM_DIR}/${DST_CLANG_RT_LIB}
+          ${INSTALL_PREFIX}/lib/clang/${CLANG_RESOURCE_VERSION}/lib/${DST_SDK_PLATFORM_DIR}/${DST_CLANG_RT_LIB}
 }
 
 function tool-install-invocation() {
