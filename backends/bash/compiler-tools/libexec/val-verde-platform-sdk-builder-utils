@@ -1836,6 +1836,8 @@ function package-swift-build() {
         ${SWIFT_BUILD_FLAGS} \
     " | ${XARGS}`
 
+    CLANG_RESOURCE_VERSION=`package-get-source-package-version llvm-project`
+
     ${ECHO} -e "{ \n\
         \"version\": 1, \n\
         \"sdk\": \"${SYSROOT}\", \n\
@@ -1845,7 +1847,7 @@ function package-swift-build() {
             \"-march=${HOST_ARCH}\", \n\
             \"-mtune=${HOST_CPU}\", \n\
             \"-pipe\", \n\
-            \"-resource-dir=${PACKAGE_PREFIX}/lib/clang/13.0.0\", \n\
+            \"-resource-dir=${PACKAGE_PREFIX}/lib/clang/${CLANG_RESOURCE_VERSION}\", \n\
             \"-stdlib++-isystem\", \"${PACKAGE_PREFIX}/include/c++/v1\", \n\
             \"-target\", \"${TARGET}\", \n\
             \"-I${PACKAGE_PREFIX}/lib/swift\", \n\
