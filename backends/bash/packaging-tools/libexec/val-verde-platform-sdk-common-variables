@@ -231,6 +231,16 @@ function package-get-path() {
     fi
 }
 
+function package-get-source-package-version() {
+    QUERIED_SOURCE_PACKAGE_VERSION="\
+    $(jq -r --arg src "$1" \
+    '.[] | select(.sourcePackageName==$src and 
+    .sourceBranchIndicator=="default") | .sourcePackageVersion' \
+    ${SOURCE_FILE})"
+
+    echo ${QUERIED_SOURCE_PACKAGE_VERSION}.0.0
+}
+
 function package-git-add() {
     package-git-tool add "${@}"
 }
