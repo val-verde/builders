@@ -2107,6 +2107,24 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "xorg-libxcursor",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "xorg-libxdamage",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "xorg-libxkbfile",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
@@ -2126,6 +2144,15 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "xorg-libxi",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "xorg-libxmu",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
@@ -2197,6 +2224,24 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "xorg-macros",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "xorg-xauth",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "xorg-xhost",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"

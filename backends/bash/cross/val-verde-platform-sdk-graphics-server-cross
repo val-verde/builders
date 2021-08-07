@@ -86,9 +86,6 @@ if [ "${HOST_OS}" != "mingw32" ]; then
     # libxinerama build
     package-invoke-builder libxinerama-cross
 
-    # xorg-xinput build
-    package-invoke-builder xorg-xinput-cross
-
     # libxcb-util build
     package-invoke-builder libxcb-util-cross
 
@@ -97,6 +94,24 @@ if [ "${HOST_OS}" != "mingw32" ]; then
 
     # xcb-render-util build
     package-invoke-builder xcb-render-util-cross
+
+    # xorg-libxcursor build
+    package-invoke-builder xorg-libxcursor-cross
+
+    # xorg-libxdamage build
+    package-invoke-builder xorg-libxdamage-cross
+
+    # xorg-libxmu build
+    package-invoke-builder xorg-libxmu-cross
+
+    # xorg-xauth build
+    package-invoke-builder xorg-xauth-cross
+
+    # xorg-xhost build
+    package-invoke-builder xorg-xhost-cross
+
+    # xorg-xinput build
+    package-invoke-builder xorg-xinput-cross
 fi
 
 # libjpeg build
