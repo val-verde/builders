@@ -29,6 +29,7 @@ package-rsync -ax \
               ${INCLUDES_PATH}/netinet \
               ${INCLUDES_PATH}/netpacket \
               ${INCLUDES_PATH}/sys \
+              ${INCLUDES_PATH}/SLES \
               ${INSTALL_PREFIX}/include/
 
 # Remove iconv and zlib components as they are rebuilt.
