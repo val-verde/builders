@@ -4,8 +4,7 @@ set -e
 
 # builder configuration defaults
 BASE_DIRECTORY=${BASE_DIRECTORY:-$(${ECHO} "${PACKAGE_ROOT}" | ${CUT} -d "/" -f2)}
-DEPENDS=${DEPENDS:=''}
-TARGETS=${TARGETS:-install}
+DEB_PATH=${DEB_PATH:-${BUILD_DEB_PATH}}
 VERSION=${VERSION:='1.0.0'}
 
 function deb-package-build() {
