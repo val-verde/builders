@@ -173,9 +173,8 @@ package-invoke-builder autogen-cross 5
 package-invoke-builder indent-cross 2
 
 # util-linux build
-DISABLE_PYTHON=TRUE \
-DISABLE_SYSTEMD=TRUE \
-package-invoke-builder util-linux-cross 2
+DEB_PATH=${TOOLCHAIN_DEB_PATH} \
+package-invoke-builder util-linux-cross 2 bootstrap-only
 
 # libarchive build
 package-invoke-builder libarchive-cross 3
