@@ -2,12 +2,16 @@
 
 set -e
 
-function get-common-variables() {
+function package-get-common-variables() {
     source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
 }
 
+function package-get-packaging-api() {
+    source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
+}
+
 function package-invoke-category-builder() {
-    get-common-variables
+    package-get-common-variables
     ${ECHO} -e "Builder Category Invocation Started"
     ${BASH} ${VAL_VERDE_GH_TEAM}-platform-sdk-${@}
     ${ECHO} -e "Builder Category Invocation Complete"
@@ -15,14 +19,9 @@ function package-invoke-category-builder() {
 }
 
 function package-install-build-archive() {
-    source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
+    package-get-packaging-api
     ${ECHO} -e "    Skipping re-build: \e[1;35m${PACKAGE_NAME}\e[0m"
-    if [[ "${PACKAGE_NAME}" == *"stage"* ]]; then
-        DISABLE_INSTALL_DEB= \
-        deb-package-install
-    else
-        deb-package-install
-    fi
+    deb-package-install
 }
 
 function package-invoke-builder() {
@@ -30,7 +29,8 @@ function package-invoke-builder() {
     export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
     export PACKAGE_NAME=${PACKAGE_NAME:-${PACKAGE_BASE_NAME}-${QUALIFIED_PACKAGE_NAME}}
 
-    get-common-variables
+    package-get-common-variables
+    package-get-packaging-api
 
     SEARCH_PATH=${DEB_PATH} \
     SEARCH_INPUT=${PACKAGE_NAME} \
@@ -52,6 +52,7 @@ function package-invoke-builder() {
 
     unset DISABLE_BUILD_DEB \
           DISABLE_INSTALL_DEB \
+          NON_PERSISTENT_ARCHIVE \
           SOURCE_PACKAGE_NAME \
           SOURCE_PACKAGE_VERSION \
           PACKAGE_NAME \
@@ -86,6 +87,8 @@ function parse-builder-args() {
             export DISABLE_INSTALL_DEB=TRUE
         elif [ $3 == "no-install" ]; then
             export DISABLE_INSTALL_DEB=TRUE
+        elif [ $3 == "bootstrap-only" ]; then
+            export NON_PERSISTENT_ARCHIVE=TRUE
         fi
     fi
 }
