@@ -11,6 +11,11 @@ export DEPENDS="\
 "
 
 # Invoke one-shot template for bootstrap/configure/install
+if [ -n "${NON_PERSISTENT_ARCHIVE}" ]; then
+    DISABLE_PYTHON=TRUE
+    DISABLE_SYSTEMD=TRUE
+fi
+
 if [ -z "${DISABLE_PYTHON}" ]; then
     ENABLE_OR_DISABLE_PYTHON=enable
 else

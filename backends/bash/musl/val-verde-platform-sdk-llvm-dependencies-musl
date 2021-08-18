@@ -176,9 +176,8 @@ package-invoke-builder libgcrypt-cross 1
 package-invoke-builder indent-cross 2
 
 # util-linux build
-DISABLE_PYTHON=TRUE \
-DISABLE_SYSTEMD=TRUE \
-package-invoke-builder util-linux-cross 2
+DEB_PATH=${TOOLCHAIN_DEB_PATH} \
+package-invoke-builder util-linux-cross 2 bootstrap-only
 
 # attr build
 package-invoke-builder attr-cross 2
