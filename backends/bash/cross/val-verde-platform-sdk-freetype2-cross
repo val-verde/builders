@@ -6,6 +6,10 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
+if [ -n "${NON_PERSISTENT_ARCHIVE}" ]; then
+    DISABLE_HARFBUZZ=TRUE
+fi
+
 if [ -z "${DISABLE_HARFBUZZ}" ]; then
     FT_WITH_HARFBUZZ=TRUE
     HARFBUZZ_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/harfbuzz

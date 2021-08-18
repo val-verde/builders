@@ -166,8 +166,8 @@ package-invoke-builder vulkan-loader-cross 1
 package-invoke-builder brotli-cross 1
 
 # freetype2 build
-DISABLE_HARFBUZZ=TRUE \
-package-invoke-builder freetype2-cross 2
+DEB_PATH=${TOOLCHAIN_DEB_PATH} \
+package-invoke-builder freetype2-cross 2 bootstrap-only
 
 # fontconfig build
 package-invoke-builder fontconfig-cross 2
