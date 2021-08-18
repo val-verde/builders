@@ -12,6 +12,10 @@ export DEPENDS="\
 "
 
 # Invoke one-shot template for stage/configure/install
+if [ -n "${NON_PERSISTENT_ARCHIVE}" ]; then
+    DISABLE_PYTHON=TRUE
+fi
+
 if [ -z "${DISABLE_PYTHON}" ]; then
     export-compiler-environment-for-python
     WITH_OR_WITHOUT_PYTHON=--with-python=${PACKAGE_PREFIX}

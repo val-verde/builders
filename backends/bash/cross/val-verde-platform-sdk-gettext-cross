@@ -10,6 +10,11 @@ export DEPENDS="\
 "
 
 # Invoke one-shot template for stage/configure/install
+if [ -n "${NON_PERSISTENT_ARCHIVE}" ]; then
+    DISABLE_LIBXML2=TRUE
+    DISABLE_XZ=TRUE
+fi
+
 DEFAULT_VISIBILITY_HIDDEN=yes
 WITH_INCLUDED_GETTEXT=yes
 
