@@ -143,10 +143,8 @@ package-invoke-builder gmp-cross 6
 package-invoke-builder ncurses-cross 6
 
 # gettext build (without libxml2 and xz)
-DISABLE_LIBXML2=TRUE \
-DISABLE_XZ=TRUE \
 DEB_PATH=${TOOLCHAIN_DEB_PATH} \
-package-invoke-builder gettext-cross 0
+package-invoke-builder gettext-cross 0 bootstrap-only
 unset GETTEXT
 
 # gzip build
@@ -160,9 +158,8 @@ package-invoke-builder xz-cross 5
 unset XZ
 
 # libxml2 build
-DISABLE_PYTHON=TRUE \
 DEB_PATH=${TOOLCHAIN_DEB_PATH} \
-package-invoke-builder libxml2-cross 2
+package-invoke-builder libxml2-cross 2 bootstrap-only
 
 # gettext build
 package-invoke-builder gettext-cross 0
