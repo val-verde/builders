@@ -14,7 +14,7 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-zlib-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Invoke one-shot template for configure/install
+# Invoke one-shot template for bootstrap/configure/install
 if [ -z "${DISABLE_PYTHON}" ]; then
     ENABLE_OR_DISABLE_PYTHON=enable
 else
@@ -28,20 +28,27 @@ else
 fi
 
 if [ "${HOST_OS}" = "macos" ]; then
+    COMMON_CFLAGS="\
+        -lintl \
+        ${COMMON_CFLAGS} \
+    "
     ENABLE_OR_DISABLE_LIBMOUNT=disable
+    ENABLE_OR_DISABLE_LIBUUID=disable
 else
     ENABLE_OR_DISABLE_LIBMOUNT=enable
+    ENABLE_OR_DISABLE_LIBUUID=enable
 fi
 
+BOOTSTRAP_FILE=autogen.sh \
 DISABLE_AUTOUPDATE=TRUE \
-NCURSES_CFLAGS="-I${PACKAGE_PREFIX}/include" \
-NCURSES_LDFLAGS="-L`package-get-path ncursesw SHARED HOST`" \
-NCURSESW6_CONFIG=${PACKAGE_PREFIX}/bin/`package-get-filename ncursesw6-config EXECUTABLE` \
+NCURSESW_CFLAGS="-I${PACKAGE_PREFIX}/include" \
+NCURSESW_LDFLAGS="-L`package-get-path ncurses SHARED HOST`" \
+NCURSESW6_CONFIG=`package-get-path ncurses6-config SCRIPT HOST` \
 PYTHON_CFLAGS=${PACKAGE_PREFIX}/include/python3.9 \
-PYTHON_LDFLAGS="-L`package-get-path ncursesw SHARED HOST`" \
+PYTHON_LDFLAGS="-L`package-get-path ncurses SHARED HOST`" \
 SYSTEMD_CFLAGS=${PACKAGE_PREFIX}/include \
 SYSTEMD_LDFLAGS="-L`package-get-path systemd SHARED HOST`" \
-package-configure-install-archive \
+package-bootstrap-configure-install-archive \
     ac_cv_func_setns=yes \
     ac_cv_func_unshare=yes \
     --disable-all-programs \
@@ -52,5 +59,6 @@ package-configure-install-archive \
     --enable-shared \
     --with-ncursesw \
     --${ENABLE_OR_DISABLE_LIBMOUNT}-libmount \
+    --${ENABLE_OR_DISABLE_LIBUUID}-libuuid \
     --${ENABLE_OR_DISABLE_PYTHON}-python \
     --${ENABLE_OR_DISABLE_SYSTEMD}-systemd

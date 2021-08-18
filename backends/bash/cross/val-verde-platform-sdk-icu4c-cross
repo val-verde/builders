@@ -30,4 +30,4 @@ package-stage-configure-install-archive \
     --enable-shared \
     --enable-tools \
     --with-library-suffix=swift \
-    "${CROSS_BUILD_CMD}"
+    ${CROSS_BUILD_CMD}

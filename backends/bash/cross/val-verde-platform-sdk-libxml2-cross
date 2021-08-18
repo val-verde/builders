@@ -17,7 +17,8 @@ export DEPENDS="\
 
 # Invoke one-shot template for stage/configure/install
 if [ -z "${DISABLE_PYTHON}" ]; then
-    WITH_OR_WITHOUT_PYTHON=--with-python
+    export-compiler-environment-for-python
+    WITH_OR_WITHOUT_PYTHON=--with-python=${PACKAGE_PREFIX}
 else
     WITH_OR_WITHOUT_PYTHON=--without-python
 fi

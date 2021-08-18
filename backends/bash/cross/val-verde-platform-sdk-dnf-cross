@@ -9,15 +9,10 @@ export SOURCE_PACKAGE_VERSION=4
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-# Configure the build components
-cd ${STAGE_ROOT}
-package-cmake \
+# Invoke one-shot template for cmake/install
+package-cmake-install-archive \
+    -DGETTEXT_MSGFMT_EXECUTABLE=`package-get-path msgfmt EXECUTABLE BUILD` \
+    -DGETTEXT_MSGMERGE_EXECUTABLE=`package-get-path msgmerge EXECUTABLE BUILD` \
     -DPYTHON_DESIRED="3" \
-    -DWITH_MAN=0 \
-    ${SOURCE_ROOT}
-
-# Build the components
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install
+    -DPYTHON_EXECUTABLE=${PYTHON} \
+    -DWITH_MAN=0

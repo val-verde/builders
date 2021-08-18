@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=maven
+export SOURCE_PACKAGE_VERSION=3
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Configure the build components
+package-push-directory ${SOURCE_ROOT}
+    TOOL_LOG=${STAGE_ROOT}/builder-invocation \
+    tool-log mvn -DdistributionTargetDir=${INSTALL_PREFIX} \
+                 clean \
+                 package
+package-pop-directory
+
+${MKDIR} -p ${INSTALL_PREFIX}/share/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
+${MV} ${INSTALL_PREFIX}/LICENSE \
+      ${INSTALL_PREFIX}/NOTICE \
+      ${INSTALL_PREFIX}/README.txt \
+      ${INSTALL_PREFIX}/share/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/
+
+# Build and install the package
+package-invoke-archive-install

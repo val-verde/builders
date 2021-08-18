@@ -1,0 +1,91 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=dbus
+export SOURCE_PACKAGE_VERSION=1
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for cmake/install
+function package-install-completion-callback() {
+    ${SED} -i \
+           "s|original_prefix=/|original_prefix=${PACKAGE_PLATFORM_SYSROOT}|g" \
+           ${INSTALL_PREFIX}/lib/pkgconfig/dbus-1.pc
+}
+
+ENABLE_SYSTEMD=FALSE
+
+if [ "${HOST_OS}" = "gnu" ]; then
+    ENABLE_SYSTEMD=TRUE
+fi
+
+CMAKE_INSTALL_PLATFORM_PREFIX=/ \
+DESTDIR=${INSTALL_ROOT}${PACKAGE_PLATFORM_SYSROOT} \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+package-cmake-install-archive \
+    -DDBUS_BUILD_TESTS=FALSE \
+    -DENABLE_SYSTEMD=${ENABLE_SYSTEMD} \
+    -DLIBRT=`package-get-path rt SHARED HOST` \
+    -DSYSTEMD_LIBRARIES=`package-get-path systemd SHARED HOST` \
+    -DWITH_SYSTEMD_SYSTEMUNITDIR=/lib/systemd/system \
+    -DWITH_SYSTEMD_USERUNITDIR=/lib/systemd/user \
+    -DX11_ICE_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_ICE_LIB=`package-get-path ICE SHARED HOST` \
+    -DX11_SM_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_SM_LIB=`package-get-path SM SHARED HOST` \
+    -DX11_X11_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_X11_LIB=`package-get-path X11 SHARED HOST` \
+    -DX11_X11_xcb_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_X11_xcb_LIB=`package-get-path X11-xcb SHARED HOST` \
+    -DX11_Xau_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_Xau_LIB=`package-get-path Xau SHARED HOST` \
+    -DX11_Xdmcp=INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_Xdmcp_LIB=`package-get-path Xdmcp SHARED HOST` \
+    -DX11_Xext_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_Xext_LIB=`package-get-path Xext SHARED HOST` \
+    -DX11_Xfixes_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_Xfixes_LIB=`package-get-path Xfixes SHARED HOST` \
+    -DX11_Xi_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_Xi_LIB=`package-get-path Xi SHARED HOST` \
+    -DX11_Xinerama_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_Xinerama_LIB=`package-get-path Xinerama SHARED HOST` \
+    -DX11_Xrandr_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_Xrandr_LIB=`package-get-path Xrandr SHARED HOST` \
+    -DX11_Xrender_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_Xrender_LIB=`package-get-path Xrender SHARED HOST` \
+    -DX11_Xt_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_Xt_LIB=`package-get-path Xt SHARED HOST` \
+    -DX11_Xtst_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_Xtst_LIB=`package-get-path Xtst SHARED HOST` \
+    -DX11_Xxf86vm_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_Xxf86vm_LIB=`package-get-path Xxf86vm SHARED HOST` \
+    -DX11_xcb_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_xcb_LIB=`package-get-path xcb SHARED HOST` \
+    -DX11_xcb_icccm_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_xcb_icccm_LIB=`package-get-path xcb-icccm SHARED HOST` \
+    -DX11_xcb_util_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_xcb_util_LIB=`package-get-path xcb-util SHARED HOST` \
+    -DX11_xcb_xfixes_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_xcb_xfixes_LIB=`package-get-path xfixes SHARED HOST` \
+    -DX11_xcb_xkb_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_xcb_xkb_LIB=`package-get-path xkb SHARED HOST` \
+    -DX11_xkbcommon_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_xkbcommon_LIB=`package-get-path xkbcommon SHARED HOST` \
+    -DX11_xkbcommon_X11_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_xkbcommon_X11_LIB=`package-get-path xkbcommon-x11 SHARED HOST` \
+    -DX11_xkbfile_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_xkbfile_LIB=`package-get-path xkbfile SHARED HOST` \
+    -DX11_XShm_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_XSync_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_Xaccessrules_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_Xaccessstr_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_Xdmcp_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_Xkb_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_Xkblib_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_Xlib_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_Xshape_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_Xutil_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_dpms_INCLUDE_PATH=${PACKAGE_PREFIX}/include

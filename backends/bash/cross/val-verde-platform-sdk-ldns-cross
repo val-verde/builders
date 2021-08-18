@@ -13,7 +13,6 @@ export DEPENDS="${PACKAGE_BASE_NAME}-ncurses-6-${HOST_OS}${HOST_OS_API_LEVEL}-${
 
 # Invoke one-shot template for stage/configure/install
 DISABLE_AUTOUPDATE=TRUE \
-ENABLE_LIBTOOLIZE=TRUE \
 LDFLAGS="\
     -lssl \
     ${LDFLAGS} \

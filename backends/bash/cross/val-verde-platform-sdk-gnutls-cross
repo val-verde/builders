@@ -12,7 +12,6 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 export DEPENDS="\
     ${PACKAGE_BASE_NAME}-autogen-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-libev-4-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-libgcrypt-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-libtasn1-4-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-libunistring-0-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-nettle-3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
@@ -20,13 +19,22 @@ export DEPENDS="\
 "
 
 # Invoke one-shot template for bootstrap/configure/install
+if [ "${HOST_OS}" != "macos" ]; then
+    export DEPENDS="\
+        ${PACKAGE_BASE_NAME}-libgcrypt-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+        ${DEPENDS} \
+    "
+fi
+
 BOOTSTRAP_FILE=bootstrap \
-CFLAGS="\
+COMMON_CFLAGS="\
     -UNDEBUG \
-    ${CFLAGS} \
+    ${COMMON_CFLAGS} \
 " \
 DISABLE_AUTOUPDATE=TRUE \
 package-bootstrap-configure-install-archive \
+    ac_cv_func_malloc_0_nonnull=yes \
+    ac_cv_func_realloc_0_nonnull=yes \
     --disable-doc \
     --disable-gtk-doc \
     --disable-gtk-doc-html \

@@ -11,37 +11,58 @@ package-invoke-builder spirv-headers-cross
 # spirv tools build
 package-invoke-builder spirv-tools-cross
 
-if [ "${HOST_OS}" = "android" ]; then
-    # khr headers build
-    package-invoke-builder khr-headers-cross
+# spirv cross build
+package-invoke-builder spirv-cross-cross
 
-    # opengl headers build
-    package-invoke-builder opengl-headers-cross
-fi
-
-if [ "${HOST_OS}" = "android" ] ||
-   [ "${HOST_OS}" = "mingw32" ]; then
-    # egl headers build
-    package-invoke-builder egl-headers-cross
-
-    # opengl-es headers build
-    package-invoke-builder opengl-es-headers-cross
-fi
+# spirv llvm translator build
+package-invoke-builder spirv-llvm-translator-cross
 
 # glslang build
 package-invoke-builder glslang-cross
 
-# vulkan tools build
-package-invoke-builder vulkan-tools-cross
+if [ "${HOST_OS}" = "macos" ]; then
+    # moltenvk build
+    package-invoke-builder moltenvk-cross
+else
+    # vulkan tools build
+    package-invoke-builder vulkan-tools-cross
+fi
 
 # vulkan validation layers build
 package-invoke-builder vulkan-validation-layers-cross
 
 if [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "macos" ] ||
    [ "${HOST_OS}" = "musl" ]; then
+    # libclc build
+    package-invoke-builder libclc-cross
+
     # mesa build
     package-invoke-builder mesa-cross
+fi
 
+if [ "${HOST_OS}" = "android" ] ||
+   [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "macos" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    # libepoxy build
+    package-invoke-builder libepoxy-cross
+fi
+
+if [ "${HOST_OS}" = "macos" ]; then
+    # libapplewm build
+    package-invoke-builder libapplewm-cross
+fi
+
+if [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "macos" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    # xorg-xserver build
+    package-invoke-builder xorg-xserver-cross
+fi
+
+if [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
     # mesa glu build
     package-invoke-builder mesa-glu-cross
 
@@ -52,8 +73,44 @@ if [ "${HOST_OS}" = "gnu" ] ||
     package-invoke-builder mesa-demos-cross
 fi
 
+# libsass build
+package-invoke-builder libsass-cross
+
+if [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "macos" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    # gtk build
+    package-invoke-builder gtk-cross
+fi
+
+if [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    # mtdev build
+    package-invoke-builder mtdev-cross
+
+    # libgudev build
+    package-invoke-builder libgudev-cross
+
+    # libwacom build
+    package-invoke-builder libwacom-cross
+
+    # libevdev build
+    package-invoke-builder libevdev-cross
+
+    # libinput build
+    package-invoke-builder libinput-cross
+
+    # seatd build
+    package-invoke-builder seatd-cross
+
+    # wlroots build
+    package-invoke-builder wlroots-cross
+
+    # sway build
+    package-invoke-builder sway-cross
+fi
+
 # sdl build
-DXSDK_DIR=${SYSROOT} \
 package-invoke-builder sdl-cross
 
 # sdl-image build

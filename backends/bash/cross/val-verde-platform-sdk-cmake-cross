@@ -19,8 +19,6 @@ export DEPENDS="\
 "
 
 # Configure the build components
-cd ${STAGE_ROOT}
-
 if [ "${HOST_OS}" = "mingw32" ]; then
     CMake_HAVE_CXX_FILESYSTEM=FALSE
 else
@@ -28,14 +26,14 @@ else
 fi
 
 CURL_LIBRARY=`package-get-path curl SHARED HOST`
-CURSES_CURSES_LIBRARY=`package-get-path ncursesw SHARED HOST`
-CURSES_FORM_LIBRARY=`package-get-path formw SHARED HOST`
+CURSES_CURSES_LIBRARY=`package-get-path ncurses SHARED HOST`
+CURSES_FORM_LIBRARY=`package-get-path form SHARED HOST`
 EXPAT_LIBRARY=`package-get-path expat SHARED HOST`
 LibArchive_LIBRARY=`package-get-path archive SHARED HOST`
 LibUV_LIBRARY=`package-get-path uv SHARED HOST`
 ZLIB_LIBRARY=`package-get-path z SHARED HOST`
 
-package-cmake \
+package-cmake-install-archive \
     -DBUILD_TESTING=FALSE \
     -DCMake_HAVE_CXX_FILESYSTEM=${CMake_HAVE_CXX_FILESYSTEM} \
     -DCMake_HAVE_CXX_UNIQUE_PTR=TRUE \
@@ -45,13 +43,14 @@ package-cmake \
     -DCURL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DCURL_LIBRARIES=${CURL_LIBRARY} \
     -DCURL_LIBRARY=${CURL_LIBRARY} \
+    -DCMAKE_USE_OPENSSL=TRUE \
     -DCMAKE_USE_SYSTEM_CURL=TRUE \
     -DCMAKE_USE_SYSTEM_EXPAT=TRUE \
     -DCMAKE_USE_SYSTEM_LIBARCHIVE=TRUE \
     -DCMAKE_USE_SYSTEM_LIBLZMA=TRUE \
     -DCMAKE_USE_SYSTEM_LIBUV=TRUE \
     -DCMAKE_USE_SYSTEM_ZLIB=TRUE \
-    -DCURSES_INCLUDE_DIR=${PACKAGE_PREFIX}/include/ncursesw \
+    -DCURSES_INCLUDE_DIR=${PACKAGE_PREFIX}/include/ncurses \
     -DCURSES_CURSES_LIBRARY=${CURSES_CURSES_LIBRARY} \
     -DCURSES_FORM_LIBRARY=${CURSES_FORM_LIBRARY} \
     -DCURSES_NCURSES_LIBRARY=${CURSES_CURSES_LIBRARY} \
@@ -65,11 +64,4 @@ package-cmake \
     -DLibUV_LIBRARY=${LibUV_LIBRARY} \
     -DPython3_EXECUTABLE=${PYTHON} \
     -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DZLIB_LIBRARY=${ZLIB_LIBRARY} \
-    ${SOURCE_ROOT}
-
-# Build the components
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install
+    -DZLIB_LIBRARY=${ZLIB_LIBRARY}

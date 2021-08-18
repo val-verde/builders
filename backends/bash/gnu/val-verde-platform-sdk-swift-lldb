@@ -10,7 +10,7 @@ export SOURCE_PACKAGE_VERSION=5
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export DEPENDS="\
-    ${PACKAGE_BASE_NAME}-libedit-20191231-3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-libedit-20210714-3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-libxml2-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-llvm-project-13-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-lua-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
@@ -25,39 +25,47 @@ export LLVM_STAGE_ROOT=${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOS
 export SOURCE_ROOT=${SOURCE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}/lldb
 export SWIFT_STAGE_ROOT=${STAGE_ROOT_BASE}/swift-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
-# Configure the build components
-cd ${STAGE_ROOT}
-
-CFLAGS="\
+# Invoke one-shot template for cmake/install
+COMMON_CFLAGS="\
     -Wno-register \
-    ${CFLAGS} \
-" \
-CXXFLAGS="\
-    -Wno-register \
-    ${CXXFLAGS} \
+    ${COMMON_CFLAGS} \
 " \
 CXX_STANDARD=17 \
-package-cmake \
+RPATH_COMPONENTS="\
+    ${INSTALL_PREFIX}/bin/lldb \
+    ${INSTALL_PREFIX}/bin/repl_swift \
+    ${INSTALL_PREFIX}/lib/${SHARED_LIBRARY_PREFIX}lldb${SHARED_LIBRARY_SUFFIX} \
+" \
+package-cmake-install-archive \
     -DClang_DIR=${LLVM_STAGE_ROOT}/lib/cmake/clang \
     -DCLANG_LINK_CLANG_DYLIB=TRUE \
     -DCMAKE_EXE_LINKER_FLAGS="-O2" \
-    -DCURSES_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/ncurses \
-    -DCURSES_LIBRARIES=`package-get-path ncursesw SHARED HOST` \
+    -DCURSES_CURSES_LIBRARY=`package-get-path ncurses SHARED HOST` \
+    -DCURSES_FORM_LIBRARY=`package-get-path form SHARED HOST` \
+    -DCURSES_INCLUDE_PATH=${PACKAGE_PREFIX}/include/ncurses \
+    -DCURSES_NCURSES_LIBRARY=`package-get-path ncurses SHARED HOST` \
     -DLibEdit_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
     -DLibEdit_LIBRARIES=`package-get-path edit SHARED HOST` \
     -DLIBLZMA_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DLIBLZMA_LIBRARY=`package-get-path lzma SHARED HOST` \
     -DLIBXML2_INCLUDE_DIR=${PACKAGE_PREFIX}/include/libxml2 \
     -DLIBXML2_LIBRARY=`package-get-path xml2 SHARED HOST` \
+    -DLLDB_ENABLE_CURSES=TRUE \
+    -DLLDB_ENABLE_LIBEDIT=TRUE \
+    -DLLDB_ENABLE_LIBXML2=TRUE \
+    -DLLDB_ENABLE_LUA=TRUE \
+    -DLLDB_ENABLE_LZMA=TRUE \
     -DLLDB_ENABLE_PYTHON=TRUE \
     -DLLDB_ENABLE_SWIFT_SUPPORT=TRUE \
     -DLLDB_ENABLE_WERROR=FALSE \
     -DLLDB_INCLUDE_TESTS=FALSE \
-    -DLLDB_PYTHON_DEFAULT_RELATIVE_PATH=lib/python${PYTHON_VERSION} \
+    -DLLDB_PYTHON_RELATIVE_PATH=lib/python${PYTHON_VERSION}/site-packages \
+    -DLLDB_USE_SYSTEM_SIX=TRUE \
     -DLLVM_BUILD_LIBRARY_DIR=${LLVM_STAGE_ROOT}/lib \
     -DLLVM_BUILD_MAIN_SRC_DIR=${LLVM_SOURCE_ROOT}/llvm \
     -DLLVM_DIR=${LLVM_STAGE_ROOT}/lib/cmake/llvm \
     -DLLVM_ENABLE_ASSERTIONS=FALSE \
+    -DLLVM_ENABLE_BACKTRACES=FALSE \
     -DLLVM_ENABLE_EH=TRUE \
     -DLLVM_ENABLE_LIBCXX=TRUE \
     -DLLVM_ENABLE_LLD=TRUE \
@@ -68,24 +76,11 @@ package-cmake \
     -DLLVM_LINK_LLVM_DYLIB=TRUE \
     -DLLVM_MAIN_INCLUDE_DIR=${LLVM_SOURCE_ROOT}/llvm/include \
     -DLLVM_TABLEGEN=${LLVM_STAGE_ROOT}/bin/llvm-tblgen \
+    -DLUA_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DLUA_LIBRARY=`package-get-path lua STATIC HOST` \
     -DPython3_EXECUTABLE=${PYTHON} \
     -DPython3_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/python${PYTHON_VERSION} \
     -DPython3_LIBRARIES=`package-get-path python${PYTHON_VERSION} SHARED HOST` \
     -DPANEL_LIBRARIES=`package-get-path panel SHARED HOST` \
     -DSwift_DIR=${SWIFT_STAGE_ROOT}/lib/cmake/swift \
-    -DSWIG_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/swig \
-    ${SOURCE_ROOT}
-
-# Build the components
-ninja-install
-
-# RPATH fixups
-COMPONENTS="\
-    ${INSTALL_PREFIX}/bin/lldb \
-    ${INSTALL_PREFIX}/bin/repl_swift \
-    ${INSTALL_PREFIX}/lib/${SHARED_LIBRARY_PREFIX}lldb${SHARED_LIBRARY_SUFFIX} \
-" \
-rpath-fixup
-
-# Build and install the package
-package-invoke-archive-install
+    -DSWIG_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/swig

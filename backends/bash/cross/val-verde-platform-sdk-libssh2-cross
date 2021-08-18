@@ -14,18 +14,9 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-zlib-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Configure the build components
-cd ${STAGE_ROOT}
-
-package-cmake \
+# Invoke one-shot template for cmake/install
+package-cmake-install-archive \
     -DBUILD_EXAMPLES=FALSE \
     -DBUILD_SHARED_LIBS=TRUE \
     -DBUILD_TESTING=FALSE \
-    -DOPENSSL_ROOT_DIR=${PACKAGE_PREFIX} \
-    ${SOURCE_ROOT}
-
-# Build the package
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install
+    -DOPENSSL_ROOT_DIR=${PACKAGE_PREFIX}

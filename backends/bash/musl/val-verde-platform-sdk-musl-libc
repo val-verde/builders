@@ -10,30 +10,22 @@ export SOURCE_PACKAGE_VERSION=1
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
-cd ${STAGE_ROOT}
+function package-install-completion-callback() {
+      ${MKDIR} -p ${INSTALL_PREFIX}/bin
+      ${LN} -sf \
+            ../lib/${SHARED_LIBRARY_PREFIX}c${SHARED_LIBRARY_SUFFIX} \
+            ${INSTALL_PREFIX}/bin/ldd
+      ${LN} -sf \
+            ../usr/lib/${SHARED_LIBRARY_PREFIX}c${SHARED_LIBRARY_SUFFIX} \
+            ${INSTALL_PREFIX}/../lib/ld-${HOST_OS}-${HOST_PROCESSOR}${SHARED_LIBRARY_SUFFIX}.1
+}
 
-CFLAGS="\
-     -U_ALL_SOURCE \
-     ${CFLAGS} \
-" \
+DISABLE_AUTOUPDATE=TRUE \
+DISABLE_TOOL_BUILD=TRUE \
 LIBCC=`${BUILD_PACKAGE_PREFIX}/bin/clang -target ${HOST_TRIPLE} \
                                          --sysroot ${SYSROOT} \
                                          -print-libgcc-file-name` \
-package-configure \
-    ${SOURCE_ROOT}/configure \
-    --syslibdir=${SYSROOT}/lib
-
-# Build the components
 INSTALL_TARGET="install-libs install-tools" \
-make-install
-
-${MKDIR} -p ${INSTALL_PREFIX}/bin
-${LN} -sf \
-      ../lib/${SHARED_LIBRARY_PREFIX}c${SHARED_LIBRARY_SUFFIX} \
-      ${INSTALL_PREFIX}/bin/ldd
-${LN} -sf \
-      ../usr/lib/${SHARED_LIBRARY_PREFIX}c${SHARED_LIBRARY_SUFFIX} \
-      ${INSTALL_PREFIX}/../lib/ld-${HOST_OS}-${HOST_PROCESSOR}${SHARED_LIBRARY_SUFFIX}.1
-
-# Build and install the package
-package-invoke-archive-install
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+package-configure-install-archive \
+    --syslibdir=${SYSROOT}/lib

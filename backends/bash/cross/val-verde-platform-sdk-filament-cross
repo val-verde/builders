@@ -9,6 +9,8 @@ export SOURCE_PACKAGE_VERSION=1
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
+copy-source-to-staging
+
 export DEPENDS="\
     ${PACKAGE_BASE_NAME}-glslang-10-11-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-spirv-tools-2020-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
@@ -17,8 +19,18 @@ export DEPENDS="\
 
 BUILD_TYPE=${BUILD_TYPE:-Release}
 
-# Configure the build components
-copy-source-to-staging
+# Invoke one-shot template for cmake/install
+function package-install-completion-callback() {
+    ${MKDIR} -p ${INSTALL_PREFIX}/lib/cmake
+
+    if [ "${BUILD_TRIPLE}" == ${HOST_TRIPLE} ]; then
+        package-rsync -ax \
+                      ${STAGE_ROOT}/ImportExecutables-${BUILD_TYPE}.cmake \
+                      ${INSTALL_PREFIX}/lib/cmake/${SOURCE_PACKAGE_NAME}.cmake
+    fi
+
+    ${RM} ${INSTALL_PREFIX}/lib/libvulkan*
+}
 
 if [ "${BUILD_TRIPLE}" != ${HOST_TRIPLE} ]; then
     package-rsync -ax \
@@ -32,13 +44,9 @@ if [ "${HOST_KERNEL}" = "linux" ] &&
 fi
 
 if [ "${HOST_OS}" = "android" ]; then
-    CFLAGS="\
+    COMMON_CFLAGS="\
         -DANDROID \
-        ${CFLAGS} \
-    "
-    CXXFLAGS="\
-        -DANDROID \
-        ${CXXFLAGS} \
+        ${COMMON_CFLAGS} \
     "
     CMAKE_ANDROID_DEFINE_CMD="-DANDROID=TRUE"
 elif [ "${HOST_OS}" = "mingw32" ]; then
@@ -47,26 +55,29 @@ elif [ "${HOST_OS}" = "mingw32" ]; then
     CMAKE_ASM_FLAGS_CMD="-DCMAKE_ASM_FLAGS_RELEASE="
 fi
 
-if [ "${HOST_OS}" != "gnu" ]; then
+if [ "${HOST_OS}" = "macos" ]; then
+    export COMMON_LDFLAGS="\
+        -framework Foundation \
+        -liconv \
+        ${COMMON_LDFLAGS} \
+    "
+elif [ "${HOST_OS}" != "gnu" ]; then
     export COMMON_LDFLAGS="\
         -liconv \
         ${COMMON_LDFLAGS} \
     "
 fi
 
-cd ${STAGE_ROOT}
-
-CFLAGS="\
-    -fno-builtin \
-    ${CFLAGS} \
-" \
-CXXFLAGS="\
+COMMON_CFLAGS="\
     -fno-builtin \
     -DSTRSAFE_NO_DEPRECATE \
-    ${CXXFLAGS} \
+    ${COMMON_CFLAGS} \
 " \
+CMAKE_CONFIGURE_ROOT=${STAGE_ROOT} \
 CXX_STANDARD=17 \
-package-cmake \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+package-cmake-install-archive \
+    -DBUILD_TESTING=FALSE \
     -DBUILD_WSI_DIRECTFB_SUPPORT=FALSE \
     -DBUILD_WSI_WAYLAND_SUPPORT=FALSE \
     -DBUILD_WSI_XLIB_SUPPORT=FALSE \
@@ -80,23 +91,9 @@ package-cmake \
     -DPYTHON_EXECUTABLE=${PYTHON} \
     -DSPIRV_WERROR=FALSE \
     -DUSE_STATIC_LIBCXX=FALSE \
-    "${CMAKE_ANDROID_DEFINE_CMD}" \
-    "${CMAKE_ASM_COMPILER_CMD}" \
-    "${CMAKE_ASM_COMPILER_ID_CMD}" \
-    "${CMAKE_ASM_FLAGS_CMD}" \
-    "${CMAKE_BLUEGL_ARCH_CMD}" \
-    ${STAGE_ROOT}
-
-# Build the components
-ninja-install
-
-${MKDIR} -p ${INSTALL_PREFIX}/lib/cmake
-
-if [ "${BUILD_TRIPLE}" == ${HOST_TRIPLE} ]; then
-    package-rsync -ax \
-                  ${STAGE_ROOT}/ImportExecutables-${BUILD_TYPE}.cmake \
-                  ${INSTALL_PREFIX}/lib/cmake/${SOURCE_PACKAGE_NAME}.cmake
-fi
-
-# Build and install the package
-package-invoke-archive-install
+    -DVulkan_LIBRARY=`package-get-path vulkan SHARED HOST` \
+    ${CMAKE_ANDROID_DEFINE_CMD} \
+    ${CMAKE_ASM_COMPILER_CMD} \
+    ${CMAKE_ASM_COMPILER_ID_CMD} \
+    ${CMAKE_ASM_FLAGS_CMD} \
+    ${CMAKE_BLUEGL_ARCH_CMD}

@@ -12,4 +12,5 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 # Invoke one-shot template for bootstrap/configure/install
 BOOTSTRAP_FILE=./autogen.sh \
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
+LIBTOOLIZE_ARGS="-i" \
 package-bootstrap-configure-install-archive

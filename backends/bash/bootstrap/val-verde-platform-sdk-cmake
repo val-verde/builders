@@ -1,0 +1,62 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=cmake
+export SOURCE_PACKAGE_VERSION=3
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Configure the build components
+if [ "${HOST_OS}" = "mingw32" ]; then
+    CMake_HAVE_CXX_FILESYSTEM=FALSE
+else
+    CMake_HAVE_CXX_FILESYSTEM=TRUE
+fi
+
+CURL_LIBRARY=`package-get-path curl SHARED HOST`
+CURSES_CURSES_LIBRARY=`package-get-path ncurses SHARED HOST`
+CURSES_FORM_LIBRARY=`package-get-path form SHARED HOST`
+EXPAT_LIBRARY=`package-get-path expat SHARED HOST`
+LibArchive_LIBRARY=`package-get-path archive SHARED HOST`
+LibUV_LIBRARY=`package-get-path uv SHARED HOST`
+ZLIB_LIBRARY=`package-get-path z SHARED HOST`
+
+COMMON_LDFLAGS="\
+    -lunwind \
+    ${COMMON_LDFLAGS} \
+" \
+package-cmake-install-archive \
+    -DBUILD_TESTING=FALSE \
+    -DCMake_HAVE_CXX_FILESYSTEM=${CMake_HAVE_CXX_FILESYSTEM} \
+    -DCMake_HAVE_CXX_UNIQUE_PTR=TRUE \
+    -DCMake_RUN_CXX_FILESYSTEM=0 \
+    -DCMake_RUN_CXX_FILESYSTEM__TRYRUN_OUTPUT=1 \
+    -DCMakeCheckCurses_COMPILED=TRUE \
+    -DCURL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DCURL_LIBRARIES=${CURL_LIBRARY} \
+    -DCURL_LIBRARY=${CURL_LIBRARY} \
+    -DCMAKE_USE_OPENSSL=FALSE \
+    -DCMAKE_USE_SYSTEM_CURL=FALSE \
+    -DCMAKE_USE_SYSTEM_EXPAT=FALSE \
+    -DCMAKE_USE_SYSTEM_LIBARCHIVE=FALSE \
+    -DCMAKE_USE_SYSTEM_LIBLZMA=FALSE \
+    -DCMAKE_USE_SYSTEM_LIBUV=FALSE \
+    -DCMAKE_USE_SYSTEM_ZLIB=FALSE \
+    -DCURSES_INCLUDE_DIR=${PACKAGE_PREFIX}/include/ncurses \
+    -DCURSES_CURSES_LIBRARY=${CURSES_CURSES_LIBRARY} \
+    -DCURSES_FORM_LIBRARY=${CURSES_FORM_LIBRARY} \
+    -DCURSES_NCURSES_LIBRARY=${CURSES_CURSES_LIBRARY} \
+    -DEXPAT_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DEXPAT_LIBRARY=${EXPAT_LIBRARY} \
+    -DHAVE_POLL_FINE_EXITCODE=0 \
+    -DHAVE_POLL_FINE_EXITCODE__TRYRUN_OUTPUT=1 \
+    -DLibArchive_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DLibArchive_LIBRARY=${LibArchive_LIBRARY} \
+    -DLibUV_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DLibUV_LIBRARY=${LibUV_LIBRARY} \
+    -DPython3_EXECUTABLE=${PYTHON} \
+    -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZLIB_LIBRARY=${ZLIB_LIBRARY}

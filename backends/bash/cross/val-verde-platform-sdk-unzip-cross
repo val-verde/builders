@@ -31,14 +31,16 @@ make-build \
     prefix=${INSTALL_PREFIX} \
     CC=${CC} \
     CFLAGS="${CFLAGS}" \
-    LFLAGS2="${LDFLAGS}" \
+    LD=${CCLD} \
+    LFLAGS2="${CCLDFLAGS}" \
     generic
 make-install \
     -f ${STAGE_ROOT}/${PLATFORM}/Makefile \
     prefix=${INSTALL_PREFIX} \
     CC=${CC} \
     CFLAGS="${CFLAGS}" \
-    LFLAGS2="${LDFLAGS}"
+    LD=${CCLD} \
+    LFLAGS2="${CCLDFLAGS}"
 
 # Build and install the package
 package-invoke-archive-install

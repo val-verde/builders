@@ -12,8 +12,15 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 export DEPENDS="${PACKAGE_BASE_NAME}-ncurses-6-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 
 # Invoke one-shot template for configure/install
+function package-install-completion-callback() {
+    ${LN} -sf \
+          vim \
+          ${INSTALL_PREFIX}/bin/vi
+}
+
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 DISABLE_AUTOUPDATE=TRUE \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-configure-install-archive \
     ac_cv_small_wchar_t=yes \
     vim_cv_getcwd_broken=no \

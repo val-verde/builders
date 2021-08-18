@@ -9,44 +9,36 @@ export SOURCE_PACKAGE_VERSION=1
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-# Configure the build components
-cd ${STAGE_ROOT}
-package-cmake \
-    ${SOURCE_ROOT} \
-    -DGIT_EXECUTABLE=${GIT} \
-    -DRE2C=${BUILD_PACKAGE_PREFIX}/bin/re2c
+# Invoke one-shot template for cmake/install
+function package-install-completion-callback() {
+    ${MKDIR} -p \
+            ${INSTALL_PREFIX}/bin \
+            ${INSTALL_PREFIX}/include/alive2/ir \
+            ${INSTALL_PREFIX}/include/alive2/smt \
+            ${INSTALL_PREFIX}/include/alive2/tools \
+            ${INSTALL_PREFIX}/include/alive2/utils \
+            ${INSTALL_PREFIX}/lib/pkgconfig
 
-# Build the components
-ninja-build
+    package-rsync -ax \
+                ${STAGE_ROOT}/alive \
+                ${INSTALL_PREFIX}/bin/
+    package-rsync -ax \
+                ${SOURCE_ROOT}/ir/*.h \
+                ${INSTALL_PREFIX}/include/alive2/ir/
+    package-rsync -ax \
+                ${SOURCE_ROOT}/smt/*.h \
+                ${INSTALL_PREFIX}/include/alive2/smt/
+    package-rsync -ax \
+                ${SOURCE_ROOT}/tools/*.h \
+                ${INSTALL_PREFIX}/include/alive2/tools/
+    package-rsync -ax \
+                ${SOURCE_ROOT}/util/*.h \
+                ${INSTALL_PREFIX}/include/alive2/util/
+    package-rsync -ax \
+                ${STAGE_ROOT}/libalive2.* \
+                ${INSTALL_PREFIX}/lib/
 
-${MKDIR} -p \
-         ${INSTALL_PREFIX}/bin \
-         ${INSTALL_PREFIX}/include/alive2/ir \
-         ${INSTALL_PREFIX}/include/alive2/smt \
-         ${INSTALL_PREFIX}/include/alive2/tools \
-         ${INSTALL_PREFIX}/include/alive2/utils \
-         ${INSTALL_PREFIX}/lib/pkgconfig
-
-package-rsync -ax \
-              ${STAGE_ROOT}/alive \
-              ${INSTALL_PREFIX}/bin/
-package-rsync -ax \
-              ${SOURCE_ROOT}/ir/*.h \
-              ${INSTALL_PREFIX}/include/alive2/ir/
-package-rsync -ax \
-              ${SOURCE_ROOT}/smt/*.h \
-              ${INSTALL_PREFIX}/include/alive2/smt/
-package-rsync -ax \
-              ${SOURCE_ROOT}/tools/*.h \
-              ${INSTALL_PREFIX}/include/alive2/tools/
-package-rsync -ax \
-              ${SOURCE_ROOT}/util/*.h \
-              ${INSTALL_PREFIX}/include/alive2/util/
-package-rsync -ax \
-              ${STAGE_ROOT}/libalive2.* \
-              ${INSTALL_PREFIX}/lib/
-
-${ECHO} "
+    ${ECHO} "
 V=${SOURCE_PACKAGE_VERSION}
 R=${SOURCE_PACKAGE_VERSION}
 
@@ -57,13 +49,21 @@ exec_prefix=\${prefix}
 libdir=\${exec_prefix}/lib
 includedir=\${prefix}/include
 
-Name: Lua
-Description: An Extensible Extension Language
+Name: alive2
+Description: Automatic verification of LLVM optimizations
 Version: \${R}
 Requires:
 Libs: -L\${libdir} -lalive2
 Cflags: -I\${includedir}
-" > ${INSTALL_PREFIX}/lib/pkgconfig/alive2.pc
+    " > ${INSTALL_PREFIX}/lib/pkgconfig/alive2.pc
+}
 
-# Build and install the package
-package-invoke-archive-install
+function tool-install-invocation() {
+    return
+}
+
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+TOOL_INSTALL_INVOCATION=tool-install-invocation \
+package-cmake-install-archive \
+    -DGIT_EXECUTABLE=${GIT} \
+    -DRE2C=${BUILD_PACKAGE_PREFIX}/bin/re2c

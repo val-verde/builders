@@ -11,22 +11,14 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
 
-# Configure the build components
-cd ${STAGE_ROOT}
+# Invoke one-shot template for cmake/install
 COMMON_LDFLAGS="\
     -L${PACKAGE_PREFIX}/lib \
     ${COMMON_LDFLAGS} \
 " \
-package-cmake \
-    ${SOURCE_ROOT} \
+package-cmake-install-archive \
     -DENABLE_TCMALLOC=FALSE \
     -DLLVM_CONFIG_BINARY=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config \
     -DLLVM_LIBRARY=`package-get-path LLVM SHARED HOST` \
     -DLLVMCC=${CC} \
     -DLLVMCXX=${CXX}
-
-# Build the components
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install

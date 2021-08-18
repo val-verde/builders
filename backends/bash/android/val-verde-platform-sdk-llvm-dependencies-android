@@ -20,6 +20,9 @@ package-invoke-builder argp-standalone-cross
 # android musl obstack build
 package-invoke-builder musl-obstack
 
+# android libxcrypt build
+package-invoke-builder libxcrypt-cross
+
 # android zlib build
 package-invoke-builder zlib-cross
 
@@ -65,13 +68,6 @@ package-invoke-builder libiconv-cross
 # android icu build
 package-invoke-builder icu4c-cross
 
-# android xz build
-package-invoke-builder xz-cross
-
-# android libxml2 build
-DISABLE_PYTHON=TRUE \
-package-invoke-builder libxml2-cross
-
 # android libunistring build
 package-invoke-builder libunistring-cross
 
@@ -83,6 +79,19 @@ package-invoke-builder gmp-cross
 
 # android ncurses build
 package-invoke-builder ncurses-cross
+
+# android gettext build (without libxml2 and xz)
+DISABLE_LIBXML2=TRUE \
+DISABLE_XZ=TRUE \
+FORTIFY_SOURCE_LEVEL=0 \
+package-invoke-builder gettext-cross
+
+# android xz build
+package-invoke-builder xz-cross
+
+# android libxml2 build
+DISABLE_PYTHON=TRUE \
+package-invoke-builder libxml2-cross
 
 # android gettext build
 FORTIFY_SOURCE_LEVEL=0 \
@@ -108,9 +117,6 @@ fi
 # android file build
 package-invoke-builder file-cross
 
-# android gnulib build
-package-invoke-builder gnulib-cross
-
 # android libedit build
 package-invoke-builder libedit-cross
 
@@ -130,10 +136,6 @@ package-invoke-builder isl-cross
 package-invoke-builder libev-cross
 
 # android gdbm build
-CFLAGS="\
-    -fcommon \
-    ${CFLAGS} \
-" \
 package-invoke-builder gdbm-cross
 
 # android libdb build
@@ -150,6 +152,9 @@ package-invoke-builder openssl-cross
 
 # android libcap build
 package-invoke-builder libcap-cross
+
+# android krb5 build
+package-invoke-builder krb5-cross
 
 # android expat build
 package-invoke-builder expat-cross
@@ -175,23 +180,16 @@ DISABLE_SYSTEMD=TRUE \
 package-invoke-builder util-linux-cross
 
 # android attr build
-CFLAGS="\
-    -lintl \
-    -D__THROW= \
-    ${CFLAGS} \
-" \
 package-invoke-builder attr-cross
 
 # android acl build
-CFLAGS="\
-    -lintl \
-    -D__THROW= \
-    ${CFLAGS} \
-" \
 package-invoke-builder acl-cross
 
 # android libarchive build
 package-invoke-builder libarchive-cross
+
+# android libssh build
+package-invoke-builder libssh-cross
 
 # android libssh2 build
 package-invoke-builder libssh2-cross
@@ -199,50 +197,8 @@ package-invoke-builder libssh2-cross
 # android curl build
 package-invoke-builder curl-cross
 
-# android xorg-macros build
-package-invoke-builder xorg-macros-cross
-
-# android xorgproto build
-package-invoke-builder xorg-xorgproto-cross
-
-# android xcb-proto build
-package-invoke-builder xcb-proto-cross
-
-# android xcb-pthread-stubs build
-package-invoke-builder xcb-pthread-stubs-cross
-
-# android libxau build
-package-invoke-builder xorg-libxau-cross
-
-# android libxcb build
-package-invoke-builder xcb-libxcb-cross
-
-# android pixman build
-package-invoke-builder pixman-cross
-
-# android xorg-libpciaccess build
-package-invoke-builder xorg-libpciaccess-cross
-
-# android xorg-libxtrans build
-package-invoke-builder xorg-libxtrans-cross
-
-# android libx11 build
-package-invoke-builder libx11-cross
-
-# android libxext build
-package-invoke-builder libxext-cross
-
-# android xorg-libxrender build
-package-invoke-builder xorg-libxrender-cross
-
-# android xorg-libxfixes build
-package-invoke-builder xorg-libxfixes-cross
-
-# android xorg-libxi build
-package-invoke-builder xorg-libxi-cross
-
-# android xorg-libice build
-package-invoke-builder xorg-libice-cross
+# android apple-mig build
+package-invoke-builder apple-mig-cross
 
 # alsa-lib build
 package-invoke-builder alsa-lib-cross
@@ -262,70 +218,6 @@ package-invoke-builder openssh-portable-cross
 # android bash build
 package-invoke-builder bash-cross
 
-# android xorg-libsm build
-package-invoke-builder xorg-libsm-cross
-
-# android xorg-libxt build
-package-invoke-builder xorg-libxt-cross
-
-# android xorg-libxtst build
-package-invoke-builder xorg-libxtst-cross
-
-# android xorg-libxrandr build
-package-invoke-builder xorg-libxrandr-cross
-
-# android xorg-xinput build
-# package-invoke-builder xorg-xinput-cross
-
-# android xorg-libxkbfile build
-package-invoke-builder xorg-libxkbfile-cross
-
-# android xorg-libxshmfence build
-package-invoke-builder xorg-libxshmfence-cross
-
-# android xorg-libxxf86vm build
-package-invoke-builder xorg-libxxf86vm-cross
-
-# android libjpeg build
-package-invoke-builder libjpeg-cross
-
-# android libpng build
-package-invoke-builder libpng-cross
-
-# android brotli build
-package-invoke-builder brotli-cross
-
-# android freetype2 build
-DISABLE_HARFBUZZ=TRUE \
-package-invoke-builder freetype2-cross
-
-# android harfbuzz build
-package-invoke-builder harfbuzz-cross
-
-# android freetype2 build
-package-invoke-builder freetype2-cross
-
-# android wayland build
-package-invoke-builder wayland-cross
-
-# android wayland-protocols build
-package-invoke-builder wayland-protocols-cross
-
-# android mesa-drm build
-package-invoke-builder mesa-drm-cross
-
-# android opencl headers build
-package-invoke-builder opencl-headers-cross
-
-# android opencl icd loader build
-package-invoke-builder opencl-icd-loader-cross
-
-# android vulkan headers build
-package-invoke-builder vulkan-headers-cross
-
-# android vulkan loader build
-package-invoke-builder vulkan-loader-cross
-
 # android grep build
 package-invoke-builder grep-cross
 
@@ -341,19 +233,8 @@ package-invoke-builder bison-cross
 # android jq build
 package-invoke-builder jq-cross
 
-# android strace build
-# if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
-#     package-invoke-builder strace-cross
-# else
-#     CFLAGS="\
-#         -Dfputs_unlocked=fputs \
-#         ${CFLAGS} \
-#     " \
-#     package-invoke-builder strace-cross
-# fi
-
-# android fontconfig build
-package-invoke-builder fontconfig-cross
+# android json-c build
+package-invoke-builder json-c-cross
 
 # android tar build
 if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
@@ -366,11 +247,10 @@ package-invoke-builder coreutils-cross
 # android findutils build
 package-invoke-builder findutils-cross
 
+# android less build
+package-invoke-builder less-cross
+
 # android dpkg build
-LIBS="\
-    -lobstack \
-    ${LIBS} \
-" \
 package-invoke-builder dpkg-cross
 
 # android rsync build
@@ -386,6 +266,12 @@ package-invoke-builder wget-cross
 _PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
 package-invoke-builder python-cross
 
+# android libxml2 build (with python support)
+package-invoke-builder libxml2-cross
+
+# android python sdk build
+category-invoke-builder python-sdk-cross
+
 # android libxslt build
 package-invoke-builder libxslt-cross
 
@@ -393,10 +279,21 @@ package-invoke-builder libxslt-cross
 package-invoke-builder libtasn1-cross
 
 # android p11-kit build
+DISABLE_SYSTEMD=TRUE \
 package-invoke-builder p11-kit-cross
+
+# android dbus build
+package-invoke-builder dbus-cross
+
+# android util-linux build (with python support)
+DISABLE_SYSTEMD=TRUE \
+package-invoke-builder util-linux-cross
 
 # android nettle build
 package-invoke-builder nettle-cross
+
+# android unbound build
+package-invoke-builder unbound-cross
 
 # android gnutls build
 package-invoke-builder gnutls-cross
@@ -405,15 +302,18 @@ package-invoke-builder gnutls-cross
 package-invoke-builder libmicrohttpd-cross
 
 # android elfutils build
-CFLAGS="\
-    -lintl \
-    ${CFLAGS} \
-" \
-CXXFLAGS="\
-    -lintl \
-    ${CXXFLAGS} \
-" \
 package-invoke-builder elfutils-cross
+
+# android strace build
+# if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
+#     package-invoke-builder strace-cross
+# else
+#     COMMON_CFLAGS="\
+#         -Dfputs_unlocked=fputs \
+#         ${COMMON_CFLAGS} \
+#     " \
+#     package-invoke-builder strace-cross
+# fi
 
 # android glib build
 package-invoke-builder glib-cross
@@ -427,11 +327,17 @@ package-invoke-builder libsecret-cross
 # android pkg-config build
 package-invoke-builder pkg-config-cross
 
+# android graphics server build
+package-invoke-builder graphics-server-cross
+
 # android itstool build
 package-invoke-builder itstool-cross
 
 # android gtk-doc build
 package-invoke-builder gtk-doc-cross
+
+# android graphviz build
+package-invoke-builder graphviz-cross
 
 # android cups build
 package-invoke-builder cups-cross
@@ -443,10 +349,6 @@ package-invoke-builder apt-cross
 package-invoke-builder popt-cross
 
 # android rpm build
-LIBS="\
-    -lintl \
-    ${LIBS} \
-" \
 package-invoke-builder rpm-cross
 
 # android dnf build
@@ -457,6 +359,12 @@ package-invoke-builder swig-cross
 
 # android openjdk build
 package-invoke-builder openjdk-cross
+
+# openjdk jansi build
+package-invoke-builder jansi-cross
+
+# android maven build
+package-invoke-builder maven-cross
 
 # android z3 build
 package-invoke-builder z3-cross
@@ -469,6 +377,15 @@ package-invoke-builder vim-cross
 
 # android cmake build
 package-invoke-builder cmake-cross
+
+# android boost build
+package-invoke-builder boost-cross
+
+# android cereal build
+package-invoke-builder cereal-cross
+
+# android libobjc2 build
+package-invoke-builder libobjc2-cross
 
 # android patch elf
 package-invoke-builder android-patch-elf-cross

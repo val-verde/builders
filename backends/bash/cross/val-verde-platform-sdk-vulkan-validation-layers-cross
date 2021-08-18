@@ -9,18 +9,14 @@ export SOURCE_PACKAGE_VERSION=1
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-export DEPENDS="${PACKAGE_BASE_NAME}-vulkan-tools-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
-
 # Configure the build components
-cd ${STAGE_ROOT}
-
 CMAKE_XCB_CMD="-DBUILD_WSI_XCB_SUPPORT=FALSE"
 
 if [ "${HOST_OS}" = "gnu" ]; then
     CMAKE_XCB_CMD="-DBUILD_WSI_XCB_SUPPORT=TRUE"
 fi
 
-package-cmake \
+package-cmake-install-archive \
     -DBUILD_LAYER_SUPPORT_FILES=TRUE \
     -DBUILD_WERROR=FALSE \
     -DBUILD_WSI_DIRECTFB_SUPPORT=FALSE \
@@ -33,13 +29,7 @@ package-cmake \
     -DSPIRV_TOOLS_LIB=`package-get-path SPIRV-Tools STATIC HOST` \
     -DSPIRV_TOOLS_OPT_SEARCH_PATH=${PACKAGE_PREFIX} \
     -DSPIRV_TOOLS_OPT_LIB=`package-get-path SPIRV-Tools-opt STATIC HOST` \
+    -DUSE_ROBIN_HOOD_HASHING=FALSE \
     -DVulkanHeaders_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DVulkanRegistry_DIR=${PACKAGE_PREFIX}/share/vulkan/registry \
-    "${CMAKE_XCB_CMD}" \
-    ${SOURCE_ROOT}
-
-# Build the components
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install
+    ${CMAKE_XCB_CMD}

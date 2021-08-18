@@ -11,15 +11,9 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export DEPENDS="${PACKAGE_BASE_NAME}-vulkan-loader-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 
-# Configure the build components
-copy-source-to-staging
-
-${SED} -i \
-    's|${ANDROID_NDK}/sources/android/cpufeatures/cpu-features.c||g' \
-    ${STAGE_ROOT}/CMakeLists.txt
-
+# Invoke one-shot template for cmake/install
 if [ "${HOST_OS}" = "android" ]; then
-    PLATFORM_CMD="-DANDROID=TRUE"
+    CMAKE_ANDROID_DEFINE_CMD="-DANDROID=1"
 fi
 
 if [ "${HOST_OS}" != "gnu" ]; then
@@ -29,15 +23,14 @@ if [ "${HOST_OS}" != "gnu" ]; then
     "
 fi
 
-${MKDIR} -p ${STAGE_ROOT}/build
+CMAKE_STAGE_ROOT=${STAGE_ROOT}/build
+${MKDIR} -p ${CMAKE_STAGE_ROOT}
 
-cd ${STAGE_ROOT}/build
-package-cmake \
-    "${PLATFORM_CMD}" \
-    ${STAGE_ROOT}
-
-# Build the components
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install
+package-cmake-install-archive \
+    -DDBUS_INCLUDE_DIRS="${PACKAGE_PREFIX}/include/dbus-1.0;${PACKAGE_PREFIX}/lib/dbus-1.0/include" \
+    -DDBUS_LIBRARIES=`package-get-path dbus-1 SHARED HOST` \
+    -DOpenGLES1_LIBRARY=`package-get-path GL SHARED HOST` \
+    -DOpenGLES2_LIBRARY=`package-get-path GL SHARED HOST` \
+    -DWAYLAND_LIBDECOR=FALSE \
+    -DWAYLAND_SCANNER=`package-get-path wayland-scanner EXECUTABLE BUILD` \
+    ${CMAKE_ANDROID_DEFINE_CMD}

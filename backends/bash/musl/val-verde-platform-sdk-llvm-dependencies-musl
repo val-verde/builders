@@ -6,11 +6,9 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # autoconf build
-CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-gnu" \
 package-invoke-builder autoconf-cross
 
 # automake build
-CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-gnu" \
 package-invoke-builder automake-cross
 
 # autoconf-archive build
@@ -27,6 +25,9 @@ package-invoke-builder musl-fts
 
 # musl obstack build
 package-invoke-builder musl-obstack
+
+# libxcrypt build
+package-invoke-builder libxcrypt-cross
 
 # zlib build
 package-invoke-builder zlib-cross
@@ -73,13 +74,6 @@ package-invoke-builder libiconv-cross
 # icu build
 package-invoke-builder icu4c-cross
 
-# xz build
-package-invoke-builder xz-cross
-
-# libxml2 build
-DISABLE_PYTHON=TRUE \
-package-invoke-builder libxml2-cross
-
 # libunistring build
 package-invoke-builder libunistring-cross
 
@@ -91,6 +85,18 @@ package-invoke-builder gmp-cross
 
 # ncurses build
 package-invoke-builder ncurses-cross
+
+# gettext build (without libxml2 and xz)
+DISABLE_LIBXML2=TRUE \
+DISABLE_XZ=TRUE \
+package-invoke-builder gettext-cross
+
+# xz build
+package-invoke-builder xz-cross
+
+# libxml2 build
+DISABLE_PYTHON=TRUE \
+package-invoke-builder libxml2-cross
 
 # gettext build
 package-invoke-builder gettext-cross
@@ -113,9 +119,6 @@ package-invoke-builder ninja-cross
 # file build
 package-invoke-builder file-cross
 
-# gnulib build
-package-invoke-builder gnulib-cross
-
 # libedit build
 package-invoke-builder libedit-cross
 
@@ -135,14 +138,9 @@ package-invoke-builder isl-cross
 package-invoke-builder libev-cross
 
 # gdbm build
-CFLAGS="\
-    -fcommon \
-    ${CFLAGS} \
-" \
 package-invoke-builder gdbm-cross
 
 # libdb build
-CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-gnu" \
 package-invoke-builder libdb-cross
 
 # tcl build
@@ -156,6 +154,9 @@ package-invoke-builder openssl-cross
 
 # libcap build
 package-invoke-builder libcap-cross
+
+# krb5 build
+package-invoke-builder krb5-cross
 
 # expat build
 package-invoke-builder expat-cross
@@ -181,23 +182,16 @@ DISABLE_SYSTEMD=TRUE \
 package-invoke-builder util-linux-cross
 
 # attr build
-CFLAGS="\
-    -include ${PACKAGE_PREFIX}/include/sys/cdefs.h \
-    ${CFLAGS} \
-" \
-CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-linux" \
 package-invoke-builder attr-cross
 
 # acl build
-CFLAGS="\
-    -include ${PACKAGE_PREFIX}/include/sys/cdefs.h \
-    ${CFLAGS} \
-" \
-CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-linux" \
 package-invoke-builder acl-cross
 
 # libarchive build
 package-invoke-builder libarchive-cross
+
+# libssh build
+package-invoke-builder libssh-cross
 
 # libssh2 build
 package-invoke-builder libssh2-cross
@@ -205,50 +199,8 @@ package-invoke-builder libssh2-cross
 # curl build
 package-invoke-builder curl-cross
 
-# xorg-macros build
-package-invoke-builder xorg-macros-cross
-
-# xorgproto build
-package-invoke-builder xorg-xorgproto-cross
-
-# xcb-proto build
-package-invoke-builder xcb-proto-cross
-
-# xcb-pthread-stubs build
-package-invoke-builder xcb-pthread-stubs-cross
-
-# libxau build
-package-invoke-builder xorg-libxau-cross
-
-# libxcb build
-package-invoke-builder xcb-libxcb-cross
-
-# pixman build
-package-invoke-builder pixman-cross
-
-# xorg-libpciaccess build
-package-invoke-builder xorg-libpciaccess-cross
-
-# xorg-libxtrans build
-package-invoke-builder xorg-libxtrans-cross
-
-# libx11 build
-package-invoke-builder libx11-cross
-
-# libxext build
-package-invoke-builder libxext-cross
-
-# xorg-libxrender build
-package-invoke-builder xorg-libxrender-cross
-
-# xorg-libxfixes build
-package-invoke-builder xorg-libxfixes-cross
-
-# xorg-libxi build
-package-invoke-builder xorg-libxi-cross
-
-# xorg-libice build
-package-invoke-builder xorg-libice-cross
+# apple-mig build
+package-invoke-builder apple-mig-cross
 
 # alsa-lib build
 package-invoke-builder alsa-lib-cross
@@ -268,70 +220,6 @@ package-invoke-builder openssh-portable-cross
 # bash build
 package-invoke-builder bash-cross
 
-# xorg-libsm build
-package-invoke-builder xorg-libsm-cross
-
-# xorg-libxt build
-package-invoke-builder xorg-libxt-cross
-
-# xorg-libxtst build
-package-invoke-builder xorg-libxtst-cross
-
-# xorg-libxrandr build
-package-invoke-builder xorg-libxrandr-cross
-
-# xorg-xinput build
-# package-invoke-builder xorg-xinput-cross
-
-# xorg-libxkbfile build
-package-invoke-builder xorg-libxkbfile-cross
-
-# xorg-libxshmfence build
-package-invoke-builder xorg-libxshmfence-cross
-
-# xorg-libxxf86vm build
-package-invoke-builder xorg-libxxf86vm-cross
-
-# libjpeg build
-package-invoke-builder libjpeg-cross
-
-# libpng build
-package-invoke-builder libpng-cross
-
-# brotli build
-package-invoke-builder brotli-cross
-
-# freetype2 build
-DISABLE_HARFBUZZ=TRUE \
-package-invoke-builder freetype2-cross
-
-# harfbuzz build
-package-invoke-builder harfbuzz-cross
-
-# freetype2 build
-package-invoke-builder freetype2-cross
-
-# wayland build
-package-invoke-builder wayland-cross
-
-# wayland-protocols build
-package-invoke-builder wayland-protocols-cross
-
-# mesa-drm build
-package-invoke-builder mesa-drm-cross
-
-# opencl headers build
-package-invoke-builder opencl-headers-cross
-
-# opencl icd loader build
-package-invoke-builder opencl-icd-loader-cross
-
-# vulkan headers build
-package-invoke-builder vulkan-headers-cross
-
-# vulkan loader build
-package-invoke-builder vulkan-loader-cross
-
 # grep build
 package-invoke-builder grep-cross
 
@@ -347,11 +235,8 @@ package-invoke-builder bison-cross
 # jq build
 package-invoke-builder jq-cross
 
-# strace build
-package-invoke-builder strace-cross
-
-# fontconfig build
-package-invoke-builder fontconfig-cross
+# json-c build
+package-invoke-builder json-c-cross
 
 # tar build
 package-invoke-builder tar-cross
@@ -362,14 +247,14 @@ package-invoke-builder coreutils-cross
 # findutils build
 package-invoke-builder findutils-cross
 
+# less build
+package-invoke-builder less-cross
+
 # dpkg build
 package-invoke-builder dpkg-cross
 
 # rsync build
 package-invoke-builder rsync-cross
-
-# systemd build
-# package-invoke-builder systemd
 
 # lua build
 package-invoke-builder lua-cross
@@ -386,17 +271,37 @@ else
     package-invoke-builder python-cross
 fi
 
+# libxml2 build (with python support)
+package-invoke-builder libxml2-cross
+
+# python sdk build
+category-invoke-builder python-sdk-cross
+
 # libxslt build
 package-invoke-builder libxslt-cross
 
 # libtasn1 build
 package-invoke-builder libtasn1-cross
 
+# eudev build
+package-invoke-builder eudev-cross
+
 # p11-kit build
+DISABLE_SYSTEMD=TRUE \
 package-invoke-builder p11-kit-cross
+
+# dbus build
+package-invoke-builder dbus-cross
+
+# util-linux build (with python support)
+DISABLE_SYSTEMD=TRUE \
+package-invoke-builder util-linux-cross
 
 # nettle build
 package-invoke-builder nettle-cross
+
+# unbound build
+package-invoke-builder unbound-cross
 
 # gnutls build
 package-invoke-builder gnutls-cross
@@ -406,6 +311,9 @@ package-invoke-builder libmicrohttpd-cross
 
 # elfutils build
 package-invoke-builder elfutils-cross
+
+# strace build
+package-invoke-builder strace-cross
 
 # glib build
 package-invoke-builder glib-cross
@@ -419,17 +327,26 @@ package-invoke-builder libsecret-cross
 # pkg-config build
 package-invoke-builder pkg-config-cross
 
+# graphics server build
+package-invoke-builder graphics-server-cross
+
 # itstool build
 package-invoke-builder itstool-cross
 
 # gtk-doc build
 package-invoke-builder gtk-doc-cross
 
+# graphviz build
+package-invoke-builder graphviz-cross
+
 # cups build
 package-invoke-builder cups-cross
 
 # apt build
 package-invoke-builder apt-cross
+
+# lvm2 build
+# package-invoke-builder lvm2
 
 # popt build
 package-invoke-builder popt-cross
@@ -446,6 +363,12 @@ package-invoke-builder swig-cross
 # openjdk build
 package-invoke-builder openjdk-cross
 
+# jansi build
+package-invoke-builder jansi-cross
+
+# maven build
+package-invoke-builder maven-cross
+
 # z3 build
 package-invoke-builder z3-cross
 
@@ -457,6 +380,15 @@ package-invoke-builder vim-cross
 
 # cmake build
 package-invoke-builder cmake-cross
+
+# boost build
+package-invoke-builder boost-cross
+
+# cereal build
+package-invoke-builder cereal-cross
+
+# libobjc2 build
+package-invoke-builder libobjc2-cross
 
 # android patch elf
 package-invoke-builder android-patch-elf-cross

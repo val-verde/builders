@@ -1,0 +1,70 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=jansi
+export SOURCE_PACKAGE_VERSION=2
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+if [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    JANSI_OS=linux
+elif [ "${HOST_OS}" = "macos" ]; then
+    JANSI_OS=mac
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    JANSI_OS=win
+else
+    JANSI_OS=${HOST_OS}
+fi
+
+if [ "${HOST_OS}" = "musl" ]; then
+    export COMMON_CFLAGS="\
+        -Dc_ispeed=__c_ispeed \
+        -Dc_ospeed=__c_ospeed \
+        ${COMMON_CFLAGS} \
+    "
+fi
+
+if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+    JANSI_PROCESSOR=arm64
+elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    JANSI_PROCESSOR=x86
+fi
+
+# Configure the build components
+cd ${STAGE_ROOT}
+copy-source-to-staging
+export-compiler-environment
+INSTALL_TARGET=native \
+make-install \
+    CC=${CCLD} \
+    CCFLAGS="${CCLDFLAGS}" \
+    OS_NAME=${JANSI_OS} \
+    OS_ARCH=${JANSI_PROCESSOR} \
+    NATIVE_TARGET_DIR=${INSTALL_PREFIX}/lib
+
+${MKDIR} -p ${INSTALL_PREFIX}/lib/pkgconfig
+${ECHO} "
+V=${SOURCE_PACKAGE_VERSION}
+R=${SOURCE_PACKAGE_VERSION}
+
+prefix=${PACKAGE_PREFIX}
+INSTALL_INC=\${prefix}/include
+INSTALL_LIB=\${prefix}/lib
+exec_prefix=\${prefix}
+libdir=\${exec_prefix}/lib
+includedir=\${prefix}/include
+
+Name: jansi
+Description: Jansi is a small java library that allows you to use ANSI escape sequences to format your console output which works even on windows. 
+Version: \${R}
+Requires:
+Libs: -L\${libdir} -ljansi
+Cflags: -I\${includedir}
+" > ${INSTALL_PREFIX}/lib/pkgconfig/jansi.pc
+
+# Build and install the package
+package-invoke-archive-install

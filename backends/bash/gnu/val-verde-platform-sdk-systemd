@@ -17,19 +17,30 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-xz-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Configure the build components
-cd ${SOURCE_ROOT}
-package-meson-build \
-    -Drootprefix=${PACKAGE_PREFIX} \
-    -Dtests=false
+# Invoke one-shot template for meson/install
+function package-install-completion-callback() {
+    package-rsync -ax \
+                  ${STAGE_ROOT}/${SHARED_LIBRARY_PREFIX}systemd*${SHARED_LIBRARY_SUFFIX}* \
+                  ${INSTALL_PREFIX}/lib/
+}
 
-# Build the components
-cd ${STAGE_ROOT}
-ninja-install
-
-package-rsync -ax \
-              ${STAGE_ROOT}/${SHARED_LIBRARY_PREFIX}systemd*${SHARED_LIBRARY_SUFFIX}* \
-              ${INSTALL_PREFIX}/lib/
-
-# Build and install the package
-package-invoke-archive-install
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+package-meson-install-archive \
+    -Dapparmor=false \
+    -Daudit=false \
+    -Dbzip2=false \
+    -Delfutils=false \
+    -Dgcrypt=true \
+    -Dglib=true \
+    -Dgnutls=true \
+    -Dlibcurl=true \
+    -Dlz4=true \
+    -Dmicrohttpd=true \
+    -Dopenssl=true \
+    -Dp11kit=true \
+    -Drootprefix=${PACKAGE_PLATFORM_SYSROOT} \
+    -Dseccomp=false \
+    -Dselinux=false \
+    -Dtests=false \
+    -Dzlib=true \
+    -Dzstd=true

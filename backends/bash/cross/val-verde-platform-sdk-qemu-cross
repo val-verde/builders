@@ -1,0 +1,105 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=qemu
+export SOURCE_PACKAGE_VERSION=6
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for configure/install
+cd ${STAGE_ROOT}
+DISABLE_FORTIFY_SOURCE_LEVEL=TRUE \
+export-compiler-environment
+generate-compiler-tools
+
+ENABLE_OR_DISABLE_COCOA=disable
+ENABLE_OR_DISABLE_GNUTLS=enable
+ENABLE_OR_DISABLE_HAX=disable
+ENABLE_OR_DISABLE_HVF=disable
+ENABLE_OR_DISABLE_KVM=enable
+ENABLE_OR_DISABLE_LIBUDEV=disable
+ENABLE_OR_DISABLE_OPENGL=enable
+ENABLE_OR_DISABLE_SDL=enable
+ENABLE_OR_DISABLE_VIRGLRENDERER=enable
+TARGET_LIST=`${ECHO} "\
+    aarch64-softmmu \
+    arm-softmmu \
+    i386-softmmu \
+    riscv32-softmmu \
+    riscv64-softmmu \
+    x86_64-softmmu \
+" | ${XARGS}`
+LINUX_USER_TARGETS=`${ECHO} "\
+    aarch64-linux-user \
+    aarch64_be-linux-user \
+    arm-linux-user \
+    armeb-linux-user \
+    i386-linux-user \
+    x86_64-linux-user \
+" | ${XARGS}`
+
+if [ "${HOST_OS}" = "android" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    TARGET_LIST=`${ECHO} "\
+        ${LINUX_USER_TARGETS} \
+        ${TARGET_LIST} \
+    " | ${XARGS}`
+elif [ "${HOST_OS}" = "gnu" ]; then
+    ENABLE_OR_DISABLE_LIBUDEV=enable
+    TARGET_LIST=`${ECHO} "\
+        ${LINUX_USER_TARGETS} \
+        ${TARGET_LIST} \
+    " | ${XARGS}`
+elif [ "${HOST_OS}" = "macos" ]; then
+    ENABLE_OR_DISABLE_HVF=enable
+    ENABLE_OR_DISABLE_KVM=disable
+fi
+
+if [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    ENABLE_OR_DISABLE_HAX=enable
+fi
+
+package-configure-invocation \
+    ${SOURCE_ROOT}/configure \
+    --cc="${CC}" \
+    --cxx="${CXX}" \
+    --cross-prefix= \
+    --objcc="${OBJC}" \
+    --host-cc="${BUILD_CC} ${BUILD_CFLAGS}" \
+    --make=${MAKE} \
+    --meson=${MESON} \
+    --ninja=${NINJA} \
+    --with-git=${GIT} \
+    --disable-gcrypt \
+    --disable-libssh \
+    --disable-werror \
+    --enable-bzip2 \
+    --enable-curses \
+    --enable-gio \
+    --enable-libudev \
+    --enable-libxml2 \
+    --enable-nettle \
+    --enable-spice \
+    --enable-vnc \
+    --enable-vnc-jpeg \
+    --enable-vnc-png \
+    --enable-zstd \
+    --target-list="${TARGET_LIST}" \
+    --${ENABLE_OR_DISABLE_COCOA}-cocoa \
+    --${ENABLE_OR_DISABLE_GNUTLS}-gnutls \
+    --${ENABLE_OR_DISABLE_HAX}-hax \
+    --${ENABLE_OR_DISABLE_HVF}-hvf \
+    --${ENABLE_OR_DISABLE_KVM}-kvm \
+    --${ENABLE_OR_DISABLE_LIBUDEV}-libudev \
+    --${ENABLE_OR_DISABLE_OPENGL}-opengl \
+    --${ENABLE_OR_DISABLE_SDL}-sdl \
+    --${ENABLE_OR_DISABLE_SDL}-sdl-image \
+    --${ENABLE_OR_DISABLE_VIRGLRENDERER}-virglrenderer
+
+TOOL=${NINJA} \
+package-install
+
+package-invoke-archive-install

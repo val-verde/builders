@@ -1,0 +1,29 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=graphviz
+export SOURCE_PACKAGE_VERSION=2
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for cmake/install
+if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+    MKDEFS=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/lib/gvpr/mkdefs
+else
+    MKDEFS=
+fi
+
+package-cmake-install-archive \
+    -DAWK_EXECUTABLE=${GAWK} \
+    -DBISON_EXECUTABLE=${BISON} \
+    -DCairo_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DCairo_LIBRARY=`package-get-path cairo SHARED HOST` \
+    -DGD_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DGD_LIBRARY=`package-get-path gd SHARED HOST` \
+    -DLTDL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DLTDL_LIBRARY=`package-get-path ltdl SHARED HOST` \
+    -DMKDEFS_EXECUTABLE=${MKDEFS} \
+    -DPython3_EXECUTABLE=${PYTHON}

@@ -15,9 +15,23 @@ export DEPENDS="\
 "
 
 # Invoke one-shot template for configure/install
+ENABLE_OR_DISABLE_DBUS=enable
+
+if [ "${HOST_OS}" = "android" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    LIBS="\
+        -lintl \
+        ${LIBS} \
+    "
+fi
+
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 CONFIGURE_FILE=autogen.sh \
+DBUS_CFLAGS="-I${PACKAGE_PREFIX}/include/dbus-1.0 -I${PACKAGE_PREFIX}/lib/dbus-1.0/include" \
+DBUS_LDFLAGS="-L${PACKAGE_PREFIX}/lib" \
+DBUS_LIBS="-ldbus-1" \
 DISABLE_AUTOUPDATE=TRUE \
 package-configure-install-archive \
     --disable-static \
-    --enable-shared
+    --enable-shared \
+    --${ENABLE_OR_DISABLE_DBUS}-dbus

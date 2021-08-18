@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=spirv-llvm-translator
+export SOURCE_PACKAGE_VERSION=12
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for cmake/install
+export LLVM_STAGE_ROOT=${LLVM_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}}
+
+package-cmake-install-archive \
+    -DLLVM_DIR=${LLVM_STAGE_ROOT}/lib/cmake/llvm

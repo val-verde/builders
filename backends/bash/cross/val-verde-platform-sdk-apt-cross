@@ -12,19 +12,23 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 export DEPENDS="${PACKAGE_BASE_NAME}-gnutls-3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 
 # Configure the build components
-cd ${STAGE_ROOT}
+HAVE_LIBC_RESOLV=TRUE
 
 if [ "${HOST_OS}" = "gnu" ]; then
+    HAVE_LIBC_RESOLV=FALSE
+    RESOLV_LIBRARIES=`package-get-path resolv SHARED HOST`
     SYSTEMD_INCLUDE_DIRS=${PACKAGE_PREFIX}/include
-    SYSTEMD_LIBRARIES=${PACKAGE_PREFIX}/lib/libsystemd.so
+    SYSTEMD_LIBRARIES=`package-get-path systemd SHARED HOST`
     UDEV_INCLUDE_DIRS=${PACKAGE_PREFIX}/include
-    UDEV_LIBRARIES=${PACKAGE_PREFIX}/lib/libudev.so
+    UDEV_LIBRARIES=`package-get-path udev SHARED HOST`
 fi
 
-package-cmake \
+package-cmake-install-archive \
     -DCONF_DIR=/etc/apt \
     -DCACHE_DIR=/var/cache/apt \
+    -DHAVE_LIBC_RESOLV=${HAVE_LIBC_RESOLV} \
     -DLOG_DIR=/var/log/apt \
+    -DRESOLV_LIBRARIES=${RESOLV_LIBRARIES} \
     -DSTATE_DIR=/var/lib/apt \
     -DSYSTEMD_INCLUDE_DIRS=${SYSTEMD_INCLUDE_DIRS} \
     -DSYSTEMD_LIBRARIES=${SYSTEM_LIBRARIES} \
@@ -32,11 +36,4 @@ package-cmake \
     -DUDEV_INCLUDE_DIRS=${UDEV_INCLUDE_DIRS} \
     -DUDEV_LIBRARIES=${UDEV_LIBRARIES} \
     -DWITH_DOC=FALSE \
-    -DWITH_TESTS=FALSE \
-    ${SOURCE_ROOT}
-
-# Build the components
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install
+    -DWITH_TESTS=FALSE

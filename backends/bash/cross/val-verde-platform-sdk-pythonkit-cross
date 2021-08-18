@@ -15,18 +15,9 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Configure the build components
-cd ${STAGE_ROOT}
-
+# Invoke one-shot template for cmake/install
 SWIFTCFLAGS="\
     -sdk ${SYSROOT} \
     ${SWIFTCFLAGS} \
 " \
-package-cmake \
-    ${SOURCE_ROOT}
-
-# Build the components
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install
+package-cmake-install-archive

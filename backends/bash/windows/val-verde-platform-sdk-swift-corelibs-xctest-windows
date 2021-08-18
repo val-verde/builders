@@ -16,33 +16,22 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Configure the build components
-cd ${STAGE_ROOT}
-CFLAGS="\
+# Invoke one-shot template for cmake/install
+function package-install-completion-callback() {
+    ${MV} ${INSTALL_PREFIX}/lib/swift/windows/XCTest.lib \
+          ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}/${SHARED_LIBRARY_PREFIX}XCTest${SHARED_LIBRARY_SUFFIX}
+}
+COMMON_CFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
-    ${CFLAGS} \
+    ${COMMON_CFLAGS} \
 " \
-CXXFLAGS="\
-    -fms-compatibility-version=19.2 \
-    -fms-extensions \
-    ${CXXFLAGS} \
-" \
+DISABLE_INSTALL_DEB=TRUE \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 SWIFTCFLAGS="\
     -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
     ${SWIFTCFLAGS} \
 " \
-package-cmake \
+package-cmake-install-archive \
     -Ddispatch_DIR=${STAGE_ROOT_BASE}/swift-corelibs-libdispatch-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
-    -DFoundation_DIR=${STAGE_ROOT_BASE}/swift-corelibs-foundation-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
-    ${SOURCE_ROOT}
-
-# Build the components
-ninja-install
-
-${MV} ${INSTALL_PREFIX}/lib/swift/windows/XCTest.lib \
-      ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}/${SHARED_LIBRARY_PREFIX}XCTest${SHARED_LIBRARY_SUFFIX}
-
-# Build and install the package
-DISABLE_INSTALL_DEB=TRUE \
-package-invoke-archive-install
+    -DFoundation_DIR=${STAGE_ROOT_BASE}/swift-corelibs-foundation-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules

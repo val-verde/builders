@@ -9,25 +9,26 @@ export SOURCE_PACKAGE_VERSION=2
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-# Configure the build components
-cd ${SOURCE_ROOT}
-
+# Invoke one-shot template for meson/install
 if [ -z "${ENABLE_GLIB}" ]; then
     ENABLE_OR_DISABLE_GLIB=disabled
 else
     ENABLE_OR_DISABLE_GLIB=enabled
 fi
 
-package-meson-build \
+if [ "${HOST_OS}" = "macos" ]; then
+    ENABLE_OR_DISABLE_CORETEXT=enabled
+else
+    ENABLE_OR_DISABLE_CORETEXT=disabled
+fi
+
+package-meson-install-archive \
+    -Dcairo=enabled \
+    -Dcoretext=${ENABLE_OR_DISABLE_CORETEXT} \
     -Ddocs=disabled \
+    -Dfreetype=enabled \
     -Dglib=${ENABLE_OR_DISABLE_GLIB} \
     -Dgobject=${ENABLE_OR_DISABLE_GLIB} \
+    -Dgraphite=enabled \
     -Dintrospection=${ENABLE_OR_DISABLE_GLIB} \
     -Dtests=disabled
-
-# Build the components
-cd ${STAGE_ROOT}
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install

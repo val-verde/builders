@@ -1,0 +1,29 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=libglvnd
+export SOURCE_PACKAGE_VERSION=1
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for meson/install
+function package-install-completion-callback() {
+    ${LN} -sf \
+         `package-get-filename GLESv2 SHARED` \
+         ${INSTALL_PREFIX}/lib/`package-get-filename GLESv3 SHARED`
+}
+
+ENABLE_OR_DISABLE_TLS=enabled
+
+if [ "${HOST_OS}" = "android" ]; then
+    ENABLE_OR_DISABLE_TLS=disabled
+fi
+
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+package-meson-install-archive \
+    -Dasm=disabled \
+    -Dtests=false \
+    -Dtls=${ENABLE_OR_DISABLE_TLS}

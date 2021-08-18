@@ -29,52 +29,47 @@ export KLEE_SRC_DIR=${SOURCE_ROOT_BASE}/klee-2
 export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
 
 # Configure the build components
-cd ${STAGE_ROOT}
+package-go-mod init souper
+package-go-get github.com/gomodule/redigo/redis
 
-TOOL_LOG=${STAGE_ROOT}/builder-go-init \
-tool-log ${GO} mod init souper
-TOOL_LOG=${STAGE_ROOT}/builder-go-get \
-tool-log ${GO} get github.com/gomodule/redigo/redis
+function package-install-completion-callback() {
+    ${MKDIR} -p \
+             ${INSTALL_PREFIX}/bin \
+             ${INSTALL_PREFIX}/lib
 
-package-cmake \
-    ${SOURCE_ROOT} \
+    package-rsync -ax \
+                  clang-souper${EXECUTABLE_SUFFIX} \
+                  sclang${EXECUTABLE_SUFFIX} \
+                  sclang++${EXECUTABLE_SUFFIX} \
+                  souper${EXECUTABLE_SUFFIX} \
+                  ${INSTALL_PREFIX}/bin/
+
+    if [ "${HOST_OS}" = "mingw32" ]; then
+        package-rsync -ax \
+                      libsouperPass${SHARED_LIBRARY_SUFFIX} \
+                      libsouperPassProfileAll${SHARED_LIBRARY_SUFFIX} \
+                      ${INSTALL_PREFIX}/bin/
+    fi
+
+    package-rsync -ax \
+                  libsouperPass${SHARED_LIBRARY_SUFFIX} \
+                  libsouperPassProfileAll${SHARED_LIBRARY_SUFFIX} \
+                  ${INSTALL_PREFIX}/lib/
+    ${LN} -sf \
+          clang-cpp${EXECUTABLE_SUFFIX} \
+          ${INSTALL_PREFIX}/bin/sclang-cpp${EXECUTABLE_SUFFIX}
+}
+
+function tool-install-invocation() {
+    return
+}
+
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+TOOL_INSTALL_INVOCATION=tool-install-invocation \
+package-cmake-install-archive \
     -DALIVE_LIBRARY=`package-get-path alive2 SHARED HOST` \
     -DHIREDIS_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DHIREDIS_LIBRARY=`package-get-path hiredis SHARED HOST` \
     -DKLEE_SRC_DIR=${KLEE_SRC_DIR} \
     -DLLVM_CONFIG_EXECUTABLE=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config \
     -DZ3_LIBRARY=`package-get-path z3 SHARED HOST`
-
-# Build the components
-ninja-build
-
-${MKDIR} -p \
-         ${INSTALL_PREFIX}/bin \
-         ${INSTALL_PREFIX}/lib
-
-package-rsync -ax \
-              clang-souper${EXECUTABLE_SUFFIX} \
-              sclang${EXECUTABLE_SUFFIX} \
-              sclang++${EXECUTABLE_SUFFIX} \
-              souper${EXECUTABLE_SUFFIX} \
-              ${INSTALL_PREFIX}/bin/
-
-if [ "${HOST_OS}" = "mingw32" ]; then
-    package-rsync -ax \
-                  libsouperCodegen${SHARED_LIBRARY_SUFFIX} \
-                  libsouperPass${SHARED_LIBRARY_SUFFIX} \
-                  libsouperPassProfileAll${SHARED_LIBRARY_SUFFIX} \
-                  ${INSTALL_PREFIX}/bin/
-fi
-
-package-rsync -ax \
-              libsouperCodegen${SHARED_LIBRARY_SUFFIX} \
-              libsouperPass${SHARED_LIBRARY_SUFFIX} \
-              libsouperPassProfileAll${SHARED_LIBRARY_SUFFIX} \
-              ${INSTALL_PREFIX}/lib/
-${LN} -sf \
-      clang-cpp${EXECUTABLE_SUFFIX} \
-      ${INSTALL_PREFIX}/bin/sclang-cpp${EXECUTABLE_SUFFIX}
-
-# Build and install the package
-package-invoke-archive-install

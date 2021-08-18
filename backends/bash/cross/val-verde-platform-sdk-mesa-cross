@@ -9,44 +9,65 @@ export SOURCE_PACKAGE_VERSION=21
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
+COMMON_CFLAGS="\
+    -D__USE_GNU \
+    -I${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/tools/clang/include \
+    -I${SOURCE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}/clang/include \
+    ${COMMON_CFLAGS} \
+" \
 export-compiler-environment
 
-export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
+LLVM_STAGE_ROOT=${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
 
-# Configure the build components
-cd ${SOURCE_ROOT}
+if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+    LLVM_STAGE_ROOT=${LLVM_STAGE_ROOT}/NATIVE
+fi
 
-GALLIUM_DRIVERS="freedreno,iris,lima,panfrost,nouveau,radeonsi,svga,swrast,v3d,vc4,virgl,zink"
+# Invoke one-shot template for meson/install
+if [ "${HOST_OS}" = "android" ] ||
+   [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    GALLIUM_DRIVERS="asahi,crocus,freedreno,iris,lima,panfrost,nouveau,radeonsi,svga,swrast,tegra,v3d,vc4,virgl,zink"
+    HARDWARE_DRIVERS_ENABLED=true
+    HARDWARE_PLATFORMS="wayland,x11"
+    OPENCL_MODE=icd
+    VULKAN_DRIVERS="amd,broadcom,freedreno,intel,panfrost,swrast,virtio-experimental"
+else
+    GALLIUM_DRIVERS="swrast,zink"
+    HARDWARE_DRIVERS_ENABLED=false
+    HARDWARE_PLATFORMS="x11"
+    OPENCL_MODE=icd
+    VULKAN_DRIVERS="swrast"
+fi
 
-CXXFLAGS="\
-    -L${PACKAGE_PREFIX}/lib \
-    ${CXXFLAGS} \
-" \
-MESON_EXTRA_BINARIES="\
-llvm-config = '${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config'
-" \
-package-meson-build \
+if [ "${HOST_OS}" = "macos" ]; then
+    DISABLE_UNDEFINED=false
+else
+    DISABLE_UNDEFINED=true
+fi
+
+package-meson-install-archive \
+    -Db_lundef=${DISABLE_UNDEFINED} \
     -Ddri-drivers= \
-    -Ddri3=true \
+    -Ddri3=enabled \
+    -Degl=enabled \
     -Dgallium-drivers="${GALLIUM_DRIVERS}" \
     -Dgallium-nine=true \
-    -Dgallium-opencl=disabled \
-    -Dglvnd=false \
+    -Dgallium-opencl=${OPENCL_MODE} \
+    -Dgbm=enabled \
+    -Dgles1=true \
+    -Dgles2=true \
+    -Dglvnd=true \
     -Dglx=dri \
+    -Dglx-direct=true \
     -Dllvm=enabled \
-    -Dopencl-native=true \
+    -Dopencl-native=${HARDWARE_DRIVERS_ENABLED} \
     -Dopencl-spirv=true \
-    -Dplatforms="wayland,x11" \
-    -Dprefix=${PACKAGE_PREFIX} \
+    -Dplatforms="${HARDWARE_PLATFORMS}" \
     -Dosmesa=true \
     -Dshared-llvm=enabled \
     -Dshared-swr=true \
-    -Dvulkan-drivers="amd,broadcom,freedreno,intel,swrast" \
+    -Dskip-llvm-config=true \
+    -Dvulkan-drivers=${VULKAN_DRIVERS} \
+    -Dvulkan-layers="device-select,intel-nullhw" \
     -Dzstd=enabled
-
-# Build the components
-cd ${STAGE_ROOT}
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install

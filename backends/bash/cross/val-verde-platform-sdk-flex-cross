@@ -9,5 +9,6 @@ export SOURCE_PACKAGE_VERSION=2
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-# Invoke one-shot template for stage/configure/install
-package-stage-configure-install-archive
+# Invoke one-shot template for bootstrap/configure/install
+BOOTSTRAP_FILE=autogen.sh \
+package-bootstrap-configure-install-archive

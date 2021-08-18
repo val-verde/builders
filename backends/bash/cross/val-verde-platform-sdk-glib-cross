@@ -32,15 +32,15 @@ if [ "${HOST_OS}" != "mingw32" ]; then
     "
 fi
 
-# Configure the build components
-cd ${SOURCE_ROOT}
-package-meson-build \
+if [ "${HOST_OS}" = "android" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    COMMON_CFLAGS="\
+        -lintl \
+        ${COMMON_CFLAGS} \
+    "
+fi
+
+# Invoke one-shot template for meson/install
+package-meson-install-archive \
     -Diconv=${ICONV_LIB} \
     -Dlibelf=${LIBELF_ENABLED}
-
-# Build the components
-cd ${STAGE_ROOT}
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install

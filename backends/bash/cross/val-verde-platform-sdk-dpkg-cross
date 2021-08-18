@@ -28,22 +28,23 @@ CONFIGURE_HOST_KERNEL=${HOST_KERNEL}
 
 if [ "${HOST_OS}" = "android" ]; then
     ADMIN_DIR=/data/local/tmp
+    COMMON_CFLAGS="\
+        -lobstack \
+        ${COMMON_CFLAGS} \
+    "
     CONFIGURE_HOST_KERNEL=unknown
 elif [ "${HOST_OS}" = "mingw32" ]; then
     ADMIN_DIR=/
     CONFIGURE_HOST_KERNEL=unknown
 elif [ "${HOST_OS}" = "musl" ]; then
-    CFLAGS="\
+    COMMON_CFLAGS="\
         -lobstack \
-        ${CFLAGS} \
+        ${COMMON_CFLAGS} \
     "
 fi
 
 CONFIGURE_HOST_TRIPLE=${HOST_PROCESSOR}-${CONFIGURE_HOST_KERNEL}-gnu \
-CXXFLAGS="\
-    -std=c++14 \
-    ${CXXFLAGS} \
-" \
+CXX_STANDARD=14 \
 TAR=tar \
 BOOTSTRAP_FILE=./autogen \
 package-bootstrap-configure-install-archive \

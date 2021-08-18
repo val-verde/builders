@@ -11,11 +11,11 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/web/${SOURCE_PACKAGE_NAME}
 
-export-compiler-environment
-
 # Configure & build the package
-copy-source-to-staging
 cd ${STAGE_ROOT}
+
+copy-source-to-staging
+export-compiler-environment
 yarn-build
 
 ${MKDIR} -p ${INSTALL_PREFIX}

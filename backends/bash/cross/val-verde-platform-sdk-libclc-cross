@@ -1,0 +1,42 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=libclc
+export SOURCE_PACKAGE_VERSION=13
+export SOURCE_ROOT=${SOURCE_ROOT_BASE}/llvm-project-${SOURCE_PACKAGE_VERSION}
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for cmake/install
+LIBCLC_NATIVE_STAGE_ROOT=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}
+LLVM_STAGE_ROOT=${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+
+if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+    LLVM_STAGE_ROOT=${LLVM_STAGE_ROOT}/NATIVE
+fi
+
+export-compiler-environment
+
+CMAKE_CONFIGURE_ROOT=${SOURCE_ROOT}/libclc \
+COMMON_LDFLAGS="\
+    -lLLVM \
+    ${COMMON_LDFLAGS} \
+" \
+PATH=${LIBCLC_NATIVE_STAGE_ROOT}:${PATH} \
+package-cmake-install-archive \
+    -DLLVM_AS=`package-get-path llvm-as EXECUTABLE BUILD` \
+    -DLLVM_CC=${CC} \
+    -DLLVM_CLANG=${CC} \
+    -DLLVM_CXX=${CXX} \
+    -DLLVM_CXX_FLAGS= \
+    -DLLVM_CONFIG=${LLVM_STAGE_ROOT}/bin/llvm-config \
+    -DLLVM_LD_FLAGS="${CXXLDFLAGS}" \
+    -DLLVM_LIBDIR=${PACKAGE_PREFIX}/lib \
+    -DLLVM_LIBS="LLVM" \
+    -DLLVM_LINK=`package-get-path llvm-link EXECUTABLE BUILD` \
+    -DLLVM_OPT=`package-get-path opt EXECUTABLE BUILD` \
+    -DLLVM_SPIRV=`package-get-path llvm-spirv EXECUTABLE BUILD` \
+    -DPython3_EXECUTABLE=${PYTHON}

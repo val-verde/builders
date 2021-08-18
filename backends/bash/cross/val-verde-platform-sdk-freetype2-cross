@@ -10,8 +10,6 @@ export SOURCE_PACKAGE_VERSION=2
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
-cd ${STAGE_ROOT}
-
 if [ -z "${DISABLE_HARFBUZZ}" ]; then
     FT_WITH_HARFBUZZ=TRUE
     HARFBUZZ_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/harfbuzz
@@ -20,7 +18,7 @@ else
     FT_WITH_HARFBUZZ=FALSE
 fi
 
-package-cmake \
+package-cmake-install-archive \
     -DBUILD_SHARED_LIBS=true \
     -DFT_WITH_BROTLI=TRUE \
     -DFT_WITH_BZIP2=TRUE \
@@ -31,11 +29,4 @@ package-cmake \
     -DHARFBUZZ_LIBRARIES=${HARFBUZZ_LIBRARIES} \
     -DPNG_LIBRARY_DEBUG=`package-get-path png SHARED HOST` \
     -DPNG_LIBRARY_RELEASE=`package-get-path png SHARED HOST` \
-    -DPNG_PNG_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    ${SOURCE_ROOT}
-
-# Build the components
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install
+    -DPNG_PNG_INCLUDE_DIR=${PACKAGE_PREFIX}/include

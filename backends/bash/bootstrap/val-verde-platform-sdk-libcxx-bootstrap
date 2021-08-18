@@ -11,8 +11,6 @@ export SOURCE_ROOT=${SOURCE_ROOT_BASE}/llvm-project-${SOURCE_PACKAGE_VERSION}
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
-cd ${STAGE_ROOT}
-
 ENABLE_FILESYSTEM=TRUE
 ENABLE_SHARED=TRUE
 ENABLE_STATIC=TRUE
@@ -29,7 +27,6 @@ elif [ "${HOST_OS}" = "mingw32" ]; then
     HAS_PTHREAD_API=FALSE
     HAS_WIN32_THREAD_API=TRUE
 elif [ "${HOST_OS}" = "wasi" ]; then
-    BUILD_WITH_INSTALL_RPATH_CMD="-DCMAKE_BUILD_WITH_INSTALL_RPATH=TRUE"
     DISABLE_LIBUNWIND=TRUE
     ENABLE_FILESYSTEM=FALSE
     ENABLE_SHARED=FALSE
@@ -38,47 +35,40 @@ elif [ "${HOST_OS}" = "wasi" ]; then
     HAS_PTHREAD_API=FALSE
 fi
 
-if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
-    COMPILER_RT_HAS_FVISIBILITY_HIDDEN_FLAG=FALSE
-elif [ "${HOST_PROCESSOR}" = "wasm32" ]; then
-    COMPILER_RT_HAS_FVISIBILITY_HIDDEN_FLAG=TRUE
-else
-    COMPILER_RT_HAS_FVISIBILITY_HIDDEN_FLAG=TRUE
+if [ "${HOST_PROCESSOR}" = "wasm32" ]; then
     SIZEOF_VOID_P=4
 fi
 
-ENABLED_PROJECTS="compiler-rt;libcxx;libcxxabi;parallel-libs;pstl"
+ENABLED_PROJECTS="libcxx;libcxxabi;parallel-libs;pstl"
 
 if [ -z "${DISABLE_LIBUNWIND}" ]; then
     ENABLED_PROJECTS="${ENABLED_PROJECTS};libunwind"
+fi
+
+INSTALL_TARGET="projects/libcxxabi/install projects/libcxx/install projects/parallel-libs/install projects/pstl/install"
+
+if [ "${HOST_OS}" != "wasi" ]; then
+    INSTALL_TARGET="projects/libunwind/install ${INSTALL_TARGET}"
 fi
 
 COMMON_CFLAGS="\
     -unwindlib=none \
     ${COMMON_CFLAGS} \
 " \
+CMAKE_CONFIGURE_ROOT=${SOURCE_ROOT}/llvm \
 CXXFLAGS="\
     -nostdlib++ \
     ${CXXFLAGS} \
 " \
-package-cmake \
+DISABLE_TOOL_BUILD=TRUE \
+package-cmake-install-archive \
     -DCMAKE_C_COMPILER_WORKS=TRUE \
     -DCMAKE_CXX_COMPILER_WORKS=TRUE \
-    -DCMAKE_LIPO=${BINDIR}/llvm-lipo \
     -DCMAKE_SIZEOF_VOID_P=${SIZEOF_VOID_P} \
-    -DCOMPILER_RT_BUILD_LIBFUZZER=FALSE \
-    -DCOMPILER_RT_BUILD_MEMPROF=FALSE \
-    -DCOMPILER_RT_BUILD_PROFILE=FALSE \
-    -DCOMPILER_RT_BUILD_SANITIZERS=FALSE \
-    -DCOMPILER_RT_BUILD_XRAY=FALSE \
-    -DCOMPILER_RT_CAN_EXECUTE_TESTS=FALSE \
-    -DCOMPILER_RT_DEFAULT_TARGET_TRIPLE=${HOST_TRIPLE} \
-    -DCOMPILER_RT_EXCLUDE_ATOMIC_BUILTIN=FALSE \
-    -DCOMPILER_RT_HAS_ATOMIC_KEYWORD=TRUE \
-    -DCOMPILER_RT_HAS_FVISIBILITY_HIDDEN_FLAG=${COMPILER_RT_HAS_FVISIBILITY_HIDDEN_FLAG} \
-    -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
-    -DDARWIN_macosx_OVERRIDE_SDK_VERSION=11 \
-    -DDARWIN_osx_SYSROOT=${SOURCE_ROOT_BASE}/macosx-11 \
+    -DDARWIN_macosx_OVERRIDE_SDK_VERSION=${MACOS_VERSION} \
+    -DDARWIN_osx_BUILTIN_ARCHS="arm64;x86_64" \
+    -DDARWIN_osx_BUILTIN_MIN_VER=${MACOS_VERSION} \
+    -DDARWIN_osx_SYSROOT=${SOURCE_ROOT_BASE}/macosx-${MACOS_VERSION} \
     -DHAVE_CXX_ATOMICS_WITHOUT_LIB=TRUE \
     -DHAVE_CXX_ATOMICS64_WITHOUT_LIB=TRUE \
     -DLIBCXX_CXX_ABI=libcxxabi \
@@ -128,6 +118,8 @@ package-cmake \
     -DLIBUNWIND_SUPPORTS_FNO_RTTI_FLAG=TRUE \
     -DLIBUNWIND_SUPPORTS_NODEFAULTLIBS_FLAG=TRUE \
     -DLIBUNWIND_USE_COMPILER_RT=TRUE \
+    -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_4_TRIPLE} \
+    -DLLVM_HOST_TRIPLE=${HOST_4_TRIPLE} \
     -DLLVM_ENABLE_LIBCXX=TRUE \
     -DLLVM_ENABLE_PROJECTS=${ENABLED_PROJECTS} \
     -DLLVM_INCLUDE_BENCHMARKS=FALSE \
@@ -137,18 +129,4 @@ package-cmake \
     -DLLVM_INCLUDE_TOOLS=FALSE \
     -DLLVM_INCLUDE_UTILS=FALSE \
     -DLLVM_TARGETS_TO_BUILD= \
-    -DPython3_EXECUTABLE=${PYTHON} \
-    "${BUILD_WITH_INSTALL_RPATH_CMD}" \
-    ${SOURCE_ROOT}/llvm
-
-# Build the components
-if [ "${HOST_OS}" != "wasi" ]; then
-    INSTALL_TARGET="projects/libunwind/install" \
-    ninja-install
-fi
-
-INSTALL_TARGET="projects/compiler-rt/install projects/libcxx/install projects/libcxxabi/install projects/parallel-libs/install projects/pstl/install" \
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install
+    -DPython3_EXECUTABLE=${PYTHON}

@@ -12,5 +12,25 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 export DEPENDS="${PACKAGE_BASE_NAME}-attr-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
 
 # Invoke one-shot template for bootstrap/configure/install
+if [ "${HOST_OS}" = "android" ]; then
+    COMMON_CFLAGS="\
+        -lintl \
+        ${COMMON_CFLAGS} \
+    "
+    LIBS="\
+        -lintl \
+        ${LIBS} \
+    "
+elif [ "${HOST_OS}" = "musl" ]; then
+    COMMON_CFLAGS="\
+        -include ${PACKAGE_PREFIX}/include/sys/cdefs.h \
+        ${COMMON_CFLAGS} \
+    "
+    LIBS="\
+        -lintl \
+        ${LIBS} \
+    "
+fi
+
 BOOTSTRAP_FILE=./autogen.sh \
 package-bootstrap-configure-install-archive

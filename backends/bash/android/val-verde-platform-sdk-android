@@ -36,104 +36,25 @@ package-invoke-builder swift-android
 # android lldb build
 package-invoke-builder swift-lldb-android
 
-# android libdispatch build
-FORTIFY_SOURCE_LEVEL=0 \
-package-invoke-builder swift-corelibs-libdispatch-cross
-
-# remove host foundation and libdispatch to avoid module collisions
-PACKAGES_TO_MANAGE=( 'swift-corelibs-foundation-5'     'BUILD' \
-                     'swift-corelibs-libdispatch-5'    'BUILD' )
-
-PACKAGE_ACTION=UNINSTALL \
-deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
-
-# android foundation build
-FORTIFY_SOURCE_LEVEL=0 \
-package-invoke-builder swift-corelibs-foundation-cross
-
-# android xctest build
-FORTIFY_SOURCE_LEVEL=0 \
-package-invoke-builder swift-corelibs-xctest-cross
-
-# android llbuild build
-FORTIFY_SOURCE_LEVEL=0 \
-package-invoke-builder swift-llbuild-cross
-
-# android swift-tools-support-core build
-FORTIFY_SOURCE_LEVEL=0 \
-package-invoke-builder swift-tools-support-core-android
-
-# android yams build
-FORTIFY_SOURCE_LEVEL=0 \
-package-invoke-builder yams-cross
-
-# android swift-argument-parser build
-FORTIFY_SOURCE_LEVEL=0 \
-package-invoke-builder swift-argument-parser-cross
-
-# android swift-driver build
-FORTIFY_SOURCE_LEVEL=0 \
-package-invoke-builder swift-driver-cross
-
-# android swiftpm build
-FORTIFY_SOURCE_LEVEL=0 \
-package-invoke-builder swift-package-manager-cross
-
-# reinstall swiftpm for build and host
-PACKAGES_TO_MANAGE=( 'swift-argument-parser-5'         'BUILD' \
-                     'swift-corelibs-foundation-5'     'BUILD' \
-                     'swift-corelibs-libdispatch-5'    'BUILD' \
-                     'swift-corelibs-xctest-5'         'BUILD' \
-                     'swift-driver-5'                  'BUILD' \
-                     'swift-llbuild-5'                 'BUILD' \
-                     'swift-package-manager-5'         'BUILD' \
-                     'swift-tools-support-core-5'      'BUILD' \
-                     'yams-3'                          'BUILD' \
-                     'swift-argument-parser-5'         'HOST' \
-                     'swift-corelibs-foundation-5'     'HOST' \
-                     'swift-corelibs-libdispatch-5'    'HOST' \
-                     'swift-corelibs-xctest-5'         'HOST' \
-                     'swift-driver-5'                  'HOST' \
-                     'swift-llbuild-5'                 'HOST' \
-                     'swift-package-manager-5'         'HOST' \
-                     'swift-tools-support-core-5'      'HOST' \
-                     'yams-3'                          'HOST' )
-
-PACKAGE_ACTION=INSTALL \
-deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
-
-# android swift-syntax build
-FORTIFY_SOURCE_LEVEL=0 \
-package-invoke-builder swift-syntax-cross
-
-# android swift-format build
-FORTIFY_SOURCE_LEVEL=0 \
-package-invoke-builder swift-format-cross
-
-# android swift-doc build
-FORTIFY_SOURCE_LEVEL=0 \
-package-invoke-builder swift-doc-cross
-
-# android sourcekit-lsp build
-FORTIFY_SOURCE_LEVEL=0 \
-package-invoke-builder sourcekit-lsp-android
-
-# android baikonur build
-FORTIFY_SOURCE_LEVEL=0 \
-package-invoke-builder baikonur-cross
-
-# android pythonkit build
-package-invoke-builder pythonkit-cross
+# swift sdk build
+DISABLE_FORTIFY_SOURCE_LEVEL=TRUE \
+category-invoke-builder swift-sdk-cross
 
 # android go build
 package-invoke-builder go-cross
 
+# android ruby build
+package-invoke-builder ruby-cross
+
 # android graphics sdk build
 category-invoke-builder graphics-sdk-cross
+
+# android virtualization sdk build
+# package-invoke-builder virtualization-sdk-cross
 
 # android node + sdk build
 package-invoke-builder node-cross
 package-invoke-builder npm-yarn-cross
 
-# android rust build
-# package-invoke-builder rust-cross
+# android blockchain sdk build
+package-invoke-builder blockchain-sdk-cross

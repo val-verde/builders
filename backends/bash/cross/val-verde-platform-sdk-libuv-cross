@@ -14,19 +14,15 @@ export DEPENDS="\
 "
 
 # Configure the build components
-cd ${STAGE_ROOT}
-
 if [ "${HOST_OS}" = "android" ]; then
     FORCE_ANDROID_CMD="-DFORCE_ANDROID=TRUE"
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    COMMON_CFLAGS="\
+        -fms-extensions \
+        ${COMMON_CFLAGS} \
+    "
 fi
 
-package-cmake \
+package-cmake-install-archive \
     -DBUILD_TESTING=FALSE \
-    ${FORCE_ANDROID_CMD} \
-    ${SOURCE_ROOT}
-
-# Build the components
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install
+    ${FORCE_ANDROID_CMD}

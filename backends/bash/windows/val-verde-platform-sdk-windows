@@ -3,8 +3,10 @@
 set -e
 
 # Source package build helper functions
-export FORTIFY_SOURCE_LEVEL=0
-export PACKAGE_USR_PREFIX=/
+export \
+    DISABLE_FORTIFY_SOURCE_LEVEL=TRUE \
+    FORTIFY_SOURCE_LEVEL=0 \
+    PACKAGE_USR_PREFIX=.
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # windows mingw-headers build
@@ -35,5 +37,11 @@ category-invoke-builder swift-sdk-windows
 # windows go build
 package-invoke-builder go-cross
 
+# windows ruby build
+package-invoke-builder ruby-cross
+
 # windows graphics sdk build
 category-invoke-builder graphics-sdk-cross
+
+# windows blockchain sdk build
+package-invoke-builder blockchain-sdk-cross

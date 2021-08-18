@@ -11,37 +11,20 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export SOURCE_ROOT=${SOURCE_ROOT_BASE}/mingw-w64-${SOURCE_PACKAGE_VERSION}/${SOURCE_PACKAGE_NAME}
 
-# Configure the build components
-cd ${STAGE_ROOT}
+# Invoke one-shot template for configure/install
+function package-install-completion-callback() {
+    ${CP} ${SOURCE_ROOT}/include/module.modulemap \
+          ${INSTALL_PREFIX}/include/
+    ${LN} -sf . \
+          ${INSTALL_PREFIX}/mingw
+    ${LN} -sf . \
+          ${INSTALL_PREFIX}/usr
+}
 
-if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
-    ENABLE_OR_DISABLE_LIB64=disable
-    ENABLE_OR_DISABLE_LIBARM64=enable
-else
-    ENABLE_OR_DISABLE_LIB64=enable
-    ENABLE_OR_DISABLE_LIBARM64=disable
-fi
-
-package-configure \
-    ${SOURCE_ROOT}/configure \
-    --disable-libarm32 \
-    --disable-lib32 \
+CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+package-stage-configure-install-archive \
     --enable-crt \
     --enable-sdk=all \
     --with-default-msvcrt=ucrt \
-    --with-default-win32-winnt=0x0A00 \
-    --${ENABLE_OR_DISABLE_LIB64}-lib64 \
-    --${ENABLE_OR_DISABLE_LIBARM64}-libarm64
-
-# Build the components
-make-install
-
-${CP} ${SOURCE_ROOT}/include/module.modulemap \
-      ${INSTALL_PREFIX}/include/
-${LN} -sf . \
-      ${INSTALL_PREFIX}/mingw
-${LN} -sf . \
-      ${INSTALL_PREFIX}/usr
-
-# Build and install the package
-package-invoke-archive-install
+    --with-default-win32-winnt=0x0A00

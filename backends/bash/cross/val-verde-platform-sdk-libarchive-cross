@@ -15,9 +15,7 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-zlib-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Configure the build components
-cd ${STAGE_ROOT}
-
+# Invoke one-shot template for cmake/install
 if [ "${HOST_OS}" != "gnu" ]; then
     export DEPENDS="\
         ${PACKAGE_BASE_NAME}-libiconv-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
@@ -41,7 +39,7 @@ LIBXML2_LIBRARY=`package-get-path xml2 SHARED HOST`
 ZLIB_LIBRARY=`package-get-path z SHARED HOST`
 ZSTD_LIBRARY=`package-get-path zstd SHARED HOST`
 
-package-cmake \
+package-cmake-install-archive \
     -DACL_LIBRARY=${ACL_LIBRARY} \
     -DBZIP2_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DBZIP2_LIBRARIES=${BZIP2_LIBRARY} \
@@ -61,11 +59,4 @@ package-cmake \
     -DZLIB_WINAPI_EXITCODE=0 \
     -DZLIB_WINAPI_EXITCODE__TRYRUN_OUTPUT=1 \
     -DZSTD_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DZSTD_LIBRARY=${ZSTD_LIBRARY} \
-    ${SOURCE_ROOT}
-
-# Build the components
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install
+    -DZSTD_LIBRARY=${ZSTD_LIBRARY}

@@ -26,6 +26,9 @@ for ((i=0; i<"${#args[@]}"; ++i)); do
         INCLUDES="${INCLUDES} -I${INCLUDE}"
         i=$((i+1))
         ;;
+    -I*)
+        INCLUDES="${INCLUDES} ${args[i]}"
+        ;;
     --preprocessor-arg=*)
         ;;
     --target*)
@@ -55,13 +58,10 @@ ${BINDIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-gcc-mingw32 \
        < ${TEMP_FILE} \
        > ${TEMP_FILE}.rc
 
-WORKING_DIR=`dirname ${IN_FILE}`
-pushd ${WORKING_DIR}
 ${BINDIR}/llvm-rc \
     ${INCLUDES} \
     ${TEMP_FILE}.rc \
     -fo ${TEMP_FILE}.res
-popd
 
 ${RM} ${TEMP_FILE}.rc
 ${MV} ${TEMP_FILE}.res \

@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=sway
+export SOURCE_PACKAGE_VERSION=1
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for meson/install
+SD_BUS_PROVIDER=libelogind
+
+if [ "${HOST_OS}" = "gnu" ]; then
+    SD_BUS_PROVIDER=libsystemd
+fi
+
+package-meson-install-archive \
+    -Dsd-bus-provider=${SD_BUS_PROVIDER} \
+    -Dwerror=false

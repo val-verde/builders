@@ -17,8 +17,13 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Configure the build components
-cd ${STAGE_ROOT}
+# Invoke one-shot template for cmake/install
+function package-install-completion-callback() {
+    package-rsync -ax \
+                  ${STAGE_ROOT}/lib/*${STATIC_LIBRARY_SUFFIX} \
+                  ${INSTALL_PREFIX}/lib
+}
+
 COMMON_CFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
@@ -28,31 +33,21 @@ COMMON_CFLAGS="\
     -Wno-unused-function \
     ${COMMON_CFLAGS} \
 " \
+DISABLE_INSTALL_DEB=TRUE \
 LIBS="\
-    -lncursesw \
+    -lncurses \
     -lole32 \
     -luuid \
     ${LIBS} \
 " \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 SWIFTCFLAGS="\
     -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
     ${SWIFTCFLAGS} \
 " \
-package-cmake \
+package-cmake-install-archive \
     -Ddispatch_DIR=${STAGE_ROOT_BASE}/swift-corelibs-libdispatch-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DFoundation_DIR=${STAGE_ROOT_BASE}/swift-corelibs-foundation-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DLLBUILD_SUPPORT_BINDINGS=Swift \
     -DSQLite3_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DSQLite3_LIBRARY=`package-get-path sqlite3 SHARED HOST` \
-    ${SOURCE_ROOT}
-
-# Build the components
-ninja-install
-
-package-rsync -ax \
-              ${STAGE_ROOT}/lib/*${STATIC_LIBRARY_SUFFIX} \
-              ${INSTALL_PREFIX}/lib
-
-# Build and install the package
-DISABLE_INSTALL_DEB=TRUE \
-package-invoke-archive-install
+    -DSQLite3_LIBRARY=`package-get-path sqlite3 SHARED HOST`

@@ -25,7 +25,10 @@ package-configure \
 INSTALL_TARGET=install-headers \
 make-install
 
-${RM} -rf ${INSTALL_PREFIX}/include/iconv.h
+${RM} -rf \
+      ${INSTALL_PREFIX}/include/crypt.h \
+      ${INSTALL_PREFIX}/include/iconv.h \
+      ${INSTALL_PREFIX}/include/libintl.h
 
 # Build and install the package
 package-invoke-archive-install

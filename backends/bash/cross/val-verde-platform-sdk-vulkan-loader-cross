@@ -11,8 +11,6 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 export-compiler-environment
 
 # Configure the build components
-cd ${STAGE_ROOT}
-
 ENABLE_WAYLAND=FALSE
 ENABLE_XLIB=FALSE
 
@@ -22,23 +20,22 @@ elif [ "${HOST_OS}" = "gnu" ] ||
      [ "${HOST_OS}" = "musl" ]; then
     ENABLE_WAYLAND=TRUE
     ENABLE_XLIB=TRUE
+elif [ "${HOST_OS}" = "macos" ]; then
+    ENABLE_XLIB=TRUE
 fi
 
-package-cmake \
+if [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    JWASM=`package-get-path ${VAL_VERDE_GH_TEAM}-platform-sdk-ml64 SCRIPT BUILD`
+fi
+
+PATH=${STAGE_ROOT_BASE}/vulkan-loader-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/loader:${PATH} \
+package-cmake-install-archive \
     -DBUILD_WSI_DIRECTFB_SUPPORT=FALSE \
     -DBUILD_WSI_WAYLAND_SUPPORT=${ENABLE_WAYLAND} \
     -DBUILD_WSI_XLIB_SUPPORT=${ENABLE_XLIB} \
     -DCMAKE_ASM_MASM_COMPILER_WORKS=FALSE \
-    -DJWASM_FOUND=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-ml64 \
+    -DJWASM_FOUND=${JWASM} \
     -DPKG_CONFIG_EXECUTABLE=${PKG_CONFIG} \
     -DVulkanHeaders_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DVulkanRegistry_DIR=${PACKAGE_PREFIX}/share/vulkan/registry \
-    "${CMAKE_ANDROID_DEFINE_CMD}" \
-    ${SOURCE_ROOT}
-
-# Build the components
-PATH=${STAGE_ROOT_BASE}/vulkan-loader-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/loader:${PATH} \
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install
+    ${CMAKE_ANDROID_DEFINE_CMD}

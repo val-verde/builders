@@ -10,7 +10,42 @@ export SOURCE_PACKAGE_VERSION=1
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for configure/install
+if [ "${HOST_OS}" = "mingw32" ]; then
+    ENABLE_OR_DISABLE_DRI3=disable
+else
+    ENABLE_OR_DISABLE_DRI3=enable
+fi
+
 CONFIGURE_FILE=autogen.sh \
 package-configure-install-archive \
+    --disable-devel-docs \
+    --disable-selinux \
+    --disable-strict-compilation \
     --disable-static \
-    --enable-shared
+    --disable-xprint \
+    --disable-xtest \
+    --enable-shared \
+    --enable-composite \
+    --enable-damage \
+    --enable-dpms \
+    --enable-dri2 \
+    --enable-ge \
+    --enable-glx \
+    --enable-present \
+    --enable-randr \
+    --enable-record \
+    --enable-render \
+    --enable-resource \
+    --enable-screensaver \
+    --enable-shape \
+    --enable-shm \
+    --enable-sync \
+    --enable-xevie \
+    --enable-xfixes \
+    --enable-xfree86-dri \
+    --enable-xinerama \
+    --enable-xinput \
+    --enable-xkb \
+    --enable-xv \
+    --enable-xvmc \
+    --${ENABLE_OR_DISABLE_DRI3}-dri3 \

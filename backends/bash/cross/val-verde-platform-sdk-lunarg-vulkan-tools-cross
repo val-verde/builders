@@ -9,9 +9,8 @@ export SOURCE_PACKAGE_VERSION=1
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-# Configure the build components
-cd ${STAGE_ROOT}
-package-cmake \
+# Invoke one-shot template for cmake/install
+package-cmake-install-archive \
     -DBUILD_WSI_DIRECTFB_SUPPORT=FALSE \
     -DBUILD_WSI_WAYLAND_SUPPORT=FALSE \
     -DBUILD_WSI_XLIB_SUPPORT=FALSE \
@@ -22,11 +21,4 @@ package-cmake \
     -DVulkan_LIBRARY=`package-get-path vulkan-1 SHARED HOST` \
     -DVULKAN_HEADERS_INSTALL_DIR=${PACKAGE_PREFIX} \
     -DVULKAN_LOADER_INSTALL_DIR=${PACKAGE_PREFIX} \
-    -DVULKAN_VALIDATIONLAYERS_INSTALL_DIR=${PACKAGE_PREFIX} \
-    ${SOURCE_ROOT}
-
-# Build the components
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install
+    -DVULKAN_VALIDATIONLAYERS_INSTALL_DIR=${PACKAGE_PREFIX}

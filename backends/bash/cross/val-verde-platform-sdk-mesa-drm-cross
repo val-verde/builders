@@ -9,28 +9,26 @@ export SOURCE_PACKAGE_VERSION=2
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-# Configure the build components
-cd ${SOURCE_ROOT}
-package-meson-build \
-    -Damdgpu=true \
-    -Dbuild-tests=false \
+# Invoke one-shot template for meson/install
+if [ "${HOST_OS}" = "android" ] ||
+   [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    HARDWARE_DRIVERS_ENABLED=true
+else
+    HARDWARE_DRIVERS_ENABLED=false
+fi
+
+package-meson-install-archive \
+    -Damdgpu=${HARDWARE_DRIVERS_ENABLED} \
     -Dcairo-tests=false \
-    -Detnaviv=true \
-    -Dexynos=true \
-    -Dfreedreno=true \
+    -Detnaviv=${HARDWARE_DRIVERS_ENABLED} \
+    -Dexynos=${HARDWARE_DRIVERS_ENABLED} \
+    -Dfreedreno=${HARDWARE_DRIVERS_ENABLED} \
     -Dinstall-test-programs=false \
-    -Dintel=true \
-    -Dlibkms=true \
-    -Domap=true \
-    -Dnouveau=true \
-    -Dradeon=true \
-    -Dtegra=true \
-    -Dvivante=true \
-    -Dvmwgfx=true
-
-# Build the components
-cd ${STAGE_ROOT}
-ninja-install
-
-# Build and install the package
-package-invoke-archive-install
+    -Dintel=${HARDWARE_DRIVERS_ENABLED} \
+    -Dlibkms=${HARDWARE_DRIVERS_ENABLED} \
+    -Domap=${HARDWARE_DRIVERS_ENABLED} \
+    -Dnouveau=${HARDWARE_DRIVERS_ENABLED} \
+    -Dradeon=${HARDWARE_DRIVERS_ENABLED} \
+    -Dtegra=${HARDWARE_DRIVERS_ENABLED} \
+    -Dvmwgfx=${HARDWARE_DRIVERS_ENABLED}

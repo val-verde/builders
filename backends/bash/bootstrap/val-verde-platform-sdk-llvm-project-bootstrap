@@ -9,28 +9,56 @@ export SOURCE_PACKAGE_VERSION=13
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-export DEPENDS="libz3-4 (>= 4.8.7-4build1), libelf1 (>= 0.176-1.1build1)"
-
+COMPILER_RT_SANITIZERS_TO_BUILD="asan;cfi;dfsan;gwp_asan;hwasan;msan;safestack;scudo;tsan;ubsan_minimal"
 CUDA_GPU_PRIMARY_ARCH=61
 CUDA_GPU_SECONDARY_ARCH=35
+COMPILER_RT_SANITIZERS_TO_BUILD="asan;cfi;dfsan;gwp_asan;hwasan;msan;safestack;scudo;tsan;ubsan_minimal"
 
-# Configure the build components
-cd ${STAGE_ROOT}
+# Invoke one-shot template for cmake/install
+function package-install-completion-callback() {
+    package-rsync -ax \
+                  ${STAGE_ROOT}/bin/dsymutil \
+                  ${STAGE_ROOT}/bin/ld64.lld* \
+                  ${STAGE_ROOT}/bin/llvm-as* \
+                  ${STAGE_ROOT}/bin/llvm-dlltool* \
+                  ${STAGE_ROOT}/bin/llvm-install-name-tool* \
+                  ${STAGE_ROOT}/bin/llvm-libtool-darwin* \
+                  ${STAGE_ROOT}/bin/llvm-link* \
+                  ${STAGE_ROOT}/bin/llvm-lipo* \
+                  ${STAGE_ROOT}/bin/llvm-mt* \
+                  ${STAGE_ROOT}/bin/llvm-otool* \
+                  ${STAGE_ROOT}/bin/llvm-pdbutil* \
+                  ${STAGE_ROOT}/bin/llvm-readelf* \
+                  ${STAGE_ROOT}/bin/llvm-readobj* \
+                  ${STAGE_ROOT}/bin/opt* \
+                  ${INSTALL_PREFIX}/bin/
+
+    # remove libcxx as it is superceded by llvm-project
+    HOST_PROCESSOR=`${ECHO} ${HOST_PROCESSOR} | ${TR} _ -`
+    PACKAGES_TO_MANAGE=( 'libcxx-13' 'HOST' )
+
+    PACKAGE_ACTION=UNINSTALL \
+    deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
+}
+
+LLVM_TARGETS_TO_BUILD="NVPTX;WebAssembly"
 
 if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
     COMPILER_RT_HAS_FVISIBILITY_HIDDEN_FLAG=FALSE
-    LLVM_TARGETS_TO_BUILD="AArch64;NVPTX"
+    LLVM_TARGETS_TO_BUILD="AArch64;${LLVM_TARGETS_TO_BUILD}"
 elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
     COMPILER_RT_HAS_FVISIBILITY_HIDDEN_FLAG=TRUE
-    LLVM_TARGETS_TO_BUILD="NVPTX;X86"
+    LLVM_TARGETS_TO_BUILD="${LLVM_TARGETS_TO_BUILD};X86"
 fi
 
-CXX_STANDARD=17 \
+CMAKE_CONFIGURE_ROOT=${SOURCE_ROOT}/llvm \
 COMMON_LDFLAGS="\
     -lunwind \
     ${COMMON_LDFLAGS} \
 " \
-package-cmake \
+CXX_STANDARD=17 \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+package-cmake-install-archive \
     -DBUILD_SHARED_LIBS=FALSE \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
     -DCLANG_DEFAULT_RTLIB=compiler-rt \
@@ -50,6 +78,7 @@ package-cmake \
     -DCLANG_TOOL_C_INDEX_TEST_BUILD=FALSE \
     -DCMAKE_CUDA_COMPILER=${BINDIR}/clang \
     -DCOMPILER_RT_BUILD_LIBFUZZER=FALSE \
+    -DCOMPILER_RT_BUILD_MEMPROF=FALSE \
     -DCOMPILER_RT_BUILD_PROFILE=FALSE \
     -DCOMPILER_RT_BUILD_SANITIZERS=FALSE \
     -DCOMPILER_RT_BUILD_XRAY=FALSE \
@@ -58,13 +87,19 @@ package-cmake \
     -DCOMPILER_RT_EXCLUDE_ATOMIC_BUILTIN=FALSE \
     -DCOMPILER_RT_HAS_ATOMIC_KEYWORD=TRUE \
     -DCOMPILER_RT_HAS_FVISIBILITY_HIDDEN_FLAG=${COMPILER_RT_HAS_FVISIBILITY_HIDDEN_FLAG} \
+    -DCOMPILER_RT_HAS_FFREESTANDING_FLAG=FALSE \
+    -DCOMPILER_RT_HAS_LIBSTDCXX=FALSE \
+    -DCOMPILER_RT_HAS_NODEFAULTLIBS_FLAG=FALSE \
     -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
+    -DCOMPILER_RT_SANITIZERS_TO_BUILD=${COMPILER_RT_SANITIZER_TO_BUILD} \
     -DCUDA_NVCC_EXECUTABLE=${BINDIR}/clang \
+    -DCUDA_TOOLKIT_INCLUDE=${PACKAGE_PREFIX}/include \
+    -DDEFAULT_SYSROOT=${BINDIR} \
     -DENABLE_EXPERIMENTAL_NEW_PASS_MANAGER=TRUE \
-    -DFFI_INCLUDE_DIR=${SYSROOT}/usr/include/${HOST_TRIPLE} \
-    -DFFI_INCLUDE_PATH=${SYSROOT}/usr/include/${HOST_TRIPLE} \
-    -DFFI_LIBRARY_DIR=${SYSROOT}/usr/lib/${HOST_TRIPLE} \
-    -DFFI_LIBRARY_PATH=${SYSROOT}/usr/lib/${HOST_TRIPLE}/${SHARED_LIBRARY_PREFIX}ffi${SHARED_LIBRARY_SUFFIX} \
+    -DFFI_INCLUDE_DIR=\
+    -DFFI_INCLUDE_PATH=\
+    -DFFI_LIBRARY_DIR=\
+    -DFFI_LIBRARY_PATH=\
     -DHAVE_GNU_POSIX_REGEX=TRUE \
     -DHAVE_CXX_ATOMICS_WITHOUT_LIB=TRUE \
     -DHAVE_CXX_ATOMICS64_WITHOUT_LIB=TRUE \
@@ -109,12 +144,14 @@ package-cmake \
     -DLIBCXXABI_USE_LLVM_UNWINDER=TRUE \
     -DLIBCXXABI_USE_SJLJ_EXCEPTIONS=FALSE \
     -DLIBOMP_ENABLE_ASSERTIONS=FALSE \
-    -DLIBOMPTARGET_DEP_LIBELF_INCLUDE_DIRS=${SYSROOT}/usr/include \
-    -DLIBOMPTARGET_DEP_LIBELF_LIBRARIES=${SYSROOT}/usr/lib/${HOST_TRIPLE}/${SHARED_LIBRARY_PREFIX}elf${SHARED_LIBRARY_SUFFIX} \
-    -DLIBOMPTARGET_NVPTX_ALTERNATE_HOST_COMPILER=gcc-8 \
+    -DLIBOMP_HAVE_VERSION_SCRIPT_FLAG=TRUE \
+    -DLIBOMPTARGET_BUILD_AMDGCN_BCLIB=FALSE \
+    -DLIBOMPTARGET_BUILD_NVPTX_BCLIB=FALSE \
+    -DLIBOMPTARGET_DEP_LIBELF_INCLUDE_DIR= \
+    -DLIBOMPTARGET_DEP_LIBELF_LIBRARIES= \
     -DLIBOMPTARGET_NVPTX_COMPUTE_CAPABILITIES="${CUDA_GPU_PRIMARY_ARCH},${CUDA_GPU_SECONDARY_ARCH}" \
-    -DLIBOMPTARGET_SEARCH_LIBFFI_INCLUDE_DIRS=${SYSROOT}/usr/include \
-    -DLIBOMPTARGET_SEARCH_LIBFFI_LIBRARY_DIRS=${SYSROOT}/usr/lib/${HOST_TRIPLE} \
+    -DLIBOMPTARGET_SEARCH_LIBFFI_INCLUDE_DIRS= \
+    -DLIBOMPTARGET_SEARCH_LIBFFI_LIBRARY_DIRS= \
     -DLIBUNWIND_ENABLE_ASSERTIONS=FALSE \
     -DLIBUNWIND_ENABLE_PEDANTIC=FALSE \
     -DLIBUNWIND_ENABLE_SHARED=TRUE \
@@ -134,11 +171,12 @@ package-cmake \
     -DLLVM_BUILD_LLVM_DYLIB=TRUE \
     -DLLVM_BUILD_TESTS=FALSE \
     -DLLVM_BUILD_UTILS=FALSE \
-    -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS} \
+    -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_4_TRIPLE} \
     -DLLVM_ENABLE_ASSERTIONS=FALSE \
+    -DLLVM_ENABLE_BACKTRACES=FALSE \
     -DLLVM_ENABLE_DOXYGEN=FALSE \
     -DLLVM_ENABLE_EH=TRUE \
-    -DLLVM_ENABLE_FFI=TRUE \
+    -DLLVM_ENABLE_FFI=FALSE \
     -DLLVM_ENABLE_LIBCXX=TRUE \
     -DLLVM_ENABLE_LLD=TRUE \
     -DLLVM_ENABLE_LTO=${ENABLE_FLTO} \
@@ -151,7 +189,7 @@ package-cmake \
     -DLLVM_ENABLE_WARNINGS=FALSE \
     -DLLVM_ENABLE_Z3_SOLVER=TRUE \
     -DLLVM_ENABLE_ZLIB=TRUE \
-    -DLLVM_HOST_TRIPLE=${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS} \
+    -DLLVM_HOST_TRIPLE=${HOST_4_TRIPLE} \
     -DLLVM_INCLUDE_BENCHMARKS=FALSE \
     -DLLVM_INCLUDE_DOCS=FALSE \
     -DLLVM_INCLUDE_EXAMPLES=FALSE \
@@ -169,40 +207,15 @@ package-cmake \
     -DLLVM_USE_RELATIVE_PATHS_IN_DEBUG_INFO=TRUE \
     -DLLVM_USE_RELATIVE_PATHS_IN_FILES=TRUE \
     -DLLVM_VERSION_SUFFIX="-${PACKAGE_BASE_NAME}" \
-    -DLLVM_Z3_INSTALL_DIR=${SYSROOT} \
-    -DMLIR_CUDA_RUNNER_ENABLED=FALSE \
+    -DLLVM_Z3_INSTALL_DIR=${PACKAGE_PLATFORM_SYSROOT} \
+    -DMLIR_ENABLE_BINDINGS_PYTHON=FALSE \
+    -DMLIR_ENABLE_CUDA_RUNNER=FALSE \
+    -DMLIR_ENABLE_SPIRV_CPU_RUNNER=FALSE \
+    -DMLIR_ENABLE_VULKAN_RUNNER=FALSE \
     -DPython3_EXECUTABLE=/usr/bin/python3 \
     -DPOLLY_ENABLE_GPGPU_CODEGEN=FALSE \
     -DSANITIZER_CXX_ABI=libc++ \
-    -DZ3_INCLUDE_DIR=${SYSROOT}/usr/include \
-    -DZ3_LIBRARIES=${SYSROOT}/usr/lib/${HOST_TRIPLE}/${SHARED_LIBRARY_PREFIX}z3${SHARED_LIBRARY_SUFFIX} \
+    -DZ3_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZ3_LIBRARIES=`package-get-path z3 SHARED HOST` \
     -DZ3_RETURNCODE=0 \
-    -DZ3_RETURNCODE__TRYRUN_OUTPUT=4.8.10 \
-    ${SOURCE_ROOT}/llvm
-
-# Build the components
-ninja-install
-
-${LN} -sf lld \
-          ${STAGE_ROOT}/bin/ld64.lld
-package-rsync -ax \
-              ${STAGE_ROOT}/bin/llvm-as* \
-              ${STAGE_ROOT}/bin/llvm-dlltool* \
-              ${STAGE_ROOT}/bin/llvm-install-name-tool* \
-              ${STAGE_ROOT}/bin/llvm-link* \
-              ${STAGE_ROOT}/bin/llvm-lipo* \
-              ${STAGE_ROOT}/bin/llvm-mt* \
-              ${STAGE_ROOT}/bin/llvm-pdbutil* \
-              ${STAGE_ROOT}/bin/llvm-readelf* \
-              ${STAGE_ROOT}/bin/llvm-readobj* \
-              ${INSTALL_PREFIX}/bin/
-
-# remove libcxx, libcxxabi and libunwind as they are superceded by llvm-project.
-HOST_PROCESSOR=`${ECHO} ${HOST_PROCESSOR} | ${TR} _ -`
-PACKAGES_TO_MANAGE=( 'libcxx-13' 'HOST' )
-
-PACKAGE_ACTION=UNINSTALL \
-deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
-
-# Build and install the package
-package-invoke-archive-install
+    -DZ3_RETURNCODE__TRYRUN_OUTPUT=4.8.12
