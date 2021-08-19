@@ -1554,7 +1554,7 @@ ${MESON_EXTRA_BINARIES}
 
     if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
         MESON_EXTRA_PROPERTIES="
-needs_exe_wrapper = true
+needs_exe_wrapper = false
 ${MESON_EXTRA_PROPERTIES}
 "
 
