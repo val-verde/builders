@@ -15,7 +15,7 @@ package-invoke-builder libcxx-bootstrap
 package-invoke-builder llvm-dependencies-darwin
 
 # swift tools build
-package-invoke-builder swift-tools-darwin || true
+package-invoke-builder swift-tools-darwin
 
 # swift sdk build
 # category-invoke-builder swift-sdk-cross
