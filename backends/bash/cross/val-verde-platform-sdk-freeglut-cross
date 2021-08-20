@@ -10,4 +10,25 @@ export SOURCE_PACKAGE_VERSION=3
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for cmake/install
-package-cmake-install-archive
+package-cmake-install-archive \
+    -DOPENGL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DOPENGL_gl_LIBRARY=`package-get-path GL SHARED HOST` \
+    -DOPENGL_glu_LIBRARY=`package-get-path GLU SHARED HOST` \
+    -DX11_X11_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_X11_LIB=`package-get-path X11 SHARED HOST` \
+    -DX11_X11_xcb_LIB=`package-get-path X11-xcb SHARED HOST` \
+    -DX11_Xau_LIB=`package-get-path Xau SHARED HOST` \
+    -DX11_Xcursor_LIB=`package-get-path Xcursor SHARED HOST` \
+    -DX11_Xdamage_LIB=`package-get-path Xdamage SHARED HOST` \
+    -DX11_Xdmcp_LIB=`package-get-path Xdmcp SHARED HOST` \
+    -DX11_Xext_LIB=`package-get-path Xext SHARED HOST` \
+    -DX11_Xfixes_LIB=`package-get-path Xfixes SHARED HOST` \
+    -DX11_Xi_LIB=`package-get-path Xi SHARED HOST` \
+    -DX11_Xinerama_LIB=`package-get-path Xinerama SHARED HOST` \
+    -DX11_Xinput_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
+    -DX11_Xmu_LIB=`package-get-path Xmu SHARED HOST` \
+    -DX11_Xrandr_LIB=`package-get-path Xrandr SHARED HOST` \
+    -DX11_Xrender_LIB=`package-get-path Xrender SHARED HOST` \
+    -DX11_Xt_LIB=`package-get-path Xt SHARED HOST` \
+    -DX11_Xtst_LIB=`package-get-path Xtst SHARED HOST` \
+    -DX11_Xxf86vm_LIB=`package-get-path Xxf86vm SHARED HOST`
