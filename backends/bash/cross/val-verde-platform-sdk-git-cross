@@ -17,12 +17,19 @@ export DEPENDS="\
 "
 
 # Invoke one-shot template for stage/configure/install
-if [ "${HOST_OS}" != "android" ]; then
+if [ "${HOST_OS}" = "android" ]; then
+    UNAME_S=Linux
+elif [ "${HOST_OS}" = "gnu" ] ||
+     [ "${HOST_OS}" = "musl" ]; then
     NEEDS_LIBRT=1
+    UNAME_S=Linux
+elif [ "${HOST_OS}" = "macos" ]; then
+    UNAME_S=Darwin
 fi
 
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
-INSTALL_TARGET="NEEDS_LIBRT=${NEEDS_LIBRT} install" \
+DISABLE_TOOL_BUILD=TRUE \
+INSTALL_TARGET="NEEDS_LIBRT=${NEEDS_LIBRT} uname_S=${UNAME_S} install" \
 package-stage-configure-install-archive \
     ac_cv_fread_reads_directories=true \
     ac_cv_iconv_omits_bom=true \

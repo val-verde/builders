@@ -352,7 +352,7 @@ package-invoke-builder maven-cross
 package-invoke-builder z3-cross
 
 # git build
-# package-invoke-builder git-cross
+package-invoke-builder git-cross
 
 # vim build
 package-invoke-builder vim-cross
