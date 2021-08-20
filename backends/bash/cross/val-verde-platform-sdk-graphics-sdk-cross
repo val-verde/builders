@@ -59,10 +59,7 @@ if [ "${HOST_OS}" = "gnu" ] ||
    [ "${HOST_OS}" = "musl" ]; then
     # xorg-xserver build
     package-invoke-builder xorg-xserver-cross
-fi
 
-if [ "${HOST_OS}" = "gnu" ] ||
-   [ "${HOST_OS}" = "musl" ]; then
     # mesa glu build
     package-invoke-builder mesa-glu-cross
 
