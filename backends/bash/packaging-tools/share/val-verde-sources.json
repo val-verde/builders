@@ -364,9 +364,9 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "freeglut",
-        "sourceBranchIndicator": "git_master",
+        "sourceBranchIndicator": "default",
         "sourcePackageVersion": "3",
-        "sourcePackageUrl": "https://github.com/dcnieho/${SOURCE_PACKAGE_NAME}.git"
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
         "retainSource": "false",
