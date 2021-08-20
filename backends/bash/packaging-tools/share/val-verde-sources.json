@@ -1163,9 +1163,9 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "mesa-glu",
-        "sourceBranchIndicator": "master",
+        "sourceBranchIndicator": "default",
         "sourcePackageVersion": "9",
-        "sourcePackageUrl": "https:///gitlab.freedesktop.org/mesa/glu.git"
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
         "retainSource": "false",
