@@ -99,6 +99,7 @@ export UNAME=${UNAME:-${BINDIR}/uname}
 export UNIQ=${UNIQ:-${BINDIR}/uniq}
 export WC=${WC:-${BINDIR}/wc}
 export WGET=${WGET:-${BINDIR}/wget}
+export WHICH=${WHICH:-${BINDIR}/which}
 export XARGS=${XARGS:-${BINDIR}/xargs}
 export XZ=${XZ:-${BINDIR}/xz}
 

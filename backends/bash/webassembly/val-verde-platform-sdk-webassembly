@@ -50,6 +50,7 @@ export \
     TEE=/usr/bin/tee \
     TR=/usr/bin/tr \
     WGET=/usr/bin/wget \
+    WHICH=/usr/bin/which \
     XARGS=/usr/bin/xargs \
     XZ=/usr/bin/xz
 

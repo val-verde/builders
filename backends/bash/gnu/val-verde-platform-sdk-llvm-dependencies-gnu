@@ -48,6 +48,7 @@ export \
     TEE=/usr/bin/tee \
     TR=/usr/bin/tr \
     WGET=/usr/bin/wget \
+    WHICH=/usr/bin/which \
     XARGS=/usr/bin/xargs \
     XZ=/usr/bin/xz
 
@@ -349,6 +350,10 @@ unset \
     RMDIR \
     TEE \
     TR
+
+# which build
+package-invoke-builder which-cross
+unset WHICH
 
 # ed build
 package-invoke-builder ed-cross

@@ -244,6 +244,9 @@ fi
 # android coreutils build
 package-invoke-builder coreutils-cross
 
+# android which build
+package-invoke-builder which-cross
+
 # android findutils build
 package-invoke-builder findutils-cross
 

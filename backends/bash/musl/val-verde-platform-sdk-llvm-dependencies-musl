@@ -244,6 +244,9 @@ package-invoke-builder tar-cross
 # coreutils build
 package-invoke-builder coreutils-cross
 
+# which build
+package-invoke-builder which-cross
+
 # findutils build
 package-invoke-builder findutils-cross
 
