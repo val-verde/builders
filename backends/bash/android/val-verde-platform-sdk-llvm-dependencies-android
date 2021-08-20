@@ -381,6 +381,9 @@ package-invoke-builder vim-cross
 # android cmake build
 package-invoke-builder cmake-cross
 
+# android protobuf build
+package-invoke-builder protobuf-cross
+
 # android boost build
 package-invoke-builder boost-cross
 

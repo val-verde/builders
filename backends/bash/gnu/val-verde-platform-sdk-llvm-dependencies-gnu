@@ -510,6 +510,9 @@ package-invoke-builder vim-cross
 # cmake build
 package-invoke-builder cmake-cross
 
+# protobuf build
+package-invoke-builder protobuf-cross
+
 # boost build
 package-invoke-builder boost-cross
 

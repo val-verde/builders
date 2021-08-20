@@ -252,6 +252,9 @@ package-invoke-builder z3-cross
 # windows cmake build
 package-invoke-builder cmake-cross
 
+# windows protobuf build
+package-invoke-builder protobuf-cross
+
 # windows boost build
 package-invoke-builder boost-cross
 
