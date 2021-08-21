@@ -20,34 +20,34 @@ PACKAGES_TO_MANAGE=( 'swift-argument-parser-5'         'BUILD' \
                      'yams-3'                          'BUILD' )
 deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 
-# musl libdispatch build
+# libdispatch build
 package-invoke-builder swift-corelibs-libdispatch-cross
 
-# musl foundation build
+# foundation build
 package-invoke-builder swift-corelibs-foundation-cross
 
-# musl xctest build
+# xctest build
 package-invoke-builder swift-corelibs-xctest-cross
 
-# musl llbuild build
+# llbuild build
 package-invoke-builder swift-llbuild-cross
 
-# musl swift tools support core build
+# swift tools support core build
 package-invoke-builder swift-tools-support-core-cross
 
-# musl yams build
+# yams build
 package-invoke-builder yams-cross
 
-# musl swift argument parser build
+# swift argument parser build
 package-invoke-builder swift-argument-parser-cross
 
-# musl swift crypto build
+# swift crypto build
 package-invoke-builder swift-crypto-cross
 
-# musl swift driver build
+# swift driver build
 package-invoke-builder swift-driver-cross
 
-# musl swift package manager build
+# swift package manager build
 package-invoke-builder swift-package-manager-cross
 
 # reinstall swiftpm for build and host
@@ -74,23 +74,23 @@ PACKAGES_TO_MANAGE=( 'swift-argument-parser-5'         'BUILD' \
                      'yams-3'                          'HOST' )
 deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 
-# musl swift-syntax build
+# swift-syntax build
 package-invoke-builder swift-syntax-cross
 
-# musl swift-format build
+# swift-format build
 package-invoke-builder swift-format-cross
 
-# musl swift-doc build
+# swift-doc build
 package-invoke-builder swift-doc-cross
 
-# musl sourcekit-lsp build
+# sourcekit-lsp build
 package-invoke-builder sourcekit-lsp-cross
 
-# musl baikonur build
+# baikonur build
 package-invoke-builder baikonur-cross
 
-# musl pythonkit build
+# pythonkit build
 package-invoke-builder pythonkit-cross
 
-# musl swift tensorflows apis build
+# swift tensorflows apis build
 # package-invoke-builder swift-tensorflow-apis
