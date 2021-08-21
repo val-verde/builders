@@ -1729,7 +1729,7 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
-        "sourcePackageName": "swift-cmark",
+        "sourcePackageName": "swift-argument-parser",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
@@ -1738,7 +1738,7 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
-        "sourcePackageName": "swift-argument-parser",
+        "sourcePackageName": "swift-cmark",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
