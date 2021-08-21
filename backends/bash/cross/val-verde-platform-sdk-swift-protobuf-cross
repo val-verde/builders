@@ -1,0 +1,45 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=swift-protobuf
+export SOURCE_PACKAGE_VERSION=1
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+export DEPENDS="\
+    ${PACKAGE_BASE_NAME}-protobuf-3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-swift-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
+"
+
+# Build the components
+cd ${SOURCE_ROOT}
+package-swift-build
+
+if [ "${HOST_OS}" = "gnu" ]; then
+    SDK_PLATFORM_DIR="linux"
+elif [ "${HOST_OS}" = "macos" ]; then
+    SDK_PLATFORM_DIR="macosx"
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    SDK_PLATFORM_DIR="windows"
+else
+    SDK_PLATFORM_DIR=${HOST_OS}
+fi
+
+cd ${STAGE_ROOT}
+${MKDIR} -p ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
+package-rsync -ax \
+              release/Swift*.swiftdoc \
+              ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
+package-rsync -ax \
+              release/Swift*.swiftmodule \
+              ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
+package-rsync -ax \
+              release/`package-get-filename protoc-gen-swift EXECUTABLE HOST` \
+              ${INSTALL_PREFIX}/bin/
+
+# Build and install the package
+package-invoke-archive-install

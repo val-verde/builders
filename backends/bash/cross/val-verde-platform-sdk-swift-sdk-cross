@@ -74,6 +74,9 @@ PACKAGES_TO_MANAGE=( 'swift-argument-parser-5'         'BUILD' \
                      'yams-3'                          'HOST' )
 deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 
+# swift-protobuf build
+package-invoke-builder swift-protobuf-cross
+
 # swift-syntax build
 package-invoke-builder swift-syntax-cross
 
