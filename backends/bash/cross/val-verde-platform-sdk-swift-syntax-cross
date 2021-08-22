@@ -16,6 +16,7 @@ export DEPENDS="\
 
 # Build the components
 cd ${SOURCE_ROOT}
+SWIFT_BUILD_SCRIPT_ENVIRONMENT=TRUE \
 package-swift-build
 
 if [ "${HOST_OS}" = "gnu" ]; then
@@ -32,12 +33,10 @@ cd ${STAGE_ROOT}
 ${MKDIR} -p ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
 package-rsync -ax \
               release/Swift*.swiftdoc \
-              ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
-package-rsync -ax \
               release/Swift*.swiftmodule \
               ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
 package-rsync -ax \
-              release/${STATIC_LIBRARY_PREFIX}Swift*${STATIC_LIBRARY_SUFFIX} \
+              release/${SHARED_LIBRARY_PREFIX}Swift*${SHARED_LIBRARY_SUFFIX} \
               ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/
 
 # Build and install the package
