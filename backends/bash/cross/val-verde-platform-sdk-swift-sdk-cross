@@ -80,8 +80,14 @@ package-invoke-builder swift-protobuf-cross
 # swift-syntax build
 package-invoke-builder swift-syntax-cross
 
+# swift-syntax-highlighter build
+package-invoke-builder swift-syntax-highlighter-cross
+
 # swift-format build
 package-invoke-builder swift-format-cross
+
+# swift-semantics build
+package-invoke-builder swift-semantics-cross
 
 # swift-doc build
 package-invoke-builder swift-doc-cross
