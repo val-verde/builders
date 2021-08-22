@@ -1,0 +1,53 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=glew
+export SOURCE_PACKAGE_VERSION=2
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Configure the build components
+function glew-build() {
+    make-build \
+        AR=${AR} \
+        AS=${AS} \
+        CC=${CC} \
+        CFLAGS.EXTRA="${CFLAGS} -DGLEW_APPLE_GLX=1" \
+        LD=${CCLD} \
+        LDFLAGS.EXTRA="${CCLDFLAGS}" \
+        LDFLAGS.GL="-ldl -lGL -lX11" \
+        LIBDIR=${INSTALL_PREFIX}/lib \
+        LN="${LN} -s" \
+        GLEW_DEST=${INSTALL_PREFIX} \
+        GLEW_PREFIX=${PACKAGE_PREFIX} \
+        RANLIB=${RANLIB} \
+        REPO_EGL=${SOURCE_ROOT_BASE}/egl-headers-1 \
+        REPO_OPENGL=${SOURCE_ROOT_BASE}/opengl-headers-1 \
+        STRIP= \
+        SYSTEM=${SYSTEM} \
+        ${@}
+}
+
+cd ${STAGE_ROOT}
+copy-source-to-staging
+export-compiler-environment
+
+SYSTEM=${HOST_OS}
+
+if [ "${HOST_OS}" = "android" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    SYSTEM=linux
+elif [ "${HOST_OS}" = "macos" ]; then
+    SYSTEM=${DARWIN_OS}
+fi
+
+NUM_PROCESSORS=1 \
+glew-build extensions
+glew-build all
+glew-build install.all
+
+# Build and install the package
+package-invoke-archive-install
