@@ -24,6 +24,9 @@ package-invoke-builder python-jinja-cross
 # python-six build
 package-invoke-builder python-six-cross
 
+# python-toml build
+package-invoke-builder python-toml-cross
+
 # numpy build
 package-invoke-builder numpy-cross
 
