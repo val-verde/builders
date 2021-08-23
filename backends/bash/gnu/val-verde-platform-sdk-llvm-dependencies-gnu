@@ -477,8 +477,8 @@ unset RPM
 package-invoke-builder dnf-cross
 unset DNF
 
-# tensorflow build
-package-invoke-builder tensorflow-cross
+# AI SDK build
+category-invoke-builder ai-sdk-cross
 
 # swig build
 package-invoke-builder swig-cross
