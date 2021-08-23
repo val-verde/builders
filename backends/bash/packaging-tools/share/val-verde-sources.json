@@ -1927,6 +1927,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "vim",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "8",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "virglrenderer",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "0",
@@ -2536,13 +2545,6 @@
         "sourceBranchIndicator": "wget",
         "sourcePackageVersion": "2.37.1",
         "sourcePackageUrl": "https://cdn.kernel.org/pub/linux/utils/${SOURCE_PACKAGE_NAME}/v2.37/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "vim",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "8.2.3245",
-        "sourcePackageUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}/archive/v${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
         "sourceType": "other",
