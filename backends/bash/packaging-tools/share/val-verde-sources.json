@@ -1927,6 +1927,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "util-linux",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "vim",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "8",
@@ -2538,13 +2547,6 @@
         "sourceBranchIndicator": "wget",
         "sourcePackageVersion": "60",
         "sourcePackageUrl": "ftp://ftp.info-zip.org/pub/infozip/src/${SOURCE_PACKAGE_NAME}${SOURCE_PACKAGE_VERSION}.tgz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "util-linux",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "2.37.1",
-        "sourcePackageUrl": "https://cdn.kernel.org/pub/linux/utils/${SOURCE_PACKAGE_NAME}/v2.37/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
         "sourceType": "other",
