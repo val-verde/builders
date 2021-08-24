@@ -13,10 +13,18 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 function package-install-completion-callback() {
     ${SED} -i \
            's/${PYTHON_PREFIX}/${prefix}/g' \
-	   ${INSTALL_PREFIX}/lib/pkgconfig/*.pc
+           ${INSTALL_PREFIX}/lib/pkgconfig/*.pc
 }
 
-export-compiler-environment-for-python
+if [ "${HOST_OS}" = "mingw32" ]; then
+    HOST_KERNEL=${BUILD_KERNEL} \
+    HOST_OS=${BUILD_OS} \
+    HOST_OS_API_LEVEL=${BUILD_OS_API_LEVEL} \
+    HOST_PROCESSOR=${BUILD_PROCESSOR} \
+    export-compiler-environment-for-python
+else
+    export-compiler-environment-for-python
+fi
 
 CONFIGURE_FILE=autogen.sh \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
