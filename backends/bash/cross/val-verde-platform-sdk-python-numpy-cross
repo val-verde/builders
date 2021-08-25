@@ -3,14 +3,15 @@
 set -e
 
 # Set all environment vars
-export SOURCE_PACKAGE_NAME=pyparsing
-export SOURCE_PACKAGE_VERSION=2
+export SOURCE_PACKAGE_NAME=python-numpy
+export SOURCE_PACKAGE_VERSION=1
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Build the components
 cd ${SOURCE_ROOT}
+NUMPY_VERSION="1.21.1" \
 package-python-build
 
 # Build and install the package
