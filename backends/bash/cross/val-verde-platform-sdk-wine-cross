@@ -12,6 +12,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 # Invoke one-shot template for stage/configure/install
 if [ "${HOST_TRIPLE}" != "${BUILD_TRIPLE}" ]; then
     CROSS_CMD="--with-wine-tools=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/build"
+    WINEBUILD="`package-get-path winebuild EXECUTABLE BUILD`"
 fi
 
 WITH_OR_WITHOUT_UDEV=without
@@ -21,46 +22,16 @@ if [ "${HOST_OS}" = "musl" ] ||
     WITH_OR_WITHOUT_UDEV=with
 fi
 
-COMMON_CFLAGS="\
-    -fno-builtin-_exit \
-    -fno-builtin-abort \
-    -fno-builtin-bsearch \
-    -fno-builtin-calloc \
-    -fno-builtin-exit \
-    -fno-builtin-free \
-    -fno-builtin-labs \
-    -fno-builtin-lrint \
-    -fno-builtin-lrintf \
-    -fno-builtin-lround \
-    -fno-builtin-lroundf \
-    -fno-builtin-llabs \
-    -fno-builtin-llrint \
-    -fno-builtin-llrintf \
-    -fno-builtin-llround \
-    -fno-builtin-llroundf \
-    -fno-builtin-malloc \
-    -fno-builtin-fprintf \
-    -fno-builtin-printf \
-    -fno-builtin-fscanf \
-    -fno-builtin-qsort \
-    -fno-builtin-realloc \
-    -fno-builtin-scanf \
-    -fno-builtin-sscanf \
-    -fno-builtin-sprintf \
-    -fno-builtin-snprintf \
-    -fno-builtin-strtol \
-    -fno-builtin-strtoul \
-    -fno-builtin-vfprintf \
-    -fno-builtin-vprintf \
-    -fno-builtin-vsprintf \
-    -fno-builtin-vsnprintf \
-    -Wno-ignored-attributes \
-    ${COMMON_CFLAGS} \
-" \
+ENABLE_LD_AS_CCLD=TRUE \
+FREETYPE_CFLAGS="-I${PACKAGE_PREFIX}/include/freetype2" \
+FREETYPE_LIBS="-lfreetype" \
+WINEBUILD=${WINEBUILD} \
 package-stage-configure-install-archive \
-    ac_cv_cflags__fno_builtin=no \
+    ac_cv_lib_soname_freetype=`package-get-filename freetype SHARED HOST` \
     --disable-static \
     --enable-shared \
     --enable-win64 \
+    --with-unwind \
+    --without-vkd3d \
     ${CROSS_CMD} \
     --${WITH_OR_WITHOUT_UDEV}-udev
