@@ -410,3 +410,6 @@ package-invoke-builder hiredis-cross
 
 # android ccache build
 package-invoke-builder ccache-cross
+
+# android distcc build
+package-invoke-builder distcc-cross

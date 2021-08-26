@@ -386,3 +386,6 @@ package-invoke-builder hiredis-cross
 
 # ccache build
 package-invoke-builder ccache-cross
+
+# distcc build
+package-invoke-builder distcc-cross
