@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=ccache
+export SOURCE_PACKAGE_VERSION=4
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for cmake/install
+package-cmake-install-archive \
+    -DENABLE_TESTING=FALSE \
+    -DENV_PROGRAM=`package-get-path env EXECUTABLE BUILD` \
+    -DGIT_EXECUTABLE=`package-get-path git EXECUTABLE BUILD` \
+    -DHIREDIS_INCLUDE_DIR=${PACKAGE_PREFIX} \
+    -DHIREDIS_LIBRARY=`package-get-path hiredis SHARED HOST` \
+    -DZSTD_INCLUDE_DIR=${PACKAGE_PREFIX} \
+    -DZSTD_LIBRARY=`package-get-path zstd SHARED HOST` \
+    -DWARNINGS_AS_ERRORS=FALSE

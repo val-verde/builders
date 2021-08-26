@@ -536,3 +536,6 @@ package-invoke-builder alive2-cross
 
 # hiredis build
 package-invoke-builder hiredis-cross
+
+# ccache build
+package-invoke-builder ccache-cross

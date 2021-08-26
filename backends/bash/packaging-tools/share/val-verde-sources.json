@@ -183,6 +183,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "ccache",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "4",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "cereal",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",

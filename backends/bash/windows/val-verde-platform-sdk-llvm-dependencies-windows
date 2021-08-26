@@ -275,3 +275,6 @@ package-invoke-builder re2c-cross
 
 # hiredis build
 package-invoke-builder hiredis-cross
+
+# ccache build
+package-invoke-builder ccache-cross

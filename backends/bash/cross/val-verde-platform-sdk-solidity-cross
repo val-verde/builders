@@ -21,6 +21,7 @@ package-cmake-install-archive \
     -DBoost_LIBRARY_DIR=${PACKAGE_PREFIX}/lib \
     -DBoost_PROGRAM_OPTIONS_LIBRARY=`package-get-path boost_program_options STATIC HOST` \
     -DBoost_UNIT_TEST_FRAMEWORK=`package-get-path boost_unit_test_framework STATIC HOST` \
+    -DCCACHE=`package-get-path ccache EXECUTABLE BUILD` \
     -DTESTS=FALSE \
     -DUSE_CVC4=FALSE \
     -DUSE_LD_GOLD=FALSE \

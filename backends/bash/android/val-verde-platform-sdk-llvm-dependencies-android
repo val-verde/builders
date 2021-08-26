@@ -407,3 +407,6 @@ package-invoke-builder alive2-cross
 
 # android hiredis build
 package-invoke-builder hiredis-cross
+
+# android ccache build
+package-invoke-builder ccache-cross
