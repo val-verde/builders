@@ -12,31 +12,38 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 # Invoke one-shot template for cmake/install
 function package-install-completion-callback() {
     ${MKDIR} -p \
-            ${INSTALL_PREFIX}/bin \
-            ${INSTALL_PREFIX}/include/alive2/ir \
-            ${INSTALL_PREFIX}/include/alive2/smt \
-            ${INSTALL_PREFIX}/include/alive2/tools \
-            ${INSTALL_PREFIX}/include/alive2/utils \
-            ${INSTALL_PREFIX}/lib/pkgconfig
+             ${INSTALL_PREFIX}/bin \
+             ${INSTALL_PREFIX}/include/alive2/ir \
+             ${INSTALL_PREFIX}/include/alive2/smt \
+             ${INSTALL_PREFIX}/include/alive2/tools \
+             ${INSTALL_PREFIX}/include/alive2/utils \
+             ${INSTALL_PREFIX}/lib/pkgconfig
 
     package-rsync -ax \
-                ${STAGE_ROOT}/alive \
-                ${INSTALL_PREFIX}/bin/
+                  ${STAGE_ROOT}/alive${EXECUTABLE_SUFFIX} \
+                  ${INSTALL_PREFIX}/bin/
+
+    if [ "${HOST_OS}" = "mingw32" ]; then
+        package-rsync -ax \
+                      ${STAGE_ROOT}/libalive2.dll \
+                      ${INSTALL_PREFIX}/bin/
+    fi
+
     package-rsync -ax \
-                ${SOURCE_ROOT}/ir/*.h \
-                ${INSTALL_PREFIX}/include/alive2/ir/
+                  ${SOURCE_ROOT}/ir/*.h \
+                  ${INSTALL_PREFIX}/include/alive2/ir/
     package-rsync -ax \
-                ${SOURCE_ROOT}/smt/*.h \
-                ${INSTALL_PREFIX}/include/alive2/smt/
+                  ${SOURCE_ROOT}/smt/*.h \
+                  ${INSTALL_PREFIX}/include/alive2/smt/
     package-rsync -ax \
-                ${SOURCE_ROOT}/tools/*.h \
-                ${INSTALL_PREFIX}/include/alive2/tools/
+                  ${SOURCE_ROOT}/tools/*.h \
+                  ${INSTALL_PREFIX}/include/alive2/tools/
     package-rsync -ax \
-                ${SOURCE_ROOT}/util/*.h \
-                ${INSTALL_PREFIX}/include/alive2/util/
+                  ${SOURCE_ROOT}/util/*.h \
+                  ${INSTALL_PREFIX}/include/alive2/util/
     package-rsync -ax \
-                ${STAGE_ROOT}/libalive2.* \
-                ${INSTALL_PREFIX}/lib/
+                  ${STAGE_ROOT}/libalive2${SHARED_LIBRARY_SUFFIX} \
+                  ${INSTALL_PREFIX}/lib/
 
     ${ECHO} "
 V=${SOURCE_PACKAGE_VERSION}
@@ -55,7 +62,7 @@ Version: \${R}
 Requires:
 Libs: -L\${libdir} -lalive2
 Cflags: -I\${includedir}
-    " > ${INSTALL_PREFIX}/lib/pkgconfig/alive2.pc
+" > ${INSTALL_PREFIX}/lib/pkgconfig/alive2.pc
 }
 
 function tool-install-invocation() {
@@ -66,4 +73,9 @@ PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 TOOL_INSTALL_INVOCATION=tool-install-invocation \
 package-cmake-install-archive \
     -DGIT_EXECUTABLE=${GIT} \
-    -DRE2C=${BUILD_PACKAGE_PREFIX}/bin/re2c
+    -DRE2C=${BUILD_PACKAGE_PREFIX}/bin/re2c \
+    -DZ3_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZ3_LIBRARIES=`package-get-path z3 SHARED HOST` \
+    -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZLIB_LIBRARY_DEBUG=`package-get-path zlib SHARED HOST` \
+    -DZLIB_LIBRARY_RELEASE=`package-get-path zlib SHARED HOST`
