@@ -130,3 +130,8 @@ package-invoke-builder sdl-ttf-cross
 
 # filament build
 package-invoke-builder filament-cross
+
+if [ "{HOST_OS}" = "mingw32" ]; then
+    # dxvk-cross build
+    package-invoke-builder dxvk-cross
+fi
