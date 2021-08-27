@@ -271,7 +271,7 @@ package-invoke-builder jwasm
 package-invoke-builder re2c-cross
 
 # alive2 build
-# package-invoke-builder alive2-cross
+package-invoke-builder alive2-cross
 
 # hiredis build
 package-invoke-builder hiredis-cross
