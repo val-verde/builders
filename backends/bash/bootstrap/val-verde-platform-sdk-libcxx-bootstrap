@@ -23,7 +23,6 @@ SIZEOF_VOID_P=8
 if [ "${HOST_OS}" = "musl" ]; then
     HAS_MUSL_LIBC=TRUE
 elif [ "${HOST_OS}" = "mingw32" ]; then
-    ENABLE_FILESYSTEM=FALSE
     HAS_PTHREAD_API=FALSE
     HAS_WIN32_THREAD_API=TRUE
 elif [ "${HOST_OS}" = "wasi" ]; then

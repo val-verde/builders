@@ -19,12 +19,6 @@ export DEPENDS="\
 "
 
 # Configure the build components
-if [ "${HOST_OS}" = "mingw32" ]; then
-    CMake_HAVE_CXX_FILESYSTEM=FALSE
-else
-    CMake_HAVE_CXX_FILESYSTEM=TRUE
-fi
-
 CURL_LIBRARY=`package-get-path curl SHARED HOST`
 CURSES_CURSES_LIBRARY=`package-get-path ncurses SHARED HOST`
 CURSES_FORM_LIBRARY=`package-get-path form SHARED HOST`
@@ -35,7 +29,7 @@ ZLIB_LIBRARY=`package-get-path z SHARED HOST`
 
 package-cmake-install-archive \
     -DBUILD_TESTING=FALSE \
-    -DCMake_HAVE_CXX_FILESYSTEM=${CMake_HAVE_CXX_FILESYSTEM} \
+    -DCMake_HAVE_CXX_FILESYSTEM=TRUE \
     -DCMake_HAVE_CXX_UNIQUE_PTR=TRUE \
     -DCMake_RUN_CXX_FILESYSTEM=0 \
     -DCMake_RUN_CXX_FILESYSTEM__TRYRUN_OUTPUT=1 \
