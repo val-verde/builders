@@ -38,7 +38,7 @@ category-invoke-builder swift-sdk-windows
 package-invoke-builder go-cross
 
 # windows ruby build
-package-invoke-builder ruby-cross
+# package-invoke-builder ruby-cross
 
 # windows graphics sdk build
 category-invoke-builder graphics-sdk-cross
