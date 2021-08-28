@@ -98,6 +98,9 @@ if [ "${HOST_OS}" != "mingw32" ]; then
     # xorg-libxcursor build
     package-invoke-builder xorg-libxcursor-cross
 
+    # xorg-libxcvt build
+    package-invoke-builder xorg-libxcvt-cross
+
     # xorg-libxdamage build
     package-invoke-builder xorg-libxdamage-cross
 
