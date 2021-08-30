@@ -11,7 +11,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Build the components
 cd ${SOURCE_ROOT}
-NUMPY_VERSION="1.21.1" \
+NUMPY_VERSION="1.21.2" \
 package-python-build
 
 # Build and install the package
