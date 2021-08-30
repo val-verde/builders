@@ -199,7 +199,7 @@ package-invoke-builder jq-cross
 package-invoke-builder json-c-cross
 
 # which build
-package-invoke-builder which-cross
+# package-invoke-builder which-cross
 
 # windows findutils build
 # package-invoke-builder findutils-cross
