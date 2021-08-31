@@ -91,15 +91,12 @@ RUN HOST_ARCH=${BUILD_ARCH} \
     HOST_PROCESSOR=${BUILD_PROCESSOR} \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap
 
-# platform independent package builders
-FROM gnu_bootstrap_builder AS platform_independent_package_builders
-
 # platform sdk package build scripts
 COPY backends/bash/cross \
      /sources/
 
 # webassembly build
-FROM platform_independent_package_builders AS webassembly_builder
+FROM gnu_bootstrap_builder AS webassembly_builder
 
 COPY backends/bash/webassembly \
      /sources/
