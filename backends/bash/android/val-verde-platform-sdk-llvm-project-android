@@ -40,6 +40,7 @@ function package-install-completion-callback() {
                   ${STAGE_ROOT}/bin/llvm-pdbutil* \
                   ${STAGE_ROOT}/bin/llvm-readelf* \
                   ${STAGE_ROOT}/bin/llvm-readobj* \
+                  ${STAGE_ROOT}/bin/llvm-windres* \
                   ${STAGE_ROOT}/bin/opt* \
                   ${INSTALL_PREFIX}/bin/
 
