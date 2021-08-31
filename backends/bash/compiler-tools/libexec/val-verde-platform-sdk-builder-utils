@@ -297,12 +297,12 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     export ${TOOL_OBJDUMP}="${!TOOL_OBJDUMP:-`package-get-path llvm-objdump EXECUTABLE BUILD`}"
     export ${TOOL_OTOOL}="${!TOOL_OTOOL:-`package-get-path llvm-otool EXECUTABLE BUILD`}"
     export ${TOOL_RANLIB}="${!TOOL_RANLIB:-`package-get-path llvm-ranlib EXECUTABLE BUILD`}"
-    export ${TOOL_RC}="${!TOOL_RC:-`package-get-path ${VAL_VERDE_GH_TEAM}-platform-sdk-rc EXECUTABLE BUILD`}"
+    export ${TOOL_RC}="${!TOOL_RC:-`package-get-path llvm-windres EXECUTABLE BUILD`}"
     export ${TOOL_READELF}="${!TOOL_READELF:-`package-get-path llvm-readelf EXECUTABLE BUILD`}"
     export ${TOOL_SIZE}="${!TOOL_SIZE:-`package-get-path llvm-size EXECUTABLE BUILD`}"
     export ${TOOL_STRINGS}="${!TOOL_STRINGS:-`package-get-path llvm-strings EXECUTABLE BUILD`}"
     export ${TOOL_STRIP}="${!TOOL_STRIP:-`package-get-path llvm-strip EXECUTABLE BUILD`}"
-    export ${TOOL_WINDRES}="${!TOOL_RC:-`package-get-path ${VAL_VERDE_GH_TEAM}-platform-sdk-rc EXECUTABLE BUILD`}"
+    export ${TOOL_WINDRES}="${!TOOL_RC:-`package-get-path llvm-windres EXECUTABLE BUILD`}"
 
     CXX_INCLUDE_DIR_VAR=${ENV_PREFIX}CXX_INCLUDE_DIR
     CXX_INCLUDE_DIR_VAR_VALUE=${!CXX_INCLUDE_DIR_VAR}
@@ -512,6 +512,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     TOOL_OBJCFLAGS=${ENV_PREFIX}OBJCFLAGS
     TOOL_OBJCPPFLAGS=${ENV_PREFIX}OBJCPPFLAGS
     TOOL_OBJCXXFLAGS=${ENV_PREFIX}OBJCXXFLAGS
+    TOOL_RCFLAGS=${ENV_PREFIX}RCFLAGS
 
     export ${TOOL_COMMON_CFLAGS}="\
         ${UNUSED_ARGUMENTS_CFLAG} \
@@ -600,6 +601,11 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     export ${TOOL_OBJCXXFLAGS}="`${ECHO} "\
         ${!TOOL_CXXFLAGS} \
         ${!TOOL_OBJCXXFLAGS} \
+    " | ${XARGS}`"
+    export ${TOOL_RCFLAGS}="`${ECHO} "\
+        ${TARGET_CFLAG} \
+        -I${!PACKAGE_PREFIX_VAR}/include \
+        ${!TOOL_RCFLAGS} \
     " | ${XARGS}`"
 
     if [ -n "${ENABLE_LD_AS_CCLD}" ]; then
@@ -778,6 +784,9 @@ function generate-compiler-tools-variant() {
     TOOL_OBJCPPFLAGS=${ENV_PREFIX}OBJCPPFLAGS
     TOOL_OBJCXX=${ENV_PREFIX}OBJCXX
     TOOL_OBJCXXFLAGS=${ENV_PREFIX}OBJCXXFLAGS
+    TOOL_RC=${ENV_PREFIX}RC
+    TOOL_RCFLAGS=${ENV_PREFIX}RCFLAGS
+    TOOL_WINDRES=${ENV_PREFIX}WINDRES
 
     create-host-tool "${!TOOL_AS}" ${ENV_PREFIX}ASFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-as-clang
     create-host-tool "${!TOOL_CC}" ${ENV_PREFIX}CFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang
@@ -786,6 +795,8 @@ function generate-compiler-tools-variant() {
     create-host-tool "${!TOOL_CXX}" ${ENV_PREFIX}CXXFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang++
     create-host-tool "${!TOOL_CXXLD}" ${ENV_PREFIX}CCLDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang++
     create-host-tool "${!TOOL_LD}" ${ENV_PREFIX}LDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld
+    create-host-tool "${!TOOL_RC}" ${ENV_PREFIX}RCFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-rc
+    create-host-tool "${!TOOL_WINDRES}" ${ENV_PREFIX}RCFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-windres
 
     export ${TOOL_AS}=${GENERATED_BINDIR}/${TOOL_PREFIX}-as-clang
     export ${TOOL_ASFLAGS}="${OPTIMIZATION_CFLAG}"
@@ -807,6 +818,9 @@ function generate-compiler-tools-variant() {
     unset ${TOOL_OBJCPPFLAGS}
     export ${TOOL_OBJCXX}=${!TOOL_CXX}
     export ${TOOL_OBJCXXFLAGS}="${OPTIMIZATION_CFLAG}"
+    export ${TOOL_RC}=${GENERATED_BINDIR}/${TOOL_PREFIX}-rc
+    unset ${TOOL_RCFLAGS}
+    export ${TOOL_WINDRES}=${GENERATED_BINDIR}/${TOOL_PREFIX}-windres
 }
 
 function get-rust-build-deps() {
@@ -1153,6 +1167,7 @@ function package-cmake-invocation-arguments-for-variant() {
 -DCMAKE_PREFIX_PATH=\""${!TOOL_PKG_CONFIG_PATH}"\" \
 -DCMAKE_RANLIB=${!TOOL_RANLIB} \
 -DCMAKE_RC_COMPILER=${!TOOL_RC} \
+-DCMAKE_RC_FLAGS=\""${!TOOL_RCFLAGS}"\" \
 -DCMAKE_READELF=${!TOOL_READELF} \
 -DCMAKE_Swift_COMPILER=${!TOOL_SWIFTC} \
 -DCMAKE_Swift_COMPILER_TARGET=${COMPILER_TARGET} \
