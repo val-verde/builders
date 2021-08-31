@@ -20,7 +20,7 @@ function glew-build() {
         GLEW_DEST=${INSTALL_PREFIX} \
         GLEW_PREFIX=${PACKAGE_PREFIX} \
         RANLIB=${RANLIB} \
-        REPO_EGL=${SOURCE_ROOT_BASE}/egl-headers-1 \
+        REPO_EGL=${SOURCE_ROOT_BASE}/egl-registry-1 \
         REPO_OPENGL=${SOURCE_ROOT_BASE}/opengl-headers-1 \
         STRIP= \
         SYSTEM=${SYSTEM} \
