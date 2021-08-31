@@ -7,7 +7,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for cmake/install
 if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
-    MKDEFS=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/lib/gvpr/mkdefs
+    MKDEFS=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}/lib/gvpr/mkdefs
 else
     MKDEFS=
 fi

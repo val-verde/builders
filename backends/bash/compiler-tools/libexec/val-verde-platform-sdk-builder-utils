@@ -26,7 +26,7 @@ if [ "${SOURCE_PACKAGE_NAME}" != "" ]; then
     ${ECHO} -e "    Package Configuration"
     ${ECHO} -e "        Name: \e[1;35m${SOURCE_PACKAGE_NAME}\e[0m"
     ${ECHO} -e "        Version: \e[1m${SOURCE_PACKAGE_VERSION}\e[0m"
-    ${ECHO} -e "        Platform: \e[1m${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}\e[0m"
+    ${ECHO} -e "        Platform: \e[1m${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}\e[0m"
     ${ECHO} -e "        Vendor: \e[1m${PACKAGE_BASE_NAME}\e[0m"
     ${ECHO} -e "        Source Root: \e[33m${SOURCE_ROOT}\e[0m"
     ${ECHO} -e "        Stage Root: \e[33m${STAGE_ROOT}\e[0m"
