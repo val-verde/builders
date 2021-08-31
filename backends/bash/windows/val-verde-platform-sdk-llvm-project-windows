@@ -36,6 +36,7 @@ function package-install-completion-callback() {
                   ${STAGE_ROOT}/bin/llvm-libtool-darwin* \
                   ${STAGE_ROOT}/bin/llvm-link* \
                   ${STAGE_ROOT}/bin/llvm-lipo* \
+                  ${STAGE_ROOT}/bin/llvm-ml* \
                   ${STAGE_ROOT}/bin/llvm-mt* \
                   ${STAGE_ROOT}/bin/llvm-otool* \
                   ${STAGE_ROOT}/bin/llvm-pdbutil* \
