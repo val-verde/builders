@@ -7,7 +7,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 if [ "${HOST_OS}" != "macos" ] &&
    [ "${HOST_OS}" != "mingw32" ]; then
-    export DEPENDS="${PACKAGE_BASE_NAME}-acl-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0)"
+    export DEPENDS="${PACKAGE_BASE_NAME}-acl-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0)"
 fi
 
 # Invoke one-shot template for stage/configure/install

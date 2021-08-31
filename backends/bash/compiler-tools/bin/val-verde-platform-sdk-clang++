@@ -2,7 +2,7 @@
 
 set -e
 
-SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/sysroot}
+SYSROOT=${SYSROOT:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/sysroot}
 
 ${BUILD_PACKAGE_PREFIX}/bin/clang++ \
     -stdlib=libc++ \

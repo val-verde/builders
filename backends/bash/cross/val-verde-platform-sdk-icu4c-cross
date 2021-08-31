@@ -7,7 +7,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for stage/configure/install
 if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
-    CROSS_BUILD_CMD="--with-cross-build=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/build"
+    CROSS_BUILD_CMD="--with-cross-build=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}/build"
 fi
 
 CONFIGURE_FILE_ROOT=${STAGE_ROOT}/${SOURCE_PACKAGE_NAME}/source \

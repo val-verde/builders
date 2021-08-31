@@ -24,7 +24,7 @@ if [ "${HOST_PROCESSOR}" = "x86_64" ]; then
     JWASM=`package-get-path ${VAL_VERDE_GH_TEAM}-platform-sdk-ml64 SCRIPT BUILD`
 fi
 
-PATH=${STAGE_ROOT_BASE}/vulkan-loader-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}/loader:${PATH} \
+PATH=${STAGE_ROOT_BASE}/vulkan-loader-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}/loader:${PATH} \
 package-cmake-install-archive \
     -DBUILD_WSI_DIRECTFB_SUPPORT=FALSE \
     -DBUILD_WSI_WAYLAND_SUPPORT=${ENABLE_WAYLAND} \

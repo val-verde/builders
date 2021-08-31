@@ -26,7 +26,7 @@ function package-install-build-archive() {
 
 function package-invoke-builder() {
     parse-builder-args "${@}"
-    export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+    export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
     export PACKAGE_NAME=${PACKAGE_NAME:-${PACKAGE_BASE_NAME}-${QUALIFIED_PACKAGE_NAME}}
 
     package-get-common-variables
