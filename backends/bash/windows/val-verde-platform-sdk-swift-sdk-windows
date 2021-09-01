@@ -114,14 +114,32 @@ PACKAGES_TO_MANAGE=( 'swift-argument-parser-5'         'BUILD' \
 PACKAGE_ACTION=INSTALL \
 deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
 
-# windows swift-syntax build
+# swift-protobuf build
+package-invoke-builder swift-protobuf-cross
+
+# swift-syntax build
 package-invoke-builder swift-syntax-cross
 
-# windows swift-format build
+# swift-syntax-highlighter build
+package-invoke-builder swift-syntax-highlighter-cross
+
+# swift-format build
 package-invoke-builder swift-format-cross
 
-# windows swift-doc build
+# swift-semantics build
+package-invoke-builder swift-semantics-cross
+
+# swift-doc build
 package-invoke-builder swift-doc-cross
 
-# windows sourcekit-lsp build
-package-invoke-builder sourcekit-lsp-windows
+# sourcekit-lsp build
+package-invoke-builder sourcekit-lsp-cross
+
+# baikonur build
+# package-invoke-builder baikonur-cross
+
+# pythonkit build
+# package-invoke-builder pythonkit-cross
+
+# swift tensorflows apis build
+# package-invoke-builder swift-tensorflow-apis
