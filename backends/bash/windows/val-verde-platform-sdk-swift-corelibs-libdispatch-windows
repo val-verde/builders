@@ -15,11 +15,6 @@ export DEPENDS="\
 "
 
 # Invoke one-shot template for cmake/install
-function package-install-completion-callback() {
-    ${MV} ${INSTALL_PREFIX}/lib/swift/windows/*${STATIC_LIBRARY_SUFFIX} \
-          ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
-}
-
 COMMON_CFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
