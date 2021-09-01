@@ -137,7 +137,7 @@ RUN DARWIN_OS=darwin \
     HOST_OS_API_LEVEL=${MACOS_VERSION} \
     HOST_PROCESSOR=x86_64 \
     SYSROOT=${SOURCE_ROOT_BASE}/macosx-${MACOS_VERSION} \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt-cross
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt-builder
 
 RUN DARWIN_OS=darwin \
     DARWIN_OS_API_LEVEL=20 \
