@@ -9,34 +9,41 @@ export SOURCE_PACKAGE_VERSION=21
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-COMMON_CFLAGS="\
-    -D__USE_GNU \
-    -I${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/tools/clang/include \
-    -I${SOURCE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}/clang/include \
-    ${COMMON_CFLAGS} \
-" \
-export-compiler-environment
-
-LLVM_STAGE_ROOT=${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
-
-if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
-    LLVM_STAGE_ROOT=${LLVM_STAGE_ROOT}/NATIVE
-fi
-
 # Invoke one-shot template for meson/install
 if [ "${HOST_OS}" = "android" ] ||
    [ "${HOST_OS}" = "gnu" ] ||
    [ "${HOST_OS}" = "musl" ]; then
+    EGL_ENABLED=enabled
     GALLIUM_DRIVERS="asahi,crocus,freedreno,iris,lima,panfrost,nouveau,radeonsi,svga,swrast,tegra,v3d,vc4,virgl,zink"
+    GBM_ENABLED=enabled
+    GLVND_ENABLED=true
+    GLX_MODE=dri
     HARDWARE_DRIVERS_ENABLED=true
     HARDWARE_PLATFORMS="wayland,x11"
     OPENCL_MODE=icd
+    STATIC_LIBCLC=
     VULKAN_DRIVERS="amd,broadcom,freedreno,intel,panfrost,swrast,virtio-experimental"
-else
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    EGL_ENABLED=disabled
     GALLIUM_DRIVERS="swrast,zink"
+    GBM_ENABLED=disabled
+    GLVND_ENABLED=false
+    GLX_MODE=disabled
+    HARDWARE_DRIVERS_ENABLED=false
+    HARDWARE_PLATFORMS=""
+    OPENCL_MODE=icd
+    STATIC_LIBCLC=all
+    VULKAN_DRIVERS="swrast"
+else
+    EGL_ENABLED=enabled
+    GALLIUM_DRIVERS="swrast,zink"
+    GBM_ENABLED=enabled
+    GLVND_ENABLED=true
+    GLX_MODE=dri
     HARDWARE_DRIVERS_ENABLED=false
     HARDWARE_PLATFORMS="x11"
     OPENCL_MODE=icd
+    STATIC_LIBCLC=
     VULKAN_DRIVERS="swrast"
 fi
 
@@ -46,28 +53,57 @@ else
     DISABLE_UNDEFINED=true
 fi
 
+
+# LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
+# LLVM_CONFIG_EXECUTABLE=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config
+
+if [ "${HOST_OS}" = "mingw32" ]; then
+    LLVM_NATIVE_STAGE_ROOT=${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+    LLVM_CONFIG_EXECUTABLE=${STAGE_ROOT}/host-llvm-config
+    SKIP_LLVM_CONFIG=false
+    WINE=`package-get-path wine64 EXECUTABLE BUILD`
+    WINE_FLAGS=${LLVM_NATIVE_STAGE_ROOT}/bin/`package-get-filename llvm-config EXECUTABLE HOST`
+
+    create-host-tool ${WINE} WINE_FLAGS ${LLVM_CONFIG_EXECUTABLE}
+elif [ "${BUILD_TRIPLE}" != "${HOST_OS}" ]; then
+    # LLVM_NATIVE_STAGE_ROOT=${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/NATIVE
+    # LLVM_CONFIG_EXECUTABLE=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config
+    SKIP_LLVM_CONFIG=true
+fi
+
+COMMON_CFLAGS="\
+    -D__USE_GNU \
+    -I${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/tools/clang/include \
+    -I${SOURCE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}/clang/include \
+    ${COMMON_CFLAGS} \
+" \
+MESON_EXTRA_BINARIES="\
+llvm-config='${LLVM_CONFIG_EXECUTABLE}' \
+" \
 package-meson-install-archive \
     -Db_lundef=${DISABLE_UNDEFINED} \
     -Ddri-drivers= \
     -Ddri3=enabled \
-    -Degl=enabled \
+    -Degl=${EGL_ENABLED} \
     -Dgallium-drivers="${GALLIUM_DRIVERS}" \
     -Dgallium-nine=true \
     -Dgallium-opencl=${OPENCL_MODE} \
-    -Dgbm=enabled \
-    -Dgles1=true \
-    -Dgles2=true \
-    -Dglvnd=true \
-    -Dglx=dri \
+    -Dgbm=${GBM_ENABLED} \
+    -Dgles1=enabled \
+    -Dgles2=enabled \
+    -Dglvnd=${GLVND_ENABLED} \
+    -Dglx=${GLX_MODE} \
     -Dglx-direct=true \
     -Dllvm=enabled \
     -Dopencl-native=${HARDWARE_DRIVERS_ENABLED} \
     -Dopencl-spirv=true \
     -Dplatforms="${HARDWARE_PLATFORMS}" \
     -Dosmesa=true \
+    -Dshared-glapi=enabled \
     -Dshared-llvm=enabled \
     -Dshared-swr=true \
-    -Dskip-llvm-config=true \
+    -Dskip-llvm-config=${SKIP_LLVM_CONFIG} \
+    -Dstatic-libclc=${STATIC_LIBCLC} \
     -Dvulkan-drivers=${VULKAN_DRIVERS} \
     -Dvulkan-layers="device-select,intel-nullhw" \
     -Dzstd=enabled
