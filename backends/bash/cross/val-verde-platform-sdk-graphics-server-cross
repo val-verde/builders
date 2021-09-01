@@ -32,36 +32,34 @@ fi
 # xorg-libxtrans build
 package-invoke-builder xorg-libxtrans-cross
 
-if [ "${HOST_OS}" != "mingw32" ]; then
-    # libxdmcp build
-    package-invoke-builder libxdmcp-cross
-fi
+# libxdmcp build
+package-invoke-builder libxdmcp-cross
 
 # libxcb build
 package-invoke-builder xcb-libxcb-cross
 
+# libx11 build
+package-invoke-builder libx11-cross
+
+# libxext build
+package-invoke-builder libxext-cross
+
+# xorg-libxrender build
+package-invoke-builder xorg-libxrender-cross
+
+# xorg-libxfixes build
+package-invoke-builder xorg-libxfixes-cross
+
+# xorg-libxi build
+package-invoke-builder xorg-libxi-cross
+
+# xorg-libice build
+package-invoke-builder xorg-libice-cross
+
+# xorg-libsm build
+package-invoke-builder xorg-libsm-cross
+
 if [ "${HOST_OS}" != "mingw32" ]; then
-    # libx11 build
-    package-invoke-builder libx11-cross
-
-    # libxext build
-    package-invoke-builder libxext-cross
-
-    # xorg-libxrender build
-    package-invoke-builder xorg-libxrender-cross
-
-    # xorg-libxfixes build
-    package-invoke-builder xorg-libxfixes-cross
-
-    # xorg-libxi build
-    package-invoke-builder xorg-libxi-cross
-
-    # xorg-libice build
-    package-invoke-builder xorg-libice-cross
-
-    # xorg-libsm build
-    package-invoke-builder xorg-libsm-cross
-
     # xorg-libxt build
     package-invoke-builder xorg-libxt-cross
 
