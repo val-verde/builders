@@ -269,11 +269,11 @@ package-invoke-builder python-cross
 # android libxml2 build (with python support)
 package-invoke-builder libxml2-cross
 
-# android python sdk build
-category-invoke-builder python-sdk-cross
-
 # android libxslt build
 package-invoke-builder libxslt-cross
+
+# android python sdk build
+category-invoke-builder python-sdk-cross
 
 # android libtasn1 build
 package-invoke-builder libtasn1-cross

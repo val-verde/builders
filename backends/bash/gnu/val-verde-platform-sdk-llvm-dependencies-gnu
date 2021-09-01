@@ -385,12 +385,12 @@ unset PYTHON
 # libxml2 build (with python support)
 package-invoke-builder libxml2-cross
 
+# libxslt build
+package-invoke-builder libxslt-cross
+
 # python sdk build
 category-invoke-builder python-sdk-cross
 unset MESON
-
-# libxslt build
-package-invoke-builder libxslt-cross
 
 # itstool build
 package-invoke-builder itstool-cross
