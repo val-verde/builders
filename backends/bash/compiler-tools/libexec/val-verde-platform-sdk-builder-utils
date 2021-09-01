@@ -272,16 +272,12 @@ function export-compiler-environment-for-c-and-cxx-variant() {
 
     export ${TOOL_INSTALL_NAME_TOOL}="${!TOOL_INSTALL_NAME_TOOL:-`package-get-path llvm-install-name-tool EXECUTABLE BUILD`}"
 
-    if [ -n "${ENABLE_LD_AS_CCLD}" ]; then
-        export ${TOOL_LD}="${!TOOL_LD:-${!TOOL_CCLD}}"
+    if [ "${!VARIANT_OS}" = "macos" ]; then
+        export ${TOOL_LD}="${!TOOL_LD:-`package-get-path ld64.lld EXECUTABLE BUILD`}"
+    elif [ "${!VARIANT_OS}" = "wasi" ]; then
+        export ${TOOL_LD}="${!TOOL_LD:-`package-get-path wasm-ld EXECUTABLE BUILD`}"
     else
-        if [ "${!VARIANT_OS}" = "macos" ]; then
-            export ${TOOL_LD}="${!TOOL_LD:-`package-get-path ld64.lld EXECUTABLE BUILD`}"
-        elif [ "${!VARIANT_OS}" = "wasi" ]; then
-            export ${TOOL_LD}="${!TOOL_LD:-`package-get-path wasm-ld EXECUTABLE BUILD`}"
-        else
-            export ${TOOL_LD}="${!TOOL_LD:-`package-get-path ld.lld EXECUTABLE BUILD`}"
-        fi
+        export ${TOOL_LD}="${!TOOL_LD:-`package-get-path ld.lld EXECUTABLE BUILD`}"
     fi
 
     if [ -z "${USE_GNU_OVER_DARWIN_LIBTOOL}" ] &&
@@ -604,6 +600,10 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         ${!TOOL_CXXFLAGS} \
         ${!TOOL_OBJCXXFLAGS} \
     " | ${XARGS}`"
+
+    if [ -n "${ENABLE_LD_AS_CCLD}" ]; then
+        export ${TOOL_LD}="${!TOOL_CCLD}"
+    fi
 
     if [ "${!VARIANT_OS}" = "macos" ]; then
         TOOL_PREFIX=`${ECHO} ${VARIANT} | ${TR} '[:upper:]' '[:lower:]'`
