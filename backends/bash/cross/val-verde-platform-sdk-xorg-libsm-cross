@@ -10,9 +10,13 @@ export SOURCE_PACKAGE_VERSION=1
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for configure/install
+WITH_OR_WITHOUT_LIBUUID=with
+
 if [ "${HOST_OS}" = "macos" ]; then
     LIBUUID_INCLUDE_DIR=${SYSROOT}/usr/include
     LIBUUID_LIBS="-framework System"
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    WITH_OR_WITHOUT_LIBUUID=without
 else
     LIBUUID_INCLUDE_DIR=${PACKAGE_PREFIX}/include
     LIBUUID_LIBS="-luuid"
@@ -23,4 +27,5 @@ LIBUUID_CFLAGS="-I${LIBUUID_INCLUDE_DIR}" \
 LIBUUID_LIBS=${LIBUUID_LIBS} \
 package-configure-install-archive \
     --disable-static \
-    --enable-shared
+    --enable-shared \
+    --${WITH_OR_WITHOUT_LIBUUID}-libuuid
