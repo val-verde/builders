@@ -547,6 +547,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         ${!TOOL_CFLAGS} \
     " | ${XARGS}`"
     export ${TOOL_ASFLAGS}="`${ECHO} "\
+        -c \
         ${!TOOL_CFLAGS} \
         ${!TOOL_ASFLAGS} \
     " | ${XARGS}`"
