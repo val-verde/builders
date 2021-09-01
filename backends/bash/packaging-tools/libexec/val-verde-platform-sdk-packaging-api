@@ -46,8 +46,8 @@ function deb-package-mgmt() {
         SYSTEM_TYPE=${PACKAGE_INPUT[$SYSTEM_TYPE_INDEX]}
         SYSTEM_OS=${SYSTEM_TYPE}_OS
         SYSTEM_OS_API=${SYSTEM_TYPE}_OS_API_LEVEL
-        SYSTEM_ARCH=${SYSTEM_TYPE}_ARCH
-        PKG_SUFFIX=${!SYSTEM_OS}${!SYSTEM_OS_API}-${!SYSTEM_ARCH}
+        SYSTEM_CPU=${SYSTEM_TYPE}_CPU
+        PKG_SUFFIX=${!SYSTEM_OS}${!SYSTEM_OS_API}-${!SYSTEM_CPU}
 
         if [[ "${PKG_NAME}"  == *"stage"* ]]; then
             PKG_NAME=${PKG_NAME%-*}
