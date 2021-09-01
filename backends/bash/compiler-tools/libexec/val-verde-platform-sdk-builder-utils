@@ -1050,7 +1050,10 @@ function package-cmake-invocation-arguments-for-variant() {
         CROSSCOMPILING_CMD \
         SYSTEM_NAME_CMD
 
-    if [ "${!VARIANT_OS}" = "macos" ]; then
+    if [ "${!VARIANT_OS}" = "mingw32" ]; then
+        COMPILER_TARGET_VAR=${VARIANT}_4_TRIPLE
+        COMPILER_TARGET=${!COMPILER_TARGET_VAR}
+    elif [ "${!VARIANT_OS}" = "macos" ]; then
         CMAKE_OSX_DEPLOYMENT_TARGET_CMD="-DCMAKE_OSX_DEPLOYMENT_TARGET=${MACOSX_DEPLOYMENT_TARGET}"
         CMAKE_OSX_SYSROOT_CMD="-DCMAKE_OSX_SYSROOT=${SYSROOT}"
     fi
