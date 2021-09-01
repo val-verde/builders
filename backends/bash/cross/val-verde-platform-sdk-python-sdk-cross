@@ -21,6 +21,9 @@ package-invoke-builder pyparsing-cross
 # python-jinja build
 package-invoke-builder python-jinja-cross
 
+# python-lxml build
+package-invoke-builder python-lxml-cross
+
 # python-markupsafe build
 package-invoke-builder python-markupsafe-cross
 
