@@ -128,7 +128,7 @@ package-invoke-builder libffi-cross 3
 
 # icu build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
-package-invoke-builder icu4c-cross 68
+package-invoke-builder icu4c-cross 69
 
 # libunistring build
 package-invoke-builder libunistring-cross 0
