@@ -615,6 +615,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "gzip",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "harfbuzz",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2",
@@ -2580,13 +2589,6 @@
         "sourcePackageName": "gperf",
         "sourceBranchIndicator": "wget",
         "sourcePackageVersion": "3.1",
-        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "gzip",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "1.10",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {

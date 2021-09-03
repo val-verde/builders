@@ -29,9 +29,6 @@ package-invoke-builder zlib-cross
 # windows bzip2 build
 package-invoke-builder bzip2-cross
 
-# windows gzip build
-package-invoke-builder gzip-cross
-
 # windows lz4 build
 package-invoke-builder lz4-cross
 
@@ -84,6 +81,10 @@ package-invoke-builder ncurses-cross
 DISABLE_LIBXML2=TRUE \
 DISABLE_XZ=TRUE \
 package-invoke-builder gettext-cross
+
+# windows gzip build
+DISABLE_FORTIFY_SOURCE_LEVEL= \
+package-invoke-builder gzip-cross
 
 # windows xz build
 package-invoke-builder xz-cross

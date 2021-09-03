@@ -35,9 +35,6 @@ package-invoke-builder zlib-cross
 # bzip2 build
 package-invoke-builder bzip2-cross
 
-# gzip build
-package-invoke-builder gzip-cross
-
 # lz4 build
 package-invoke-builder lz4-cross
 
@@ -90,6 +87,9 @@ package-invoke-builder ncurses-cross
 DISABLE_LIBXML2=TRUE \
 DISABLE_XZ=TRUE \
 package-invoke-builder gettext-cross
+
+# gzip build
+package-invoke-builder gzip-cross
 
 # xz build
 package-invoke-builder xz-cross
