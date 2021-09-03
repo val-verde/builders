@@ -47,10 +47,6 @@ COMMON_CFLAGS="\
     -fms-extensions \
     ${COMMON_CFLAGS} \
 " \
-SWIFTCFLAGS="\
-    -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
-    ${SWIFTCFLAGS} \
-" \
 package-invoke-builder swift-argument-parser-cross
 
 # windows swift-crypto build
@@ -58,10 +54,6 @@ COMMON_CFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
     ${COMMON_CFLAGS} \
-" \
-SWIFTCFLAGS="\
-    -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
-    ${SWIFTCFLAGS} \
 " \
 package-invoke-builder swift-crypto-cross
 
@@ -71,10 +63,6 @@ COMMON_CFLAGS="\
     -fms-extensions \
     ${COMMON_CFLAGS} \
 " \
-SWIFTCFLAGS="\
-    -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
-    ${SWIFTCFLAGS} \
-" \
 package-invoke-builder swift-driver-cross
 
 # windows swiftpm build
@@ -82,10 +70,6 @@ COMMON_CFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
     ${COMMON_CFLAGS} \
-" \
-SWIFTCFLAGS="\
-    -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
-    ${SWIFTCFLAGS} \
 " \
 package-invoke-builder swift-package-manager-cross
 

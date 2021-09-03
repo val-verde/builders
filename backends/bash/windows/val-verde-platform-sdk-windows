@@ -22,7 +22,6 @@ package-invoke-builder compiler-rt-cross
 package-invoke-builder libcxx-bootstrap
 
 # windows mingw-winpthreads build
-LD=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
 package-invoke-builder winpthreads-cross
 
 # windows llvm dependencies
