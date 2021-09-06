@@ -10,15 +10,19 @@ export SOURCE_PACKAGE_VERSION=1
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for meson/install
+ENABLE_GLX=true
 ENABLE_LOGIND=false
 ENABLE_UDEV=false
 
 if [ "${HOST_OS}" = "gnu" ]; then
     ENABLE_UDEV=true
+elif [ "${HOST_OS}" = "macos" ]; then
+    ENABLE_GLX=false
 fi
 
 MIGCC=${STAGE_ROOT}/host-clang \
 package-meson-install-archive \
+    -Dglx=${ENABLE_GLX} \
     -Dsecure-rpc=false \
     -Dsystemd_logind=${ENABLE_LOGIND} \
     -Dudev=${ENABLE_UDEV} \
