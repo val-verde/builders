@@ -51,6 +51,7 @@ package-invoke-builder help2man-cross 1
 package-invoke-builder gperf-cross 3
 
 # android libtool build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder libtool-cross 2
 
 # libatomic-ops build
