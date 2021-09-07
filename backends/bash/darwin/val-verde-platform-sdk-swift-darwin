@@ -47,7 +47,7 @@ function package-install-completion-callback() {
 if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
     SWIFT_SDK_ARCH=arm64
 else
-    SWIFT_SDK_ARCH=`${ECHO} ${HOST_PROCESSOR} | ${TR} - _`
+    SWIFT_SDK_ARCH=${HOST_PROCESSOR}
 fi
 
 export-compiler-environment
