@@ -1822,10 +1822,26 @@ function package-swift-build() {
         fi
     fi
 
-    if [ "${HOST_OS}" != "mingw32" ]; then
-        TARGET=${TARGET:-${HOST_4_TRIPLE}}
-    else
+    SWIFT_HOST_OS=${HOST_OS}
+
+    if [ "${HOST_OS}" = "macos" ]; then
+        SWIFT_HOST_OS=macosx
+        SWIFT_HOST_PROCESSOR=${HOST_PROCESSOR}
+        HOST_OS_API_SUBVERSION="0.0"
+
+        if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+            SWIFT_HOST_PROCESSOR=arm64
+        fi
+
+        TARGET=${TARGET:-${SWIFT_HOST_PROCESSOR}-${HOST_KERNEL}-${SWIFT_HOST_OS}${HOST_OS_API_LEVEL}.${HOST_OS_API_SUBVERSION}}
+    elif [ "${HOST_OS}" = "mingw32" ]; then
         TARGET=${TARGET:-${HOST_PROCESSOR}-unknown-windows-gnu}
+    else
+        TARGET=${TARGET:-${HOST_4_TRIPLE}}
+    fi
+
+    if [ "${SYSROOT}" != "${PACKAGE_PLATFORM_SYSROOT}" ]; then
+        SWIFTMODULE_PATH_SWIFTCFLAG="-I${PACKAGE_PREFIX}/lib/swift/${SWIFT_HOST_OS}"
     fi
 
     SWIFT_BUILD_FLAGS=`${ECHO} "\
@@ -1869,6 +1885,7 @@ function package-swift-build() {
             \"-L${PACKAGE_PREFIX}/lib\", \n\
             \"-O${SWIFT_OPTIMIZATION_LEVEL}\", \n\
             \"-Xfrontend\", \"-disable-llvm-verify\", \n\
+            \"${SWIFTMODULE_PATH_SWIFTCFLAG}\", \n\
             \"${FLTO_SWIFTCFLAG}\", \n\
             \"${HOST_VECTOR_SWIFTCFLAG}\", \n\
             \"${POLLY_SWIFTCFLAG}\" \n\
