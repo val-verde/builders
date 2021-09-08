@@ -24,6 +24,45 @@ function package-install-build-archive() {
     deb-package-install
 }
 
+function package-invoke-archive-action() {
+    package-get-common-variables
+    PACKAGE_ACTION="${1}"
+    shift
+    PACKAGE_INPUT=($@)
+    PACKAGE_COUNT=$((${#PACKAGE_INPUT[@]} / 2))
+
+    for i in `seq 0 $(($PACKAGE_COUNT - 1))`; do
+        PACKAGE_NAME_INDEX=$((i * 2))
+        SYSTEM_TYPE_INDEX=$((i * 2 + 1))
+        PKG_NAME=${PACKAGE_INPUT[$PACKAGE_NAME_INDEX]}
+        SYSTEM_TYPE=${PACKAGE_INPUT[$SYSTEM_TYPE_INDEX]}
+        SYSTEM_OS=${SYSTEM_TYPE}_OS
+        SYSTEM_OS_API=${SYSTEM_TYPE}_OS_API_LEVEL
+        SYSTEM_CPU=${SYSTEM_TYPE}_CPU
+        PKG_SUFFIX=${!SYSTEM_OS}${!SYSTEM_OS_API}-${!SYSTEM_CPU}
+
+        if [[ "${PKG_NAME}"  == *"stage"* ]]; then
+            PKG_NAME=${PKG_NAME%-*}
+            PKG_SUFFIX=${PKG_SUFFIX}-stage
+        fi
+
+        PKG_PREFIX=${PACKAGE_BASE_NAME}-${PKG_NAME}
+        PACKAGE_FILE_NAME=${PKG_PREFIX}-${PKG_SUFFIX}
+        DEB_NAME=${DEB_PATH}/${PACKAGE_FILE_NAME}.deb
+        QUALIFIED_FILE_NAME="${QUALIFIED_FILE_NAME} ${PACKAGE_FILE_NAME}"
+        QUALIFIED_DEB="${QUALIFIED_DEB} ${DEB_NAME}"
+    done
+
+    if [ "${PACKAGE_ACTION}" = "uninstall" ]; then
+        package-dpkg-remove --force-depends ${QUALIFIED_FILE_NAME}
+    elif [ "${PACKAGE_ACTION}" = "install" ]; then
+        package-dpkg-install ${QUALIFIED_DEB}
+    fi
+
+    unset QUALIFIED_DEB \
+          QUALIFIED_FILE_NAME
+}
+
 function package-invoke-builder() {
     parse-builder-args "${@}"
     export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
