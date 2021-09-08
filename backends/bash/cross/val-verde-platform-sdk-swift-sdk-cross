@@ -4,7 +4,6 @@ set -e
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # remove host foundation and libdispatch to avoid module collisions
 PACKAGES_TO_MANAGE=( 'swift-argument-parser-5'         'BUILD' \
@@ -17,8 +16,7 @@ PACKAGES_TO_MANAGE=( 'swift-argument-parser-5'         'BUILD' \
                      'swift-package-manager-5'         'BUILD' \
                      'swift-tools-support-core-5'      'BUILD' \
                      'yams-3'                          'BUILD' )
-PACKAGE_ACTION=UNINSTALL \
-deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
+package-invoke-archive-action uninstall ${PACKAGES_TO_MANAGE[@]}
 
 # libdispatch build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
@@ -82,8 +80,7 @@ PACKAGES_TO_MANAGE=( 'swift-corelibs-libdispatch-5'    'BUILD' \
                      'swift-driver-5'                  'HOST' \
                      'swift-package-manager-5'         'HOST')
 
-PACKAGE_ACTION=INSTALL \
-deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
+package-invoke-archive-action install ${PACKAGES_TO_MANAGE[@]}
 
 # swift-protobuf build
 package-invoke-builder swift-protobuf-cross 1
