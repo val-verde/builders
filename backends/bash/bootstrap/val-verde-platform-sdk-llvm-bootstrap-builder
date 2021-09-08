@@ -41,18 +41,15 @@ ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder llvm-project-bootstrap 13 no-install
 
 # remove libcxx, libcxxabi and libunwind as they are superceded by llvm-project.
-HOST_PROCESSOR=`${ECHO} ${HOST_PROCESSOR} | ${TR} _ -`
 PACKAGES_TO_MANAGE=( 'libcxx-13' 'HOST' )
 
-PACKAGE_ACTION=UNINSTALL \
-deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
+package-invoke-archive-action uninstall ${PACKAGES_TO_MANAGE[@]}
 
 # install llvm for host
 PACKAGES_TO_MANAGE=( 'llvm-project-13' 'HOST'
                      'llvm-project-13-stage' 'HOST' )
 
-PACKAGE_ACTION=INSTALL \
-deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
+package-invoke-archive-action install ${PACKAGES_TO_MANAGE[@]}
 
 # remove host compiler and libraries as it is superceded by bootstrapped clang
 package-apt-remove \

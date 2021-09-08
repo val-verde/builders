@@ -55,7 +55,6 @@ export \
     XZ=/usr/bin/xz
 
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
 
 # webassembly libc
 package-invoke-builder wasi-libc 0
@@ -69,5 +68,4 @@ package-invoke-builder libcxx-bootstrap 13
 # remove llvm-bootstrap stage root components
 PACKAGES_TO_MANAGE=( 'llvm-project-13-stage' 'BUILD' )
 
-PACKAGE_ACTION=UNINSTALL \
-deb-package-mgmt ${PACKAGES_TO_MANAGE[@]}
+package-invoke-archive-action uninstall ${PACKAGES_TO_MANAGE[@]}

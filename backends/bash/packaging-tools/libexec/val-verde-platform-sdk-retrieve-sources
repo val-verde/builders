@@ -118,7 +118,7 @@ function fetch-sources() {
             index=$index \
             get-source-package-metadata
 
-            PACKAGE_VERSION=$(package-major-version) \
+            PACKAGE_VERSION=$(package-get-major-version ${SOURCE_PACKAGE_VERSION}) \
             derive-upstream-source-url
 
             if [[ ${SOURCE_TYPE} = 'git' ]]; then

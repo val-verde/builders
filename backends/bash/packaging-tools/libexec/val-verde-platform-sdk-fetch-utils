@@ -85,7 +85,7 @@ function get-source-package-count() {
 
 function prepare-source-base() {
     # Establish package url
-    PACKAGE_VERSION=$(package-major-version) \
+    PACKAGE_VERSION=$(package-get-major-version ${SOURCE_PACKAGE_VERSION}) \
     derive-upstream-source-url
 
     # Set source package details
