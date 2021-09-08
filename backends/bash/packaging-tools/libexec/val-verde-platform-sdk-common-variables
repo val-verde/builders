@@ -116,7 +116,6 @@ export NODE_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/web
 export PATH=${BUILD_PACKAGE_PREFIX}/bin:${PATH}
 export TEMPDIR=${TEMPDIR:-/tmp}
 TEMP_ROOT_BASE=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}
-export QUALIFIED_LLVM_PATH=llvm-project-13
 
 # 'host' configuration
 export HOST_TRIPLE=${HOST_TRIPLE:-${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}}
@@ -291,9 +290,15 @@ function package-git-tool() {
     done
 }
 
-function package-major-version() {
-    MAJOR_VERSION=`echo "${SOURCE_PACKAGE_VERSION}" | cut -d "." -f1`
+function package-get-major-version() {
+    MAJOR_VERSION=`echo "${1}" | cut -d "." -f1`
     echo ${MAJOR_VERSION}
+}
+
+function package-get-source-package-data() {
+    QUERIED_SOURCE_PACKAGE_VERSION=`package-get-source-package-version ${1}`
+    PACKAGE_MAJOR_VERSION=`package-get-major-version ${QUERIED_SOURCE_PACKAGE_VERSION}`
+    echo ${1}-${PACKAGE_MAJOR_VERSION}
 }
 
 function package-push-directory() {
