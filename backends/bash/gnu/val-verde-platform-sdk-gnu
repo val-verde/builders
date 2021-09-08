@@ -51,6 +51,7 @@ package-invoke-builder npm-yarn-cross 1
 package-invoke-builder yarn-yautja-server-cross 1
 
 # wine build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder wine-cross 6
 
 # blockchain sdk build
