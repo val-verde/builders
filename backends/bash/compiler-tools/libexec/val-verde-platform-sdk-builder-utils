@@ -12,6 +12,7 @@ if [ "${SOURCE_PACKAGE_NAME}" != "" ]; then
     export INSTALL_PREFIX=${INSTALL_PREFIX:-${INSTALL_ROOT}${PACKAGE_PREFIX}}
     export STAGE_ROOT=${STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_PACKAGE_NAME}}
     export SOURCE_ROOT=${SOURCE_ROOT:-${SOURCE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}}
+    export QUALIFIED_LLVM_PATH=`package-get-source-package-data llvm-project`
 
     # pre-build cleanup
     ${RM} -rf ${INSTALL_ROOT}/*
