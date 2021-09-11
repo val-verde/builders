@@ -117,7 +117,7 @@ package-invoke-builder swift-semantics-cross
 package-invoke-builder swift-doc-cross
 
 # sourcekit-lsp build
-package-invoke-builder sourcekit-lsp-cross
+package-invoke-builder sourcekit-lsp-windows
 
 # baikonur build
 # package-invoke-builder baikonur-cross
