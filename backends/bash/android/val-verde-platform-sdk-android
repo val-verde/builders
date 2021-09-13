@@ -36,6 +36,9 @@ package-invoke-builder swift-android
 # android lldb build
 package-invoke-builder swift-lldb-android
 
+# swiftpm build
+category-invoke-builder swiftpm-cross
+
 # swift sdk build
 DISABLE_FORTIFY_SOURCE_LEVEL=TRUE \
 category-invoke-builder swift-sdk-cross

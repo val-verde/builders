@@ -28,6 +28,9 @@ category-invoke-builder llvm-dependencies-musl
 # swift tools build
 category-invoke-builder swift-tools-musl
 
+# swiftpm build
+category-invoke-builder swiftpm-cross
+
 # swift sdk build
 category-invoke-builder swift-sdk-cross
 

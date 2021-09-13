@@ -1,0 +1,47 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=swift-argument-parser
+export SOURCE_PACKAGE_VERSION=5
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+export DEPENDS="\
+    ${PACKAGE_BASE_NAME}-llvm-project-13-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-swift-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-swift-corelibs-xctest-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
+"
+# Invoke one-shot template for cmake/install
+function package-install-completion-callback() {
+    package-rsync -ax \
+                  ${STAGE_ROOT}/lib \
+                  ${INSTALL_PREFIX}/
+
+    if [ "${HOST_OS}" = "mingw32" ]; then
+        package-rsync -ax \
+                      ${STAGE_ROOT}/bin \
+                      ${INSTALL_PREFIX}/
+    fi
+
+    if [ "${HOST_OS}" = "android" ]; then
+        ${MV} ${INSTALL_PREFIX}/lib/swift/linux \
+              ${INSTALL_PREFIX}/lib/swift/android
+    elif [ "${HOST_OS}" = "musl" ]; then
+        ${MV} ${INSTALL_PREFIX}/lib/swift/linux \
+              ${INSTALL_PREFIX}/lib/swift/musl
+    fi
+}
+
+DISABLE_INSTALL_DEB=TRUE \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+package-cmake-install-archive \
+    -Ddispatch_DIR=${STAGE_ROOT_BASE}/swift-corelibs-libdispatch-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
+    -DBUILD_EXAMPLES=FALSE \
+    -DBUILD_TESTING=FALSE \
+    -DFoundation_DIR=${STAGE_ROOT_BASE}/swift-corelibs-foundation-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
+    -DXCTest_DIR=${STAGE_ROOT_BASE}/swift-corelibs-foundation-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules

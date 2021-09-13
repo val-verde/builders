@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+# Set all environment vars
+export SOURCE_PACKAGE_NAME=swift-corelibs-libdispatch
+export SOURCE_PACKAGE_VERSION=5
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+${MKDIR} -p ${INSTALL_PREFIX}/lib/swift/macosx/
+${RSYNC} -aPx \
+         ${SYSROOT}/usr/lib/swift/Dispatch.swiftmodule \
+         ${SYSROOT}/usr/lib/swift/libswiftDispatch.tbd \
+         ${INSTALL_PREFIX}/lib/swift/macosx/
+
+DISABLE_INSTALL_DEB=TRUE \
+package-invoke-archive-install

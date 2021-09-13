@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -x -e
 
 # Set all environment vars
 export SOURCE_PACKAGE_NAME=swift-package-manager
@@ -10,40 +10,55 @@ export SOURCE_PACKAGE_VERSION=5
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export DEPENDS="\
-    ${PACKAGE_BASE_NAME}-llvm-project-13-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-swift-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-swift-argument-parser-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-swift-corelibs-xctest-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-swift-crypto-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-swift-driver-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-swift-llbuild-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-swift-tools-support-core-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
+    ${PACKAGE_BASE_NAME}-protobuf-3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-swift-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Invoke one-shot template for cmake/install
-function package-install-completion-callback() {
-    package-rsync -ax \
-                  ${STAGE_ROOT}/bin \
-                  ${STAGE_ROOT}/lib \
-                  ${INSTALL_PREFIX}/
-}
+# Build the components
+cd ${SOURCE_ROOT}
+SWIFT_BUILD_FLAGS="
+    -Xlinker -lc++ \
+    -Xlinker -licuucswift \
+    -Xlinker -lncurses \
+" \
+package-swift-build
 
-if [ "${HOST_OS}" = "musl" ]; then
-    SWIFTCFLAGS="\
-        -DUSE_MUSL_LIBC \
-        ${SWIFTCFLAGS} \
-    "
+if [ "${HOST_OS}" = "gnu" ]; then
+    SDK_PLATFORM_DIR="linux"
+elif [ "${HOST_OS}" = "macos" ]; then
+    SDK_PLATFORM_DIR="macosx"
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    SDK_PLATFORM_DIR="windows"
+else
+    SDK_PLATFORM_DIR=${HOST_OS}
 fi
 
-DISABLE_INSTALL_DEB=TRUE \
-PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
-package-cmake-install-archive \
-    -Ddispatch_DIR=${STAGE_ROOT_BASE}/swift-corelibs-libdispatch-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
-    -DArgumentParser_DIR=${STAGE_ROOT_BASE}/swift-argument-parser-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
-    -DFoundation_DIR=${STAGE_ROOT_BASE}/swift-corelibs-foundation-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
-    -DLLBuild_DIR=${STAGE_ROOT_BASE}/swift-llbuild-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
-    -DSwiftCrypto_DIR=${STAGE_ROOT_BASE}/swift-crypto-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
-    -DSwiftDriver_DIR=${STAGE_ROOT_BASE}/swift-driver-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
-    -DTSC_DIR=${STAGE_ROOT_BASE}/swift-tools-support-core-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules
+cd ${STAGE_ROOT}
+${MKDIR} -p ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/
+package-rsync -ax \
+              release/Package*.swiftdoc \
+              release/Swift*.swiftdoc \
+              ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/
+package-rsync -ax \
+              release/Package*.swiftmodule \
+              release/Swift*.swiftmodule \
+              ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/
+package-rsync -ax \
+              release/`package-get-filename package-info EXECUTABLE HOST` \
+              release/`package-get-filename swift-build EXECUTABLE HOST` \
+              release/`package-get-filename swift-package EXECUTABLE HOST` \
+              release/`package-get-filename swift-run EXECUTABLE HOST` \
+              release/`package-get-filename swift-test EXECUTABLE HOST` \
+              release/`package-get-filename swift-test EXECUTABLE HOST` \
+              release/`package-get-filename swiftpm-xctest-helper EXECUTABLE HOST` \
+              ${INSTALL_PREFIX}/bin/
+package-rsync -ax \
+              release/`package-get-filename PackageDescription SHARED HOST` \
+              release/`package-get-filename PackagePlugin SHARED HOST` \
+              release/`package-get-filename SwiftPM SHARED HOST` \
+              release/`package-get-filename SwiftPMDataModel SHARED HOST` \
+              ${INSTALL_PREFIX}/lib/
+
+# Build and install the package
+package-invoke-archive-install

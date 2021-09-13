@@ -17,8 +17,11 @@ package-invoke-builder llvm-dependencies-darwin
 # swift tools build
 package-invoke-builder swift-tools-darwin
 
+# swiftpm build
+category-invoke-builder swiftpm-cross
+
 # swift sdk build
-# category-invoke-builder swift-sdk-cross
+category-invoke-builder swift-sdk-cross
 
 # go build
 package-invoke-builder go-cross
