@@ -15,9 +15,30 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
-# Invoke one-shot template for cmake/install
-SWIFTCFLAGS="\
-    -sdk ${SYSROOT} \
-    ${SWIFTCFLAGS} \
-" \
-package-cmake-install-archive
+# Build the components
+cd ${SOURCE_ROOT}
+SWIFT_BUILD_SCRIPT_ENVIRONMENT=TRUE \
+package-swift-build
+
+if [ "${HOST_OS}" = "gnu" ]; then
+    SDK_PLATFORM_DIR="linux"
+elif [ "${HOST_OS}" = "macos" ]; then
+    SDK_PLATFORM_DIR="macosx"
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    SDK_PLATFORM_DIR="windows"
+else
+    SDK_PLATFORM_DIR=${HOST_OS}
+fi
+
+cd ${STAGE_ROOT}
+${MKDIR} -p ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
+package-rsync -ax \
+              release/*.swiftdoc \
+              release/*.swiftmodule \
+              ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
+package-rsync -ax \
+              release/${SHARED_LIBRARY_PREFIX}*${SHARED_LIBRARY_SUFFIX} \
+              ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/
+
+# Build and install the package
+package-invoke-archive-install
