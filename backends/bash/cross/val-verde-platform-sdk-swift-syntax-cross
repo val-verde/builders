@@ -30,11 +30,11 @@ else
 fi
 
 cd ${STAGE_ROOT}
-${MKDIR} -p ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
+${MKDIR} -p ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/
 package-rsync -ax \
               release/Swift*.swiftdoc \
               release/Swift*.swiftmodule \
-              ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
+              ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/
 package-rsync -ax \
               release/${SHARED_LIBRARY_PREFIX}Swift*${SHARED_LIBRARY_SUFFIX} \
               ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/

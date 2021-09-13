@@ -27,11 +27,8 @@ USE_NEWPM=${USE_NEWPM:-TRUE}
 # Invoke one-shot template for cmake/install
 function package-install-completion-callback() {
     ${SED} -i \
-           's/\/usr/\.\.\/\.\.\/\.\.\/\.\./g' \
-           ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/${HOST_PROCESSOR}/glibc.modulemap
-
-    ${MV} ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/*.swift* \
-          ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/${HOST_PROCESSOR}/
+           's/\/usr/\.\.\/\.\.\/\.\./g' \
+           ${INSTALL_PREFIX}/lib/swift/${HOST_OS}/glibc.modulemap
 
     COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
     RPATH_COMPONENTS="\

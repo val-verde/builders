@@ -30,13 +30,13 @@ else
 fi
 
 cd ${STAGE_ROOT}
-${MKDIR} -p ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
+${MKDIR} -p ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/
 package-rsync -ax \
               release/Swift*.swiftdoc \
-              ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
+              ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/
 package-rsync -ax \
               release/Swift*.swiftmodule \
-              ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
+              ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/
 package-rsync -ax \
               release/`package-get-filename protoc-gen-swift EXECUTABLE HOST` \
               ${INSTALL_PREFIX}/bin/
