@@ -40,7 +40,7 @@ The purpose of this community project is to serve as a cross-platform standardiz
 6. LLVM and Swift bleeding edge support which is also central to Val Verde build and devops infrastructure.
 
 ## Building
-[How to](https://github.com/val-verde/builders/Building.md)
+[How to](https://github.com/val-verde/builders/blob/master/Building.md)
 
 ## License and Contact
 Val Verde is an open community and each deliverable is available under the same license as its original project.
