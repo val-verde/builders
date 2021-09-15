@@ -14,6 +14,8 @@ cd ${STAGE_ROOT}
 
 copy-source-to-staging
 export-compiler-environment
+generate-compiler-tools
+export-compiler-environment-for-go
 make-install \
     lib=lib \
     prefix=${PACKAGE_PREFIX} \
