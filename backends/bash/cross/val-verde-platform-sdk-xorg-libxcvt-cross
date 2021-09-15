@@ -3,15 +3,11 @@
 set -e
 
 # Set all environment vars
-export SOURCE_PACKAGE_NAME=mako
+export SOURCE_PACKAGE_NAME=xorg-libxcvt
 export SOURCE_PACKAGE_VERSION=1
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-# Build the components
-cd ${SOURCE_ROOT}
-package-python-build
-
-# Build and install the package
-package-invoke-archive-install
+# Invoke one-shot template for meson/install
+package-meson-install-archive

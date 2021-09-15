@@ -27,6 +27,14 @@ function package-install-completion-callback() {
                       ${STAGE_ROOT}/bin \
                       ${INSTALL_PREFIX}/
     fi
+
+    if [ "${HOST_OS}" = "android" ]; then
+        ${MV} ${INSTALL_PREFIX}/lib/swift/linux \
+              ${INSTALL_PREFIX}/lib/swift/android
+    elif [ "${HOST_OS}" = "musl" ]; then
+        ${MV} ${INSTALL_PREFIX}/lib/swift/linux \
+              ${INSTALL_PREFIX}/lib/swift/musl
+    fi
 }
 
 DISABLE_INSTALL_DEB=TRUE \

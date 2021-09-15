@@ -183,6 +183,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "ccache",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "4",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "cereal",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
@@ -195,6 +204,15 @@
         "sourcePackageName": "cmake",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "coremltools",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -228,15 +246,6 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
-        "sourcePackageName": "cython",
-        "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "0",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
-    },
-    {
-        "retainSource": "false",
-        "depth": "1",
-        "sourceType": "git",
         "sourcePackageName": "dbus",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
@@ -255,6 +264,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "distcc",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "dnf",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "4",
@@ -265,6 +283,15 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "dpkg",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "dxvk",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
@@ -364,9 +391,9 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "freeglut",
-        "sourceBranchIndicator": "git_master",
+        "sourceBranchIndicator": "default",
         "sourcePackageVersion": "3",
-        "sourcePackageUrl": "https://github.com/dcnieho/${SOURCE_PACKAGE_NAME}.git"
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
         "retainSource": "false",
@@ -427,6 +454,15 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "git",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "glew",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
@@ -579,6 +615,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "gzip",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "harfbuzz",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2",
@@ -598,7 +643,7 @@
         "sourceType": "git",
         "sourcePackageName": "icu4c",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "68",
+        "sourcePackageVersion": "69",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/icu.git"
     },
     {
@@ -680,7 +725,17 @@
         "sourcePackageName": "klee",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"    },
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "lapack",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
     {
         "retainSource": "false",
         "depth": "1",
@@ -1163,18 +1218,18 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "mesa-glu",
-        "sourceBranchIndicator": "master",
+        "sourceBranchIndicator": "default",
         "sourcePackageVersion": "9",
-        "sourcePackageUrl": "https:///gitlab.freedesktop.org/mesa/glu.git"
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "mesa-demos",
-        "sourceBranchIndicator": "master",
+        "sourceBranchIndicator": "default",
         "sourcePackageVersion": "8",
-        "sourcePackageUrl": "https:///gitlab.freedesktop.org/mesa/demos.git"
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
         "retainSource": "false",
@@ -1183,15 +1238,6 @@
         "sourcePackageName": "mesa-drm",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
-    },
-    {
-        "retainSource": "false",
-        "depth": "1",
-        "sourceType": "git",
-        "sourcePackageName": "meson",
-        "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1297,9 +1343,18 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
-        "sourcePackageName": "numpy",
+        "sourcePackageName": "protobuf",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1",
+        "sourcePackageVersion": "3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "openblas",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1450,33 +1505,6 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
-        "sourcePackageName": "pybind11",
-        "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "2",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
-    },
-    {
-        "retainSource": "false",
-        "depth": "1",
-        "sourceType": "git",
-        "sourcePackageName": "pygments",
-        "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "2",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
-    },
-    {
-        "retainSource": "false",
-        "depth": "1",
-        "sourceType": "git",
-        "sourcePackageName": "pyparsing",
-        "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "2",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
-    },
-    {
-        "retainSource": "false",
-        "depth": "1",
-        "sourceType": "git",
         "sourcePackageName": "python",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "3",
@@ -1486,9 +1514,126 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "python-cython",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "python-jinja",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "python-lxml",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "4",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "python-mako",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "python-markupsafe",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "python-meson",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "python-numpy",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "python-pybind11",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "python-pygments",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "python-pyparsing",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "python-scikit-learn",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "python-scipy",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "python-six",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "python-toml",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1729,7 +1874,7 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
-        "sourcePackageName": "swift-cmark",
+        "sourcePackageName": "swift-argument-parser",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
@@ -1738,7 +1883,7 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
-        "sourcePackageName": "swift-argument-parser",
+        "sourcePackageName": "swift-cmark",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
@@ -1846,9 +1991,36 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "swift-protobuf",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "swift-semantics",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "swift-syntax",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "5",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "swift-syntax-highlighter",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1875,7 +2047,7 @@
         "sourceType": "git",
         "sourcePackageName": "systemd",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "248",
+        "sourcePackageVersion": "249",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1921,6 +2093,24 @@
         "sourcePackageName": "unbound",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "util-linux",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "vim",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "8",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1993,6 +2183,15 @@
         "sourcePackageName": "wayland-protocols",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "which",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -2108,6 +2307,15 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "xorg-libxcursor",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "xorg-libxcvt",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
@@ -2385,13 +2593,6 @@
     },
     {
         "sourceType": "other",
-        "sourcePackageName": "gzip",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "1.10",
-        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
-    },
-    {
-        "sourceType": "other",
         "sourcePackageName": "help2man",
         "sourceBranchIndicator": "wget-xz",
         "sourcePackageVersion": "1.48.3",
@@ -2436,7 +2637,7 @@
         "sourceType": "other",
         "sourcePackageName": "linux",
         "sourceBranchIndicator": "wget-xz",
-        "sourcePackageVersion": "5.13.11",
+        "sourcePackageVersion": "5.14.3",
         "sourcePackageUrl": "https://cdn.kernel.org/pub/${SOURCE_PACKAGE_NAME}/kernel/v5.x/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz"
     },
     {
@@ -2445,13 +2646,6 @@
         "sourceBranchIndicator": "wget-xz",
         "sourcePackageVersion": "11.3",
         "sourcePackageUrl": "https://github.com/joseluisq/${SOURCE_PACKAGE_NAME}-sdks/releases/download/${SOURCE_PACKAGE_VERSION}/${SOURCE_PACKAGE_NAME}${SOURCE_PACKAGE_VERSION}.sdk.tar.xz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "mako",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "1.1.4",
-        "sourcePackageUrl": "https://ftp.osuosl.org/pub/blfs/conglomeration/python-modules/Mako-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
         "sourceType": "other",
@@ -2529,20 +2723,6 @@
         "sourceBranchIndicator": "wget",
         "sourcePackageVersion": "60",
         "sourcePackageUrl": "ftp://ftp.info-zip.org/pub/infozip/src/${SOURCE_PACKAGE_NAME}${SOURCE_PACKAGE_VERSION}.tgz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "util-linux",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "2.37.1",
-        "sourcePackageUrl": "https://cdn.kernel.org/pub/linux/utils/${SOURCE_PACKAGE_NAME}/v2.37/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "vim",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "8.2.3245",
-        "sourcePackageUrl": "https://github.com/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}/archive/v${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
         "sourceType": "other",

@@ -3,7 +3,7 @@
 set -e
 
 # Set all environment vars
-export SOURCE_PACKAGE_NAME=cython
+export SOURCE_PACKAGE_NAME=python-toml
 export SOURCE_PACKAGE_VERSION=0
 
 # Source package build helper functions

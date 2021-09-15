@@ -6,26 +6,38 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-# cython build
-package-invoke-builder cython-cross
+# python-cython build
+package-invoke-builder python-cython-cross
 
-# pybind11 build
-package-invoke-builder pybind11-cross
+# python-jinja build
+package-invoke-builder python-jinja-cross
 
-# pygments build
-package-invoke-builder pygments-cross
+# python-lxml build
+package-invoke-builder python-lxml-cross
 
-# pyparsing build
-package-invoke-builder pyparsing-cross
+# python-mako build
+package-invoke-builder python-mako-cross
+
+# python-markupsafe build
+package-invoke-builder python-markupsafe-cross
+
+# python-meson build
+package-invoke-builder python-meson-cross
+
+# python-numpy build
+package-invoke-builder python-numpy-cross
+
+# python-pybind11 build
+package-invoke-builder python-pybind11-cross
+
+# python-pygments build
+package-invoke-builder python-pygments-cross
+
+# python-pyparsing build
+package-invoke-builder python-pyparsing-cross
 
 # python-six build
 package-invoke-builder python-six-cross
 
-# numpy build
-package-invoke-builder numpy-cross
-
-# mako build
-package-invoke-builder mako-cross
-
-# meson build
-package-invoke-builder meson-cross
+# python-toml build
+package-invoke-builder python-toml-cross

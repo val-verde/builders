@@ -18,13 +18,28 @@ export DEPENDS="\
 cd ${SOURCE_ROOT}
 package-swift-build
 
+if [ "${HOST_OS}" = "gnu" ]; then
+    SDK_PLATFORM_DIR="linux"
+elif [ "${HOST_OS}" = "macos" ]; then
+    SDK_PLATFORM_DIR="macosx"
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    SDK_PLATFORM_DIR="windows"
+else
+    SDK_PLATFORM_DIR=${HOST_OS}
+fi
+
 cd ${STAGE_ROOT}
-${MKDIR} -p ${INSTALL_PREFIX}/bin
-package-push-directory release
+${MKDIR} -p ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
 package-rsync -ax \
-              `${FIND} -type f -name swift-format\*` \
-              ${INSTALL_PREFIX}/bin
-package-pop-directory
+              release/Swift*.swiftdoc \
+              release/Swift*.swiftmodule \
+              ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
+package-rsync -ax \
+              release/`package-get-filename ${SOURCE_PACKAGE_NAME} EXECUTABLE HOST` \
+              ${INSTALL_PREFIX}/bin/
+package-rsync -ax \
+              release/${SHARED_LIBRARY_PREFIX}Swift*${SHARED_LIBRARY_SUFFIX} \
+              ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/
 
 # Build and install the package
 package-invoke-archive-install

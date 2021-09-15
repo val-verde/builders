@@ -11,18 +11,13 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export DEPENDS="\
     ${PACKAGE_BASE_NAME}-curl-7-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-icu4c-68-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-icu4c-69-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-libxml2-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-llvm-project-13-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-swift-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
 "
 
 # Invoke one-shot template for cmake/install
-function package-install-completion-callback() {
-    ${MV} ${INSTALL_PREFIX}/lib/swift/windows/*${STATIC_LIBRARY_SUFFIX} \
-          ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}
-}
-
 COMMON_CFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
@@ -33,11 +28,6 @@ COMMON_CFLAGS="\
     ${COMMON_CFLAGS} \
 " \
 DISABLE_INSTALL_DEB=TRUE \
-PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
-SWIFTCFLAGS="\
-    -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
-    ${SWIFTCFLAGS} \
-" \
 package-cmake-install-archive \
     -Ddispatch_DIR=${STAGE_ROOT_BASE}/swift-corelibs-libdispatch-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/cmake/modules \
     -DICU_INCLUDE_DIR=${PACKAGE_PREFIX}/include \

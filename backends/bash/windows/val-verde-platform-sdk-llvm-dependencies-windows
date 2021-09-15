@@ -29,9 +29,6 @@ package-invoke-builder zlib-cross
 # windows bzip2 build
 package-invoke-builder bzip2-cross
 
-# windows gzip build
-package-invoke-builder gzip-cross
-
 # windows lz4 build
 package-invoke-builder lz4-cross
 
@@ -85,12 +82,15 @@ DISABLE_LIBXML2=TRUE \
 DISABLE_XZ=TRUE \
 package-invoke-builder gettext-cross
 
+# windows gzip build
+DISABLE_FORTIFY_SOURCE_LEVEL= \
+package-invoke-builder gzip-cross
+
 # windows xz build
 package-invoke-builder xz-cross
 
 # windows libxml2 build
 DISABLE_PYTHON=TRUE \
-LD=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
 package-invoke-builder libxml2-cross
 
 # windows gettext build
@@ -198,6 +198,9 @@ package-invoke-builder jq-cross
 # json-c build
 package-invoke-builder json-c-cross
 
+# which build
+# package-invoke-builder which-cross
+
 # windows findutils build
 # package-invoke-builder findutils-cross
 
@@ -249,6 +252,9 @@ package-invoke-builder z3-cross
 # windows cmake build
 package-invoke-builder cmake-cross
 
+# windows protobuf build
+package-invoke-builder protobuf-cross
+
 # windows boost build
 package-invoke-builder boost-cross
 
@@ -265,7 +271,13 @@ package-invoke-builder jwasm
 package-invoke-builder re2c-cross
 
 # alive2 build
-# package-invoke-builder alive2-cross
+package-invoke-builder alive2-cross
 
 # hiredis build
 package-invoke-builder hiredis-cross
+
+# ccache build
+package-invoke-builder ccache-cross
+
+# distcc build
+# package-invoke-builder distcc-cross

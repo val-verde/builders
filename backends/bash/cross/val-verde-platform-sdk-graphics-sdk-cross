@@ -59,15 +59,15 @@ if [ "${HOST_OS}" = "gnu" ] ||
    [ "${HOST_OS}" = "musl" ]; then
     # xorg-xserver build
     package-invoke-builder xorg-xserver-cross
-fi
 
-if [ "${HOST_OS}" = "gnu" ] ||
-   [ "${HOST_OS}" = "musl" ]; then
     # mesa glu build
     package-invoke-builder mesa-glu-cross
 
     # freeglut build
     package-invoke-builder freeglut-cross
+
+    # glew build
+    package-invoke-builder glew-cross
 
     # mesa demos build
     package-invoke-builder mesa-demos-cross
@@ -127,3 +127,8 @@ package-invoke-builder sdl-ttf-cross
 
 # filament build
 package-invoke-builder filament-cross
+
+if [ "{HOST_OS}" = "mingw32" ]; then
+    # dxvk-cross build
+    package-invoke-builder dxvk-cross
+fi

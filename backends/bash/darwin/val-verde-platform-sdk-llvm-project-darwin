@@ -31,11 +31,13 @@ function package-install-completion-callback() {
                   ${STAGE_ROOT}/bin/llvm-libtool-darwin* \
                   ${STAGE_ROOT}/bin/llvm-link* \
                   ${STAGE_ROOT}/bin/llvm-lipo* \
+                  ${STAGE_ROOT}/bin/llvm-ml* \
                   ${STAGE_ROOT}/bin/llvm-mt* \
                   ${STAGE_ROOT}/bin/llvm-otool* \
                   ${STAGE_ROOT}/bin/llvm-pdbutil* \
                   ${STAGE_ROOT}/bin/llvm-readelf* \
                   ${STAGE_ROOT}/bin/llvm-readobj* \
+                  ${STAGE_ROOT}/bin/llvm-windres* \
                   ${STAGE_ROOT}/bin/opt* \
                   ${INSTALL_PREFIX}/bin/
 
@@ -192,7 +194,7 @@ package-cmake-install-archive \
     -DLLVM_BUILD_LLVM_DYLIB=TRUE \
     -DLLVM_BUILD_TESTS=FALSE \
     -DLLVM_BUILD_UTILS=TRUE \
-    -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_4_TRIPLE} \
+    -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_TRIPLE} \
     -DLLVM_ENABLE_ASSERTIONS=FALSE \
     -DLLVM_ENABLE_BACKTRACES=FALSE \
     -DLLVM_ENABLE_DOXYGEN=FALSE \
@@ -201,6 +203,7 @@ package-cmake-install-archive \
     -DLLVM_ENABLE_LIBCXX=TRUE \
     -DLLVM_ENABLE_LLD=TRUE \
     -DLLVM_ENABLE_LTO=${ENABLE_FLTO} \
+    -DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=FALSE \
     -DLLVM_ENABLE_PIC=TRUE \
     -DLLVM_ENABLE_PROJECTS="clang;compiler-rt;flang;libcxx;libcxxabi;libunwind;lld;${EXTRA_PROJECTS}" \
     -DLLVM_ENABLE_RTTI=TRUE \
@@ -210,7 +213,7 @@ package-cmake-install-archive \
     -DLLVM_ENABLE_WARNINGS=FALSE \
     -DLLVM_ENABLE_Z3_SOLVER=TRUE \
     -DLLVM_ENABLE_ZLIB=TRUE \
-    -DLLVM_HOST_TRIPLE=${HOST_4_TRIPLE} \
+    -DLLVM_HOST_TRIPLE=${HOST_TRIPLE} \
     -DLLVM_INCLUDE_BENCHMARKS=FALSE \
     -DLLVM_INCLUDE_DOCS=FALSE \
     -DLLVM_INCLUDE_EXAMPLES=FALSE \

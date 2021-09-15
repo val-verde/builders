@@ -9,39 +9,17 @@ export SOURCE_PACKAGE_VERSION=1
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-DISABLED_WARNINGS="\
-    -Wno-deprecated-enum-enum-conversion \
-"
-
-COMMON_CFLAGS="\
-    -I${PACKAGE_PREFIX}/include/alive2 \
-    -I${KLEE_SOURCE_ROOT}/include \
-    ${DISABLED_WARNINGS} \
-    ${COMMON_CFLAGS} \
-" \
-COMMON_LDFLAGS="\
-    -L${PACKAGE_PREFIX}/lib \
-    ${COMMON_LDFLAGS} \
-" \
-export-compiler-environment
-
-export KLEE_SRC_DIR=${SOURCE_ROOT_BASE}/klee-2
-export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
-
-# Configure the build components
-package-go-mod init souper
-package-go-get github.com/gomodule/redigo/redis
-
+# Invoke one-shot template for cmake/install
 function package-install-completion-callback() {
     ${MKDIR} -p \
              ${INSTALL_PREFIX}/bin \
              ${INSTALL_PREFIX}/lib
 
     package-rsync -ax \
-                  clang-souper${EXECUTABLE_SUFFIX} \
-                  sclang${EXECUTABLE_SUFFIX} \
-                  sclang++${EXECUTABLE_SUFFIX} \
-                  souper${EXECUTABLE_SUFFIX} \
+                  `package-get-filename clang-souper EXECUTABLE HOST` \
+                  `package-get-filename sclang SCRIPT HOST` \
+                  `package-get-filename sclang++ SCRIPT HOST` \
+                  `package-get-filename souper EXECUTABLE HOST` \
                   ${INSTALL_PREFIX}/bin/
 
     if [ "${HOST_OS}" = "mingw32" ]; then
@@ -64,6 +42,41 @@ function tool-install-invocation() {
     return
 }
 
+KLEE_SRC_DIR=${SOURCE_ROOT_BASE}/klee-2
+LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
+LLVM_CONFIG_EXECUTABLE=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config
+USE_STATIC_LIBCLANG=FALSE
+
+if [ "${HOST_OS}" = "mingw32" ]; then
+    LLVM_NATIVE_STAGE_ROOT=${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}
+    LLVM_CONFIG_EXECUTABLE=${STAGE_ROOT}/host-llvm-config
+    USE_STATIC_LIBCLANG=TRUE
+    WINE=`package-get-path wine64 EXECUTABLE BUILD`
+    WINE_FLAGS=${LLVM_NATIVE_STAGE_ROOT}/bin/`package-get-filename llvm-config EXECUTABLE HOST`
+    export WINEPATH=${PACKAGE_PREFIX}/bin
+
+    create-host-tool ${WINE} WINE_FLAGS ${LLVM_CONFIG_EXECUTABLE}
+fi
+
+DISABLED_WARNINGS="\
+    -Wno-deprecated-enum-enum-conversion \
+"
+
+COMMON_CFLAGS="\
+    -I${PACKAGE_PREFIX}/include/alive2 \
+    -I${KLEE_SOURCE_ROOT}/include \
+    ${DISABLED_WARNINGS} \
+    ${COMMON_CFLAGS} \
+" \
+COMMON_LDFLAGS="\
+    -L${PACKAGE_PREFIX}/lib \
+    ${COMMON_LDFLAGS} \
+" \
+export-compiler-environment
+
+package-go-mod init souper
+package-go-get github.com/gomodule/redigo/redis
+
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 TOOL_INSTALL_INVOCATION=tool-install-invocation \
 package-cmake-install-archive \
@@ -71,5 +84,6 @@ package-cmake-install-archive \
     -DHIREDIS_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DHIREDIS_LIBRARY=`package-get-path hiredis SHARED HOST` \
     -DKLEE_SRC_DIR=${KLEE_SRC_DIR} \
-    -DLLVM_CONFIG_EXECUTABLE=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config \
+    -DLLVM_CONFIG_EXECUTABLE="${LLVM_CONFIG_EXECUTABLE}" \
+    -DUSE_STATIC_LIBCLANG=${USE_STATIC_LIBCLANG} \
     -DZ3_LIBRARY=`package-get-path z3 SHARED HOST`

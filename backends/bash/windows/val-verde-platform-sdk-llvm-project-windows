@@ -36,11 +36,13 @@ function package-install-completion-callback() {
                   ${STAGE_ROOT}/bin/llvm-libtool-darwin* \
                   ${STAGE_ROOT}/bin/llvm-link* \
                   ${STAGE_ROOT}/bin/llvm-lipo* \
+                  ${STAGE_ROOT}/bin/llvm-ml* \
                   ${STAGE_ROOT}/bin/llvm-mt* \
                   ${STAGE_ROOT}/bin/llvm-otool* \
                   ${STAGE_ROOT}/bin/llvm-pdbutil* \
                   ${STAGE_ROOT}/bin/llvm-readelf* \
                   ${STAGE_ROOT}/bin/llvm-readobj* \
+                  ${STAGE_ROOT}/bin/llvm-windres* \
                   ${STAGE_ROOT}/bin/opt* \
                   ${INSTALL_PREFIX}/bin/
 
@@ -101,6 +103,7 @@ TOOL_INSTALL_INVOCATION=tool-install-invocation \
 package-cmake-install-archive \
     -DBUILD_SHARED_LIBS=TRUE \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
+    -DCLANG_DEFAULT_LINKER=lld \
     -DCLANG_DEFAULT_RTLIB=compiler-rt \
     -DCLANG_DEFAULT_STD_C=gnu2x \
     -DCLANG_DEFAULT_STD_CXX=gnucxx20 \
@@ -156,8 +159,8 @@ package-cmake-install-archive \
     -DLIBCXX_ENABLE_ASSERTIONS=FALSE \
     -DLIBCXX_ENABLE_EXPERIMENTAL_LIBRARY=TRUE \
     -DLIBCXX_ENABLE_EXCEPTIONS=TRUE \
-    -DLIBCXX_ENABLE_FILESYSTEM=FALSE \
-    -DLIBCXX_ENABLE_NEW_DELETE_DEFINITIONS=FALSE \
+    -DLIBCXX_ENABLE_FILESYSTEM=TRUE \
+    -DLIBCXX_ENABLE_NEW_DELETE_DEFINITIONS=TRUE \
     -DLIBCXX_ENABLE_PARALLEL_ALGORITHMS=TRUE \
     -DLIBCXX_ENABLE_RTTI=TRUE \
     -DLIBCXX_ENABLE_SHARED=TRUE \
@@ -223,6 +226,7 @@ package-cmake-install-archive \
     -DLLVM_ENABLE_LIBCXX=TRUE \
     -DLLVM_ENABLE_LLD=TRUE \
     -DLLVM_ENABLE_LTO=${ENABLE_FLTO} \
+    -DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=FALSE \
     -DLLVM_ENABLE_PIC=FALSE \
     -DLLVM_ENABLE_PROJECTS="clang;compiler-rt;flang;libcxx;libcxxabi;libunwind;lld;${EXTRA_PROJECTS}" \
     -DLLVM_ENABLE_RTTI=TRUE \

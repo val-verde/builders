@@ -48,6 +48,7 @@ export \
     TEE=/usr/bin/tee \
     TR=/usr/bin/tr \
     WGET=/usr/bin/wget \
+    WHICH=/usr/bin/which \
     XARGS=/usr/bin/xargs \
     XZ=/usr/bin/xz
 
@@ -89,12 +90,6 @@ package-invoke-builder zlib-cross
 
 # bzip2 build
 package-invoke-builder bzip2-cross
-
-# gzip build
-package-invoke-builder gzip-cross
-unset \
-    GUNZIP \
-    GZIP
 
 # lz4 build
 package-invoke-builder lz4-cross
@@ -150,6 +145,12 @@ DISABLE_LIBXML2=TRUE \
 DISABLE_XZ=TRUE \
 package-invoke-builder gettext-cross
 unset GETTEXT
+
+# gzip build
+package-invoke-builder gzip-cross
+unset \
+    GUNZIP \
+    GZIP
 
 # xz build
 package-invoke-builder xz-cross
@@ -350,6 +351,10 @@ unset \
     TEE \
     TR
 
+# which build
+package-invoke-builder which-cross
+unset WHICH
+
 # ed build
 package-invoke-builder ed-cross
 
@@ -385,12 +390,12 @@ unset PYTHON
 # libxml2 build (with python support)
 package-invoke-builder libxml2-cross
 
+# libxslt build
+package-invoke-builder libxslt-cross
+
 # python sdk build
 category-invoke-builder python-sdk-cross
 unset MESON
-
-# libxslt build
-package-invoke-builder libxslt-cross
 
 # itstool build
 package-invoke-builder itstool-cross
@@ -477,8 +482,8 @@ unset RPM
 package-invoke-builder dnf-cross
 unset DNF
 
-# tensorflow build
-package-invoke-builder tensorflow-cross
+# AI SDK build
+category-invoke-builder ai-sdk-cross
 
 # swig build
 package-invoke-builder swig-cross
@@ -505,6 +510,9 @@ package-invoke-builder vim-cross
 # cmake build
 package-invoke-builder cmake-cross
 
+# protobuf build
+package-invoke-builder protobuf-cross
+
 # boost build
 package-invoke-builder boost-cross
 
@@ -528,3 +536,9 @@ package-invoke-builder alive2-cross
 
 # hiredis build
 package-invoke-builder hiredis-cross
+
+# ccache build
+package-invoke-builder ccache-cross
+
+# distcc build
+package-invoke-builder distcc-cross

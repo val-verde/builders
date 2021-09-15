@@ -50,9 +50,16 @@ if [ "${HOST_OS}" = "android" ]; then
     "
     CMAKE_ANDROID_DEFINE_CMD="-DANDROID=TRUE"
 elif [ "${HOST_OS}" = "mingw32" ]; then
-    CMAKE_ASM_COMPILER_CMD="-DCMAKE_ASM_COMPILER=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-ml64"
-    CMAKE_ASM_COMPILER_ID_CMD="-DCMAKE_ASM_COMPILER_ID=MSVC"
-    CMAKE_ASM_FLAGS_CMD="-DCMAKE_ASM_FLAGS_RELEASE="
+    COMMON_CFLAGS="\
+        -fms-compatibility-version=19.2 \
+        -fms-extensions \
+        ${COMMON_CFLAGS} \
+    "
+    if [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+        CMAKE_ASM_COMPILER_CMD="-DCMAKE_ASM_COMPILER=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-ml64"
+        CMAKE_ASM_COMPILER_ID_CMD="-DCMAKE_ASM_COMPILER_ID=MSVC"
+        CMAKE_ASM_FLAGS_CMD="-DCMAKE_ASM_FLAGS_RELEASE="
+    fi
 fi
 
 if [ "${HOST_OS}" = "macos" ]; then
@@ -68,6 +75,18 @@ elif [ "${HOST_OS}" != "gnu" ]; then
     "
 fi
 
+if [ "${HOST_OS}" = "mingw32" ]; then
+    API=legacy
+    GL_HEADER_PATH=${SOURCE_ROOT_BASE}/mingw-w64-6/mingw-w64-headers/include
+else
+    API=gl
+    GL_HEADER_PATH=${PACKAGE_PREFIX}/include
+fi
+
+${PYTHON} ${STAGE_ROOT}/libs/bluegl/bluegl-gen.py -I ${GL_HEADER_PATH} \
+                                                  --api ${API} \
+                                                  -o ${STAGE_ROOT}/libs/bluegl/src/
+
 COMMON_CFLAGS="\
     -fno-builtin \
     -DSTRSAFE_NO_DEPRECATE \
@@ -81,6 +100,7 @@ package-cmake-install-archive \
     -DBUILD_WSI_DIRECTFB_SUPPORT=FALSE \
     -DBUILD_WSI_WAYLAND_SUPPORT=FALSE \
     -DBUILD_WSI_XLIB_SUPPORT=FALSE \
+    -DCCACHE_PROGRAM=`package-get-path ccache EXECUTABLE BUILD` \
     -DDIST_ARCH=${HOST_PROCESSOR} \
     -DDIST_DIR="/" \
     -DFILAMENT_ENABLE_JAVA=FALSE \

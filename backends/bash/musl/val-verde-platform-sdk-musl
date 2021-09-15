@@ -47,5 +47,8 @@ package-invoke-builder virtualization-sdk-cross
 package-invoke-builder node-cross
 package-invoke-builder npm-yarn-cross
 
+# wine build
+package-invoke-builder wine-cross
+
 # blockchain sdk build
 package-invoke-builder blockchain-sdk-cross

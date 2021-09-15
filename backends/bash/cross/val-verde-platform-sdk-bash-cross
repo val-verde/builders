@@ -29,7 +29,8 @@ WITH_OR_WITHOUT_BASH_MALLOC=with
 
 if [ "${HOST_OS}" = "android" ]; then
     HAS_GETCWD=no
-elif [ "${HOST_OS}" = "musl" ]; then
+elif [ "${HOST_OS}" = "macos" ] ||
+     [ "${HOST_OS}" = "musl" ]; then
     WITH_OR_WITHOUT_BASH_MALLOC=without
 fi
 

@@ -272,16 +272,12 @@ function export-compiler-environment-for-c-and-cxx-variant() {
 
     export ${TOOL_INSTALL_NAME_TOOL}="${!TOOL_INSTALL_NAME_TOOL:-`package-get-path llvm-install-name-tool EXECUTABLE BUILD`}"
 
-    if [ -n "${ENABLE_LD_AS_CCLD}" ]; then
-        export ${TOOL_LD}="${!TOOL_LD:-${!TOOL_CCLD}}"
+    if [ "${!VARIANT_OS}" = "macos" ]; then
+        export ${TOOL_LD}="${!TOOL_LD:-`package-get-path ld64.lld EXECUTABLE BUILD`}"
+    elif [ "${!VARIANT_OS}" = "wasi" ]; then
+        export ${TOOL_LD}="${!TOOL_LD:-`package-get-path wasm-ld EXECUTABLE BUILD`}"
     else
-        if [ "${!VARIANT_OS}" = "macos" ]; then
-            export ${TOOL_LD}="${!TOOL_LD:-`package-get-path ld64.lld EXECUTABLE BUILD`}"
-        elif [ "${!VARIANT_OS}" = "wasi" ]; then
-            export ${TOOL_LD}="${!TOOL_LD:-`package-get-path wasm-ld EXECUTABLE BUILD`}"
-        else
-            export ${TOOL_LD}="${!TOOL_LD:-`package-get-path ld.lld EXECUTABLE BUILD`}"
-        fi
+        export ${TOOL_LD}="${!TOOL_LD:-`package-get-path ld.lld EXECUTABLE BUILD`}"
     fi
 
     if [ -z "${USE_GNU_OVER_DARWIN_LIBTOOL}" ] &&
@@ -301,12 +297,12 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     export ${TOOL_OBJDUMP}="${!TOOL_OBJDUMP:-`package-get-path llvm-objdump EXECUTABLE BUILD`}"
     export ${TOOL_OTOOL}="${!TOOL_OTOOL:-`package-get-path llvm-otool EXECUTABLE BUILD`}"
     export ${TOOL_RANLIB}="${!TOOL_RANLIB:-`package-get-path llvm-ranlib EXECUTABLE BUILD`}"
-    export ${TOOL_RC}="${!TOOL_RC:-`package-get-path ${VAL_VERDE_GH_TEAM}-platform-sdk-rc EXECUTABLE BUILD`}"
+    export ${TOOL_RC}="${!TOOL_RC:-`package-get-path llvm-windres EXECUTABLE BUILD`}"
     export ${TOOL_READELF}="${!TOOL_READELF:-`package-get-path llvm-readelf EXECUTABLE BUILD`}"
     export ${TOOL_SIZE}="${!TOOL_SIZE:-`package-get-path llvm-size EXECUTABLE BUILD`}"
     export ${TOOL_STRINGS}="${!TOOL_STRINGS:-`package-get-path llvm-strings EXECUTABLE BUILD`}"
     export ${TOOL_STRIP}="${!TOOL_STRIP:-`package-get-path llvm-strip EXECUTABLE BUILD`}"
-    export ${TOOL_WINDRES}="${!TOOL_RC:-`package-get-path ${VAL_VERDE_GH_TEAM}-platform-sdk-rc EXECUTABLE BUILD`}"
+    export ${TOOL_WINDRES}="${!TOOL_RC:-`package-get-path llvm-windres EXECUTABLE BUILD`}"
 
     CXX_INCLUDE_DIR_VAR=${ENV_PREFIX}CXX_INCLUDE_DIR
     CXX_INCLUDE_DIR_VAR_VALUE=${!CXX_INCLUDE_DIR_VAR}
@@ -516,6 +512,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     TOOL_OBJCFLAGS=${ENV_PREFIX}OBJCFLAGS
     TOOL_OBJCPPFLAGS=${ENV_PREFIX}OBJCPPFLAGS
     TOOL_OBJCXXFLAGS=${ENV_PREFIX}OBJCXXFLAGS
+    TOOL_RCFLAGS=${ENV_PREFIX}RCFLAGS
 
     export ${TOOL_COMMON_CFLAGS}="\
         ${UNUSED_ARGUMENTS_CFLAG} \
@@ -551,6 +548,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         ${!TOOL_CFLAGS} \
     " | ${XARGS}`"
     export ${TOOL_ASFLAGS}="`${ECHO} "\
+        -c \
         ${!TOOL_CFLAGS} \
         ${!TOOL_ASFLAGS} \
     " | ${XARGS}`"
@@ -604,6 +602,15 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         ${!TOOL_CXXFLAGS} \
         ${!TOOL_OBJCXXFLAGS} \
     " | ${XARGS}`"
+    export ${TOOL_RCFLAGS}="`${ECHO} "\
+        ${TARGET_CFLAG} \
+        -I${!PACKAGE_PREFIX_VAR}/include \
+        ${!TOOL_RCFLAGS} \
+    " | ${XARGS}`"
+
+    if [ -n "${ENABLE_LD_AS_CCLD}" ]; then
+        export ${TOOL_LD}="${!TOOL_CCLD}"
+    fi
 
     if [ "${!VARIANT_OS}" = "macos" ]; then
         TOOL_PREFIX=`${ECHO} ${VARIANT} | ${TR} '[:upper:]' '[:lower:]'`
@@ -677,6 +684,7 @@ function export-compiler-environment-for-go() {
 function export-compiler-environment-for-python() {
     PYTHON_HOST_OS=${HOST_OS}
     PYTHON_PLATFORM=${HOST_KERNEL}
+    PYTHON_VERSION=${PYTHON_VERSION:-3.9}
 
     if [ "${HOST_OS}" = "macos" ]; then
         PYTHON_HOST_OS="${HOST_OS}${HOST_OS_API_LEVEL}"
@@ -688,7 +696,8 @@ function export-compiler-environment-for-python() {
     export \
         _PYTHON_HOST_PLATFORM=${HOST_KERNEL}-${HOST_PROCESSOR} \
         _PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata__${PYTHON_PLATFORM}_${HOST_PROCESSOR}-${HOST_KERNEL}-${PYTHON_HOST_OS} \
-        PYTHONHOME=${PACKAGE_PREFIX}:${BUILD_PACKAGE_PREFIX}
+        PYTHONHOME=${PACKAGE_PREFIX}:${BUILD_PACKAGE_PREFIX} \
+        PYTHONPATH=${BUILD_PACKAGE_PREFIX}/lib/python${PYTHON_VERSION}
 }
 
 function export-compiler-environment-for-swift() {
@@ -775,6 +784,9 @@ function generate-compiler-tools-variant() {
     TOOL_OBJCPPFLAGS=${ENV_PREFIX}OBJCPPFLAGS
     TOOL_OBJCXX=${ENV_PREFIX}OBJCXX
     TOOL_OBJCXXFLAGS=${ENV_PREFIX}OBJCXXFLAGS
+    TOOL_RC=${ENV_PREFIX}RC
+    TOOL_RCFLAGS=${ENV_PREFIX}RCFLAGS
+    TOOL_WINDRES=${ENV_PREFIX}WINDRES
 
     create-host-tool "${!TOOL_AS}" ${ENV_PREFIX}ASFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-as-clang
     create-host-tool "${!TOOL_CC}" ${ENV_PREFIX}CFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang
@@ -783,6 +795,8 @@ function generate-compiler-tools-variant() {
     create-host-tool "${!TOOL_CXX}" ${ENV_PREFIX}CXXFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang++
     create-host-tool "${!TOOL_CXXLD}" ${ENV_PREFIX}CCLDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang++
     create-host-tool "${!TOOL_LD}" ${ENV_PREFIX}LDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld
+    create-host-tool "${!TOOL_RC}" ${ENV_PREFIX}RCFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-rc
+    create-host-tool "${!TOOL_WINDRES}" ${ENV_PREFIX}RCFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-windres
 
     export ${TOOL_AS}=${GENERATED_BINDIR}/${TOOL_PREFIX}-as-clang
     export ${TOOL_ASFLAGS}="${OPTIMIZATION_CFLAG}"
@@ -804,6 +818,9 @@ function generate-compiler-tools-variant() {
     unset ${TOOL_OBJCPPFLAGS}
     export ${TOOL_OBJCXX}=${!TOOL_CXX}
     export ${TOOL_OBJCXXFLAGS}="${OPTIMIZATION_CFLAG}"
+    export ${TOOL_RC}=${GENERATED_BINDIR}/${TOOL_PREFIX}-rc
+    unset ${TOOL_RCFLAGS}
+    export ${TOOL_WINDRES}=${GENERATED_BINDIR}/${TOOL_PREFIX}-windres
 }
 
 function get-rust-build-deps() {
@@ -1047,7 +1064,10 @@ function package-cmake-invocation-arguments-for-variant() {
         CROSSCOMPILING_CMD \
         SYSTEM_NAME_CMD
 
-    if [ "${!VARIANT_OS}" = "macos" ]; then
+    if [ "${!VARIANT_OS}" = "mingw32" ]; then
+        COMPILER_TARGET_VAR=${VARIANT}_4_TRIPLE
+        COMPILER_TARGET=${!COMPILER_TARGET_VAR}
+    elif [ "${!VARIANT_OS}" = "macos" ]; then
         CMAKE_OSX_DEPLOYMENT_TARGET_CMD="-DCMAKE_OSX_DEPLOYMENT_TARGET=${MACOSX_DEPLOYMENT_TARGET}"
         CMAKE_OSX_SYSROOT_CMD="-DCMAKE_OSX_SYSROOT=${SYSROOT}"
     fi
@@ -1101,6 +1121,8 @@ function package-cmake-invocation-arguments-for-variant() {
 -DCMAKE_EXE_LINKER_FLAGS_MINSIZEREL= \
 -DCMAKE_EXE_LINKER_FLAGS_RELEASE= \
 -DCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO= \
+-DCMAKE_Fortran_COMPILER=${FORTRAN} \
+-DCMAKE_Fortran_FLAGS= \
 -DCMAKE_GENERATOR=Ninja \
 -DCMAKE_INSTALL_BINDIR=bin \
 -DCMAKE_INSTALL_DATAROOTDIR=share \
@@ -1145,6 +1167,7 @@ function package-cmake-invocation-arguments-for-variant() {
 -DCMAKE_PREFIX_PATH=\""${!TOOL_PKG_CONFIG_PATH}"\" \
 -DCMAKE_RANLIB=${!TOOL_RANLIB} \
 -DCMAKE_RC_COMPILER=${!TOOL_RC} \
+-DCMAKE_RC_FLAGS=\""${!TOOL_RCFLAGS}"\" \
 -DCMAKE_READELF=${!TOOL_READELF} \
 -DCMAKE_Swift_COMPILER=${!TOOL_SWIFTC} \
 -DCMAKE_Swift_COMPILER_TARGET=${COMPILER_TARGET} \
@@ -1158,6 +1181,7 @@ function package-cmake-invocation-arguments-for-variant() {
 -DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO= \
 -DCMAKE_SYSROOT=${CMAKE_SYSROOT} \
 -DCMAKE_SYSTEM_PROCESSOR=${CMAKE_SYSTEM_PROCESSOR} \
+-DCMAKE_SYSTEM_VERSION=${HOST_OS_API_LEVEL} \
 ${CMAKE_OSX_DEPLOYMENT_TARGET_CMD} \
 ${CMAKE_OSX_SYSROOT_CMD} \
 ${CROSSCOMPILING_CMD} \
@@ -1221,7 +1245,7 @@ function package-configure-invocation() {
     SBINDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PLATFORM_PREFIX}/sbin`
     SYSCONFDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PLATFORM_PREFIX}/etc`
 
-    AS_FOR_BUILD=${BUILD_ASFLAGS} \
+    AS_FOR_BUILD=${BUILD_AS} \
     ASFLAGS_FOR_BUILD=${BUILD_ASFLAGS} \
     CC_FOR_BUILD=${BUILD_CC} \
     CFLAGS_FOR_BUILD=${BUILD_CFLAGS} \
@@ -1798,10 +1822,26 @@ function package-swift-build() {
         fi
     fi
 
-    if [ "${HOST_OS}" != "mingw32" ]; then
-        TARGET=${TARGET:-${HOST_4_TRIPLE}}
-    else
+    SWIFT_HOST_OS=${HOST_OS}
+
+    if [ "${HOST_OS}" = "macos" ]; then
+        SWIFT_HOST_OS=macosx
+        SWIFT_HOST_PROCESSOR=${HOST_PROCESSOR}
+        HOST_OS_API_SUBVERSION="0.0"
+
+        if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+            SWIFT_HOST_PROCESSOR=arm64
+        fi
+
+        TARGET=${TARGET:-${SWIFT_HOST_PROCESSOR}-${HOST_KERNEL}-${SWIFT_HOST_OS}${HOST_OS_API_LEVEL}.${HOST_OS_API_SUBVERSION}}
+    elif [ "${HOST_OS}" = "mingw32" ]; then
         TARGET=${TARGET:-${HOST_PROCESSOR}-unknown-windows-gnu}
+    else
+        TARGET=${TARGET:-${HOST_4_TRIPLE}}
+    fi
+
+    if [ "${SYSROOT}" != "${PACKAGE_PLATFORM_SYSROOT}" ]; then
+        SWIFTMODULE_PATH_SWIFTCFLAG="-I${PACKAGE_PREFIX}/lib/swift/${SWIFT_HOST_OS}"
     fi
 
     SWIFT_BUILD_FLAGS=`${ECHO} "\
@@ -1842,9 +1882,11 @@ function package-swift-build() {
             \"-resource-dir\", \"${PACKAGE_PREFIX}/lib/swift\", \n\
             \"-sdk\", \"${SYSROOT}\", \n\
             \"-target-cpu\", \"${HOST_CPU}\", \n\
+            \"-I${PACKAGE_PREFIX}/include\", \n\
             \"-L${PACKAGE_PREFIX}/lib\", \n\
             \"-O${SWIFT_OPTIMIZATION_LEVEL}\", \n\
             \"-Xfrontend\", \"-disable-llvm-verify\", \n\
+            \"${SWIFTMODULE_PATH_SWIFTCFLAG}\", \n\
             \"${FLTO_SWIFTCFLAG}\", \n\
             \"${HOST_VECTOR_SWIFTCFLAG}\", \n\
             \"${POLLY_SWIFTCFLAG}\" \n\

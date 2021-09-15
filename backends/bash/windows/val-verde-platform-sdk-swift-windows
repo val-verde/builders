@@ -10,7 +10,7 @@ export SOURCE_PACKAGE_VERSION=5
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export DEPENDS="\
-    ${PACKAGE_BASE_NAME}-icu4c-68-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-icu4c-69-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-libxml2-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-llvm-project-13-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-mingw-w64-headers-6-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH} (>=1.0.0) \
@@ -22,17 +22,13 @@ USE_NEWPM=${USE_NEWPM:-TRUE}
 
 # Invoke one-shot template for cmake/install
 function package-install-completion-callback() {
-    package-rsync -ax \
-                  ${STAGE_ROOT}/lib/*${STATIC_LIBRARY_SUFFIX} \
-                  ${INSTALL_PREFIX}/lib/*${STATIC_LIBRARY_SUFFIX} \
-                  ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}/
     ${RM} -f \
           ${INSTALL_PREFIX}/bin/*libdispatch* \
           ${INSTALL_PREFIX}/bin/*BlocksRuntime* \
           ${INSTALL_PREFIX}/lib/*libdispatch* \
           ${INSTALL_PREFIX}/lib/*BlocksRuntime* \
-          ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}/*libdispatch* \
-          ${INSTALL_PREFIX}/lib/swift/windows/${HOST_PROCESSOR}/*BlocksRuntime*
+          ${INSTALL_PREFIX}/lib/swift/windows/*libdispatch* \
+          ${INSTALL_PREFIX}/lib/swift/windows/*BlocksRuntime*
 }
 
 COMMON_CFLAGS="\
@@ -86,6 +82,7 @@ package-cmake-install-archive \
     -DSWIFT_BUILD_SOURCEKIT=TRUE \
     -DSWIFT_BUILD_STATIC_SDK_OVERLAY=TRUE \
     -DSWIFT_BUILD_STATIC_STDLIB=TRUE \
+    -DSWIFT_BUILD_TEST_SUPPORT_MODULES=FALSE \
     -DSWIFT_BUILD_SYNTAXPARSERLIB=TRUE \
     -DSWIFT_CMARK_LIBRARY_DIR=${STAGE_ROOT_BASE}/swift-cmark-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/src \
     -DSWIFT_ENABLE_EXPERIMENTAL_CONCURRENCY=TRUE \

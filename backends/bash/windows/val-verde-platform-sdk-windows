@@ -22,7 +22,6 @@ package-invoke-builder compiler-rt-cross
 package-invoke-builder libcxx-bootstrap
 
 # windows mingw-winpthreads build
-LD=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
 package-invoke-builder winpthreads-cross
 
 # windows llvm dependencies
@@ -38,10 +37,13 @@ category-invoke-builder swift-sdk-windows
 package-invoke-builder go-cross
 
 # windows ruby build
-package-invoke-builder ruby-cross
+# package-invoke-builder ruby-cross
 
 # windows graphics sdk build
 category-invoke-builder graphics-sdk-cross
+
+# wine build
+package-invoke-builder wine-cross
 
 # windows blockchain sdk build
 package-invoke-builder blockchain-sdk-cross

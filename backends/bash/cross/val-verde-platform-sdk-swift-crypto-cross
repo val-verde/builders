@@ -19,6 +19,20 @@ function package-install-completion-callback {
     package-rsync -ax \
                   ${STAGE_ROOT}/lib \
                   ${INSTALL_PREFIX}/
+
+    if [ "${HOST_OS}" = "mingw32" ]; then
+        package-rsync -ax \
+                      ${STAGE_ROOT}/bin \
+                      ${INSTALL_PREFIX}/
+    fi
+
+    if [ "${HOST_OS}" = "android" ]; then
+        ${MV} ${INSTALL_PREFIX}/lib/swift/linux \
+              ${INSTALL_PREFIX}/lib/swift/android
+    elif [ "${HOST_OS}" = "musl" ]; then
+        ${MV} ${INSTALL_PREFIX}/lib/swift/linux \
+              ${INSTALL_PREFIX}/lib/swift/musl
+    fi
 }
 
 DISABLE_INSTALL_DEB=TRUE \

@@ -32,9 +32,6 @@ package-invoke-builder zlib-cross
 # bzip2 build
 package-invoke-builder bzip2-cross
 
-# gzip build
-package-invoke-builder gzip-cross
-
 # lz4 build
 package-invoke-builder lz4-cross
 
@@ -87,6 +84,9 @@ package-invoke-builder ncurses-cross
 DISABLE_LIBXML2=TRUE \
 DISABLE_XZ=TRUE \
 package-invoke-builder gettext-cross
+
+# gzip build
+package-invoke-builder gzip-cross
 
 # xz build
 package-invoke-builder xz-cross
@@ -235,6 +235,9 @@ package-invoke-builder tar-cross
 # coreutils build
 package-invoke-builder coreutils-cross
 
+# which build
+package-invoke-builder which-cross
+
 # findutils build
 package-invoke-builder findutils-cross
 
@@ -260,11 +263,11 @@ package-invoke-builder python-cross
 # libxml2 build (with python support)
 package-invoke-builder libxml2-cross
 
-# python sdk build
-category-invoke-builder python-sdk-cross
-
 # libxslt build
 package-invoke-builder libxslt-cross
+
+# python sdk build
+category-invoke-builder python-sdk-cross
 
 # libtasn1 build
 package-invoke-builder libtasn1-cross
@@ -349,13 +352,16 @@ package-invoke-builder maven-cross
 package-invoke-builder z3-cross
 
 # git build
-# package-invoke-builder git-cross
+package-invoke-builder git-cross
 
 # vim build
 package-invoke-builder vim-cross
 
 # cmake build
 package-invoke-builder cmake-cross
+
+# protobuf build
+package-invoke-builder protobuf-cross
 
 # boost build
 package-invoke-builder boost-cross
@@ -377,3 +383,9 @@ package-invoke-builder alive2-cross
 
 # hiredis build
 package-invoke-builder hiredis-cross
+
+# ccache build
+package-invoke-builder ccache-cross
+
+# distcc build
+package-invoke-builder distcc-cross

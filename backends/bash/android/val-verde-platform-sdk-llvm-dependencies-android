@@ -29,9 +29,6 @@ package-invoke-builder zlib-cross
 # android bzip2 build
 package-invoke-builder bzip2-cross
 
-# android gzip build
-package-invoke-builder gzip-cross
-
 # android lz4 build
 package-invoke-builder lz4-cross
 
@@ -85,6 +82,9 @@ DISABLE_LIBXML2=TRUE \
 DISABLE_XZ=TRUE \
 FORTIFY_SOURCE_LEVEL=0 \
 package-invoke-builder gettext-cross
+
+# android gzip build
+package-invoke-builder gzip-cross
 
 # android xz build
 package-invoke-builder xz-cross
@@ -244,6 +244,9 @@ fi
 # android coreutils build
 package-invoke-builder coreutils-cross
 
+# android which build
+package-invoke-builder which-cross
+
 # android findutils build
 package-invoke-builder findutils-cross
 
@@ -269,11 +272,11 @@ package-invoke-builder python-cross
 # android libxml2 build (with python support)
 package-invoke-builder libxml2-cross
 
-# android python sdk build
-category-invoke-builder python-sdk-cross
-
 # android libxslt build
 package-invoke-builder libxslt-cross
+
+# android python sdk build
+category-invoke-builder python-sdk-cross
 
 # android libtasn1 build
 package-invoke-builder libtasn1-cross
@@ -305,15 +308,15 @@ package-invoke-builder libmicrohttpd-cross
 package-invoke-builder elfutils-cross
 
 # android strace build
-# if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
-#     package-invoke-builder strace-cross
-# else
-#     COMMON_CFLAGS="\
-#         -Dfputs_unlocked=fputs \
-#         ${COMMON_CFLAGS} \
-#     " \
-#     package-invoke-builder strace-cross
-# fi
+if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
+    package-invoke-builder strace-cross
+else
+    COMMON_CFLAGS="\
+        -Dfputs_unlocked=fputs \
+        ${COMMON_CFLAGS} \
+    " \
+    package-invoke-builder strace-cross
+fi
 
 # android glib build
 package-invoke-builder glib-cross
@@ -378,6 +381,9 @@ package-invoke-builder vim-cross
 # android cmake build
 package-invoke-builder cmake-cross
 
+# android protobuf build
+package-invoke-builder protobuf-cross
+
 # android boost build
 package-invoke-builder boost-cross
 
@@ -401,3 +407,9 @@ package-invoke-builder alive2-cross
 
 # android hiredis build
 package-invoke-builder hiredis-cross
+
+# android ccache build
+package-invoke-builder ccache-cross
+
+# android distcc build
+package-invoke-builder distcc-cross

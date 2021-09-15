@@ -8,6 +8,9 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 # windows llvm build
 package-invoke-builder llvm-project-windows
 
+# souper build
+package-invoke-builder souper-cross
+
 # windows cmark build
 package-invoke-builder swift-cmark-cross
 
