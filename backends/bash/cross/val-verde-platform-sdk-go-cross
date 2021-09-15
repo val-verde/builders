@@ -14,6 +14,7 @@ copy-source-to-staging
 # Configure the build components
 CGO_ENABLED=0 \
 export-compiler-environment
+generate-compiler-tools
 
 export CC_FOR_TARGET=${CC}
 export CXX_FOR_TARGET=${CXX}
