@@ -21,7 +21,8 @@ ENV PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME} \
     BUILD_DEB_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/build-debs \
     CUDA_VERSION=11.4.1 \
     MACOS_VERSION=11 \
-    SOURCE_DEB_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/source-debs
+    SOURCE_DEB_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/source-debs \
+    TOOLCHAIN_DEB_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/toolchain-debs
 
 ENV BUILD_ARCH=skylake \
     BUILD_CPU=skylake \
@@ -38,25 +39,22 @@ COPY backends/bash/deb-templates \
 COPY backends/bash/packaging-tools \
      /sources/packaging-tools/
 
-COPY /source-debs/ \
-     ${SOURCE_DEB_PATH}
-
 # upstream source package build
 FROM fedora AS sources_builder
 
+COPY /source-debs/ \
+     ${SOURCE_DEB_PATH}
 COPY backends/bash/sources \
      /sources/
 
 RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sources-builder
+COPY /build-debs/ \
+     ${BUILD_DEB_PATH}
+COPY /toolchain-debs/ \
+     ${TOOLCHAIN_DEB_PATH}
 
-# gnu bootstrap build
-FROM sources_builder AS gnu_bootstrap_builder
-
-# LTO configuration: [OFF | Full | Thin]
-# ENV ENABLE_FLTO=Thin
-
-# Optimization level speed: [0-3] or size: [s, z]
-ENV OPTIMIZATION_LEVEL=3
+# bootstrap binaries build
+FROM sources_builder AS binaries_builder
 
 # platform sdk bootstrap package build scripts
 COPY backends/bash/compiler-tools/bin/* \
@@ -71,18 +69,32 @@ RUN HOST_ARCH=${BUILD_ARCH} \
     HOST_KERNEL=${BUILD_KERNEL} \
     HOST_OS=${BUILD_OS} \
     HOST_PROCESSOR=${BUILD_PROCESSOR} \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-binaries-builder
 
-# platform independent package builders
-FROM gnu_bootstrap_builder AS platform_independent_package_builders
+# gnu bootstrap build
+FROM binaries_builder AS gnu_bootstrap_builder
+
+# LTO configuration: [OFF | Full | Thin]
+# ENV ENABLE_FLTO=Thin
+
+# Optimization level speed: [0-3] or size: [s, z]
+ENV OPTIMIZATION_LEVEL=3
+
+RUN HOST_ARCH=${BUILD_ARCH} \
+    HOST_CPU=${BUILD_CPU} \
+    HOST_KERNEL=${BUILD_KERNEL} \
+    HOST_OS=${BUILD_OS} \
+    HOST_PROCESSOR=${BUILD_PROCESSOR} \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap
 
 # platform sdk package build scripts
 COPY backends/bash/cross \
      /sources/
 
 # webassembly build
-FROM platform_independent_package_builders AS webassembly_builder
+FROM gnu_bootstrap__builder AS webassembly_builder
 
+# webassembly package builders
 COPY backends/bash/webassembly \
      /sources/
 
@@ -97,6 +109,7 @@ RUN HOST_ARCH=wasm32 \
 # gnu build
 FROM webassembly_builder AS gnu_builder
 
+# gnu package builders
 COPY backends/bash/gnu \
      /sources/
 
@@ -110,6 +123,7 @@ RUN HOST_ARCH=${BUILD_ARCH} \
 # macos build
 FROM gnu_builder AS macos_builder
 
+# macos package builders
 COPY backends/bash/darwin \
      /sources/
 
@@ -122,8 +136,9 @@ RUN DARWIN_OS=darwin \
     HOST_OS_API_LEVEL=${MACOS_VERSION} \
     HOST_PROCESSOR=x86_64 \
     SYSROOT=${SOURCE_ROOT_BASE}/macosx-${MACOS_VERSION} \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt-cross
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-compiler-rt-builder
 
+# macos-x86_64 environment
 RUN DARWIN_OS=darwin \
     DARWIN_OS_API_LEVEL=20 \
     HOST_ARCH=haswell \
@@ -134,6 +149,7 @@ RUN DARWIN_OS=darwin \
     HOST_PROCESSOR=x86_64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-darwin
 
+# macos-aarch64 environment
 RUN DARWIN_OS=darwin \
     DARWIN_OS_API_LEVEL=20 \
     HOST_ARCH=armv8-a \
@@ -147,9 +163,11 @@ RUN DARWIN_OS=darwin \
 # musl build
 FROM macos_builder AS musl_builder
 
+# musl package builders
 COPY backends/bash/musl \
      /sources/
 
+# musl-x86_64 environment
 RUN HOST_ARCH=broadwell \
     HOST_CPU=broadwell \
     HOST_KERNEL=linux \
@@ -157,6 +175,7 @@ RUN HOST_ARCH=broadwell \
     HOST_PROCESSOR=x86_64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-musl
 
+# musl-aarch64 environment
 RUN HOST_ARCH=armv8-a \
     HOST_CPU=cortex-a57 \
     HOST_KERNEL=linux \
@@ -189,15 +208,14 @@ RUN HOST_ARCH=westmere \
     HOST_PROCESSOR=x86_64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android
 
-# windows environment
-FROM android_builder AS windows_sources_builder
+# windows build
+FROM android_builder AS windows_builder
 
+# windows package builders
 COPY backends/bash/windows \
      /sources/
 
-# windows build
-FROM windows_sources_builder AS windows_builder
-
+# windows-x86_64 environment
 RUN HOST_ARCH=haswell \
     HOST_CPU=skylake \
     HOST_KERNEL=w64 \
@@ -206,6 +224,7 @@ RUN HOST_ARCH=haswell \
     HOST_PROCESSOR=x86_64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows
 
+# windows-aarch64 environment
 RUN HOST_ARCH=armv8-a \
     HOST_CPU=cortex-a57 \
     HOST_KERNEL=w64 \
@@ -214,12 +233,13 @@ RUN HOST_ARCH=armv8-a \
     HOST_PROCESSOR=aarch64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows
 
+# rust build
 FROM windows_builder AS rust_builder
 
+# rust package builders
 COPY backends/bash/rust \
      /sources/
 
-# rust build
 RUN HOST_ARCH=${BUILD_ARCH} \
     HOST_CPU=${BUILD_CPU} \
     HOST_KERNEL=${BUILD_KERNEL} \
