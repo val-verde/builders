@@ -822,6 +822,17 @@ function generate-compiler-tools-variant() {
     export ${TOOL_WINDRES}=${GENERATED_BINDIR}/${TOOL_PREFIX}-windres
 }
 
+function get-android-build-deps() {
+    ANDROID_PACKAGE_NAME=$(jq -r --argjson id $index \
+                                '.[$id].sourcePackageName' \
+                                ${ANDROID_PACKAGE_LIST})
+    ANDROID_PACKAGE_VERSION=$(jq -r --argjson id $index \
+                                '.[$id].sourcePackageVersion' \
+                                ${ANDROID_PACKAGE_LIST})
+    ANDROID_PACKAGE_URL=$(jq -r --argjson id $index \
+                                '.[$id].upstreamUrl' \
+                                ${ANDROID_PACKAGE_LIST})
+}
 
 function get-cuda-build-deps() {
     CUDA_PACKAGE_NAME=$(jq -r --argjson id $index \
