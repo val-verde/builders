@@ -55,6 +55,3 @@ package-invoke-builder hiredis 1
 
 # souper build
 package-invoke-builder souper 1
-
-# android ndk build
-package-invoke-builder android-ndk ${ANDROID_NDK_VERSION}

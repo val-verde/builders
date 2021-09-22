@@ -24,3 +24,6 @@ package-invoke-builder maven-bootstrap 3
 
 # rust bootstrap build
 package-invoke-builder rust-bootstrap 1
+
+# android ndk build
+package-invoke-builder android-ndk ${ANDROID_NDK_VERSION}
