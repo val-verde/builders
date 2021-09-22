@@ -42,10 +42,10 @@ package-rsync -ax \
 
 ${PATCH} -p1 \
         -i ${STAGE_ROOT}/${SOURCE_PACKAGE_NAME}-dirent-versionsort.diff \
-        ${DESTINATION_DIR}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${ANDROID_NDK_BUILD_PROCESSOR}/sysroot/usr/include/dirent.h
+        ${DESTINATION_DIR}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${ANDROID_NDK_BUILD_PROCESSOR}/sysroot/usr/include/dirent.h
 ${PATCH} -p1 \
         -i ${STAGE_ROOT}/${SOURCE_PACKAGE_NAME}-string-strverscmp.diff \
-        ${DESTINATION_DIR}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${ANDROID_NDK_BUILD_PROCESSOR}/sysroot/usr/include/string.h
+        ${DESTINATION_DIR}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${ANDROID_NDK_BUILD_PROCESSOR}/sysroot/usr/include/string.h
 
 # Build and install the package
 package-invoke-archive-install
