@@ -215,6 +215,7 @@ package-cmake-install-archive \
     -DLLVM_ENABLE_LIBCXX=TRUE \
     -DLLVM_ENABLE_LLD=TRUE \
     -DLLVM_ENABLE_LTO=${ENABLE_FLTO} \
+    -DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=FALSE \
     -DLLVM_ENABLE_PIC=TRUE \
     -DLLVM_ENABLE_PROJECTS="clang;compiler-rt;libcxx;libcxxabi;libunwind;lld;${EXTRA_PROJECTS}" \
     -DLLVM_ENABLE_RTTI=TRUE \
