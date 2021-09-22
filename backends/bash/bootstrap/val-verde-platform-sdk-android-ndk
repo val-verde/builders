@@ -2,37 +2,50 @@
 
 set -e
 
-# Set all environment vars
-export ANDROID_NDK_URL=https://dl.google.com/android/repository
-export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
-
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
 ANDROID_NDK_BUILD_PROCESSOR=x86_64
+ANDROID_PACKAGE_LIST=/usr/share/${VAL_VERDE_GH_TEAM}-android-binaries.json
+ANDROID_PACKAGE_COUNT=$(jq -r length ${ANDROID_PACKAGE_LIST})
+DESTINATION_DIR=${INSTALL_PREFIX}/share/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
 
-${MKDIR} -p ${SOURCE_ROOT}
-cd ${SOURCE_ROOT}
+${MKDIR} -p ${DESTINATION_DIR}
 
-if [[ "${ANDROID_NDK_VERSION}" < "r23" ]]; then
-    package-wget -c ${ANDROID_NDK_URL}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${ANDROID_NDK_BUILD_PROCESSOR}.zip
-    package-unzip ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${ANDROID_NDK_BUILD_PROCESSOR}.zip
-else
-    package-wget -c ${ANDROID_NDK_URL}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}.zip
-    package-unzip ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}.zip
-fi
+for index in `seq 0 $((${ANDROID_PACKAGE_COUNT} - 1))`; do
+    index=$index \
+    get-android-build-deps
 
-cd ${STAGE_ROOT}
-${MKDIR} -p ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}
-${MV} ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}
+    ANDROID_PACKAGE_URL=${ANDROID_PACKAGE_URL//'${ANDROID_PACKAGE_NAME}'/${ANDROID_PACKAGE_NAME}}
+    ANDROID_PACKAGE_URL=${ANDROID_PACKAGE_URL//'${ANDROID_PACKAGE_VERSION}'/${ANDROID_PACKAGE_VERSION}}
+    ANDROID_PACKAGE_URL=${ANDROID_PACKAGE_URL//'${BUILD_KERNEL}'/${BUILD_KERNEL}}
+    
+    if [[ "${ANDROID_NDK_VERSION}" < "r23" ]]; then
+        ANDROID_PACKAGE_URL=${ANDROID_PACKAGE_URL}-${ANDROID_NDK_BUILD_PROCESSOR}
+    fi
+done
+
+package-wget -c ${ANDROID_PACKAGE_URL}.zip \
+      -O ${STAGE_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.zip
+package-unzip \
+      ${STAGE_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.zip \
+      -d ${STAGE_ROOT}/
+
+package-rsync -ax \
+              ${STAGE_ROOT}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/* \
+              ${DESTINATION_DIR}/
+
 package-rsync -ax \
               ${SOURCE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-patches-1/* \
-              ${SOURCE_ROOT}
+              ${STAGE_ROOT}
 
 ${PATCH} -p1 \
-         -i ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-dirent-versionsort.diff \
-         ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${ANDROID_NDK_BUILD_PROCESSOR}/sysroot/usr/include/dirent.h
+        -i ${STAGE_ROOT}/${SOURCE_PACKAGE_NAME}-dirent-versionsort.diff \
+        ${DESTINATION_DIR}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${ANDROID_NDK_BUILD_PROCESSOR}/sysroot/usr/include/dirent.h
 ${PATCH} -p1 \
-         -i ${SOURCE_ROOT}/${SOURCE_PACKAGE_NAME}-string-strverscmp.diff \
-         ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${ANDROID_NDK_BUILD_PROCESSOR}/sysroot/usr/include/string.h
+        -i ${STAGE_ROOT}/${SOURCE_PACKAGE_NAME}-string-strverscmp.diff \
+        ${DESTINATION_DIR}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${ANDROID_NDK_BUILD_PROCESSOR}/sysroot/usr/include/string.h
+
+# Build and install the package
+package-invoke-archive-install
