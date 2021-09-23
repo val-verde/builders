@@ -7,7 +7,7 @@ export \
     BINDIR=/usr/bin \
     C_COMPILER=clang \
     CPP="/usr/bin/clang -E" \
-    DEB_PATH=${TOOLCHAIN_DEB_PATH}
+    DEB_PATH=${BOOTSTRAP_DEB_PATH}
 
 export \
     DISABLE_POLLY=TRUE \
