@@ -18,11 +18,11 @@ ENV PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME} \
     STAGE_ROOT_BASE=${STAGE_ROOT_BASE:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/staging} \
     VAL_VERDE_GH_TEAM=${VAL_VERDE_GH_TEAM} \
     ANDROID_NDK_VERSION=r23 \
-    BUILD_DEB_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/build-debs \
+    RELEASE_DEB_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/release-debs \
     CUDA_VERSION=11.4.1 \
     MACOS_VERSION=11 \
     SOURCE_DEB_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/source-debs \
-    TOOLCHAIN_DEB_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/toolchain-debs
+    BOOTSTRAP_DEB_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/bootstrap-debs
 
 ENV BUILD_ARCH=skylake \
     BUILD_CPU=skylake \
@@ -31,7 +31,7 @@ ENV BUILD_ARCH=skylake \
     BUILD_OS_API_LEVEL= \
     BUILD_PROCESSOR=x86_64
 
-RUN mkdir -p ${BUILD_DEB_PATH} ${SOURCE_DEB_PATH}
+RUN mkdir -p ${RELEASE_DEB_PATH} ${SOURCE_DEB_PATH}
 
 # platform sdk tool wrapper scripts and templates
 COPY backends/bash/deb-templates \
@@ -48,10 +48,10 @@ COPY backends/bash/sources \
      /sources/
 
 RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sources-builder
-COPY /build-debs/ \
-     ${BUILD_DEB_PATH}
-COPY /toolchain-debs/ \
-     ${TOOLCHAIN_DEB_PATH}
+COPY /release-debs/ \
+     ${RELEASE_DEB_PATH}
+COPY /bootstrap-debs/ \
+     ${BOOTSTRAP_DEB_PATH}
 
 # bootstrap binaries build
 FROM sources_builder AS binaries_builder
