@@ -16,10 +16,6 @@ COMMON_CFLAGS="\
     -fms-extensions \
     ${COMMON_CFLAGS} \
 " \
-SWIFTCFLAGS="\
-    -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
-    ${SWIFTCFLAGS} \
-" \
 package-cmake-install-archive \
     -DBUILD_TESTING=FALSE \
     -DENABLE_SWIFT=TRUE
