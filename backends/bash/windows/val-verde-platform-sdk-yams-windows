@@ -19,10 +19,6 @@ COMMON_CFLAGS="\
     -fms-extensions \
     ${COMMON_CFLAGS} \
 " \
-SWIFTCFLAGS="\
-    -use-ld=${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-mslink \
-    ${SWIFTCFLAGS} \
-" \
 package-cmake-install-archive \
     -Ddispatch_DIR=${STAGE_ROOT_BASE}/swift-corelibs-libdispatch-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/cmake/modules \
     -DBUILD_TESTING=FALSE \
