@@ -357,6 +357,11 @@ function export-compiler-environment-for-c-and-cxx-variant() {
             MTUNE_CFLAG="-mtune=${CPU_AARCH64}"
         else
             MTUNE_CFLAG="-mtune=${!VARIANT_CPU}"
+
+            if [ "${!VARIANT_CPU}" = "apple-m1" ] &&
+               [ "`${ECHO} | ${!TOOL_CC} ${TARGET_CFLAG} ${MTUNE_CFLAG} -E -o /dev/null 2>/dev/null - && ${ECHO} true || ${ECHO} false`" = "false" ]; then
+                MTUNE_CFLAG="-mtune=apple-a13"
+            fi
         fi
     else
         unset MTUNE_CFLAG
