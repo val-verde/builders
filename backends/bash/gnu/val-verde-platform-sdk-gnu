@@ -14,7 +14,7 @@ package-invoke-category-builder llvm-dependencies-gnu
 
 # llvm build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
-package-invoke-builder llvm-project 13
+package-invoke-builder llvm-project 15
 
 # souper build
 package-invoke-builder souper-cross 1

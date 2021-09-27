@@ -18,7 +18,7 @@ package-invoke-builder spirv-tools-cross 2022
 package-invoke-builder spirv-cross-cross 2022
 
 # spirv llvm translator build
-package-invoke-builder spirv-llvm-translator-cross 13
+package-invoke-builder spirv-llvm-translator-cross 15
 
 # glslang build
 package-invoke-builder glslang-cross 11
@@ -36,7 +36,7 @@ package-invoke-builder vulkan-validation-layers-cross 1
 
 # libclc build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
-package-invoke-builder libclc-cross 13
+package-invoke-builder libclc-cross 15
 
 # mesa build
 package-invoke-builder mesa-cross 21

@@ -60,7 +60,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 package-invoke-builder wasi-libc 0
 
 # webassembly compiler-rt (bootstrap)
-package-invoke-builder compiler-rt-cross 13
+package-invoke-builder compiler-rt-cross 15
 
 # webassembly libcxx
-package-invoke-builder libcxx-bootstrap 13
+package-invoke-builder libcxx-bootstrap 15
