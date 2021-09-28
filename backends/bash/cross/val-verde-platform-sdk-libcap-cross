@@ -10,6 +10,8 @@ cd ${STAGE_ROOT}
 
 copy-source-to-staging
 export-compiler-environment
+generate-compiler-tools
+export-compiler-environment-for-go
 make-install \
     lib=lib \
     prefix=${PACKAGE_PREFIX} \
@@ -32,7 +34,9 @@ make-install \
     INDENT=${INDENT} \
     KERNEL_HEADERS=${PACKAGE_PREFIX}/include/uapi \
     LD=${CCLD} \
+    OBJCOPY=${OBJCOPY} \
     PSXLINKFLAGS=-pthread \
+    RANLIB=${RANLIB} \
     SYSTEM_HEADERS=${PACKAGE_PREFIX}/include \
     TESTS=no \
     LDFLAGS="-shared ${CCLDFLAGS}"
