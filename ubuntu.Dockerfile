@@ -51,9 +51,6 @@ COPY backends/bash/sources \
 
 RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sources-builder
 
-COPY /release-debs/ \
-     ${RELEASE_DEB_PATH}
-
 COPY /bootstrap-debs/ \
      ${BOOTSTRAP_DEB_PATH}
 
@@ -90,6 +87,9 @@ RUN HOST_ARCH=${BUILD_ARCH} \
     HOST_OS=${BUILD_OS} \
     HOST_PROCESSOR=${BUILD_PROCESSOR} \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap
+
+COPY /release-debs/ \
+     ${RELEASE_DEB_PATH}
 
 # platform sdk package build scripts
 COPY backends/bash/cross \
