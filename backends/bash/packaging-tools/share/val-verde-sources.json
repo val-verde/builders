@@ -246,6 +246,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "ceres-solver",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "cmake",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "3",
@@ -363,6 +372,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "eigen",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "elfutils",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "0",
@@ -462,15 +480,6 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
-        "sourceBranchIndicator": "default",
-        "sourcePackageName": "gdk-pixbuf",
-        "sourcePackageVersion": "2",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
-    },
-    {
-        "retainSource": "false",
-        "depth": "1",
-        "sourceType": "git",
         "sourcePackageName": "gc",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "8",
@@ -489,9 +498,27 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourceBranchIndicator": "default",
+        "sourcePackageName": "gdk-pixbuf",
+        "sourcePackageVersion": "2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "gettext",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "gflags",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -538,6 +565,15 @@
         "sourceBranchIndicator": "default-next",
         "sourcePackageVersion": "2",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/glibc.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "glog",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
         "retainSource": "false",
@@ -1409,6 +1445,15 @@
         "sourcePackageName": "opencl-icd-loader",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2020",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "opencv",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "4",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {

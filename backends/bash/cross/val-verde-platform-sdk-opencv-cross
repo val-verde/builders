@@ -1,0 +1,46 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for cmake/install
+function package-install-completion-callback() {
+    if [ "${HOST_OS}" = "mingw32" ]; then
+        ${MV} \
+            ${INSTALL_PREFIX}/setup_vars_opencv4.cmd \
+            ${INSTALL_PREFIX}/bin/
+    fi
+
+    ${RM} \
+        ${INSTALL_PREFIX}/LICENSE
+}
+
+if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+    HAVE_CPU_NEON_SUPPORT=TRUE
+else
+    HAVE_CPU_NEON_SUPPORT=FALSE
+fi
+
+CXX_STANDARD=17 \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+package-cmake-install-archive \
+    -Dlibprotobuf_BINARY_DIR=${PACKAGE_PREFIX}/lib/cmake/protobuf \
+    -DBUILD_PERF_TESTS=FALSE \
+    -DBUILD_PROTOBUF=FALSE \
+    -DBUILD_TESTS=FALSE \
+    -DCCACHE_PROGRAM=`package-get-path ccache EXECUTABLE BUILD` \
+    -DHAVE_CPU_NEON_SUPPORT=${HAVE_CPU_NEON_SUPPORT} \
+    -DProtobuf_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DProtobuf_LIBRARY_DEBUG=`package-get-path protobuf SHARED HOST` \
+    -DProtobuf_LIBRARY_RELEASE=`package-get-path protobuf SHARED HOST` \
+    -DProtobuf_LITE_LIBRARY_DEBUG=`package-get-path protobuf-lite SHARED HOST` \
+    -DProtobuf_LITE_LIBRARY_RELEASE=`package-get-path protobuf-lite SHARED HOST` \
+    -DProtobuf_PROTOC_EXECUTABLE=`package-get-path protoc EXECUTABLE BUILD` \
+    -DProtobuf_PROTOC_LIBRARY_DEBUG=`package-get-path protoc SHARED HOST` \
+    -DProtobuf_PROTOC_LIBRARY_RELEASE=`package-get-path protoc SHARED HOST` \
+    -DPYTHON3_INCLUDE_PATH=${PACKAGE_PREFIX}/include/python${PYTHON_VERSION} \
+    -DPYTHON3_LIBRARY=`package-get-path python${PYTHON_VERSION} SHARED HOST` \
+    -DPROTOBUF_UPDATE_FILES=TRUE \
+    -DPYTHON3_EXECUTABLE=${PYTHON}

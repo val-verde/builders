@@ -512,6 +512,12 @@ package-invoke-builder vim-cross 8
 # cmake build
 package-invoke-builder cmake-cross 3
 
+# gflags build
+package-invoke-builder gflags-cross 2
+
+# glog build
+package-invoke-builder glog-cross 0
+
 # protobuf build
 package-invoke-builder protobuf-cross 3
 

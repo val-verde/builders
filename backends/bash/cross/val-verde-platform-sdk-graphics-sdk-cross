@@ -134,3 +134,12 @@ if [ "{HOST_OS}" = "mingw32" ]; then
     # dxvk-cross build
     package-invoke-builder dxvk-cross 1
 fi
+
+# eigen build
+package-invoke-builder eigen-cross 3
+
+# ceres-solver build
+package-invoke-builder ceres-solver-cross 2
+
+# opencv build
+package-invoke-builder opencv-cross 4
