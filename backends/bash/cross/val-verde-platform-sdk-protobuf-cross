@@ -5,7 +5,12 @@ set -e
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-# Invoke one-shot template for stage/configure/install
-package-stage-configure-install-archive \
-    --disable-static \
-    --enable-shared
+# Invoke one-shot template for cmake/install
+CMAKE_CONFIGURE_ROOT=${SOURCE_ROOT}/cmake \
+package-cmake-install-archive \
+    -Dprotobuf_BUILD_CONFORMANCE=FALSE \
+    -Dprotobuf_BUILD_EXAMPLES=FALSE \
+    -Dprotobuf_BUILD_LIBPROTOC=TRUE \
+    -Dprotobuf_BUILD_PROTOC_BINARIES=TRUE \
+    -Dprotobuf_BUILD_SHARED_LIBS=TRUE \
+    -Dprotobuf_BUILD_TESTS=FALSE
