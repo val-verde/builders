@@ -9,6 +9,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 BOOTSTRAP_FILE=./bootstrap.sh \
 ENABLE_GNULIB_OVERRIDE=TRUE \
 GNULIB_DIR=gnulib \
+MAKEINFO=true \
 package-bootstrap-configure-install-archive \
     --disable-static \
     --enable-shared
