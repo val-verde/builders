@@ -11,6 +11,12 @@ if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
     MAKEINFO=`package-get-path true EXECUTABLE BUILD`
 fi
 
+if [ "${HOST_OS}" = "mingw32" ]; then
+     HAS_FFSL=no
+else
+     HAS_FFSL=yes
+fi
+
 BOOTSTRAP_ARGS="\
     --force \
     --no-git \
@@ -18,4 +24,5 @@ BOOTSTRAP_ARGS="\
     --skip-po \
 " \
 ENABLE_GNULIB_OVERRIDE=TRUE \
-package-bootstrap-configure-install-archive
+package-bootstrap-configure-install-archive \
+    ac_cv_func_ffsl=${HAS_FFSL}
