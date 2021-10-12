@@ -25,7 +25,10 @@ function package-install-completion-callback() {
                       ${INSTALL_PREFIX}/lib/cmake/${SOURCE_PACKAGE_NAME}.cmake
     fi
 
-    ${RM} ${INSTALL_PREFIX}/lib/libvulkan*
+    ${RM} \
+          ${INSTALL_PREFIX}/LICENSE \
+          ${INSTALL_PREFIX}/README.md \
+          ${INSTALL_PREFIX}/lib/libvulkan*
 }
 
 if [ "${BUILD_TRIPLE}" != ${HOST_TRIPLE} ]; then
