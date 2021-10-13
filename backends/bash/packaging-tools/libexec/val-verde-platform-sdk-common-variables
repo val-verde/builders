@@ -158,6 +158,7 @@ function package-dpkg-tool() {
 function package-get-filename() {
     NAME=${1}
     TYPE=${2}
+    VARIANT=${3}
 
     if [ -z "${VARIANT}" ] ||
        [ "${VARIANT}" = "HOST" ]; then
@@ -221,7 +222,7 @@ function package-get-path() {
         RESULT=${!PACKAGE_PREFIX_VAR}/${SUBDIR}
     fi
 
-    RESULT=${RESULT}/`package-get-filename ${NAME} ${TYPE}`
+    RESULT=${RESULT}/`package-get-filename ${NAME} ${TYPE} ${VARIANT}`
 
     if [ -f "${RESULT}" ]; then
         echo ${RESULT}
