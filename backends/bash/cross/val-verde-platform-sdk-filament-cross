@@ -82,9 +82,10 @@ else
     GL_HEADER_PATH=${PACKAGE_PREFIX}/include
 fi
 
-${PYTHON} ${STAGE_ROOT}/libs/bluegl/bluegl-gen.py -I ${GL_HEADER_PATH} \
-                                                  --api ${API} \
-                                                  -o ${STAGE_ROOT}/libs/bluegl/src/
+TOOL_LOG=builder-bootstrap \
+tool-log ${PYTHON} ${STAGE_ROOT}/libs/bluegl/bluegl-gen.py -I ${GL_HEADER_PATH} \
+                                                           --api ${API} \
+                                                            -o ${STAGE_ROOT}/libs/bluegl/src/
 
 COMMON_CFLAGS="\
     -fno-builtin \
