@@ -1,0 +1,129 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for stage/configure/install
+function package-install-completion-callback() {
+    ${RM} -r ${INSTALL_ROOT}${CONFIGURE_PACKAGE_PREFIX}/share/info/dir
+}
+
+ENABLE_OR_DISABLE_GCOV=enable
+
+if [ "${HOST_OS}" = "android" ]; then
+    COMMON_CFLAGS="\
+        -D__BIONIC_VERSIONER \
+        -DBIONIC_IOCTL_NO_SIGNEDNESS_OVERLOAD \
+        ${COMMON_CFLAGS} \
+    "
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    ENABLE_OR_DISABLE_GCOV=disable
+fi
+
+BUILD_COMMON_CFLAGS="\
+    -pthread \
+    -L${BUILD_PACKAGE_PREFIX}/lib \
+    ${BUILD_COMMON_CFLAGS} \
+" \
+BUILD_CXXFLAGS="\
+    -std=gnu++17 \
+    ${BUILD_CXXFLAGS} \
+" \
+COMMON_CFLAGS="\
+    -pthread \
+    -L${PACKAGE_PREFIX}/lib \
+    ${COMMON_CFLAGS} \
+" \
+CXXFLAGS="\
+    -std=gnu++17 \
+    ${CXXFLAGS} \
+" \
+export-compiler-environment
+generate-compiler-tools
+
+AS=${BUILD_PACKAGE_PREFIX}/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/bin/`package-get-filename as EXECUTABLE BUILD`
+ASFLAGS=
+BUILD_AS=${BUILD_PACKAGE_PREFIX}/${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}/bin/`package-get-filename as EXECUTABLE BUILD`
+BUILD_ASFLAGS=
+BUILD_LD=${BUILD_PACKAGE_PREFIX}/${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}/bin/`package-get-filename ld EXECUTABLE BUILD`
+BUILD_LDFLAGS=
+BUILD_OBJDUMP=${BUILD_PACKAGE_PREFIX}/${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}/bin/`package-get-filename objdump EXECUTABLE BUILD`
+LD=${BUILD_PACKAGE_PREFIX}/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/bin/`package-get-filename ld EXECUTABLE BUILD`
+LDFLAGS=
+OBJDUMP=${BUILD_PACKAGE_PREFIX}/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/bin/`package-get-filename objdump EXECUTABLE BUILD`
+
+AR=${BUILD_AR} \
+AR_FOR_TARGET=${AR} \
+AS=${BUILD_AS} \
+AS_FOR_TARGET=${AS} \
+ASFLAGS=${BUILD_ASFLAGS} \
+ASFLAGS_FOR_TARGET=${ASFLAGS} \
+BUILD_AS=${BUILD_AS} \
+BUILD_ASFLAGS=${BUILD_ASFLAGS} \
+BUILD_LD=${BUILD_LD} \
+BUILD_LDFLAGS=${BUILD_LDFLAGS} \
+CC=${BUILD_CC} \
+CC_FOR_TARGET=${CC} \
+CFLAGS=${BUILD_CFLAGS} \
+CFLAGS_FOR_TARGET=${CFLAGS} \
+CONFIGURE_PACKAGE_PLATFORM_PREFIX=${BUILD_PACKAGE_PLATFORM_SYSROOT} \
+CPP=${BUILD_CPP} \
+CPP_FOR_TARGET=${CPP} \
+CPPFLAGS=${BUILD_CPPFLAGS} \
+CPPFLAGS_FOR_TARGET=${CPPFLAGS} \
+CXX=${BUILD_CXX} \
+CXX_FOR_TARGET=${CXX} \
+CXXFLAGS=${BUILD_CXXFLAGS} \
+CXXFLAGS_FOR_TARGET=${CXXFLAGS} \
+DISABLE_AUTOUPDATE=TRUE \
+DISABLE_GENERATED_TOOLS=TRUE \
+DISABLE_LIBTOOLIZE=TRUE \
+LD=${BUILD_LD} \
+LD_FOR_TARGET=${BUILD_LD} \
+LDFLAGS=${BUILD_LDFLAGS} \
+LDFLAGS_FOR_TARGET=${LDFLAGS} \
+HOST_TRIPLE=${BUILD_TRIPLE} \
+OBJCOPY=${BUILD_OBJCOPY} \
+OBJCOPY_FOR_TARGET=${OBJCOPY} \
+OBJDUMP=${BUILD_OBJDUMP} \
+OBJDUMP_FOR_TARGET=${OBJDUMP} \
+PATH=${BUILD_PACKAGE_PREFIX}/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/bin:${PATH} \
+NM=${BUILD_NM} \
+NM_FOR_TARGET=${NM} \
+RANLIB=${BUILD_RANLIB} \
+RANLIB_FOR_TARGET=${RANLIB} \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+PACKAGE_USR_PREFIX=${BUILD_PACKAGE_USR_PREFIX}/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} \
+PKG_CONFIG=${BUILD_PKGCONFIG} \
+SOURCE_ROOT=${SOURCE_ROOT_BASE}/gcc-${SOURCE_PACKAGE_VERSION} \
+WINDRES=${BUILD_WINDRES} \
+WINDRES_FOR_TARGET=${WINDRES} \
+package-stage-configure-install-archive \
+    --disable-bootstrap \
+    --disable-libsanitizer \
+    --disable-multiarch \
+    --disable-multilib \
+    --disable-werror \
+    --enable-cet=yes \
+    --enable-default-pie \
+    --enable-languages="c,c++,d,fortran,lto,objc,obj-c++" \
+    --enable-large-address-aware \
+    --enable-plugin \
+    --enable-shared \
+    --enable-static \
+    --target=${HOST_TRIPLE} \
+    --with-as=${AS} \
+    --with-build-sysroot="${SYSROOT} -isystem ${PACKAGE_PREFIX}/include" \
+    --with-glibc-version=2.31 \
+    --with-gmp=${BUILD_PACKAGE_PREFIX} \
+    --with-isl=${BUILD_PACKAGE_PREFIX} \
+    --with-ld=${LD} \
+    --with-long-double-128 \
+    --with-mpfr=${BUILD_PACKAGE_PREFIX} \
+    --with-mpc=${BUILD_PACKAGE_PREFIX} \
+    --with-program-prefix= \
+    --with-sysroot=${SYSROOT} \
+    --without-system-libunwind \
+    --${ENABLE_OR_DISABLE_GCOV}-gcov

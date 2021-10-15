@@ -566,3 +566,9 @@ package-invoke-builder ccache-cross 4
 
 # distcc build
 package-invoke-builder distcc-cross 3
+
+# binutils-gdb build
+package-invoke-builder cross-binutils-gdb-cross 2
+
+# gcc build
+package-invoke-builder cross-gcc-cross 11

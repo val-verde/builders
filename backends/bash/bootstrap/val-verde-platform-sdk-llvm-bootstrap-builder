@@ -5,28 +5,97 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
+if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
+    export \
+        BUILD_SYSROOT=/ \
+        MAKEINFO=`package-get-path true EXECUTABLE BUILD` \
+        SYSROOT=/
+fi
+
+export \
+    DISABLE_CXX_INCLUDE=TRUE \
+    DISABLE_CXX_STDLIB=TRUE
+
 # kernel-headers bootstrap build
-BUILD_SYSROOT=/ \
 package-invoke-builder kernel-headers 5
 
 # autoconf bootstrap build
 package-invoke-builder autoconf 2
+export \
+    AUTORECONF=`BINDIR= package-get-path autoreconf EXECUTABLE BUILD` \
+    AUTOUPDATE=`BINDIR= package-get-path autoupdate EXECUTABLE BUILD`
 
 # automake bootstrap build
 package-invoke-builder automake 1
+export AUTOMAKE=`BINDIR= package-get-path automake EXECUTABLE BUILD`
 
-# gcc bootstrap build
-package-invoke-builder gcc 11
+# autoconf-archive bootstrap build
+package-invoke-builder autoconf-archive 2021
+
+# glibc-bootstrap phase 1
+
+export DEB_PATH_BASE=${BOOTSTRAP_DEB_PATH}/glibc-2-bootstrap
+export ENABLE_BOOTSTRAP=TRUE
+
+export DEB_PATH=${DEB_PATH_BASE}/phase-1
+${MKDIR} -p ${DEB_PATH}
+
+# help2man bootstrap build
+package-invoke-builder help2man 1
+export HELP2MAN=`BINDIR= package-get-path help2man EXECUTABLE BUILD`
+
+# libtool bootstrap build
+package-invoke-builder libtool 2
+
+# gmp bootstrap build
+package-invoke-builder gmp 6 bootstrap-only
+
+# mpfr bootstrap build
+package-invoke-builder mpfr 4 bootstrap-only
+
+# mpc bootstrap build
+package-invoke-builder mpc 1 bootstrap-only
+
+# isl bootstrap build
+package-invoke-builder isl 0 bootstrap-only
+
+# binutils-gdb bootstrap build
+package-invoke-builder cross-binutils-gdb 2
+
+# gcc bootstrap build (gcc only)
+export DISABLE_LIBGCC=TRUE
+package-invoke-builder cross-gcc 11 bootstrap-only
+unset DISABLE_LIBGCC
+
+unset SYSROOT
+
+# glibc-interface headers bootstrap build
+package-invoke-builder glibc-interface 2 bootstrap-only
+
+# glibc-bootstrap phase 2
+
+export DEB_PATH=${DEB_PATH_BASE}/phase-2
+${MKDIR} -p ${DEB_PATH}
+
+# gcc bootstrap build (gcc + libgcc only)
+package-invoke-builder cross-gcc 11 bootstrap-only
+
+unset ENABLE_BOOTSTRAP
+export DEB_PATH=${BOOTSTRAP_DEB_PATH}
 
 # glibc-interface bootstrap build
-CC=`BINDIR= package-get-path gcc EXECUTABLE BUILD` \
-CPP=`BINDIR= package-get-path cpp EXECUTABLE BUILD` \
 package-invoke-builder glibc-interface 2
 
+unset BUILD_SYSROOT
+
+# glibc-bootstrap complete
+
 # libcxx bootstrap build
-DISABLE_CXX_INCLUDE=TRUE \
-DISABLE_CXX_STDLIB=TRUE \
 package-invoke-builder libcxx-bootstrap 13
+
+unset \
+    DISABLE_CXX_INCLUDE \
+    DISABLE_CXX_STDLIB
 
 # cmake bootstrap build
 package-invoke-builder cmake 3
