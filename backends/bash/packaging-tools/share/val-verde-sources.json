@@ -749,6 +749,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "itstool",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "jansi",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2",
@@ -2659,13 +2668,6 @@
         "sourceBranchIndicator": "wget-xz",
         "sourcePackageVersion": "1.48.3",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "itstool",
-        "sourceBranchIndicator": "wget-bz2",
-        "sourcePackageVersion": "2.0.6",
-        "sourcePackageUrl": "http://files.${SOURCE_PACKAGE_NAME}.org/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.bz2"
     },
     {
         "sourceType": "other",

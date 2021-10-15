@@ -11,8 +11,8 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-zlib-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0) \
 "
 
-# Invoke one-shot template for stage/configure/install
-aDISABLE_AUTOUPDATE=TRUE \
-package-stage-configure-install-archive \
+# Invoke one-shot template for configure/install
+CONFIGURE_FILE=autogen.sh \
+package-configure-install-archive \
     --disable-static \
     --enable-shared
