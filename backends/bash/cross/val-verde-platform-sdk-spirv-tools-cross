@@ -9,4 +9,5 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 package-cmake-install-archive \
     -DLIBRT= \
     -DPYTHON_EXECUTABLE=${PYTHON} \
-    -DSPIRV-Headers_SOURCE_DIR=${PACKAGE_PREFIX}
+    -DSPIRV-Headers_SOURCE_DIR=${PACKAGE_PREFIX} \
+    -DSPIRV_WERROR=FALSE
