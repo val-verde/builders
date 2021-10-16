@@ -133,11 +133,6 @@ package-invoke-builder sdl-ttf-cross 2
 ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder filament-cross 1
 
-if [ "{HOST_OS}" = "mingw32" ]; then
-    # dxvk-cross build
-    package-invoke-builder dxvk-cross 1
-fi
-
 # eigen build
 package-invoke-builder eigen-cross 3
 
