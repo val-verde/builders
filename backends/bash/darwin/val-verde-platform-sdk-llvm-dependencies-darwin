@@ -324,6 +324,12 @@ package-invoke-builder graphviz-cross 2
 # cups build
 # package-invoke-builder cups-cross 2
 
+# intltool build
+package-invoke-builder intltool-cross 0
+
+# util-linux build (with python and systemd support)
+package-invoke-builder util-linux-cross 2
+
 # apt build
 # package-invoke-builder apt-cross 1
 
