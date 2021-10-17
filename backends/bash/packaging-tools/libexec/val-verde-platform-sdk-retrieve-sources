@@ -30,11 +30,6 @@ function build-install-git-source-package() {
         DEPTH=${DEPTH} \
         package-git-clone ${SOURCE_BRANCH}
 
-        package-push-directory ${INSTALL_PREFIX}
-            package-git-tool submodule init
-            package-git-tool submodule update
-        package-pop-directory
-
         # Prepare source root
         package-push-directory ${INSTALL_PREFIX}
             if [ "${RETAIN_SOURCE}" = 'false' ]; then

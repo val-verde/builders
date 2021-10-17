@@ -257,10 +257,15 @@ function package-git-clone() {
             DEPTH_CMD="--depth=${DEPTH}"
         fi
 
+        if [ -z "${DISABLE_RECURSIVE_CLOSE}" ]; then
+            RECURSE_SUBMODULE_CMD="--recurse"
+        fi
+
         package-git-tool clone ${GIT_URL} \
                                --branch ${GIT_BRANCH} \
                                --single-branch \
                                ${DEPTH_CMD} \
+                               ${RECURSE_SUBMODULE_CMD} \
                                ${TARGET_ROOT}
 
     package-pop-directory
