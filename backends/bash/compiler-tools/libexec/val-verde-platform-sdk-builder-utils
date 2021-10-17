@@ -1285,7 +1285,7 @@ function package-configure-invocation() {
     CONFIGURE_PACKAGE_PLATFORM_PREFIX=${CONFIGURE_PACKAGE_PLATFORM_PREFIX:-${PACKAGE_PLATFORM_SYSROOT}}
     CONFIGURE_PACKAGE_PREFIX=${CONFIGURE_PACKAGE_PLATFORM_PREFIX}/${PACKAGE_USR_PREFIX}
 
-    BINDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}/bin`
+    CONFIGURE_BINDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}/bin`
     DATAROOTDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}/share`
     INCLUDEDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}/include`
     LIBDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}/lib`
@@ -1309,7 +1309,7 @@ function package-configure-invocation() {
     tool-log "${@}" \
         --build=${BUILD_TRIPLE} \
         --host=${CONFIGURE_HOST_TRIPLE} \
-        --bindir=${BINDIR} \
+        --bindir=${CONFIGURE_BINDIR} \
         --datarootdir=${DATAROOTDIR} \
         --includedir=${INCLUDEDIR} \
         --libdir=${LIBDIR} \
