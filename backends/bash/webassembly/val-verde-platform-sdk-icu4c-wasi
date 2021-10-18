@@ -3,7 +3,7 @@
 set -e
 
 # Set all environment vars
-export SOURCE_ROOT=/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
+export SOURCE_ROOT=/sources/icu4c-${SOURCE_PACKAGE_VERSION}
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
