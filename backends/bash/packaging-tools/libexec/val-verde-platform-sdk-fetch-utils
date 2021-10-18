@@ -3,7 +3,15 @@
 set -e
 
 function derive-upstream-source-url() {
-    export PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${PACKAGE_VERSION}        
+    PACKAGE_NAME_PREFIX=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${PACKAGE_VERSION}
+
+    if [[ ${SOURCE_BRANCH_IND} == *"android"* ]]; then
+        PACKAGE_NAME_PREFIX=${PACKAGE_NAME_PREFIX}-android
+    elif [[ ${SOURCE_BRANCH_IND} == *"windows"* ]]; then
+        PACKAGE_NAME_PREFIX=${PACKAGE_NAME_PREFIX}-windows
+    fi
+
+    export PACKAGE_NAME=${PACKAGE_NAME_PREFIX}-sources
 
     if [[ ${PACKAGE_BASE_URL} == *'${SOURCE_PACKAGE_NAME}'* || ${PACKAGE_BASE_URL} == *'${SOURCE_PACKAGE_VERSION}'* ]]; then
         PACKAGE_URL=${PACKAGE_BASE_URL//'${SOURCE_PACKAGE_NAME}'/${SOURCE_PACKAGE_NAME}}
@@ -22,16 +30,12 @@ function determine-git-source-package() {
         SOURCE_BRANCH=val-verde-mainline-next-testing
     elif [[ ${SOURCE_BRANCH_IND} == "android" ]]; then
         SOURCE_BRANCH=val-verde-android-mainline
-        PACKAGE_NAME=${PACKAGE_NAME}-android
     elif [[ ${SOURCE_BRANCH_IND} == "android-next" ]]; then
         SOURCE_BRANCH=val-verde-android-mainline-next
-        PACKAGE_NAME=${PACKAGE_NAME}-android
     elif [[ ${SOURCE_BRANCH_IND} == "android-next-testing" ]]; then
         SOURCE_BRANCH=val-verde-android-mainline-next-testing
-        PACKAGE_NAME=${PACKAGE_NAME}-android
     elif [[ ${SOURCE_BRANCH_IND} == "windows" ]]; then
         SOURCE_BRANCH=val-verde-windows-mainline
-        PACKAGE_NAME=${PACKAGE_NAME}-windows
     else
         SOURCE_BRANCH=${SOURCE_BRANCH_IND}
     fi
@@ -90,8 +94,8 @@ function prepare-source-base() {
         determine-git-source-package
     fi
 
-    export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources/${PACKAGE_NAME} \
-           INSTALL_ROOT=${TEMP_ROOT_BASE}/${PACKAGE_NAME}-sources \
+    export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
+           INSTALL_ROOT=${TEMP_ROOT_BASE}/${PACKAGE_NAME} \
            STAGE_ROOT=${STAGE_ROOT_BASE}/${PACKAGE_NAME} \
            ARCHIVE_PATH=${SOURCE_ARCHIVE_PATH}
     
