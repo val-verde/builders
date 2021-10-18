@@ -79,7 +79,7 @@ function package-invoke-builder() {
     if [ ${FILE_EXISTS} == 'true' ]; then
         SEARCH_RESULTS_ARRAY=( ${SEARCH_RESULTS} )
         for file in "${SEARCH_RESULTS_ARRAY[@]}"; do
-            PACKAGE_NAME=$(echo $file | cut -d '/' -f5 | cut -d '.' -f1) \
+            PACKAGE_NAME=`${BASENAME} ${file%.*}`
             package-install-build-archive
         done
     else
