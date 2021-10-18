@@ -2,9 +2,10 @@
 
 set -e
 
+export SOURCE_ROOT=${SOURCE_ROOT_BASE}/linux-${SOURCE_PACKAGE_VERSION}
+
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
-export SOURCE_ROOT=${SOURCE_ROOT_BASE}/linux-${SOURCE_PACKAGE_VERSION}
 
 # Configure the build components
 DISABLE_FORTIFY_SOURCE_LEVEL=TRUE \
