@@ -516,7 +516,7 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
-        "sourcePackageName": "gcc",
+        "sourcePackageName": "gcc-project",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "11",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
