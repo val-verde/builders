@@ -46,6 +46,8 @@ LLVMCONFIG=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config
 RUSTC=${BINDIR}/rustc
 RUSTFMT=${BINDIR}/rustfmt
 
+export RUSTFLAGS="-C target-cpu=${HOST_CPU}"
+
 ${SED} -i "s|@@AR@@|${AR}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@BUILD_CC@@|${BUILD_CC}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@BUILD_CXX@@|${BUILD_CXX}|g" ${STAGE_ROOT}/config.toml

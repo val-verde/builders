@@ -47,8 +47,8 @@ package-invoke-category-builder virtualization-sdk-cross
 package-invoke-builder node-cross 16
 package-invoke-builder npm-yarn-cross 1
 
-# wine build
-package-invoke-builder wine-cross 6
+# wine-sdk build
+package-invoke-category-builder wine-sdk-cross
 
 # blockchain sdk build
 package-invoke-category-builder blockchain-sdk-cross

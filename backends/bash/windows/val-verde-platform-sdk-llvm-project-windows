@@ -41,6 +41,9 @@ function package-install-completion-callback() {
                   ${STAGE_ROOT}/bin/llvm-windres* \
                   ${STAGE_ROOT}/bin/opt* \
                   ${INSTALL_PREFIX}/bin/
+    package-rsync -ax \
+                  ${STAGE_ROOT}/NATIVE/bin/`package-get-filename llvm-config EXECUTABLE BUILD` \
+                  ${STAGE_ROOT}/bin/`package-get-filename host-llvm-config EXECUTABLE BUILD`
 
     CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
     DST_CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
@@ -125,7 +128,7 @@ package-cmake-install-archive \
     -DCOMPILER_RT_HAS_NODEFAULTLIBS_FLAG=FALSE \
     -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
     -DCOMPILER_RT_SANITIZERS_TO_BUILD=${COMPILER_RT_SANITIZER_TO_BUILD} \
-    -DCROSS_TOOLCHAIN_FLAGS_NATIVE="${CROSS_TOOLCHAIN_FLAGS_NATIVE}" \
+    -DCROSS_TOOLCHAIN_FLAGS_NATIVE="-DBUILD_SHARED_LIBS=TRUE;-DLLVM_ENABLE_RTTI=TRUE;-DLLVM_HOST_TRIPLE=${HOST_4_TRIPLE};${CROSS_TOOLCHAIN_FLAGS_NATIVE}" \
     -DCUDA_NVCC_EXECUTABLE=${BINDIR}/clang \
     -DCUDA_TOOLKIT_INCLUDE=${PACKAGE_PREFIX}/include \
     -DDARWIN_macosx_OVERRIDE_SDK_VERSION=${MACOS_VERSION} \

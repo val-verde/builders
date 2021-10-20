@@ -79,7 +79,6 @@ export NICE=${NICE:-${BINDIR}/nice}
 export PATCH=${PATCH:-/usr/bin/patch}
 export PERL=${PERL:-${BINDIR}/perl}
 export PYTHON=${PYTHON:-${BINDIR}/python3}
-export PYTHON_VERSION=${PYTHON_VERSION:-3.9}
 export READLINK=${READLINK:-${BINDIR}/readlink}
 export RM=${RM:-"${BINDIR}/rm -f"}
 export RMDIR=${RMDIR:-${BINDIR}/rmdir}
@@ -159,6 +158,7 @@ function package-dpkg-tool() {
 function package-get-filename() {
     NAME=${1}
     TYPE=${2}
+    VARIANT=${3}
 
     if [ -z "${VARIANT}" ] ||
        [ "${VARIANT}" = "HOST" ]; then
@@ -222,7 +222,7 @@ function package-get-path() {
         RESULT=${!PACKAGE_PREFIX_VAR}/${SUBDIR}
     fi
 
-    RESULT=${RESULT}/`package-get-filename ${NAME} ${TYPE}`
+    RESULT=${RESULT}/`package-get-filename ${NAME} ${TYPE} ${VARIANT}`
 
     if [ -f "${RESULT}" ]; then
         echo ${RESULT}
@@ -257,10 +257,15 @@ function package-git-clone() {
             DEPTH_CMD="--depth=${DEPTH}"
         fi
 
+        if [ -z "${DISABLE_RECURSIVE_CLOSE}" ]; then
+            RECURSE_SUBMODULE_CMD="--recurse"
+        fi
+
         package-git-tool clone ${GIT_URL} \
                                --branch ${GIT_BRANCH} \
                                --single-branch \
                                ${DEPTH_CMD} \
+                               ${RECURSE_SUBMODULE_CMD} \
                                ${TARGET_ROOT}
 
     package-pop-directory

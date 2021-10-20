@@ -381,6 +381,12 @@ package-invoke-builder vim-cross 8
 # android cmake build
 package-invoke-builder cmake-cross 3
 
+# android gflags build
+package-invoke-builder gflags-cross 2
+
+# android glog build
+package-invoke-builder glog-cross 0
+
 # android protobuf build
 package-invoke-builder protobuf-cross 3
 

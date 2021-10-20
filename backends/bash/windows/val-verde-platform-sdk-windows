@@ -42,8 +42,8 @@ package-invoke-builder go-cross 1
 # windows graphics sdk build
 package-invoke-category-builder graphics-sdk-cross
 
-# wine build
-package-invoke-builder wine-cross 6
+# wine-sdk build
+package-invoke-category-builder wine-sdk-cross
 
 # windows blockchain sdk build
 package-invoke-category-builder blockchain-sdk-cross

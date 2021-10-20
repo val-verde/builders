@@ -93,6 +93,33 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "autoconf",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "autoconf-archive",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2021",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "automake",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "autogen",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "5",
@@ -132,6 +159,15 @@
         "sourcePackageName": "bionic-libc",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "bison",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -204,6 +240,15 @@
         "sourcePackageName": "cereal",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "ceres-solver",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -327,6 +372,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "eigen",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "elfutils",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "0",
@@ -426,15 +480,6 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
-        "sourceBranchIndicator": "default",
-        "sourcePackageName": "gdk-pixbuf",
-        "sourcePackageVersion": "2",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
-    },
-    {
-        "retainSource": "false",
-        "depth": "1",
-        "sourceType": "git",
         "sourcePackageName": "gc",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "8",
@@ -453,9 +498,27 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourceBranchIndicator": "default",
+        "sourcePackageName": "gdk-pixbuf",
+        "sourcePackageVersion": "2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "gettext",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "gflags",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -502,6 +565,15 @@
         "sourceBranchIndicator": "default-next",
         "sourcePackageVersion": "2",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/glibc.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "glog",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
         "retainSource": "false",
@@ -671,6 +743,15 @@
         "sourcePackageName": "intltool",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "itstool",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1373,6 +1454,15 @@
         "sourcePackageName": "opencl-icd-loader",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2020",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "opencv",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "4",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -2135,6 +2225,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "vkd3d-proton",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "vulkan-headers",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
@@ -2458,6 +2557,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "xorg-xcb-util-keysyms",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "xorg-xhost",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
@@ -2546,37 +2654,9 @@
     },
     {
         "sourceType": "other",
-        "sourcePackageName": "autoconf",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "2.71",
-        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "autoconf-archive",
-        "sourceBranchIndicator": "wget-xz",
-        "sourcePackageVersion": "2021.02.19",
-        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "automake",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "1.16.4",
-        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
-    },
-    {
-        "sourceType": "other",
         "sourcePackageName": "bash",
         "sourceBranchIndicator": "wget",
         "sourcePackageVersion": "5.1.8",
-        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "bison",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "3.7.6",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
@@ -2606,13 +2686,6 @@
         "sourceBranchIndicator": "wget-xz",
         "sourcePackageVersion": "1.48.3",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "itstool",
-        "sourceBranchIndicator": "wget-bz2",
-        "sourcePackageVersion": "2.0.6",
-        "sourcePackageUrl": "http://files.${SOURCE_PACKAGE_NAME}.org/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.bz2"
     },
     {
         "sourceType": "other",
@@ -2646,7 +2719,7 @@
         "sourceType": "other",
         "sourcePackageName": "linux",
         "sourceBranchIndicator": "wget-xz",
-        "sourcePackageVersion": "5.14.3",
+        "sourcePackageVersion": "5.14.14",
         "sourcePackageUrl": "https://cdn.kernel.org/pub/${SOURCE_PACKAGE_NAME}/kernel/v5.x/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz"
     },
     {

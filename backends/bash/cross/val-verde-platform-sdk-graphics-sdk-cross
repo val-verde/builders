@@ -40,6 +40,9 @@ if [ "${HOST_OS}" = "gnu" ] ||
 
     # mesa build
     package-invoke-builder mesa-cross 21
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    # opengl-es-headers build
+    package-invoke-builder opengl-es-headers-cross 1
 fi
 
 if [ "${HOST_OS}" = "android" ] ||
@@ -130,7 +133,11 @@ package-invoke-builder sdl-ttf-cross 2
 ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder filament-cross 1
 
-if [ "{HOST_OS}" = "mingw32" ]; then
-    # dxvk-cross build
-    package-invoke-builder dxvk-cross 1
-fi
+# eigen build
+package-invoke-builder eigen-cross 3
+
+# ceres-solver build
+package-invoke-builder ceres-solver-cross 2
+
+# opencv build
+package-invoke-builder opencv-cross 4

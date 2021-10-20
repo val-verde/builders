@@ -47,6 +47,9 @@ package-rsync -ax \
 ${LN} -sf \
       clang \
       ${INSTALL_PREFIX}/bin/nvcc
+${LN} -sf \
+      stubs/libcuda.so \
+      ${INSTALL_PREFIX}/lib/libcuda.so.1
 
 # Remove OpenCL components.
 ${RM} -rf \

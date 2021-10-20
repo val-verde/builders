@@ -10,8 +10,11 @@ copy-source-to-staging
 # Invoke one-shot template for cmake/install
 cd ${STAGE_ROOT}
 
+export-compiler-environment
+
 TOOL_LOG=${STAGE_ROOT}/builder-bootstrap \
-tool-log ${BASH} ${SOURCE_ROOT}/bootstrap.sh
+tool-log ${BASH} ${SOURCE_ROOT}/bootstrap.sh \
+    --with-toolset=clang
 
 BOOST_CONTEXT_ABI=sysv
 BOOST_CONTEXT_ASSEMBLER=gas

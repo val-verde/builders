@@ -19,8 +19,9 @@ ENV PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME} \
     VAL_VERDE_GH_TEAM=${VAL_VERDE_GH_TEAM} \
     ANDROID_NDK_VERSION=r23 \
     RELEASE_DEB_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/release-debs \
-    CUDA_VERSION=11.4.1 \
+    CUDA_VERSION=11.4.2 \
     MACOS_VERSION=11 \
+    PYTHON_VERSION=3.10 \
     SOURCE_DEB_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/source-debs \
     BOOTSTRAP_DEB_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/bootstrap-debs
 
@@ -50,9 +51,6 @@ COPY backends/bash/sources \
      /sources/
 
 RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sources-builder
-
-COPY /release-debs/ \
-     ${RELEASE_DEB_PATH}
 
 COPY /bootstrap-debs/ \
      ${BOOTSTRAP_DEB_PATH}
@@ -90,6 +88,9 @@ RUN HOST_ARCH=${BUILD_ARCH} \
     HOST_OS=${BUILD_OS} \
     HOST_PROCESSOR=${BUILD_PROCESSOR} \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap
+
+COPY /release-debs/ \
+     ${RELEASE_DEB_PATH}
 
 # platform sdk package build scripts
 COPY backends/bash/cross \

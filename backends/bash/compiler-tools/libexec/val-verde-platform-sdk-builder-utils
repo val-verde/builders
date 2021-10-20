@@ -357,6 +357,11 @@ function export-compiler-environment-for-c-and-cxx-variant() {
             MTUNE_CFLAG="-mtune=${CPU_AARCH64}"
         else
             MTUNE_CFLAG="-mtune=${!VARIANT_CPU}"
+
+            if [ "${!VARIANT_CPU}" = "apple-m1" ] &&
+               [ "`${ECHO} | ${!TOOL_CC} ${TARGET_CFLAG} ${MTUNE_CFLAG} -E -o /dev/null 2>/dev/null - && ${ECHO} true || ${ECHO} false`" = "false" ]; then
+                MTUNE_CFLAG="-mtune=apple-a13"
+            fi
         fi
     else
         unset MTUNE_CFLAG
@@ -683,7 +688,6 @@ function export-compiler-environment-for-go() {
 function export-compiler-environment-for-python() {
     PYTHON_HOST_OS=${HOST_OS}
     PYTHON_PLATFORM=${HOST_KERNEL}
-    PYTHON_VERSION=${PYTHON_VERSION:-3.9}
 
     if [ "${HOST_OS}" = "macos" ]; then
         PYTHON_HOST_OS="${HOST_OS}${HOST_OS_API_LEVEL}"
@@ -1281,7 +1285,7 @@ function package-configure-invocation() {
     CONFIGURE_PACKAGE_PLATFORM_PREFIX=${CONFIGURE_PACKAGE_PLATFORM_PREFIX:-${PACKAGE_PLATFORM_SYSROOT}}
     CONFIGURE_PACKAGE_PREFIX=${CONFIGURE_PACKAGE_PLATFORM_PREFIX}/${PACKAGE_USR_PREFIX}
 
-    BINDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}/bin`
+    CONFIGURE_BINDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}/bin`
     DATAROOTDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}/share`
     INCLUDEDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}/include`
     LIBDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}/lib`
@@ -1305,7 +1309,7 @@ function package-configure-invocation() {
     tool-log "${@}" \
         --build=${BUILD_TRIPLE} \
         --host=${CONFIGURE_HOST_TRIPLE} \
-        --bindir=${BINDIR} \
+        --bindir=${CONFIGURE_BINDIR} \
         --datarootdir=${DATAROOTDIR} \
         --includedir=${INCLUDEDIR} \
         --libdir=${LIBDIR} \

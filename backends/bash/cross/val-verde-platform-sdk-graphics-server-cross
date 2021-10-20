@@ -113,6 +113,9 @@ if [ "${HOST_OS}" != "mingw32" ]; then
 
     # xorg-xinput build
     package-invoke-builder xorg-xinput-cross 1
+
+    # xorg-xcb-util-keysyms build
+    package-invoke-builder xorg-xcb-util-keysyms-cross 0
 fi
 
 # libjpeg build
