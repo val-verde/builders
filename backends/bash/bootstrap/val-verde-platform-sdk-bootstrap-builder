@@ -7,17 +7,12 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 unset \
     BUILD_C_COMPILER \
-    BUILD_CPP \
-    BUILD_CPPFLAGS \
-    C_COMPILER \
-    CPP \
-    CPPFLAGS
+    C_COMPILER
 
 export \
     AR=`BINDIR= package-get-path llvm-ar EXECUTABLE BUILD` \
     BUILD_AR=`BINDIR= package-get-path llvm-ar EXECUTABLE BUILD` \
     BUILD_CC=`BINDIR= package-get-path clang EXECUTABLE BUILD` \
-    BUILD_CPP=`BINDIR= package-get-path clang-cpp EXECUTABLE BUILD` \
     BUILD_CXX=`BINDIR= package-get-path clang++ EXECUTABLE BUILD` \
     BUILD_LD=`BINDIR= package-get-path ld.lld EXECUTABLE BUILD` \
     BUILD_NM=`BINDIR= package-get-path llvm-nm EXECUTABLE BUILD` \
@@ -27,7 +22,6 @@ export \
     BUILD_STRINGS=`BINDIR= package-get-path llvm-strings EXECUTABLE BUILD` \
     BUILD_STRIP=`BINDIR= package-get-path llvm-strip EXECUTABLE BUILD` \
     CC=`BINDIR= package-get-path clang EXECUTABLE BUILD` \
-    CPP=`BINDIR= package-get-path clang-cpp EXECUTABLE BUILD` \
     CXX=`BINDIR= package-get-path clang++ EXECUTABLE BUILD` \
     LD=`BINDIR= package-get-path ld.lld EXECUTABLE BUILD` \
     NM=`BINDIR= package-get-path llvm-nm EXECUTABLE BUILD` \

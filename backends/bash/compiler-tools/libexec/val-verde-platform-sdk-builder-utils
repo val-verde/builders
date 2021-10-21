@@ -203,15 +203,12 @@ function export-compiler-environment-for-c-and-cxx-variant() {
 
     if [ -n "${USE_GCC}" ]; then
         C_COMPILER=gcc
-        CPP_COMPILER=${CPP_COMPILER:-cpp}
 
         DISABLE_COMPILER_TARGET=TRUE
         DISABLE_FUSE_LD=TRUE
         DISABLE_POLLY=TRUE
         DISABLE_SOUPER=TRUE
         DISABLE_UNUSED_ARGUMENTS=TRUE
-    else
-        CPP_COMPILER=${CPP_COMPILER:-${C_COMPILER}-cpp}
     fi
 
     FLANG=${FLANG:-`package-get-path flang EXECUTABLE BUILD`}
@@ -221,6 +218,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     TOOL_CCLD=${ENV_PREFIX}CCLD
     TOOL_CPP=${ENV_PREFIX}CPP
     TOOL_CXX=${ENV_PREFIX}CXX
+    TOOL_CXXCPP=${ENV_PREFIX}CXXCPP
     TOOL_CXXFILT=${ENV_PREFIX}CXXFILT
     TOOL_CXXLD=${ENV_PREFIX}CXXLD
     TOOL_DLLTOOL=${ENV_PREFIX}DLLTOOL
@@ -257,8 +255,9 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     export ${TOOL_AS}="${!TOOL_AS:-`package-get-path ${C_COMPILER} EXECUTABLE BUILD`}"
     export ${TOOL_CC}="${!TOOL_CC:-`package-get-path ${C_COMPILER} EXECUTABLE BUILD`}"
     export ${TOOL_CCLD}="${!TOOL_CCLD:-${!TOOL_CC}}"
-    export ${TOOL_CPP}="${!TOOL_CPP:-`package-get-path ${CPP_COMPILER} EXECUTABLE BUILD`}"
+    export ${TOOL_CPP}=${!TOOL_CPP:-"${!TOOL_CC} -E"}
     export ${TOOL_CXX}="${!TOOL_CXX:-`package-get-path ${CXX_COMPILER} EXECUTABLE BUILD`}"
+    export ${TOOL_CXXCPP}=${!TOOL_CXXCPP:-"${!TOOL_CXX} -E"}
     export ${TOOL_CXXFILT}="${!TOOL_CXXFILT:-`package-get-path llvm-cxxfilt EXECUTABLE BUILD`}"
     export ${TOOL_CXXLD}="${!TOOL_CXXLD:-${!TOOL_CXX}}"
     export ${TOOL_DLLTOOL}="${!TOOL_DLLTOOL:-`package-get-path llvm-dlltool EXECUTABLE BUILD`}"
@@ -509,6 +508,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     TOOL_CFLAGS=${ENV_PREFIX}CFLAGS
     TOOL_CCLDFLAGS=${ENV_PREFIX}CCLDFLAGS
     TOOL_CPPFLAGS=${ENV_PREFIX}CPPFLAGS
+    TOOL_CXXCPPFLAGS=${ENV_PREFIX}CXXCPPFLAGS
     TOOL_CXXFLAGS=${ENV_PREFIX}CXXFLAGS
     TOOL_CXXLDFLAGS=${ENV_PREFIX}CXXLDFLAGS
     TOOL_LDFLAGS=${ENV_PREFIX}LDFLAGS
@@ -566,6 +566,10 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         ${!TOOL_COMMON_CFLAGS} \
         ${OPTIMIZATION_CFLAG} \
         ${!TOOL_CPPFLAGS} \
+    " | ${XARGS}`"
+    export ${TOOL_CXXCPPFLAGS}="`${ECHO} "\
+        ${!TOOL_CPPFLAGS} \
+        ${!TOOL_CXXCPPFLAGS} \
     " | ${XARGS}`"
     export ${TOOL_CXXFLAGS}="`${ECHO} "\
         ${!TOOL_CFLAGS} \
@@ -776,6 +780,8 @@ function generate-compiler-tools-variant() {
     TOOL_CPP=${ENV_PREFIX}CPP
     TOOL_CPPFLAGS=${ENV_PREFIX}CPPFLAGS
     TOOL_CXX=${ENV_PREFIX}CXX
+    TOOL_CXXCPP=${ENV_PREFIX}CXXCPP
+    TOOL_CXXCPPFLAGS=${ENV_PREFIX}CXXCPPFLAGS
     TOOL_CXXFLAGS=${ENV_PREFIX}CXXFLAGS
     TOOL_CXXLD=${ENV_PREFIX}CXXLD
     TOOL_CXXLDFLAGS=${ENV_PREFIX}CXXLDFLAGS
@@ -796,6 +802,7 @@ function generate-compiler-tools-variant() {
     create-host-tool "${!TOOL_CCLD}" ${ENV_PREFIX}CCLDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang
     create-host-tool "${!TOOL_CPP}" ${ENV_PREFIX}CPPFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang-cpp
     create-host-tool "${!TOOL_CXX}" ${ENV_PREFIX}CXXFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang++
+    create-host-tool "${!TOOL_CXXCPP}" ${ENV_PREFIX}CXXCPPFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang-cpp++
     create-host-tool "${!TOOL_CXXLD}" ${ENV_PREFIX}CCLDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang++
     create-host-tool "${!TOOL_LD}" ${ENV_PREFIX}LDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld
     create-host-tool "${!TOOL_RC}" ${ENV_PREFIX}RCFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-rc
@@ -810,6 +817,8 @@ function generate-compiler-tools-variant() {
     export ${TOOL_CPP}=${!TOOL_CC}-cpp
     unset ${TOOL_CPPFLAGS}
     export ${TOOL_CXX}=${!TOOL_CC}++
+    export ${TOOL_CXXCPP}=${!TOOL_CPP}++
+    unset ${TOOL_CXXCPPFLAGS}
     export ${TOOL_CXXFLAGS}="${OPTIMIZATION_CFLAG}"
     export ${TOOL_CXXLD}=${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang++
     export ${TOOL_CXXLDFLAGS}="${!PACKAGE_PREFIX_LIBDIR_CFLAG_VAR} ${OPTIMIZATION_LDFLAG} ${STRIP_CFLAG}"
@@ -1038,6 +1047,7 @@ ${CMAKE} \\
         CCLDFLAGS \
         CFLAGS \
         CPPFLAGS \
+        CXXCPPFLAGS \
         CXXLDFLAGS \
         CXXFLAGS \
         LDFLAGS \
@@ -1303,6 +1313,8 @@ function package-configure-invocation() {
     CPP_FOR_BUILD=${BUILD_CPP} \
     CPPFLAGS_FOR_BUILD=${BUILD_CPPFLAGS} \
     CXX_FOR_BUILD=${BUILD_CXX} \
+    CXXCPP_FOR_BUILD=${BUILD_CXXCPP} \
+    CXXCPPFLAGS_FOR_BUILD=${BUILD_CXXCPPFLAGS} \
     CXXFLAGS_FOR_BUILD=${BUILD_CXXFLAGS} \
     LD_FOR_BUILD=${BUILD_LD} \
     LDFLAGS_FOR_BUILD=${BUILD_LDFLAGS} \

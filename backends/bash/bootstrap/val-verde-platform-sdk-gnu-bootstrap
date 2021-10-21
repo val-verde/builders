@@ -9,11 +9,7 @@ if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
     export \
         BINDIR=/usr/bin \
         BUILD_C_COMPILER=clang \
-        BUILD_CPP=/usr/bin/clang \
-        BUILD_CPPFLAGS="-E" \
         C_COMPILER=clang \
-        CPP=/usr/bin/clang \
-        CPPFLAGS="-E" \
         DISABLE_POLLY=TRUE \
         USE_FUSE_LD_OVER_LD_PATH=TRUE
 else
