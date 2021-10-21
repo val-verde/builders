@@ -75,7 +75,7 @@ package-cmake-install-archive \
     -DBUILD_SHARED_LIBS=FALSE \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
     -DCLANG_DEFAULT_RTLIB=compiler-rt \
-    -DCLANG_DEFAULT_STD_C=gnu2x \
+    -DCLANG_DEFAULT_STD_C=gnu17 \
     -DCLANG_DEFAULT_STD_CXX=gnucxx20 \
     -DCLANG_DEFAULT_UNWINDLIB=libunwind \
     -DCLANG_ENABLE_ARCMT=TRUE \
