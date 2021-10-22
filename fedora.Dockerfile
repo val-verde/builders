@@ -57,8 +57,9 @@ COPY /bootstrap-debs/ \
 FROM sources_builder AS binaries_builder
 
 # platform sdk bootstrap package build scripts
-COPY backends/bash/compiler-tools/bin/* \
-     /usr/bin/
+RUN mkdir -p ${SOURCE_ROOT_BASE}/compiler-tools-0
+COPY backends/bash/compiler-tools \
+     ${SOURCE_ROOT_BASE}/compiler-tools-0/
 COPY backends/bash/compiler-tools/libexec/* \
      /usr/libexec/
 COPY backends/bash/bootstrap \
@@ -116,11 +117,34 @@ FROM webassembly_builder AS gnu_builder
 COPY backends/bash/gnu \
      /sources/
 
+# gnu build environment
 RUN HOST_ARCH=${BUILD_ARCH} \
     HOST_CPU=${BUILD_CPU} \
     HOST_KERNEL=${BUILD_KERNEL} \
     HOST_OS=${BUILD_OS} \
     HOST_PROCESSOR=${BUILD_PROCESSOR} \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu
+
+# gnu-aarch64 environment
+RUN HOST_ARCH=armv8-a \
+    HOST_CPU=apple-m1 \
+    HOST_KERNEL=${BUILD_KERNEL} \
+    HOST_OS=${BUILD_OS} \
+    HOST_PROCESSOR=aarch64 \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-binaries-builder
+
+RUN HOST_ARCH=armv8-a \
+    HOST_CPU=apple-m1 \
+    HOST_KERNEL=${BUILD_KERNEL} \
+    HOST_OS=${BUILD_OS} \
+    HOST_PROCESSOR=aarch64 \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap
+
+RUN HOST_ARCH=armv8-a \
+    HOST_CPU=apple-m1 \
+    HOST_KERNEL=${BUILD_KERNEL} \
+    HOST_OS=${BUILD_OS} \
+    HOST_PROCESSOR=aarch64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu
 
 # macos build

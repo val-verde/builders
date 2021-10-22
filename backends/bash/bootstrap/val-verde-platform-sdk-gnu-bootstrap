@@ -2,78 +2,20 @@
 
 set -e
 
+# Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
-# Source package build helper functions
-if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
-    export \
-        BINDIR=/usr/bin \
-        BUILD_C_COMPILER=clang \
-        C_COMPILER=clang \
-        DISABLE_POLLY=TRUE \
-        USE_FUSE_LD_OVER_LD_PATH=TRUE
-else
-    export \
-        APT=/usr/bin/apt \
-        AUTOGEN=/usr/bin/autogen \
-        AUTORECONF=/usr/bin/autoreconf \
-        AUTOUPDATE=/usr/bin/autoupdate \
-        BASENAME=/usr/bin/basename \
-        BASH=/usr/bin/bash \
-        BISON=/usr/bin/bison \
-        CHMOD=/usr/bin/chmod \
-        CP=/usr/bin/cp \
-        CURL=/usr/bin/curl \
-        CUT=/usr/bin/cut \
-        DNF=/usr/bin/dnf \
-        DPKG=/usr/bin/dpkg \
-        ECHO=/usr/bin/echo \
-        FIND=/usr/bin/find \
-        GAWK=/usr/bin/gawk \
-        GETTEXT=/usr/bin/gettext \
-        GIT=/usr/bin/git \
-        GPERF=/usr/bin/gperf \
-        GREP=/usr/bin/grep \
-        HELP2MAN=/usr/bin/true \
-        INSTALL=/usr/bin/install \
-        LESS=/usr/bin/less \
-        LN=/usr/bin/ln \
-        LS=/usr/bin/ls \
-        M4=/usr/bin/m4 \
-        MAKE=/usr/bin/make \
-        MAKEINFO=/usr/bin/true \
-        MESON=/usr/bin/meson \
-        MKDIR=/usr/bin/mkdir \
-        MV=/usr/bin/mv \
-        NINJA=/usr/bin/ninja \
-        PERL=/usr/bin/perl \
-        PYTHON=/usr/bin/python3 \
-        READLINK=/usr/bin/readlink \
-        RM="/usr/bin/rm -f" \
-        RMDIR=/usr/bin/rmdir \
-        RPM=/usr/bin/rpm \
-        RSYNC=/usr/bin/rsync \
-        SED=/usr/bin/sed \
-        SSH=/usr/bin/ssh \
-        TAR=/usr/bin/tar \
-        TEE=/usr/bin/tee \
-        TR=/usr/bin/tr \
-        WGET=/usr/bin/wget \
-        WHICH=/usr/bin/which \
-        XARGS=/usr/bin/xargs \
-        XZ=/usr/bin/xz
-fi
-
-export \
-    DEB_PATH=${BOOTSTRAP_DEB_PATH}
+export DEB_PATH=${BOOTSTRAP_DEB_PATH}
 
 # builder-tools build
-if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
+if [ "${BUILD_PROCESSOR}" = "${HOST_PROCESSOR}" ] &&
+   [ "${BUILD_KERNEL}" = "${HOST_KERNEL}" ] &&
+   [ "${BUILD_OS}" = "${HOST_OS}" ] &&
+   [ "${BUILD_OS_API_LEVEL}" = "${HOST_OS_API_LEVEL}" ]; then
     export BINDIR=/usr/bin
 fi
 
-package-invoke-builder builder-tools 0
-unset BINDIR
+package-invoke-builder compiler-tools 0
 
 # libcxx and llvm bootstrap build
 package-invoke-category-builder llvm-bootstrap-builder

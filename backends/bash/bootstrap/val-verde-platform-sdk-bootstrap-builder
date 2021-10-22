@@ -5,9 +5,9 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-unset \
-    BUILD_C_COMPILER \
-    C_COMPILER
+if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
+    export BINDIR=/usr/bin
+fi
 
 export \
     AR=`BINDIR= package-get-path llvm-ar EXECUTABLE BUILD` \
@@ -39,55 +39,53 @@ export \
     CMAKE=`BINDIR= package-get-path cmake EXECUTABLE BUILD` \
     MAKEINFO=`package-get-path true EXECUTABLE BUILD`
 
-unset \
-    DISABLE_POLLY \
-    USE_FUSE_LD_OVER_LD_PATH
+if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
+    # zlib bootstrap build
+    package-invoke-builder zlib 1
 
-# zlib bootstrap build
-package-invoke-builder zlib 1
+    # help2man bootstrap build
+    package-invoke-builder help2man 1
+    export HELP2MAN=`BINDIR= package-get-path help2man EXECUTABLE BUILD`
 
-# help2man bootstrap build
-package-invoke-builder help2man 1
-export HELP2MAN=`BINDIR= package-get-path help2man EXECUTABLE BUILD`
+    # libtool bootstrap build
+    package-invoke-builder libtool 2
 
-# libtool bootstrap build
-package-invoke-builder libtool 2
+    # libffi bootstrap build
+    package-invoke-builder libffi 3
 
-# libffi bootstrap build
-package-invoke-builder libffi 3
+    # pcre build
+    package-invoke-builder pcre 8
 
-# pcre build
-package-invoke-builder pcre 8
+    # glib bootstrap build
+    package-invoke-builder glib 1
 
-# glib bootstrap build
-package-invoke-builder glib 1
+    # pkg-config bootstrap build
+    package-invoke-builder pkg-config 0
 
-# pkg-config bootstrap build
-package-invoke-builder pkg-config 0
+    # re2c build
+    package-invoke-builder re2c 2
 
-# re2c build
-package-invoke-builder re2c 2
+    # alive2 build
+    package-invoke-builder alive2 1
 
-# alive2 build
-package-invoke-builder alive2 1
+    # hiredis build
+    package-invoke-builder hiredis 1
 
-# hiredis build
-package-invoke-builder hiredis 1
+    # souper build
+    package-invoke-builder souper 1
 
-# souper build
-package-invoke-builder souper 1
+    # gmp build
+    package-invoke-builder gmp 6
 
-# gmp build
-package-invoke-builder gmp 6
+    # mpfr build
+    package-invoke-builder mpfr 4
 
-# mpfr build
-package-invoke-builder mpfr 4
+    # mpc build
+    package-invoke-builder mpc 1
 
-# mpc build
-package-invoke-builder mpc 1
-
-# isl build
-package-invoke-builder isl 0
+    # isl build
+    package-invoke-builder isl 0
+fi
 
 # binutils-gdb build
 package-invoke-builder cross-binutils-gdb 2
