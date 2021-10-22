@@ -38,6 +38,9 @@ package-invoke-builder libtool 2
 # libffi bootstrap build
 package-invoke-builder libffi 3
 
+# pcre build
+package-invoke-builder pcre 8
+
 # glib bootstrap build
 package-invoke-builder glib 1
 
