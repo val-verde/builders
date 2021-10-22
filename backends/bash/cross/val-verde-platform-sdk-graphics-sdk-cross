@@ -77,6 +77,9 @@ if [ "${HOST_OS}" = "gnu" ] ||
     package-invoke-builder mesa-demos-cross 8
 fi
 
+# glfw build
+package-invoke-builder glfw-cross 3
+
 # libsass build
 package-invoke-builder libsass-cross 3
 
