@@ -1042,7 +1042,6 @@ function package-bootstrap-configure-install() {
 
     package-push-directory ${CONFIGURE_FILE_ROOT}
         package-autoupdate
-        package-gnulib-override
         package-libtoolize
         package-bootstrap
     package-pop-directory
@@ -1532,18 +1531,6 @@ function package-go-tool() {
     package-pop-directory
 }
 
-function package-gnulib-override() {
-    GNULIB_DIR=${GNULIB_DIR:-glib}
-    GNULIB_ROOT=${GNULIB_ROOT:-${STAGE_ROOT}}
-
-    if [ -n "${ENABLE_GNULIB_OVERRIDE}" ]; then
-        ${RM} -rf glib
-        ${LN} -sf \
-               ${SOURCE_ROOT_BASE}/gnulib-0 \
-               ${GNULIB_ROOT}/${GNULIB_DIR}
-    fi
-}
-
 function package-libtoolize() {
     LIBTOOLIZE=`package-get-path libtoolize EXECUTABLE BUILD`
     LIBTOOLIZE_ARGS=${LIBTOOLIZE_ARGS:-"-fi"}
@@ -1889,7 +1876,6 @@ function package-stage-configure-install() {
 
     package-push-directory ${CONFIGURE_FILE_ROOT}
         package-autoupdate
-        package-gnulib-override
         package-libtoolize
         package-autoreconf -fi
     package-pop-directory
