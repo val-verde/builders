@@ -17,12 +17,5 @@ else
      HAS_FFSL=yes
 fi
 
-BOOTSTRAP_ARGS="\
-    --force \
-    --no-git \
-    --gnulib-srcdir=${STAGE_ROOT}/glib \
-    --skip-po \
-" \
-ENABLE_GNULIB_OVERRIDE=TRUE \
 package-bootstrap-configure-install-archive \
     ac_cv_func_ffsl=${HAS_FFSL}
