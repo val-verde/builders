@@ -2982,46 +2982,46 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
-        "sourcePackageName": "xcb-libxcb",
+        "sourcePackageName": "xorg-xcb-libxcb",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/xcb-libxcb.git"
     },
     {
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
-        "sourcePackageName": "xcb-pthread-stubs",
+        "sourcePackageName": "xorg-xcb-pthread-stubs",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "0",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/xcb-pthread-stubs.git"
     },
     {
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
-        "sourcePackageName": "xcb-render-util",
+        "sourcePackageName": "xorg-xcb-render-util",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "0",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/xcb-render-util.git"
     },
     {
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
-        "sourcePackageName": "xcbproto",
+        "sourcePackageName": "xorg-xcb-proto",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/xcbproto.git"
     },
     {
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
-        "sourcePackageName": "xkeyboard-config",
+        "sourcePackageName": "xorg-xkeyboard-config",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/xkeyboard-config.git"
     },
     {
         "retainSource": "false",

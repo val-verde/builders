@@ -115,9 +115,7 @@ function parse-builder-args() {
         SOURCE_PACKAGE_NAME=${BUILDER_INPUT_SCRIPT}
     fi
 
-    if [ ${SOURCE_PACKAGE_NAME} == "xcb-proto" ]; then
-        SOURCE_PACKAGE_NAME=xcbproto
-    elif [ ${SOURCE_PACKAGE_NAME} == "yarn-yautja-server" ]; then
+    if [ ${SOURCE_PACKAGE_NAME} == "yarn-yautja-server" ]; then
         SOURCE_PACKAGE_NAME=yautja-server
     fi
     
