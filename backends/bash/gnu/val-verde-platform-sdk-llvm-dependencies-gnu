@@ -77,11 +77,18 @@ package-invoke-builder automake-cross 1
 # autoconf-archive build
 package-invoke-builder autoconf-archive-cross 2021
 
+# glibc build phase
+
+# glibc runtime build
+package-invoke-builder glibc-runtime 2 no-install
+
 # glibc interface build
 package-invoke-builder glibc-interface 2
 
-# glibc runtime build
-package-invoke-builder glibc-runtime 2
+PACKAGES_TO_MANAGE=( 'glibc-runtime-2' 'HOST' )
+package-invoke-archive-action install ${PACKAGES_TO_MANAGE[@]}
+
+# glibc build phase complete
 
 # libxcrypt build
 package-invoke-builder libxcrypt-cross 4

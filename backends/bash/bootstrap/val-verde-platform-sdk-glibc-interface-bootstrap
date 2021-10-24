@@ -2,6 +2,9 @@
 
 set -e
 
+# Override bootstrap package name
+export SOURCE_PACKAGE_NAME=glibc-interface
+
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
@@ -9,7 +12,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 function package-install-completion-callback() {
     if [ -n "${ENABLE_BOOTSTRAP}" ]; then
         ${MKDIR} -p ${INSTALL_PREFIX}/glibc-interface/usr/lib
-	${MV} ${INSTALL_PREFIX}/include \
+        ${MV} ${INSTALL_PREFIX}/include \
               ${INSTALL_PREFIX}/glibc-interface/usr/
         ${LN} -sf \
               ../../../include/asm \
@@ -21,74 +24,36 @@ function package-install-completion-callback() {
                       ${STAGE_ROOT}/build/csu/crt*.o \
                       ${INSTALL_PREFIX}/glibc-interface/usr/lib/
     else
-        ${RM} -rf ${INSTALL_PREFIX}/../lib
-        ${MV} ${INSTALL_PREFIX}/../lib64 \
-              ${INSTALL_PREFIX}/glibc-interface
-        ${LN} -sf \
-              ../glibc-interface/libanl.so.1 \
-              ${INSTALL_PREFIX}/lib/libanl.so
-        ${LN} -sf \
-              ../glibc-interface/libdl.so.2 \
-              ${INSTALL_PREFIX}/lib/libdl.so
-        ${LN} -sf \
-              ../glibc-interface/libnsl.so.1 \
-              ${INSTALL_PREFIX}/lib/libnsl.so
-        ${LN} -sf \
-              ../glibc-interface/libnss_compat.so.2 \
-              ${INSTALL_PREFIX}/lib/libnss_compat.so
-        ${LN} -sf \
-              ../glibc-interface/libnss_db.so.2 \
-              ${INSTALL_PREFIX}/lib/libnss_db.so
-        ${LN} -sf \
-              ../glibc-interface/libnss_dns.so.2 \
-              ${INSTALL_PREFIX}/lib/libnss_dns.so
-        ${LN} -sf \
-              ../glibc-interface/libnss_files.so.2 \
-              ${INSTALL_PREFIX}/lib/libnss_files.so
-        ${LN} -sf \
-              ../glibc-interface/libnss_hesiod.so.2 \
-              ${INSTALL_PREFIX}/lib/libnss_hesiod.so
-        ${LN} -sf \
-              ../glibc-interface/libpthread.so.0 \
-              ${INSTALL_PREFIX}/lib/libpthread.so
-        ${LN} -sf \
-              ../glibc-interface/libresolv.so.2 \
-              ${INSTALL_PREFIX}/lib/libresolv.so
-        ${LN} -sf \
-              ../glibc-interface/librt.so.1 \
-              ${INSTALL_PREFIX}/lib/librt.so
-        ${LN} -sf \
-              ../glibc-interface/libthread_db.so.1 \
-              ${INSTALL_PREFIX}/lib/libthread_db.so
-        ${LN} -sf \
-              ../glibc-interface/libutil.so.1 \
-              ${INSTALL_PREFIX}/lib/libutil.so
-        ${LN} -sf \
-              ../glibc-interface/libBrokenLocale.so.1 \
-              ${INSTALL_PREFIX}/lib/libBrokenLocale.so
-
         if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
-            ${LN} -sf \
-                  ../glibc-interface/libm.so.6 \
-                  ${INSTALL_PREFIX}/lib/libm.so
+            LINKER_LOADER=ld-${HOST_KERNEL}-${HOST_PROCESSOR}.so.1
+            LINKER_LOADER_DIR=lib
         elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
-            ${LN} -sf \
-                  ../glibc-interface/libmvec.so.1 \
-                  ${INSTALL_PREFIX}/lib/libmvec.so
-            ${SED} -i \
-                   "s| /lib64/| ../glibc-interface/|g" \
-                   ${INSTALL_PREFIX}/lib/libm.so
+            LINKER_LOADER=ld-${HOST_KERNEL}-x86-64.so.2
+            LINKER_LOADER_DIR=lib64
         fi
 
+        LINKER_LOADER_PATH=${INSTALL_PREFIX}/../${LINKER_LOADER_DIR}
+
+        ${MKDIR} -p ${LINKER_LOADER_PATH}
+        ${RM} ${INSTALL_PREFIX}/glibc-interface/${LINKER_LOADER}
+        ${LN} -sf \
+              ../usr/glibc-interface/ld-${SOURCE_PACKAGE_VERSION}.31.so \
+              ${LINKER_LOADER_PATH}/${LINKER_LOADER}
         ${SED} -i \
-               "s| /usr/lib/| |g" \
+               "s|/usr/glibc-interface|/${LINKER_LOADER_DIR}|g" \
+               ${INSTALL_PREFIX}/bin/ldd
+        ${SED} -i \
+               "s|/usr/glibc-interface/ld-${HOST_KERNEL}|/${LINKER_LOADER_DIR}/ld-${HOST_KERNEL}|g" \
                ${INSTALL_PREFIX}/lib/libc.so
         ${SED} -i \
-               "s| /lib/| ../glibc-interface/|g" \
+               "s| /| =/|g" \
                ${INSTALL_PREFIX}/lib/libc.so
-        ${SED} -i \
-               "s| /lib64/| ../glibc-interface/|g" \
-               ${INSTALL_PREFIX}/lib/libc.so
+
+        if [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+            ${SED} -i \
+                   "s| /| =/|g" \
+                   ${INSTALL_PREFIX}/lib/libm.so
+        fi
     fi
 }
 
@@ -127,7 +92,10 @@ TOOL_INSTALL_INVOCATION=${TOOL_INSTALL_INVOCATION} \
 USE_GCC=TRUE \
 package-stage-configure-install-archive \
     libc_cv_include_x86_isa_level=no \
+    libc_cv_slibdir=/usr/glibc-interface \
     --disable-crypt \
+    --disable-multiarch \
+    --disable-multilib \
     --disable-sanity-checks \
     --disable-werror \
     --enable-cet=yes \

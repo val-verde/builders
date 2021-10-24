@@ -5,6 +5,9 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
+SPECIFIED_BUILD_SYSROOT=${BUILD_SYSROOT}
+SPECIFIED_SYSROOT=${SYSROOT}
+
 if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
     export \
         BUILD_C_COMPILER=clang \
@@ -36,7 +39,7 @@ export AUTOMAKE=`BINDIR= package-get-path automake EXECUTABLE BUILD`
 # autoconf-archive bootstrap build
 package-invoke-builder autoconf-archive 2021
 
-# glibc-bootstrap phase 1
+# glibc-interface bootstrap phase 1
 
 export DEB_PATH_BASE=${BOOTSTRAP_DEB_PATH}/glibc-2-bootstrap
 export ENABLE_BOOTSTRAP=TRUE
@@ -73,12 +76,12 @@ export DISABLE_LIBGCC=TRUE
 package-invoke-builder cross-gcc 11 bootstrap-only
 unset DISABLE_LIBGCC
 
-unset SYSROOT
+export SYSROOT=${SPECIFIED_SYSROOT}
 
-# glibc-interface headers bootstrap build
-package-invoke-builder glibc-interface 2 bootstrap-only
+# glibc-interface bootstrap build (headers only)
+package-invoke-builder glibc-interface-bootstrap 2 bootstrap-only
 
-# glibc-bootstrap phase 2
+# glibc-interface bootstrap phase 2
 
 export DEB_PATH=${DEB_PATH_BASE}/phase-2
 ${MKDIR} -p ${DEB_PATH}
@@ -90,11 +93,11 @@ unset ENABLE_BOOTSTRAP
 export DEB_PATH=${BOOTSTRAP_DEB_PATH}
 
 # glibc-interface bootstrap build
-package-invoke-builder glibc-interface 2
+package-invoke-builder glibc-interface-bootstrap 2
 
-unset BUILD_SYSROOT
+export BUILD_SYSROOT=${SPECIFIED_BUILD_SYSROOT}
 
-# glibc-bootstrap complete
+# glibc-interface bootstrap complete
 
 if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
     # compiler-rt bootstrap build

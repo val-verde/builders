@@ -31,6 +31,8 @@ USE_GCC=TRUE \
 package-configure-install-archive \
     libc_cv_include_x86_isa_level=no \
     --disable-crypt \
+    --disable-multiarch \
+    --disable-multilib \
     --disable-sanity-checks \
     --disable-werror \
     --enable-cet=yes \
