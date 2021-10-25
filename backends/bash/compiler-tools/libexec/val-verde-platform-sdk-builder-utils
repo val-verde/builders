@@ -1915,6 +1915,24 @@ function package-swift-build() {
         ${SWIFT_BUILD_FLAGS}
 }
 
+function package-yarn-install-archive() {
+    YARN_INSTALL_PREFIX=${YARN_INSTALL_PREFIX:${INSTALL_PREFIX}/${SOURCE_PACKAGE_NAME}}
+
+    package-push-directory ${STAGE_ROOT}
+        copy-source-to-staging
+        export-compiler-environment
+        generate-compiler-tools
+        yarn-build
+    package-pop-directory
+
+    package-rsync -ax \
+                  ${STAGE_ROOT}/ \
+                  ${INSTALL_PREFIX}/
+
+    INSTALL_PREFIX=${YARN_INSTALL_PREFIX} \
+    package-invoke-archive-install
+}
+
 function rpath-fixup() {
     if [ "${HOST_OS}" = "android" ] ||
        [ "${HOST_OS}" = "gnu" ] ||
