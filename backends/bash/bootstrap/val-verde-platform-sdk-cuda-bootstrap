@@ -9,6 +9,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 CUDA_PACKAGE_LIST=/usr/share/${VAL_VERDE_GH_TEAM}-cuda-binaries.json
 CUDA_PACKAGE_COUNT=$(jq -r length ${CUDA_PACKAGE_LIST})
 CUDA_HOST_PROCESSOR=${HOST_PROCESSOR}
+CUDA_STAGE_ROOT=${STAGE_ROOT}/builds
 
 for index in `seq 0 $(($CUDA_PACKAGE_COUNT - 1))`; do
     index=$index \
@@ -18,7 +19,7 @@ for index in `seq 0 $(($CUDA_PACKAGE_COUNT - 1))`; do
     CUDA_PACKAGE_URL=${CUDA_PACKAGE_URL//'${CUDA_PACKAGE_VERSION}'/${CUDA_PACKAGE_VERSION}}
 
 
-    if [ "${BUILD_PROCESSOR}" = "aarch64" ]; then
+    if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
         CUDA_HOST_PROCESSOR=sbsa
         PACKAGE_FILENAME_SUFFIX=_${CUDA_HOST_PROCESSOR}
     fi
@@ -26,30 +27,32 @@ for index in `seq 0 $(($CUDA_PACKAGE_COUNT - 1))`; do
     PACKAGE_FILENAME=${SOURCE_PACKAGE_NAME}_${CUDA_PACKAGE_VERSION}_${NVIDIA_DRIVER_VERSION}_${HOST_KERNEL}${PACKAGE_FILENAME_SUFFIX}.run
 
     package-wget -c ${CUDA_PACKAGE_URL}/${PACKAGE_FILENAME} \
-             -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}.run
+                 -O ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}.run
 
-    ${BASH} ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}.run \
-        --extract=${STAGE_ROOT}
-
+    TOOL_LOG=builder-bootstrap \
+    tool-log ${BASH} ${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}.run \
+        --keep \
+        --noexec \
+        --target ${STAGE_ROOT}
 done
 
 ${MKDIR} -p ${INSTALL_PREFIX}/bin
 package-rsync -ax \
-              ${STAGE_ROOT}/cuda_cudart/targets/${CUDA_HOST_PROCESSOR}-${HOST_KERNEL}/* \
-              ${STAGE_ROOT}/cuda_nvcc/nvvm \
-              ${STAGE_ROOT}/cuda_nvcc/targets/${CUDA_HOST_PROCESSOR}-${HOST_KERNEL}/* \
-              ${STAGE_ROOT}/libcurand/targets/${CUDA_HOST_PROCESSOR}-${HOST_KERNEL}/include \
+              ${CUDA_STAGE_ROOT}/cuda_cudart/targets/${CUDA_HOST_PROCESSOR}-${HOST_KERNEL}/* \
+              ${CUDA_STAGE_ROOT}/cuda_nvcc/nvvm \
+              ${CUDA_STAGE_ROOT}/cuda_nvcc/targets/${CUDA_HOST_PROCESSOR}-${HOST_KERNEL}/* \
+              ${CUDA_STAGE_ROOT}/libcurand/targets/${CUDA_HOST_PROCESSOR}-${HOST_KERNEL}/include \
               ${INSTALL_PREFIX}/
 package-rsync -ax \
-              ${STAGE_ROOT}/cuda_nvcc/bin/fatbinary \
-              ${STAGE_ROOT}/cuda_nvcc/bin/ptxas \
+              ${CUDA_STAGE_ROOT}/cuda_nvcc/bin/fatbinary \
+              ${CUDA_STAGE_ROOT}/cuda_nvcc/bin/ptxas \
               ${INSTALL_PREFIX}/bin/
 ${LN} -sf \
       clang \
       ${INSTALL_PREFIX}/bin/nvcc
 ${LN} -sf \
-      stubs/libcuda.so \
-      ${INSTALL_PREFIX}/lib/libcuda.so.1
+      stubs/`package-get-filename cuda SHARED HOST` \
+      ${INSTALL_PREFIX}/lib/`package-get-filename cuda SHARED HOST`.1
 
 # Remove OpenCL components.
 ${RM} -rf \
