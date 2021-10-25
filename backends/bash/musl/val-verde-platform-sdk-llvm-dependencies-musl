@@ -284,6 +284,12 @@ package-invoke-builder libxslt-cross 1
 # python sdk build
 package-invoke-category-builder python-sdk-cross
 
+# itstool build
+package-invoke-builder itstool-cross 2
+
+# gtk-doc build
+package-invoke-builder gtk-doc-cross 1
+
 # libtasn1 build
 package-invoke-builder libtasn1-cross 4
 
@@ -293,9 +299,6 @@ package-invoke-builder eudev-cross 3
 # p11-kit build
 DISABLE_SYSTEMD=TRUE \
 package-invoke-builder p11-kit-cross 0
-
-# dbus build
-package-invoke-builder dbus-cross 1
 
 # util-linux build (with python support)
 DISABLE_SYSTEMD=TRUE \
@@ -334,14 +337,11 @@ package-invoke-builder pkg-config-cross 0
 # graphics server build
 package-invoke-category-builder graphics-server-cross
 
-# itstool build
-package-invoke-builder itstool-cross 2
-
-# gtk-doc build
-package-invoke-builder gtk-doc-cross 1
-
 # graphviz build
 package-invoke-builder graphviz-cross 2
+
+# dbus build
+package-invoke-builder dbus-cross 1
 
 # cups build
 package-invoke-builder cups-cross 2

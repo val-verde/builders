@@ -276,9 +276,6 @@ package-invoke-builder libtasn1-cross 4
 DISABLE_SYSTEMD=TRUE \
 package-invoke-builder p11-kit-cross 0
 
-# dbus build
-package-invoke-builder dbus-cross 1
-
 # nettle build
 package-invoke-builder nettle-cross 3
 
@@ -320,6 +317,9 @@ package-invoke-builder gtk-doc-cross 1
 
 # graphviz build
 package-invoke-builder graphviz-cross 2
+
+# dbus build
+package-invoke-builder dbus-cross 1
 
 # cups build
 # package-invoke-builder cups-cross 2

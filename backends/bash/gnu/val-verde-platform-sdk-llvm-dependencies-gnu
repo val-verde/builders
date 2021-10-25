@@ -415,10 +415,6 @@ package-invoke-builder itstool-cross 2
 # gtk-doc build
 package-invoke-builder gtk-doc-cross 1
 
-# graphviz build
-ENABLE_STAGE_ROOT_BUILD=TRUE \
-package-invoke-builder graphviz-cross 2
-
 # libtasn1 build
 package-invoke-builder libtasn1-cross 4
 
@@ -463,8 +459,9 @@ package-invoke-builder pkg-config-cross 0
 # graphics server build
 package-invoke-category-builder graphics-server-cross
 
-# cups build
-package-invoke-builder cups-cross 2
+# graphviz build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
+package-invoke-builder graphviz-cross 2
 
 # intltool build
 package-invoke-builder intltool-cross 0
@@ -477,6 +474,9 @@ package-invoke-builder p11-kit-cross 0
 
 # dbus build
 package-invoke-builder dbus-cross 1
+
+# cups build
+package-invoke-builder cups-cross 2
 
 # util-linux build (with python and systemd support)
 package-invoke-builder util-linux-cross 2
