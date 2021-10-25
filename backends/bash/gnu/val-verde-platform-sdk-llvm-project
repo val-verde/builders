@@ -55,10 +55,14 @@ function tool-install-invocation() {
     tool-install
 }
 
+# Make native tools available in PATH/LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=${STAGE_ROOT}/NATIVE/lib:${LD_LIBRARY_PATH}
+export PATH=${STAGE_ROOT}/NATIVE/bin:${PATH}
+
 COMPILER_RT_SANITIZERS_TO_BUILD="asan;cfi;dfsan;gwp_asan;hwasan;msan;safestack;scudo;tsan;ubsan_minimal"
 CUDA_GPU_PRIMARY_ARCH=61
 CUDA_GPU_SECONDARY_ARCH=35
-CUDA_RUNTIME_LIBRARY=${PACKAGE_PREFIX}/lib/stubs/libcuda.so
+CUDA_RUNTIME_LIBRARY=${PACKAGE_PREFIX}/lib/stubs/`package-get-filename cuda SHARED HOST`
 CXX_STANDARD=17
 EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;flang;mlir;openmp;parallel-libs;polly;pstl"}
 
@@ -74,12 +78,25 @@ fi
 
 export-compiler-environment
 
+if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+    LLVM_NATIVE_STAGE_ROOT=${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}
+    LLVM_DIR=${LLVM_NATIVE_STAGE_ROOT}/lib/cmake/llvm
+    CLANG_TOOL=${CC}
+    LINK_TOOL=`package-get-path llvm-link EXECUTABLE BUILD`
+    OPT_TOOL=`package-get-path opt EXECUTABLE BUILD`
+fi
+
 CROSS_TOOLCHAIN_FLAGS_NATIVE=`package-cmake-invocation-arguments-for-variant BUILD`
 CUDA_COMPILER=${STAGE_ROOT}/host-nvcc
 NVCC=${CC}
 NVCCFLAGS=`${ECHO} "\
-    --cuda-path=${SYSROOT} \
+    -isystem ${PACKAGE_PREFIX}/include \
+    -stdlib++-isystem ${CXX_INCLUDE_DIR} \
+    -B${BINDIR} \
+    -L${PACKAGE_PREFIX}/lib \
+    --cuda-path=${PACKAGE_PREFIX} \
     --sysroot=${SYSROOT} \
+    --target=${HOST_TRIPLE} \
 " | ${XARGS}`
 
 create-host-tool ${NVCC} NVCCFLAGS ${CUDA_COMPILER}
@@ -103,6 +120,7 @@ package-cmake-install-archive \
     -DCLANG_INCLUDE_TESTS=FALSE \
     -DCLANG_LINK_CLANG_DYLIB=TRUE \
     -DCLANG_OPENMP_NVPTX_DEFAULT_ARCH=sm_${OPENMP_NVPTX_DEFAULT_ARCH} \
+    -DCLANG_TOOL=${CLANG_TOOL} \
     -DCLANG_TOOL_ARCMT_TEST_BUILD=FALSE \
     -DCLANG_TOOL_CLANG_IMPORT_TEST_BUILD=FALSE \
     -DCLANG_TOOL_CLANG_REFACTOR_TEST_BUILD=FALSE \
@@ -205,6 +223,7 @@ package-cmake-install-archive \
     -DLIBUNWIND_SUPPORTS_FNO_RTTI_FLAG=TRUE \
     -DLIBUNWIND_SUPPORTS_NODEFAULTLIBS_FLAG=TRUE \
     -DLIBUNWIND_USE_COMPILER_RT=TRUE \
+    -DLINK_TOOL=${LINK_TOOL} \
     -DLLD_INCLUDE_TESTS=FALSE \
     -DLLVM_ABI_BREAKING_CHECKS=FORCE_OFF \
     -DLLVM_BUILD_EXAMPLES=FALSE \
@@ -213,6 +232,7 @@ package-cmake-install-archive \
     -DLLVM_BUILD_TESTS=FALSE \
     -DLLVM_BUILD_UTILS=TRUE \
     -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_4_TRIPLE} \
+    -DLLVM_DIR=${LLVM_DIR} \
     -DLLVM_ENABLE_ASSERTIONS=FALSE \
     -DLLVM_ENABLE_BACKTRACES=FALSE \
     -DLLVM_ENABLE_DOXYGEN=FALSE \
@@ -256,6 +276,7 @@ package-cmake-install-archive \
     -DMLIR_ENABLE_VULKAN_RUNNER=TRUE \
     -DOpenCL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DOpenCL_LIBRARY=`package-get-path OpenCL SHARED HOST` \
+    -DOPT_TOOL=${OPT_TOOL} \
     -DPython3_EXECUTABLE=${PYTHON} \
     -DPOLLY_ENABLE_GPGPU_CODEGEN=TRUE \
     -DPYTHON_HOME=${PACKAGE_PREFIX} \
