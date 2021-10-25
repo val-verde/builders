@@ -39,6 +39,7 @@ fi
 
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 DISABLE_LIBTOOLIZE=TRUE \
+KRB5CONFIG=`package-get-path krb5-config SCRIPT HOST` \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-configure-install-archive \
     --disable-static \
