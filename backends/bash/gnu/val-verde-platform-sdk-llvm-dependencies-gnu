@@ -164,8 +164,11 @@ package-invoke-builder libxml2-cross 2 bootstrap-only
 # gettext build
 package-invoke-builder gettext-cross 0
 
-# texinfo build
-package-invoke-builder texinfo-cross 6
+if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
+    # texinfo build
+    package-invoke-builder texinfo-cross 6
+fi
+
 unset MAKEINFO
 
 # guile build
@@ -187,8 +190,11 @@ unset NINJA
 package-invoke-builder file-cross 5
 unset FILE
 
-# perl build
-package-invoke-builder perl-cross 5
+if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
+    # perl build
+    package-invoke-builder perl-cross 5
+fi
+
 unset PERL
 
 # libedit build
@@ -236,8 +242,10 @@ package-invoke-builder krb5-cross 1
 # expat build
 package-invoke-builder expat-cross 2
 
-# perl-xml-parser build
-package-invoke-builder perl-xml-parser-cross 2
+if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
+    # perl-xml-parser build
+    package-invoke-builder perl-xml-parser-cross 2
+fi
 
 # gawk build
 package-invoke-builder gawk-cross 5
@@ -316,8 +324,10 @@ unset SED
 package-invoke-builder bison-cross 3
 unset BISON
 
-# flex build
-package-invoke-builder flex-cross 2
+if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
+    # flex build
+    package-invoke-builder flex-cross 2
+fi
 
 # jq build
 package-invoke-builder jq-cross 1
@@ -439,8 +449,10 @@ package-invoke-builder strace-cross 5
 # glib build
 package-invoke-builder glib-cross 1
 
-# gobject-introspection build
-package-invoke-builder gobject-introspection-cross 1
+if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
+    # gobject-introspection build
+    package-invoke-builder gobject-introspection-cross 1
+fi
 
 # libsecret build
 package-invoke-builder libsecret-cross 0
