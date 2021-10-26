@@ -30,10 +30,10 @@ package-invoke-builder xorg-macros-cross 1
 package-invoke-builder xorg-xorgproto-cross 2021
 
 # xcb-proto build
-package-invoke-builder xcb-proto-cross 1
+package-invoke-builder xorg-xcb-proto-cross 1
 
 # xcb-pthread-stubs build
-package-invoke-builder xcb-pthread-stubs-cross 0
+package-invoke-builder xorg-xcb-pthread-stubs-cross 0
 
 # libxau build
 package-invoke-builder xorg-libxau-cross 1
@@ -54,7 +54,7 @@ package-invoke-builder xorg-libxtrans-cross 1
 package-invoke-builder libxdmcp-cross 1
 
 # libxcb build
-package-invoke-builder xcb-libxcb-cross 1
+package-invoke-builder xorg-xcb-libxcb-cross 1
 
 # libx11 build
 package-invoke-builder libx11-cross 1
@@ -81,7 +81,7 @@ package-invoke-builder xorg-libsm-cross 1
 package-invoke-builder xorg-libxrandr-cross 1
 
 # xkeyboard-config build
-package-invoke-builder xkeyboard-config-cross 2
+package-invoke-builder xorg-xkeyboard-config-cross 2
 
 # libxinerama build
 package-invoke-builder libxinerama-cross 1
@@ -108,7 +108,7 @@ package-invoke-builder xorg-libxkbfile-cross 1
 package-invoke-builder xorg-libxdamage-cross 1
 
 # xcb-render-util build
-package-invoke-builder xcb-render-util-cross 0
+package-invoke-builder xorg-xcb-render-util-cross 0
 
 # xorg-xcb-util-keysyms build
 package-invoke-builder xorg-xcb-util-keysyms-cross 0
