@@ -1948,7 +1948,7 @@
         "sourceType": "git",
         "sourcePackageName": "spirv-tools",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "2020",
+        "sourcePackageVersion": "2021",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {

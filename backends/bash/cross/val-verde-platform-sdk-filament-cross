@@ -7,7 +7,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export DEPENDS="\
     ${PACKAGE_BASE_NAME}-glslang-10-11-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-spirv-tools-2020-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-spirv-tools-2021-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-vulkan-loader-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0) \
 "
 
