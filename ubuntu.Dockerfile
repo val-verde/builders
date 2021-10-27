@@ -90,6 +90,8 @@ RUN HOST_ARCH=${BUILD_ARCH} \
     HOST_PROCESSOR=${BUILD_PROCESSOR} \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap
 
+ENV BUILD_SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}/sysroot/usr/glibc-interface
+
 COPY /release-debs/ \
      ${RELEASE_DEB_PATH}
 

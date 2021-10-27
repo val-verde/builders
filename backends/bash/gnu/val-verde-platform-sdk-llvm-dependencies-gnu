@@ -6,8 +6,6 @@ if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
     export \
         APT=/usr/bin/apt \
         AUTOGEN=/usr/bin/autogen \
-        AUTORECONF=/usr/bin/autoreconf \
-        AUTOUPDATE=/usr/bin/autoupdate \
         BASENAME=/usr/bin/basename \
         BASH=/usr/bin/bash \
         BISON=/usr/bin/bison \
@@ -24,7 +22,6 @@ if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
         GIT=/usr/bin/git \
         GPERF=/usr/bin/gperf \
         GREP=/usr/bin/grep \
-        HELP2MAN=/usr/bin/true \
         INSTALL=/usr/bin/install \
         LESS=/usr/bin/less \
         LN=/usr/bin/ln \
@@ -62,22 +59,17 @@ fi
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
+# glibc build phase
+SPECIFIED_SYSROOT=${SYSROOT}
+unset SYSROOT
+
+if [ "${BUILD_TRIPLE}" = ${HOST_TRIPLE} ]; then
+    SPECIFIED_BUILD_SYSROOT=${BUILD_SYSROOT}
+    unset BUILD_SYSROOT
+fi
+
 # kernel headers builds
 package-invoke-builder kernel-headers-cross 5
-
-# autoconf build
-package-invoke-builder autoconf-cross 2
-unset \
-    AUTORECONF \
-    AUTOUPDATE
-
-# automake build
-package-invoke-builder automake-cross 1
-
-# autoconf-archive build
-package-invoke-builder autoconf-archive-cross 2021
-
-# glibc build phase
 
 # glibc runtime build
 package-invoke-builder glibc-runtime 2 no-install
@@ -89,6 +81,22 @@ PACKAGES_TO_MANAGE=( 'glibc-runtime-2' 'HOST' )
 package-invoke-archive-action install ${PACKAGES_TO_MANAGE[@]}
 
 # glibc build phase complete
+export SYSROOT=${SPECIFIED_SYSROOT}
+unset SPECIFIED_SYSROOT
+
+if [ "${BUILD_TRIPLE}" = ${HOST_TRIPLE} ]; then
+    export BUILD_SYSROOT=${SPECIFIED_BUILD_SYSROOT}
+    unset SPECIFIED_BUILD_SYSROOT
+fi
+
+# autoconf build
+package-invoke-builder autoconf-cross 2
+
+# automake build
+package-invoke-builder automake-cross 1
+
+# autoconf-archive build
+package-invoke-builder autoconf-archive-cross 2021
 
 # libxcrypt build
 package-invoke-builder libxcrypt-cross 4
@@ -118,7 +126,6 @@ unset UNZIP
 
 # help2man build
 package-invoke-builder help2man-cross 1
-unset HELP2MAN
 
 # gperf build
 package-invoke-builder gperf-cross 3

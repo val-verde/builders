@@ -1895,6 +1895,7 @@ function package-swift-build() {
         \"extra-cpp-flags\": [ \n\
         ], \n\
         \"extra-linker-flags\": [ \n\
+            \"-L${PACKAGE_PREFIX}/lib\", \n\
             \"-O${LINKER_OPTIMIZATION_LEVEL}\", \n\
             \"${DISABLE_LLVM_VERIFIER_CFLAG}\", \n\
             \"${FLTO_CFLAG}\", \n\

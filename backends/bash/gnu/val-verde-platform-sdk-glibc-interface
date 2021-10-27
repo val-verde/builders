@@ -7,32 +7,14 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for stage/configure/install
 function package-install-completion-callback() {
-    if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
-        LINKER_LOADER=ld-${HOST_KERNEL}-${HOST_PROCESSOR}.so.1
-        LINKER_LOADER_DIR=lib
-    elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
-        LINKER_LOADER=ld-${HOST_KERNEL}-x86-64.so.2
-        LINKER_LOADER_DIR=lib64
-    fi
-
-    ${RM} ${INSTALL_PREFIX}/glibc-interface/${LINKER_LOADER}
-    ${LN} -sf \
-            ../glibc-interface/ld-${SOURCE_PACKAGE_VERSION}.31.so \
-            ${INSTALL_PREFIX}/lib/${LINKER_LOADER}
-    ${SED} -i \
-            "s|/usr/glibc-interface|/${LINKER_LOADER_DIR}|g" \
-            ${INSTALL_PREFIX}/bin/ldd
-    ${SED} -i \
-            "s|/usr/glibc-interface/ld-${HOST_KERNEL}|/${LINKER_LOADER_DIR}/ld-${HOST_KERNEL}|g" \
-            ${INSTALL_PREFIX}/lib/libc.so
     ${SED} -i \
             "s| /| =/|g" \
-            ${INSTALL_PREFIX}/lib/libc.so
+            ${INSTALL_PREFIX}/glibc-interface/usr/lib/libc.so
 
     if [ "${HOST_PROCESSOR}" = "x86_64" ]; then
         ${SED} -i \
                 "s| /| =/|g" \
-                ${INSTALL_PREFIX}/lib/libm.so
+                ${INSTALL_PREFIX}/glibc-interface/usr/lib/libm.so
     fi
 }
 
@@ -45,16 +27,13 @@ fi
 BUILD_CC=`BINDIR=${BUILD_PACKAGE_PREFIX}/${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}/bin package-get-path ${BUILD_TRIPLE}-gcc EXECUTABLE BUILD` \
 CC=`BINDIR=${BUILD_PACKAGE_PREFIX}/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/bin package-get-path ${HOST_TRIPLE}-gcc EXECUTABLE BUILD` \
 CONFIGURE_PACKAGE_PLATFORM_PREFIX=/ \
-DESTDIR=${INSTALL_PREFIX}/.. \
+DESTDIR=${INSTALL_PREFIX}/glibc-interface \
 DISABLE_FORTIFY_SOURCE_LEVEL=TRUE \
-DISABLE_TOOL_BUILD=${DISABLE_TOOL_BUILD} \
 INSTALL_TARGET=${INSTALL_TARGET} \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
-TOOL_INSTALL_INVOCATION=${TOOL_INSTALL_INVOCATION} \
 USE_GCC=TRUE \
 package-stage-configure-install-archive \
     libc_cv_include_x86_isa_level=no \
-    libc_cv_slibdir=/usr/glibc-interface \
     --disable-crypt \
     --disable-multiarch \
     --disable-multilib \
