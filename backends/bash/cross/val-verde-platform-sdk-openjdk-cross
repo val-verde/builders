@@ -5,6 +5,14 @@ set -e
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
+BUILD_COMMON_CFLAGS="\
+    -L${BUILD_PACKAGE_PREFIX}/lib \
+    ${BUILD_COMMON_CFLAGS} \
+" \
+COMMON_CFLAGS="\
+    -L${PACKAGE_PREFIX}/lib \
+    ${COMMON_CFLAGS} \
+" \
 export-compiler-environment
 generate-compiler-tools
 
@@ -17,7 +25,7 @@ HOST_CFLAGS=${CFLAGS}
 HOST_CXXFLAGS=${CXXFLAGS}
 HOST_LDFLAGS=${LDFLAGS}
 
-export RM=${BINDIR}/rm
+export RM=`package-get-path rm EXECUTABLE BUILD`
 unset \
     ASFLAGS \
     CFLAGS \
