@@ -7,6 +7,10 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Build the components
 cd ${SOURCE_ROOT}
+COMMON_CFLAGS="\
+    -L${PACKAGE_PREFIX}/lib \
+    ${COMMON_CFLAGS} \
+" \
 NUMPY_VERSION="1.21.2" \
 package-python-build
 
