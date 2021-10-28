@@ -14,6 +14,10 @@ if [ "${HOST_OS}" = "android" ] ||
     "
 fi
 
+COMMON_CFLAGS="\
+    -L${PACKAGE_PREFIX}/lib \
+    ${COMMON_CFLAGS} \
+" \
 DISABLE_AUTOUPDATE=TRUE \
 SOURCE_ROOT=${SOURCE_ROOT}/src \
 package-stage-configure-install-archive \
