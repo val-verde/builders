@@ -413,6 +413,7 @@ package-invoke-builder graphviz-cross 2
 package-invoke-builder libtasn1-cross 4
 
 # p11-kit build
+DEB_PATH=${BOOTSTRAP_DEB_PATH} \
 DISABLE_SYSTEMD=TRUE \
 package-invoke-builder p11-kit-cross 0
 
