@@ -12,8 +12,8 @@ cd ${STAGE_ROOT}
 copy-source-to-staging
 export-compiler-environment
 make-install \
-    CC=${CC} \
-    CFLAGS="${CFLAGS}" \
+    CC=${CCLD} \
+    CFLAGS="${CCLDFLAGS}" \
     DSTROOT=${INSTALL_PREFIX} \
     OUTDIR=${STAGE_ROOT}
 
