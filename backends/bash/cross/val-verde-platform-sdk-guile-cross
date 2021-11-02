@@ -37,6 +37,10 @@ elif [ "${HOST_OS}" = "mingw32" ]; then
 fi
 
 BOOTSTRAP_FILE=./autogen.sh \
+BUILD_COMMON_CFLAGS="\
+    -L${BUILD_PACKAGE_PREFIX}/lib \
+    ${BUILD_COMMON_CFLAGS} \
+" \
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 DISABLE_AUTOUPDATE=TRUE \
 package-bootstrap-configure-install-archive \
