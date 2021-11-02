@@ -100,7 +100,7 @@ function prepare-source-base() {
     # Check if the source deb exists
     SEARCH_PATH=${SOURCE_ARCHIVE_PATH} \
     SEARCH_INPUT=${PACKAGE_NAME} \
-    SEARCH_EXTENSION=deb \
+    SEARCH_EXTENSION=${PACKAGE_ARCHIVE_CLASS} \
     tool-check
 }
 
