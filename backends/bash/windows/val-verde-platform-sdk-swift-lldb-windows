@@ -29,6 +29,7 @@ COMMON_CFLAGS="\
     ${COMMON_CFLAGS} \
 " \
 CXX_STANDARD=17 \
+DISABLE_STRIP=TRUE \
 LDFLAGS="\
     -lole32 \
     -lpsapi \
@@ -38,7 +39,6 @@ LDFLAGS="\
 package-cmake-install-archive \
     -DClang_DIR=${LLVM_STAGE_ROOT}/lib/cmake/clang \
     -DCLANG_LINK_CLANG_DYLIB=FALSE \
-    -DCMAKE_EXE_LINKER_FLAGS="-O2" \
     -DCURSES_CURSES_LIBRARY=`package-get-path ncurses SHARED HOST` \
     -DCURSES_FORM_LIBRARY=`package-get-path form SHARED HOST` \
     -DCURSES_INCLUDE_PATH=${PACKAGE_PREFIX}/include/ncurses \
