@@ -28,7 +28,7 @@ if [ "${HOST_OS}" != "macos" ] &&
 fi
 
 ACL_LIBRARY=`package-get-path acl SHARED HOST`
-BZIP2_LIBRARY=`package-get-path bzip2 STATIC HOST`
+BZIP2_LIBRARY=`package-get-path bz2 STATIC HOST`
 LZ4_LIBRARY=`package-get-path lz4 SHARED HOST`
 LIBLZMA_LIBRARY=`package-get-path lzma SHARED HOST`
 LIBXML2_LIBRARY=`package-get-path xml2 SHARED HOST`
@@ -37,8 +37,8 @@ ZSTD_LIBRARY=`package-get-path zstd SHARED HOST`
 
 package-cmake-install-archive \
     -DACL_LIBRARY=${ACL_LIBRARY} \
-    -DBZIP2_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DBZIP2_LIBRARIES=${BZIP2_LIBRARY} \
+    -DBZIP2_LIBRARY_DEBUG=${BZIP2_LIBRARY} \
+    -DBZIP2_LIBRARY_RELEASE=${BZIP2_LIBRARY} \
     -DENABLE_CAT_SHARED=TRUE \
     -DENABLE_CPIO_SHARED=TRUE \
     -DENABLE_LibGCC=FALSE \
