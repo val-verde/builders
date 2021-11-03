@@ -20,6 +20,9 @@ fi
 
 package-cmake-install-archive \
     -DBUILD_SHARED_LIBS=true \
+    -DBZIP2_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DBZIP2_LIBRARY_DEBUG=`package-get-path bz2 STATIC HOST` \
+    -DBZIP2_LIBRARY_RELEASE=`package-get-path bz2 STATIC HOST` \
     -DFT_WITH_BROTLI=TRUE \
     -DFT_WITH_BZIP2=TRUE \
     -DFT_WITH_HARFBUZZ=${FT_WITH_HARFBUZZ} \
@@ -29,4 +32,7 @@ package-cmake-install-archive \
     -DHARFBUZZ_LIBRARIES=${HARFBUZZ_LIBRARIES} \
     -DPNG_LIBRARY_DEBUG=`package-get-path png SHARED HOST` \
     -DPNG_LIBRARY_RELEASE=`package-get-path png SHARED HOST` \
-    -DPNG_PNG_INCLUDE_DIR=${PACKAGE_PREFIX}/include
+    -DPNG_PNG_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZLIB_LIBRARY_DEBUG=`package-get-path z SHARED HOST` \
+    -DZLIB_LIBRARY_RELEASE=`package-get-path z SHARED HOST`
