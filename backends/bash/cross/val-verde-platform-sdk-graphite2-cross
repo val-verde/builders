@@ -6,4 +6,7 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for cmake/install
-package-cmake-install-archive
+package-cmake-install-archive \
+    -DFREETYPE_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DFREETYPE_LIBRARY_DEBUG=`package-get-path freetype SHARED HOST` \
+    -DFREETYPE_LIBRARY_RELEASE=`package-get-path freetype SHARED HOST`
