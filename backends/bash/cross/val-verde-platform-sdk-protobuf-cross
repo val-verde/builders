@@ -13,4 +13,7 @@ package-cmake-install-archive \
     -Dprotobuf_BUILD_LIBPROTOC=TRUE \
     -Dprotobuf_BUILD_PROTOC_BINARIES=TRUE \
     -Dprotobuf_BUILD_SHARED_LIBS=TRUE \
-    -Dprotobuf_BUILD_TESTS=FALSE
+    -Dprotobuf_BUILD_TESTS=FALSE \
+    -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZLIB_LIBRARY_DEBUG=`package-get-path z SHARED HOST` \
+    -DZLIB_LIBRARY_RELEASE=`package-get-path z SHARED HOST`
