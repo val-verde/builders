@@ -17,9 +17,14 @@ package-cmake-install-archive \
     -DBISON_EXECUTABLE=${BISON} \
     -DCairo_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DCairo_LIBRARY=`package-get-path cairo SHARED HOST` \
+    -DFL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DFL_LIBRARY=`package-get-path fl SHARED HOST` \
     -DGD_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DGD_LIBRARY=`package-get-path gd SHARED HOST` \
     -DLTDL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DLTDL_LIBRARY=`package-get-path ltdl SHARED HOST` \
     -DMKDEFS_EXECUTABLE=${MKDEFS} \
-    -DPython3_EXECUTABLE=${PYTHON}
+    -DPython3_EXECUTABLE=${PYTHON} \
+    -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZLIB_LIBRARY_DEBUG=`package-get-path z SHARED HOST` \
+    -DZLIB_LIBRARY_RELEASE=`package-get-path z SHARED HOST`
