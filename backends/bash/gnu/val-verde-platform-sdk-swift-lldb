@@ -75,8 +75,7 @@ package-cmake-install-archive \
     -DLUA_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DLUA_LIBRARY=`package-get-path lua STATIC HOST` \
     -DPython3_EXECUTABLE=${PYTHON} \
-    -DPython3_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/python${PYTHON_VERSION} \
-    -DPython3_LIBRARIES=`package-get-path python${PYTHON_VERSION} SHARED HOST` \
     -DPANEL_LIBRARIES=`package-get-path panel SHARED HOST` \
+    -DPYTHON_HOME=${PACKAGE_PREFIX} \
     -DSwift_DIR=${SWIFT_STAGE_ROOT}/lib/cmake/swift \
     -DSWIG_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/swig

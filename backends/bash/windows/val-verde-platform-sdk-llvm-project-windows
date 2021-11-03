@@ -252,10 +252,14 @@ package-cmake-install-archive \
     -DMLIR_ENABLE_CUDA_RUNNER=FALSE \
     -DMLIR_ENABLE_SPIRV_CPU_RUNNER=TRUE \
     -DMLIR_ENABLE_VULKAN_RUNNER=TRUE \
+    -DOpenCL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DOpenCL_LIBRARY=`package-get-path OpenCL SHARED HOST` \
     -DPython3_EXECUTABLE=${PYTHON} \
     -DPOLLY_ENABLE_GPGPU_CODEGEN=FALSE \
+    -DPYTHON_HOME=${PACKAGE_PREFIX} \
     -DSANITIZER_CXX_ABI=libc++ \
     -DVulkan_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DVulkan_LIBRARY=`package-get-path vulkan-1 SHARED HOST` \
     -DZ3_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DZ3_LIBRARIES=`package-get-path z3 SHARED HOST` \
     -DZ3_RETURNCODE=0 \
