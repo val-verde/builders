@@ -24,4 +24,7 @@ package-cmake-install-archive \
     -DHAVE_POLL_FINE_EXITCODE__TRYRUN_OUTPUT=1 \
     -DLIBSSH2_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DLIBSSH2_LIBRARY=`package-get-path ssh2 SHARED HOST` \
+    -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZLIB_LIBRARY_DEBUG=`package-get-path z SHARED HOST` \
+    -DZLIB_LIBRARY_RELEASE=`package-get-path z SHARED HOST` \
     ${CMAKE_ANDROID_DEFINE_CMD}
