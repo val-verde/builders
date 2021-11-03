@@ -20,10 +20,21 @@ if [ "${HOST_OS}" = "gnu" ]; then
 fi
 
 package-cmake-install-archive \
+    -DBERKELEY_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
+    -DBERKELEY_LIBRARIES=`package-get-path db SHARED HOST` \
+    -DBZIP2_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DBZIP2_LIBRARY_DEBUG=`package-get-path bz2 STATIC HOST` \
+    -DBZIP2_LIBRARY_RELEASE=`package-get-path bz2 STATIC HOST` \
     -DCONF_DIR=/etc/apt \
     -DCACHE_DIR=/var/cache/apt \
+    -DGCRYPT_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
+    -DGCRYPT_LIBRARIES=`package-get-path gcrypt SHARED HOST` \
     -DHAVE_LIBC_RESOLV=${HAVE_LIBC_RESOLV} \
     -DLOG_DIR=/var/log/apt \
+    -DLZ4_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
+    -DLZ4_LIBRARIES=`package-get-path lz4 SHARED HOST` \
+    -DLZMA_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
+    -DLZMA_LIBRARIES=`package-get-path lzma SHARED HOST` \
     -DRESOLV_LIBRARIES=${RESOLV_LIBRARIES} \
     -DSTATE_DIR=/var/lib/apt \
     -DSYSTEMD_INCLUDE_DIRS=${SYSTEMD_INCLUDE_DIRS} \
@@ -32,4 +43,11 @@ package-cmake-install-archive \
     -DUDEV_INCLUDE_DIRS=${UDEV_INCLUDE_DIRS} \
     -DUDEV_LIBRARIES=${UDEV_LIBRARIES} \
     -DWITH_DOC=FALSE \
-    -DWITH_TESTS=FALSE
+    -DWITH_TESTS=FALSE \
+    -DXXHASH_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
+    -DXXHASH_LIBRARIES=`package-get-path xxhash SHARED HOST` \
+    -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZLIB_LIBRARY_DEBUG=`package-get-path z SHARED HOST` \
+    -DZLIB_LIBRARY_RELEASE=`package-get-path z SHARED HOST` \
+    -DZSTD_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
+    -DZSTD_LIBRARIES=`package-get-path zstd SHARED HOST`
