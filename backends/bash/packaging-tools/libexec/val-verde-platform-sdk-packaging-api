@@ -78,9 +78,10 @@ function generate-control-file() {
 
 function generate-spec-file() {
     ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+    HOST_PROCESSOR=${HOST_PROCESSOR:-${BUILD_PROCESSOR}}
 
     ${SED} "s|ARCHIVE_ROOT|${ARCHIVE_ROOT}|g; \
-            s|BUILD_PROCESSOR|${BUILD_PROCESSOR}|g; \
+            s|HOST_PROCESSOR|${HOST_PROCESSOR}|g; \
             s|PACKAGE_NAME|${PACKAGE_NAME}|g; \
             s|RELEASE|${RELEASE}|g; \
             s|SYSTEM_ARCH|${PACKAGE_ARCH}|g; \
