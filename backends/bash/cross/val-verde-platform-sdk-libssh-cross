@@ -7,4 +7,15 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for cmake/install
 package-cmake-install-archive \
+    -DCOM_ERR_LIBRARY=`package-get-path com_err SHARED HOST` \
+    -DGSSAPI_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DGSSAPI_LIBRARY=`package-get-path gssapi_krb5 SHARED HOST` \
+    -DK5CRYPTO_LIBRARY=`package-get-path k5crypto SHARED HOST` \
+    -DKRB5_LIBRARY=`package-get-path krb5 SHARED HOST` \
+    -DOPENSSL_CRYPTO_LIBRARY=`package-get-path crypto SHARED HOST` \
+    -DOPENSSL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DOPENSSL_SSL_LIBRARY=`package-get-path ssl SHARED HOST` \
+    -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZLIB_LIBRARY_DEBUG=`package-get-path z SHARED HOST` \
+    -DZLIB_LIBRARY_RELEASE=`package-get-path z SHARED HOST` \
     -DWITH_EXAMPLES=FALSE
