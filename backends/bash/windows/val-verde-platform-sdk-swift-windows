@@ -116,4 +116,7 @@ package-cmake-install-archive \
     -DSWIFT_WINDOWS_NATIVE_SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/sysroot \
     -DUSE_POSIX_SEM=1 \
     -DUUID_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
-    -DUUID_LIBRARIES=`package-get-path uuid STATIC HOST`
+    -DUUID_LIBRARIES=`package-get-path uuid STATIC HOST` \
+    -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZLIB_LIBRARY_DEBUG=`package-get-path z SHARED HOST` \
+    -DZLIB_LIBRARY_RELEASE=`package-get-path z SHARED HOST`

@@ -135,4 +135,7 @@ package-cmake-install-archive \
     -DSWIFT_VENDOR="${PACKAGE_BASE_NAME}" \
     -DUSE_POSIX_SEM=1 \
     -DUUID_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
-    -DUUID_LIBRARIES=`package-get-path uuid SHARED HOST`
+    -DUUID_LIBRARIES=`package-get-path uuid SHARED HOST` \
+    -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZLIB_LIBRARY_DEBUG=`package-get-path z SHARED HOST` \
+    -DZLIB_LIBRARY_RELEASE=`package-get-path z SHARED HOST`
