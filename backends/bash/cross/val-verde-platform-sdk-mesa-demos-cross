@@ -13,6 +13,15 @@ package-cmake-install-archive \
     -DGLUT_glu_LIBRARY=`package-get-path glu SHARED HOST` \
     -DGLUT_glut_LIBRARY=`package-get-path glut SHARED HOST` \
     -DGLUT_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DGLUT_Xi_LIBRARY=`package-get-path Xi SHARED HOST` \
+    -DGLUT_Xmu_LIBRARY=`package-get-path Xmu SHARED HOST` \
+    -DOPENGL_egl_LIBRARY=`package-get-path EGL SHARED HOST` \
+    -DOPENGL_gl_LIBRARY=`package-get-path GL SHARED HOST` \
+    -DOPENGL_glu_LIBRARY=`package-get-path GLU SHARED HOST` \
+    -DOPENGL_glx_LIBRARY=`package-get-path GLX SHARED HOST` \
+    -DOPENGL_EGL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DOPENGL_GLX_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DOPENGL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DX11_dpms_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
     -DX11_xcb_icccm_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
     -DX11_xcb_icccm_LIB=`package-get-path xcb-icccm SHARED HOST` \
