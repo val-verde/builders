@@ -21,3 +21,9 @@ fi
 
 # qemu build
 package-invoke-builder qemu-cross 6
+
+
+if [ "${HOST_OS}" = "gnu" ]; then
+    # box64 build
+    package-invoke-builder box64-cross 0
+fi
