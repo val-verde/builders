@@ -25,8 +25,26 @@ ${MKDIR} -p ${CMAKE_STAGE_ROOT}
 package-cmake-install-archive \
     -DDBUS_INCLUDE_DIRS="${PACKAGE_PREFIX}/include/dbus-1.0;${PACKAGE_PREFIX}/lib/dbus-1.0/include" \
     -DDBUS_LIBRARIES=`package-get-path dbus-1 SHARED HOST` \
+    -DDRM_LIB=`package-get-path drm SHARED HOST` \
+    -DEGL_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
+    -DGBM_LIB=`package-get-path gbm SHARED HOST` \
     -DOpenGLES1_LIBRARY=`package-get-path GL SHARED HOST` \
     -DOpenGLES2_LIBRARY=`package-get-path GL SHARED HOST` \
+    -DUNWIND=`package-get-path unwind SHARED HOST` \
+    -DWAYLAND_CLIENT_LIB=`package-get-path wayland-client SHARED HOST` \
+    -DWAYLAND_CURSOR_LIB=`package-get-path wayland-cursor SHARED HOST` \
+    -DWAYLAND_EGL_LIB=`package-get-path wayland-egl SHARED HOST` \
+    -DWAYLAND_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
     -DWAYLAND_LIBDECOR=FALSE \
     -DWAYLAND_SCANNER=`package-get-path wayland-scanner EXECUTABLE BUILD` \
+    -DX_INCLUDEDIR=${PACKAGE_PREFIX}/include \
+    -DX11_LIB=`package-get-path X11 SHARED HOST` \
+    -DXCURSOR_LIB=`package-get-path Xcursor SHARED HOST` \
+    -DXEXT_LIB=`package-get-path Xext SHARED HOST` \
+    -DXINERAMA_LIB=`package-get-path Xinerama SHARED HOST` \
+    -DXI_LIB=`package-get-path Xi SHARED HOST` \
+    -DXKBCOMMON_LIB=`package-get-path xkbcommon SHARED HOST` \
+    -DXRANDR_LIB=`package-get-path Xrandr SHARED HOST` \
+    -DXRENDER_LIB=`package-get-path Xrender SHARED HOST` \
+    -DXXF86VM_LIB=`package-get-path Xxf86vm SHARED HOST` \
     ${CMAKE_ANDROID_DEFINE_CMD}
