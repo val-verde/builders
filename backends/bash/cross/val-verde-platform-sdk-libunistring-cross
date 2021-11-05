@@ -12,5 +12,6 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 BOOTSTRAP_FILE=./autogen.sh \
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 package-bootstrap-configure-install-archive \
+    ac_cv_func_malloc_0_nonnull=yes \
     --disable-static \
     --enable-shared
