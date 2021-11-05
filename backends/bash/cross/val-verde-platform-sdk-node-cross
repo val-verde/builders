@@ -5,9 +5,6 @@ set -e
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-export-compiler-environment
-generate-compiler-tools
-
 export DEPENDS="\
     ${PACKAGE_BASE_NAME}-icu4c-70-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-libuv-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
@@ -18,10 +15,6 @@ export DEPENDS="\
 export NODE_NATIVE_STAGE_ROOT=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}
 
 # Configure the build components
-copy-source-to-staging
-
-cd ${STAGE_ROOT}
-
 CONFIGURE_BUILD_OS=${BUILD_OS}
 CONFIGURE_HOST_OS=${HOST_OS}
 CONFIGURE_HOST_PROCESSOR=${HOST_PROCESSOR}
@@ -87,49 +80,51 @@ if [ -z "${DISABLE_LIBNODE_SHARED}" ]; then
     LIBNODE_SHARED_CMD="--shared"
 fi
 
-DISABLED_WARNING_CFLAGS=`${ECHO} "\
+DISABLED_WARNING_CFLAGS="\
     -Wno-deprecated-enum-enum-conversion \
     -Wno-deprecated-volatile \
     -Wno-ignored-attributes \
     -Wno-implicit-const-int-float-conversion \
     -Wno-macro-redefined \
-" | ${XARGS}`
+"
 
-export AR_host=${AR_host:-${BUILD_PACKAGE_PREFIX}/bin/llvm-ar}
+copy-source-to-staging
+
+BUILD_COMMON_CFLAGS="\
+    ${DISABLED_WARNING_CFLAGS} \
+    ${BUILD_COMMON_CFLAGS} \
+" \
+COMMON_CFLAGS="\
+    ${DISABLED_WARNING_CFLAGS} \
+    ${COMMON_CFLAGS} \
+" \
+export-compiler-environment
+generate-compiler-tools
+
+export AR_host=${BUILD_AR}
 export AR_target=${AR}
-export AS_host=${AS_host:-${BUILD_AS}}
+export AS_host=${BUILD_AS}
 export AS_target=${AS}
-export CC_host=${CC_host:-${BUILD_CC}}
+export CC_host=${BUILD_CC}
 export CC_target=${CC}
-export CFLAGS_host=`${ECHO} "\
-    --sysroot=${BUILD_PACKAGE_PREFIX}/.. \
-    ${DISABLED_WARNING_CFLAGS} \
-" | ${XARGS}`
-export CFLAGS=`${ECHO} ${CFLAGS} | ${XARGS}`
-export CPP_host=${CPP_host:-${BUILD_CPP}}
+export CFLAGS_host=${BUILD_CFLAGS}
+export CFLAGS=${CFLAGS}
+export CPP_host=${BUILD_CPP}
 export CPP_target=${CPP}
-export CPPFLAGS_host=`${ECHO} "\
-    --sysroot=${BUILD_PACKAGE_PREFIX}/.. \
-    ${DISABLED_WARNING_CFLAGS} \
-" | ${XARGS}`
-export CPPFLAGS=`${ECHO} ${CPPFLAGS} | ${XARGS}`
-export CXX_host=${CXX_host:-${BUILD_CXX}}
+export CPPFLAGS_host=${BUILD_CPPFLAGS}
+export CPPFLAGS=${CPPFLAGS}
+export CXX_host=${BUILD_CXX}
 export CXX_target=${CXX}
-export CXXFLAGS_host=`${ECHO} "\
-    ${DISABLED_WARNING_CFLAGS} \
-    ${BUILD_CXXFLAGS} \
-" | ${XARGS}`
-export CXXFLAGS=`${ECHO} "\
-    ${DISABLED_WARNING_CFLAGS} \
-    ${CXXFLAGS} \
-" | ${XARGS}`
-LDFLAGS_host=`${ECHO} ${BUILD_LDFLAGS} | ${XARGS}`
-export LDFLAGS=`${ECHO} ${LDFLAGS} | ${XARGS}`
-export LINK=${LD_host:-${BUILD_CXXLD}}
+export CXXFLAGS_host=${BUILD_CXXFLAGS}
+export CXXFLAGS=${CXXFLAGS}
+export LDFLAGS_host=${BUILD_LDFLAGS}
+export LDFLAGS=${CCLDFLAGS}
+export LINK=${BUILD_CXXLD}
 export LINK_target=${CXXLD}
-export RANLIB_host=${RANLIB_host:-${BUILD_RANLIB}}
+export RANLIB_host=${BUILD_RANLIB}
 export RANLIB_target=${RANLIB}
 
+cd ${STAGE_ROOT}
 ${STAGE_ROOT}/configure \
     --dest-cpu=${CONFIGURE_HOST_PROCESSOR} \
     --dest-os=${CONFIGURE_HOST_OS} \
