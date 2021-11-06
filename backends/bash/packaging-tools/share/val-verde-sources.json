@@ -15,7 +15,7 @@
         "sourcePackageName": "alive2",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"    
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
         "retainSource": "false",
