@@ -2,16 +2,27 @@
 
 set -e
 
-function derive-upstream-source-url() {
-    PACKAGE_NAME_PREFIX=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}-${PACKAGE_VERSION}
+# Source common variables and functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
+
+function derive-source-package-name-version() {
+    PACKAGE_MAJOR_VERSION=$(package-get-major-version ${SOURCE_PACKAGE_VERSION})
+    PACKAGE_NAME_VERSION=${SOURCE_PACKAGE_NAME}-${PACKAGE_MAJOR_VERSION}
 
     if [[ ${SOURCE_BRANCH_IND} == *"android"* ]]; then
-        PACKAGE_NAME_PREFIX=${PACKAGE_NAME_PREFIX}-android
+        SOURCE_PACKAGE_NAME_VERSION=${PACKAGE_NAME_VERSION}-android
     elif [[ ${SOURCE_BRANCH_IND} == *"windows"* ]]; then
-        PACKAGE_NAME_PREFIX=${PACKAGE_NAME_PREFIX}-windows
+        SOURCE_PACKAGE_NAME_VERSION=${PACKAGE_NAME_VERSION}-windows
+    else
+        SOURCE_PACKAGE_NAME_VERSION=${PACKAGE_NAME_VERSION}
     fi
 
-    export PACKAGE_NAME=${PACKAGE_NAME_PREFIX}-sources
+    ${ECHO} ${SOURCE_PACKAGE_NAME_VERSION}
+}
+
+function derive-upstream-source-url() {
+    SOURCE_PACKAGE_NAME_VERSION=`derive-source-package-name-version`
+    PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME_VERSION}-sources
 
     if [[ ${PACKAGE_BASE_URL} == *'${SOURCE_PACKAGE_NAME}'* || ${PACKAGE_BASE_URL} == *'${SOURCE_PACKAGE_VERSION}'* ]]; then
         PACKAGE_URL=${PACKAGE_BASE_URL//'${SOURCE_PACKAGE_NAME}'/${SOURCE_PACKAGE_NAME}}
@@ -85,8 +96,7 @@ function get-source-package-count() {
 }
 
 function prepare-source-base() {
-    # Establish package url
-    PACKAGE_VERSION=$(package-get-major-version ${SOURCE_PACKAGE_VERSION}) \
+    # Determine package url and name
     derive-upstream-source-url
 
     # Set source package details
@@ -94,10 +104,12 @@ function prepare-source-base() {
         determine-git-source-package
     fi
 
-    export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION} \
-           INSTALL_ROOT=${TEMP_ROOT_BASE}/${PACKAGE_NAME} \
-           STAGE_ROOT=${STAGE_ROOT_BASE}/${PACKAGE_NAME} \
-           ARCHIVE_PATH=${SOURCE_ARCHIVE_PATH}
+    SOURCE_PACKAGE_NAME_VERSION=`derive-source-package-name-version`
+
+    export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources/${SOURCE_PACKAGE_NAME_VERSION} \
+           INSTALL_ROOT=${TEMP_ROOT_BASE}/${SOURCE_PACKAGE_NAME_VERSION} \
+           STAGE_ROOT=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME_VERSION} \
+           DEB_PATH=${SOURCE_DEB_PATH}
     
     export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX}
 
