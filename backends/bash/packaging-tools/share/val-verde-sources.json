@@ -12,6 +12,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "alien-package-tool",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "8",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "alive2",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",

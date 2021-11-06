@@ -486,6 +486,9 @@ unset RPM
 package-invoke-builder dnf-cross 4
 unset DNF
 
+# alien package tool build
+package-invoke-builder alien-package-tool-cross 8
+
 # AI SDK build
 package-invoke-category-builder ai-sdk-cross
 

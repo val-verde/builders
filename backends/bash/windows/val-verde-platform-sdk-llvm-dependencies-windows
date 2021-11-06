@@ -207,6 +207,9 @@ package-invoke-builder json-c-cross 0
 # less build
 # package-invoke-builder less-cross 590
 
+# alien package tool build
+package-invoke-builder alien-package-tool-cross 8
+
 # windows lua build
 package-invoke-builder lua-cross 5
 
