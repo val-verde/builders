@@ -1760,7 +1760,7 @@ function package-swift-build() {
     export-compiler-environment
 
     SWIFT_BUILD_TYPE=${SWIFT_BUILD_TYPE:-release}
-    TEMP_FILE=`mktemp`
+    SWIFT_DESTINATION_JSON=${SWIFT_DESTINATION_JSON:-${STAGE_ROOT}/builder-swift-destination.json}
 
     if [ -n "${HOST_ARCH_VECTOR_SIZE}" ]; then
         HOST_VECTOR_CFLAG="-mllvm\", \"-force-vector-width=${HOST_ARCH_VECTOR_SIZE}"
@@ -1901,14 +1901,16 @@ function package-swift-build() {
             \"${POLLY_SWIFTCFLAG}\" \n\
         ] \n\
     } \n\
-    " > ${TEMP_FILE}
+    " > ${SWIFT_DESTINATION_JSON}
 
     TOOL_LOG=${STAGE_ROOT}/builder-invocation \
     tool-log ${BINDIR}/swift \
         build \
         --build-path ${STAGE_ROOT} \
         --configuration ${SWIFT_BUILD_TYPE} \
-        --destination ${TEMP_FILE} \
+        --destination ${SWIFT_DESTINATION_JSON} \
+        -Xmanifest -I${BUILD_PACKAGE_PREFIX}/include \
+        -Xmanifest -L${BUILD_PACKAGE_PREFIX}/lib \
         ${SWIFT_BUILD_FLAGS}
 }
 
