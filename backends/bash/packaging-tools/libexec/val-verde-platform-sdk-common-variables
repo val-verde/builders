@@ -139,7 +139,8 @@ function package-apt-tool() {
 }
 
 function package-dpkg-build() {
-    ${DPKG}-deb --build -Zzstd --no-uniform-compression "${@}" \
+    COMPRESSION_OPTION=$(( "${PACKAGE_ARCHIVE_CLASS}" == "deb" ? "-Zzstd --no-uniform-compression" : "" ))
+    ${DPKG}-deb --build "${COMPRESSION_OPTION}" "${@}" \
         > ${STAGE_ROOT}/builder-dpkg.log
 }
 
