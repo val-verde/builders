@@ -1845,6 +1845,8 @@ function package-swift-build() {
     fi
 
     if [ "${SYSROOT}" != "${PACKAGE_PLATFORM_SYSROOT}" ]; then
+        ISYSTEM_CFLAG="-isystem\", \"${PACKAGE_PREFIX}/include"
+        SYSTEM_INCLUDE_SWIFTCFLAG="-I${PACKAGE_PREFIX}/include"
         SWIFTMODULE_PATH_SWIFTCFLAG="-I${PACKAGE_PREFIX}/lib/swift/${SWIFT_HOST_OS}"
     fi
 
@@ -1873,6 +1875,7 @@ function package-swift-build() {
             \"${FLTO_CFLAG}\", \n\
             \"${FPIC_CFLAG}\", \n\
             \"${HOST_VECTOR_CFLAG}\", \n\
+            \"${ISYSTEM_CFLAG}\", \n\
             \"${LIBSOUPER_CFLAGS}\", \n\
             \"${POLLY_CFLAG}\" \n\
         ], \n\
@@ -1888,10 +1891,10 @@ function package-swift-build() {
             \"-resource-dir\", \"${PACKAGE_PREFIX}/lib/swift\", \n\
             \"-sdk\", \"${SYSROOT}\", \n\
             \"-target-cpu\", \"${HOST_CPU}\", \n\
-            \"-I${PACKAGE_PREFIX}/include\", \n\
             \"-L${PACKAGE_PREFIX}/lib\", \n\
             \"-O${SWIFT_OPTIMIZATION_LEVEL}\", \n\
             \"-Xfrontend\", \"-disable-llvm-verify\", \n\
+            \"${SYSTEM_INCLUDE_SWIFTCFLAG}\", \n\
             \"${SWIFTMODULE_PATH_SWIFTCFLAG}\", \n\
             \"${FLTO_SWIFTCFLAG}\", \n\
             \"${HOST_VECTOR_SWIFTCFLAG}\", \n\
