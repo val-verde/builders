@@ -15,7 +15,7 @@ package-invoke-builder spirv-tools-cross 2020
 package-invoke-builder spirv-cross-cross 2021
 
 # spirv llvm translator build
-package-invoke-builder spirv-llvm-translator-cross 12
+package-invoke-builder spirv-llvm-translator-cross 13
 
 # glslang build
 package-invoke-builder glslang-cross 10-11

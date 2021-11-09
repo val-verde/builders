@@ -1912,7 +1912,7 @@
         "sourceType": "git",
         "sourcePackageName": "spirv-llvm-translator",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "12",
+        "sourcePackageVersion": "13",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
