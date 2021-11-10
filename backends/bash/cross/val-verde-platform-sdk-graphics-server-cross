@@ -59,6 +59,40 @@ package-invoke-builder xorg-libice-cross 1
 # xorg-libsm build
 package-invoke-builder xorg-libsm-cross 1
 
+# xorg-libxrandr build
+package-invoke-builder xorg-libxrandr-cross 1
+
+# xkeyboard-config build
+package-invoke-builder xkeyboard-config-cross 2
+
+# libxinerama build
+package-invoke-builder libxinerama-cross 1
+
+# libxcb-util build
+package-invoke-builder libxcb-util-cross 0
+
+# libxcb-wm build
+package-invoke-builder libxcb-wm-cross 0
+
+# xorg-libxcursor build
+package-invoke-builder xorg-libxcursor-cross 1
+
+# xorg-libxcvt build
+package-invoke-builder xorg-libxcvt-cross 1
+
+# xorg-libxkbfile build
+package-invoke-builder xorg-libxkbfile-cross 1
+
+# xorg-libxdamage build
+package-invoke-builder xorg-libxdamage-cross 1
+
+# xcb-render-util build
+package-invoke-builder xcb-render-util-cross 0
+
+# xorg-xcb-util-keysyms build
+package-invoke-builder xorg-xcb-util-keysyms-cross 0
+
+
 if [ "${HOST_OS}" != "mingw32" ]; then
     # xorg-libxt build
     package-invoke-builder xorg-libxt-cross 1
@@ -66,41 +100,11 @@ if [ "${HOST_OS}" != "mingw32" ]; then
     # xorg-libxtst build
     package-invoke-builder xorg-libxtst-cross 1
 
-    # xorg-libxrandr build
-    package-invoke-builder xorg-libxrandr-cross 1
-
-    # xorg-libxkbfile build
-    package-invoke-builder xorg-libxkbfile-cross 1
-
-    # xkeyboard-config build
-    package-invoke-builder xkeyboard-config-cross 2
-
     # xorg-libxshmfence build
     package-invoke-builder xorg-libxshmfence-cross 1
 
     # xorg-libxxf86vm build
     package-invoke-builder xorg-libxxf86vm-cross 1
-
-    # libxinerama build
-    package-invoke-builder libxinerama-cross 1
-
-    # libxcb-util build
-    package-invoke-builder libxcb-util-cross 0
-
-    # libxcb-wm build
-    package-invoke-builder libxcb-wm-cross 0
-
-    # xcb-render-util build
-    package-invoke-builder xcb-render-util-cross 0
-
-    # xorg-libxcursor build
-    package-invoke-builder xorg-libxcursor-cross 1
-
-    # xorg-libxcvt build
-    package-invoke-builder xorg-libxcvt-cross 1
-
-    # xorg-libxdamage build
-    package-invoke-builder xorg-libxdamage-cross 1
 
     # xorg-libxmu build
     package-invoke-builder xorg-libxmu-cross 1
@@ -113,9 +117,6 @@ if [ "${HOST_OS}" != "mingw32" ]; then
 
     # xorg-xinput build
     package-invoke-builder xorg-xinput-cross 1
-
-    # xorg-xcb-util-keysyms build
-    package-invoke-builder xorg-xcb-util-keysyms-cross 0
 fi
 
 # libjpeg build
@@ -137,12 +138,12 @@ if [ "${HOST_OS}" != "mingw32" ]; then
     # libxkbcommon build
     package-invoke-builder libxkbcommon-cross 1
 
-    # shared-mime-info build
-    package-invoke-builder shared-mime-info-cross 2
-
     # mesa-drm build
     package-invoke-builder mesa-drm-cross 2
 fi
+
+# shared-mime-info build
+package-invoke-builder shared-mime-info-cross 2
 
 # opencl headers build
 package-invoke-builder opencl-headers-cross 2020
@@ -175,10 +176,8 @@ package-invoke-builder freetype2-cross 2 bootstrap-only
 # fontconfig build
 package-invoke-builder fontconfig-cross 2
 
-if [ "${HOST_OS}" != "mingw32" ]; then
-    # cairo build
-    package-invoke-builder cairo-cross 1
-fi
+# cairo build
+package-invoke-builder cairo-cross 1
 
 # graphite2 build
 package-invoke-builder graphite2-cross 1
@@ -189,13 +188,13 @@ package-invoke-builder harfbuzz-cross 2
 # freetype2 build
 package-invoke-builder freetype2-cross 2
 
+# xorg-font-util-cross build
+package-invoke-builder xorg-font-util-cross 1
+
+# libfontenc build
+package-invoke-builder libfontenc-cross 1
+
 if [ "${HOST_OS}" != "mingw32" ]; then
-    # xorg-font-util-cross build
-    package-invoke-builder xorg-font-util-cross 1
-
-    # libfontenc build
-    package-invoke-builder libfontenc-cross 1
-
     # libxfont-cross build
     package-invoke-builder libxfont-cross 2
 fi
@@ -209,7 +208,5 @@ package-invoke-builder graphene-cross 1
 # gdk-pixbuf build
 package-invoke-builder gdk-pixbuf-cross 2
 
-if [ "${HOST_OS}" != "mingw32" ]; then
-    # pango build
-    package-invoke-builder pango-cross 1
-fi
+# pango build
+package-invoke-builder pango-cross 1
