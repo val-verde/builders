@@ -7,9 +7,15 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for meson/install
 GL_BACKEND=gl
+ENABLE_XCB=enabled
+ENABLE_XLIB=enabled
 
 if [ "${HOST_OS}" = "android" ]; then
     GL_BACKEND=glesv3
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    GL_BACKEND=disabled
+    ENABLE_XCB=disabled
+    ENABLE_XLIB=disabled
 fi
 
 MESON_EXTRA_PROPERTIES="
@@ -25,4 +31,6 @@ package-meson-install-archive \
     -Dpng=enabled \
     -Dsymbol-lookup=disabled \
     -Dtests=disabled \
+    -Dxcb=${ENABLE_XCB} \
+    -Dxlib=${ENABLE_XLIB} \
     -Dzlib=enabled
