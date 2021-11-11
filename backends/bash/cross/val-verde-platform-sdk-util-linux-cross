@@ -28,13 +28,20 @@ else
     ENABLE_OR_DISABLE_SYSTEMD=disable
 fi
 
-if [ "${HOST_OS}" = "macos" ]; then
+ENABLE_OR_DISABLE_LIBBLKID=enable
+
+if [ "${HOST_OS}" = "macos" ] ||
+   [ "${HOST_OS}" = "mingw32" ]; then
     COMMON_CFLAGS="\
         -lintl \
         ${COMMON_CFLAGS} \
     "
     ENABLE_OR_DISABLE_LIBMOUNT=disable
     ENABLE_OR_DISABLE_LIBUUID=disable
+
+    if [ "${HOST_OS}" = "mingw32" ]; then
+        ENABLE_OR_DISABLE_LIBBLKID=disable
+    fi
 else
     ENABLE_OR_DISABLE_LIBMOUNT=enable
     ENABLE_OR_DISABLE_LIBUUID=enable
@@ -55,10 +62,10 @@ package-bootstrap-configure-install-archive \
     --disable-all-programs \
     --disable-bash-completion \
     --disable-static \
-    --enable-libblkid \
     --enable-libuuid \
     --enable-shared \
     --with-ncursesw \
+    --${ENABLE_OR_DISABLE_LIBBLKID}-libblkid \
     --${ENABLE_OR_DISABLE_LIBMOUNT}-libmount \
     --${ENABLE_OR_DISABLE_LIBUUID}-libuuid \
     --${ENABLE_OR_DISABLE_PYTHON}-python \

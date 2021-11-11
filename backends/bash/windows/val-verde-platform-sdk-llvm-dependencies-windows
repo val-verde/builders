@@ -162,6 +162,10 @@ package-invoke-builder libgpg-error-cross 1
 # windows indent build
 # package-invoke-builder indent-cross 2
 
+# windows util-linux build
+DEB_PATH=${BOOTSTRAP_DEB_PATH} \
+package-invoke-builder util-linux-cross 2 bootstrap-only
+
 # windows libarchive build
 package-invoke-builder libarchive-cross 3
 
@@ -215,6 +219,10 @@ package-invoke-builder lua-cross 5
 
 # windows wget build
 package-invoke-builder wget-cross 1
+
+# windows util-linux build (with python support)
+DISABLE_SYSTEMD=TRUE \
+package-invoke-builder util-linux-cross 2
 
 # windows unbound build
 package-invoke-builder unbound-cross 1
