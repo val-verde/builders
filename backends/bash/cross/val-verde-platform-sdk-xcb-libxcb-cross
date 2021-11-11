@@ -12,6 +12,8 @@ else
     ENABLE_OR_DISABLE_DRI3=enable
 fi
 
+export-compiler-environment-for-python
+
 CONFIGURE_FILE=autogen.sh \
 package-configure-install-archive \
     --disable-devel-docs \
@@ -44,4 +46,4 @@ package-configure-install-archive \
     --enable-xkb \
     --enable-xv \
     --enable-xvmc \
-    --${ENABLE_OR_DISABLE_DRI3}-dri3 \
+    --${ENABLE_OR_DISABLE_DRI3}-dri3

@@ -12,15 +12,7 @@ function package-install-completion-callback() {
            ${INSTALL_PREFIX}/lib/pkgconfig/*.pc
 }
 
-if [ "${HOST_OS}" = "mingw32" ]; then
-    HOST_KERNEL=${BUILD_KERNEL} \
-    HOST_OS=${BUILD_OS} \
-    HOST_OS_API_LEVEL=${BUILD_OS_API_LEVEL} \
-    HOST_PROCESSOR=${BUILD_PROCESSOR} \
-    export-compiler-environment-for-python
-else
-    export-compiler-environment-for-python
-fi
+export-compiler-environment-for-python
 
 CONFIGURE_FILE=autogen.sh \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \

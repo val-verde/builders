@@ -220,6 +220,20 @@ package-invoke-builder lua-cross 5
 # windows wget build
 package-invoke-builder wget-cross 1
 
+# windows python build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
+_PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
+package-invoke-builder python-cross 3
+
+# windows libxml2 build (with python support)
+package-invoke-builder libxml2-cross 2
+
+# windows libxslt build
+package-invoke-builder libxslt-cross 1
+
+# windows python sdk build
+package-invoke-category-builder python-sdk-cross
+
 # windows util-linux build (with python support)
 DISABLE_SYSTEMD=TRUE \
 package-invoke-builder util-linux-cross 2
