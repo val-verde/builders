@@ -138,6 +138,28 @@ function package-apt-tool() {
     tool-log ${APT} ${@} > /dev/null
 }
 
+function package-archive-build-install() {
+    TEMPLATE_ROOT=${TEMPLATE_ROOT_BASE}/${PACKAGE_ARCHIVE_CLASS}
+
+    # Build the package
+    if [ -z "${DISABLE_BUILD_ARCHIVE}" ]; then
+        ${PACKAGE_ARCHIVE_CLASS}-package-build
+    fi
+
+    # Install the package
+    if [ -z "${DISABLE_INSTALL_ARCHIVE}" ]; then
+        ${PACKAGE_ARCHIVE_CLASS}-package-install
+    fi
+}
+
+function package-archive-remove() {
+    if [ "${PACKAGE_ARCHIVE_CLASS}" = "deb" ]; then
+        package-dpkg-remove --force-depends "${1}"
+    elif [ "${PACKAGE_ARCHIVE_CLASS}" = "rpm" ]; then
+        package-rpm-remove "${1}"
+    fi
+}
+
 function package-dpkg-build() {
     COMPRESSION_OPTION=$(( "${PACKAGE_ARCHIVE_CLASS}" == "deb" ? "-Zzstd --no-uniform-compression" : "" ))
     ${DPKG}-deb --build "${COMPRESSION_OPTION}" "${@}" \
@@ -325,6 +347,11 @@ function package-rpm-build() {
 function package-rpm-install() {
     TOOL_LOG=${STAGE_ROOT}/builder-rpm-install \
     tool-log ${RPM} -ivh "${@}"
+}
+
+function package-rpm-remove() {
+    TOOL_LOG=${STAGE_ROOT}/builder-rpm-remove \
+    tool-log ${RPM} -e "${@}"
 }
 
 function package-rsync() {
