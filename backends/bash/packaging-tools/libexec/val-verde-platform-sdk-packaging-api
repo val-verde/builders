@@ -8,20 +8,6 @@ RELEASE=${RELEASE:='1'}
 TEMPLATE_ROOT_BASE=${TEMPLATE_ROOT_BASE:-/usr/share/${VAL_VERDE_GH_TEAM}}
 VERSION=${VERSION:='1.0.0'}
 
-function packaging-archive-build-install() {
-    TEMPLATE_ROOT=${TEMPLATE_ROOT_BASE}/${PACKAGE_ARCHIVE_CLASS}
-
-    # Build the package
-    if [ -z "${DISABLE_BUILD_ARCHIVE}" ]; then
-        ${PACKAGE_ARCHIVE_CLASS}-package-build
-    fi
-
-    # Install the package
-    if [ -z "${DISABLE_INSTALL_ARCHIVE}" ]; then
-        ${PACKAGE_ARCHIVE_CLASS}-package-install
-    fi
-}
-
 function deb-package-build() {
     ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
     TEMPLATE_ROOT=${TEMPLATE_ROOT:-${TEMPLATE_ROOT_BASE}/deb}
