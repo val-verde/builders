@@ -43,7 +43,7 @@ function build-install-git-source-package() {
 
         # Build the source archive package
         DISABLE_INSTALL_ARCHIVE=TRUE \
-        packaging-archive-build-install
+        package-archive-build-install
 
         # Clean up
         ${RM} -rf ${INSTALL_ROOT}
@@ -69,7 +69,7 @@ function build-install-other-source-package() {
 
         # Build the source archive package
         DISABLE_INSTALL_ARCHIVE=TRUE \
-        packaging-archive-build-install
+        package-archive-build-install
 
         # Clean up
         ${RM} -rf ${INSTALL_ROOT}
