@@ -19,9 +19,10 @@ function package-invoke-category-builder() {
 }
 
 function package-install-build-archive() {
-    package-get-packaging-api
+    package-get-common-variables
     ${ECHO} -e "    Skipping re-build: \e[1;35m${PACKAGE_NAME}\e[0m"
-    deb-package-install
+    DISABLE_BUILD_ARCHIVE=TRUE \
+    package-archive-build-install
 }
 
 function package-invoke-archive-action() {
@@ -48,18 +49,20 @@ function package-invoke-archive-action() {
 
         PKG_PREFIX=${PACKAGE_BASE_NAME}-${PKG_NAME}
         PACKAGE_FILE_NAME=${PKG_PREFIX}-${PKG_SUFFIX}
-        DEB_NAME=${ARCHIVE_PATH}/${PACKAGE_FILE_NAME}.deb
+        ARCHIVE_NAME=${ARCHIVE_PATH}/${PACKAGE_FILE_NAME}.${PACKAGE_ARCHIVE_CLASS}
         QUALIFIED_FILE_NAME="${QUALIFIED_FILE_NAME} ${PACKAGE_FILE_NAME}"
-        QUALIFIED_DEB="${QUALIFIED_DEB} ${DEB_NAME}"
+        QUALIFIED_ARCHIVE="${QUALIFIED_ARCHIVE} ${ARCHIVE_NAME}"
     done
 
     if [ "${PACKAGE_ACTION}" = "uninstall" ]; then
-        package-dpkg-remove --force-depends ${QUALIFIED_FILE_NAME}
+        package-archive-remove ${QUALIFIED_FILE_NAME}
     elif [ "${PACKAGE_ACTION}" = "install" ]; then
-        package-dpkg-install ${QUALIFIED_DEB}
+        DISABLE_INSTALL_ARCHIVE=TRUE \
+        PACKAGE_NAME=${QUALIFIED_ARCHIVE} \
+        package-archive-build-install
     fi
 
-    unset QUALIFIED_DEB \
+    unset QUALIFIED_ARCHIVE \
           QUALIFIED_FILE_NAME
 }
 
@@ -71,7 +74,7 @@ function package-invoke-builder() {
     package-get-common-variables
     package-get-packaging-api
 
-    SEARCH_PATH=${DEB_PATH} \
+    SEARCH_PATH=${ARCHIVE_PATH} \
     SEARCH_INPUT=${PACKAGE_NAME} \
     SEARCH_EXTENSION=${PACKAGE_ARCHIVE_CLASS} \
     tool-check
@@ -89,8 +92,8 @@ function package-invoke-builder() {
         ${ECHO}
     fi
 
-    unset DISABLE_BUILD_DEB \
-          DISABLE_INSTALL_DEB \
+    unset DISABLE_BUILD_ARCHIVE \
+          DISABLE_INSTALL_ARCHIVE \
           NON_PERSISTENT_ARCHIVE \
           SOURCE_PACKAGE_NAME \
           SOURCE_PACKAGE_VERSION \
@@ -122,10 +125,10 @@ function parse-builder-args() {
     
     if [ "${3}" ]; then
         if [ $3 == "none" ]; then
-            export DISABLE_BUILD_DEB=TRUE
-            export DISABLE_INSTALL_DEB=TRUE
+            export DISABLE_BUILD_ARCHIVE=TRUE
+            export DISABLE_INSTALL_ARCHIVE=TRUE
         elif [ $3 == "no-install" ]; then
-            export DISABLE_INSTALL_DEB=TRUE
+            export DISABLE_INSTALL_ARCHIVE=TRUE
         elif [ $3 == "bootstrap-only" ]; then
             export NON_PERSISTENT_ARCHIVE=TRUE
         fi
