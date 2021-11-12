@@ -28,7 +28,7 @@ package-rsync -ax \
 BASE_DIRECTORY=${INSTALL_ROOT}/usr \
 PACKAGE_INSTALL_BASE=/usr \
 TEMPLATE_ROOT_BASE=${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM} \
-packaging-archive-build-install
+package-archive-build-install
 
 # Fetch sources
 bash /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-packages
