@@ -128,7 +128,7 @@ package-invoke-builder sourcekit-lsp-windows 5
 # package-invoke-builder baikonur-cross
 
 # pythonkit build
-# package-invoke-builder pythonkit-cross
+package-invoke-builder pythonkit-cross 5
 
 # swift tensorflows apis build
 # package-invoke-builder swift-tensorflow-apis
