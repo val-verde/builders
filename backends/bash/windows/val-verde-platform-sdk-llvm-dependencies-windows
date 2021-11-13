@@ -262,6 +262,12 @@ package-invoke-builder pkg-config-cross 0
 # windows graphics server build
 package-invoke-category-builder graphics-server-cross
 
+# windows itstool build
+package-invoke-builder itstool-cross 2
+
+# windows gtk-doc build
+package-invoke-builder gtk-doc-cross 1
+
 # windows graphviz build
 package-invoke-builder graphviz-cross 2
 
@@ -310,6 +316,9 @@ package-invoke-builder boost-cross 1
 
 # windows cereal build
 package-invoke-builder cereal-cross 1
+
+# windows libobjc2 build
+package-invoke-builder libobjc2-cross 2
 
 # windows android patch elf build
 # package-invoke-builder android-patch-elf-cross 1
