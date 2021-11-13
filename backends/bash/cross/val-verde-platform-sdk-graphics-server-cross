@@ -194,10 +194,8 @@ package-invoke-builder xorg-font-util-cross 1
 # libfontenc build
 package-invoke-builder libfontenc-cross 1
 
-if [ "${HOST_OS}" != "mingw32" ]; then
-    # libxfont-cross build
-    package-invoke-builder libxfont-cross 2
-fi
+# libxfont-cross build
+package-invoke-builder libxfont-cross 2
 
 # fribidi build
 package-invoke-builder fribidi-cross 1
