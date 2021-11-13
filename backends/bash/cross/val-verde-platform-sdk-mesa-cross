@@ -6,38 +6,64 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for meson/install
+function package-install-completion-callback() {
+    if [ "${HOST_OS}" = "mingw32" ]; then
+        ${RM} -r \
+            ${INSTALL_PREFIX}/include/GL \
+            ${INSTALL_PREFIX}/include/KHR
+        ${MV} \
+              ${INSTALL_PREFIX}/bin/opengl32.dll \
+              ${INSTALL_PREFIX}/bin/GL.dll
+        ${MV} \
+              ${INSTALL_PREFIX}/lib/opengl32.dll.a \
+              ${INSTALL_PREFIX}/lib/libGL.dll.a
+    fi
+}
+
+VULKAN_LAYERS="device-select,intel-nullhw"
+
 if [ "${HOST_OS}" = "android" ] ||
    [ "${HOST_OS}" = "gnu" ] ||
    [ "${HOST_OS}" = "musl" ]; then
+    DRI3_ENABLED=enabled
     EGL_ENABLED=enabled
     GALLIUM_DRIVERS="asahi,crocus,freedreno,iris,lima,panfrost,nouveau,radeonsi,svga,swrast,tegra,v3d,vc4,virgl,zink"
     GBM_ENABLED=enabled
     GLVND_ENABLED=true
+    GLX_DIRECT_ENABLED=true
     GLX_MODE=dri
     HARDWARE_DRIVERS_ENABLED=true
     HARDWARE_PLATFORMS="wayland,x11"
+    NINE_ENABLED=true
     OPENCL_MODE=icd
     STATIC_LIBCLC=
     VULKAN_DRIVERS="amd,broadcom,freedreno,intel,panfrost,swrast,virtio-experimental"
 elif [ "${HOST_OS}" = "mingw32" ]; then
+    DRI3_ENABLED=disabled
     EGL_ENABLED=disabled
     GALLIUM_DRIVERS="swrast,zink"
     GBM_ENABLED=disabled
     GLVND_ENABLED=false
+    GLX_DIRECT_ENABLED=false
     GLX_MODE=disabled
     HARDWARE_DRIVERS_ENABLED=false
-    HARDWARE_PLATFORMS=""
+    HARDWARE_PLATFORMS="windows,x11"
+    NINE_ENABLED=false
     OPENCL_MODE=icd
     STATIC_LIBCLC=all
-    VULKAN_DRIVERS="swrast"
+    VULKAN_DRIVERS=
+    VULKAN_LAYERS=
 else
+    DRI3_ENABLED=disabled
     EGL_ENABLED=enabled
     GALLIUM_DRIVERS="swrast,zink"
     GBM_ENABLED=enabled
     GLVND_ENABLED=true
+    GLX_DIRECT_ENABLED=true
     GLX_MODE=dri
     HARDWARE_DRIVERS_ENABLED=false
     HARDWARE_PLATFORMS="x11"
+    NINE_ENABLED=false
     OPENCL_MODE=icd
     STATIC_LIBCLC=
     VULKAN_DRIVERS="swrast"
@@ -49,22 +75,13 @@ else
     DISABLE_UNDEFINED=true
 fi
 
+LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}}
+LLVM_CONFIG_EXECUTABLE=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config
 
-# LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_ARCH}}
-# LLVM_CONFIG_EXECUTABLE=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config
-
-if [ "${HOST_OS}" = "mingw32" ]; then
+if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
     LLVM_NATIVE_STAGE_ROOT=${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
-    LLVM_CONFIG_EXECUTABLE=${STAGE_ROOT}/host-llvm-config
-    SKIP_LLVM_CONFIG=false
-    WINE=`package-get-path wine64 EXECUTABLE BUILD`
-    WINE_FLAGS=${LLVM_NATIVE_STAGE_ROOT}/bin/`package-get-filename llvm-config EXECUTABLE HOST`
-
-    create-host-tool ${WINE} WINE_FLAGS ${LLVM_CONFIG_EXECUTABLE}
-elif [ "${BUILD_TRIPLE}" != "${HOST_OS}" ]; then
-    # LLVM_NATIVE_STAGE_ROOT=${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_ARCH}/NATIVE
-    # LLVM_CONFIG_EXECUTABLE=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config
-    SKIP_LLVM_CONFIG=true
+    LLVM_CONFIG_EXECUTABLE=${LLVM_NATIVE_STAGE_ROOT}/bin/host-llvm-config
+    export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${LLVM_NATIVE_STAGE_ROOT}/NATIVE/lib
 fi
 
 COMMON_CFLAGS="\
@@ -76,20 +93,21 @@ COMMON_CFLAGS="\
 MESON_EXTRA_BINARIES="\
 llvm-config='${LLVM_CONFIG_EXECUTABLE}' \
 " \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-meson-install-archive \
     -Db_lundef=${DISABLE_UNDEFINED} \
     -Ddri-drivers= \
-    -Ddri3=enabled \
+    -Ddri3=${DRI3_ENABLED} \
     -Degl=${EGL_ENABLED} \
     -Dgallium-drivers="${GALLIUM_DRIVERS}" \
-    -Dgallium-nine=true \
+    -Dgallium-nine=${NINE_ENABLED} \
     -Dgallium-opencl=${OPENCL_MODE} \
     -Dgbm=${GBM_ENABLED} \
     -Dgles1=enabled \
     -Dgles2=enabled \
     -Dglvnd=${GLVND_ENABLED} \
     -Dglx=${GLX_MODE} \
-    -Dglx-direct=true \
+    -Dglx-direct=${GLX_DIRECT_ENABLED} \
     -Dllvm=enabled \
     -Dopencl-native=${HARDWARE_DRIVERS_ENABLED} \
     -Dopencl-spirv=true \
@@ -98,8 +116,7 @@ package-meson-install-archive \
     -Dshared-glapi=enabled \
     -Dshared-llvm=enabled \
     -Dshared-swr=true \
-    -Dskip-llvm-config=${SKIP_LLVM_CONFIG} \
     -Dstatic-libclc=${STATIC_LIBCLC} \
     -Dvulkan-drivers=${VULKAN_DRIVERS} \
-    -Dvulkan-layers="device-select,intel-nullhw" \
+    -Dvulkan-layers=${VULKAN_LAYERS} \
     -Dzstd=enabled
