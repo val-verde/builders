@@ -8,6 +8,7 @@ COPY fedora \
      /sources/
 RUN bash install-host-packages
 
+ARG PACKAGE_ARCHIVE_CLASS
 ARG PACKAGE_BASE_NAME
 ARG PACKAGE_ROOT
 ARG VAL_VERDE_GH_TEAM
@@ -18,12 +19,12 @@ ENV PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME} \
     STAGE_ROOT_BASE=${STAGE_ROOT_BASE:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/staging} \
     VAL_VERDE_GH_TEAM=${VAL_VERDE_GH_TEAM} \
     ANDROID_NDK_VERSION=r23b \
-    RELEASE_DEB_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/release-debs \
+    RELEASE_ARCHIVE_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/release-archives \
     CUDA_VERSION=11.6.0 \
     MACOS_VERSION=12 \
     PYTHON_VERSION=3.10 \
-    SOURCE_DEB_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/source-debs \
-    BOOTSTRAP_DEB_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/bootstrap-debs
+    SOURCE_ARCHIVE_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/source-archives \
+    BOOTSTRAP_ARCHIVE_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/bootstrap-archives
 
 ENV BUILD_ARCH=skylake \
     BUILD_CPU=skylake \
@@ -32,26 +33,28 @@ ENV BUILD_ARCH=skylake \
     BUILD_OS_API_LEVEL= \
     BUILD_PROCESSOR=x86_64
 
-RUN mkdir -p ${RELEASE_DEB_PATH} ${SOURCE_DEB_PATH}
+RUN mkdir -p ${RELEASE_ARCHIVE_PATH} \
+             ${SOURCE_ARCHIVE_PATH} \
+             ${BOOTSTRAP_ARCHIVE_PATH}
 
 # platform sdk tool wrapper scripts and templates
-COPY backends/bash/deb-templates \
-     /sources/deb-templates/
+COPY backends/bash/archive-templates \
+     /sources/archive-templates/
 COPY backends/bash/packaging-tools \
      /sources/packaging-tools/
 
 # upstream source package build
 FROM fedora AS sources_builder
 
-COPY /source-debs/ \
-     ${SOURCE_DEB_PATH}
+COPY /source-archives/ \
+     ${SOURCE_ARCHIVE_PATH}
 COPY backends/bash/sources \
      /sources/
 
 RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sources-builder
 
-COPY /bootstrap-debs/ \
-     ${BOOTSTRAP_DEB_PATH}
+COPY /bootstrap-archives/ \
+     ${BOOTSTRAP_ARCHIVE_PATH}
 
 # bootstrap binaries build
 FROM sources_builder AS binaries_builder
@@ -90,15 +93,15 @@ RUN HOST_ARCH=${BUILD_ARCH} \
 
 ENV BUILD_SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}/sysroot/usr/glibc-interface
 
-COPY /release-debs/ \
-     ${RELEASE_DEB_PATH}
+COPY /release-archives/ \
+     ${RELEASE_ARCHIVE_PATH}
 
 # platform sdk package build scripts
 COPY backends/bash/cross \
      /sources/
 
 # webassembly build
-FROM gnu_bootstrap__builder AS webassembly_builder
+FROM gnu_bootstrap_builder AS webassembly_builder
 
 # webassembly package builders
 COPY backends/bash/webassembly \
