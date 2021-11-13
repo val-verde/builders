@@ -234,12 +234,21 @@ package-invoke-builder libxslt-cross 1
 # windows python sdk build
 package-invoke-category-builder python-sdk-cross
 
-# windows util-linux build (with python support)
-DISABLE_SYSTEMD=TRUE \
-package-invoke-builder util-linux-cross 2
+# libtasn1 build
+# package-invoke-builder libtasn1-cross 4
+
+# p11-kit build
+# DISABLE_SYSTEMD=TRUE \
+# package-invoke-builder p11-kit-cross 0
+
+# nettle build
+package-invoke-builder nettle-cross 3
 
 # windows unbound build
 package-invoke-builder unbound-cross 1
+
+# gnutls build
+# package-invoke-builder gnutls-cross 3
 
 # windows libmicrohttpd build
 package-invoke-builder libmicrohttpd-cross 0
@@ -261,6 +270,16 @@ package-invoke-builder graphviz-cross 2
 
 # cups build
 # package-invoke-builder cups-cross 2
+
+# windows util-linux build (with python support)
+DISABLE_SYSTEMD=TRUE \
+package-invoke-builder util-linux-cross 2
+
+# alien package tool build
+package-invoke-builder alien-package-tool-cross 8
+
+# swig build
+package-invoke-builder swig-cross 4
 
 # windows openjdk build
 # package-invoke-builder openjdk-cross 17
