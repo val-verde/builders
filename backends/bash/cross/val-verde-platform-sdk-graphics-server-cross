@@ -71,6 +71,9 @@ package-invoke-builder libxinerama-cross 1
 # libxcb-util build
 package-invoke-builder libxcb-util-cross 0
 
+# libxcb-image build
+package-invoke-builder libxcb-image-cross 0
+
 # libxcb-wm build
 package-invoke-builder libxcb-wm-cross 0
 
