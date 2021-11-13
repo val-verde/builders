@@ -9,4 +9,6 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 CONFIGURE_FILE=autogen.sh \
 package-configure-install-archive \
     --disable-static \
+    --disable-selective-werror \
+    --disable-strict-compilation \
     --enable-shared
