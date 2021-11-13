@@ -345,6 +345,9 @@ package-invoke-builder popt-cross 1
 # alien package tool build
 package-invoke-builder alien-package-tool-cross 8
 
+# AI SDK build
+package-invoke-category-builder ai-sdk-cross
+
 # swig build
 package-invoke-builder swig-cross 4
 

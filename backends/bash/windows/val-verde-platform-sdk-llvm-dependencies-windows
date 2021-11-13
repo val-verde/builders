@@ -193,26 +193,23 @@ package-invoke-builder grep-cross 3
 # windows bison build
 package-invoke-builder bison-cross 3
 
-# flex build
+# windows flex build
 # package-invoke-builder flex-cross
 
-# jq build
+# windows jq build
 package-invoke-builder jq-cross 1
 
-# json-c build
+# windows json-c build
 package-invoke-builder json-c-cross 0
 
-# which build
+# windows which build
 # package-invoke-builder which-cross 2
 
 # windows findutils build
 # package-invoke-builder findutils-cross 4
 
-# less build
+# windows less build
 # package-invoke-builder less-cross 590
-
-# alien package tool build
-package-invoke-builder alien-package-tool-cross 8
 
 # windows lua build
 package-invoke-builder lua-cross 5
@@ -234,20 +231,20 @@ package-invoke-builder libxslt-cross 1
 # windows python sdk build
 package-invoke-category-builder python-sdk-cross
 
-# libtasn1 build
+# windows libtasn1 build
 # package-invoke-builder libtasn1-cross 4
 
-# p11-kit build
+# windows p11-kit build
 # DISABLE_SYSTEMD=TRUE \
 # package-invoke-builder p11-kit-cross 0
 
-# nettle build
+# windows nettle build
 package-invoke-builder nettle-cross 3
 
 # windows unbound build
 package-invoke-builder unbound-cross 1
 
-# gnutls build
+# windows gnutls build
 # package-invoke-builder gnutls-cross 3
 
 # windows libmicrohttpd build
@@ -265,20 +262,23 @@ package-invoke-builder pkg-config-cross 0
 # windows graphics server build
 package-invoke-category-builder graphics-server-cross
 
-# graphviz build
+# windows graphviz build
 package-invoke-builder graphviz-cross 2
 
-# cups build
+# windows cups build
 # package-invoke-builder cups-cross 2
 
 # windows util-linux build (with python support)
 DISABLE_SYSTEMD=TRUE \
 package-invoke-builder util-linux-cross 2
 
-# alien package tool build
+# windows alien package tool build
 package-invoke-builder alien-package-tool-cross 8
 
-# swig build
+# windows AI SDK build
+package-invoke-category-builder ai-sdk-cross
+
+# windows swig build
 package-invoke-builder swig-cross 4
 
 # windows openjdk build
@@ -296,10 +296,10 @@ package-invoke-builder z3-cross 4
 # windows cmake build
 package-invoke-builder cmake-cross 3
 
-# gflags build
+# windows gflags build
 package-invoke-builder gflags-cross 2
 
-# glog build
+# windows glog build
 package-invoke-builder glog-cross 0
 
 # windows protobuf build
@@ -317,17 +317,17 @@ package-invoke-builder cereal-cross 1
 # windows jwasm build
 package-invoke-builder jwasm 2
 
-# re2c build
+# windows re2c build
 package-invoke-builder re2c-cross 2
 
-# alive2 build
+# windows alive2 build
 package-invoke-builder alive2-cross 1
 
-# hiredis build
+# windows hiredis build
 package-invoke-builder hiredis-cross 1
 
-# ccache build
+# windows ccache build
 package-invoke-builder ccache-cross 4
 
-# distcc build
+# windows distcc build
 # package-invoke-builder distcc-cross 3

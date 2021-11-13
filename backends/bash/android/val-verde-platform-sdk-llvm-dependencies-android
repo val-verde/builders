@@ -360,6 +360,9 @@ package-invoke-builder rpm-cross 4
 # alien package tool build
 package-invoke-builder alien-package-tool-cross 8
 
+# AI SDK build
+package-invoke-category-builder ai-sdk-cross
+
 # android swig build
 package-invoke-builder swig-cross 4
 
