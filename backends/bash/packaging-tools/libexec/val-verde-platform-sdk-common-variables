@@ -20,7 +20,6 @@ PACKAGE_USR_PREFIX=${PACKAGE_USR_PREFIX:-usr}
 
 # global package configuration variables
 PACKAGE_ARCH=all
-ARCHIVE_ROOT_BASE=${TEMP_ROOT_BASE}/archiving
 
 # 'build' configuration
 export BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}
@@ -115,6 +114,7 @@ export NODE_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/web
 export PATH=${BUILD_PACKAGE_PREFIX}/bin:${PATH}
 export TEMPDIR=${TEMPDIR:-/tmp}
 TEMP_ROOT_BASE=${TEMPDIR}/org.${VAL_VERDE_GH_TEAM}
+ARCHIVE_ROOT_BASE=${TEMP_ROOT_BASE}/archiving
 
 # 'host' configuration
 export HOST_TRIPLE=${HOST_TRIPLE:-${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}}
@@ -160,9 +160,15 @@ function package-archive-remove() {
     fi
 }
 
+function package-determine-os-distribution() {
+    if [[ "$(${LSB_RELEASE} --description)" = *Ubuntu* ]]; then
+        ${ECHO} "-Zzstd --no-uniform-compression"
+    fi
+}
+
 function package-dpkg-build() {
-    COMPRESSION_OPTION=$(( "${PACKAGE_ARCHIVE_CLASS}" == "deb" ? "-Zzstd --no-uniform-compression" : "" ))
-    ${DPKG}-deb --build "${COMPRESSION_OPTION}" "${@}" \
+    COMPRESSION_OPTION="`package-determine-os-distribution` "${@}""
+    ${DPKG}-deb --build  ${COMPRESSION_OPTION} \
         > ${STAGE_ROOT}/builder-dpkg.log
 }
 
