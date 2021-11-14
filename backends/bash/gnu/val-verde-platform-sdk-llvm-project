@@ -65,7 +65,7 @@ CUDA_GPU_PRIMARY_ARCH=61
 CUDA_GPU_SECONDARY_ARCH=35
 CUDA_RUNTIME_LIBRARY=${PACKAGE_PREFIX}/lib/stubs/`package-get-filename cuda SHARED HOST`
 CXX_STANDARD=17
-EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;flang;mlir;openmp;parallel-libs;polly;pstl"}
+EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;flang;mlir;openmp;polly;pstl"}
 
 if [ -n "${ENABLE_MUSL_LIBC}" ]; then
     LIBC_CMD="-DLIBCXX_HAS_MUSL_LIBC=TRUE"
