@@ -17,6 +17,7 @@ HAS_MUSL_LIBC=FALSE
 HAS_PTHREAD_API=TRUE
 HAS_WIN32_THREAD_API=FALSE
 SIZEOF_VOID_P=8
+USE_LLVM_UNWINDER=TRUE
 
 if [ "${HOST_OS}" = "musl" ]; then
     HAS_MUSL_LIBC=TRUE
@@ -30,21 +31,18 @@ elif [ "${HOST_OS}" = "wasi" ]; then
     ENABLE_THREADS=FALSE
     HAS_MUSL_LIBC=TRUE
     HAS_PTHREAD_API=FALSE
+    USE_LLVM_UNWINDER=FALSE
 fi
 
 if [ "${HOST_PROCESSOR}" = "wasm32" ]; then
     SIZEOF_VOID_P=4
 fi
 
-ENABLED_PROJECTS="libcxx;libcxxabi;parallel-libs;pstl"
+ENABLED_PROJECTS="libcxx;libcxxabi;pstl"
+INSTALL_TARGET="projects/libcxxabi/install projects/libcxx/install projects/pstl/install"
 
 if [ -z "${DISABLE_LIBUNWIND}" ]; then
     ENABLED_PROJECTS="${ENABLED_PROJECTS};libunwind"
-fi
-
-INSTALL_TARGET="projects/libcxxabi/install projects/libcxx/install projects/parallel-libs/install projects/pstl/install"
-
-if [ "${HOST_OS}" != "wasi" ]; then
     INSTALL_TARGET="projects/libunwind/install ${INSTALL_TARGET}"
 fi
 
@@ -101,7 +99,7 @@ package-cmake-install-archive \
     -DLIBCXXABI_LIBCXX_INCLUDES=${SOURCE_ROOT}/libcxx/include \
     -DLIBCXXABI_STATICALLY_LINK_UNWINDER_IN_SHARED_LIBRARY=FALSE \
     -DLIBCXXABI_USE_COMPILER_RT=TRUE \
-    -DLIBCXXABI_USE_LLVM_UNWINDER=TRUE \
+    -DLIBCXXABI_USE_LLVM_UNWINDER=${USE_LLVM_UNWINDER} \
     -DLIBCXXABI_USE_SJLJ_EXCEPTIONS=FALSE \
     -DLIBUNWIND_ENABLE_ASSERTIONS=FALSE \
     -DLIBUNWIND_ENABLE_PEDANTIC=FALSE \
