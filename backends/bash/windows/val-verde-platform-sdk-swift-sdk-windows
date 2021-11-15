@@ -125,10 +125,10 @@ package-invoke-builder swift-doc-cross 5
 package-invoke-builder sourcekit-lsp-windows 5
 
 # baikonur build
-# package-invoke-builder baikonur-cross
+# package-invoke-builder baikonur-cross 1
 
 # pythonkit build
 package-invoke-builder pythonkit-cross 5
 
 # swift tensorflows apis build
-# package-invoke-builder swift-tensorflow-apis
+# package-invoke-builder swift-tensorflow-apis 5

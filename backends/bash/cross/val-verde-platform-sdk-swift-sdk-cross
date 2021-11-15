@@ -110,4 +110,4 @@ package-invoke-builder baikonur-cross 1
 package-invoke-builder pythonkit-cross 5
 
 # swift tensorflows apis build
-# package-invoke-builder swift-tensorflow-apis
+# package-invoke-builder swift-tensorflow-apis 5
