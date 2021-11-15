@@ -11,7 +11,7 @@ COMMON_CFLAGS="\
     -L${PACKAGE_PREFIX}/lib \
     ${COMMON_CFLAGS} \
 " \
-NUMPY_VERSION="1.21.2" \
+NUMPY_VERSION="1.21.4" \
 package-python-build
 
 # Build and install the package
