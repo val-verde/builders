@@ -269,7 +269,13 @@ ENABLE_STAGE_ROOT_BUILD=TRUE \
 _PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
 package-invoke-builder python-cross 3
 
-# libxml2 build (with python support)
+# android python-setuptools build
+package-invoke-builder python-setuptools-cross 59
+
+# android python-pip build
+package-invoke-builder python-pip-cross 21
+
+# android libxml2 build (with python support)
 package-invoke-builder libxml2-cross 2
 
 # android libxslt build

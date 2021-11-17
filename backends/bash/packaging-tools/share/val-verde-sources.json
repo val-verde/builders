@@ -1721,6 +1721,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "python-pip",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "21",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "python-pybind11",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2",
@@ -1769,6 +1778,15 @@
         "sourcePackageName": "python-six",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "python-setuptools",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "59",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {

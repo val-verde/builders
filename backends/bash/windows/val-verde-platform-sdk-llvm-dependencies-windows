@@ -222,6 +222,12 @@ ENABLE_STAGE_ROOT_BUILD=TRUE \
 _PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
 package-invoke-builder python-cross 3
 
+# windows python-setuptools build
+package-invoke-builder python-setuptools-cross 59
+
+# windows python-pip build
+package-invoke-builder python-pip-cross 21
+
 # windows libxml2 build (with python support)
 package-invoke-builder libxml2-cross 2
 

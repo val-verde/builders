@@ -18,17 +18,19 @@ export DEPENDS="\
 # Invoke one-shot template for stage/configure/install
 function package-install-completion-callback() {
     ${LN} -sf \
-          `package-get-filename pip3 EXECUTABLE HOST` \
-          ${INSTALL_PREFIX}/bin/`package-get-filename pip EXECUTABLE HOST`
-    ${LN} -sf \
           `package-get-filename python3 EXECUTABLE HOST` \
           ${INSTALL_PREFIX}/bin/`package-get-filename python EXECUTABLE HOST`
 }
 
+ENSURE_PIP=no
 HAVE_ALARM=yes
 HAVE_CLOCK_API=yes
 HAVE_DEV_PTMX=yes
 HAVE_SOCKLEN_T=yes
+
+if [ -n "${ENABLE_PIP}" ]; then
+    ENSURE_PIP=yes
+fi
 
 if [ "${HOST_OS}" = "mingw32" ]; then
     ADDITIONAL_LIBS="\
@@ -95,7 +97,7 @@ package-stage-configure-install-archive \
     ac_cv_func_clock_settime=${HAVE_CLOCK_API} \
     ac_cv_type_socklen_t=${HAVE_SOCKLEN_T} \
     --enable-shared \
-    --with-ensurepip=yes \
+    --with-ensurepip=${ENSURE_PIP} \
     --with-openssl=${PACKAGE_PREFIX} \
     --with-system-expat \
     --with-system-ffi \
