@@ -974,14 +974,6 @@ function ninja-install() {
     tool-install "${@}"
 }
 
-function package-archive-build-install() {
-    # Build the package
-    deb-package-build
-
-    # Install the package
-    deb-package-install
-}
-
 function package-autoreconf() {
     if [ -z "${DISABLE_AUTORECONF}" ]; then
         TOOL_LOG=${STAGE_ROOT}/builder-compile \
