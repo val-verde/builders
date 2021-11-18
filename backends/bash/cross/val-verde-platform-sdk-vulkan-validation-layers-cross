@@ -6,12 +6,25 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
+function tool-install-invocation() {
+    INSTALL_TARGET="VulkanVL_generated_source" \
+    tool-install
+
+    INSTALL_TARGET="install" \
+    tool-install
+}
+
+copy-source-to-staging
+
 CMAKE_XCB_CMD="-DBUILD_WSI_XCB_SUPPORT=FALSE"
 
 if [ "${HOST_OS}" = "gnu" ]; then
     CMAKE_XCB_CMD="-DBUILD_WSI_XCB_SUPPORT=TRUE"
 fi
 
+CMAKE_CONFIGURE_ROOT=${STAGE_ROOT} \
+DISABLE_TOOL_BUILD=TRUE \
+TOOL_INSTALL_INVOCATION=tool-install-invocation \
 package-cmake-install-archive \
     -DBUILD_LAYER_SUPPORT_FILES=TRUE \
     -DBUILD_WERROR=FALSE \
@@ -20,6 +33,7 @@ package-cmake-install-archive \
     -DBUILD_WSI_XLIB_SUPPORT=FALSE \
     -DGLSLANG_INSTALL_DIR=${PACKAGE_PREFIX} \
     -DPKG_CONFIG_EXECUTABLE=${PKG_CONFIG} \
+    -DPYTHON_EXECUTABLE=${PYTHON} \
     -DSPIRV_HEADERS_INSTALL_DIR=${PACKAGE_PREFIX} \
     -DSPIRV_TOOLS_INSTALL_DIR=${PACKAGE_PREFIX} \
     -DSPIRV_TOOLS_LIB=`package-get-path SPIRV-Tools STATIC HOST` \
@@ -28,4 +42,5 @@ package-cmake-install-archive \
     -DUSE_ROBIN_HOOD_HASHING=FALSE \
     -DVulkanHeaders_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DVulkanRegistry_DIR=${PACKAGE_PREFIX}/share/vulkan/registry \
+    -DVULKAN_HEADERS_INSTALL_DIR=${PACKAGE_PREFIX} \
     ${CMAKE_XCB_CMD}
