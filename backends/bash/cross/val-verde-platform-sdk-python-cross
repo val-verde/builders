@@ -22,6 +22,8 @@ function package-install-completion-callback() {
           ${INSTALL_PREFIX}/bin/`package-get-filename python EXECUTABLE HOST`
 }
 
+${MKDIR} -p ${STAGE_ROOT}/Modules
+
 ENSURE_PIP=no
 HAVE_ALARM=yes
 HAVE_CLOCK_API=yes
@@ -54,6 +56,19 @@ if [ "${HOST_OS}" = "mingw32" ]; then
     HAVE_ALARM=no
     HAVE_CLOCK_API=no
     HAVE_DEV_PTMX=no
+
+    ${ECHO} '\
+nt -DPy_BUILD_CORE_BUILTIN -I$(srcdir)/Include/internal posixmodule.c # posix (UNIX) system calls
+_overlapped -DPy_BUILD_CORE_BUILTIN -I$(srcdir)/Include/internal overlapped.c # _overlapped
+_winapi -DPy_BUILD_CORE_BUILTIN -I$(srcdir)/Include/internal _winapi.c # _winapi
+msvcrt -DPy_BUILD_CORE_BUILTIN -I$(srcdir)/Include/internal ../PC/msvcrtmodule.c # msvcrt
+winreg -DPy_BUILD_CORE_BUILTIN -I$(srcdir)/Include/internal ../PC/winreg.c # winreg
+winsound -DPy_BUILD_CORE_BUILTIN -I$(srcdir)/Include/internal -lwinmm ../PC/winsound.c # winsound
+' > ${STAGE_ROOT}/Modules/Setup.local
+else
+    ${ECHO} '\
+posix -DPy_BUILD_CORE_BUILTIN -I$(srcdir)/Include/internal posixmodule.c # posix (UNIX) system calls
+' > ${STAGE_ROOT}/Modules/Setup.local
 fi
 
 export-compiler-environment
