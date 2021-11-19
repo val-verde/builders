@@ -1417,7 +1417,7 @@
         "sourceType": "git",
         "sourcePackageName": "node",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "16",
+        "sourcePackageVersion": "17",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
