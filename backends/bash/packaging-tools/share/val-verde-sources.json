@@ -785,6 +785,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "isl",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "itstool",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2",
@@ -2794,13 +2803,6 @@
         "sourceBranchIndicator": "wget-xz",
         "sourcePackageVersion": "1.48.3",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "isl",
-        "sourceBranchIndicator": "wget-bz2",
-        "sourcePackageVersion": "0.24",
-        "sourcePackageUrl": "http://isl.gforge.inria.fr/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.bz2"
     },
     {
         "sourceType": "other",
