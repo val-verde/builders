@@ -1,0 +1,55 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Configure the build components
+${MKDIR} -p ${INSTALL_PREFIX}/lib/pkgconfig
+${ECHO} "
+V=${SOURCE_PACKAGE_VERSION}
+R=${SOURCE_PACKAGE_VERSION}
+
+prefix=${PACKAGE_PREFIX}
+INSTALL_INC=\${prefix}/include
+INSTALL_LIB=\${prefix}/lib
+exec_prefix=\${prefix}
+libdir=\${exec_prefix}/lib
+includedir=\${prefix}/include
+
+Name: libpcre
+Description: PCRE - Perl compatible regular expressions C library with 8 bit character support
+Version: \${R}
+Requires:
+Libs: -L\${libdir} -lpcre
+Cflags: -I\${includedir}
+" > ${INSTALL_PREFIX}/lib/pkgconfig/libpcre.pc
+
+if [ "${HOST_OS}" = "android" ] ||
+   [ "${HOST_OS}" = "mingw32" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    HAVE_STRTOQ=FALSE
+else
+    HAVE_STRTOQ=TRUE
+fi
+
+package-cmake-install-archive \
+    -DBUILD_SHARED_LIBS=TRUE \
+    -DHAVE_STRTOQ=${HAVE_STRTOQ} \
+    -DPCRE_BUILD_PCRE8=TRUE \
+    -DPCRE_BUILD_PCRE16=TRUE \
+    -DPCRE_BUILD_PCRE32=TRUE \
+    -DPCRE_BUILD_PCRECPP=TRUE \
+    -DPCRE_BUILD_PCREGREP=TRUE \
+    -DPCRE_BUILD_TESTS=FALSE \
+    -DPCRE_SUPPORT_JIT=FALSE \
+    -DPCRE_SUPPORT_LIBBZ2=FALSE \
+    -DPCRE_SUPPORT_LIBEDIT=FALSE \
+    -DPCRE_SUPPORT_LIBREADLINE=FALSE \
+    -DPCRE_SUPPORT_LIBZ=TRUE \
+    -DPCRE_SUPPORT_PCREGREP_JIT=FALSE \
+    -DPCRE_SUPPORT_UNICODE_PROPERTIES=TRUE \
+    -DPCRE_SUPPORT_UTF=TRUE \
+    -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZLIB_LIBRARY=`package-get-path z SHARED HOST`

@@ -8,4 +8,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 # Invoke one-shot template for cmake/install
 package-cmake-install-archive \
     -DAWK=${GAWK} \
-    -DPNG_ARM_NEON=on
+    -DPNG_ARM_NEON=on \
+    -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZLIB_LIBRARY_DEBUG=`package-get-path z SHARED HOST` \
+    -DZLIB_LIBRARY_RELEASE=`package-get-path z SHARED HOST`

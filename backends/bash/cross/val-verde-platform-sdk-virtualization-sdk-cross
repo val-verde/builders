@@ -8,16 +8,22 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 # spice-protocol build
 package-invoke-builder spice-protocol-cross 0
 
-# spice build
-package-invoke-builder spice-cross 0
-
 if [ "${HOST_OS}" = "android" ] ||
    [ "${HOST_OS}" = "gnu" ] ||
    [ "${HOST_OS}" = "macos" ] ||
    [ "${HOST_OS}" = "musl" ]; then
+    # spice build
+    package-invoke-builder spice-cross 0
+
     # virglrenderer build
     package-invoke-builder virglrenderer-cross 0
 fi
 
 # qemu build
 package-invoke-builder qemu-cross 6
+
+
+if [ "${HOST_OS}" = "gnu" ]; then
+    # box64 build
+    package-invoke-builder box64-cross 0
+fi

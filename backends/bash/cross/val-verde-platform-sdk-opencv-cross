@@ -32,6 +32,9 @@ package-cmake-install-archive \
     -DBUILD_TESTS=FALSE \
     -DCCACHE_PROGRAM=`package-get-path ccache EXECUTABLE BUILD` \
     -DHAVE_CPU_NEON_SUPPORT=${HAVE_CPU_NEON_SUPPORT} \
+    -DJPEG_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DJPEG_LIBRARY_DEBUG=`package-get-path jpeg STATIC HOST` \
+    -DJPEG_LIBRARY_RELEASE=`package-get-path jpeg STATIC HOST` \
     -DProtobuf_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DProtobuf_LIBRARY_DEBUG=`package-get-path protobuf SHARED HOST` \
     -DProtobuf_LIBRARY_RELEASE=`package-get-path protobuf SHARED HOST` \
@@ -40,7 +43,13 @@ package-cmake-install-archive \
     -DProtobuf_PROTOC_EXECUTABLE=`package-get-path protoc EXECUTABLE BUILD` \
     -DProtobuf_PROTOC_LIBRARY_DEBUG=`package-get-path protoc SHARED HOST` \
     -DProtobuf_PROTOC_LIBRARY_RELEASE=`package-get-path protoc SHARED HOST` \
+    -DPNG_PNG_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DPNG_LIBRARY_DEBUG=`package-get-path png SHARED HOST` \
+    -DPNG_LIBRARY_RELEASE=`package-get-path png SHARED HOST` \
     -DPYTHON3_INCLUDE_PATH=${PACKAGE_PREFIX}/include/python${PYTHON_VERSION} \
     -DPYTHON3_LIBRARY=`package-get-path python${PYTHON_VERSION} SHARED HOST` \
     -DPROTOBUF_UPDATE_FILES=TRUE \
-    -DPYTHON3_EXECUTABLE=${PYTHON}
+    -DPYTHON3_EXECUTABLE=${PYTHON} \
+    -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZLIB_LIBRARY_DEBUG=`package-get-path z SHARED HOST` \
+    -DZLIB_LIBRARY_RELEASE=`package-get-path z SHARED HOST`

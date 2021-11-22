@@ -5,17 +5,15 @@ set -e
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-copy-source-to-staging
-
 export DEPENDS="\
     ${PACKAGE_BASE_NAME}-glslang-10-11-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-spirv-tools-2020-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-spirv-tools-2021-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-vulkan-loader-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0) \
 "
 
+# Invoke one-shot template for cmake/install
 BUILD_TYPE=${BUILD_TYPE:-Release}
 
-# Invoke one-shot template for cmake/install
 function package-install-completion-callback() {
     ${MKDIR} -p ${INSTALL_PREFIX}/lib/cmake
 
@@ -30,6 +28,8 @@ function package-install-completion-callback() {
           ${INSTALL_PREFIX}/README.md \
           ${INSTALL_PREFIX}/lib/libvulkan*
 }
+
+copy-source-to-staging
 
 if [ "${BUILD_TRIPLE}" != ${HOST_TRIPLE} ]; then
     package-rsync -ax \

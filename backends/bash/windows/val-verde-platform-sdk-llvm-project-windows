@@ -41,9 +41,12 @@ function package-install-completion-callback() {
                   ${STAGE_ROOT}/bin/llvm-windres* \
                   ${STAGE_ROOT}/bin/opt* \
                   ${INSTALL_PREFIX}/bin/
-    package-rsync -ax \
-                  ${STAGE_ROOT}/NATIVE/bin/`package-get-filename llvm-config EXECUTABLE BUILD` \
-                  ${STAGE_ROOT}/bin/`package-get-filename host-llvm-config EXECUTABLE BUILD`
+
+    if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+        package-rsync -ax \
+                      ${STAGE_ROOT}/NATIVE/bin/`package-get-filename llvm-config EXECUTABLE BUILD` \
+                      ${STAGE_ROOT}/bin/`package-get-filename host-llvm-config EXECUTABLE BUILD`
+    fi
 
     CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
     DST_CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
@@ -98,7 +101,7 @@ package-cmake-install-archive \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
     -DCLANG_DEFAULT_LINKER=lld \
     -DCLANG_DEFAULT_RTLIB=compiler-rt \
-    -DCLANG_DEFAULT_STD_C=gnu2x \
+    -DCLANG_DEFAULT_STD_C=gnu17 \
     -DCLANG_DEFAULT_STD_CXX=gnucxx20 \
     -DCLANG_DEFAULT_UNWINDLIB=libunwind \
     -DCLANG_ENABLE_ARCMT=TRUE \
@@ -248,17 +251,21 @@ package-cmake-install-archive \
     -DLLVM_USE_RELATIVE_PATHS_IN_FILES=TRUE \
     -DLLVM_VERSION_SUFFIX="-${PACKAGE_BASE_NAME}" \
     -DLLVM_Z3_INSTALL_DIR=${PACKAGE_PLATFORM_SYSROOT} \
-    -DMLIR_ENABLE_BINDINGS_PYTHON=FALSE \
+    -DMLIR_ENABLE_BINDINGS_PYTHON=TRUE \
     -DMLIR_ENABLE_CUDA_RUNNER=FALSE \
     -DMLIR_ENABLE_SPIRV_CPU_RUNNER=TRUE \
     -DMLIR_ENABLE_VULKAN_RUNNER=TRUE \
+    -DOpenCL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DOpenCL_LIBRARY=`package-get-path OpenCL SHARED HOST` \
     -DPython3_EXECUTABLE=${PYTHON} \
     -DPOLLY_ENABLE_GPGPU_CODEGEN=FALSE \
+    -DPYTHON_HOME=${PACKAGE_PREFIX} \
     -DSANITIZER_CXX_ABI=libc++ \
     -DVulkan_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DVulkan_LIBRARY=`package-get-path vulkan-1 SHARED HOST` \
     -DZ3_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DZ3_LIBRARIES=`package-get-path z3 SHARED HOST` \
     -DZ3_RETURNCODE=0 \
-    -DZ3_RETURNCODE__TRYRUN_OUTPUT=4.8.12 \
+    -DZ3_RETURNCODE__TRYRUN_OUTPUT=4.8.13 \
     -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DZLIB_LIBRARY_RELEASE=`package-get-path zlib SHARED HOST`

@@ -104,17 +104,18 @@ exec ${host_tool} ${!host_tool_flags} \"\${@}\"
 }
 
 function create-indirect-pkg-config() {
-    host_pkg_config_path=${1}
-    wrapper_name=${2}
+    SPECIFIED_PKG_CONFIG_LIBDIR=${1}
+    WRAPPER_NAME=${2}
 
     ${ECHO} "\
 #!/bin/bash
 
 set -e
 
-PKG_CONFIG_PATH=\"${!host_pkg_config_path}\" exec ${PKG_CONFIG} \"\${@}\"
-" > ${wrapper_name}
-    ${CHMOD} +x ${wrapper_name}
+PKG_CONFIG_LIBDIR=\"${!SPECIFIED_PKG_CONFIG_LIBDIR}\" \
+exec ${PKG_CONFIG} \"\${@}\"
+" > ${WRAPPER_NAME}
+    ${CHMOD} +x ${WRAPPER_NAME}
 }
 
 function export-compiler-environment() {
@@ -149,13 +150,18 @@ function export-compiler-environment-for-build-tools() {
     export NODE=${NODE:-${BINDIR}/node}
     export PYTHON=${PYTHON:-${BINDIR}/python}
 
-    export PKG_CONFIG=${PKG_CONFIG:-${BINDIR}/pkg-config}
-    export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-${PACKAGE_PREFIX}/lib/pkgconfig:${PACKAGE_PREFIX}/share/pkgconfig}
-    export BUILD_PKG_CONFIG_PATH=${BUILD_PKG_CONFIG_PATH:-${BUILD_PACKAGE_PREFIX}/lib/pkgconfig:${BUILD_PACKAGE_PREFIX}/share/pkgconfig}
+    export \
+        PKG_CONFIG=${PKG_CONFIG:-${BINDIR}/pkg-config} \
+        PKG_CONFIG_LIBDIR=${PKG_CONFIG_LIBDIR:-${PACKAGE_PREFIX}/lib/pkgconfig:${PACKAGE_PREFIX}/share/pkgconfig} \
+        BUILD_PKG_CONFIG_LIBDIR=${BUILD_PKG_CONFIG_LIBDIR:-${BUILD_PACKAGE_PREFIX}/lib/pkgconfig:${BUILD_PACKAGE_PREFIX}/share/pkgconfig}
 
     if [ "${SYSROOT}" = "/" ]; then
-        export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:/usr/lib/${BUILD_TRIPLE}/pkgconfig:/usr/share/pkgconfig
+        export PKG_CONFIG_LIBDIR=${PKG_CONFIG_LIBDIR}:/usr/lib/${BUILD_TRIPLE}/pkgconfig:/usr/share/pkgconfig
     fi
+
+    export \
+        BUILD_PKG_CONFIG_PATH=${BUILD_PKG_CONFIG_LIBDIR} \
+        PKG_CONFIG_PATH=${PKG_CONFIG_LIBDIR}
 
     if [ "${BUILD_OS}" = "android" ] ||
        [ "${BUILD_OS}" = "gnu" ] ||
@@ -203,15 +209,12 @@ function export-compiler-environment-for-c-and-cxx-variant() {
 
     if [ -n "${USE_GCC}" ]; then
         C_COMPILER=gcc
-        CPP_COMPILER=${CPP_COMPILER:-cpp}
 
         DISABLE_COMPILER_TARGET=TRUE
         DISABLE_FUSE_LD=TRUE
         DISABLE_POLLY=TRUE
         DISABLE_SOUPER=TRUE
         DISABLE_UNUSED_ARGUMENTS=TRUE
-    else
-        CPP_COMPILER=${CPP_COMPILER:-${C_COMPILER}-cpp}
     fi
 
     FLANG=${FLANG:-`package-get-path flang EXECUTABLE BUILD`}
@@ -221,6 +224,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     TOOL_CCLD=${ENV_PREFIX}CCLD
     TOOL_CPP=${ENV_PREFIX}CPP
     TOOL_CXX=${ENV_PREFIX}CXX
+    TOOL_CXXCPP=${ENV_PREFIX}CXXCPP
     TOOL_CXXFILT=${ENV_PREFIX}CXXFILT
     TOOL_CXXLD=${ENV_PREFIX}CXXLD
     TOOL_DLLTOOL=${ENV_PREFIX}DLLTOOL
@@ -257,8 +261,9 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     export ${TOOL_AS}="${!TOOL_AS:-`package-get-path ${C_COMPILER} EXECUTABLE BUILD`}"
     export ${TOOL_CC}="${!TOOL_CC:-`package-get-path ${C_COMPILER} EXECUTABLE BUILD`}"
     export ${TOOL_CCLD}="${!TOOL_CCLD:-${!TOOL_CC}}"
-    export ${TOOL_CPP}="${!TOOL_CPP:-`package-get-path ${CPP_COMPILER} EXECUTABLE BUILD`}"
+    export ${TOOL_CPP}=${!TOOL_CPP:-"${!TOOL_CC} -E"}
     export ${TOOL_CXX}="${!TOOL_CXX:-`package-get-path ${CXX_COMPILER} EXECUTABLE BUILD`}"
+    export ${TOOL_CXXCPP}=${!TOOL_CXXCPP:-"${!TOOL_CXX} -E"}
     export ${TOOL_CXXFILT}="${!TOOL_CXXFILT:-`package-get-path llvm-cxxfilt EXECUTABLE BUILD`}"
     export ${TOOL_CXXLD}="${!TOOL_CXXLD:-${!TOOL_CXX}}"
     export ${TOOL_DLLTOOL}="${!TOOL_DLLTOOL:-`package-get-path llvm-dlltool EXECUTABLE BUILD`}"
@@ -509,6 +514,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     TOOL_CFLAGS=${ENV_PREFIX}CFLAGS
     TOOL_CCLDFLAGS=${ENV_PREFIX}CCLDFLAGS
     TOOL_CPPFLAGS=${ENV_PREFIX}CPPFLAGS
+    TOOL_CXXCPPFLAGS=${ENV_PREFIX}CXXCPPFLAGS
     TOOL_CXXFLAGS=${ENV_PREFIX}CXXFLAGS
     TOOL_CXXLDFLAGS=${ENV_PREFIX}CXXLDFLAGS
     TOOL_LDFLAGS=${ENV_PREFIX}LDFLAGS
@@ -566,6 +572,10 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         ${!TOOL_COMMON_CFLAGS} \
         ${OPTIMIZATION_CFLAG} \
         ${!TOOL_CPPFLAGS} \
+    " | ${XARGS}`"
+    export ${TOOL_CXXCPPFLAGS}="`${ECHO} "\
+        ${!TOOL_CPPFLAGS} \
+        ${!TOOL_CXXCPPFLAGS} \
     " | ${XARGS}`"
     export ${TOOL_CXXFLAGS}="`${ECHO} "\
         ${!TOOL_CFLAGS} \
@@ -687,11 +697,26 @@ function export-compiler-environment-for-go() {
 
 function export-compiler-environment-for-python() {
     PYTHON_HOST_OS=${HOST_OS}
+    PYTHON_LIBS=
     PYTHON_PLATFORM=${HOST_KERNEL}
 
     if [ "${HOST_OS}" = "macos" ]; then
         PYTHON_HOST_OS="${HOST_OS}${HOST_OS_API_LEVEL}"
+        PYTHON_LIBS=`${ECHO} "\
+            -lpython${PYTHON_VERSION} \
+            ${PYTHON_LIBS} \
+        " | ${XARGS}`
         PYTHON_PLATFORM=${DARWIN_OS}
+    elif [ "${HOST_OS}" = "mingw32" ]; then
+        PYTHON_PLATFORM=win32
+        PYTHON_HOST_OS=windows-gnu
+        PYTHON_LIBS=`${ECHO} "\
+            -lpathcch \
+            -lpython${PYTHON_VERSION} \
+            -lversion \
+            -lws2_32 \
+            ${PYTHON_LIBS} \
+        " | ${XARGS}`
     elif [ "${HOST_OS}" = "musl" ]; then
         PYTHON_HOST_OS=gnu
     fi
@@ -699,6 +724,8 @@ function export-compiler-environment-for-python() {
     export \
         _PYTHON_HOST_PLATFORM=${HOST_KERNEL}-${HOST_PROCESSOR} \
         _PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata__${PYTHON_PLATFORM}_${HOST_PROCESSOR}-${HOST_KERNEL}-${PYTHON_HOST_OS} \
+        CCSHARED="${CC} -pthread -shared ${CCFLAGS}" \
+        LDSHARED="${CCLD} -pthread -shared ${CCLDFLAGS} ${PYTHON_LIBS}" \
         PYTHONHOME=${PACKAGE_PREFIX}:${BUILD_PACKAGE_PREFIX} \
         PYTHONPATH=${BUILD_PACKAGE_PREFIX}/lib/python${PYTHON_VERSION}
 }
@@ -776,6 +803,8 @@ function generate-compiler-tools-variant() {
     TOOL_CPP=${ENV_PREFIX}CPP
     TOOL_CPPFLAGS=${ENV_PREFIX}CPPFLAGS
     TOOL_CXX=${ENV_PREFIX}CXX
+    TOOL_CXXCPP=${ENV_PREFIX}CXXCPP
+    TOOL_CXXCPPFLAGS=${ENV_PREFIX}CXXCPPFLAGS
     TOOL_CXXFLAGS=${ENV_PREFIX}CXXFLAGS
     TOOL_CXXLD=${ENV_PREFIX}CXXLD
     TOOL_CXXLDFLAGS=${ENV_PREFIX}CXXLDFLAGS
@@ -796,6 +825,7 @@ function generate-compiler-tools-variant() {
     create-host-tool "${!TOOL_CCLD}" ${ENV_PREFIX}CCLDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang
     create-host-tool "${!TOOL_CPP}" ${ENV_PREFIX}CPPFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang-cpp
     create-host-tool "${!TOOL_CXX}" ${ENV_PREFIX}CXXFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang++
+    create-host-tool "${!TOOL_CXXCPP}" ${ENV_PREFIX}CXXCPPFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang-cpp++
     create-host-tool "${!TOOL_CXXLD}" ${ENV_PREFIX}CCLDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang++
     create-host-tool "${!TOOL_LD}" ${ENV_PREFIX}LDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld
     create-host-tool "${!TOOL_RC}" ${ENV_PREFIX}RCFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-rc
@@ -810,6 +840,8 @@ function generate-compiler-tools-variant() {
     export ${TOOL_CPP}=${!TOOL_CC}-cpp
     unset ${TOOL_CPPFLAGS}
     export ${TOOL_CXX}=${!TOOL_CC}++
+    export ${TOOL_CXXCPP}=${!TOOL_CPP}++
+    unset ${TOOL_CXXCPPFLAGS}
     export ${TOOL_CXXFLAGS}="${OPTIMIZATION_CFLAG}"
     export ${TOOL_CXXLD}=${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang++
     export ${TOOL_CXXLDFLAGS}="${!PACKAGE_PREFIX_LIBDIR_CFLAG_VAR} ${OPTIMIZATION_LDFLAG} ${STRIP_CFLAG}"
@@ -1038,6 +1070,7 @@ ${CMAKE} \\
         CCLDFLAGS \
         CFLAGS \
         CPPFLAGS \
+        CXXCPPFLAGS \
         CXXLDFLAGS \
         CXXFLAGS \
         LDFLAGS \
@@ -1097,7 +1130,7 @@ function package-cmake-invocation-arguments-for-variant() {
     TOOL_OBJCXX=${ENV_PREFIX}OBJCXX
     TOOL_OBJCXXFLAGS=${ENV_PREFIX}OBJCXXFLAGS
     TOOL_OBJDUMP=${ENV_PREFIX}OBJDUMP
-    TOOL_PKG_CONFIG_PATH=${ENV_PREFIX}PKG_CONFIG_PATH
+    TOOL_PKG_CONFIG_LIBDIR=${ENV_PREFIX}PKG_CONFIG_LIBDIR
     TOOL_RANLIB=${ENV_PREFIX}RANLIB
     TOOL_RC=${ENV_PREFIX}RC
     TOOL_READELF=${ENV_PREFIX}READELF
@@ -1214,7 +1247,8 @@ function package-cmake-invocation-arguments-for-variant() {
 -DCMAKE_OBJCXX_LINK_EXECUTABLE=\""${!TOOL_CXXLD} <FLAGS> <CMAKE_OBJCXX_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>"\" \
 -DCMAKE_OBJCXX_STANDARD=${CXX_STANDARD} \
 -DCMAKE_OBJDUMP=${!TOOL_OBJDUMP} \
--DCMAKE_PREFIX_PATH=\""${!TOOL_PKG_CONFIG_PATH}"\" \
+-DCMAKE_POLICY_DEFAULT_CMP0056=NEW \
+-DCMAKE_PREFIX_PATH=\""${!TOOL_PKG_CONFIG_LIBDIR}"\" \
 -DCMAKE_RANLIB=${!TOOL_RANLIB} \
 -DCMAKE_RC_COMPILER=${!TOOL_RC} \
 -DCMAKE_RC_FLAGS=\""${!TOOL_RCFLAGS}"\" \
@@ -1302,6 +1336,8 @@ function package-configure-invocation() {
     CPP_FOR_BUILD=${BUILD_CPP} \
     CPPFLAGS_FOR_BUILD=${BUILD_CPPFLAGS} \
     CXX_FOR_BUILD=${BUILD_CXX} \
+    CXXCPP_FOR_BUILD=${BUILD_CXXCPP} \
+    CXXCPPFLAGS_FOR_BUILD=${BUILD_CXXCPPFLAGS} \
     CXXFLAGS_FOR_BUILD=${BUILD_CXXFLAGS} \
     LD_FOR_BUILD=${BUILD_LD} \
     LDFLAGS_FOR_BUILD=${BUILD_LDFLAGS} \
@@ -1525,7 +1561,7 @@ function package-meson-build-invocation() {
         MESON_CXX_STANDARD=none
     fi
 
-    HOST_CMAKE_PREFIXES="${PACKAGE_PREFIX}/lib/cmake:${PKG_CONFIG_PATH}"
+    HOST_CMAKE_PREFIXES="${PACKAGE_PREFIX}/lib/cmake:${PKG_CONFIG_LIBDIR}"
     HOST_C_ARGS=`${ECHO} [\'${CFLAGS}\'] | ${SED} "s/ /','/g"`
     HOST_C_LINK_ARGS=`${ECHO} [\'${LDFLAGS}\'] | ${SED} "s/ /','/g"`
     HOST_CMAKE_PREFIX_PATH=`${ECHO} [\'${HOST_CMAKE_PREFIXES}\'] | ${SED} "s/:/','/g"`
@@ -1566,9 +1602,11 @@ function package-meson-build-invocation() {
         export STRIP_FOR_BUILD=${BUILD_STRIP}
         export STRINGS_FOR_BUILD=${BUILD_STRINGS}
 
-        create-indirect-pkg-config BUILD_PKG_CONFIG_PATH ${STAGE_ROOT}/build-pkgconfig
+        create-indirect-pkg-config BUILD_PKG_CONFIG_LIBDIR ${STAGE_ROOT}/build-pkgconfig
+        create-indirect-pkg-config PKG_CONFIG_LIBDIR ${STAGE_ROOT}/host-pkgconfig
 
         export PKG_CONFIG_FOR_BUILD=${STAGE_ROOT}/build-pkgconfig
+        export PKG_CONFIG=${STAGE_ROOT}/host-pkgconfig
     fi
 
     ${RM} -f ${CONFIG_FILE}
@@ -1646,7 +1684,7 @@ objc='${OBJC}'
 objcpp='${OBJCPP}'
 optimization='${OPTIMIZATION_LEVEL}'
 pkgconfig='${PKG_CONFIG}'
-pkg_config_path='${PKG_CONFIG_PATH}'
+pkg_config_path='${PKG_CONFIG_LIBDIR}'
 python='${PYTHON}'
 nm='${NM}'
 ranlib='${RANLIB}'
@@ -1714,12 +1752,14 @@ function package-python-build() {
 
     TOOL_LOG=${STAGE_ROOT}/builder-invocation \
     tool-log ${PYTHON} ${SETUP_PY} build -b ${STAGE_ROOT} \
-                                         -j ${NUM_PROCESSORS}
+                                         -j ${NUM_PROCESSORS} \
+                                         ${@}
 
     TOOL_LOG=${STAGE_ROOT}/builder-installation \
     tool-log ${PYTHON} ${SETUP_PY} install --prefix ${INSTALL_PREFIX} \
                                            --record ${INSTALLED_FILE_LIST} \
-                                           --single-version-externally-managed
+                                           --single-version-externally-managed \
+                                           ${@}
 }
 
 function package-quote-arguments() {
@@ -1760,7 +1800,7 @@ function package-swift-build() {
     export-compiler-environment
 
     SWIFT_BUILD_TYPE=${SWIFT_BUILD_TYPE:-release}
-    TEMP_FILE=`mktemp`
+    SWIFT_DESTINATION_JSON=${SWIFT_DESTINATION_JSON:-${STAGE_ROOT}/builder-swift-destination.json}
 
     if [ -n "${HOST_ARCH_VECTOR_SIZE}" ]; then
         HOST_VECTOR_CFLAG="-mllvm\", \"-force-vector-width=${HOST_ARCH_VECTOR_SIZE}"
@@ -1845,6 +1885,8 @@ function package-swift-build() {
     fi
 
     if [ "${SYSROOT}" != "${PACKAGE_PLATFORM_SYSROOT}" ]; then
+        ISYSTEM_CFLAG="-isystem\", \"${PACKAGE_PREFIX}/include"
+        SYSTEM_INCLUDE_SWIFTCFLAG="-I${PACKAGE_PREFIX}/include"
         SWIFTMODULE_PATH_SWIFTCFLAG="-I${PACKAGE_PREFIX}/lib/swift/${SWIFT_HOST_OS}"
     fi
 
@@ -1873,12 +1915,14 @@ function package-swift-build() {
             \"${FLTO_CFLAG}\", \n\
             \"${FPIC_CFLAG}\", \n\
             \"${HOST_VECTOR_CFLAG}\", \n\
+            \"${ISYSTEM_CFLAG}\", \n\
             \"${LIBSOUPER_CFLAGS}\", \n\
             \"${POLLY_CFLAG}\" \n\
         ], \n\
         \"extra-cpp-flags\": [ \n\
         ], \n\
         \"extra-linker-flags\": [ \n\
+            \"-L${PACKAGE_PREFIX}/lib\", \n\
             \"-O${LINKER_OPTIMIZATION_LEVEL}\", \n\
             \"${DISABLE_LLVM_VERIFIER_CFLAG}\", \n\
             \"${FLTO_CFLAG}\", \n\
@@ -1888,25 +1932,45 @@ function package-swift-build() {
             \"-resource-dir\", \"${PACKAGE_PREFIX}/lib/swift\", \n\
             \"-sdk\", \"${SYSROOT}\", \n\
             \"-target-cpu\", \"${HOST_CPU}\", \n\
-            \"-I${PACKAGE_PREFIX}/include\", \n\
             \"-L${PACKAGE_PREFIX}/lib\", \n\
             \"-O${SWIFT_OPTIMIZATION_LEVEL}\", \n\
             \"-Xfrontend\", \"-disable-llvm-verify\", \n\
+            \"${SYSTEM_INCLUDE_SWIFTCFLAG}\", \n\
             \"${SWIFTMODULE_PATH_SWIFTCFLAG}\", \n\
             \"${FLTO_SWIFTCFLAG}\", \n\
             \"${HOST_VECTOR_SWIFTCFLAG}\", \n\
             \"${POLLY_SWIFTCFLAG}\" \n\
         ] \n\
     } \n\
-    " > ${TEMP_FILE}
+    " > ${SWIFT_DESTINATION_JSON}
 
     TOOL_LOG=${STAGE_ROOT}/builder-invocation \
     tool-log ${BINDIR}/swift \
         build \
         --build-path ${STAGE_ROOT} \
         --configuration ${SWIFT_BUILD_TYPE} \
-        --destination ${TEMP_FILE} \
+        --destination ${SWIFT_DESTINATION_JSON} \
+        -Xmanifest -I${BUILD_PACKAGE_PREFIX}/include \
+        -Xmanifest -L${BUILD_PACKAGE_PREFIX}/lib \
         ${SWIFT_BUILD_FLAGS}
+}
+
+function package-yarn-install-archive() {
+    YARN_INSTALL_PREFIX=${YARN_INSTALL_PREFIX:${INSTALL_PREFIX}/${SOURCE_PACKAGE_NAME}}
+
+    package-push-directory ${STAGE_ROOT}
+        copy-source-to-staging
+        export-compiler-environment
+        generate-compiler-tools
+        yarn-build
+    package-pop-directory
+
+    package-rsync -ax \
+                  ${STAGE_ROOT}/ \
+                  ${INSTALL_PREFIX}/
+
+    INSTALL_PREFIX=${YARN_INSTALL_PREFIX} \
+    package-invoke-archive-install
 }
 
 function rpath-fixup() {

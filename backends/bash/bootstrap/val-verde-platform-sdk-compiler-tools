@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Build and install the package
+${MKDIR} -p ${INSTALL_PREFIX}/bin/
+
+package-rsync -ax \
+              ${SOURCE_ROOT}/bin \
+              ${INSTALL_PREFIX}/
+${CHMOD} +x ${INSTALL_PREFIX}/bin/*
+
+package-invoke-archive-install

@@ -2,85 +2,101 @@
 
 set -e
 
-export \
-    APT=/usr/bin/apt \
-    AUTOGEN=/usr/bin/autogen \
-    AUTORECONF=/usr/bin/autoreconf \
-    AUTOUPDATE=/usr/bin/autoupdate \
-    BASENAME=/usr/bin/basename \
-    BASH=/usr/bin/bash \
-    BISON=/usr/bin/bison \
-    CHMOD=/usr/bin/chmod \
-    CP=/usr/bin/cp \
-    CURL=/usr/bin/curl \
-    CUT=/usr/bin/cut \
-    DNF=/usr/bin/dnf \
-    DPKG=/usr/bin/dpkg \
-    ECHO=/usr/bin/echo \
-    FIND=/usr/bin/find \
-    GAWK=/usr/bin/gawk \
-    GETTEXT=/usr/bin/gettext \
-    GIT=/usr/bin/git \
-    GPERF=/usr/bin/gperf \
-    GREP=/usr/bin/grep \
-    HELP2MAN=/usr/bin/true \
-    INSTALL=/usr/bin/install \
-    LESS=/usr/bin/less \
-    LN=/usr/bin/ln \
-    LS=/usr/bin/ls \
-    M4=/usr/bin/m4 \
-    MAKE=/usr/bin/make \
-    MAKEINFO=/usr/bin/true \
-    MESON=/usr/bin/meson \
-    MKDIR=/usr/bin/mkdir \
-    MV=/usr/bin/mv \
-    NINJA=/usr/bin/ninja \
-    PERL=/usr/bin/perl \
-    PYTHON=/usr/bin/python3 \
-    READLINK=/usr/bin/readlink \
-    RM="/usr/bin/rm -f" \
-    RMDIR=/usr/bin/rmdir \
-    RPM=/usr/bin/rpm \
-    RSYNC=/usr/bin/rsync \
-    SED=/usr/bin/sed \
-    SSH=/usr/bin/ssh \
-    TAR=/usr/bin/tar \
-    TEE=/usr/bin/tee \
-    TR=/usr/bin/tr \
-    WGET=/usr/bin/wget \
-    WHICH=/usr/bin/which \
-    XARGS=/usr/bin/xargs \
-    XZ=/usr/bin/xz
-
-GUNZIP=/usr/bin/gunzip
-GZIP=/usr/bin/gzip
-UNZIP=/usr/bin/unzip
-ZIP=/usr/bin/zip
+if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
+    export \
+        APT=/usr/bin/apt \
+        AUTOGEN=/usr/bin/autogen \
+        BASENAME=/usr/bin/basename \
+        BASH=/usr/bin/bash \
+        BISON=/usr/bin/bison \
+        CHMOD=/usr/bin/chmod \
+        CP=/usr/bin/cp \
+        CURL=/usr/bin/curl \
+        CUT=/usr/bin/cut \
+        DNF=/usr/bin/dnf \
+        DPKG=/usr/bin/dpkg \
+        ECHO=/usr/bin/echo \
+        FIND=/usr/bin/find \
+        GAWK=/usr/bin/gawk \
+        GETTEXT=/usr/bin/gettext \
+        GIT=/usr/bin/git \
+        GPERF=/usr/bin/gperf \
+        GREP=/usr/bin/grep \
+        INSTALL=/usr/bin/install \
+        LESS=/usr/bin/less \
+        LN=/usr/bin/ln \
+        LS=/usr/bin/ls \
+        M4=/usr/bin/m4 \
+        MAKE=/usr/bin/make \
+        MAKEINFO=/usr/bin/true \
+        MESON=/usr/bin/meson \
+        MKDIR=/usr/bin/mkdir \
+        MV=/usr/bin/mv \
+        NINJA=/usr/bin/ninja \
+        PERL=/usr/bin/perl \
+        PYTHON=/usr/bin/python3 \
+        READLINK=/usr/bin/readlink \
+        RM="/usr/bin/rm -f" \
+        RMDIR=/usr/bin/rmdir \
+        RPM=/usr/bin/rpm \
+        RSYNC=/usr/bin/rsync \
+        SED=/usr/bin/sed \
+        SSH=/usr/bin/ssh \
+        TAR=/usr/bin/tar \
+        TEE=/usr/bin/tee \
+        TR=/usr/bin/tr \
+        WGET=/usr/bin/wget \
+        WHICH=/usr/bin/which \
+        XARGS=/usr/bin/xargs \
+        XZ=/usr/bin/xz
+    GUNZIP=/usr/bin/gunzip
+    GZIP=/usr/bin/gzip
+    UNZIP=/usr/bin/unzip
+    ZIP=/usr/bin/zip
+fi
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
+# glibc build phase
+SPECIFIED_SYSROOT=${SYSROOT}
+unset SYSROOT
+
+if [ "${BUILD_TRIPLE}" = ${HOST_TRIPLE} ]; then
+    SPECIFIED_BUILD_SYSROOT=${BUILD_SYSROOT}
+    unset BUILD_SYSROOT
+fi
+
 # kernel headers builds
 package-invoke-builder kernel-headers-cross 5
 
+# glibc runtime build
+package-invoke-builder glibc-runtime 2 no-install
+
+# glibc interface build
+package-invoke-builder glibc-interface 2
+
+PACKAGES_TO_MANAGE=( 'glibc-runtime-2' 'HOST' )
+package-invoke-archive-action install ${PACKAGES_TO_MANAGE[@]}
+
+# glibc build phase complete
+export SYSROOT=${SPECIFIED_SYSROOT}
+unset SPECIFIED_SYSROOT
+
+if [ "${BUILD_TRIPLE}" = ${HOST_TRIPLE} ]; then
+    export BUILD_SYSROOT=${SPECIFIED_BUILD_SYSROOT}
+    unset SPECIFIED_BUILD_SYSROOT
+fi
+
 # autoconf build
 package-invoke-builder autoconf-cross 2
-unset \
-    AUTORECONF \
-    AUTOUPDATE
 
 # automake build
 package-invoke-builder automake-cross 1
 
 # autoconf-archive build
 package-invoke-builder autoconf-archive-cross 2021
-
-# glibc interface build
-package-invoke-builder glibc-interface 2
-
-# glibc runtime build
-package-invoke-builder glibc-runtime 2
 
 # libxcrypt build
 package-invoke-builder libxcrypt-cross 4
@@ -110,7 +126,6 @@ unset UNZIP
 
 # help2man build
 package-invoke-builder help2man-cross 1
-unset HELP2MAN
 
 # gperf build
 package-invoke-builder gperf-cross 3
@@ -128,7 +143,7 @@ package-invoke-builder libffi-cross 3
 
 # icu build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
-package-invoke-builder icu4c-cross 69
+package-invoke-builder icu4c-cross 70
 
 # libunistring build
 package-invoke-builder libunistring-cross 0
@@ -164,8 +179,11 @@ package-invoke-builder libxml2-cross 2 bootstrap-only
 # gettext build
 package-invoke-builder gettext-cross 0
 
-# texinfo build
-package-invoke-builder texinfo-cross 6
+if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
+    # texinfo build
+    package-invoke-builder texinfo-cross 6
+fi
+
 unset MAKEINFO
 
 # guile build
@@ -187,8 +205,11 @@ unset NINJA
 package-invoke-builder file-cross 5
 unset FILE
 
-# perl build
-package-invoke-builder perl-cross 5
+if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
+    # perl build
+    package-invoke-builder perl-cross 5
+fi
+
 unset PERL
 
 # libedit build
@@ -236,8 +257,10 @@ package-invoke-builder krb5-cross 1
 # expat build
 package-invoke-builder expat-cross 2
 
-# perl-xml-parser build
-package-invoke-builder perl-xml-parser-cross 2
+if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
+    # perl-xml-parser build
+    package-invoke-builder perl-xml-parser-cross 2
+fi
 
 # gawk build
 package-invoke-builder gawk-cross 5
@@ -316,8 +339,10 @@ unset SED
 package-invoke-builder bison-cross 3
 unset BISON
 
-# flex build
-package-invoke-builder flex-cross 2
+if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
+    # flex build
+    package-invoke-builder flex-cross 2
+fi
 
 # jq build
 package-invoke-builder jq-cross 1
@@ -384,16 +409,52 @@ package-invoke-builder lua-cross 5
 package-invoke-builder wget-cross 1
 unset WGET
 
-# python build
-ENABLE_STAGE_ROOT_BUILD=TRUE \
-package-invoke-builder python-cross 3
-unset PYTHON
+if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
+    # python bootstrap build (with pip)
+    DEB_PATH=${BOOTSTRAP_DEB_PATH} \
+    ENABLE_PIP=TRUE \
+    ENABLE_STAGE_ROOT_BUILD=TRUE \
+    package-invoke-builder python-cross 3
+    unset PYTHON
+
+    # python-setuptools build
+    DISABLE_INSTALL_DEB=TRUE \
+    package-invoke-builder python-setuptools-cross 59
+
+    # python-pip build
+    DISABLE_INSTALL_DEB=TRUE \
+    package-invoke-builder python-pip-cross 21
+
+    # python build (without pip)
+    ENABLE_STAGE_ROOT_BUILD=TRUE \
+    package-invoke-builder python-cross 3
+
+    # install python-pip package
+    PACKAGES_TO_MANAGE=( 'python-pip-21' 'HOST'
+                         'python-setuptools-59' 'HOST' )
+
+    package-invoke-archive-action install ${PACKAGES_TO_MANAGE[@]}
+else
+    # python build
+    ENABLE_STAGE_ROOT_BUILD=TRUE \
+    package-invoke-builder python-cross 3
+    unset PYTHON
+
+    # python-setuptools build
+    package-invoke-builder python-setuptools-cross 59
+
+    # python-pip build
+    package-invoke-builder python-pip-cross 21
+fi
 
 # libxml2 build (with python support)
 package-invoke-builder libxml2-cross 2
 
 # libxslt build
 package-invoke-builder libxslt-cross 1
+
+# libyaml build
+package-invoke-builder libyaml-cross 0
 
 # python sdk build
 package-invoke-category-builder python-sdk-cross
@@ -405,14 +466,11 @@ package-invoke-builder itstool-cross 2
 # gtk-doc build
 package-invoke-builder gtk-doc-cross 1
 
-# graphviz build
-ENABLE_STAGE_ROOT_BUILD=TRUE \
-package-invoke-builder graphviz-cross 2
-
 # libtasn1 build
 package-invoke-builder libtasn1-cross 4
 
 # p11-kit build
+DEB_PATH=${BOOTSTRAP_DEB_PATH} \
 DISABLE_SYSTEMD=TRUE \
 package-invoke-builder p11-kit-cross 0
 
@@ -438,8 +496,10 @@ package-invoke-builder strace-cross 5
 # glib build
 package-invoke-builder glib-cross 1
 
-# gobject-introspection build
-package-invoke-builder gobject-introspection-cross 1
+if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
+    # gobject-introspection build
+    package-invoke-builder gobject-introspection-cross 1
+fi
 
 # libsecret build
 package-invoke-builder libsecret-cross 0
@@ -450,8 +510,9 @@ package-invoke-builder pkg-config-cross 0
 # graphics server build
 package-invoke-category-builder graphics-server-cross
 
-# cups build
-package-invoke-builder cups-cross 2
+# graphviz build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
+package-invoke-builder graphviz-cross 2
 
 # intltool build
 package-invoke-builder intltool-cross 0
@@ -464,6 +525,9 @@ package-invoke-builder p11-kit-cross 0
 
 # dbus build
 package-invoke-builder dbus-cross 1
+
+# cups build
+package-invoke-builder cups-cross 2
 
 # util-linux build (with python and systemd support)
 package-invoke-builder util-linux-cross 2
@@ -485,6 +549,9 @@ unset RPM
 # dnf build
 package-invoke-builder dnf-cross 4
 unset DNF
+
+# alien package tool build
+package-invoke-builder alien-package-tool-cross 8
 
 # AI SDK build
 package-invoke-category-builder ai-sdk-cross
@@ -550,3 +617,9 @@ package-invoke-builder ccache-cross 4
 
 # distcc build
 package-invoke-builder distcc-cross 3
+
+# binutils-gdb build
+package-invoke-builder cross-binutils-gdb-cross 2
+
+# gcc build
+package-invoke-builder cross-gcc-cross 11

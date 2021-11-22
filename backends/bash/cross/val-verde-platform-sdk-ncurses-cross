@@ -26,9 +26,11 @@ function tool-install-invocation() {
 TIC=${TIC:-/usr/bin/tic}
 
 if [ "${HOST_OS}" = "mingw32" ]; then
+    ENABLE_OR_DISABLE_EXP_WIN32=enable
     ENABLE_OR_DISABLE_SIGWINCH=disable
     ENABLE_VERSIONED_SYMS=no
 else
+    ENABLE_OR_DISABLE_EXP_WIN32=disable
     ENABLE_OR_DISABLE_SIGWINCH=enable
     ENABLE_VERSIONED_SYMS=yes
 fi
@@ -55,6 +57,7 @@ package-stage-configure-install-archive \
     --enable-sp-funcs \
     --enable-term-driver \
     --enable-widec \
+    --${ENABLE_OR_DISABLE_EXP_WIN32}-exp-win32 \
     --with-curses-h \
     --with-cxx \
     --with-cxx-shared \

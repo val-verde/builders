@@ -64,7 +64,7 @@ package-invoke-builder libffi-cross 3
 package-invoke-builder libiconv-cross 1
 
 # android icu build
-package-invoke-builder icu4c-cross 69
+package-invoke-builder icu4c-cross 70
 
 # android libunistring build
 package-invoke-builder libunistring-cross 0
@@ -269,11 +269,20 @@ ENABLE_STAGE_ROOT_BUILD=TRUE \
 _PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
 package-invoke-builder python-cross 3
 
-# libxml2 build (with python support)
+# android python-setuptools build
+package-invoke-builder python-setuptools-cross 59
+
+# android python-pip build
+package-invoke-builder python-pip-cross 21
+
+# android libxml2 build (with python support)
 package-invoke-builder libxml2-cross 2
 
 # android libxslt build
 package-invoke-builder libxslt-cross 1
+
+# android libyaml build
+package-invoke-builder libyaml-cross 0
 
 # android python sdk build
 package-invoke-category-builder python-sdk-cross
@@ -284,9 +293,6 @@ package-invoke-builder libtasn1-cross 4
 # android p11-kit build
 DISABLE_SYSTEMD=TRUE \
 package-invoke-builder p11-kit-cross 0
-
-# android dbus build
-package-invoke-builder dbus-cross 1
 
 # android util-linux build (with python support)
 DISABLE_SYSTEMD=TRUE \
@@ -342,6 +348,9 @@ package-invoke-builder gtk-doc-cross 1
 # android graphviz build
 package-invoke-builder graphviz-cross 2
 
+# android dbus build
+package-invoke-builder dbus-cross 1
+
 # android cups build
 package-invoke-builder cups-cross 2
 
@@ -356,6 +365,12 @@ package-invoke-builder rpm-cross 4
 
 # android dnf build
 # package-invoke-builder dnf-cross 2
+
+# alien package tool build
+package-invoke-builder alien-package-tool-cross 8
+
+# AI SDK build
+package-invoke-category-builder ai-sdk-cross
 
 # android swig build
 package-invoke-builder swig-cross 4

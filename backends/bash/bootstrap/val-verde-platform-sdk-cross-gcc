@@ -1,0 +1,174 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for stage/configure/install
+function package-install-completion-callback() {
+    ${RM} -r ${INSTALL_ROOT}${CONFIGURE_PACKAGE_PREFIX}/share/info/dir
+}
+
+ENABLED_LANGUAGES="c"
+
+if [ -n "${ENABLE_BOOTSTRAP}" ]; then
+    function tool-install-invocation() {
+        INSTALL_TARGET=all-gcc \
+        tool-install
+
+        INSTALL_TARGET=install-gcc \
+        tool-install
+
+        if [ -z "${DISABLE_LIBGCC}" ]; then
+            INSTALL_TARGET=all-target-libgcc \
+            tool-install
+
+            INSTALL_TARGET=install-target-libgcc \
+            tool-install
+        fi
+    }
+
+    DISABLE_TOOL_BUILD=TRUE
+    ENABLE_OR_DISABLE_SHARED=disable
+    TOOL_INSTALL_INVOCATION=tool-install-invocation
+    WITH_OR_WITHOUT_SYSTEM_ZLIB=without
+
+    if [ -z "${DISABLE_LIBGCC}" ]; then
+        SYSROOT=${PACKAGE_PREFIX}/glibc-interface
+    fi
+else
+    ENABLE_OR_DISABLE_SHARED=enable
+    ENABLED_LANGUAGES="${ENABLED_LANGUAGES},c++,d,fortran,lto,objc,obj-c++"
+    WITH_OR_WITHOUT_SYSTEM_ZLIB=with
+fi
+
+if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+    MULTILIB_LIST="lp64"
+elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    MULTILIB_LIST="m64"
+fi
+
+ENABLE_OR_DISABLE_GCOV=enable
+
+if [ "${HOST_OS}" = "android" ]; then
+    COMMON_CFLAGS="\
+        -D__BIONIC_VERSIONER \
+        -DBIONIC_IOCTL_NO_SIGNEDNESS_OVERLOAD \
+        ${COMMON_CFLAGS} \
+    "
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    ENABLE_OR_DISABLE_GCOV=disable
+fi
+
+BUILD_COMMON_CFLAGS="\
+    -pthread \
+    -L${BUILD_PACKAGE_PREFIX}/lib \
+    ${BUILD_COMMON_CFLAGS} \
+" \
+BUILD_CXXFLAGS="\
+    -std=gnu++17 \
+    ${BUILD_CXXFLAGS} \
+" \
+COMMON_CFLAGS="\
+    -pthread \
+    -L${PACKAGE_PREFIX}/lib \
+    ${COMMON_CFLAGS} \
+" \
+CXXFLAGS="\
+    -std=gnu++17 \
+    ${CXXFLAGS} \
+" \
+export-compiler-environment
+generate-compiler-tools
+
+AS=${BUILD_PACKAGE_PREFIX}/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/bin/`package-get-filename as EXECUTABLE BUILD`
+ASFLAGS=
+BUILD_AS=${BUILD_PACKAGE_PREFIX}/${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}/bin/`package-get-filename as EXECUTABLE BUILD`
+BUILD_ASFLAGS=
+BUILD_LD=${BUILD_PACKAGE_PREFIX}/${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}/bin/`package-get-filename ld EXECUTABLE BUILD`
+BUILD_LDFLAGS=
+BUILD_OBJDUMP=${BUILD_PACKAGE_PREFIX}/${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}/bin/`package-get-filename objdump EXECUTABLE BUILD`
+LD=${BUILD_PACKAGE_PREFIX}/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/bin/`package-get-filename ld EXECUTABLE BUILD`
+LDFLAGS=
+OBJDUMP=${BUILD_PACKAGE_PREFIX}/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/bin/`package-get-filename objdump EXECUTABLE BUILD`
+
+AR=${BUILD_AR} \
+AR_FOR_TARGET=${AR} \
+AS=${BUILD_AS} \
+AS_FOR_TARGET=${AS} \
+ASFLAGS=${BUILD_ASFLAGS} \
+ASFLAGS_FOR_TARGET=${ASFLAGS} \
+BUILD_AS=${BUILD_AS} \
+BUILD_ASFLAGS=${BUILD_ASFLAGS} \
+BUILD_LD=${BUILD_LD} \
+BUILD_LDFLAGS=${BUILD_LDFLAGS} \
+CC=${BUILD_CC} \
+CC_FOR_TARGET=${CC} \
+CFLAGS=${BUILD_CFLAGS} \
+CFLAGS_FOR_TARGET=${CFLAGS} \
+CONFIGURE_PACKAGE_PLATFORM_PREFIX=${BUILD_PACKAGE_PLATFORM_SYSROOT} \
+CPP=${BUILD_CPP} \
+CPP_FOR_TARGET=${CPP} \
+CPPFLAGS=${BUILD_CPPFLAGS} \
+CPPFLAGS_FOR_TARGET=${CPPFLAGS} \
+CXX=${BUILD_CXX} \
+CXX_FOR_TARGET=${CXX} \
+CXXCPP=${BUILD_CXXCPP} \
+CXXCPP_FOR_TARGET=${CXXCPP} \
+CXXCPPFLAGS=${BUILD_CXXCPPFLAGS} \
+CXXCPPFLAGS_FOR_TARGET=${CXXCPPFLAGS} \
+CXXFLAGS=${BUILD_CXXFLAGS} \
+CXXFLAGS_FOR_TARGET=${CXXFLAGS} \
+DISABLE_AUTOUPDATE=TRUE \
+DISABLE_GENERATED_TOOLS=TRUE \
+DISABLE_LIBTOOLIZE=TRUE \
+DISABLE_TOOL_BUILD=${DISABLE_TOOL_BUILD} \
+LD=${BUILD_LD} \
+LD_FOR_TARGET=${BUILD_LD} \
+LDFLAGS=${BUILD_LDFLAGS} \
+LDFLAGS_FOR_TARGET=${LDFLAGS} \
+HOST_TRIPLE=${BUILD_TRIPLE} \
+OBJCOPY=${BUILD_OBJCOPY} \
+OBJCOPY_FOR_TARGET=${OBJCOPY} \
+OBJDUMP=${BUILD_OBJDUMP} \
+OBJDUMP_FOR_TARGET=${OBJDUMP} \
+PATH=${BUILD_PACKAGE_PREFIX}/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/bin:${PATH} \
+NM=${BUILD_NM} \
+NM_FOR_TARGET=${NM} \
+RANLIB=${BUILD_RANLIB} \
+RANLIB_FOR_TARGET=${RANLIB} \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+PACKAGE_USR_PREFIX=${BUILD_PACKAGE_USR_PREFIX}/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} \
+PKG_CONFIG=${BUILD_PKGCONFIG} \
+SOURCE_ROOT=${SOURCE_ROOT_BASE}/gcc-project-${SOURCE_PACKAGE_VERSION} \
+TOOL_INSTALL_INVOCATION=${TOOL_INSTALL_INVOCATION} \
+WINDRES=${BUILD_WINDRES} \
+WINDRES_FOR_TARGET=${WINDRES} \
+package-stage-configure-install-archive \
+    --disable-bootstrap \
+    --disable-multiarch \
+    --disable-multilib \
+    --disable-werror \
+    --enable-cet=yes \
+    --enable-default-pie \
+    --enable-languages=c \
+    --enable-large-address-aware \
+    --enable-plugin \
+    --enable-static \
+    --target=${HOST_TRIPLE} \
+    --with-as=${AS} \
+    --with-build-sysroot=${SYSROOT} \
+    --with-glibc-version=2.31 \
+    --with-gmp=${BUILD_PACKAGE_PREFIX} \
+    --with-isl=${BUILD_PACKAGE_PREFIX} \
+    --with-ld=${LD} \
+    --with-long-double-128 \
+    --with-mpfr=${BUILD_PACKAGE_PREFIX} \
+    --with-mpc=${BUILD_PACKAGE_PREFIX} \
+    --with-multilib-list=${MULTILIB_LIST} \
+    --with-program-prefix= \
+    --with-sysroot=${SYSROOT} \
+    --${ENABLE_OR_DISABLE_GCOV}-gcov \
+    --${ENABLE_OR_DISABLE_SHARED}-shared \
+    --${WITH_OR_WITHOUT_SYSTEM_ZLIB}-system-zlib

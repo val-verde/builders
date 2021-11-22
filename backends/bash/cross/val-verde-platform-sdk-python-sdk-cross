@@ -18,6 +18,9 @@ package-invoke-builder python-lxml-cross 4
 # python-mako build
 package-invoke-builder python-mako-cross 1
 
+# python-markdown build
+package-invoke-builder python-markdown-cross 3
+
 # python-markupsafe build
 package-invoke-builder python-markupsafe-cross 2
 
@@ -41,3 +44,9 @@ package-invoke-builder python-six-cross 1
 
 # python-toml build
 package-invoke-builder python-toml-cross 0
+
+# python-typogrify build
+package-invoke-builder python-typogrify-cross 2
+
+# python-yaml build
+package-invoke-builder python-yaml-cross 6

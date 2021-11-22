@@ -5,19 +5,14 @@ set -e
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-export-compiler-environment
-
 export DEPENDS="\
-    ${PACKAGE_BASE_NAME}-icu4c-69-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-icu4c-70-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-libedit-20210714-3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-libxml2-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-python-3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-util-linux-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0) \
 "
-export LLVM_SOURCE_ROOT=${SOURCE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}
-export LLVM_STAGE_ROOT=${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOST_OS_API_LEVEL}-${BUILD_CPU}
-USE_NEWPM=${USE_NEWPM:-TRUE}
 
 # Invoke one-shot template for cmake/install
 function package-install-completion-callback() {
@@ -28,6 +23,20 @@ function package-install-completion-callback() {
     rpath-fixup
 }
 
+LLVM_SOURCE_ROOT=${SOURCE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}
+LLVM_STAGE_ROOT=${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
+LLVM_NATIVE_TOOL_ROOT=${LLVM_STAGE_ROOT}
+USE_NEWPM=${USE_NEWPM:-TRUE}
+
+if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+    LLVM_NATIVE_TOOL_ROOT=${LLVM_STAGE_ROOT}/NATIVE
+    NATIVE_SWIFT_TOOLS_PATH=${BUILD_PACKAGE_PREFIX}/bin
+fi
+
+LLVM_TABLEGEN=`BINDIR=${LLVM_NATIVE_TOOL_ROOT}/bin package-get-path llvm-tblgen EXECUTABLE BUILD`
+
+export-compiler-environment
+
 CXX_STANDARD=17 \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 RPATH_COMPONENTS="\
@@ -35,9 +44,10 @@ RPATH_COMPONENTS="\
 " \
 package-cmake-install-archive \
     -DClang_DIR=${LLVM_STAGE_ROOT}/lib/cmake/clang \
-    -DICU_I18N_INCLUDE_DIRS=${BUILD_PACKAGE_PREFIX}/include \
+    -DCMAKE_Swift_COMPILER_WORKS=TRUE \
+    -DICU_I18N_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
     -DICU_I18N_LIBRARIES=`package-get-path icui18nswift SHARED HOST` \
-    -DICU_UC_INCLUDE_DIRS=${BUILD_PACKAGE_PREFIX}/include \
+    -DICU_UC_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
     -DICU_UC_LIBRARIES=`package-get-path icuucswift SHARED HOST` \
     -DLibEdit_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
     -DLibEdit_LIBRARIES=`package-get-path edit SHARED HOST` \
@@ -57,7 +67,7 @@ package-cmake-install-archive \
     -DLLVM_ENABLE_RTTI=TRUE \
     -DLLVM_INSTALL_TOOLCHAIN_ONLY=TRUE \
     -DLLVM_MAIN_INCLUDE_DIR=${LLVM_SOURCE_ROOT}/llvm/include \
-    -DLLVM_TABLEGEN=${LLVM_STAGE_ROOT}/bin/llvm-tblgen \
+    -DLLVM_TABLEGEN=${LLVM_TABLEGEN} \
     -DLLVM_USE_NEWPM=${USE_NEWPM} \
     -DLLVM_USE_RELATIVE_PATHS_IN_DEBUG_INFO=TRUE \
     -DPython3_EXECUTABLE=${PYTHON} \
@@ -82,6 +92,7 @@ package-cmake-install-archive \
     -DSWIFT_LIPO=${LIPO} \
     -DSWIFT_NATIVE_CLANG_TOOLS_PATH=${BUILD_PACKAGE_PREFIX}/bin \
     -DSWIFT_NATIVE_LLVM_TOOLS_PATH=${BUILD_PACKAGE_PREFIX}/bin \
+    -DSWIFT_NATIVE_SWIFT_TOOLS_PATH=${NATIVE_SWIFT_TOOLS_PATH} \
     -DSWIFT_PATH_TO_CMARK_BUILD=${STAGE_ROOT_BASE}/swift-cmark-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} \
     -DSWIFT_PATH_TO_CMARK_SOURCE=${SOURCE_ROOT_BASE}/swift-cmark-${SOURCE_PACKAGE_VERSION} \
     -DSWIFT_PATH_TO_LIBDISPATCH_SOURCE=${SOURCE_ROOT_BASE}/swift-corelibs-libdispatch-${SOURCE_PACKAGE_VERSION} \
@@ -100,4 +111,7 @@ package-cmake-install-archive \
     -DSWIFT_USE_LINKER=${BUILD_PACKAGE_PREFIX}/bin/ld.lld \
     -DSWIFT_VENDOR="${PACKAGE_BASE_NAME}" \
     -DUUID_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
-    -DUUID_LIBRARIES=`package-get-path uuid SHARED HOST`
+    -DUUID_LIBRARIES=`package-get-path uuid SHARED HOST` \
+    -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZLIB_LIBRARY_DEBUG=`package-get-path z SHARED HOST` \
+    -DZLIB_LIBRARY_RELEASE=`package-get-path z SHARED HOST`

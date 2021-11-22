@@ -9,6 +9,10 @@ export DEPENDS="${PACKAGE_BASE_NAME}-libgpg-error-1-${HOST_OS}${HOST_OS_API_LEVE
 
 # Invoke one-shot template for bootstrap/configure/install
 BOOTSTRAP_FILE=./autogen.sh \
+BUILD_COMMON_CFLAGS="\
+    -L${BUILD_PACKAGE_PREFIX}/lib \
+    ${BUILD_COMMON_CFLAGS} \
+" \
 LIBTOOLIZE_ARGS="-i" \
 package-bootstrap-configure-install-archive \
     --disable-doc \

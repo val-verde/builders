@@ -15,7 +15,6 @@ fi
 apt install -y \
     autoconf \
     bison \
-    build-essential \
     ca-certificates \
     clang${LLVM_VERSION_SUFFIX} \
     cmake \
@@ -23,10 +22,6 @@ apt install -y \
     gawk \
     git \
     jq \
-    libgmp-dev \
-    libisl-dev \
-    libmpc-dev \
-    libmpfr-dev \
     lld${LLVM_VERSION_SUFFIX} \
     llvm${LLVM_VERSION_SUFFIX} \
     make \

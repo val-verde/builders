@@ -42,6 +42,9 @@ package-invoke-builder go-cross 1
 # windows graphics sdk build
 package-invoke-category-builder graphics-sdk-cross
 
+# windows virtualization sdk build
+package-invoke-category-builder virtualization-sdk-cross
+
 # wine-sdk build
 package-invoke-category-builder wine-sdk-cross
 

@@ -1,0 +1,105 @@
+#!/bin/bash
+
+set -e
+
+# Override bootstrap package name
+export SOURCE_PACKAGE_NAME=glibc-interface
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for stage/configure/install
+function package-install-completion-callback() {
+    if [ -n "${ENABLE_BOOTSTRAP}" ]; then
+        ${MKDIR} -p ${INSTALL_PREFIX}/glibc-interface/usr/lib
+        ${MV} ${INSTALL_PREFIX}/include \
+              ${INSTALL_PREFIX}/glibc-interface/usr/
+        ${LN} -sf \
+              ../../../include/asm \
+              ../../../include/asm-generic \
+              ../../../include/linux \
+              ${INSTALL_PREFIX}/glibc-interface/usr/include/
+        ${TOUCH} ${INSTALL_PREFIX}/glibc-interface/usr/include/gnu/stubs.h
+        package-rsync -ax \
+                      ${STAGE_ROOT}/build/csu/crt*.o \
+                      ${INSTALL_PREFIX}/glibc-interface/usr/lib/
+    else
+        if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+            LINKER_LOADER=ld-${HOST_KERNEL}-${HOST_PROCESSOR}.so.1
+            LINKER_LOADER_DIR=lib
+        elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+            LINKER_LOADER=ld-${HOST_KERNEL}-x86-64.so.2
+            LINKER_LOADER_DIR=lib64
+        fi
+
+        LINKER_LOADER_PATH=${INSTALL_PREFIX}/../${LINKER_LOADER_DIR}
+
+        ${MKDIR} -p ${LINKER_LOADER_PATH}
+        ${RM} ${INSTALL_PREFIX}/glibc-interface/${LINKER_LOADER}
+        ${LN} -sf \
+              ../usr/glibc-interface/ld-${SOURCE_PACKAGE_VERSION}.31.so \
+              ${LINKER_LOADER_PATH}/${LINKER_LOADER}
+        ${SED} -i \
+               "s|/usr/glibc-interface|/${LINKER_LOADER_DIR}|g" \
+               ${INSTALL_PREFIX}/bin/ldd
+        ${SED} -i \
+               "s|/usr/glibc-interface/ld-${HOST_KERNEL}|/${LINKER_LOADER_DIR}/ld-${HOST_KERNEL}|g" \
+               ${INSTALL_PREFIX}/lib/libc.so
+        ${SED} -i \
+               "s| /| =/|g" \
+               ${INSTALL_PREFIX}/lib/libc.so
+
+        if [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+            ${SED} -i \
+                   "s| /| =/|g" \
+                   ${INSTALL_PREFIX}/lib/libm.so
+        fi
+    fi
+}
+
+if [ -n "${ENABLE_BOOTSTRAP}" ]; then
+    DISABLE_TOOL_BUILD=TRUE
+
+    function tool-install-invocation() {
+        INSTALL_TARGET="install-headers" \
+        tool-install
+
+        INSTALL_TARGET="csu/subdir_lib" \
+        tool-install
+    }
+
+    TOOL_INSTALL_INVOCATION=tool-install-invocation
+    WITH_OR_WITHOUT_SYSTEM_ZLIB=without
+else
+    WITH_OR_WITHOUT_SYSTEM_ZLIB=with
+fi
+
+if [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    ENABLE_OR_DISABLE_STATIC_PIE=enable
+else
+    ENABLE_OR_DISABLE_STATIC_PIE=disable
+fi
+
+BUILD_CC=`BINDIR=${BUILD_PACKAGE_PREFIX}/${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}/bin package-get-path ${BUILD_TRIPLE}-gcc EXECUTABLE BUILD` \
+CC=`BINDIR=${BUILD_PACKAGE_PREFIX}/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/bin package-get-path ${HOST_TRIPLE}-gcc EXECUTABLE BUILD` \
+CONFIGURE_PACKAGE_PLATFORM_PREFIX=/ \
+DESTDIR=${INSTALL_PREFIX}/.. \
+DISABLE_FORTIFY_SOURCE_LEVEL=TRUE \
+DISABLE_TOOL_BUILD=${DISABLE_TOOL_BUILD} \
+INSTALL_TARGET=${INSTALL_TARGET} \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+TOOL_INSTALL_INVOCATION=${TOOL_INSTALL_INVOCATION} \
+USE_GCC=TRUE \
+package-stage-configure-install-archive \
+    libc_cv_include_x86_isa_level=no \
+    libc_cv_slibdir=/usr/glibc-interface \
+    --disable-crypt \
+    --disable-multiarch \
+    --disable-multilib \
+    --disable-sanity-checks \
+    --disable-werror \
+    --enable-cet=yes \
+    --enable-kernel=4.0 \
+    --with-headers=${PACKAGE_PREFIX}/include \
+    --${ENABLE_OR_DISABLE_STATIC_PIE}-static-pie \
+    --${WITH_OR_WITHOUT_SYSTEM_ZLIB}-system-zlib

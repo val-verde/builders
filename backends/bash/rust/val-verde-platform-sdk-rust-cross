@@ -5,66 +5,85 @@ set -e
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-CCLDFLAGS="\
-    -lunwind \
-    -L${PACKAGE_PREFIX}/lib \
-    ${CCLDFLAGS} \
-" \
-export-compiler-environment
-generate-compiler-tools
-
 export DEPENDS="\
     ${PACKAGE_BASE_NAME}-llvm-project-13-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-z3-4-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0) \
 "
-export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}}
 
 # Configure the build components
-cd ${STAGE_ROOT}
+${MKDIR} -p ${STAGE_ROOT}
+
+CLANG_RESOURCE_VERSION=`package-get-source-package-version llvm-project`
+RUST_HOST_OS=${HOST_OS}
+
+if [ "${HOST_OS}" = "gnu" ]; then
+    RUST_HOST_OS=linux
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    RUST_HOST_OS=windows
+fi
 
 package-rsync -ax \
               ${SOURCE_ROOT}/${VAL_VERDE_GH_TEAM}-config-cross.toml.in \
               ${STAGE_ROOT}/config.toml
 
+COMMON_LDFLAGS="\
+    -lclang_rt.builtins-${HOST_PROCESSOR} \
+    -L${BUILD_PACKAGE_PREFIX}/lib/clang/${CLANG_RESOURCE_VERSION}/lib/${RUST_HOST_OS} \
+    ${COMMON_LDFLAGS} \
+" \
+export-compiler-environment
+generate-compiler-tools
+
 if [ "${BUILD_OS}" = "android" ]; then
-    BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}
+    RUST_BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}
+elif [ "${BUILD_OS}" = "macos" ]; then
+    RUST_BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${DARWIN_OS}
+elif [ "${BUILD_OS}" = "mingw32" ]; then
+    RUST_BUILD_TRIPLE=${BUILD_PROCESSOR}-pc-windows-gnu
 else
-    BUILD_TRIPLE=${BUILD_PROCESSOR}-unknown-${BUILD_KERNEL}-${BUILD_OS}
+    RUST_BUILD_TRIPLE=${BUILD_4_TRIPLE}
 fi
 
 if [ "${HOST_OS}" = "android" ]; then
-    HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}
+    RUST_HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}
+elif [ "${HOST_OS}" = "macos" ]; then
+    RUST_HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${DARWIN_OS}
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    RUST_HOST_TRIPLE=${HOST_PROCESSOR}-pc-windows-gnu
 else
-    HOST_TRIPLE=${HOST_PROCESSOR}-unknown-${HOST_KERNEL}-${HOST_OS}
+    RUST_HOST_TRIPLE=${HOST_4_TRIPLE}
 fi
 
-CARGO=${BINDIR}/cargo
-FILECHECK=${LLVM_NATIVE_STAGE_ROOT}/bin/FileCheck
-LD=${CCLD}
-LDFLAGS=
-LLVMCONFIG=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config
-RUSTC=${BINDIR}/rustc
-RUSTFMT=${BINDIR}/rustfmt
+LLVM_STAGE_ROOT=${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}
+BUILD_LLVM_CONFIG_EXECUTABLE=${LLVM_STAGE_ROOT}/bin/llvm-config
+LLVM_NATIVE_STAGE_ROOT=${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
+LLVM_CONFIG_EXECUTABLE=${LLVM_NATIVE_STAGE_ROOT}/bin/host-llvm-config
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${LLVM_NATIVE_STAGE_ROOT}/NATIVE/lib
+
+CARGO=`package-get-path cargo EXECUTABLE BUILD`
+FILECHECK=`BINDIR=${LLVM_STAGE_ROOT}/bin package-get-path FileCheck EXECUTABLE BUILD`
+RUSTC=`package-get-path rustc EXECUTABLE BUILD`
+RUSTFMT=`package-get-path rustfmt EXECUTABLE BUILD`
 
 export RUSTFLAGS="-C target-cpu=${HOST_CPU}"
 
 ${SED} -i "s|@@AR@@|${AR}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@BUILD_CC@@|${BUILD_CC}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@BUILD_CXX@@|${BUILD_CXX}|g" ${STAGE_ROOT}/config.toml
-${SED} -i "s|@@BUILD_LD@@|${BUILD_LD}|g" ${STAGE_ROOT}/config.toml
-${SED} -i "s|@@BUILD_LLVMCONFIG@@|${LLVMCONFIG}|g" ${STAGE_ROOT}/config.toml
-${SED} -i "s|@@BUILD_TRIPLE@@|${BUILD_TRIPLE}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@BUILD_LD@@|${BUILD_CCLD}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@BUILD_LLVMCONFIG@@|${BUILD_LLVM_CONFIG_EXECUTABLE}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@BUILD_TRIPLE@@|${RUST_BUILD_TRIPLE}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@CARGO@@|${CARGO}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@CC@@|${CC}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@CFLAGS@@|${CFLAGS}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@CXX@@|${CXX}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@CXXFLAGS@@|${CXXFLAGS}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@FILECHECK@@|${FILECHECK}|g" ${STAGE_ROOT}/config.toml
-${SED} -i "s|@@HOST_TRIPLE@@|${BUILD_TRIPLE}\", \"${HOST_TRIPLE}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@HOST_TRIPLE@@|${RUST_HOST_TRIPLE}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@INSTALL_PREFIX@@|${INSTALL_PREFIX}|g" ${STAGE_ROOT}/config.toml
-${SED} -i "s|@@LD@@|${LD}|g" ${STAGE_ROOT}/config.toml
-${SED} -i "s|@@LDFLAGS@@|${LDFLAGS}|g" ${STAGE_ROOT}/config.toml
-${SED} -i "s|@@LLVMCONFIG@@|${LLVMCONFIG}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@LD@@|${CCLD}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@LDFLAGS@@|${CCLDFLAGS}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@LLVMCONFIG@@|${LLVM_CONFIG_EXECUTABLE}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@MUSLROOT@@|${PACKAGE_PREFIX}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@NODE@@|${NODE}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@PYTHON@@|${PYTHON}|g" ${STAGE_ROOT}/config.toml
@@ -72,13 +91,7 @@ ${SED} -i "s|@@RANLIB@@|${RANLIB}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@RUSTC@@|${RUSTC}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@RUSTFMT@@|${RUSTFMT}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@STAGE_ROOT@@|${STAGE_ROOT}|g" ${STAGE_ROOT}/config.toml
-${SED} -i "s|@@TARGET_TRIPLE@@|${HOST_TRIPLE}|g" ${STAGE_ROOT}/config.toml
-
-export HOST_CFLAGS="${BUILD_CFLAGS}"
-export HOST_CXXFLAGS="${BUILD_CXXFLAGS}"
-export TARGET_CFLAGS="${CFLAGS}"
-export TARGET_CXXFLAGS="${CXXFLAGS}"
-unset CFLAGS CXXFLAGS
+${SED} -i "s|@@TARGET_TRIPLE@@|${RUST_HOST_TRIPLE}|g" ${STAGE_ROOT}/config.toml
 
 # Build the components
 TOOL_LOG=${STAGE_ROOT}/builder-invocation \

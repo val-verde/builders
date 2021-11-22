@@ -9,5 +9,13 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 # coremltools build
 package-invoke-builder coremltools-cross 5
 
+if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
+    # hdf5 build
+    package-invoke-builder hdf5-cross 1
+fi
+
 # tensorflow build
 package-invoke-builder tensorflow-cross 2
+
+# tensorflow-io build
+package-invoke-builder tensorflow-io-cross 0

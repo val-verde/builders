@@ -4,6 +4,9 @@ set -e
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+export SYSROOT=${PACKAGE_PREFIX}/glibc-interface
 
 # llvm dependencies
 ECHO=/usr/bin/echo \
@@ -44,7 +47,7 @@ package-invoke-category-builder graphics-sdk-cross
 package-invoke-category-builder virtualization-sdk-cross
 
 # node + sdk build
-package-invoke-builder node-cross 16
+package-invoke-builder node-cross 17
 package-invoke-builder npm-yarn-cross 1
 
 # yautja server build

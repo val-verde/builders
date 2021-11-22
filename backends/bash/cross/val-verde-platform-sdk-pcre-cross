@@ -36,6 +36,11 @@ fi
 
 package-cmake-install-archive \
     -DBUILD_SHARED_LIBS=TRUE \
+    -DBZIP2_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DBZIP2_LIBRARY_DEBUG=`package-get-path bz2 STATIC HOST` \
+    -DBZIP2_LIBRARY_RELEASE=`package-get-path bz2 STATIC HOST` \
+    -DEDITLINE_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DEDITLINE_LIBRARY=`package-get-path edit SHARED HOST` \
     -DHAVE_STRTOQ=${HAVE_STRTOQ} \
     -DPCRE_BUILD_PCRE8=TRUE \
     -DPCRE_BUILD_PCRE16=TRUE \
@@ -50,4 +55,6 @@ package-cmake-install-archive \
     -DPCRE_SUPPORT_LIBZ=TRUE \
     -DPCRE_SUPPORT_PCREGREP_JIT=TRUE \
     -DPCRE_SUPPORT_UNICODE_PROPERTIES=TRUE \
-    -DPCRE_SUPPORT_UTF=TRUE
+    -DPCRE_SUPPORT_UTF=TRUE \
+    -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZLIB_LIBRARY=`package-get-path z SHARED HOST`

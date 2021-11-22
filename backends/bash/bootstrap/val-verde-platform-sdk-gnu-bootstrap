@@ -3,27 +3,19 @@
 set -e
 
 # Source package build helper functions
-export \
-    BINDIR=/usr/bin \
-    C_COMPILER=clang \
-    CPP="/usr/bin/clang -E" \
-    DEB_PATH=${BOOTSTRAP_DEB_PATH}
-
-export \
-    DISABLE_POLLY=TRUE \
-    USE_FUSE_LD_OVER_LD_PATH=TRUE
-
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-${MKDIR} -p ${BUILD_PACKAGE_PREFIX}
+export DEB_PATH=${BOOTSTRAP_DEB_PATH}
 
-package-rsync -ax \
-              /usr/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-* \
-              ${BUILD_PACKAGE_PREFIX}/bin/
-${CHMOD} +x ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang \
-            ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-clang++ \
-            ${BUILD_PACKAGE_PREFIX}/bin/${VAL_VERDE_GH_TEAM}-platform-sdk-ml64
+# builder-tools build
+if [ "${BUILD_PROCESSOR}" = "${HOST_PROCESSOR}" ] &&
+   [ "${BUILD_KERNEL}" = "${HOST_KERNEL}" ] &&
+   [ "${BUILD_OS}" = "${HOST_OS}" ] &&
+   [ "${BUILD_OS_API_LEVEL}" = "${HOST_OS_API_LEVEL}" ]; then
+    export BINDIR=/usr/bin
+fi
+
+package-invoke-builder compiler-tools 0
 
 # libcxx and llvm bootstrap build
 package-invoke-category-builder llvm-bootstrap-builder

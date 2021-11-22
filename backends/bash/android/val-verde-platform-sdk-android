@@ -67,7 +67,7 @@ package-invoke-category-builder graphics-sdk-cross
 # package-invoke-category-builder virtualization-sdk-cross
 
 # android node + sdk build
-package-invoke-builder node-cross 16
+package-invoke-builder node-cross 17
 package-invoke-builder npm-yarn-cross 1
 
 # android blockchain sdk build

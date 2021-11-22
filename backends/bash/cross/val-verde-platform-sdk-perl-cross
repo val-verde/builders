@@ -8,6 +8,11 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 # Configure the build components
 cd ${STAGE_ROOT}
 copy-source-to-staging
+
+COMMON_LDFLAGS="\
+    -L${PACKAGE_PREFIX}/lib \
+    ${COMMON_LDFLAGS} \
+" \
 export-compiler-environment
 
 TOOL_LOG=builder-invocation \
@@ -15,19 +20,21 @@ tool-log ${STAGE_ROOT}/Configure \
     -d \
     -e \
     -s \
-    -Dar=${AR} \
-    -Das=${AS} \
-    -Dcc=${CC} \
+    -Dar="${AR}" \
+    -Das="${AS}" \
+    -Dcc="${CC}" \
     -Dccflags="${CFLAGS}" \
-    -Dcxx=${CXX} \
+    -Dcpp="${CPP}" \
+    -Dcppflags="${CPPFLAGS}" \
+    -Dcxx="${CXX}" \
     -Dcxxflags="${CXXFLAGS}" \
     -Dincpth=${PACKAGE_PREFIX}/include \
-    -Dld=${LD} \
+    -Dld="${LD}" \
     -Dldflags="${LDFLAGS}" \
-    -Dlibpth=${PACKAGE_PREFIX}/lib \
-    -Dnm=${NM} \
+    -Dloclibpth="${PACKAGE_PREFIX}/lib ${SYSROOT}/usr/lib" \
+    -Dnm="${NM}" \
     -Dprefix=${PACKAGE_PREFIX} \
-    -Dranlib=${RANLIB} \
+    -Dranlib="${RANLIB}" \
     -Dsiteprefix=${PACKAGE_PREFIX}/local \
     -Dsysroot=${SYSROOT} \
     -Dusrinc=${PACKAGE_PREFIX}/include \

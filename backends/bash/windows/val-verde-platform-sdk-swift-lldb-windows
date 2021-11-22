@@ -22,6 +22,11 @@ export SWIFT_NATIVE_STAGE_ROOT=${SWIFT_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/swi
 export SWIFT_STAGE_ROOT=${STAGE_ROOT_BASE}/swift-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
 
 # Invoke one-shot template for cmake/install
+export-compiler-environment
+
+CROSS_TOOLCHAIN_FLAGS_NATIVE=`package-cmake-invocation-arguments-for-variant BUILD`
+LLVM_TABLEGEN=`BINDIR=${LLVM_NATIVE_TOOL_ROOT}/bin package-get-path llvm-tblgen EXECUTABLE BUILD`
+
 COMMON_CFLAGS="\
     -fms-compatibility-version=19.2 \
     -fms-extensions \
@@ -29,6 +34,7 @@ COMMON_CFLAGS="\
     ${COMMON_CFLAGS} \
 " \
 CXX_STANDARD=17 \
+DISABLE_STRIP=TRUE \
 LDFLAGS="\
     -lole32 \
     -lpsapi \
@@ -38,7 +44,7 @@ LDFLAGS="\
 package-cmake-install-archive \
     -DClang_DIR=${LLVM_STAGE_ROOT}/lib/cmake/clang \
     -DCLANG_LINK_CLANG_DYLIB=FALSE \
-    -DCMAKE_EXE_LINKER_FLAGS="-O2" \
+    -DCROSS_TOOLCHAIN_FLAGS_NATIVE="${CROSS_TOOLCHAIN_FLAGS_NATIVE}" \
     -DCURSES_CURSES_LIBRARY=`package-get-path ncurses SHARED HOST` \
     -DCURSES_FORM_LIBRARY=`package-get-path form SHARED HOST` \
     -DCURSES_INCLUDE_PATH=${PACKAGE_PREFIX}/include/ncurses \
@@ -54,7 +60,7 @@ package-cmake-install-archive \
     -DLLDB_ENABLE_LIBXML2=TRUE \
     -DLLDB_ENABLE_LUA=TRUE \
     -DLLDB_ENABLE_LZMA=TRUE \
-    -DLLDB_ENABLE_PYTHON=FALSE \
+    -DLLDB_ENABLE_PYTHON=TRUE \
     -DLLDB_ENABLE_SWIFT_SUPPORT=TRUE \
     -DLLDB_ENABLE_WERROR=FALSE \
     -DLLDB_INCLUDE_TESTS=FALSE \
@@ -77,12 +83,16 @@ package-cmake-install-archive \
     -DLLVM_INSTALL_TOOLCHAIN_ONLY=TRUE \
     -DLLVM_LINK_LLVM_DYLIB=FALSE \
     -DLLVM_MAIN_INCLUDE_DIR=${LLVM_SOURCE_ROOT}/llvm/include \
-    -DLLVM_TABLEGEN=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-tblgen \
+    -DLLVM_TABLEGEN=${LLVM_TABLEGEN} \
     -DLUA_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DLUA_LIBRARY=`package-get-path lua STATIC HOST` \
     -DNATIVE_Clang_DIR=${LLVM_NATIVE_STAGE_ROOT}/lib/cmake/clang \
     -DNATIVE_LLVM_DIR=${LLVM_NATIVE_STAGE_ROOT}/lib/cmake/lib \
     -DPython3_EXECUTABLE=${PYTHON} \
     -DPANEL_LIBRARIES=`package-get-path panel SHARED HOST` \
+    -DPYTHON_HOME=${PACKAGE_PREFIX} \
     -DSwift_DIR=${SWIFT_STAGE_ROOT}/lib/cmake/swift \
-    -DSWIG_EXECUTABLE=${BUILD_PACKAGE_PREFIX}/bin/swig
+    -DSWIG_EXECUTABLE=`package-get-path swig EXECUTABLE BUILD` \
+    -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZLIB_LIBRARY_DEBUG=`package-get-path z SHARED HOST` \
+    -DZLIB_LIBRARY_RELEASE=`package-get-path z SHARED HOST`

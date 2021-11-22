@@ -7,6 +7,10 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for bootstrap/configure/install
 BOOTSTRAP_FILE=./autogen.sh \
+BUILD_COMMON_CFLAGS="\
+    -L${BUILD_PACKAGE_PREFIX}/lib \
+    ${BUILD_COMMON_CFLAGS} \
+" \
 DISABLE_LIBTOOLIZE=TRUE \
 package-bootstrap-configure-install-archive \
     --disable-doc \

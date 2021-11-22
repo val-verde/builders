@@ -38,7 +38,7 @@ function package-install-completion-callback() {
     CLANG_RT_INSTALL_PREFIX=${INSTALL_PREFIX}/lib/clang/${CLANG_RESOURCE_VERSION}/lib/${DST_SDK_PLATFORM_DIR}
     ${MKDIR} -p ${CLANG_RT_INSTALL_PREFIX}
 
-    if [ "${HOST_OS}" = "linux" ] ||
+    if [ "${HOST_OS}" = "gnu" ] ||
        [ "${HOST_OS}" = "musl" ]; then
         ${MV} ${CLANG_RT_SOURCE_INSTALL_PREFIX}/clang_rt.crtbegin-${HOST_PROCESSOR}.o \
               ${CLANG_RT_INSTALL_PREFIX}/
@@ -50,7 +50,15 @@ function package-install-completion-callback() {
           ${CLANG_RT_INSTALL_PREFIX}/${DST_CLANG_RT_LIB}
 }
 
-if [ "${HOST_OS}" = "macos" ]; then
+if [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
+    ${ECHO} "#define printf(...)" > ${STAGE_ROOT}/dummy-printf.h
+    COMMON_CFLAGS="\
+        -include ${STAGE_ROOT}/dummy-printf.h \
+        ${COMMON_CFLAGS} \
+    "
+elif [ "${HOST_OS}" = "macos" ]; then
     CLANG_RT_LIB=`package-get-filename clang_rt.osx STATIC`
     DST_CLANG_RT_LIB=`package-get-filename clang_rt.osx STATIC`
 elif [ "${HOST_OS}" = "mingw32" ]; then
@@ -58,13 +66,6 @@ elif [ "${HOST_OS}" = "mingw32" ]; then
     DST_CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
     COMMON_CFLAGS="\
         -Wl,/force:unresolved \
-        ${COMMON_CFLAGS} \
-    "
-elif [ "${HOST_OS}" = "musl" ]; then
-    CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
-    ${ECHO} "#define printf(...)" > ${STAGE_ROOT}/dummy-printf.h
-    COMMON_CFLAGS="\
-        -include ${STAGE_ROOT}/dummy-printf.h \
         ${COMMON_CFLAGS} \
     "
 elif [ "${HOST_OS}" = "wasi" ]; then

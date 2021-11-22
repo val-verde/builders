@@ -6,4 +6,18 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for cmake/install
-package-cmake-install-archive
+export-compiler-environment
+
+CUDA_COMPILER=${STAGE_ROOT}/host-nvcc
+NVCC=${CC}
+NVCCFLAGS=`${ECHO} "\
+    --cuda-path=${PACKAGE_PREFIX} \
+    --sysroot=${SYSROOT} \
+    --target=${HOST_TRIPLE} \
+    -B${BINDIR} \
+" | ${XARGS}`
+
+create-host-tool ${NVCC} NVCCFLAGS ${CUDA_COMPILER}
+
+package-cmake-install-archive \
+    -DCUDA_NVCC_EXECUTABLE=${STAGE_ROOT}/host-nvcc

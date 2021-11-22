@@ -18,45 +18,102 @@ export DEPENDS="\
 # Invoke one-shot template for stage/configure/install
 function package-install-completion-callback() {
     ${LN} -sf \
-          pip3 \
-          ${INSTALL_PREFIX}/bin/pip
-    ${LN} -sf \
-          python3 \
-          ${INSTALL_PREFIX}/bin/python
+          `package-get-filename python3 EXECUTABLE HOST` \
+          ${INSTALL_PREFIX}/bin/`package-get-filename python EXECUTABLE HOST`
 }
 
-if [ "${HOST_OS}" = "android" ] ||
-   [ "${HOST_OS}" = "musl" ]; then
-    COMMON_CFLAGS="\
-        -lintl \
-        ${COMMON_CFLAGS} \
-    "
+${MKDIR} -p ${STAGE_ROOT}/Modules
+
+ENSURE_PIP=no
+HAVE_ALARM=yes
+HAVE_CLOCK_API=yes
+HAVE_DEV_PTMX=yes
+HAVE_SOCKLEN_T=yes
+
+if [ -n "${ENABLE_PIP}" ]; then
+    ENSURE_PIP=yes
 fi
 
-COMMON_CFLAGS="\
+if [ "${HOST_OS}" = "mingw32" ]; then
+    ADDITIONAL_LIBS="\
+        -lcrypt32 \
+        -lffi \
+        -liphlpapi \
+        -lnetio \
+        -lole32 \
+        -loleaut32 \
+        -lpathcch \
+        -lshlwapi \
+        -luuid \
+        -lversion \
+        -lws2_32 \
+        ${ADDITIONAL_LIBS} \
+    "
+    COMMON_LDFLAGS="\
+        -pthread \
+        ${COMMON_LDFLAGS} \
+    "
+    HAVE_ALARM=no
+    HAVE_CLOCK_API=no
+    HAVE_DEV_PTMX=no
+
+    ${ECHO} '\
+nt -DPy_BUILD_CORE_BUILTIN -I$(srcdir)/Include/internal posixmodule.c # posix (UNIX) system calls
+_overlapped -DPy_BUILD_CORE_BUILTIN -I$(srcdir)/Include/internal overlapped.c # _overlapped
+_winapi -DPy_BUILD_CORE_BUILTIN -I$(srcdir)/Include/internal _winapi.c # _winapi
+msvcrt -DPy_BUILD_CORE_BUILTIN -I$(srcdir)/Include/internal ../PC/msvcrtmodule.c # msvcrt
+winreg -DPy_BUILD_CORE_BUILTIN -I$(srcdir)/Include/internal ../PC/winreg.c # winreg
+winsound -DPy_BUILD_CORE_BUILTIN -I$(srcdir)/Include/internal -lwinmm ../PC/winsound.c # winsound
+' > ${STAGE_ROOT}/Modules/Setup.local
+else
+    ${ECHO} '\
+posix -DPy_BUILD_CORE_BUILTIN -I$(srcdir)/Include/internal posixmodule.c # posix (UNIX) system calls
+' > ${STAGE_ROOT}/Modules/Setup.local
+fi
+
+export-compiler-environment
+generate-compiler-tools
+
+CFLAGS="\
     --sysroot=${SYSROOT} \
     -I${PACKAGE_PREFIX}/include \
     -I${PACKAGE_PREFIX}/include/ncurses \
-    ${COMMON_CFLAGS} \
+    ${CFLAGS} \
 " \
-COMMON_LDFLAGS="\
+CPPFLAGS="\
+    --sysroot=${SYSROOT} \
+    -I${PACKAGE_PREFIX}/include \
+    -I${PACKAGE_PREFIX}/include/ncurses \
+    ${CPPFLAGS} \
+" \
+LD=${CCLD} \
+LDFLAGS="\
     --sysroot=${SYSROOT} \
     -L${PACKAGE_PREFIX}/lib \
-    ${COMMON_LDFLAGS} \
+    ${ADDITIONAL_LIBS} \
+    ${CCLDFLAGS} \
 " \
 _PYTHON_PROJECT_BASE=${STAGE_ROOT} \
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
+DISABLE_GENERATED_TOOLS=TRUE \
 OPENSSL_LIBS=`${ECHO} "\
     -lcrypto \
     -lssl \
 " | ${XARGS}` \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-stage-configure-install-archive \
+    ac_cv_broken_sem_getvalue=no \
     ac_cv_buggy_getaddrinfo=no \
     ac_cv_file__dev_ptc=no \
-    ac_cv_file__dev_ptmx=yes \
+    ac_cv_file__dev_ptmx=${HAVE_DEV_PTMX} \
+    ac_cv_func_alarm=${HAVE_ALARM} \
+    ac_cv_func_clock_gettime=${HAVE_CLOCK_API} \
+    ac_cv_func_clock_getres=${HAVE_CLOCK_API} \
+    ac_cv_func_clock_settime=${HAVE_CLOCK_API} \
+    ac_cv_type_socklen_t=${HAVE_SOCKLEN_T} \
     --enable-shared \
-    --with-ensurepip=yes \
+    --with-ensurepip=${ENSURE_PIP} \
     --with-openssl=${PACKAGE_PREFIX} \
     --with-system-expat \
-    --with-system-ffi
+    --with-system-ffi \
+    --without-static-libpython

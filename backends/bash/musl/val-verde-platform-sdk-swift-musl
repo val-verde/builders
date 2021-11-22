@@ -8,7 +8,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 export-compiler-environment
 
 export DEPENDS="\
-    ${PACKAGE_BASE_NAME}-icu4c-69-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-icu4c-70-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-libedit-20210714-3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-libxml2-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
@@ -116,4 +116,7 @@ package-cmake-install-archive \
     -DSWIFT_VENDOR="${PACKAGE_BASE_NAME}" \
     -DUSE_POSIX_SEM=1 \
     -DUUID_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
-    -DUUID_LIBRARIES=`package-get-path uuid SHARED HOST`
+    -DUUID_LIBRARIES=`package-get-path uuid SHARED HOST` \
+    -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZLIB_LIBRARY_DEBUG=`package-get-path z SHARED HOST` \
+    -DZLIB_LIBRARY_RELEASE=`package-get-path z SHARED HOST`

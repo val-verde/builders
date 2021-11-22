@@ -40,6 +40,12 @@ function package-install-completion-callback() {
                   ${STAGE_ROOT}/bin/llvm-windres* \
                   ${STAGE_ROOT}/bin/opt* \
                   ${INSTALL_PREFIX}/bin/
+
+    if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+        package-rsync -ax \
+                      ${STAGE_ROOT}/NATIVE/bin/`package-get-filename llvm-config EXECUTABLE BUILD` \
+                      ${STAGE_ROOT}/bin/`package-get-filename host-llvm-config EXECUTABLE BUILD`
+    fi
 }
 
 function tool-install-invocation() {
@@ -80,7 +86,7 @@ package-cmake-install-archive \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
     -DCLANG_DEFAULT_LINKER=lld \
     -DCLANG_DEFAULT_RTLIB=compiler-rt \
-    -DCLANG_DEFAULT_STD_C=gnu2x \
+    -DCLANG_DEFAULT_STD_C=gnu17 \
     -DCLANG_DEFAULT_STD_CXX=gnucxx20 \
     -DCLANG_DEFAULT_UNWINDLIB=libunwind \
     -DCLANG_ENABLE_ARCMT=TRUE \
@@ -109,7 +115,7 @@ package-cmake-install-archive \
     -DCOMPILER_RT_HAS_NODEFAULTLIBS_FLAG=FALSE \
     -DCOMPILER_RT_INCLUDE_TESTS=FALSE \
     -DCOMPILER_RT_SANITIZERS_TO_BUILD=${COMPILER_RT_SANITIZER_TO_BUILD} \
-    -DCROSS_TOOLCHAIN_FLAGS_NATIVE="${CROSS_TOOLCHAIN_FLAGS_NATIVE}" \
+    -DCROSS_TOOLCHAIN_FLAGS_NATIVE="-DBUILD_SHARED_LIBS=FALSE;-DLLVM_BUILD_LLVM_DYLIB=TRUE;-DLLVM_ENABLE_RTTI=TRUE;-DLLVM_HOST_TRIPLE=${HOST_TRIPLE};-DLLVM_LINK_LLVM_DYLIB=TRUE;${CROSS_TOOLCHAIN_FLAGS_NATIVE}" \
     -DCUDA_NVCC_EXECUTABLE=${BINDIR}/clang \
     -DCUDA_TOOLKIT_INCLUDE=${PACKAGE_PREFIX}/include \
     -DDARWIN_macosx_OVERRIDE_SDK_VERSION=${MACOS_VERSION} \
@@ -230,15 +236,20 @@ package-cmake-install-archive \
     -DLLVM_VERSION_SUFFIX="-${PACKAGE_BASE_NAME}" \
     -DLLVM_Z3_INSTALL_DIR=${PACKAGE_PLATFORM_SYSROOT} \
     -DMLIR_ENABLE_CUDA_RUNNER=FALSE \
-    -DMLIR_ENABLE_BINDINGS_PYTHON=FALSE \
+    -DMLIR_ENABLE_BINDINGS_PYTHON=TRUE \
     -DMLIR_ENABLE_SPIRV_CPU_RUNNER=TRUE \
     -DMLIR_ENABLE_VULKAN_RUNNER=TRUE \
+    -DOpenCL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DOpenCL_LIBRARY=`package-get-path OpenCL SHARED HOST` \
     -DPython3_EXECUTABLE=${PYTHON} \
     -DPOLLY_ENABLE_GPGPU_CODEGEN=TRUE \
+    -DPYTHON_HOME=${PACKAGE_PREFIX} \
     -DSANITIZER_CXX_ABI=libcxxabi \
+    -DVulkan_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DVulkan_LIBRARY=`package-get-path vulkan SHARED HOST` \
     -DZ3_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DZ3_LIBRARIES=`package-get-path z3 SHARED HOST` \
     -DZ3_RETURNCODE=0 \
-    -DZ3_RETURNCODE__TRYRUN_OUTPUT=4.8.12 \
+    -DZ3_RETURNCODE__TRYRUN_OUTPUT=4.8.13 \
     -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DZLIB_LIBRARY_RELEASE=`package-get-path z SHARED HOST`

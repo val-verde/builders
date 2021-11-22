@@ -9,6 +9,15 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 cd ${STAGE_ROOT}
 
 copy-source-to-staging
+
+BUILD_COMMON_CFLAGS="\
+    -L${BUILD_PACKAGE_PREFIX}/lib \
+    ${BUILD_COMMON_CFLAGS} \
+" \
+COMMON_CFLAGS="\
+    -L${PACKAGE_PREFIX}/lib \
+    ${COMMON_CFLAGS} \
+" \
 export-compiler-environment
 generate-compiler-tools
 export-compiler-environment-for-go
@@ -19,7 +28,7 @@ make-install \
     BUILD_CC=${BUILD_CC} \
     BUILD_CFLAGS="${BUILD_CFLAGS}" \
     BUILD_COPTS="-O${OPTIMIZATION_LEVEL}" \
-    BUILD_LD=${BUILD_LD} \
+    BUILD_LD=${BUILD_CCLD} \
     BUILD_LDFLAGS="${BUILD_CCLDFLAGS}" \
     BUILD_GPERF=${GPERF} \
     CC=${CC} \
@@ -34,12 +43,12 @@ make-install \
     INDENT=${INDENT} \
     KERNEL_HEADERS=${PACKAGE_PREFIX}/include/uapi \
     LD=${CCLD} \
+    LDFLAGS="-shared ${CCLDFLAGS}" \
     OBJCOPY=${OBJCOPY} \
     PSXLINKFLAGS=-pthread \
     RANLIB=${RANLIB} \
     SYSTEM_HEADERS=${PACKAGE_PREFIX}/include \
-    TESTS=no \
-    LDFLAGS="-shared ${CCLDFLAGS}"
+    TESTS=no
 
 # Build and install the package
 package-invoke-archive-install

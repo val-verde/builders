@@ -67,7 +67,7 @@ package-invoke-builder libffi-cross 3
 package-invoke-builder libiconv-cross 1
 
 # icu build
-package-invoke-builder icu4c-cross 69
+package-invoke-builder icu4c-cross 70
 
 # libunistring build
 package-invoke-builder libunistring-cross 0
@@ -260,11 +260,20 @@ ENABLE_STAGE_ROOOT_BUILD=TRUE \
 _PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
 package-invoke-builder python-cross 3
 
+# python-setuptools build
+package-invoke-builder python-setuptools-cross 59
+
+# python-pip build
+package-invoke-builder python-pip-cross 21
+
 # libxml2 build (with python support)
 package-invoke-builder libxml2-cross 2
 
 # libxslt build
 package-invoke-builder libxslt-cross 1
+
+# libyaml build
+package-invoke-builder libyaml-cross 0
 
 # python sdk build
 package-invoke-category-builder python-sdk-cross
@@ -275,9 +284,6 @@ package-invoke-builder libtasn1-cross 4
 # p11-kit build
 DISABLE_SYSTEMD=TRUE \
 package-invoke-builder p11-kit-cross 0
-
-# dbus build
-package-invoke-builder dbus-cross 1
 
 # nettle build
 package-invoke-builder nettle-cross 3
@@ -321,6 +327,9 @@ package-invoke-builder gtk-doc-cross 1
 # graphviz build
 package-invoke-builder graphviz-cross 2
 
+# dbus build
+package-invoke-builder dbus-cross 1
+
 # cups build
 # package-invoke-builder cups-cross 2
 
@@ -341,6 +350,12 @@ package-invoke-builder popt-cross 1
 
 # dnf build
 # package-invoke-builder dnf-cross 2
+
+# alien package tool build
+package-invoke-builder alien-package-tool-cross 8
+
+# AI SDK build
+package-invoke-category-builder ai-sdk-cross
 
 # swig build
 package-invoke-builder swig-cross 4

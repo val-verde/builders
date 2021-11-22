@@ -1,0 +1,101 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for stage/configure/install
+function package-install-completion-callback() {
+    ${RM} -r ${INSTALL_ROOT}${CONFIGURE_PACKAGE_PREFIX}/share/info/dir
+}
+
+function tool-install-invocation() {
+    INSTALL_TARGET="MAKEINFO=${MAKEINFO} all" \
+    tool-install
+
+    INSTALL_TARGET="MAKEINFO=${MAKEINFO} install" \
+    tool-install
+}
+
+if [ -n "${ENABLE_BOOTSTRAP}" ]; then
+    ENABLE_OR_DISABLE_MULTIARCH=enable
+    ENABLE_OR_DISABLE_MULTILIB=enable
+    WITH_OR_WITHOUT_SYSTEM_ZLIB=without
+else
+    ENABLE_OR_DISABLE_MULTIARCH=disable
+    ENABLE_OR_DISABLE_MULTILIB=disable
+    WITH_OR_WITHOUT_SYSTEM_ZLIB=with
+fi
+
+if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+    MULTILIB_LIST="lp64"
+elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    MULTILIB_LIST="m64"
+fi
+
+BUILD_CXXFLAGS="\
+    -std=gnu++17 \
+    ${BUILD_CXXFLAGS} \
+" \
+CXXFLAGS="\
+    -std=gnu++17 \
+    ${CXXFLAGS} \
+" \
+export-compiler-environment
+generate-compiler-tools
+
+AS=${BUILD_AS} \
+AS_FOR_TARGET=${AS} \
+ASFLAGS=${BUILD_ASFLAGS} \
+ASFLAGS_FOR_TARGET=${ASFLAGS} \
+CC=${BUILD_CC} \
+CC_FOR_TARGET=${CC} \
+CFLAGS=${BUILD_CFLAGS} \
+CFLAGS_FOR_TARGET=${CFLAGS} \
+CONFIGURE_PACKAGE_PLATFORM_PREFIX=${BUILD_PACKAGE_PLATFORM_SYSROOT} \
+CPP=${BUILD_CPP} \
+CPP_FOR_TARGET=${CPP} \
+CPPFLAGS=${BUILD_CPPFLAGS} \
+CPPFLAGS_FOR_TARGET=${CPPFLAGS} \
+CXX=${BUILD_CXX} \
+CXX_FOR_TARGET=${CXX} \
+CXXCPP=${BUILD_CXXCPP} \
+CXXCPP_FOR_TARGET=${CXXCPP} \
+CXXCPPFLAGS=${BUILD_CXXCPPFLAGS} \
+CXXCPPFLAGS_FOR_TARGET=${CXXCPPFLAGS} \
+CXXFLAGS=${BUILD_CXXFLAGS} \
+CXXFLAGS_FOR_TARGET=${CXXFLAGS} \
+DISABLE_AUTOUPDATE=TRUE \
+DISABLE_GENERATED_TOOLS=TRUE \
+DISABLE_LIBTOOLIZE=TRUE \
+DISABLE_TOOL_BUILD=TRUE \
+LD=${BUILD_LD} \
+LD_FOR_TARGET=${LD} \
+LDFLAGS=${BUILD_LDFLAGS} \
+LDFLAGS_FOR_TARGET=${LDFLAGS} \
+HOST_TRIPLE=${BUILD_TRIPLE} \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+PACKAGE_USR_PREFIX=${BUILD_PACKAGE_USR_PREFIX}/${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} \
+PKG_CONFIG=${BUILD_PKGCONFIG} \
+SOURCE_ROOT=${SOURCE_ROOT_BASE}/binutils-gdb-${SOURCE_PACKAGE_VERSION} \
+TOOL_INSTALL_INVOCATION=tool-install-invocation \
+package-stage-configure-install-archive \
+    ac_cv_prog_MAKEINFO=${MAKEINFO} \
+    --disable-bootstrap \
+    --disable-sim \
+    --disable-werror \
+    --enable-64-bit-bfd \
+    --enable-cet=yes \
+    --enable-gold \
+    --enable-plugins \
+    --enable-static \
+    --enable-shared \
+    --program-prefix= \
+    --target=${HOST_TRIPLE} \
+    --with-guile=no \
+    --with-multilib-list=${MULTILIB_LIST} \
+    --with-sysroot=${SYSROOT} \
+    --${ENABLE_OR_DISABLE_MULTIARCH}-multiarch \
+    --${ENABLE_OR_DISABLE_MULTILIB}-multilib \
+    --${WITH_OR_WITHOUT_SYSTEM_ZLIB}-system-zlib

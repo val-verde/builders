@@ -30,6 +30,10 @@ elif [ "${HOST_OS}" = "macos" ] ||
     WITH_OR_WITHOUT_BASH_MALLOC=without
 fi
 
+BUILD_COMMON_CFLAGS="\
+    -L${BUILD_PACKAGE_PREFIX}/lib \
+    ${BUILD_COMMON_CFLAGS} \
+" \
 NUM_PROCESSORS=1 \
 package-configure-install-archive \
     ac_cv_func_getcwd=${HAS_GETCWD} \
