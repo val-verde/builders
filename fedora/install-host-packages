@@ -15,6 +15,7 @@ yum -y install \
     clang \
     cmake \
     dpkg \
+    fedpkg \
     flex \
     gawk \
     git \
