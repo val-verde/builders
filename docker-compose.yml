@@ -20,6 +20,7 @@ services:
             context: ./
             dockerfile: fedora.Dockerfile
             args:
+                - PACKAGE_ARCHIVE_CLASS=rpm
                 - PACKAGE_BASE_NAME=val-verde
                 - PACKAGE_ROOT=/opt
                 - VAL_VERDE_GH_TEAM=val-verde
