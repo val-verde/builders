@@ -115,7 +115,6 @@ package-meson-install-archive \
     -Dosmesa=true \
     -Dshared-glapi=enabled \
     -Dshared-llvm=enabled \
-    -Dshared-swr=true \
     -Dstatic-libclc=${STATIC_LIBCLC} \
     -Dvulkan-drivers=${VULKAN_DRIVERS} \
     -Dvulkan-layers=${VULKAN_LAYERS} \
