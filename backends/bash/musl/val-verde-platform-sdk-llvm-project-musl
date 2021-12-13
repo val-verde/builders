@@ -81,6 +81,7 @@ PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 TOOL_INSTALL_INVOCATION=tool-install-invocation \
 package-cmake-install-archive \
     -DBUILD_SHARED_LIBS=FALSE \
+    -DCCACHE_PROGRAM=`package-get-path ccache EXECUTABLE BUILD` \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
     -DCLANG_DEFAULT_LINKER=lld \
     -DCLANG_DEFAULT_RTLIB=compiler-rt \
@@ -192,6 +193,7 @@ package-cmake-install-archive \
     -DLLVM_BUILD_LLVM_DYLIB=TRUE \
     -DLLVM_BUILD_TESTS=FALSE \
     -DLLVM_BUILD_UTILS=TRUE \
+    -DLLVM_CCACHE_BUILD=TRUE \
     -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_4_TRIPLE} \
     -DLLVM_ENABLE_ASSERTIONS=FALSE \
     -DLLVM_ENABLE_BACKTRACES=FALSE \
