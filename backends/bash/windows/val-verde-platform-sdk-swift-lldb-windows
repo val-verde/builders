@@ -89,6 +89,7 @@ package-cmake-install-archive \
     -DNATIVE_Clang_DIR=${LLVM_NATIVE_STAGE_ROOT}/lib/cmake/clang \
     -DNATIVE_LLVM_DIR=${LLVM_NATIVE_STAGE_ROOT}/lib/cmake/lib \
     -DPython3_EXECUTABLE=${PYTHON} \
+    -DPython3_ROOT_DIR=${PACKAGE_PREFIX} \
     -DPANEL_LIBRARIES=`package-get-path panel SHARED HOST` \
     -DPYTHON_HOME=${PACKAGE_PREFIX} \
     -DSwift_DIR=${SWIFT_STAGE_ROOT}/lib/cmake/swift \

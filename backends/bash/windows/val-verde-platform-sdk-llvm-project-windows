@@ -260,6 +260,7 @@ package-cmake-install-archive \
     -DOpenCL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DOpenCL_LIBRARY=`package-get-path OpenCL SHARED HOST` \
     -DPython3_EXECUTABLE=${PYTHON} \
+    -DPython3_ROOT_DIR=${PACKAGE_PREFIX} \
     -DPOLLY_ENABLE_GPGPU_CODEGEN=FALSE \
     -DPYTHON_HOME=${PACKAGE_PREFIX} \
     -DSANITIZER_CXX_ABI=libc++ \
