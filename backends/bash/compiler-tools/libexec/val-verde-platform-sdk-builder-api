@@ -19,14 +19,14 @@ function package-invoke-category-builder() {
 }
 
 function package-install-build-archive() {
-    package-get-common-variables
+    package-get-packaging-api
     ${ECHO} -e "    Skipping re-build: \e[1;35m${PACKAGE_NAME}\e[0m"
     DISABLE_BUILD_ARCHIVE=TRUE \
     package-archive-build-install
 }
 
 function package-invoke-archive-action() {
-    package-get-common-variables
+    package-get-packaging-api
     PACKAGE_ACTION="${1}"
     shift
     PACKAGE_INPUT=($@)
