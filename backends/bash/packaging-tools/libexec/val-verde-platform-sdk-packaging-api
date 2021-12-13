@@ -9,6 +9,44 @@ RELEASE=${RELEASE:='1'}
 TEMPLATE_ROOT_BASE=${TEMPLATE_ROOT_BASE:-/usr/share/${VAL_VERDE_GH_TEAM}}
 VERSION=${VERSION:='1.0.0'}
 
+function package-archive-build-install() {
+    TEMPLATE_ROOT=${TEMPLATE_ROOT_BASE}/${PACKAGE_ARCHIVE_CLASS}
+
+    # Build the package
+    if [ -z "${DISABLE_BUILD_ARCHIVE}" ]; then
+	${PACKAGE_ARCHIVE_CLASS}-package-build
+    fi
+
+    # Install the package
+    ARCHIVE_CHECK=$(package-archive-check)
+    if [ "${ARCHIVE_CHECK}" == "true" ]; then
+ 	package-archive-remove "${PACKAGE_NAME}"
+    fi
+
+    if [ -z "${DISABLE_INSTALL_ARCHIVE}" ]; then
+	${PACKAGE_ARCHIVE_CLASS}-package-install
+    fi
+}
+
+function package-archive-check() {
+    if [ "${PACKAGE_ARCHIVE_CLASS}" = "rpm" ]; then
+	if [[ $(${RPM} -q ${PACKAGE_NAME}) = *"${PACKAGE_NAME} is not installed"* ]]; then
+	    ${ECHO} "false"
+        else
+	    ${ECHO} "true"
+	fi
+    fi
+}
+
+function package-archive-remove() {
+    ${ECHO} "Removing existing ${PACKAGE_ARCHIVE_CLASS} package: ${PACKAGE_NAME}."
+    if [ "${PACKAGE_ARCHIVE_CLASS}" = "deb" ]; then
+	package-dpkg-remove --force-depends "${1}"
+    elif [ "${PACKAGE_ARCHIVE_CLASS}" = "rpm" ]; then
+	package-rpm-remove "${1}"
+    fi
+}
+
 function deb-package-build() {
     ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
     TEMPLATE_ROOT=${TEMPLATE_ROOT:-${TEMPLATE_ROOT_BASE}/deb}
