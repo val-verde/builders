@@ -20,7 +20,7 @@ function package-archive-build-install() {
     # Install the package
     ARCHIVE_CHECK=$(package-archive-check)
     if [ "${ARCHIVE_CHECK}" == "true" ]; then
- 	package-archive-remove "${PACKAGE_NAME}"
+	package-rpm-remove "${PACKAGE_NAME}"
     fi
 
     if [ -z "${DISABLE_INSTALL_ARCHIVE}" ]; then
@@ -35,15 +35,6 @@ function package-archive-check() {
         else
 	    ${ECHO} "true"
 	fi
-    fi
-}
-
-function package-archive-remove() {
-    ${ECHO} "Removing existing ${PACKAGE_ARCHIVE_CLASS} package: ${PACKAGE_NAME}."
-    if [ "${PACKAGE_ARCHIVE_CLASS}" = "deb" ]; then
-	package-dpkg-remove --force-depends "${1}"
-    elif [ "${PACKAGE_ARCHIVE_CLASS}" = "rpm" ]; then
-	package-rpm-remove "${1}"
     fi
 }
 
