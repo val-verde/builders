@@ -109,7 +109,7 @@ package-invoke-builder swift-doc-cross 5
 package-invoke-builder sourcekit-lsp-cross 5
 
 # baikonur build
-package-invoke-builder baikonur-cross 1
+# package-invoke-builder baikonur-cross 1
 
 # pythonkit build
 package-invoke-builder pythonkit-cross 5

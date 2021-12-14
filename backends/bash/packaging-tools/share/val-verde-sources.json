@@ -688,7 +688,7 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "gnulib",
-        "sourceBranchIndicator": "default",
+        "sourceBranchIndicator": "default-next",
         "sourcePackageVersion": "0",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
@@ -868,7 +868,7 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "ispc",
-        "sourceBranchIndicator": "default",
+        "sourceBranchIndicator": "default-next",
         "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
@@ -1404,8 +1404,8 @@
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
-        "retainSource": "false",
-        "depth": "1",
+        "retainSource": "true",
+        "depth": "0",
         "sourceType": "git",
         "sourcePackageName": "libzmq",
         "sourceBranchIndicator": "default",
@@ -1417,16 +1417,16 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "llvm-project",
-        "sourceBranchIndicator": "default",
+        "sourceBranchIndicator": "default-next-testing",
         "sourcePackageVersion": "15",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
-        "retainSource": "false",
-        "depth": "1",
+        "retainSource": "true",
+        "depth": "0",
         "sourceType": "git",
         "sourcePackageName": "llvm-project",
-        "sourceBranchIndicator": "android",
+        "sourceBranchIndicator": "android-next-testing",
         "sourcePackageVersion": "15",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
@@ -2245,7 +2245,7 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "rust",
-        "sourceBranchIndicator": "default",
+        "sourceBranchIndicator": "default-next",
         "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
@@ -2326,7 +2326,7 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "souper",
-        "sourceBranchIndicator": "default",
+        "sourceBranchIndicator": "default-next",
         "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
@@ -2362,8 +2362,8 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "spirv-llvm-translator",
-        "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "13",
+        "sourceBranchIndicator": "default-next",
+        "sourcePackageVersion": "14",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -2407,16 +2407,16 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "swift",
-        "sourceBranchIndicator": "default",
+        "sourceBranchIndicator": "default-next-testing",
         "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
-        "retainSource": "false",
-        "depth": "1",
+        "retainSource": "true",
+        "depth": "0",
         "sourceType": "git",
         "sourcePackageName": "swift",
-        "sourceBranchIndicator": "android",
+        "sourceBranchIndicator": "android-next-testing",
         "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },

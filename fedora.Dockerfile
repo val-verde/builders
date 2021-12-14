@@ -1,4 +1,4 @@
-FROM fedora:34 AS fedora
+FROM fedora:35 AS fedora
 
 WORKDIR /sources
 

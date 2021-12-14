@@ -51,7 +51,7 @@ package-invoke-builder node-cross 17
 package-invoke-builder npm-yarn-cross 1
 
 # yautja server build
-package-invoke-builder yarn-yautja-server-cross 1
+# package-invoke-builder yarn-yautja-server-cross 1
 
 # wine-sdk build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
