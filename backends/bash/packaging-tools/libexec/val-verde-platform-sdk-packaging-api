@@ -16,21 +16,30 @@ function package-archive-build-install() {
     if [ -z "${DISABLE_BUILD_ARCHIVE}" ]; then
 	${PACKAGE_ARCHIVE_CLASS}-package-build
     fi
-
-    # Install the package
-    ARCHIVE_CHECK=$(package-archive-check)
+    # Check if package is installed using ARCHIVE_CHECK = false if package is not installed; true if installed
+    # if already installed then uninstall the package
+    ARCHIVE_CHECK=$(package-archive-check-existence)
     if [ "${ARCHIVE_CHECK}" == "true" ]; then
-	package-rpm-remove "${PACKAGE_NAME}"
+        package-archive-uninstall "${PACKAGE_NAME}"
     fi
 
+    # Install the package
     if [ -z "${DISABLE_INSTALL_ARCHIVE}" ]; then
-	${PACKAGE_ARCHIVE_CLASS}-package-install
+        ${PACKAGE_ARCHIVE_CLASS}-package-install
     fi
 }
 
-function package-archive-check() {
+function package-archive-uninstall() {
+    if [ "${PACKAGE_ARCHIVE_CLASS}" = "deb" ]; then
+        package-dpkg-remove --force-depends "${1}"
+    elif [ "${PACKAGE_ARCHIVE_CLASS}" = "rpm" ]; then
+        package-rpm-remove "${1}"
+    fi
+}
+
+function package-archive-check-existence() {
     if [ "${PACKAGE_ARCHIVE_CLASS}" = "rpm" ]; then
-	if [[ $(${RPM} -q ${PACKAGE_NAME}) = *"${PACKAGE_NAME} is not installed"* ]]; then
+	if [[ $(${RPM} -q ${PACKAGE_NAME}) == *"${PACKAGE_NAME} is not installed"* ]]; then
 	    ${ECHO} "false"
         else
 	    ${ECHO} "true"
