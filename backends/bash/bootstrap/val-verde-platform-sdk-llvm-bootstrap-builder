@@ -135,7 +135,7 @@ PACKAGES_TO_MANAGE=( 'llvm-project-13' 'HOST'
 package-invoke-archive-action install ${PACKAGES_TO_MANAGE[@]}
 
 # remove host compiler and libraries as it is superceded by bootstrapped clang
-package-apt-remove \
+package-archive-remove \
     clang* \
     cmake \
     libclang* \
