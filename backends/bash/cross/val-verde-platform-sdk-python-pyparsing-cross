@@ -6,7 +6,6 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Build the components
-cd ${SOURCE_ROOT}
 package-python-build
 
 # Build and install the package
