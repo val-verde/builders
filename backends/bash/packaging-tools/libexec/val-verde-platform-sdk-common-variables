@@ -134,18 +134,43 @@ function package-apt-remove() {
 }
 
 function package-apt-tool() {
-    TOOL_LOG=${STAGE_ROOT}/builder-apt-${1} \
-    tool-log ${APT} ${@} > /dev/null
+    TOOL_LOG=${TEMP_ROOT_BASE}/builder-apt-${1} \
+    tool-log ${APT} ${@}
 }
 
-function package-determine-os-distribution() {
-    if [[ "$(${LSB_RELEASE} --description)" = *Ubuntu* ]]; then
+function package-archive-remove() {
+    if [ "$(package-determine-os-distribution)" = "ubuntu" ]; then
+	    package-apt-remove "${@}"
+    elif [ "$(package-determine-os-distribution)" = "fedora" ]; then
+	    package-dnf-remove "${@}"
+    fi
+}
+
+function package-determine-compression-option() {
+    if [ "$(package-determine-os-distribution)" = "ubuntu" ]; then
         ${ECHO} "-Zzstd --no-uniform-compression"
     fi
 }
 
+function package-determine-os-distribution() {
+    if [[ "$(${LSB_RELEASE} --description)" = *Ubuntu* ]]; then
+        ${ECHO} "ubuntu"
+    elif [[ "$(${LSB_RELEASE} --description)" = *Fedora* ]]; then
+	    ${ECHO} "fedora"
+    fi
+}
+
+function package-dnf-tool() {
+    TOOL_LOG=${TEMP_ROOT_BASE}/builder-dnf-${1} \
+    tool-log ${DNF} ${@}
+}
+
+function package-dnf-remove() {
+    package-dnf-tool remove -y "${@}"
+}
+
 function package-dpkg-build() {
-    COMPRESSION_OPTION="`package-determine-os-distribution` "${@}""
+    COMPRESSION_OPTION="`package-determine-compression-option` "${@}""
     ${DPKG}-deb --build  ${COMPRESSION_OPTION} \
         > ${STAGE_ROOT}/builder-dpkg.log
 }
