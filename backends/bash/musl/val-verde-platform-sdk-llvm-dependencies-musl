@@ -265,15 +265,8 @@ package-invoke-builder lua-cross 5
 package-invoke-builder wget-cross 1
 
 # python build
-if [ "${BUILD_PROCESSOR}" = "${HOST_PROCESSOR}" ]; then
-    ENABLE_STAGE_ROOT_BUILD=TRUE \
-    PYTHON_FOR_BUILD=${PYTHON} \
-    package-invoke-builder python-cross 3
-else
-    ENABLE_STAGE_ROOT_BUILD=TRUE \
-    _PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
-    package-invoke-builder python-cross 3
-fi
+ENABLE_STAGE_ROOT_BUILD=TRUE \
+package-invoke-builder python-cross 3
 
 # python-setuptools build
 package-invoke-builder python-setuptools-cross 59
