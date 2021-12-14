@@ -5,12 +5,12 @@ set -e
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-# Build the components
+# Invoke one-shot template for python/build/install
+function package-install-completion-callback() {
+    # Remove duplicated copies of easy_install script
+    ${RM} -rf ${INSTALL_PREFIX}/bin/easy_install*
+}
+
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 SETUP_PY_ROOT=${SOURCE_ROOT}/tensorflow/tools/pip_package \
-package-python-build
-
-# Remove duplicated copies of easy_install script
-${RM} -rf ${INSTALL_PREFIX}/bin/easy_install*
-
-# Build and install the package
-package-invoke-archive-install
+package-python-install-archive
