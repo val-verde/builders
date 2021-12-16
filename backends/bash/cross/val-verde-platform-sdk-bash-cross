@@ -15,7 +15,7 @@ if [ "${HOST_OS}" != "macos" ] &&
 
     export DEPENDS="\
         ${PACKAGE_BASE_NAME}-acl-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
-	${DEPENDS} \
+    ${DEPENDS} \
     "
 fi
 

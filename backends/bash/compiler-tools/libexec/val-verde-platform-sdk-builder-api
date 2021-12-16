@@ -50,9 +50,9 @@ function package-invoke-archive-action() {
         PACKAGE_FILE_NAME=${PKG_PREFIX}-${PKG_SUFFIX}
 
         if [ "${PACKAGE_ACTION}" = "uninstall" ]; then
-	    package-archive-uninstall ${PACKAGE_FILE_NAME}
+            package-archive-uninstall ${PACKAGE_FILE_NAME}
         elif [ "${PACKAGE_ACTION}" = "install" ]; then
-	    DISABLE_BUILD_ARCHIVE=TRUE \
+            DISABLE_BUILD_ARCHIVE=TRUE \
             PACKAGE_NAME=${PACKAGE_FILE_NAME} \
             package-archive-build-install
         fi
