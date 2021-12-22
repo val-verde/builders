@@ -86,6 +86,7 @@ CMAKE_CONFIGURE_ROOT=${SOURCE_ROOT}/llvm \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-cmake-install-archive \
     -DBUILD_SHARED_LIBS=FALSE \
+    -DCCACHE_PROGRAM=`package-get-path ccache EXECUTABLE BUILD` \
     -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
     -DCLANG_DEFAULT_LINKER=lld \
     -DCLANG_DEFAULT_RTLIB=compiler-rt \

@@ -257,7 +257,6 @@ package-invoke-builder lua-cross 5
 
 # python build
 ENABLE_STAGE_ROOOT_BUILD=TRUE \
-_PYTHON_HOST_PLATFORM=${HOST_OS}-${HOST_PROCESSOR} \
 package-invoke-builder python-cross 3
 
 # python-setuptools build

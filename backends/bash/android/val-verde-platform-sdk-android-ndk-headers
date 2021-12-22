@@ -17,6 +17,7 @@ ${MKDIR} -p ${INSTALL_PREFIX}/include
 package-rsync -ax \
               ${INCLUDES_PATH}/${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}/asm \
               ${INCLUDES_PATH}/*.h \
+              ${INCLUDES_PATH}/aaudio \
               ${INCLUDES_PATH}/android \
               ${INCLUDES_PATH}/arpa \
               ${INCLUDES_PATH}/asm-generic \

@@ -230,13 +230,13 @@ function package-get-path() {
 }
 
 function package-get-source-package-version() {
-    QUERIED_SOURCE_PACKAGE_VERSION="\
+    QUERIED_SOURCE_PACKAGE_VERSIONS="\
     $(jq -r --arg src "$1" \
-    '.[] | select(.sourcePackageName==$src and 
-    .sourceBranchIndicator=="default") | .sourcePackageVersion' \
+    '.[] | select(.sourcePackageName==$src) | .sourcePackageVersion' \
     ${SOURCE_FILE})"
 
-    echo ${QUERIED_SOURCE_PACKAGE_VERSION}.0.0
+    VERSION=(${QUERIED_SOURCE_PACKAGE_VERSIONS}) # extract first reported version
+    ${ECHO} ${VERSION}.0.0
 }
 
 function package-git-add() {
