@@ -11,15 +11,18 @@ if [ -n "${NON_PERSISTENT_ARCHIVE}" ]; then
 fi
 
 if [ -z "${DISABLE_HARFBUZZ}" ]; then
+    FT_DISABLE_HARFBUZZ=FALSE
     FT_WITH_HARFBUZZ=TRUE
     HARFBUZZ_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/harfbuzz
     HARFBUZZ_LIBRARIES=`package-get-path harfbuzz SHARED HOST`
 else
+    FT_DISABLE_HARFBUZZ=TRUE
     FT_WITH_HARFBUZZ=FALSE
 fi
 
 package-cmake-install-archive \
     -DBUILD_SHARED_LIBS=true \
+    -DFT_DISABLE_HARFBUZZ=${FT_DISABLE_HARFBUZZ} \
     -DBZIP2_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DBZIP2_LIBRARY_DEBUG=`package-get-path bz2 STATIC HOST` \
     -DBZIP2_LIBRARY_RELEASE=`package-get-path bz2 STATIC HOST` \
