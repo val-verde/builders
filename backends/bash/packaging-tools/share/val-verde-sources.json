@@ -2848,7 +2848,7 @@
         "sourceType": "other",
         "sourcePackageName": "linux",
         "sourceBranchIndicator": "wget-xz",
-        "sourcePackageVersion": "5.15.9",
+        "sourcePackageVersion": "5.15.11",
         "sourcePackageUrl": "https://cdn.kernel.org/pub/${SOURCE_PACKAGE_NAME}/kernel/v5.x/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz"
     },
     {
