@@ -274,6 +274,9 @@ package-invoke-builder libxslt-cross 1
 # libyaml build
 package-invoke-builder libyaml-cross 0
 
+# protobuf build
+package-invoke-builder protobuf-cross 3
+
 # python sdk build
 package-invoke-category-builder python-sdk-cross
 
@@ -385,9 +388,6 @@ package-invoke-builder gflags-cross 2
 
 # glog build
 package-invoke-builder glog-cross 0
-
-# protobuf build
-package-invoke-builder protobuf-cross 3
 
 # boost build
 package-invoke-builder boost-cross 1

@@ -283,6 +283,9 @@ package-invoke-builder libxslt-cross 1
 # android libyaml build
 package-invoke-builder libyaml-cross 0
 
+# android protobuf build
+package-invoke-builder protobuf-cross 3
+
 # android python sdk build
 package-invoke-category-builder python-sdk-cross
 
@@ -400,9 +403,6 @@ package-invoke-builder gflags-cross 2
 
 # android glog build
 package-invoke-builder glog-cross 0
-
-# android protobuf build
-package-invoke-builder protobuf-cross 3
 
 # android boost build
 package-invoke-builder boost-cross 1

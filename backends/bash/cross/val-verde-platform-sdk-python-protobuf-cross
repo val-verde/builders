@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for python/build/install
+SETUP_PY=setup.py \
+SETUP_PY_ROOT=python \
+SOURCE_ROOT=${SOURCE_ROOT_BASE}/protobuf-${SOURCE_PACKAGE_VERSION} \
+package-python-install-archive

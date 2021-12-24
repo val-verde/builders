@@ -30,6 +30,9 @@ package-invoke-builder python-meson-cross 0
 # python-numpy build
 package-invoke-builder python-numpy-cross 1
 
+# python-protobuf build
+package-invoke-builder python-protobuf-cross 3
+
 # python-pybind11 build
 package-invoke-builder python-pybind11-cross 2
 
