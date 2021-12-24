@@ -2353,7 +2353,7 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "spirv-headers",
-        "sourceBranchIndicator": "default",
+        "sourceBranchIndicator": "default-next",
         "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
@@ -2371,7 +2371,7 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "spirv-tools",
-        "sourceBranchIndicator": "default",
+        "sourceBranchIndicator": "default-next",
         "sourcePackageVersion": "2022",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
