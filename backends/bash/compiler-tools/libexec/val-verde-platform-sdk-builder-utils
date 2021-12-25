@@ -2006,11 +2006,6 @@ function rpath-fixup() {
             patchelf --set-rpath ${COMPONENT_RPATH} \
                                  ${COMPONENT}
         done
-    elif [ "${HOST_OS}" = "macos" ]; then
-        for COMPONENT in ${RPATH_COMPONENTS}; do
-            ${INSTALL_NAME_TOOL} -add_rpath "@loader_path/../lib" ${COMPONENT}
-            ${INSTALL_NAME_TOOL} -add_rpath "@loader_path/../lib/swift/macosx" ${COMPONENT}
-        done
     fi
 }
 
