@@ -498,13 +498,9 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     fi
 
     if [ "${!VARIANT_OS}" = "macos" ]; then
-        HEADER_PADDING="0x40"
-        HEADERPAD_CFLAG="-Wl,-headerpad,${HEADER_PADDING}"
-        HEADERPAD_LDFLAG="-headerpad ${HEADER_PADDING}"
+        EMBED_BITCODE_CFLAG="-fembed-bitcode"
     else
-        unset \
-            HEADERPAD_CFLAG \
-            HEADERPAD_LDFLAG
+        unset EMBED_BITCODE_CFLAG
     fi
 
     TOOL_COMMON_CFLAGS=${ENV_PREFIX}COMMON_CFLAGS
@@ -549,7 +545,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         ${PIPE_CFLAG} \
         ${!TOOL_COMMON_CFLAGS} \
         ${OPTIMIZATION_CFLAG} \
-        ${HEADERPAD_CFLAG} \
+        ${EMBED_BITCODE_CFLAG} \
         ${LLVM_FORCE_VECTOR_WIDTH_CFLAG} \
         ${FLTO_CFLAG} \
         ${LIBSOUPER_CFLAGS} \
@@ -595,7 +591,6 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         " | ${XARGS}`"
     else
         export ${TOOL_LDFLAGS}="`${ECHO} "\
-            ${HEADERPAD_LDFLAG} \
             ${!TOOL_COMMON_LDFLAGS} \
             ${!TOOL_LDFLAGS} \
         " | ${XARGS}`"
