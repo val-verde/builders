@@ -201,6 +201,9 @@ package-invoke-builder curl-cross 7
 # apple-mig build
 package-invoke-builder apple-mig-cross 121
 
+# apple-xar build
+package-invoke-builder apple-xar-cross 452
+
 # alsa-lib build
 package-invoke-builder alsa-lib-cross 1
 

@@ -189,8 +189,14 @@ package-invoke-builder libssh2-cross 1
 # curl build
 package-invoke-builder curl-cross 7
 
+# apple-common-crypto build
+package-invoke-builder apple-common-crypto-cross 60178
+
 # apple-mig build
 package-invoke-builder apple-mig-cross 121
+
+# apple-xar build
+package-invoke-builder apple-xar-cross 452
 
 # alsa-lib build
 # package-invoke-builder alsa-lib-cross 1
