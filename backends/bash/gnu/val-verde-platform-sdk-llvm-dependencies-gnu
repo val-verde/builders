@@ -525,7 +525,7 @@ package-invoke-builder graphviz-cross 2
 package-invoke-builder intltool-cross 0
 
 # systemd build
-package-invoke-builder systemd 249
+package-invoke-builder systemd 250
 
 # p11-kit build
 package-invoke-builder p11-kit-cross 0
