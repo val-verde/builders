@@ -6,10 +6,12 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 CONFIGURE_FILE_DIR=unix
+ENABLE_OR_DISABLE_FRAMEWORK=disable
 TCL_SYSTEM=Linux
 
 if [ "${HOST_OS}" = "macos" ]; then
     TCL_SYSTEM=Darwin
+    ENABLE_OR_DISABLE_FRAMEWORK=enable
 elif [ "${HOST_OS}" = "mingw32" ]; then
     CONFIGURE_FILE_DIR=win
 fi
@@ -34,4 +36,5 @@ INSTALL_TARGET="INSTALL_ROOT=${INSTALL_ROOT} install" \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-stage-configure-install-archive \
     ac_cv_func_memmove=yes \
-    tcl_cv_sys_version=${TCL_SYSTEM}
+    tcl_cv_sys_version=${TCL_SYSTEM} \
+    --${ENABLE_OR_DISABLE_FRAMEWORK}-framework
