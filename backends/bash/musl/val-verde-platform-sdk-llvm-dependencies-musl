@@ -144,6 +144,7 @@ package-invoke-builder gdbm-cross 1
 package-invoke-builder libdb-cross 5
 
 # tcl build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder tcl-cross 8
 
 # sqlite build
