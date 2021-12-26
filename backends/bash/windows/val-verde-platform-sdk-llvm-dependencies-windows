@@ -117,6 +117,9 @@ package-invoke-builder ninja-cross 1
 # windows editline build
 package-invoke-builder wineditline-cross 2
 
+# windows readline build
+package-invoke-builder readline-cross 8
+
 # windows pcre build
 package-invoke-builder pcre-cross 8
 

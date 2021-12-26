@@ -119,6 +119,9 @@ package-invoke-builder file-cross 5
 # libedit build
 package-invoke-builder libedit-cross 20210714-3
 
+# readline build
+package-invoke-builder readline-cross 8
+
 # pcre build
 package-invoke-builder pcre-cross 8
 
