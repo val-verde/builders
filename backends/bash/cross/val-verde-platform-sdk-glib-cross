@@ -34,6 +34,11 @@ if [ "${HOST_OS}" = "android" ] ||
         -lintl \
         ${COMMON_CFLAGS} \
     "
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    COMMON_CFLAGS="\
+        -ltermiwin \
+        ${COMMON_CFLAGS} \
+    "
 fi
 
 # Invoke one-shot template for meson/install

@@ -114,6 +114,9 @@ package-invoke-builder ninja-cross 1
 # windows file build
 # package-invoke-builder file-cross 5
 
+# windows termiwin build
+package-invoke-builder termiwin-windows 1
+
 # windows editline build
 package-invoke-builder wineditline-cross 2
 
