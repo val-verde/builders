@@ -276,7 +276,7 @@ ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder python-cross 3
 
 # python-setuptools build
-package-invoke-builder python-setuptools-cross 59
+package-invoke-builder python-setuptools-cross 60
 
 # python-pip build
 package-invoke-builder python-pip-cross 21

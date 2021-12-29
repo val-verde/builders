@@ -1832,7 +1832,7 @@
         "sourceType": "git",
         "sourcePackageName": "python-setuptools",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "59",
+        "sourcePackageVersion": "60",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {

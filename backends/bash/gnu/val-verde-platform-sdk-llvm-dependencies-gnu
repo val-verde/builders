@@ -426,19 +426,21 @@ if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
 
     # python-setuptools build
     DISABLE_INSTALL_DEB=TRUE \
-    package-invoke-builder python-setuptools-cross 59
+    package-invoke-builder python-setuptools-cross 60
 
     # python-pip build
     DISABLE_INSTALL_DEB=TRUE \
     package-invoke-builder python-pip-cross 21
 
     # python build (without pip)
+    DISABLE_INSTALL_DEB=TRUE \
     ENABLE_STAGE_ROOT_BUILD=TRUE \
     package-invoke-builder python-cross 3
 
     # install python-pip package
-    PACKAGES_TO_MANAGE=( 'python-pip-21' 'HOST'
-                         'python-setuptools-59' 'HOST' )
+    PACKAGES_TO_MANAGE=( 'python-3' 'HOST'
+                         'python-pip-21' 'HOST'
+                         'python-setuptools-60' 'HOST' )
 
     package-invoke-archive-action install ${PACKAGES_TO_MANAGE[@]}
 else
@@ -448,7 +450,7 @@ else
     unset PYTHON
 
     # python-setuptools build
-    package-invoke-builder python-setuptools-cross 59
+    package-invoke-builder python-setuptools-cross 60
 
     # python-pip build
     package-invoke-builder python-pip-cross 21
