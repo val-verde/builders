@@ -243,6 +243,9 @@ package-invoke-builder libxslt-cross 1
 # windows libyaml build
 package-invoke-builder libyaml-cross 0
 
+# windows libzmq build
+package-invoke-builder libzmq-cross 4
+
 # windows protobuf build
 package-invoke-builder protobuf-cross 3
 

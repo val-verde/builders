@@ -465,6 +465,9 @@ package-invoke-builder libxslt-cross 1
 # libyaml build
 package-invoke-builder libyaml-cross 0
 
+# libzmq build
+package-invoke-builder libzmq-cross 4
+
 # protobuf build
 package-invoke-builder protobuf-cross 3
 

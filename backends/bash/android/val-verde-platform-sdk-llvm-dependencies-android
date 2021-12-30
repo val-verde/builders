@@ -290,6 +290,9 @@ package-invoke-builder libxslt-cross 1
 # android libyaml build
 package-invoke-builder libyaml-cross 0
 
+# android libzmq build
+package-invoke-builder libzmq-cross 4
+
 # android protobuf build
 package-invoke-builder protobuf-cross 3
 
