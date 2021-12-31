@@ -45,8 +45,14 @@ package-invoke-builder python-pyparsing-cross 2
 # python-six build
 package-invoke-builder python-six-cross 1
 
+# python-sympy build
+package-invoke-builder python-sympy-cross 1
+
 # python-toml build
 package-invoke-builder python-toml-cross 0
+
+# python-tqdm build
+package-invoke-builder python-tqdm-cross 4
 
 # python-typogrify build
 package-invoke-builder python-typogrify-cross 2
