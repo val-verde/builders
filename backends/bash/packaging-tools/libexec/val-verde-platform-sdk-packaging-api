@@ -105,13 +105,12 @@ function generate-control-file() {
 
 function generate-spec-file() {
     ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
-    HOST_PROCESSOR=${HOST_PROCESSOR:-${BUILD_PROCESSOR}}
 
     ${SED} "s|ARCHIVE_ROOT|${ARCHIVE_ROOT}|g; \
-            s|HOST_PROCESSOR|${HOST_PROCESSOR}|g; \
+            s|RPM_BUILD_PROCESSOR|${BUILD_PROCESSOR}|g; \
+            s|PACKAGE_ARCH|${PACKAGE_ARCH}|g; \
             s|PACKAGE_NAME|${PACKAGE_NAME}|g; \
             s|RELEASE|${RELEASE}|g; \
-            s|SYSTEM_ARCH|${PACKAGE_ARCH}|g; \
             s|VERSION|${VERSION}|g" \
             ${TEMPLATE_ROOT}/spec.in \
             > ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
@@ -120,6 +119,12 @@ function generate-spec-file() {
 function rpm-package-build() {
     ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
     TEMPLATE_ROOT=${TEMPLATE_ROOT:-${TEMPLATE_ROOT_BASE}/rpm}
+
+    if [ "${HOST_PROCESSOR}" = "wasm32"  ]; then
+	PACKAGE_ARCH=noarch
+    else
+        PACKAGE_ARCH=${PACKAGE_ARCH:-${HOST_PROCESSOR}}
+    fi
 
     package-push-directory ${INSTALL_ROOT}
         ${RM} -rf ${ARCHIVE_ROOT}
@@ -131,13 +136,13 @@ function rpm-package-build() {
                     ${BASE_DIRECTORY} \
                     ${ARCHIVE_ROOT}/SOURCES/${PACKAGE_NAME}
         
-        generate-spec-file "${PACKAGE_NAME}"
+        generate-spec-file "${PACKAGE_ARCH}" "${PACKAGE_NAME}"
 
         ${SED} -i "s|%files|%files\n/${PACKAGE_INSTALL_BASE}/*|g" ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
 
-        package-rpm-build --quiet --define "_topdir ${ARCHIVE_ROOT}" -ba ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
+        package-rpm-build --define "_topdir ${ARCHIVE_ROOT}" -bb ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
 
-        ${MV} ${ARCHIVE_ROOT}/RPMS/${BUILD_PROCESSOR}/${PACKAGE_NAME}.rpm \
+        ${MV} ${ARCHIVE_ROOT}/RPMS/${PACKAGE_ARCH}/${PACKAGE_NAME}.rpm \
                 ${ARCHIVE_PATH}/${PACKAGE_NAME}.rpm
         ${RM} -rf ${ARCHIVE_ROOT}
     package-pop-directory
