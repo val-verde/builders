@@ -23,10 +23,14 @@ else
     HAVE_CPU_NEON_SUPPORT=FALSE
 fi
 
+export-compiler-environment-for-python
+
 CXX_STANDARD=17 \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-cmake-install-archive \
     -Dlibprotobuf_BINARY_DIR=${PACKAGE_PREFIX}/lib/cmake/protobuf \
+    -DBUILD_opencv_python3=TRUE \
+    -DBUILD_JAVA=TRUE \
     -DBUILD_PERF_TESTS=FALSE \
     -DBUILD_PROTOBUF=FALSE \
     -DBUILD_TESTS=FALSE \
@@ -48,8 +52,12 @@ package-cmake-install-archive \
     -DPNG_LIBRARY_RELEASE=`package-get-path png SHARED HOST` \
     -DPYTHON3_INCLUDE_PATH=${PACKAGE_PREFIX}/include/python${PYTHON_VERSION} \
     -DPYTHON3_LIBRARY=`package-get-path python${PYTHON_VERSION} SHARED HOST` \
+    -DPYTHON3_VERSION_STRING=${PYTHON_VERSION} \
+    -DPYTHON3_NUMPY_INCLUDE_DIRS=${PACKAGE_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/numpy/core/include \
     -DPROTOBUF_UPDATE_FILES=TRUE \
     -DPYTHON3_EXECUTABLE=${PYTHON} \
+    -WITH_EIGEN=TRUE \
+    -WITH_FREETYPE=TRUE \
     -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DZLIB_LIBRARY_DEBUG=`package-get-path z SHARED HOST` \
     -DZLIB_LIBRARY_RELEASE=`package-get-path z SHARED HOST`
