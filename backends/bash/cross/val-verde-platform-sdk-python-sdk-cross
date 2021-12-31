@@ -9,6 +9,9 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 # python-cython build
 package-invoke-builder python-cython-cross 0
 
+# python-distro build
+package-invoke-builder python-distro-cross 1
+
 # python-jinja build
 package-invoke-builder python-jinja-cross 3
 
@@ -27,8 +30,14 @@ package-invoke-builder python-markupsafe-cross 2
 # python-meson build
 package-invoke-builder python-meson-cross 0
 
+# python-mpmath build
+package-invoke-builder python-mpmath-cross 1
+
 # python-numpy build
 package-invoke-builder python-numpy-cross 1
+
+# python-packaging build
+package-invoke-builder python-packaging-cross 21
 
 # python-protobuf build
 package-invoke-builder python-protobuf-cross 3
@@ -41,6 +50,9 @@ package-invoke-builder python-pygments-cross 2
 
 # python-pyparsing build
 package-invoke-builder python-pyparsing-cross 2
+
+# python-scikit-build build
+package-invoke-builder python-scikit-build-cross 0
 
 # python-six build
 package-invoke-builder python-six-cross 1
@@ -56,6 +68,9 @@ package-invoke-builder python-tqdm-cross 4
 
 # python-typogrify build
 package-invoke-builder python-typogrify-cross 2
+
+# python-wheel build
+package-invoke-builder python-wheel-cross 0
 
 # python-yaml build
 package-invoke-builder python-yaml-cross 6
