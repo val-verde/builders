@@ -330,7 +330,7 @@ function package-git-tool() {
 }
 
 function package-get-major-version() {
-    MAJOR_VERSION=`${ECHO} "${SOURCE_PACKAGE_VERSION}" | ${CUT} -d "." -f1`
+    MAJOR_VERSION=`${ECHO} "${1}" | ${CUT} -d "." -f1`
     ${ECHO} ${MAJOR_VERSION}
 }
 
