@@ -120,12 +120,6 @@ function rpm-package-build() {
     ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
     TEMPLATE_ROOT=${TEMPLATE_ROOT:-${TEMPLATE_ROOT_BASE}/rpm}
 
-    if [ "${HOST_PROCESSOR}" = "wasm32"  ]; then
-	PACKAGE_ARCH=noarch
-    else
-        PACKAGE_ARCH=${PACKAGE_ARCH:-${HOST_PROCESSOR}}
-    fi
-
     package-push-directory ${INSTALL_ROOT}
         ${RM} -rf ${ARCHIVE_ROOT}
         ${MKDIR} -p ${ARCHIVE_ROOT} \
