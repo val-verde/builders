@@ -12,15 +12,6 @@ export INSTALL_ROOT=/tmp/org.${VAL_VERDE_GH_TEAM}/scripts
 export STAGE_ROOT=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}
 export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}
 
-# Establish base architecture for package-builder
-# Assumes that deb is the default choice for archive tool on debian
-# and rpm, the defualt choice on fedora distributions.
-if [ "$(package-determine-os-distribution)" = "ubuntu" ]; then
-    export PACKAGE_ARCH=all
-elif [ "$(package-determine-os-distribution)" = "fedora" ]; then
-    export PACKAGE_ARCH=noarch
-fi
-
 ${MKDIR} -p \
          ${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM} \
          ${STAGE_ROOT}

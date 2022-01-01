@@ -19,8 +19,6 @@ BUILD_PACKAGE_USR_PREFIX=${BUILD_PACKAGE_USR_PREFIX:-usr}
 PACKAGE_USR_PREFIX=${PACKAGE_USR_PREFIX:-usr}
 
 # global package configuration variables
-PACKAGE_ARCH=all
-
 # 'build' configuration
 export BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}
 export BUILD_4_TRIPLE=${BUILD_PROCESSOR}-${BUILD_ENV:-unknown}-${BUILD_KERNEL}-${BUILD_OS}
@@ -100,6 +98,28 @@ export WHICH=${WHICH:-${BINDIR}/which}
 export XARGS=${XARGS:-${BINDIR}/xargs}
 export XZ=${XZ:-${BINDIR}/xz}
 
+function package-determine-os-distribution() {
+    if [[ "$(${LSB_RELEASE} --description)" = *Ubuntu* ]]; then
+        echo "ubuntu"
+    elif [[ "$(${LSB_RELEASE} --description)" = *Fedora* ]]; then
+        echo "fedora"
+    fi
+}
+
+# Establish base architecture for package-builder
+# Assumes that deb is the default choice for archive tool on debian
+# and rpm, the defualt choice on fedora distributions.
+if [ "$(package-determine-os-distribution)" = "ubuntu" ]; then
+    PACKAGE_ARCH=all
+elif [ "$(package-determine-os-distribution)" = "fedora" ]; then
+    if [ "${HOST_PROCESSOR}" = "wasm32" ]; then
+        PACKAGE_ARCH=noarch
+    elif [ -z "${HOST_PROCESSOR}" ]; then
+        PACKAGE_ARCH=noarch
+    else
+        PACKAGE_ARCH=${HOST_PROCESSOR}
+    fi
+fi
 # [G]UNZIP and [G]ZIP environment variables are used as options to the tools
 # and should not be exported
 GUNZIP=${GUNZIP:-${BINDIR}/gunzip}
@@ -149,14 +169,6 @@ function package-archive-remove() {
 function package-determine-compression-option() {
     if [ "$(package-determine-os-distribution)" = "ubuntu" ]; then
         ${ECHO} "-Zzstd --no-uniform-compression"
-    fi
-}
-
-function package-determine-os-distribution() {
-    if [[ "$(${LSB_RELEASE} --description)" = *Ubuntu* ]]; then
-        ${ECHO} "ubuntu"
-    elif [[ "$(${LSB_RELEASE} --description)" = *Fedora* ]]; then
-	    ${ECHO} "fedora"
     fi
 }
 
