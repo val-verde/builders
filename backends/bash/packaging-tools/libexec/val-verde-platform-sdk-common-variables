@@ -182,18 +182,18 @@ function package-dnf-remove() {
     package-dnf-tool remove -y "${@}"
 }
 
-function package-dpkg-build() {
+function package-deb-build() {
     COMPRESSION_OPTION="`package-determine-compression-option` "${@}""
     ${DPKG}-deb --build  ${COMPRESSION_OPTION} \
         > ${STAGE_ROOT}/builder-dpkg.log
 }
 
-function package-dpkg-install() {
+function package-deb-install() {
     package-dpkg-tool install "${@}"
 }
 
-function package-dpkg-remove() {
-    package-dpkg-tool remove "${@}"
+function package-deb-remove() {
+    package-dpkg-tool remove --force-depends "${@}"
 }
 
 function package-dpkg-tool() {
