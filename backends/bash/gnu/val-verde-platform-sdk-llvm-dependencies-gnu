@@ -425,17 +425,14 @@ if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
     unset PYTHON
 
     # python-setuptools build
-    DISABLE_INSTALL_ARCHIVE=TRUE \
-    package-invoke-builder python-setuptools-cross 60
+    package-invoke-builder python-setuptools-cross 60 no-install
 
     # python-pip build
-    DISABLE_INSTALL_ARCHIVE=TRUE \
-    package-invoke-builder python-pip-cross 21
+    package-invoke-builder python-pip-cross 21 no-install
 
     # python build (without pip)
-    DISABLE_INSTALL_ARCHIVE=TRUE \
     ENABLE_STAGE_ROOT_BUILD=TRUE \
-    package-invoke-builder python-cross 3
+    package-invoke-builder python-cross 3 no-install
 
     # install python-pip package
     PACKAGES_TO_MANAGE=( 'python-3' 'HOST'
