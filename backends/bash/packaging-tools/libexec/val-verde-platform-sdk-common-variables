@@ -115,11 +115,12 @@ elif [ "$(package-determine-os-distribution)" = "fedora" ]; then
     if [ "${HOST_PROCESSOR}" = "wasm32" ]; then
         PACKAGE_ARCH=noarch
     elif [ -z "${HOST_PROCESSOR}" ]; then
-        PACKAGE_ARCH=noarch
+        PACKAGE_ARCH=${BUILD_PROCESSOR}
     else
         PACKAGE_ARCH=${HOST_PROCESSOR}
     fi
 fi
+
 # [G]UNZIP and [G]ZIP environment variables are used as options to the tools
 # and should not be exported
 GUNZIP=${GUNZIP:-${BINDIR}/gunzip}
