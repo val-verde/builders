@@ -26,6 +26,7 @@ function package-install-build-archive() {
 }
 
 function package-invoke-archive-action() {
+    package-get-common-variables
     package-get-packaging-api
     PACKAGE_ACTION="${1}"
     shift
@@ -50,6 +51,7 @@ function package-invoke-archive-action() {
         PACKAGE_FILE_NAME=${PKG_PREFIX}-${PKG_SUFFIX}
 
         if [ "${PACKAGE_ACTION}" = "uninstall" ]; then
+            ARCHIVE_CHECK=$(package-archive-check-existence "${PACKAGE_FILE_NAME}") \
             package-archive-uninstall ${PACKAGE_FILE_NAME}
         elif [ "${PACKAGE_ACTION}" = "install" ]; then
             DISABLE_BUILD_ARCHIVE=TRUE \
