@@ -114,8 +114,14 @@ package-invoke-builder ninja-cross 1
 # windows file build
 # package-invoke-builder file-cross 5
 
+# windows termiwin build
+package-invoke-builder termiwin-windows 1
+
 # windows editline build
 package-invoke-builder wineditline-cross 2
+
+# windows readline build
+package-invoke-builder readline-cross 8
 
 # windows pcre build
 package-invoke-builder pcre-cross 8
@@ -130,6 +136,7 @@ package-invoke-builder mpc-cross 1
 # package-invoke-builder isl-cross 0
 
 # windows tcl build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder tcl-cross 8
 
 # windows sqlite build
@@ -222,7 +229,7 @@ ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder python-cross 3
 
 # windows python-setuptools build
-package-invoke-builder python-setuptools-cross 59
+package-invoke-builder python-setuptools-cross 60
 
 # windows python-pip build
 package-invoke-builder python-pip-cross 21
@@ -235,6 +242,12 @@ package-invoke-builder libxslt-cross 1
 
 # windows libyaml build
 package-invoke-builder libyaml-cross 0
+
+# windows libzmq build
+package-invoke-builder libzmq-cross 4
+
+# windows protobuf build
+package-invoke-builder protobuf-cross 3
 
 # windows python sdk build
 package-invoke-category-builder python-sdk-cross
@@ -315,9 +328,6 @@ package-invoke-builder gflags-cross 2
 
 # windows glog build
 package-invoke-builder glog-cross 0
-
-# windows protobuf build
-package-invoke-builder protobuf-cross 3
 
 # windows boost build
 package-invoke-builder boost-cross 1

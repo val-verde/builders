@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for cmake/install
+if [ "${HOST_OS}" = "musl" ]; then
+    POLLER=epoll
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    SYSTEM_VERSION="10.0.0"
+    POLLER=epoll
+else
+    POLLER=select
+fi
+
+package-cmake-install-archive \
+    -DBUILD_TESTS=FALSE \
+    -DGNUTLS_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DGNUTLS_LIBRARY=`package-get-path gnutls SHARED HOST` \
+    -DPOLLER=${POLLER} \
+    -DZMQ_BUILD_TESTS=FALSE

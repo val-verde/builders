@@ -10,5 +10,8 @@ cd ${SOURCE_ROOT}
 package-python-build
 package-python-build --project tensorflow-io-gcs-filesystem
 
+package-python-install
+package-python-install --project tensorflow-io-gcs-filesystem
+
 # Build and install the package
 package-invoke-archive-install

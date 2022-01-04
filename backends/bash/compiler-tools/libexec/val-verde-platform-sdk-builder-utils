@@ -498,13 +498,9 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     fi
 
     if [ "${!VARIANT_OS}" = "macos" ]; then
-        HEADER_PADDING="0x40"
-        HEADERPAD_CFLAG="-Wl,-headerpad,${HEADER_PADDING}"
-        HEADERPAD_LDFLAG="-headerpad ${HEADER_PADDING}"
+        EMBED_BITCODE_CFLAG="-fembed-bitcode"
     else
-        unset \
-            HEADERPAD_CFLAG \
-            HEADERPAD_LDFLAG
+        unset EMBED_BITCODE_CFLAG
     fi
 
     TOOL_COMMON_CFLAGS=${ENV_PREFIX}COMMON_CFLAGS
@@ -549,7 +545,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         ${PIPE_CFLAG} \
         ${!TOOL_COMMON_CFLAGS} \
         ${OPTIMIZATION_CFLAG} \
-        ${HEADERPAD_CFLAG} \
+        ${EMBED_BITCODE_CFLAG} \
         ${LLVM_FORCE_VECTOR_WIDTH_CFLAG} \
         ${FLTO_CFLAG} \
         ${LIBSOUPER_CFLAGS} \
@@ -595,7 +591,6 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         " | ${XARGS}`"
     else
         export ${TOOL_LDFLAGS}="`${ECHO} "\
-            ${HEADERPAD_LDFLAG} \
             ${!TOOL_COMMON_LDFLAGS} \
             ${!TOOL_LDFLAGS} \
         " | ${XARGS}`"
@@ -720,7 +715,7 @@ function export-compiler-environment-for-python() {
     fi
 
     export \
-        _PYTHON_HOST_PLATFORM=${HOST_KERNEL}-${HOST_PROCESSOR} \
+        _PYTHON_HOST_PLATFORM=${PYTHON_PLATFORM}-${HOST_PROCESSOR} \
         _PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata__${PYTHON_PLATFORM}_${HOST_PROCESSOR}-${HOST_KERNEL}-${PYTHON_HOST_OS} \
         CCSHARED="${CC} -pthread -shared ${CCFLAGS}" \
         LDSHARED="${CCLD} -pthread -shared ${CCLDFLAGS} ${PYTHON_LIBS}" \
@@ -1102,6 +1097,7 @@ function package-cmake-invocation-arguments-for-variant() {
     COMPILER_TARGET=${!COMPILER_TARGET_VAR}
     CXX_STANDARD=${CXX_STANDARD:-20}
     SYSTEM_NAME_VAR=${ENV_PREFIX}SYSTEM_NAME
+    SYSTEM_VERSION=${SYSTEM_VERSION:-${HOST_OS_API_LEVEL}}
 
     TOOL_AR=${ENV_PREFIX}AR
     TOOL_AS=${ENV_PREFIX}AS
@@ -1217,6 +1213,7 @@ function package-cmake-invocation-arguments-for-variant() {
 -DCMAKE_LIBTOOL=${CMAKE_LIBTOOL} \
 -DCMAKE_LINKER=${!TOOL_LD} \
 -DCMAKE_LIPO=${!TOOL_LIPO} \
+-DCMAKE_MACOSX_RPATH=TRUE \
 -DCMAKE_MAKE_PROGRAM=${NINJA} \
 -DCMAKE_MODULE_LINKER_FLAGS=\""${!TOOL_CCLDFLAGS}"\" \
 -DCMAKE_MODULE_LINKER_FLAGS_DEBUG= \
@@ -1263,7 +1260,7 @@ function package-cmake-invocation-arguments-for-variant() {
 -DCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO= \
 -DCMAKE_SYSROOT=${CMAKE_SYSROOT} \
 -DCMAKE_SYSTEM_PROCESSOR=${CMAKE_SYSTEM_PROCESSOR} \
--DCMAKE_SYSTEM_VERSION=${HOST_OS_API_LEVEL} \
+-DCMAKE_SYSTEM_VERSION=${SYSTEM_VERSION} \
 ${CMAKE_OSX_DEPLOYMENT_TARGET_CMD} \
 ${CMAKE_OSX_SYSROOT_CMD} \
 ${CROSSCOMPILING_CMD} \
@@ -1749,11 +1746,11 @@ function package-python-build() {
 
     export-compiler-environment-for-python
 
-    package-push-directory ${STAGE_ROOT}
+    package-push-directory ${STAGE_ROOT}/${SETUP_PY_ROOT}
         TOOL_LOG=${STAGE_ROOT}/builder-invocation \
-        tool-log ${PYTHON} ${SETUP_PY_ROOT}/${SETUP_PY} build -b ${STAGE_ROOT} \
-                                                              -j ${NUM_PROCESSORS} \
-                                                              ${@}
+        tool-log ${PYTHON} ${SETUP_PY} build -b ${STAGE_ROOT} \
+                                             -j ${NUM_PROCESSORS} \
+                                             ${@}
     package-pop-directory
 }
 
@@ -1762,12 +1759,12 @@ function package-python-install() {
     SETUP_PY_ROOT=${SETUP_PY_ROOT:-.}
     SETUP_PY=${SETUP_PY:-setup.py}
 
-    package-push-directory ${STAGE_ROOT}
+    package-push-directory ${STAGE_ROOT}/${SETUP_PY_ROOT}
         TOOL_LOG=${STAGE_ROOT}/builder-installation \
-        tool-log ${PYTHON} ${SETUP_PY_ROOT}/${SETUP_PY} install --prefix ${INSTALL_PREFIX} \
-                                                                --record ${INSTALLED_FILE_LIST} \
-                                                                --single-version-externally-managed \
-                                                                ${@}
+        tool-log ${PYTHON} ${SETUP_PY} install --prefix ${INSTALL_PREFIX} \
+                                               --record ${INSTALLED_FILE_LIST} \
+                                               --single-version-externally-managed \
+                                               ${@}
     package-pop-directory
 }
 
@@ -2004,11 +2001,6 @@ function rpath-fixup() {
         for COMPONENT in ${RPATH_COMPONENTS}; do
             patchelf --set-rpath ${COMPONENT_RPATH} \
                                  ${COMPONENT}
-        done
-    elif [ "${HOST_OS}" = "macos" ]; then
-        for COMPONENT in ${RPATH_COMPONENTS}; do
-            ${INSTALL_NAME_TOOL} -add_rpath "@loader_path/../lib" ${COMPONENT}
-            ${INSTALL_NAME_TOOL} -add_rpath "@loader_path/../lib/swift/macosx" ${COMPONENT}
         done
     fi
 }

@@ -6,9 +6,9 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for python/build/install
-COMMON_CFLAGS="\
-    -L${PACKAGE_PREFIX}/lib \
-    ${COMMON_CFLAGS} \
-" \
-NUMPY_VERSION="1.22.0" \
+${ECHO} "\
+[global]
+skip_check_zmq=True
+zmq_prefix=${PACKAGE_PREFIX}
+" > ${STAGE_ROOT}/setup.cfg
 package-python-install-archive

@@ -6,9 +6,7 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for python/build/install
-COMMON_CFLAGS="\
-    -L${PACKAGE_PREFIX}/lib \
-    ${COMMON_CFLAGS} \
-" \
-NUMPY_VERSION="1.22.0" \
+SETUP_PY=setup.py \
+SETUP_PY_ROOT=python \
+SOURCE_ROOT=${SOURCE_ROOT_BASE}/protobuf-${SOURCE_PACKAGE_VERSION} \
 package-python-install-archive

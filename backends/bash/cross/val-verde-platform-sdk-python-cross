@@ -17,6 +17,10 @@ export DEPENDS="\
 
 # Invoke one-shot template for stage/configure/install
 function package-install-completion-callback() {
+    if [ -n "${ENABLE_PIP}" ]; then
+        ${RM} -rf ${INSTALL_PREFIX}/lib/python${PYTHON_VERSION}/ste-packages/_distutils_hack
+    fi
+
     ${LN} -sf \
           `package-get-filename python3 EXECUTABLE HOST` \
           ${INSTALL_PREFIX}/bin/`package-get-filename python EXECUTABLE HOST`

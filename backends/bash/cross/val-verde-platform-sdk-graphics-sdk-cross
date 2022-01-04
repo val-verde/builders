@@ -82,6 +82,9 @@ fi
 # glfw build
 package-invoke-builder glfw-cross 3
 
+# tk build
+package-invoke-builder tk-cross 8
+
 # libsass build
 package-invoke-builder libsass-cross 3
 

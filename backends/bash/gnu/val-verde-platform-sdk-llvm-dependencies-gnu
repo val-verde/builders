@@ -215,6 +215,9 @@ unset PERL
 # libedit build
 package-invoke-builder libedit-cross 20210714-3
 
+# readline build
+package-invoke-builder readline-cross 8
+
 # pcre build
 package-invoke-builder pcre-cross 8
 
@@ -240,6 +243,7 @@ package-invoke-builder gdbm-cross 1
 package-invoke-builder libdb-cross 5
 
 # tcl build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder tcl-cross 8
 
 # sqlite build
@@ -306,6 +310,9 @@ package-invoke-builder libndp-cross 1
 
 # apple-mig build
 package-invoke-builder apple-mig-cross 121
+
+# apple-xar build
+package-invoke-builder apple-xar-cross 452
 
 # alsa-lib build
 package-invoke-builder alsa-lib-cross 1
@@ -419,19 +426,21 @@ if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
 
     # python-setuptools build
     DISABLE_INSTALL_DEB=TRUE \
-    package-invoke-builder python-setuptools-cross 59
+    package-invoke-builder python-setuptools-cross 60
 
     # python-pip build
     DISABLE_INSTALL_DEB=TRUE \
     package-invoke-builder python-pip-cross 21
 
     # python build (without pip)
+    DISABLE_INSTALL_DEB=TRUE \
     ENABLE_STAGE_ROOT_BUILD=TRUE \
     package-invoke-builder python-cross 3
 
     # install python-pip package
-    PACKAGES_TO_MANAGE=( 'python-pip-21' 'HOST'
-                         'python-setuptools-59' 'HOST' )
+    PACKAGES_TO_MANAGE=( 'python-3' 'HOST'
+                         'python-pip-21' 'HOST'
+                         'python-setuptools-60' 'HOST' )
 
     package-invoke-archive-action install ${PACKAGES_TO_MANAGE[@]}
 else
@@ -441,7 +450,7 @@ else
     unset PYTHON
 
     # python-setuptools build
-    package-invoke-builder python-setuptools-cross 59
+    package-invoke-builder python-setuptools-cross 60
 
     # python-pip build
     package-invoke-builder python-pip-cross 21
@@ -455,6 +464,12 @@ package-invoke-builder libxslt-cross 1
 
 # libyaml build
 package-invoke-builder libyaml-cross 0
+
+# libzmq build
+package-invoke-builder libzmq-cross 4
+
+# protobuf build
+package-invoke-builder protobuf-cross 3
 
 # python sdk build
 package-invoke-category-builder python-sdk-cross
@@ -518,7 +533,7 @@ package-invoke-builder graphviz-cross 2
 package-invoke-builder intltool-cross 0
 
 # systemd build
-package-invoke-builder systemd 249
+package-invoke-builder systemd 250
 
 # p11-kit build
 package-invoke-builder p11-kit-cross 0
@@ -584,9 +599,6 @@ package-invoke-builder gflags-cross 2
 
 # glog build
 package-invoke-builder glog-cross 0
-
-# protobuf build
-package-invoke-builder protobuf-cross 3
 
 # boost build
 package-invoke-builder boost-cross 1

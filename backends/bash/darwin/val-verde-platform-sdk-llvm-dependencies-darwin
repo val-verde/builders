@@ -119,6 +119,9 @@ package-invoke-builder file-cross 5
 # libedit build
 package-invoke-builder libedit-cross 20210714-3
 
+# readline build
+package-invoke-builder readline-cross 8
+
 # pcre build
 package-invoke-builder pcre-cross 8
 
@@ -141,6 +144,7 @@ package-invoke-builder gdbm-cross 1
 package-invoke-builder libdb-cross 5
 
 # tcl build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder tcl-cross 8
 
 # sqlite build
@@ -189,8 +193,14 @@ package-invoke-builder libssh2-cross 1
 # curl build
 package-invoke-builder curl-cross 7
 
+# apple-common-crypto build
+package-invoke-builder apple-common-crypto-cross 60178
+
 # apple-mig build
 package-invoke-builder apple-mig-cross 121
+
+# apple-xar build
+package-invoke-builder apple-xar-cross 452
 
 # alsa-lib build
 # package-invoke-builder alsa-lib-cross 1
@@ -260,7 +270,7 @@ ENABLE_STAGE_ROOOT_BUILD=TRUE \
 package-invoke-builder python-cross 3
 
 # python-setuptools build
-package-invoke-builder python-setuptools-cross 59
+package-invoke-builder python-setuptools-cross 60
 
 # python-pip build
 package-invoke-builder python-pip-cross 21
@@ -273,6 +283,12 @@ package-invoke-builder libxslt-cross 1
 
 # libyaml build
 package-invoke-builder libyaml-cross 0
+
+# libzmq build
+package-invoke-builder libzmq-cross 4
+
+# protobuf build
+package-invoke-builder protobuf-cross 3
 
 # python sdk build
 package-invoke-category-builder python-sdk-cross
@@ -385,9 +401,6 @@ package-invoke-builder gflags-cross 2
 
 # glog build
 package-invoke-builder glog-cross 0
-
-# protobuf build
-package-invoke-builder protobuf-cross 3
 
 # boost build
 package-invoke-builder boost-cross 1

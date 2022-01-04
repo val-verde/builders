@@ -120,6 +120,9 @@ package-invoke-builder file-cross 5
 # android libedit build
 package-invoke-builder libedit-cross 20210714-3
 
+# android readline build
+package-invoke-builder readline-cross 8
+
 # android pcre build
 package-invoke-builder pcre-cross 8
 
@@ -142,6 +145,7 @@ package-invoke-builder gdbm-cross 1
 package-invoke-builder libdb-cross 5
 
 # android tcl build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder tcl-cross 8
 
 # android sqlite build
@@ -198,6 +202,9 @@ package-invoke-builder curl-cross 7
 
 # android apple-mig build
 package-invoke-builder apple-mig-cross 121
+
+# android apple-xar build
+package-invoke-builder apple-xar-cross 452
 
 # alsa-lib build
 package-invoke-builder alsa-lib-cross 1
@@ -269,7 +276,7 @@ ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder python-cross 3
 
 # android python-setuptools build
-package-invoke-builder python-setuptools-cross 59
+package-invoke-builder python-setuptools-cross 60
 
 # android python-pip build
 package-invoke-builder python-pip-cross 21
@@ -282,6 +289,12 @@ package-invoke-builder libxslt-cross 1
 
 # android libyaml build
 package-invoke-builder libyaml-cross 0
+
+# android libzmq build
+package-invoke-builder libzmq-cross 4
+
+# android protobuf build
+package-invoke-builder protobuf-cross 3
 
 # android python sdk build
 package-invoke-category-builder python-sdk-cross
@@ -400,9 +413,6 @@ package-invoke-builder gflags-cross 2
 
 # android glog build
 package-invoke-builder glog-cross 0
-
-# android protobuf build
-package-invoke-builder protobuf-cross 3
 
 # android boost build
 package-invoke-builder boost-cross 1

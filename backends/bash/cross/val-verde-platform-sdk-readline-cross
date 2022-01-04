@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for stage/configure/install
+function package-install-completion-callback() {
+    ${RM} ${INSTALL_PREFIX}/share/man/man3/history.3
+}
+
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+package-stage-configure-install-archive \
+    --disable-install-examples \
+    --disable-static \
+    --enable-multibyte \
+    --enable-shared \
+    --with-curses
