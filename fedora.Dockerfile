@@ -1,7 +1,5 @@
 FROM fedora:34 AS fedora
 
-ENV DEBIAN_FRONTEND=noninteractive
-
 WORKDIR /sources
 
 COPY fedora \
