@@ -64,8 +64,3 @@ package-invoke-builder compiler-rt-cross 13
 
 # webassembly libcxx
 package-invoke-builder libcxx-bootstrap 13
-
-# remove llvm-bootstrap stage root components
-PACKAGES_TO_MANAGE=( 'llvm-project-13-stage' 'BUILD' )
-
-package-invoke-archive-action uninstall ${PACKAGES_TO_MANAGE[@]}
