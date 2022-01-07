@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for stage/configure/install
+function tool-install-invocation() {
+    INSTALL_TARGET=" " \
+    tool-install \
+        SAK_CC="${BUILD_CC}" \
+        SAK_CFLAGS="${BUILD_CFLAGS}" \
+	SAK_LINK="${BUILD_CCLD} ${BUILD_CCLDFLAGS} \$(OUTPUTEXE)\$(1) \$(2)"
+
+    tool-install \
+        SAK_CC="${BUILD_CC}" \
+        SAK_CFLAGS="${BUILD_CFLAGS}" \
+	SAK_LINK="${BUILD_CCLD} ${BUILD_CCLDFLAGS} \$(OUTPUTEXE)\$(1) \$(2)"
+}
+
+CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
+DISABLE_TOOL_BUILD=TRUE \
+TOOL_INSTALL_INVOCATION=tool-install-invocation \
+package-stage-configure-install-archive
