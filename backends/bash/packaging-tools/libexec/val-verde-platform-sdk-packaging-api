@@ -14,7 +14,7 @@ function package-archive-build-install() {
 
     # Build the package
     if [ -z "${DISABLE_BUILD_ARCHIVE}" ]; then
-        ${PACKAGE_ARCHIVE_CLASS}-package-build
+        ${PACKAGE_ARCHIVE_CLASS}-archive-build
     fi
 
     # Check if package is installed and needs to be uninstalled
@@ -25,7 +25,7 @@ function package-archive-build-install() {
 
     # Install the package
     if [ -z "${DISABLE_INSTALL_ARCHIVE}" ]; then
-        ${PACKAGE_ARCHIVE_CLASS}-package-install
+        ${PACKAGE_ARCHIVE_CLASS}-archive-install
     fi
 }
 
@@ -46,7 +46,7 @@ function package-archive-check-existence() {
     fi
 }
 
-function deb-package-build() {
+function deb-archive-build() {
     ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
     TEMPLATE_ROOT=${TEMPLATE_ROOT:-${TEMPLATE_ROOT_BASE}/deb}
 
@@ -58,7 +58,7 @@ function deb-package-build() {
                     ${ARCHIVE_ROOT}/
 
         TEMPLATE_ROOT=${TEMPLATE_ROOT} \
-        generate-control-file "${PACKAGE_NAME}"
+        generate-debian-control-file "${PACKAGE_NAME}"
         package-deb-build ${ARCHIVE_ROOT}
 
         ${MV} ${ARCHIVE_ROOT}/../${PACKAGE_NAME}.deb \
@@ -69,11 +69,11 @@ function deb-package-build() {
     ${RM} -rf ${ARCHIVE_ROOT_BASE}
 }
 
-function deb-package-install() {
+function deb-archive-install() {
     package-deb-install ${ARCHIVE_PATH}/${PACKAGE_NAME}.deb
 }
 
-function generate-control-file() {
+function generate-debian-control-file() {
     ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
 
     # Template definition
@@ -100,7 +100,7 @@ function generate-control-file() {
             > ${DEBIAN_ROOT}/changelog
 }
 
-function generate-spec-file() {
+function generate-rpm-spec-file() {
     ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
 
     ${SED} "s|ARCHIVE_ROOT|${ARCHIVE_ROOT}|g; \
@@ -113,7 +113,7 @@ function generate-spec-file() {
             > ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
 }
 
-function rpm-package-build() {
+function rpm-archive-build() {
     ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
     TEMPLATE_ROOT=${TEMPLATE_ROOT:-${TEMPLATE_ROOT_BASE}/rpm}
 
@@ -127,7 +127,7 @@ function rpm-package-build() {
                     ${BASE_DIRECTORY} \
                     ${ARCHIVE_ROOT}/SOURCES/${PACKAGE_NAME}
         
-        generate-spec-file "${PACKAGE_ARCH}" "${PACKAGE_NAME}"
+        generate-rpm-spec-file "${PACKAGE_ARCH}" "${PACKAGE_NAME}"
 
         ${SED} -i "s|%files|%files\n/${PACKAGE_INSTALL_BASE}/*|g" ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
 
@@ -141,7 +141,7 @@ function rpm-package-build() {
     ${RM} -rf ${ARCHIVE_ROOT_BASE}
 }
 
-function rpm-package-install() {
+function rpm-archive-install() {
     package-rpm-install ${ARCHIVE_PATH}/${PACKAGE_NAME}.rpm
 }
 
