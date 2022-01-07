@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for configure/install
+${TOUCH} ${STAGE_ROOT}/ChangeLog
+
+CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
+CONFIGURE_FILE=bootstrap.sh \
+DISABLE_AUTOUPDATE=TRUE \
+package-configure-install-archive \
+    --disable-doc

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for cmake/install
+package-cmake-install-archive \
+    -DGLUT_INCLUDE_DIR= \
+    -DJPEG_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DJPEG_LIBRARY=`package-get-path jpeg STATIC HOST` \
+    -DJPEG_LIBRARY_DEBUG=`package-get-path jpeg STATIC HOST` \
+    -DJPEG_LIBRARY_RELEASE=`package-get-path jpeg STATIC HOST` \
+    -DLIBLZMA_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DLIBLZMA_LIBRARY=`package-get-path lzma SHARED HOST` \
+    -DLIBLZMA_LIBRARY_DEBUG=`package-get-path lzma SHARED HOST` \
+    -DLIBLZMA_LIBRARY_RELEASE=`package-get-path lzma SHARED HOST` \
+    -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZLIB_LIBRARY=`package-get-path z SHARED HOST` \
+    -DZLIB_LIBRARY_DEBUG=`package-get-path z SHARED HOST` \
+    -DZLIB_LIBRARY_RELEASE=`package-get-path z SHARED HOST` \
+    -DZSTD_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZSTD_LIBRARY=`package-get-path zstd SHAREDC HOST` \
+    -DZSTD_LIBRARY_DEBUG=`package-get-path zstd SHARED HOST` \
+    -DZSTD_LIBRARY_RELEASE=`package-get-path zstd SHARED HOST`
