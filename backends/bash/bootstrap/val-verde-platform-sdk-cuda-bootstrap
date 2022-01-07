@@ -8,7 +8,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 # Configure the build components
 CUDA_PACKAGE_LIST=/usr/share/${VAL_VERDE_GH_TEAM}-cuda-binaries.json
 CUDA_PACKAGE_COUNT=$(jq -r length ${CUDA_PACKAGE_LIST})
-CUDA_HOST_PROCESSOR=${HOST_PROCESSOR}
+CUDA_PROCESSOR=${HOST_PROCESSOR}
 CUDA_STAGE_ROOT=${STAGE_ROOT}/builds
 
 for index in `seq 0 $(($CUDA_PACKAGE_COUNT - 1))`; do
@@ -20,8 +20,8 @@ for index in `seq 0 $(($CUDA_PACKAGE_COUNT - 1))`; do
 
 
     if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
-        CUDA_HOST_PROCESSOR=sbsa
-        PACKAGE_FILENAME_SUFFIX=_${CUDA_HOST_PROCESSOR}
+        CUDA_PROCESSOR=sbsa
+        PACKAGE_FILENAME_SUFFIX=_${CUDA_PROCESSOR}
     fi
     
     PACKAGE_FILENAME=${SOURCE_PACKAGE_NAME}_${CUDA_PACKAGE_VERSION}_${NVIDIA_DRIVER_VERSION}_${HOST_KERNEL}${PACKAGE_FILENAME_SUFFIX}.run
@@ -38,10 +38,10 @@ done
 
 ${MKDIR} -p ${INSTALL_PREFIX}/bin
 package-rsync -ax \
-              ${CUDA_STAGE_ROOT}/cuda_cudart/targets/${CUDA_HOST_PROCESSOR}-${HOST_KERNEL}/* \
+              ${CUDA_STAGE_ROOT}/cuda_cudart/targets/${CUDA_PROCESSOR}-${HOST_KERNEL}/* \
               ${CUDA_STAGE_ROOT}/cuda_nvcc/nvvm \
-              ${CUDA_STAGE_ROOT}/cuda_nvcc/targets/${CUDA_HOST_PROCESSOR}-${HOST_KERNEL}/* \
-              ${CUDA_STAGE_ROOT}/libcurand/targets/${CUDA_HOST_PROCESSOR}-${HOST_KERNEL}/include \
+              ${CUDA_STAGE_ROOT}/cuda_nvcc/targets/${CUDA_PROCESSOR}-${HOST_KERNEL}/* \
+              ${CUDA_STAGE_ROOT}/libcurand/targets/${CUDA_PROCESSOR}-${HOST_KERNEL}/include \
               ${INSTALL_PREFIX}/
 package-rsync -ax \
               ${CUDA_STAGE_ROOT}/cuda_nvcc/bin/fatbinary \
