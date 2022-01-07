@@ -281,6 +281,12 @@ package-invoke-builder libxml2-cross 2
 # libxslt build
 package-invoke-builder libxslt-cross 1
 
+# pugixml build
+package-invoke-builder pugixml-cross 1
+
+# xmlto build
+package-invoke-builder xmlto-cross 0
+
 # libyaml build
 package-invoke-builder libyaml-cross 0
 
