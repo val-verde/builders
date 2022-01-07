@@ -8,11 +8,11 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 GO_PACKAGE_VERSION=1.17.6
 
 # Configure the build components
-GO_PROCESSOR=${BUILD_PROCESSOR}
+GO_PROCESSOR=${HOST_PROCESSOR}
 
-if [ "${BUILD_PROCESSOR}" = "aarch64" ]; then
+if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
     GO_PROCESSOR=arm64
-elif [ "${BUILD_PROCESSOR}" = "x86_64" ]; then
+elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
     GO_PROCESSOR=amd64
 fi
 

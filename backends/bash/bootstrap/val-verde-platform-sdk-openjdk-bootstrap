@@ -5,16 +5,17 @@ set -e
 # Set all environment vars
 SUB_VERSION=35
 OPENJDK_URL=https://download.java.net/java/GA/jdk${SOURCE_PACKAGE_VERSION}/0d483333a00540d886896bac774ff48b/${SUB_VERSION}/GPL
-OPENJDK_TAR_GZ=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${BUILD_PROCESSOR}.tar.gz
+OPENJDK_PROCESSOR=${HOST_PROCESSOR}
+OPENJDK_TAR_GZ=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${OPENJDK_PROCESSOR}.tar.gz
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
-if [ "${BUILD_PROCESSOR}" = "x86_64" ]; then
+if [ "${HOST_PROCESSOR}" = "x86_64" ]; then
     OPENJDK_ARCH=x64
 else
-    OPENJDK_ARCH=${BUILD_PROCESSOR}
+    OPENJDK_ARCH=${OPENJDK_PROCESSOR}
 fi
 
 if [ "${BUILD_OS}" = "mingw32" ]; then
