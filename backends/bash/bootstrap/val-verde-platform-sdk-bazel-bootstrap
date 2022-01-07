@@ -10,9 +10,9 @@ BAZEL_PACKAGE_VERSION=4.0.0
 # Configure the build components
 mkdir -p ${INSTALL_PREFIX}/bin
 
-BAZEL_PROCESSOR=${BUILD_PROCESSOR}
+BAZEL_PROCESSOR=${HOST_PROCESSOR}
 
-if [ "${BUILD_PROCESSOR}" = "aarch64" ]; then
+if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
     BAZEL_PROCESSOR=arm64
 fi
 
