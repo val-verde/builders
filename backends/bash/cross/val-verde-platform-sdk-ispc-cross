@@ -57,6 +57,7 @@ package-cmake-install-archive \
     -DCURSES_FORM_LIBRARY=`package-get-path form SHARED HOST` \
     -DCURSES_NCURSES_LIBRARY=`package-get-path ncurses SHARED HOST` \
     -DFL_LIBRARY=`package-get-path fl SHARED HOST` \
+    -DGIT_BINARY=${GIT} \
     -DISPC_ANDROID_TARGET=${ISPC_ANDROID_TARGET} \
     -DISPC_CROSS=TRUE \
     -DISPC_FREEBSD_TARGET=FALSE \
@@ -74,6 +75,7 @@ package-cmake-install-archive \
     -DLLVM_CONFIG_EXECUTABLE=${LLVM_CONFIG_EXECUTABLE} \
     -DLLVM_DIR=${LLVM_STAGE_ROOT}/lib/cmake/llvm \
     -DLLVM_DIS_EXECUTABLE=`package-get-path llvm-dis EXECUTABLE BUILD` \
+    -DM4_EXECUTABLE=${M4} \
     -DNCURSES_TINFO_LIBRARY=`package-get-path ncurses SHARED HOST` \
     -DX86_ENABLED=${X86_ENABLED} \
     -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
