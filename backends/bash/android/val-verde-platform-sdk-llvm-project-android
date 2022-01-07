@@ -26,6 +26,7 @@ function package-install-completion-callback() {
                   ${STAGE_ROOT}/bin/dsymutil \
                   ${STAGE_ROOT}/bin/ld64.lld* \
                   ${STAGE_ROOT}/bin/llvm-as* \
+                  ${STAGE_ROOT}/bin/llvm-dis* \
                   ${STAGE_ROOT}/bin/llvm-dlltool* \
                   ${STAGE_ROOT}/bin/llvm-install-name-tool* \
                   ${STAGE_ROOT}/bin/llvm-libtool-darwin* \
