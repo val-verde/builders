@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for cmake/install
+CXX_STANDARD=14 \
+package-cmake-install-archive \
+    -Dpybind11_ROOT=${PACKAGE_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/pybind11 \
+    -DBoost_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
+    -DBoost_VERSION=107700 \
+    -DBOOST_CUSTOM=TRUE \
+    -DBUILD_TESTING=FALSE \
+    -DCOMPILER_SUPPORTS_ATOMIC_WITHOUT_LIBATOMIC_EXITCODE=0 \
+    -DCOMPILER_SUPPORTS_ATOMIC_WITHOUT_LIBATOMIC_EXITCODE__TRYRUN_OUTPUT=0 \
+    -DPython_ROOT=${PACKAGE_PREFIX} \
+    -DPYTHON=${PYTHON} \
+    -DPYTHON_VERSION=${PYTHON_VERSION} \
+    -DUSE_PYTHON=FALSE
