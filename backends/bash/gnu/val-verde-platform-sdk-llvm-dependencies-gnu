@@ -587,6 +587,9 @@ package-invoke-builder openjdk-cross 17
 # maven build
 package-invoke-builder maven-cross 3
 
+# onetbb build
+package-invoke-builder onetbb-cross 2021
+
 # z3 build
 package-invoke-builder z3-cross 4
 

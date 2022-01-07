@@ -402,6 +402,9 @@ package-invoke-builder jansi-cross 2
 # android maven build
 package-invoke-builder maven-cross 3
 
+# android onetbb build
+package-invoke-builder onetbb-cross 2021
+
 # android z3 build
 package-invoke-builder z3-cross 4
 

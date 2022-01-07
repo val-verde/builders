@@ -323,6 +323,9 @@ package-invoke-builder jansi-cross 2
 # windows maven build
 package-invoke-builder maven-cross 3
 
+# windows onetbb build
+package-invoke-builder onetbb-cross 2021
+
 # windows z3 build
 package-invoke-builder z3-cross 4
 
