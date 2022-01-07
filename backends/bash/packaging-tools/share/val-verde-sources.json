@@ -1587,6 +1587,42 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "ocaml",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "4",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "ocaml-num",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "ocamlbuild",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "ocamlfind",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "onetbb",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2021",

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Configure the build components
+cd ${STAGE_ROOT}
+copy-source-to-staging
+export-compiler-environment
+make-build
+make-install
+
+# Build and install the package
+package-invoke-archive-install
