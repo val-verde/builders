@@ -162,3 +162,6 @@ package-invoke-builder bullet-cross 3
 
 # python-bullet build
 # package-invoke-builder python-bullet-cross 3
+
+# embree build
+package-invoke-builder embree-cross 3
