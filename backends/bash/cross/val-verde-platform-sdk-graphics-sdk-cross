@@ -35,13 +35,8 @@ package-invoke-builder vulkan-validation-layers-cross 1
 ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder libclc-cross 13
 
-if [ "${HOST_OS}" = "gnu" ] ||
-   [ "${HOST_OS}" = "macos" ] ||
-   [ "${HOST_OS}" = "mingw32" ] ||
-   [ "${HOST_OS}" = "musl" ]; then
-    # mesa build
-    package-invoke-builder mesa-cross 21
-fi
+# mesa build
+package-invoke-builder mesa-cross 21
 
 # libepoxy build
 package-invoke-builder libepoxy-cross 1
@@ -56,7 +51,12 @@ if [ "${HOST_OS}" = "gnu" ] ||
    [ "${HOST_OS}" = "musl" ]; then
     # xorg-xserver build
     package-invoke-builder xorg-xserver-cross 1
+fi
 
+if [ "${HOST_OS}" = "android" ] ||
+   [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "macos" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
     # mesa glu build
     package-invoke-builder mesa-glu-cross 9
 fi
