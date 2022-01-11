@@ -17,6 +17,12 @@ COMMON_CFLAGS="\
 package-cmake-install-archive \
     -Dgpgme=`package-get-path gpgme SHARED HOST` \
     -DENABLE_RHSM_SUPPORT=FALSE \
+    -DGETTEXT_MSGFMT_EXECUTABLE=`package-get-path msgfmt EXECUTABLE BUILD` \
+    -DGETTEXT_MSGMERGE_EXECUTABLE=`package-get-path msgmerge EXECUTABLE BUILD` \
     -DLibSolv_DIR=${PACKAGE_PREFIX}/lib/cmake \
+    -DPYTHON_EXECUTABLE=`package-get-path python EXECUTABLE BUILD` \
+    -DPYTHON_VERSION=${PYTHON_VERSION} \
+    -DSWIG_DIR=${PACKAGE_PREFIX}/share/swig/4.0.2 \
+    -DSWIG_EXECUTABLE=`package-get-path swig EXECUTABLE BUILD` \
     -DWITH_BINDINGS=TRUE \
     -DWITH_ZCHUNK=FALSE
