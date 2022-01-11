@@ -387,9 +387,6 @@ package-invoke-builder popt-cross 1
 # android rpm build
 package-invoke-builder rpm-cross 4
 
-# android dnf build
-# package-invoke-builder dnf-cross 2
-
 # alien package tool build
 package-invoke-builder alien-package-tool-cross 8
 
@@ -398,6 +395,9 @@ package-invoke-category-builder ai-sdk-cross
 
 # android swig build
 package-invoke-builder swig-cross 4
+
+# rpm package manager category build
+package-invoke-category-builder rpm-package-manager-cross
 
 # android openjdk build
 package-invoke-builder openjdk-cross 17
