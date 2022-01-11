@@ -9,7 +9,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 function package-install-completion-callback() {
     ${MKDIR} -p ${INSTALL_PREFIX}/lib/cmake
     ${LN} -sf \
-          ../..//share/cmake/Modules/FindLibSolv.cmake \
+          ../../share/cmake/Modules/FindLibSolv.cmake \
           ${INSTALL_PREFIX}/lib/cmake/LibSolvConfig.cmake
 }
 
