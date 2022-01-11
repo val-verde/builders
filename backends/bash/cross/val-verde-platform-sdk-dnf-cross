@@ -7,8 +7,9 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for cmake/install
 function package-install-completion-callback() {
+    PYTHON_MAJOR_VERSION=`${ECHO} ${PYTHON_VERSION} | ${CUT} -d\. -f1`
     ${LN} -sf \
-          dnf-${SOURCE_PACKAGE_VERSION} \
+          dnf-${PYTHON_MAJOR_VERSION} \
           ${INSTALL_PREFIX}/bin/dnf
 }
 
