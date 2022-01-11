@@ -573,10 +573,6 @@ package-invoke-builder popt-cross 1
 package-invoke-builder rpm-cross 4
 unset RPM
 
-# dnf build
-package-invoke-builder dnf-cross 4
-unset DNF
-
 # alien package tool build
 package-invoke-builder alien-package-tool-cross 8
 

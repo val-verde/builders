@@ -1,0 +1,41 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# libsolv build
+package-invoke-builder libsolv-cross 0
+
+# check build
+package-invoke-builder check-cross 0
+
+# libmodulemd build
+package-invoke-builder libmodulemd-cross 2
+
+# libassuan build
+package-invoke-builder libassuan-cross 2
+
+# gpgme build
+package-invoke-builder gpgme-cross 1
+
+# python-gpgme build
+package-invoke-builder python-gpgme-cross 0
+
+# python-libcomps build
+package-invoke-builder python-libcomps-cross 0
+
+# python-smartcols build
+#package-invoke-builder python-smartcols-cross 0
+
+# librepo build
+package-invoke-builder librepo-cross 1
+
+#libdnf build
+package-invoke-builder libdnf-cross 0
+
+# dnf build
+package-invoke-builder dnf-cross 4
+unset DNF
