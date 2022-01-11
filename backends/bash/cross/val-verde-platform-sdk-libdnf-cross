@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for cmake/install
+CXX_STANDARD=17
+export-compiler-environment-for-python
+
+COMMON_CFLAGS="\
+    -fcommon \
+    -fmerge-all-constants \
+    -mglobal-merge \
+    ${COMMON_CFLAGS} \
+" \
+package-cmake-install-archive \
+    -Dgpgme=`package-get-path gpgme SHARED HOST` \
+    -DENABLE_RHSM_SUPPORT=FALSE \
+    -DLibSolv_DIR=${PACKAGE_PREFIX}/lib/cmake \
+    -DWITH_BINDINGS=TRUE \
+    -DWITH_ZCHUNK=FALSE

@@ -6,7 +6,15 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for cmake/install
+function package-install-completion-callback() {
+    ${LN} -sf \
+          dnf-${SOURCE_PACKAGE_VERSION} \
+          ${INSTALL_PREFIX}/bin/dnf
+}
+
 export-compiler-environment-for-python
+
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-cmake-install-archive \
     -DGETTEXT_MSGFMT_EXECUTABLE=`package-get-path msgfmt EXECUTABLE BUILD` \
     -DGETTEXT_MSGMERGE_EXECUTABLE=`package-get-path msgmerge EXECUTABLE BUILD` \

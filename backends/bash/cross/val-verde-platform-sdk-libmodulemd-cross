@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for meson/install
+export-compiler-environment-for-python
+
+package-meson-install-archive \
+    -Dskip_introspection=true \
+    -Dtest_installed_lib=false \
+    -Dwith_docs=false \
+    -Dwith_manpages=disabled \
+    -Dwith_py2=false \
+    -Dwith_py3=false
