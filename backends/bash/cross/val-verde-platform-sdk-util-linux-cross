@@ -29,6 +29,7 @@ else
 fi
 
 ENABLE_OR_DISABLE_LIBBLKID=enable
+ENABLE_OR_DISABLE_LIBSMARTCOLS=enable
 
 if [ "${HOST_OS}" = "macos" ] ||
    [ "${HOST_OS}" = "mingw32" ]; then
@@ -41,6 +42,7 @@ if [ "${HOST_OS}" = "macos" ] ||
 
     if [ "${HOST_OS}" = "mingw32" ]; then
         ENABLE_OR_DISABLE_LIBBLKID=disable
+        ENABLE_OR_DISABLE_LIBSMARTCOLS=disable
     fi
 else
     ENABLE_OR_DISABLE_LIBMOUNT=enable
@@ -67,6 +69,7 @@ package-bootstrap-configure-install-archive \
     --with-ncursesw \
     --${ENABLE_OR_DISABLE_LIBBLKID}-libblkid \
     --${ENABLE_OR_DISABLE_LIBMOUNT}-libmount \
+    --${ENABLE_OR_DISABLE_LIBSMARTCOLS}-libsmartcols \
     --${ENABLE_OR_DISABLE_LIBUUID}-libuuid \
     --${ENABLE_OR_DISABLE_PYTHON}-python \
     --${ENABLE_OR_DISABLE_SYSTEMD}-systemd
