@@ -7,8 +7,10 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for cmake/install
 package-cmake-install-archive \
+    -D_GPGMECONFIG_EXECUTABLE=`package-get-path gpgme-config SCRIPT HOST` \
     -DCURL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DCURL_LIBRARY=`package-get-path curl SHARED HOST` \
     -DENABLE_DOCS=FALSE \
     -DENABLE_TESTS=FALSE \
+    -DPYTHON_LIBRARY=`package-get-path python${PYTHON_VERSION} SHARED HOST` \
     -DWITH_ZCHUNK=FALSE
