@@ -582,6 +582,9 @@ package-invoke-category-builder ai-sdk-cross
 # swig build
 package-invoke-builder swig-cross 4
 
+# rpm package manager category build
+package-invoke-category-builder rpm-package-manager-cross
+
 # openjdk build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder openjdk-cross 17
