@@ -17,4 +17,12 @@ PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-cmake-install-archive \
     -DENABLE_COMPLEX_DEPS=TRUE \
     -DENABLE_RPMDB=TRUE \
-    -DENABLE_RPMMD=TRUE
+    -DENABLE_RPMMD=TRUE \
+    -DEXPAT_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DEXPAT_LIBRARY=`package-get-path expat SHARED HOST` \
+    -DRPM_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DRPMDB_LIBRARY=`package-get-path rpm SHARED HOST` \
+    -DRPMIO_LIBRARY=`package-get-path rpmio SHARED HOST` \
+    -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZLIB_LIBRARY_DEBUG=`package-get-path z SHARED HOST` \
+    -DZLIB_LIBRARY_RELEASE=`package-get-path z SHARED HOST`
