@@ -373,10 +373,7 @@ package-invoke-builder util-linux-cross 2
 package-invoke-builder popt-cross 1
 
 # rpm build
-# package-invoke-builder rpm-cross 4
-
-# dnf build
-# package-invoke-builder dnf-cross 2
+package-invoke-builder rpm-cross 4
 
 # alien package tool build
 package-invoke-builder alien-package-tool-cross 8
@@ -386,6 +383,9 @@ package-invoke-category-builder ai-sdk-cross
 
 # swig build
 package-invoke-builder swig-cross 4
+
+# rpm package manager category build
+# package-invoke-category-builder rpm-package-manager-cross
 
 # openjdk build
 # package-invoke-builder openjdk-cross 17
