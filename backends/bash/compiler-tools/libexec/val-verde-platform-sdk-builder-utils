@@ -1743,6 +1743,12 @@ function package-python-build() {
         generate-compiler-tools
     fi
 
+    if [ -n "${SKBUILD_CMAKE_ARGUMENTS}" ]; then
+        CMAKE_ARGUMENTS=`${ECHO} ${SKBUILD_CMAKE_ARGUMENTS} | ${XARGS}`
+        CMAKE_INVOCATION_ARGUMENTS=`package-cmake-invocation-arguments-for-variant HOST`
+        export SKBUILD_CONFIGURE_OPTIONS=`${ECHO} ${CMAKE_INVOCATION_ARGUMENTS} ${CMAKE_ARGUMENTS} | ${TR} ';' ' '`
+    fi
+
     export-compiler-environment-for-python
 
     package-push-directory ${STAGE_ROOT}/${SETUP_PY_ROOT}
