@@ -43,6 +43,12 @@ function package-archive-check-existence() {
         else
             ${ECHO} "true"
         fi
+    elif [ "${PACKAGE_ARCHIVE_CLASS}" = "deb" ]; then
+        if [[ $(${DPKG}-query -W -f='${Status}' ${PACKAGE_NAME}) == *"install ok installed"*  ]]; then
+            ${ECHO} "true"
+        else
+            ${ECHO} "false"
+        fi
     fi
 }
 
