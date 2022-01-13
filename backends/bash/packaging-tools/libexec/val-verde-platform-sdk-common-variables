@@ -149,8 +149,7 @@ function package-apt-remove() {
 }
 
 function package-apt-tool() {
-    TOOL_LOG=${TEMP_ROOT_BASE}/builder-apt-${1} \
-    tool-log ${APT} ${@}
+    ${APT} ${@} > ${TEMP_ROOT_BASE}/builder-apt-${1}.log
 }
 
 function package-archive-remove() {
@@ -168,8 +167,7 @@ function package-determine-compression-option() {
 }
 
 function package-dnf-tool() {
-    TOOL_LOG=${TEMP_ROOT_BASE}/builder-dnf-${1} \
-    tool-log ${DNF} ${@}
+    ${DNF} ${@} > ${TEMP_ROOT_BASE}/builder-dnf-${1}.log
 }
 
 function package-dnf-remove() {
