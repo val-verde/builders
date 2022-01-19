@@ -15,12 +15,6 @@ package-invoke-builder check-cross 0
 # libmodulemd build
 package-invoke-builder libmodulemd-cross 2
 
-# libassuan build
-package-invoke-builder libassuan-cross 2
-
-# gpgme build
-package-invoke-builder gpgme-cross 1
-
 # librepo build
 package-invoke-builder librepo-cross 1
 
