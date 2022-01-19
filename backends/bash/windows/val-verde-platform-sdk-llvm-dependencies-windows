@@ -166,6 +166,12 @@ package-invoke-builder libgpg-error-cross 1
 # windows libgcrypt build
 # package-invoke-builder libgcrypt-cross 1
 
+# windows libassuan build
+package-invoke-builder libassuan-cross 2
+
+# windows gpgme build
+package-invoke-builder gpgme-cross 1
+
 # windows indent build
 # package-invoke-builder indent-cross 2
 
