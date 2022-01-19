@@ -29,8 +29,7 @@ function package-invoke-archive-action() {
     package-get-common-variables
     package-get-packaging-api
     PACKAGE_ACTION="${1}"
-    shift
-    PACKAGE_INPUT=($@)
+    PACKAGE_INPUT=(${@:2})
     PACKAGE_COUNT=$((${#PACKAGE_INPUT[@]} / 2))
     for i in `seq 0 $(($PACKAGE_COUNT - 1))`; do
         PACKAGE_NAME_INDEX=$((i * 2))
