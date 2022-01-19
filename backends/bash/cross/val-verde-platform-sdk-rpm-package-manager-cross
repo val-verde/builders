@@ -21,15 +21,6 @@ package-invoke-builder libassuan-cross 2
 # gpgme build
 package-invoke-builder gpgme-cross 1
 
-# python-gpgme build
-package-invoke-builder python-gpgme-cross 0
-
-# python-libcomps build
-package-invoke-builder python-libcomps-cross 0
-
-# python-smartcols build
-#package-invoke-builder python-smartcols-cross 0
-
 # librepo build
 package-invoke-builder librepo-cross 1
 

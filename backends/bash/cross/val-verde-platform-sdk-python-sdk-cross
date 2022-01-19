@@ -12,8 +12,14 @@ package-invoke-builder python-cython-cross 0
 # python-distro build
 package-invoke-builder python-distro-cross 1
 
+# python-gpgme build
+package-invoke-builder python-gpgme-cross 0
+
 # python-jinja build
 package-invoke-builder python-jinja-cross 3
+
+# python-libcomps build
+package-invoke-builder python-libcomps-cross 0
 
 # python-lxml build
 package-invoke-builder python-lxml-cross 4
@@ -56,6 +62,9 @@ package-invoke-builder python-scikit-build-cross 0
 
 # python-six build
 package-invoke-builder python-six-cross 1
+
+# python-smartcols build
+package-invoke-builder python-smartcols-cross 0
 
 # python-sympy build
 package-invoke-builder python-sympy-cross 1
