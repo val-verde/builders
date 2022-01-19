@@ -177,6 +177,12 @@ package-invoke-builder libgpg-error-cross 1
 # libgcrypt build
 package-invoke-builder libgcrypt-cross 1
 
+# libassuan build
+package-invoke-builder libassuan-cross 2
+
+# gpgme build
+package-invoke-builder gpgme-cross 1
+
 # indent build
 package-invoke-builder indent-cross 2
 
