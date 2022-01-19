@@ -154,9 +154,9 @@ function package-apt-tool() {
 
 function package-archive-remove() {
     if [ "$(package-determine-os-distribution)" = "ubuntu" ]; then
-	    package-apt-remove "${@}"
+        package-apt-remove "${@}"
     elif [ "$(package-determine-os-distribution)" = "fedora" ]; then
-	    package-dnf-remove "${@}"
+	package-dnf-remove "${@}"
     fi
 }
 
