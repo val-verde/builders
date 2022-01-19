@@ -171,7 +171,10 @@ function package-dnf-tool() {
 }
 
 function package-dnf-remove() {
-    package-dnf-tool remove -y "${@}"
+    for i in ${@}; do
+        PACKAGE_NAME=`${ECHO} ${i} | ${CUT} -d\* -f1`
+        package-dnf-tool remove -y `${DNF} list --installed | ${GREP} ^${PACKAGE_NAME} | ${CUT} -d\  -f 1`
+    done
 }
 
 function package-deb-build() {
