@@ -149,14 +149,15 @@ function package-apt-remove() {
 }
 
 function package-apt-tool() {
-    ${APT} ${@} > ${TEMP_ROOT_BASE}/builder-apt-${1}.log
+    TOOL_LOG=${STAGE_ROOT}/builder-apt-${1} \
+    tool-log ${APT} ${@}
 }
 
 function package-archive-remove() {
     if [ "$(package-determine-os-distribution)" = "ubuntu" ]; then
         package-apt-remove "${@}"
     elif [ "$(package-determine-os-distribution)" = "fedora" ]; then
-	package-dnf-remove "${@}"
+	    package-dnf-remove "${@}"
     fi
 }
 
@@ -167,7 +168,8 @@ function package-determine-compression-option() {
 }
 
 function package-dnf-tool() {
-    ${DNF} ${@} > ${TEMP_ROOT_BASE}/builder-dnf-${1}.log
+    TOOL_LOG=${STAGE_ROOT}/builder-dnf-${1} \
+    tool-log ${DNF} ${@}
 }
 
 function package-dnf-remove() {
