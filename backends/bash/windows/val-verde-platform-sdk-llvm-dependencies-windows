@@ -323,9 +323,6 @@ package-invoke-builder alien-package-tool-cross 8
 # windows AI SDK build
 package-invoke-category-builder ai-sdk-cross
 
-# windows swig build
-package-invoke-builder swig-cross 4
-
 # windows openjdk build
 # package-invoke-builder openjdk-cross 17
 
