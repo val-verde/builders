@@ -484,6 +484,11 @@ package-invoke-builder protobuf-cross 3
 package-invoke-category-builder python-sdk-cross
 unset MESON
 
+# dnf package manager category build
+package-invoke-category-builder dnf-package-manager-cross
+unset RPM
+unset DNF
+
 # itstool build
 package-invoke-builder itstool-cross 2
 
@@ -577,14 +582,6 @@ package-invoke-builder alien-package-tool-cross 8
 
 # AI SDK build
 package-invoke-category-builder ai-sdk-cross
-
-# swig build
-package-invoke-builder swig-cross 4
-
-# rpm package manager category build
-package-invoke-category-builder rpm-package-manager-cross
-unset RPM
-unset DNF
 
 # openjdk build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
