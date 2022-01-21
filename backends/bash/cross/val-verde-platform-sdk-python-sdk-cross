@@ -21,9 +21,6 @@ package-invoke-builder python-gpgme-cross 0
 # python-jinja build
 package-invoke-builder python-jinja-cross 3
 
-# python-libcomps build
-package-invoke-builder python-libcomps-cross 0
-
 # python-lxml build
 package-invoke-builder python-lxml-cross 4
 
@@ -38,6 +35,9 @@ package-invoke-builder python-markupsafe-cross 2
 
 # python-meson build
 package-invoke-builder python-meson-cross 0
+
+# python-scikit-build build
+package-invoke-builder python-scikit-build-cross 0
 
 # python-mpmath build
 package-invoke-builder python-mpmath-cross 1
@@ -60,8 +60,8 @@ package-invoke-builder python-pygments-cross 2
 # python-pyparsing build
 package-invoke-builder python-pyparsing-cross 2
 
-# python-scikit-build build
-package-invoke-builder python-scikit-build-cross 0
+# python-libcomps build
+package-invoke-builder python-libcomps-cross 0
 
 # python-six build
 package-invoke-builder python-six-cross 1
