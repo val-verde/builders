@@ -379,12 +379,6 @@ package-invoke-builder apt-cross 2
 # lvm2 build
 # package-invoke-builder lvm2 2
 
-# popt build
-package-invoke-builder popt-cross 1
-
-# rpm build
-package-invoke-builder rpm-cross 4
-
 # alien package tool build
 package-invoke-builder alien-package-tool-cross 8
 
