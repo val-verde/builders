@@ -13,4 +13,5 @@ BUILD_COMMON_CFLAGS="\
 " \
 DISABLE_LIBTOOLIZE=TRUE \
 MAKEINFO=`package-get-path true EXECUTABLE BUILD` \
-package-bootstrap-configure-install-archive
+package-bootstrap-configure-install-archive \
+    --disable-doc
