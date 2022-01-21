@@ -311,6 +311,9 @@ package-invoke-builder protobuf-cross 3
 # python sdk build
 package-invoke-category-builder python-sdk-cross
 
+# dnf package manager category build
+package-invoke-category-builder dnf-package-manager-cross
+
 # libtasn1 build
 package-invoke-builder libtasn1-cross 4
 
@@ -380,12 +383,6 @@ package-invoke-builder alien-package-tool-cross 8
 
 # AI SDK build
 package-invoke-category-builder ai-sdk-cross
-
-# swig build
-package-invoke-builder swig-cross 4
-
-# rpm package manager category build
-# package-invoke-category-builder rpm-package-manager-cross
 
 # openjdk build
 # package-invoke-builder openjdk-cross 17
