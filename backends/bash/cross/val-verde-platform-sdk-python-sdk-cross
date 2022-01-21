@@ -86,3 +86,6 @@ package-invoke-builder python-yaml-cross 6
 
 # python-zmq build
 package-invoke-builder python-zmq-cross 22
+
+# swig build
+package-invoke-builder swig-cross 4
