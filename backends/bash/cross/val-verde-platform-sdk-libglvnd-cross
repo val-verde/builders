@@ -12,14 +12,24 @@ function package-install-completion-callback() {
          ${INSTALL_PREFIX}/lib/`package-get-filename GLESv3 SHARED`
 }
 
+ENABLE_OR_DISABLE_GLX=enabled
+ENABLE_OR_DISABLE_X11=enabled
 ENABLE_TLS=true
 
 if [ "${HOST_OS}" = "android" ]; then
+    ENABLE_OR_DISABLE_GLX=disabled
+    ENABLE_OR_DISABLE_X11=disabled
     ENABLE_TLS=false
 fi
 
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-meson-install-archive \
     -Dasm=disabled \
+    -Degl=true \
+    -Dgles1=true \
+    -Dgles2=true \
+    -Dglx=${ENABLE_OR_DISABLE_GLX} \
+    -Dheaders=true \
     -Dtests=false \
-    -Dtls=${ENABLE_TLS}
+    -Dtls=${ENABLE_TLS} \
+    -Dx11=${ENABLE_OR_DISABLE_X11}
