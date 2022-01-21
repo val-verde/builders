@@ -578,13 +578,6 @@ package-invoke-builder lvm2-cross 2
 package-invoke-builder apt-cross 2
 unset APT
 
-# popt build
-package-invoke-builder popt-cross 1
-
-# rpm build
-package-invoke-builder rpm-cross 4
-unset RPM
-
 # alien package tool build
 package-invoke-builder alien-package-tool-cross 8
 
@@ -596,6 +589,8 @@ package-invoke-builder swig-cross 4
 
 # rpm package manager category build
 package-invoke-category-builder rpm-package-manager-cross
+unset RPM
+unset DNF
 
 # openjdk build
 ENABLE_STAGE_ROOT_BUILD=TRUE \

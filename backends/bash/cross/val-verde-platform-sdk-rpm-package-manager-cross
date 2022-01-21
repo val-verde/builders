@@ -6,6 +6,12 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
+# popt build
+package-invoke-builder popt-cross 1
+
+# rpm build
+package-invoke-builder rpm-cross 4
+
 # libsolv build
 package-invoke-builder libsolv-cross 0
 
@@ -23,4 +29,3 @@ package-invoke-builder libdnf-cross 0
 
 # dnf build
 package-invoke-builder dnf-cross 4
-unset DNF
