@@ -6,6 +6,9 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
+# python-wheel build
+package-invoke-builder python-wheel-cross 0
+
 # python-cython build
 package-invoke-builder python-cython-cross 0
 
@@ -77,9 +80,6 @@ package-invoke-builder python-tqdm-cross 4
 
 # python-typogrify build
 package-invoke-builder python-typogrify-cross 2
-
-# python-wheel build
-package-invoke-builder python-wheel-cross 0
 
 # python-yaml build
 package-invoke-builder python-yaml-cross 6
