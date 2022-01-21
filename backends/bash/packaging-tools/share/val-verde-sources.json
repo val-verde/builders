@@ -2469,6 +2469,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "swig",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "4",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "swift",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "5",
@@ -3317,13 +3326,6 @@
         "sourceBranchIndicator": "wget",
         "sourcePackageVersion": "3",
         "sourcePackageUrl": "https://sqlite.org/2021/sqlite-autoconf-3360000.tar.gz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "swig",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "4.0.2",
-        "sourcePackageUrl": "https://ftp.osuosl.org/pub/blfs/conglomeration/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
         "sourceType": "other",
