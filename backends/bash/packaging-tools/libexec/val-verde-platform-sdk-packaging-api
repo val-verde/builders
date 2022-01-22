@@ -187,10 +187,6 @@ function trigger-source-package-install() {
 
     for src_file in ${SOURCE_FILES}; do
         ${ECHO} -e "Installing Source ${PACKAGE_ARCHIVE_CLASS} Package: ${src_file}"
-        if [ "${PACKAGE_ARCHIVE_CLASS}" = "deb" ]; then
-            package-deb-install ${src_file}
-        elif [ "${PACKAGE_ARCHIVE_CLASS}" = "rpm" ]; then
-            package-rpm-install --nodeps ${src_file}
-        fi
+        package-${PACKAGE_ARCHIVE_CLASS}-install ${src_file}
     done
 }
