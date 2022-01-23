@@ -23,6 +23,10 @@ fi
 
 export-compiler-environment-for-python
 
+COMMON_CFLAGS="\
+    -lpython${PYTHON_VERSION} \
+    ${COMMON_CFLAGS} \
+" \
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 CONFIGURE_FILE=autogen.sh \
 DBUS_CFLAGS="-I${PACKAGE_PREFIX}/include/dbus-1.0 -I${PACKAGE_PREFIX}/lib/dbus-1.0/include" \
