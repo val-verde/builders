@@ -6,6 +6,10 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for bootstrap/configure/install
+if [ "${HOST_OS}" = "macos" ]; then
+    export CONFIGURE_HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${DARWIN_OS}
+fi
+
 BOOTSTRAP_FILE=./autogen.sh \
 BUILD_COMMON_CFLAGS="\
     -L${BUILD_PACKAGE_PREFIX}/lib \
