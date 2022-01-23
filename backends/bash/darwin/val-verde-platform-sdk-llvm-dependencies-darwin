@@ -172,7 +172,7 @@ package-invoke-builder autogen-cross 5
 package-invoke-builder libgpg-error-cross 1
 
 # libgcrypt build
-# package-invoke-builder libgcrypt-cross 1
+package-invoke-builder libgcrypt-cross 1
 
 # indent build
 package-invoke-builder indent-cross 2
