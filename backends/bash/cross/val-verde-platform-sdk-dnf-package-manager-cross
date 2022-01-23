@@ -13,6 +13,7 @@ package-invoke-builder popt-cross 1
 package-invoke-builder rpm-cross 4
 
 # libsolv build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder libsolv-cross 0
 
 # check build
