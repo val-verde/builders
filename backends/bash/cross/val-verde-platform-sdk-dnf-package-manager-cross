@@ -25,8 +25,12 @@ package-invoke-builder libmodulemd-cross 2
 # librepo build
 package-invoke-builder librepo-cross 1
 
-#libdnf build
-package-invoke-builder libdnf-cross 0
+if [ "${HOST_OS}" = "android" ] ||
+   [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    # libdnf build
+    package-invoke-builder libdnf-cross 0
 
-# dnf build
-package-invoke-builder dnf-cross 4
+    # dnf build
+    package-invoke-builder dnf-cross 4
+fi
