@@ -44,5 +44,9 @@ for index in `seq 0 $(($RUST_PACKAGE_COUNT - 1))`; do
 
 done
 
+${CHMOD} 755 \
+         ${DESTINATION_DIR}/lib \
+         ${DESTINATION_DIR}/bin
+
 # Build and install the package
 package-invoke-archive-install
