@@ -116,10 +116,8 @@ function generate-rpm-spec-file() {
     ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
 
     ${SED} "s|ARCHIVE_ROOT|${ARCHIVE_ROOT}|g; \
-            s|RPM_BUILD_PROCESSOR|${BUILD_PROCESSOR}|g; \
             s|PACKAGE_ARCH|${PACKAGE_ARCH}|g; \
             s|PACKAGE_NAME|${PACKAGE_NAME}|g; \
-            s|RELEASE|${RELEASE}|g; \
             s|VERSION|${VERSION}|g" \
             ${TEMPLATE_ROOT}/spec.in \
             > ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
@@ -145,7 +143,7 @@ function rpm-archive-build() {
 
         package-rpm-build --define "_topdir ${ARCHIVE_ROOT}" -bb ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
 
-        ${MV} ${ARCHIVE_ROOT}/RPMS/${PACKAGE_ARCH}/${PACKAGE_NAME}.rpm \
+        ${MV} ${ARCHIVE_ROOT}/RPMS/${PACKAGE_ARCH}/${PACKAGE_NAME}-${VERSION}-${RELEASE}.${PACKAGE_ARCH}.rpm \
                 ${ARCHIVE_PATH}/${PACKAGE_NAME}.rpm
         ${RM} -rf ${ARCHIVE_ROOT}
     package-pop-directory
