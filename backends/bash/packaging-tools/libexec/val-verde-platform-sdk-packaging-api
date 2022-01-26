@@ -31,24 +31,29 @@ function package-archive-build-install() {
 
 function package-archive-uninstall() {
     if [ -n "${ARCHIVE_CHECK}" ]; then
-        package-${PACKAGE_ARCHIVE_CLASS}-remove "${1}"
+        if [ "${PACKAGE_ARCHIVE_CLASS}" = "deb" ]; then
+            package-${PACKAGE_ARCHIVE_CLASS}-remove "${1}"
+        elif [ "${PACKAGE_ARCHIVE_CLASS}" = "rpm" ]; then
+            package-dnf-remove "${1}"
+        fi
     fi
 }
 
 function package-archive-check-existence() {
     PACKAGE_NAME=${PACKAGE_NAME:-${1}}
-    if [ "${PACKAGE_ARCHIVE_CLASS}" = "rpm" ]; then
-        if [[ $(${RPM} -q ${PACKAGE_NAME}) == *"${PACKAGE_NAME} is not installed"* ]]; then
-            ${ECHO} "false"
-        else
-            ${ECHO} "true"
-        fi
-    elif [ "${PACKAGE_ARCHIVE_CLASS}" = "deb" ]; then
+    if [ "${PACKAGE_ARCHIVE_CLASS}" = "deb" ]; then
         INSTALLED_DEB_CHECK=$(${DPKG}-query -W -f='${status}' ${PACKAGE_NAME} 2>&1 | ${GREP} "install ok installed")
         if [ -n "${INSTALLED_DEB_CHECK}" ]; then
             ${ECHO} "true"
         else
             ${ECHO} "false"
+        fi
+    elif [ "${PACKAGE_ARCHIVE_CLASS}" = "rpm" ]; then
+        INSTALLED_RPM_CHECK=$(${RPM} -q ${PACKAGE_NAME} 2>&1 | ${GREP} "${PACKAGE_NAME} is not installed")
+        if [ -n "${INSTALLED_RPM_CHECK}" ]; then
+            ${ECHO} "false"
+        else
+            ${ECHO} "true"
         fi
     fi
 }
