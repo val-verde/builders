@@ -13,9 +13,11 @@ if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
         CP=/usr/bin/cp \
         CURL=/usr/bin/curl \
         CUT=/usr/bin/cut \
-        DNF=/usr/bin/dnf \
+        DNF="build-system-tool dnf" \
         DPKG=/usr/bin/dpkg \
         ECHO=/usr/bin/echo \
+        ENV=/usr/bin/env \
+        FALSE=/usr/bin/false \
         FIND=/usr/bin/find \
         GAWK=/usr/bin/gawk \
         GETTEXT=/usr/bin/gettext \
@@ -45,6 +47,7 @@ if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
         TAR=/usr/bin/tar \
         TEE=/usr/bin/tee \
         TR=/usr/bin/tr \
+        TRUE=/usr/bin/true \
         WGET=/usr/bin/wget \
         WHICH=/usr/bin/which \
         XARGS=/usr/bin/xargs \
@@ -385,6 +388,8 @@ unset \
     CP \
     CUT \
     ECHO \
+    ENV \
+    FALSE \
     INSTALL \
     LS \
     LN \
@@ -394,7 +399,8 @@ unset \
     RM \
     RMDIR \
     TEE \
-    TR
+    TR \
+    TRUE
 
 # which build
 package-invoke-builder which-cross 2

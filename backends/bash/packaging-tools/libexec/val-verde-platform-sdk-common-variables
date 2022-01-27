@@ -48,7 +48,9 @@ export DIFF=${DIFF:-/usr/bin/diff}
 export DNF=${DNF:-${BINDIR}/dnf}
 export DPKG=${DPKG:-${BINDIR}/dpkg}
 export ECHO=${ECHO:-${BINDIR}/echo}
+export ENV=${ENV:-${BINDIR}/env}
 export EXPR=${EXPR:-${BINDIR}/expr}
+export FALSE=${FALSE:-${BINDIR}/false}
 export FILE=${FILE:-${BINDIR}/file}
 export FIND=${FIND:-${BINDIR}/find}
 export FLOCK=${FLOCK:-/usr/bin/flock}
@@ -90,6 +92,7 @@ export TAR=${TAR:-${BINDIR}/tar}
 export TEE=${TEE:-${BINDIR}/tee}
 export TOUCH=${TOUCH:-${BINDIR}/touch}
 export TR=${TR:-${BINDIR}/tr}
+export TRUE=${TRUE:-${BINDIR}/true}
 export UNAME=${UNAME:-${BINDIR}/uname}
 export UNIQ=${UNIQ:-${BINDIR}/uniq}
 export WC=${WC:-${BINDIR}/wc}
@@ -97,6 +100,13 @@ export WGET=${WGET:-${BINDIR}/wget}
 export WHICH=${WHICH:-${BINDIR}/which}
 export XARGS=${XARGS:-${BINDIR}/xargs}
 export XZ=${XZ:-${BINDIR}/xz}
+
+function build-system-tool() {
+    BUILD_BINDIR=${BUILD_BINDIR:-/usr/bin}
+    ENV=${ENV:-${BUILD_BINDIR}/env}
+
+    ${ENV} -i "${@}"
+}
 
 function package-determine-os-distribution() {
     if [[ "$(${LSB_RELEASE} --description)" = *Ubuntu* ]]; then
