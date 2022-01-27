@@ -19,6 +19,7 @@ export \
     DNF=/usr/bin/dnf \
     DPKG=/usr/bin/dpkg \
     ECHO=/usr/bin/echo \
+    ENV=/usr/bin/env \
     FIND=/usr/bin/find \
     GAWK=/usr/bin/gawk \
     GETTEXT=/usr/bin/gettext \
