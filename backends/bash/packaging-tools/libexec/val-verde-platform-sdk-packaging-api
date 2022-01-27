@@ -19,7 +19,8 @@ function package-archive-build-install() {
 
     # Check if package is installed and needs to be uninstalled
     ARCHIVE_CHECK=$(package-archive-check-existence)
-    if [ "${ARCHIVE_CHECK}" == "true" ]; then
+    if [ "${ARCHIVE_CHECK}" == "true" ] && 
+       [[ ${PACKAGE_NAME} != *"stage"* ]]; then
         package-archive-uninstall "${PACKAGE_NAME}"
     fi
 
