@@ -17,7 +17,7 @@ package-invoke-category-builder llvm-dependencies-darwin
 package-invoke-category-builder swift-tools-darwin
 
 # swift sdk build
-# package-invoke-category-builder swift-sdk-darwin
+package-invoke-category-builder swift-sdk-cross
 
 # go build
 package-invoke-builder go-cross 1
