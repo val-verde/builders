@@ -11,6 +11,8 @@ ${MKDIR} -p ${INSTALL_PREFIX}/bin/
 package-rsync -ax \
               ${SOURCE_ROOT}/bin \
               ${INSTALL_PREFIX}/
-${CHMOD} +x ${INSTALL_PREFIX}/bin/*
+${CHMOD} 755 \
+         ${INSTALL_PREFIX}/bin \
+         ${INSTALL_PREFIX}/bin/*
 
 package-invoke-archive-install
