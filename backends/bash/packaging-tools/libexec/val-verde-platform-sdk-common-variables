@@ -98,6 +98,11 @@ export WHICH=${WHICH:-${BINDIR}/which}
 export XARGS=${XARGS:-${BINDIR}/xargs}
 export XZ=${XZ:-${BINDIR}/xz}
 
+function build-system-tool() {
+    BUILD_SYSTEM_BINDIR=${BUILD_SYSTEM_BINDIR:-/usr/bin}
+    LD_LIBRARY_PATH= ${BUILD_SYSTEM_BINDIR}/${@}
+}
+
 function package-determine-os-distribution() {
     if [[ "$(${LSB_RELEASE} --description)" = *Ubuntu* ]]; then
         echo "ubuntu"
