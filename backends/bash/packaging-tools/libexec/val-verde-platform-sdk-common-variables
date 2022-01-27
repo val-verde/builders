@@ -172,16 +172,31 @@ function package-determine-compression-option() {
     fi
 }
 
-function package-dnf-tool() {
-    TOOL_LOG=${STAGE_ROOT}/builder-dnf-${1} \
-    tool-log ${DNF} ${@}
+function package-dnf-list() {
+    DISABLE_TOOL_LOG=TRUE \
+    package-dnf-tool list "${@}"
 }
 
 function package-dnf-remove() {
     for i in ${@}; do
         PACKAGE_NAME=`${ECHO} ${i} | ${CUT} -d\* -f1`
-        package-dnf-tool remove -y `${DNF} list --installed | ${GREP} ^${PACKAGE_NAME} | ${CUT} -d\  -f 1`
+        package-dnf-tool remove -y `package-dnf-list --installed | ${GREP} ^${PACKAGE_NAME} | ${CUT} -d\  -f 1`
     done
+}
+
+function package-dnf-tool() {
+    if [ -z "${DISABLE_DNF_RELEASE_VER}" ]; then
+        RELEASE_VER=`package-get-lsb-release-version`
+        RELEASE_VER_CMD="--releasever ${RELEASE_VER}"
+    else
+        unset \
+            RELEASE_VER \
+            RELEASE_VER_CMD
+    fi
+
+    TOOL_LOG=${STAGE_ROOT}/builder-dnf-${1} \
+    tool-log ${DNF} ${RELEASE_VER_CMD} \
+                    ${@}
 }
 
 function package-deb-build() {
@@ -240,6 +255,10 @@ function package-get-filename() {
     esac
 
     echo ${RESULT}
+}
+
+function package-get-lsb-release-version() {
+    ${LSB_RELEASE} -rs
 }
 
 # package-get-path <name> <EXECUTABLE|SCRIPT|SHARED|STATIC> <BUILD|HOST>
