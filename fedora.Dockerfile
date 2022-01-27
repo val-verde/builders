@@ -25,8 +25,8 @@ ENV PACKAGE_ARCHIVE_CLASS=${PACKAGE_ARCHIVE_CLASS} \
     SOURCE_ARCHIVE_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/source-archives \
     BOOTSTRAP_ARCHIVE_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/bootstrap-archives
 
-ENV BUILD_ARCH=skylake \
-    BUILD_CPU=skylake \
+ENV BUILD_ARCH=westmere \
+    BUILD_CPU=westmere \
     BUILD_KERNEL=linux \
     BUILD_OS=gnu \
     BUILD_OS_API_LEVEL= \
@@ -160,8 +160,8 @@ COPY backends/bash/darwin \
 
 RUN DARWIN_OS=darwin \
     DARWIN_OS_API_LEVEL=20 \
-    HOST_ARCH=haswell \
-    HOST_CPU=haswell \
+    HOST_ARCH=westmere \
+    HOST_CPU=westmere \
     HOST_KERNEL=apple \
     HOST_OS=macos \
     HOST_OS_API_LEVEL=${MACOS_VERSION} \
@@ -172,8 +172,8 @@ RUN DARWIN_OS=darwin \
 # macos-x86_64 environment
 RUN DARWIN_OS=darwin \
     DARWIN_OS_API_LEVEL=20 \
-    HOST_ARCH=haswell \
-    HOST_CPU=haswell \
+    HOST_ARCH=westmere \
+    HOST_CPU=westmere \
     HOST_KERNEL=apple \
     HOST_OS=macos \
     HOST_OS_API_LEVEL=${MACOS_VERSION} \
@@ -199,8 +199,8 @@ COPY backends/bash/musl \
      /sources/
 
 # musl-x86_64 environment
-RUN HOST_ARCH=broadwell \
-    HOST_CPU=broadwell \
+RUN HOST_ARCH=westmere \
+    HOST_CPU=westmere \
     HOST_KERNEL=linux \
     HOST_OS=musl \
     HOST_PROCESSOR=x86_64 \
@@ -247,8 +247,8 @@ COPY backends/bash/windows \
      /sources/
 
 # windows-x86_64 environment
-RUN HOST_ARCH=haswell \
-    HOST_CPU=skylake \
+RUN HOST_ARCH=westmere \
+    HOST_CPU=westmere \
     HOST_KERNEL=w64 \
     HOST_OS=mingw32 \
     HOST_OS_API_LEVEL= \
