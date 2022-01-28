@@ -8,6 +8,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
 
 if [ "${SOURCE_PACKAGE_NAME}" != "" ]; then
     # package specific variables
+    package-get-qualified-package-name "${SOURCE_PACKAGE_NAME}" "${SOURCE_PACKAGE_VERSION}"
     export INSTALL_ROOT=${INSTALL_ROOT:-${TEMP_ROOT_BASE}/${QUALIFIED_PACKAGE_NAME}}
     export INSTALL_PREFIX=${INSTALL_PREFIX:-${INSTALL_ROOT}${PACKAGE_PREFIX}}
     export STAGE_ROOT=${STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_PACKAGE_NAME}}
@@ -1440,15 +1441,15 @@ function package-install() {
 }
 
 function package-invoke-archive-install() {
-    package-archive-build-install
+    package-archive-build-install "${PACKAGE_NAME}"
 
     if [ -n "${ENABLE_STAGE_ROOT_BUILD}" ]; then
-        package-invoke-stage-root-archive
+        package-invoke-stage-root-archive "${PACKAGE_NAME}"
     fi
 }
 
 function package-invoke-stage-root-archive() {
-    STAGING_BUILD_ROOT=${TEMP_ROOT_BASE}/staging/${PACKAGE_NAME}
+    STAGING_BUILD_ROOT=${TEMP_ROOT_BASE}/staging/${1}
     STAGING_BUILD_PATH=${STAGING_BUILD_ROOT}${STAGE_ROOT}/
     ${MKDIR} -p ${STAGING_BUILD_PATH}
 
@@ -1457,8 +1458,7 @@ function package-invoke-stage-root-archive() {
 
     DEPENDS= \
     INSTALL_ROOT=${STAGING_BUILD_ROOT} \
-    PACKAGE_NAME=${PACKAGE_NAME}-stage \
-    package-archive-build-install
+    package-archive-build-install "${1}-stage"
 
     ${RM} -rf ${STAGING_BUILD_ROOT}
 }
