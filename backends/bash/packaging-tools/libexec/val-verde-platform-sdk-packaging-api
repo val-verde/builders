@@ -14,43 +14,43 @@ function package-archive-build-install() {
 
     # Build the package
     if [ -z "${DISABLE_BUILD_ARCHIVE}" ]; then
-        ${PACKAGE_ARCHIVE_CLASS}-archive-build
+        ${PACKAGE_ARCHIVE_CLASS}-archive-build "${1}"
     fi
 
     # Check if package is installed and needs to be uninstalled
-    ARCHIVE_CHECK=$(package-archive-check-existence)
-    if [ "${ARCHIVE_CHECK}" == "true" ] && 
-       [[ ${PACKAGE_NAME} != *"stage"* ]]; then
-        package-archive-uninstall "${PACKAGE_NAME}"
-    fi
+    package-archive-uninstall "${1}"
 
     # Install the package
     if [ -z "${DISABLE_INSTALL_ARCHIVE}" ]; then
-        ${PACKAGE_ARCHIVE_CLASS}-archive-install
+        ${PACKAGE_ARCHIVE_CLASS}-archive-install "${1}"
     fi
 }
 
 function package-archive-uninstall() {
-    if [ -n "${ARCHIVE_CHECK}" ]; then
+    # Parse package name and check if it is installed
+    PACKAGE_NAME_INPUT=`${BASENAME} ${1} ${PACKAGE_ARCHIVE_CLASS}`
+    ARCHIVE_CHECK=$(package-archive-check-existence "${PACKAGE_NAME_INPUT}")
+
+    if [ -n "${ARCHIVE_CHECK}" ] &&
+       [[ ${PACKAGE_NAME_INPUT} != *"stage"* ]]; then
         if [ "${PACKAGE_ARCHIVE_CLASS}" = "deb" ]; then
-            package-${PACKAGE_ARCHIVE_CLASS}-remove "${1}"
+            package-${PACKAGE_ARCHIVE_CLASS}-remove "${PACKAGE_NAME_INPUT}"
         elif [ "${PACKAGE_ARCHIVE_CLASS}" = "rpm" ]; then
-            package-dnf-remove "${1}"
+	        package-dnf-remove "${PACKAGE_NAME_INPUT}"
         fi
     fi
 }
 
 function package-archive-check-existence() {
-    PACKAGE_NAME=${PACKAGE_NAME:-${1}}
     if [ "${PACKAGE_ARCHIVE_CLASS}" = "deb" ]; then
-        INSTALLED_DEB_CHECK=$(${DPKG}-query -W -f='${status}' ${PACKAGE_NAME} 2>&1 | ${GREP} "install ok installed")
+        INSTALLED_DEB_CHECK=$(${DPKG}-query -W -f='${status}' ${1} 2>&1 | ${GREP} "install ok installed")
         if [ -n "${INSTALLED_DEB_CHECK}" ]; then
             ${ECHO} "true"
         else
             ${ECHO} "false"
         fi
     elif [ "${PACKAGE_ARCHIVE_CLASS}" = "rpm" ]; then
-        INSTALLED_RPM_CHECK=$(${RPM} -q ${PACKAGE_NAME} 2>&1 | ${GREP} "${PACKAGE_NAME} is not installed")
+        INSTALLED_RPM_CHECK=$(${RPM} -q ${1} 2>&1 | ${GREP} "${1} is not installed")
         if [ -n "${INSTALLED_RPM_CHECK}" ]; then
             ${ECHO} "false"
         else
@@ -60,7 +60,7 @@ function package-archive-check-existence() {
 }
 
 function deb-archive-build() {
-    ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+    ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${1}
     TEMPLATE_ROOT=${TEMPLATE_ROOT:-${TEMPLATE_ROOT_BASE}/deb}
 
     package-push-directory ${INSTALL_ROOT}
@@ -71,11 +71,11 @@ function deb-archive-build() {
                     ${ARCHIVE_ROOT}/
 
         TEMPLATE_ROOT=${TEMPLATE_ROOT} \
-        generate-debian-control-file "${PACKAGE_NAME}"
+        generate-debian-control-file "${1}"
         package-deb-build ${ARCHIVE_ROOT}
 
-        ${MV} ${ARCHIVE_ROOT}/../${PACKAGE_NAME}.deb \
-                ${ARCHIVE_PATH}/${PACKAGE_NAME}.deb
+        ${MV} ${ARCHIVE_ROOT}/../${1}.deb \
+                ${ARCHIVE_PATH}/${1}.deb
         ${RM} -rf ${ARCHIVE_ROOT}
     package-pop-directory
 
@@ -83,11 +83,11 @@ function deb-archive-build() {
 }
 
 function deb-archive-install() {
-    package-deb-install ${ARCHIVE_PATH}/${PACKAGE_NAME}.deb
+    package-deb-install ${ARCHIVE_PATH}/${1}.deb
 }
 
 function generate-debian-control-file() {
-    ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+    ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${1}
 
     # Template definition
     DEBIAN_ROOT=${ARCHIVE_ROOT}/DEBIAN
@@ -96,56 +96,55 @@ function generate-debian-control-file() {
     ${ECHO} 10 \
             > ${DEBIAN_ROOT}/compat
     ${SED} "s|DEPENDS|${DEPENDS}|g; \
-            s|PACKAGE_NAME|${PACKAGE_NAME}|g; \
+            s|PACKAGE_NAME|${1}|g; \
             s|PACKAGE_BASE_NAME|${PACKAGE_BASE_NAME}|g; \
             s|SOURCE_PACKAGE_VERSION|${SOURCE_PACKAGE_VERSION}|g; \
             s|SYSTEM_ARCH|${PACKAGE_ARCH}|g; \
             s|VERSION|${VERSION}|g" \
             ${TEMPLATE_ROOT}/control.in \
             > ${DEBIAN_ROOT}/control
-    ${SED} "s|PACKAGE_NAME|${PACKAGE_NAME}|g" \
+    ${SED} "s|PACKAGE_NAME|${1}|g" \
             ${TEMPLATE_ROOT}/copyright.in \
             > ${DEBIAN_ROOT}/copyright
     ${SED} "s|CURRENT_DATE|`date`|g; \
-            s|PACKAGE_NAME|${PACKAGE_NAME}|g; \
+            s|PACKAGE_NAME|${1}|g; \
             s|SOURCE_PACKAGE_VERSION|${SOURCE_PACKAGE_VERSION}|g" \
             ${TEMPLATE_ROOT}/changelog.in \
             > ${DEBIAN_ROOT}/changelog
 }
 
 function generate-rpm-spec-file() {
-    ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
-
+    ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${1}
     ${SED} "s|ARCHIVE_ROOT|${ARCHIVE_ROOT}|g; \
             s|PACKAGE_ARCH|${PACKAGE_ARCH}|g; \
-            s|PACKAGE_NAME|${PACKAGE_NAME}|g; \
+            s|PACKAGE_NAME|${1}|g; \
             s|VERSION|${VERSION}|g" \
             ${TEMPLATE_ROOT}/spec.in \
             > ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
 }
 
 function rpm-archive-build() {
-    ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${PACKAGE_NAME}
+    ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${1}
     TEMPLATE_ROOT=${TEMPLATE_ROOT:-${TEMPLATE_ROOT_BASE}/rpm}
 
     package-push-directory ${INSTALL_ROOT}
         ${RM} -rf ${ARCHIVE_ROOT}
         ${MKDIR} -p ${ARCHIVE_ROOT} \
             ${ARCHIVE_ROOT}/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS} \
-            ${ARCHIVE_ROOT}/SOURCES/${PACKAGE_NAME}
+            ${ARCHIVE_ROOT}/SOURCES/${1}
 
         package-rsync -ax \
                     ${BASE_DIRECTORY} \
-                    ${ARCHIVE_ROOT}/SOURCES/${PACKAGE_NAME}
+                    ${ARCHIVE_ROOT}/SOURCES/${1}
         
-        generate-rpm-spec-file "${PACKAGE_ARCH}" "${PACKAGE_NAME}"
+        generate-rpm-spec-file "${1}"
 
         ${SED} -i "s|%files|%files\n/${PACKAGE_INSTALL_BASE}/*|g" ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
 
         package-rpm-build --define "_topdir ${ARCHIVE_ROOT}" -bb ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
 
-        ${MV} ${ARCHIVE_ROOT}/RPMS/${PACKAGE_ARCH}/${PACKAGE_NAME}-${VERSION}-${RELEASE}.${PACKAGE_ARCH}.rpm \
-                ${ARCHIVE_PATH}/${PACKAGE_NAME}.rpm
+        ${MV} ${ARCHIVE_ROOT}/RPMS/${PACKAGE_ARCH}/${1}-${VERSION}-${RELEASE}.${PACKAGE_ARCH}.rpm \
+                ${ARCHIVE_PATH}/${1}.rpm
         ${RM} -rf ${ARCHIVE_ROOT}
     package-pop-directory
 
@@ -153,7 +152,7 @@ function rpm-archive-build() {
 }
 
 function rpm-archive-install() {
-    package-rpm-install ${ARCHIVE_PATH}/${PACKAGE_NAME}.rpm
+    package-rpm-install ${ARCHIVE_PATH}/${1}.rpm
 }
 
 
