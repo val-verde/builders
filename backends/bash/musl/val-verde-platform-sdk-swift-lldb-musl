@@ -24,21 +24,17 @@ export SWIFT_STAGE_ROOT=${STAGE_ROOT_BASE}/swift-${SOURCE_PACKAGE_VERSION}-${HOS
 export SWIFT_NATIVE_STAGE_ROOT=${SWIFT_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/swift-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}}
 
 # Invoke one-shot template for cmake/install
+DISABLE_STRIP=TRUE \
 export-compiler-environment
 
 CROSS_TOOLCHAIN_FLAGS_NATIVE=`package-cmake-invocation-arguments-for-variant BUILD`
 LLVM_TABLEGEN=`BINDIR=${LLVM_NATIVE_TOOL_ROOT}/bin package-get-path llvm-tblgen EXECUTABLE BUILD`
 
-COMMON_CFLAGS="\
-    -Wno-register \
-    ${COMMON_CFLAGS} \
-" \
 CXX_STANDARD=17 \
-DISABLE_STRIP=TRUE \
 RPATH_COMPONENTS="\
-    ${INSTALL_PREFIX}/bin/lldb \
-    ${INSTALL_PREFIX}/bin/repl_swift \
-    ${INSTALL_PREFIX}/lib/${SHARED_LIBRARY_PREFIX}lldb${SHARED_LIBRARY_SUFFIX} \
+    ${INSTALL_PREFIX}/bin/`package-get-filename lldb EXECUTABLE HOST` \
+    ${INSTALL_PREFIX}/bin/`package-get-filename repl_swift EXECUTABLE HOST` \
+    ${INSTALL_PREFIX}/lib/`package-get-filename lldb SHARED HOST` \
 " \
 package-cmake-install-archive \
     -DClang_DIR=${LLVM_STAGE_ROOT}/lib/cmake/clang \
