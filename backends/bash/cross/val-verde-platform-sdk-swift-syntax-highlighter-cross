@@ -34,11 +34,16 @@ else
 fi
 
 cd ${STAGE_ROOT}
-${MKDIR} -p ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
+
+if [ "${HOST_OS}" != "macos" ]; then
+    SWIFT_ARCH_DIR=${HOST_PROCESSOR}
+fi
+
+${MKDIR} -p ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${SWIFT_ARCH_DIR}/
 package-rsync -ax \
               release/*.swiftdoc \
               release/*.swiftmodule \
-              ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${HOST_PROCESSOR}/
+              ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${SWIFT_ARCH_DIR}/
 package-rsync -ax \
               release/${SHARED_LIBRARY_PREFIX}Swift*${SHARED_LIBRARY_SUFFIX} \
               ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/
