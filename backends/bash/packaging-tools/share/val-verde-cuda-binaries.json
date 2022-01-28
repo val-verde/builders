@@ -1,8 +1,8 @@
 [
     {
         "sourcePackageName": "cuda",
-        "sourcePackageVersion": "11.5.1",
-        "driverVersion": "495.29.05",
+        "sourcePackageVersion": "11.6.0",
+        "driverVersion": "510.39.01",
         "upstreamUrl": "https://developer.download.nvidia.com/compute/${CUDA_PACKAGE_NAME}/${CUDA_PACKAGE_VERSION}/local_installers"
     }
 ]
