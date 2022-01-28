@@ -4,6 +4,7 @@ set -e
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+export SOURCE_ROOT=${SOURCE_ROOT_BASE}/linux-5
 
 # Configure the build components
 cd ${STAGE_ROOT}
