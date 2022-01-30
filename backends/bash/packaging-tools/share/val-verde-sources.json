@@ -2120,7 +2120,7 @@
         "sourceType": "git",
         "sourcePackageName": "spirv-cross",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "2021",
+        "sourcePackageVersion": "2022",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
