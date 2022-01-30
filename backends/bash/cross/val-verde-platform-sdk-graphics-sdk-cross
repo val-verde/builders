@@ -18,7 +18,7 @@ package-invoke-builder spirv-cross-cross 2022
 package-invoke-builder spirv-llvm-translator-cross 13
 
 # glslang build
-package-invoke-builder glslang-cross 10-11
+package-invoke-builder glslang-cross 11
 
 if [ "${HOST_OS}" = "macos" ]; then
     # moltenvk build
