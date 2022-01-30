@@ -9,7 +9,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 package-invoke-builder spirv-headers-cross 1
 
 # spirv tools build
-package-invoke-builder spirv-tools-cross 2021
+package-invoke-builder spirv-tools-cross 2022
 
 # spirv cross build
 package-invoke-builder spirv-cross-cross 2021
