@@ -1166,7 +1166,7 @@
         "sourceType": "git",
         "sourcePackageName": "libwacom",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "1",
+        "sourcePackageVersion": "2",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {

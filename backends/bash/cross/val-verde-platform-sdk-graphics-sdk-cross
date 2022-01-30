@@ -105,7 +105,7 @@ if [ "${HOST_OS}" = "gnu" ] ||
     package-invoke-builder libgudev-cross 1
     
     # libwacom build
-    package-invoke-builder libwacom-cross 1
+    package-invoke-builder libwacom-cross 2
     
     # libevdev build
     package-invoke-builder libevdev-cross 1
