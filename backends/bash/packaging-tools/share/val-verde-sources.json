@@ -635,7 +635,7 @@
         "sourceType": "git",
         "sourcePackageName": "glslang",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "10-11",
+        "sourcePackageVersion": "11",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
