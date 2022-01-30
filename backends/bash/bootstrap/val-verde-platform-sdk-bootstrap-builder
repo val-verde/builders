@@ -63,7 +63,7 @@ if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
     package-invoke-builder pkg-config 0
 
     # re2c build
-    package-invoke-builder re2c 2
+    package-invoke-builder re2c 3
 
     # alive2 build
     package-invoke-builder alive2 1

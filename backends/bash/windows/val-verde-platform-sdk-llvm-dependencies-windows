@@ -345,7 +345,7 @@ package-invoke-builder libobjc2-cross 2
 package-invoke-builder jwasm 2
 
 # windows re2c build
-package-invoke-builder re2c-cross 2
+package-invoke-builder re2c-cross 3
 
 # windows alive2 build
 package-invoke-builder alive2-cross 1
