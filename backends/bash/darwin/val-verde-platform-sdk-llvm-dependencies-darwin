@@ -415,7 +415,7 @@ package-invoke-builder cereal-cross 1
 package-invoke-builder jwasm 2
 
 # re2c build
-package-invoke-builder re2c-cross 2
+package-invoke-builder re2c-cross 3
 
 # alive2 build
 package-invoke-builder alive2-cross 1
