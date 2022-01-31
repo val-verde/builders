@@ -297,6 +297,15 @@ function package-get-path() {
     fi
 }
 
+function package-get-qualified-package-name() {
+    QUALIFIED_PACKAGE_NAME=${1}-${2}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
+    PACKAGE_NAME=${PACKAGE_BASE_NAME}-${QUALIFIED_PACKAGE_NAME}
+}
+
+function package-get-qualified-source-package-name() {
+    PACKAGE_NAME=${PACKAGE_BASE_NAME}-${1}-sources
+}
+
 function package-get-source-package-version() {
     QUERIED_SOURCE_PACKAGE_VERSIONS="\
     $(jq -r --arg src "$1" \
