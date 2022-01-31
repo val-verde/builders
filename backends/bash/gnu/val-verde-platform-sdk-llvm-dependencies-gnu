@@ -484,11 +484,6 @@ package-invoke-builder protobuf-cross 3
 package-invoke-category-builder python-sdk-cross
 unset MESON
 
-# dnf package manager category build
-package-invoke-category-builder dnf-package-manager-cross
-unset RPM
-unset DNF
-
 # itstool build
 package-invoke-builder itstool-cross 2
 
@@ -563,6 +558,11 @@ package-invoke-builder p11-kit-cross 0
 
 # dbus build
 package-invoke-builder dbus-cross 1
+
+# dnf package manager category build
+package-invoke-category-builder dnf-package-manager-cross
+unset RPM
+unset DNF
 
 # cups build
 package-invoke-builder cups-cross 2
