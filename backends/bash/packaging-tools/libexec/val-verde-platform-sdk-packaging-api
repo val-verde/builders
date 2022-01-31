@@ -11,6 +11,7 @@ VERSION=${VERSION:='1.0.0'}
 
 function package-archive-build-install() {
     TEMPLATE_ROOT=${TEMPLATE_ROOT_BASE}/${PACKAGE_ARCHIVE_CLASS}
+    ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${1}
 
     # Build the package
     if [ -z "${DISABLE_BUILD_ARCHIVE}" ]; then
@@ -60,9 +61,6 @@ function package-archive-check-existence() {
 }
 
 function deb-archive-build() {
-    ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${1}
-    TEMPLATE_ROOT=${TEMPLATE_ROOT:-${TEMPLATE_ROOT_BASE}/deb}
-
     package-push-directory ${INSTALL_ROOT}
         ${RM} -rf ${ARCHIVE_ROOT}
         ${MKDIR} -p ${ARCHIVE_ROOT}
@@ -87,8 +85,6 @@ function deb-archive-install() {
 }
 
 function generate-debian-control-file() {
-    ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${1}
-
     # Template definition
     DEBIAN_ROOT=${ARCHIVE_ROOT}/DEBIAN
 
@@ -114,7 +110,6 @@ function generate-debian-control-file() {
 }
 
 function generate-rpm-spec-file() {
-    ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${1}
     ${SED} "s|ARCHIVE_ROOT|${ARCHIVE_ROOT}|g; \
             s|PACKAGE_ARCH|${PACKAGE_ARCH}|g; \
             s|PACKAGE_NAME|${1}|g; \
@@ -124,9 +119,6 @@ function generate-rpm-spec-file() {
 }
 
 function rpm-archive-build() {
-    ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${1}
-    TEMPLATE_ROOT=${TEMPLATE_ROOT:-${TEMPLATE_ROOT_BASE}/rpm}
-
     package-push-directory ${INSTALL_ROOT}
         ${RM} -rf ${ARCHIVE_ROOT}
         ${MKDIR} -p ${ARCHIVE_ROOT} \
