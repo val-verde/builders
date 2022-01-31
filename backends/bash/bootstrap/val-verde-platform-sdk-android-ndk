@@ -48,8 +48,5 @@ ${PATCH} -p1 \
         ${DESTINATION_DIR}/toolchains/llvm/prebuilt/${BUILD_KERNEL}-${ANDROID_NDK_BUILD_PROCESSOR}/sysroot/usr/include/string.h
 
 
-${CHMOD} 755 \
-         ${INSTALL_PREFIX}/share
-
 # Build and install the package
 package-invoke-archive-install

@@ -46,7 +46,13 @@ done
 
 ${CHMOD} 755 \
          ${DESTINATION_DIR}/lib \
-         ${DESTINATION_DIR}/bin
+         ${DESTINATION_DIR}/libexec \
+         ${DESTINATION_DIR}/bin \
+         ${DESTINATION_DIR}/share \
+         ${DESTINATION_DIR}/share/doc \
+         ${DESTINATION_DIR}/share/man \
+         ${DESTINATION_DIR}/share/man/man1 \
+         ${DESTINATION_DIR}/share/zsh
 
 # Build and install the package
 package-invoke-archive-install
