@@ -21,9 +21,6 @@ function derive-source-package-name-version() {
 }
 
 function derive-upstream-source-url() {
-    SOURCE_PACKAGE_NAME_VERSION=`derive-source-package-name-version`
-    PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME_VERSION}-sources
-
     if [[ ${PACKAGE_BASE_URL} == *'${SOURCE_PACKAGE_NAME}'* || ${PACKAGE_BASE_URL} == *'${SOURCE_PACKAGE_VERSION}'* ]]; then
         PACKAGE_URL=${PACKAGE_BASE_URL//'${SOURCE_PACKAGE_NAME}'/${SOURCE_PACKAGE_NAME}}
         PACKAGE_URL=${PACKAGE_URL//'${SOURCE_PACKAGE_VERSION}'/${SOURCE_PACKAGE_VERSION}}
@@ -96,7 +93,7 @@ function get-source-package-count() {
 }
 
 function prepare-source-base() {
-    # Determine package url and name
+    # Determine package url
     derive-upstream-source-url
 
     # Set source package details
@@ -104,12 +101,14 @@ function prepare-source-base() {
         determine-git-source-package
     fi
 
+    # Set source package name metadata
     SOURCE_PACKAGE_NAME_VERSION=`derive-source-package-name-version`
+    package-get-qualified-source-package-name "${SOURCE_PACKAGE_NAME_VERSION}"
 
     export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources/${SOURCE_PACKAGE_NAME_VERSION} \
            INSTALL_ROOT=${TEMP_ROOT_BASE}/${SOURCE_PACKAGE_NAME_VERSION} \
            STAGE_ROOT=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME_VERSION} \
-           DEB_PATH=${SOURCE_DEB_PATH}
+           DEB_PATH=${SOURCE_ARCHIVE_PATH}
     
     export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX}
 
