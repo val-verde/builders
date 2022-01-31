@@ -10,7 +10,6 @@ export SOURCE_PACKAGE_NAME=sources-builder
 export SOURCE_PACKAGE_VERSION=1
 export INSTALL_ROOT=/tmp/org.${VAL_VERDE_GH_TEAM}/scripts
 export STAGE_ROOT=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}
-export PACKAGE_NAME=${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}
 
 ${MKDIR} -p \
          ${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM} \
@@ -31,7 +30,7 @@ ${CHMOD} 755 \
 BASE_DIRECTORY=${INSTALL_ROOT}/usr \
 PACKAGE_INSTALL_BASE=/usr \
 TEMPLATE_ROOT_BASE=${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM} \
-package-archive-build-install
+package-archive-build-install "${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}"
 
 # Fetch sources
 bash /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-packages
