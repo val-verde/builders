@@ -330,7 +330,7 @@ function package-git-clone() {
             ${RM} -rf ${TARGET_ROOT}
         fi
 
-        if [ "${RETAIN_SOURCE}" != 'true' ]; then
+        if [ `${ECHO} ${RETAIN_SOURCE^^}` != 'TRUE' ]; then
             DEPTH_CMD="--depth=${DEPTH}"
         fi
 
@@ -361,14 +361,14 @@ function package-git-submodule() {
 }
 
 function package-git-tool() {
-    failed=false
+    failed=FALSE
     TOOL_LOG=${STAGE_ROOT}/builder-git-${1} \
-    tool-log ${GIT} "${@}" || failed=true
+    tool-log ${GIT} "${@}" || failed=TRUE
 
-    while [ "${failed}" = "true" ]; do
+    while [ "${failed}" = "TRUE" ]; do
         failed=false
         TOOL_LOG=${STAGE_ROOT}/builder-git-${1} \
-        tool-log ${GIT} "${@}" || failed=true
+        tool-log ${GIT} "${@}" || failed=TRUE
     done
 }
 
@@ -434,10 +434,10 @@ function package-zip() {
 function tool-check() {
     SEARCH_KEY=${SEARCH_PATH}/${SEARCH_INPUT}
     if [ -f "${SEARCH_KEY}.${SEARCH_EXTENSION}" ]; then
-        FILE_EXISTS='true'
+        FILE_EXISTS='TRUE'
         SEARCH_RESULTS=`compgen -G "${SEARCH_KEY}*"`
     else
-        FILE_EXISTS='false'
+        FILE_EXISTS='FALSE'
     fi
 }
 

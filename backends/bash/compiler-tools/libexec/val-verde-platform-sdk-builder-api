@@ -73,7 +73,7 @@ function package-invoke-builder() {
     SEARCH_EXTENSION=${PACKAGE_ARCHIVE_CLASS} \
     tool-check
 
-    if [ ${FILE_EXISTS} == 'true' ]; then
+    if [ ${FILE_EXISTS} == 'TRUE' ]; then
         SEARCH_RESULTS_ARRAY=( ${SEARCH_RESULTS} )
         for file in "${SEARCH_RESULTS_ARRAY[@]}"; do
             PACKAGE_NAME_INPUT=`${BASENAME} ${file%.*}`
