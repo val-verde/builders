@@ -7,6 +7,10 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for configure/install
 cd ${STAGE_ROOT}
+COMMON_CFLAGS="\
+    -L${PACKAGE_PREFIX}/lib \
+    ${COMMON_CFLAGS} \
+" \
 DISABLE_FORTIFY_SOURCE_LEVEL=TRUE \
 export-compiler-environment
 generate-compiler-tools
