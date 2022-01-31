@@ -32,8 +32,7 @@ function package-archive-uninstall() {
     PACKAGE_NAME_INPUT=`${BASENAME} ${1} ${PACKAGE_ARCHIVE_CLASS}`
     ARCHIVE_CHECK=$(package-archive-check-existence "${PACKAGE_NAME_INPUT}")
 
-    if [ -n "${ARCHIVE_CHECK}" ] &&
-       [[ ${PACKAGE_NAME_INPUT} != *"stage"* ]]; then
+    if [ -n "${ARCHIVE_CHECK}" ]; then
         if [ "${PACKAGE_ARCHIVE_CLASS}" = "deb" ]; then
             package-${PACKAGE_ARCHIVE_CLASS}-remove "${PACKAGE_NAME_INPUT}"
         elif [ "${PACKAGE_ARCHIVE_CLASS}" = "rpm" ]; then
