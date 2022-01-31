@@ -20,17 +20,19 @@ function package-invoke-category-builder() {
 
 function package-install-build-archive() {
     package-get-packaging-api
-    ${ECHO} -e "    Skipping re-build: \e[1;35m${PACKAGE_NAME}\e[0m"
+    ${ECHO} -e "    Skipping re-build: \e[1;35m${1}\e[0m"
     DISABLE_BUILD_ARCHIVE=TRUE \
-    package-archive-build-install
+    package-archive-build-install "${1}"
 }
 
 function package-invoke-archive-action() {
     package-get-common-variables
     package-get-packaging-api
+
     PACKAGE_ACTION="${1}"
     PACKAGE_INPUT=(${@:2})
     PACKAGE_COUNT=$((${#PACKAGE_INPUT[@]} / 2))
+
     for i in `seq 0 $(($PACKAGE_COUNT - 1))`; do
         PACKAGE_NAME_INDEX=$((i * 2))
         SYSTEM_TYPE_INDEX=$((i * 2 + 1))
@@ -50,25 +52,20 @@ function package-invoke-archive-action() {
         PACKAGE_FILE_NAME=${PKG_PREFIX}-${PKG_SUFFIX}
 
         if [ "${PACKAGE_ACTION}" = "uninstall" ]; then
-            ARCHIVE_CHECK=$(package-archive-check-existence "${PACKAGE_FILE_NAME}") \
-            package-archive-uninstall ${PACKAGE_FILE_NAME}
+            package-archive-uninstall "${PACKAGE_FILE_NAME}"
         elif [ "${PACKAGE_ACTION}" = "install" ]; then
             DISABLE_BUILD_ARCHIVE=TRUE \
-            PACKAGE_NAME=${PACKAGE_FILE_NAME} \
-            package-archive-build-install
+            package-archive-build-install "${PACKAGE_FILE_NAME}"
         fi
     done
-
-    unset QUALIFIED_ARCHIVE \
-          QUALIFIED_FILE_NAME
 }
 
 function package-invoke-builder() {
     parse-builder-args "${@}"
-    export QUALIFIED_PACKAGE_NAME=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
-    export PACKAGE_NAME=${PACKAGE_NAME:-${PACKAGE_BASE_NAME}-${QUALIFIED_PACKAGE_NAME}}
 
     package-get-common-variables
+    package-get-qualified-package-name "${SOURCE_PACKAGE_NAME}" "${SOURCE_PACKAGE_VERSION}"
+
     package-get-packaging-api
 
     SEARCH_PATH=${ARCHIVE_PATH} \
@@ -79,8 +76,8 @@ function package-invoke-builder() {
     if [ ${FILE_EXISTS} == 'true' ]; then
         SEARCH_RESULTS_ARRAY=( ${SEARCH_RESULTS} )
         for file in "${SEARCH_RESULTS_ARRAY[@]}"; do
-            PACKAGE_NAME=`${BASENAME} ${file%.*}`
-            package-install-build-archive
+            PACKAGE_NAME_INPUT=`${BASENAME} ${file%.*}`
+	        package-install-build-archive "${PACKAGE_NAME_INPUT}"
         done
     else
         ${ECHO} -e "Builder Invocation Started"
@@ -91,11 +88,7 @@ function package-invoke-builder() {
 
     unset DISABLE_BUILD_ARCHIVE \
           DISABLE_INSTALL_ARCHIVE \
-          NON_PERSISTENT_ARCHIVE \
-          SOURCE_PACKAGE_NAME \
-          SOURCE_PACKAGE_VERSION \
-          PACKAGE_NAME \
-          QUALIFIED_PACKAGE_NAME
+          NON_PERSISTENT_ARCHIVE
 }
 
 function parse-builder-args() {
