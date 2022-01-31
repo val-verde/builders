@@ -77,30 +77,42 @@ function package-invoke-builder() {
         SEARCH_RESULTS_ARRAY=( ${SEARCH_RESULTS} )
         for file in "${SEARCH_RESULTS_ARRAY[@]}"; do
             PACKAGE_NAME_INPUT=`${BASENAME} ${file%.*}`
+            DISABLE_BUILD_ARCHIVE=${DISABLE_BUILD_ARCHIVE} \
+            DISABLE_INSTALL_ARCHIVE=${DISABLE_INSTALL_ARCHIVE} \
 	        package-install-build-archive "${PACKAGE_NAME_INPUT}"
         done
     else
         ${ECHO} -e "Builder Invocation Started"
-        ${BASH} ${VAL_VERDE_GH_TEAM}-platform-sdk-${@}
+        DISABLE_BUILD_ARCHIVE=${DISABLE_BUILD_ARCHIVE} \
+        DISABLE_INSTALL_ARCHIVE=${DISABLE_INSTALL_ARCHIVE} \
+        NON_PERSISTENT_ARCHIVE=${NON_PERSISTENT_ARCHIVE} \
+        SOURCE_PACKAGE_NAME=${SOURCE_PACKAGE_NAME} \
+        SOURCE_PACKAGE_VERSION=${SOURCE_PACKAGE_VERSION} \
+	    ${BASH} ${VAL_VERDE_GH_TEAM}-platform-sdk-${@}
         ${ECHO} -e "Builder Invocation Complete"
         ${ECHO}
     fi
 
-    unset DISABLE_BUILD_ARCHIVE \
-          DISABLE_INSTALL_ARCHIVE \
-          NON_PERSISTENT_ARCHIVE
+    unset \
+        DISABLE_BUILD_ARCHIVE \
+        DISABLE_INSTALL_ARCHIVE \
+        NON_PERSISTENT_ARCHIVE
 }
 
 function parse-builder-args() {
-    if [ ${1##*-} == 'cross' ] \
-       || [[ ${1##*-} == *"bootstrap"* ]] \
-       || [[ ${1##*-} == *"darwin"* ]] \
-       || [[ ${1##*-} == *"musl"* ]] \
-       || [[ ${1##*-} == *"android"* ]] \
-       || [[ ${1##*-} == *"windows"* ]]; then
-        export SOURCE_PACKAGE_NAME=${1%-*}
+    BUILDER_INPUT_SCRIPT=${1}
+    SOURCE_PACKAGE_VERSION=${2}
+    BUILDER_ACTION_OPTION=${3}
+
+    if [[ ${BUILDER_INPUT_SCRIPT} == *"cross" ]] ||
+       [[ ${BUILDER_INPUT_SCRIPT} == *"bootstrap" ]] ||
+       [[ ${BUILDER_INPUT_SCRIPT} == *"darwin" ]] ||
+       [[ ${BUILDER_INPUT_SCRIPT} == *"musl" ]] ||
+       [[ ${BUILDER_INPUT_SCRIPT} == *"android" ]] ||
+       [[ ${BUILDER_INPUT_SCRIPT} == *"windows" ]]; then
+        SOURCE_PACKAGE_NAME=${BUILDER_INPUT_SCRIPT%-*}
     else
-        export SOURCE_PACKAGE_NAME=$1
+        SOURCE_PACKAGE_NAME=${BUILDER_INPUT_SCRIPT}
     fi
 
     if [ ${SOURCE_PACKAGE_NAME} == "xcb-proto" ]; then
@@ -108,17 +120,15 @@ function parse-builder-args() {
     elif [ ${SOURCE_PACKAGE_NAME} == "yarn-yautja-server" ]; then
         SOURCE_PACKAGE_NAME=yautja-server
     fi
-
-    export SOURCE_PACKAGE_VERSION=$2
     
-    if [ "${3}" ]; then
-        if [ $3 == "none" ]; then
-            export DISABLE_BUILD_ARCHIVE=TRUE
-            export DISABLE_INSTALL_ARCHIVE=TRUE
-        elif [ $3 == "no-install" ]; then
-            export DISABLE_INSTALL_ARCHIVE=TRUE
-        elif [ $3 == "bootstrap-only" ]; then
-            export NON_PERSISTENT_ARCHIVE=TRUE
+    if [ -n "${BUILDER_ACTION_OPTION}" ]; then
+        if [ "${BUILDER_ACTION_OPTION}" == "none" ]; then
+            DISABLE_BUILD_ARCHIVE=TRUE
+            DISABLE_INSTALL_ARCHIVE=TRUE
+        elif [ "${BUILDER_ACTION_OPTION}" == "no-install" ]; then
+            DISABLE_INSTALL_ARCHIVE=TRUE
+        elif [ "${BUILDER_ACTION_OPTION}" == "bootstrap-only" ]; then
+            NON_PERSISTENT_ARCHIVE=TRUE
         fi
     fi
 }
