@@ -32,6 +32,7 @@ package-cmake-install-archive \
     -DCMAKE_ASM_MASM_COMPILER_WORKS=FALSE \
     -DJWASM_FOUND=${JWASM} \
     -DPKG_CONFIG_EXECUTABLE=${PKG_CONFIG} \
+    -DUSE_GAS=FALSE \
     -DVulkanHeaders_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DVulkanRegistry_DIR=${PACKAGE_PREFIX}/share/vulkan/registry \
     ${CMAKE_ANDROID_DEFINE_CMD}
