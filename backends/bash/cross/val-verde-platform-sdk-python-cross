@@ -42,6 +42,9 @@ function package-install-completion-callback() {
                              @rpath/Python.framework/Versions/${PYTHON_VERSION}/Python \
                              ${INSTALL_ROOT}/${PACKAGE_PLATFORM_SYSROOT}/System/Library/Frameworks/Python.framework/Versions/${PYTHON_VERSION}/Python
     fi
+    
+    ${CHMOD} 755 \
+         ${INSTALL_PREFIX}/lib/python3.10/*
 }
 
 ${MKDIR} -p ${STAGE_ROOT}/Modules
