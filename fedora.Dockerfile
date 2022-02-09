@@ -1,4 +1,5 @@
-FROM fedora:34 AS fedora
+ARG OS_RELEASE_VERSION=${OS_RELEASE_VERSION}
+FROM fedora:${OS_RELEASE_VERSION} AS fedora
 
 WORKDIR /sources
 

@@ -3,6 +3,13 @@
 set -e
 
 DISTRO=${DISTRO:-ubuntu}
+
+if [ "${DISTRO}" == "ubuntu" ]; then
+    OS_RELEASE_VERSION=${OS_RELEASE_VERSION:-'latest'}
+elif [ "${DISTRO}" == "fedora" ]; then
+    OS_RELEASE_VERSION=${OS_RELEASE_VERSION:-'latest'}
+fi
+
 PACKAGE_ARCHIVE_CLASS=${PACKAGE_ARCHIVE_CLASS:-deb}
 PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME:-val-verde}
 PACKAGE_ROOT=${PACKAGE_ROOT:-/opt}
@@ -14,6 +21,7 @@ tag='val-verde-compilers'
 version='1.0.0'
 target="${DISTRO}"
 buildArgs=`echo "\
+    --build-arg OS_RELEASE_VERSION=${OS_RELEASE_VERSION} \
     --build-arg PACKAGE_ARCHIVE_CLASS=${PACKAGE_ARCHIVE_CLASS} \
     --build-arg PACKAGE_BASE_NAME=${PACKAGE_BASE_NAME} \
     --build-arg PACKAGE_ROOT=${PACKAGE_ROOT} \
