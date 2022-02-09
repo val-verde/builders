@@ -8,6 +8,7 @@ services:
             context: ./
             dockerfile: ubuntu.Dockerfile
             args:
+                - OS_RELEASE_VERSION=latest
                 - PACKAGE_ARCHIVE_CLASS=deb
                 - PACKAGE_BASE_NAME=val-verde
                 - PACKAGE_ROOT=/opt
@@ -20,6 +21,7 @@ services:
             context: ./
             dockerfile: fedora.Dockerfile
             args:
+                - OS_RELEASE_VERSION=latest
                 - PACKAGE_ARCHIVE_CLASS=rpm
                 - PACKAGE_BASE_NAME=val-verde
                 - PACKAGE_ROOT=/opt

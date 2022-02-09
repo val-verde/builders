@@ -1,4 +1,5 @@
-FROM ubuntu:20.04 AS ubuntu
+ARG OS_RELEASE_VERSION=${OS_RELEASE_VERSION}
+FROM ubuntu:${OS_RELEASE_VERSION} AS ubuntu
 
 ENV DEBIAN_FRONTEND=noninteractive
 
