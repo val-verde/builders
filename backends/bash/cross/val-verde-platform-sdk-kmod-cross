@@ -1,0 +1,48 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for bootstrap/configure/install
+function package-install-completion-callback() {
+    ${LN} -sf \
+          kmod \
+          ${INSTALL_PREFIX}/bin/depmod
+    ${LN} -sf \
+          kmod \
+          ${INSTALL_PREFIX}/bin/insmod
+    ${LN} -sf \
+          kmod \
+          ${INSTALL_PREFIX}/bin/lsmod
+    ${LN} -sf \
+          kmod \
+          ${INSTALL_PREFIX}/bin/modinfo
+    ${LN} -sf \
+          kmod \
+          ${INSTALL_PREFIX}/bin/modprobe
+    ${LN} -sf \
+          kmod \
+          ${INSTALL_PREFIX}/bin/rmmod
+}
+
+export-compiler-environment
+export-compiler-environment-for-python
+
+BOOTSTRAP_FILE=./autogen.sh \
+DISABLE_AUTOUPDATE=TRUE \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+package-bootstrap-configure-install-archive \
+    --disable-manpages \
+    --disable-gtk-doc \
+    --disable-gtk-doc-html \
+    --disable-gtk-doc-pdf \
+    --disable-static \
+    --enable-python \
+    --enable-shared \
+    --enable-tools \
+    --with-openssl \
+    --with-xz \
+    --with-zlib \
+    --with-zstd

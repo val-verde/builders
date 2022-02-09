@@ -52,3 +52,6 @@ package-invoke-category-builder wine-sdk-cross
 
 # blockchain sdk build
 package-invoke-category-builder blockchain-sdk-cross
+
+# base system build
+package-invoke-category-builder base-system-cross

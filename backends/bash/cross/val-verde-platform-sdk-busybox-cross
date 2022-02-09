@@ -1,0 +1,60 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Configure the build components
+cd ${SOURCE_ROOT}
+export-compiler-environment
+
+ARCH=${HOST_PROCESSOR}
+KERNEL_INSTALL_PREFIX=${INSTALL_ROOT}/${PACKAGE_PLATFORM_SYSROOT}
+
+if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+    ARCH=arm64
+fi
+
+function busybox-build() {
+    make-build \
+        AR=${AR} \
+        ARCH=${ARCH} \
+        CC=${CC} \
+        CFLAGS="${CFLAGS}" \
+        INSTALL_NO_USR=y \
+        CONFIG_PREFIX=${INSTALL_PREFIX}/busybox \
+        CONFIG_STATIC=y \
+        CXX=${CXX} \
+        CXXFLAGS="${CXXFLAGS}" \
+        HOSTAR=${AR} \
+        HOSTCC=${BUILD_CC} \
+        HOSTCFLAGS="${BUILD_CFLAGS} -L${BUILD_PACKAGE_PREFIX}/lib" \
+        HOSTCXX=${BUILD_CXX} \
+        HOSTCXXFLAGS="${BUILD_CXXFLAGS} -L${BUILD_PACKAGE_PREFIX}/lib" \
+        HOSTLD=${BUILD_LD} \
+        HOSTLDFLAGS="${BUILD_LDFLAGS}" \
+        LD=${LD} \
+        LDFLAGS="${LDFLAGS}" \
+        LLVM_IAS=1 \
+        NM=${NM} \
+        O=${STAGE_ROOT} \
+        OBJCOPY=${OBJCOPY} \
+        OBJDUMP=${OBJDUMP} \
+        RANLIB=${RANLIB} \
+        READELF=${READELF} \
+        STRIP=${STRIP} \
+        ${@}
+}
+
+busybox-build defconfig
+
+${SED} -i \
+       "s/# CONFIG_INSTALL_NO_USR is not set/CONFIG_INSTALL_NO_USR=y/g" \
+       ${STAGE_ROOT}/.config
+
+busybox-build all
+busybox-build install
+
+# Build and install the package
+package-invoke-archive-install
