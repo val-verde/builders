@@ -24,11 +24,30 @@ function package-install-completion-callback() {
     ${LN} -sf \
           `package-get-filename python3 EXECUTABLE HOST` \
           ${INSTALL_PREFIX}/bin/`package-get-filename python EXECUTABLE HOST`
+
+    if [ "${HOST_OS}" = "macos" ]; then
+	PYTHON_LIBRARY=`package-get-filename python${PYTHON_VERSION} SHARED HOST`
+
+        ${RSYNC} -ax \
+                 ${INSTALL_PREFIX}/include/python${PYTHON_VERSION}/* \
+                 ${INSTALL_ROOT}/${PACKAGE_PLATFORM_SYSROOT}/System/Library/Frameworks/Python.framework/Versions/${PYTHON_VERSION}/Headers/
+        ${RM} -rf ${INSTALL_PREFIX}/include/python${PYTHON_VERSION}
+        ${LN} -sf \
+              ../../System/Library/Frameworks/Python.framework/Versions/Current/Headers \
+              ${INSTALL_PREFIX}/include/python${PYTHON_VERSION}
+        ${LN} -sf \
+              ../../System/Library/Frameworks/Python.framework/Versions/Current/Python \
+              ${INSTALL_PREFIX}/lib/${PYTHON_LIBRARY}
+        ${INSTALL_NAME_TOOL} -id \
+                             @rpath/Python.framework/Versions/${PYTHON_VERSION}/Python \
+                             ${INSTALL_ROOT}/${PACKAGE_PLATFORM_SYSROOT}/System/Library/Frameworks/Python.framework/Versions/${PYTHON_VERSION}/Python
+    fi
 }
 
 ${MKDIR} -p ${STAGE_ROOT}/Modules
 
 ENSURE_PIP=no
+ENABLE_SHARED_OPTION="--enable-shared"
 HAVE_ALARM=yes
 HAVE_CLOCK_API=yes
 HAVE_DEV_PTMX=yes
@@ -73,6 +92,16 @@ else
     ${ECHO} '\
 posix -DPy_BUILD_CORE_BUILTIN -I$(srcdir)/Include/internal posixmodule.c # posix (UNIX) system calls
 ' > ${STAGE_ROOT}/Modules/Setup.local
+
+    if [ "${HOST_OS}" = "macos" ]; then
+        function tool-install-invocation() {
+            NUM_PROCESSORS=1 \
+            tool-install
+        }
+
+        ENABLE_SHARED_OPTION="--enable-framework=${PACKAGE_PLATFORM_SYSROOT}/System/Library/Frameworks"
+        TOOL_INSTALL_INVOCATION=tool-install-invocation
+    fi
 fi
 
 export-compiler-environment
@@ -115,9 +144,9 @@ package-stage-configure-install-archive \
     ac_cv_func_clock_getres=${HAVE_CLOCK_API} \
     ac_cv_func_clock_settime=${HAVE_CLOCK_API} \
     ac_cv_type_socklen_t=${HAVE_SOCKLEN_T} \
-    --enable-shared \
     --with-ensurepip=${ENSURE_PIP} \
     --with-openssl=${PACKAGE_PREFIX} \
     --with-system-expat \
     --with-system-ffi \
-    --without-static-libpython
+    --without-static-libpython \
+    ${ENABLE_SHARED_OPTION}

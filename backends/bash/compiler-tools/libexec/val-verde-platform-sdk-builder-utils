@@ -691,9 +691,15 @@ function export-compiler-environment-for-go() {
 }
 
 function export-compiler-environment-for-python() {
+    PYTHON_BUILD_PACKAGE_PREFIX=${BUILD_PACKAGE_PREFIX}
     PYTHON_HOST_OS=${HOST_OS}
     PYTHON_LIBS=
+    PYTHON_PACKAGE_PREFIX=${PACKAGE_PREFIX}
     PYTHON_PLATFORM=${HOST_KERNEL}
+
+    if [ "${BUILD_OS}" = "macos" ]; then
+        PYTHON_BUILD_PACKAGE_PREFIX=${BUILD_PACKAGE_PLATFORM_SYSROOT}/System/Library/Frameworks/Python.framework/Versions/Current
+    fi
 
     if [ "${HOST_OS}" = "macos" ]; then
         PYTHON_HOST_OS="${HOST_OS}${HOST_OS_API_LEVEL}"
@@ -701,6 +707,7 @@ function export-compiler-environment-for-python() {
             -lpython${PYTHON_VERSION} \
             ${PYTHON_LIBS} \
         " | ${XARGS}`
+        PYTHON_PACKAGE_PREFIX=${PACKAGE_PLATFORM_SYSROOT}/System/Library/Frameworks/Python.framework/Versions/Current
         PYTHON_PLATFORM=${DARWIN_OS}
     elif [ "${HOST_OS}" = "mingw32" ]; then
         PYTHON_PLATFORM=win32
@@ -719,8 +726,8 @@ function export-compiler-environment-for-python() {
         _PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata__${PYTHON_PLATFORM}_${HOST_PROCESSOR}-${HOST_KERNEL}-${PYTHON_HOST_OS} \
         CCSHARED="${CC} -pthread -shared ${CCFLAGS}" \
         LDSHARED="${CCLD} -pthread -shared ${CCLDFLAGS} ${PYTHON_LIBS}" \
-        PYTHONHOME=${PACKAGE_PREFIX}:${BUILD_PACKAGE_PREFIX} \
-        PYTHONPATH=${BUILD_PACKAGE_PREFIX}/lib/python${PYTHON_VERSION}
+        PYTHONHOME=${PYTHON_PACKAGE_PREFIX}:${PYTHON_BUILD_PACKAGE_PREFIX} \
+        PYTHONPATH=${PYTHON_BUILD_PACKAGE_PREFIX}/lib/python${PYTHON_VERSION}
 }
 
 function export-compiler-environment-for-swift() {
