@@ -67,7 +67,9 @@ package-invoke-builder python-libcomps-cross 0
 package-invoke-builder python-six-cross 1
 
 # python-smartcols build
-package-invoke-builder python-smartcols-cross 0
+if [ "${HOST_OS}" != "mingw32" ]; then
+    package-invoke-builder python-smartcols-cross 0
+fi
 
 # python-sympy build
 package-invoke-builder python-sympy-cross 1
