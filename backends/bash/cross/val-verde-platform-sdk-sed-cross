@@ -11,5 +11,11 @@ if [ "${HOST_OS}" != "macos" ] &&
 fi
 
 # Invoke one-shot template for stage/configure/install
+if [ "${HOST_OS}" = "mingw32" ]; then
+    FORTIFY_SOURCE_LEVEL=0
+    unset DISABLE_FORTIFY_SOURCE_LEVEL
+fi
+
 DISABLE_AUTOUPDATE=TRUE \
-package-stage-configure-install-archive
+package-stage-configure-install-archive \
+    --disable-gcc-warnings

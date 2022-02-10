@@ -195,7 +195,7 @@ package-invoke-builder libuv-cross 1
 package-invoke-builder grep-cross 3
 
 # windows sed build
-# package-invoke-builder sed-cross 4
+package-invoke-builder sed-cross 4
 
 # windows bison build
 package-invoke-builder bison-cross 3
