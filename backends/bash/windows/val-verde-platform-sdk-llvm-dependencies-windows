@@ -164,10 +164,10 @@ package-invoke-builder expat-cross 2
 package-invoke-builder libgpg-error-cross 1
 
 # windows libgcrypt build
-# package-invoke-builder libgcrypt-cross 1
+package-invoke-builder libgcrypt-cross 1
 
 # windows indent build
-# package-invoke-builder indent-cross 2
+package-invoke-builder indent-cross 2
 
 # windows util-linux build
 DEB_PATH=${BOOTSTRAP_DEB_PATH} \
@@ -216,7 +216,7 @@ package-invoke-builder json-c-cross 0
 # package-invoke-builder findutils-cross 4
 
 # windows less build
-# package-invoke-builder less-cross 590
+package-invoke-builder less-cross 590
 
 # windows lua build
 package-invoke-builder lua-cross 5
