@@ -177,16 +177,16 @@ function package-determine-compression-option() {
     fi
 }
 
-function package-dnf-list() {
-    DISABLE_TOOL_LOG=TRUE \
-    package-dnf-tool list "${@}"
-}
-
 function package-dnf-remove() {
     for i in ${@}; do
         PACKAGE_NAME=`${ECHO} ${i} | ${CUT} -d\* -f1`
-        package-dnf-tool remove -y `package-dnf-list --installed | ${GREP} ^${PACKAGE_NAME} | ${CUT} -d\  -f 1`
+        package-dnf-tool remove -y `package-dnf-repoquery --installed --queryformat '%{name}' ${PACKAGE_NAME}`
     done
+}
+
+function package-dnf-repoquery() {
+    DISABLE_TOOL_LOG=TRUE \
+    package-dnf-tool repoquery "${@}"
 }
 
 function package-dnf-tool() {
