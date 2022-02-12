@@ -314,6 +314,12 @@ package-invoke-builder apple-mig-cross 121
 # apple-xar build
 package-invoke-builder apple-xar-cross 452
 
+# cctools-port-cross build
+package-invoke-builder cctools-port-cross 973
+
+# sigtool build
+package-invoke-builder sigtool-cross 0
+
 # alsa-lib build
 package-invoke-builder alsa-lib-cross 1
 

@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for stage/configure/install
+function package-install-completion-callback() {
+    BINARIES_TO_RENAME="ar as ld libtool nm ranlib size strings strip"
+
+    for BINARY in ${BINARIES_TO_RENAME}; do
+        ${MV} ${INSTALL_PREFIX}/bin/${BINARY} \
+              ${INSTALL_PREFIX}/bin/${BINARY}-darwin
+    done
+
+    ${RM} -rf ${INSTALL_PREFIX}/share/man
+}
+
+LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}}
+LLVM_CONFIG_EXECUTABLE=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config
+
+if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+    LLVM_NATIVE_STAGE_ROOT=${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
+    LLVM_CONFIG_EXECUTABLE=${LLVM_NATIVE_STAGE_ROOT}/bin/host-llvm-config
+    export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${LLVM_NATIVE_STAGE_ROOT}/NATIVE/lib
+fi
+
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+SOURCE_ROOT=${SOURCE_ROOT}/cctools \
+package-stage-configure-install-archive \
+    --enable-lto-support \
+    --enable-xar-support \
+    --with-llvm-config=${LLVM_CONFIG_EXECUTABLE}
