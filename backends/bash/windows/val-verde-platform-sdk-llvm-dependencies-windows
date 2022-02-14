@@ -265,8 +265,8 @@ package-invoke-category-builder python-sdk-cross
 package-invoke-builder libtasn1-cross 4
 
 # windows p11-kit build
-# DISABLE_SYSTEMD=TRUE \
-# package-invoke-builder p11-kit-cross 0
+DISABLE_SYSTEMD=TRUE \
+package-invoke-builder p11-kit-cross 0
 
 # windows nettle build
 package-invoke-builder nettle-cross 3
