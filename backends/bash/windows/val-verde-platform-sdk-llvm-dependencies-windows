@@ -138,6 +138,9 @@ package-invoke-builder mpc-cross 1
 # windows isl build
 package-invoke-builder isl-cross 0
 
+# windows libev build
+package-invoke-builder libev-cross 4
+
 # windows tcl build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder tcl-cross 8
