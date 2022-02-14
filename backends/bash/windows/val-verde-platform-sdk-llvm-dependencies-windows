@@ -278,7 +278,7 @@ package-invoke-builder nettle-cross 3
 package-invoke-builder unbound-cross 1
 
 # windows gnutls build
-# package-invoke-builder gnutls-cross 3
+package-invoke-builder gnutls-cross 3
 
 # windows libmicrohttpd build
 package-invoke-builder libmicrohttpd-cross 0

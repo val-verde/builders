@@ -6,7 +6,6 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export DEPENDS="\
-    ${PACKAGE_BASE_NAME}-autogen-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-libev-4-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-libtasn1-4-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-libunistring-0-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
@@ -15,11 +14,32 @@ export DEPENDS="\
 "
 
 # Invoke one-shot template for bootstrap/configure/install
-if [ "${HOST_OS}" != "macos" ]; then
+if [ "${HOST_OS}" != "mingw32" ]; then
     export DEPENDS="\
-        ${PACKAGE_BASE_NAME}-libgcrypt-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
-        ${DEPENDS} \
+        ${DEPENDS}, \
+        ${PACKAGE_BASE_NAME}-autogen-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0) \
     "
+fi
+
+ENABLE_OR_DISABLE_HARDWARE_ACCELERATION=enable
+UNBOUND_ROOT_KEY=/var/lib/unbound/root.key
+
+if [ "${HOST_OS}" = "mingw32" ]; then
+    if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+        ENABLE_OR_DISABLE_HARDWARE_ACCELERATION=disable
+    fi
+
+    function tool-install-invocation() {
+        DISABLE_TOOL_BUILD= \
+        NUM_PROCESSORS=1 \
+        tool-build
+        tool-install
+    }
+
+    DISABLE_TOOL_BUILD=TRUE
+    MINGW_WINDOWS_MOUNT_DRIVE_LETTER=z
+    TOOL_INSTALL_INVOCATION=tool-install-invocation
+    UNBOUND_ROOT_KEY=${MINGW_WINDOWS_MOUNT_DRIVER_LETTER}:${UNBOUND_ROOT_KEY}
 fi
 
 BOOTSTRAP_FILE=bootstrap \
@@ -40,4 +60,6 @@ package-bootstrap-configure-install-archive \
     --disable-tests \
     --enable-shared \
     --enable-ssl3-support \
-    --with-autoopts-config=${PACKAGE_PREFIX}/bin/autoopts-config
+    --with-autoopts-config=`package-get-path autoopts-config SCRIPT HOST` \
+    --with-unbound-root-key-file=${UNBOUND_ROOT_KEY} \
+    --${ENABLE_OR_DISABLE_HARDWARE_ACCELERATION}-hardware-acceleration

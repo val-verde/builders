@@ -58,7 +58,6 @@ elif [ "${HOST_OS}" = "macos" ]; then
     ENABLE_OR_DISABLE_HVF=enable
     ENABLE_OR_DISABLE_KVM=disable
 elif [ "${HOST_OS}" = "mingw32" ]; then
-    ENABLE_OR_DISABLE_GNUTLS=disable
     ENABLE_OR_DISABLE_KVM=disable
     ENABLE_OR_DISABLE_SPICE=disable
     ENABLE_OR_DISABLE_VIRGLRENDERER=disable
@@ -68,6 +67,7 @@ if [ "${HOST_PROCESSOR}" = "x86_64" ]; then
     ENABLE_OR_DISABLE_HAX=enable
 fi
 
+SDL2_CONFIG=`package-get-path sdl2-config SCRIPT HOST` \
 package-configure-invocation \
     ${SOURCE_ROOT}/configure \
     --cc="${CC}" \
