@@ -136,7 +136,7 @@ package-invoke-builder mpfr-cross 4
 package-invoke-builder mpc-cross 1
 
 # windows isl build
-# package-invoke-builder isl-cross 0
+package-invoke-builder isl-cross 0
 
 # windows tcl build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
