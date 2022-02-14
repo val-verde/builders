@@ -111,8 +111,11 @@ package-invoke-builder m4-cross 1
 # windows ninja build
 package-invoke-builder ninja-cross 1
 
+# windows mingw-libgnurx
+package-invoke-builder mingw-libgnurx-cross 2
+
 # windows file build
-# package-invoke-builder file-cross 5
+package-invoke-builder file-cross 5
 
 # windows termiwin build
 package-invoke-builder termiwin-windows 1
