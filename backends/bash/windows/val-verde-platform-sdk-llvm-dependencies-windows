@@ -262,7 +262,7 @@ package-invoke-builder protobuf-cross 3
 package-invoke-category-builder python-sdk-cross
 
 # windows libtasn1 build
-# package-invoke-builder libtasn1-cross 4
+package-invoke-builder libtasn1-cross 4
 
 # windows p11-kit build
 # DISABLE_SYSTEMD=TRUE \
