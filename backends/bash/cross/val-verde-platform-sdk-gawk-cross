@@ -7,8 +7,18 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export DEPENDS="${PACKAGE_BASE_NAME}-ncurses-6-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0)"
 
-# Invoke one-shot template for stage/configure/install
+# Invoke one-shot template for bootstrap/configure/install
+if [ "${HOST_OS}" = "mingw32" ]; then
+    COMMON_CFLAGS="\
+        -lshlwapi \
+        -lws2_32 \
+        -I${STAGE_ROOT}/pc \
+        ${COMMON_CFLAGS} \
+    "
+    DISABLE_TOOL_BUILD=TRUE
+    INSTALL_TARGET="AWKPROG=${GAWK} install"
+fi
+
+BOOTSTRAP_FILE=bootstrap.sh \
 DISABLE_AUTOUPDATE=TRUE \
-DISABLE_TOOL_BUILD=TRUE \
-INSTALL_TARGET="AM_CFLAGS= install" \
-package-stage-configure-install-archive
+package-bootstrap-configure-install-archive
