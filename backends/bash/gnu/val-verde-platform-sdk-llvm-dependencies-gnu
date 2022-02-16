@@ -4,7 +4,7 @@ set -e
 
 if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
     export \
-        APT=/usr/bin/apt \
+        APT="build-system-tool apt" \
         AUTOGEN=/usr/bin/autogen \
         BASENAME=/usr/bin/basename \
         BASH=/usr/bin/bash \
@@ -14,7 +14,7 @@ if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
         CURL=/usr/bin/curl \
         CUT=/usr/bin/cut \
         DNF="build-system-tool dnf" \
-        DPKG=/usr/bin/dpkg \
+        DPKG="build-system-tool dpkg" \
         ECHO=/usr/bin/echo \
         ENV=/usr/bin/env \
         FALSE=/usr/bin/false \
