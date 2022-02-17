@@ -104,8 +104,9 @@ export XZ=${XZ:-${BINDIR}/xz}
 function build-system-tool() {
     BUILD_BINDIR=${BUILD_BINDIR:-/usr/bin}
     ENV=${ENV:-${BUILD_BINDIR}/env}
+    BUILD_ARGS=${@}
 
-    ${ENV} -i "${@}"
+    ${ENV} -i ${BASH} -lc 'for i in `cat /etc/environment`; do export $i; done; '"${BUILD_ARGS}"''
 }
 
 function package-determine-os-distribution() {
@@ -205,9 +206,9 @@ function package-dnf-tool() {
 }
 
 function package-deb-build() {
-    COMPRESSION_OPTION="`package-determine-compression-option` "${@}""
+    COMPRESSION_OPTION=`package-determine-compression-option`
     TOOL_LOG=${STAGE_ROOT}/builder-dpkg \
-    tool-log ${DPKG}-deb --build  ${COMPRESSION_OPTION}
+    tool-log ${DPKG}-deb --build ${COMPRESSION_OPTION} "${@}"
 }
 
 function package-deb-install() {
@@ -220,7 +221,7 @@ function package-deb-remove() {
 
 function package-dpkg-tool() {
     TOOL_LOG=${STAGE_ROOT}/builder-dpkg-${1} \
-    tool-log ${DPKG} --${@}
+    tool-log ${DPKG} "--${@}"
 }
 
 # package-get-filename <name> <EXECUTABLE|SHARED|STATIC> <BUILD|HOST>
