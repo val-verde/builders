@@ -5,6 +5,18 @@ set -e
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
+# fftw build
+package-invoke-builder fftw3-cross 3
+
+# libjpeg build
+package-invoke-builder libjpeg-cross 9
+
+# libpng build
+package-invoke-builder libpng-cross 1
+
+# libtiff build
+package-invoke-builder libtiff-cross 4
+
 # xorg-macros build
 package-invoke-builder xorg-macros-cross 1
 
@@ -121,12 +133,6 @@ if [ "${HOST_OS}" != "mingw32" ]; then
     # xorg-xinput build
     package-invoke-builder xorg-xinput-cross 1
 fi
-
-# libjpeg build
-package-invoke-builder libjpeg-cross 9
-
-# libpng build
-package-invoke-builder libpng-cross 1
 
 if [ "${HOST_OS}" != "macos" ] &&
    [ "${HOST_OS}" != "mingw32" ]; then

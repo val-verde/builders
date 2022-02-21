@@ -6,8 +6,17 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for bootstrap/configure/install
+HAVE_FFS=yes
+
+if [ "${HOST_OS}" = "mingw32" ]; then
+    HAVE_FFS=no
+    ISL_LDFLAGS="-no-undefined"
+fi
+
 BOOTSTRAP_FILE=./autogen.sh \
 package-bootstrap-configure-install-archive \
-    ac_cv_have_decl_ffs=yes \
+    ac_cv_have_decl_ffs=${HAVE_FFS} \
+    ISL_LDFLAGS=${ISL_LDFLAGS} \
     --disable-static \
-    --enable-shared
+    --enable-shared \
+    --with-int=gmp

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# ocamlbuild build
+package-invoke-builder ocamlbuild-cross 0
+
+# ocamlfind build
+package-invoke-builder ocamlfind-cross 1
+
+# ocaml-num build
+package-invoke-builder ocaml-num-cross 1

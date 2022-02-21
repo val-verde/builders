@@ -22,25 +22,17 @@ export SWIFT_NATIVE_STAGE_ROOT=${SWIFT_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/swi
 export SWIFT_STAGE_ROOT=${STAGE_ROOT_BASE}/swift-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
 
 # Invoke one-shot template for cmake/install
+COMMON_LDFLAGS="\
+    -ltermiwin \
+    ${COMMON_LDFLAGS} \
+" \
+DISABLE_STRIP=TRUE \
 export-compiler-environment
 
 CROSS_TOOLCHAIN_FLAGS_NATIVE=`package-cmake-invocation-arguments-for-variant BUILD`
 LLVM_TABLEGEN=`BINDIR=${LLVM_NATIVE_TOOL_ROOT}/bin package-get-path llvm-tblgen EXECUTABLE BUILD`
 
-COMMON_CFLAGS="\
-    -fms-compatibility-version=19.2 \
-    -fms-extensions \
-    -Wno-register \
-    ${COMMON_CFLAGS} \
-" \
 CXX_STANDARD=17 \
-DISABLE_STRIP=TRUE \
-LDFLAGS="\
-    -lole32 \
-    -lpsapi \
-    -luuid \
-    ${LDFLAGS} \
-"
 package-cmake-install-archive \
     -DClang_DIR=${LLVM_STAGE_ROOT}/lib/cmake/clang \
     -DCLANG_LINK_CLANG_DYLIB=FALSE \
@@ -66,7 +58,9 @@ package-cmake-install-archive \
     -DLLDB_INCLUDE_TESTS=FALSE \
     -DLLDB_PATH_TO_NATIVE_SWIFT_BUILD=${SWIFT_NATIVE_STAGE_ROOT}/lib/cmake/swift \
     -DLLDB_PYTHON_RELATIVE_PATH=lib/python${PYTHON_VERSION}/site-packages \
+    -DLLDB_SKIP_STRIP=TRUE \
     -DLLDB_TABLEGEN=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}/bin/lldb-tblgen \
+    -DLLDB_USE_SYSTEM_DEBUGSERVER=FALSE \
     -DLLDB_USE_SYSTEM_SIX=TRUE \
     -DLLVM_BUILD_LIBRARY_DIR=${LLVM_STAGE_ROOT}/lib \
     -DLLVM_BUILD_LLVM_DYLIB=FALSE \

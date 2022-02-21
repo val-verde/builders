@@ -23,6 +23,12 @@ else
     HAVE_CPU_NEON_SUPPORT=FALSE
 fi
 
+if [ "${HOST_OS}" = "macos" ]; then
+    PYTHON3_INCLUDE_DIR=${PACKAGE_PLATFORM_SYSROOT}/System/Library/Frameworks/Python.framework/Versions/Current/Headers
+else
+    PYTHON3_INCLUDE_DIR=${PACKAGE_PREFIX}/include/python${PYTHON_VERSION}
+fi
+
 export-compiler-environment-for-python
 
 CXX_STANDARD=17 \
@@ -39,6 +45,7 @@ package-cmake-install-archive \
     -DJPEG_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DJPEG_LIBRARY_DEBUG=`package-get-path jpeg STATIC HOST` \
     -DJPEG_LIBRARY_RELEASE=`package-get-path jpeg STATIC HOST` \
+    -DOPENCV_PYTHON3_VERSION=${PYTHON_VERSION} \
     -DProtobuf_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DProtobuf_LIBRARY_DEBUG=`package-get-path protobuf SHARED HOST` \
     -DProtobuf_LIBRARY_RELEASE=`package-get-path protobuf SHARED HOST` \
@@ -50,7 +57,7 @@ package-cmake-install-archive \
     -DPNG_PNG_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DPNG_LIBRARY_DEBUG=`package-get-path png SHARED HOST` \
     -DPNG_LIBRARY_RELEASE=`package-get-path png SHARED HOST` \
-    -DPYTHON3_INCLUDE_PATH=${PACKAGE_PREFIX}/include/python${PYTHON_VERSION} \
+    -DPYTHON3_INCLUDE_DIR=${PYTHON3_INCLUDE_DIR} \
     -DPYTHON3_LIBRARY=`package-get-path python${PYTHON_VERSION} SHARED HOST` \
     -DPYTHON3_VERSION_STRING=${PYTHON_VERSION} \
     -DPYTHON3_NUMPY_INCLUDE_DIRS=${PACKAGE_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/numpy/core/include \

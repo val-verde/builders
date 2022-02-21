@@ -1,0 +1,84 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for cmake/install
+LLVM_SOURCE_ROOT=${SOURCE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}
+LLVM_STAGE_ROOT=${LLVM_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}}
+LLVM_CONFIG_EXECUTABLE=${LLVM_STAGE_ROOT}/bin/llvm-config
+
+if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+    LLVM_CONFIG_EXECUTABLE=${LLVM_STAGE_ROOT}/bin/host-llvm-config
+    export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${LLVM_STAGE_ROOT}/NATIVE/lib
+fi
+
+ARM_ENABLED=FALSE
+X86_ENABLED=FALSE
+
+if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+    ARM_ENABLED=TRUE
+elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    X86_ENABLED=TRUE
+fi
+
+ISPC_ANDROID_TARGET=FALSE 
+ISPC_LINUX_TARGET=FALSE
+ISPC_MACOS_TARGET=FALSE
+ISPC_WINDOWS_TARGET=FALSE
+
+if [ "${HOST_OS}" = "android" ]; then
+    ISPC_ANDROID_TARGET=TRUE 
+elif [ "${HOST_OS}" = "gnu" ] ||
+     [ "${HOST_OS}" = "musl" ]; then
+    ISPC_LINUX_TARGET=TRUE
+elif [ "${HOST_OS}" = "macos" ]; then
+    ISPC_MACOS_TARGET=TRUE
+elif [ "${HOST_OS}" = "mingw32" ]; then
+    ISPC_WINDOWS_TARGET=TRUE
+fi
+
+COMMON_CFLAGS="\
+    -I${LLVM_SOURCE_ROOT}/clang/include \
+    -I${LLVM_STAGE_ROOT}/tools/clang/include \
+" \
+export-compiler-environment
+generate-compiler-tools
+
+DISABLE_GENERATED_TOOLS=TRUE \
+package-cmake-install-archive \
+    -DARM_ENABLED=${ARM_ENABLED} \
+    -DBISON_EXECUTABLE=${BISON} \
+    -DCLANG_EXECUTABLE=${CC} \
+    -DCLANGPP_EXECUTABLE=${CXX} \
+    -DCURSES_INCLUDE_PATH=${PACKAGE_PREFIX} \
+    -DCURSES_FORM_LIBRARY=`package-get-path form SHARED HOST` \
+    -DCURSES_NCURSES_LIBRARY=`package-get-path ncurses SHARED HOST` \
+    -DFL_LIBRARY=`package-get-path fl SHARED HOST` \
+    -DGIT_BINARY=${GIT} \
+    -DISPC_ANDROID_TARGET=${ISPC_ANDROID_TARGET} \
+    -DISPC_CROSS=TRUE \
+    -DISPC_FREEBSD_TARGET=FALSE \
+    -DISPC_GNUWIN32_PATH=${PACKAGE_PREFIX} \
+    -DISPC_INCLUDE_EXAMPLES=FALSE \
+    -DISPC_INCLUDE_TESTS=FALSE \
+    -DISPC_IOS_TARGET=FALSE \
+    -DISPC_LINUX_TARGET=${ISPC_LINUX_TARGET} \
+    -DISPC_MACOS_SDK_PATH=${SYSROOT} \
+    -DISPC_MACOS_TARGET=${ISPC_MACOS_TARGET} \
+    -DISPC_NO_DUMPS=TRUE \
+    -DISPC_PS_TARGET=FALSE \
+    -DISPC_WINDOWS_TARGET=${ISPC_WINDOWS_TARGET} \
+    -DLLVM_AS_EXECUTABLE=`package-get-path llvm-as EXECUTABLE BUILD` \
+    -DLLVM_CONFIG_EXECUTABLE=${LLVM_CONFIG_EXECUTABLE} \
+    -DLLVM_DIR=${LLVM_STAGE_ROOT}/lib/cmake/llvm \
+    -DLLVM_DIS_EXECUTABLE=`package-get-path llvm-dis EXECUTABLE BUILD` \
+    -DM4_EXECUTABLE=${M4} \
+    -DNCURSES_TINFO_LIBRARY=`package-get-path ncurses SHARED HOST` \
+    -DX86_ENABLED=${X86_ENABLED} \
+    -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZLIB_LIBRARY=`package-get-path z SHARED HOST` \
+    -DZLIB_LIBRARY_DEBUG=`package-get-path z SHARED HOST` \
+    -DZLIB_LIBRARY_RELEASE=`package-get-path z SHARED HOST`

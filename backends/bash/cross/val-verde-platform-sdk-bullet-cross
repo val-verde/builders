@@ -1,0 +1,36 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for cmake/install
+GL_PREFERENCE=GLVND
+
+if [ "${HOST_OS}" = "mingw32" ]; then
+    GL_PREFERENCE=LEGACY
+fi
+
+export-compiler-environment-for-python
+
+package-cmake-install-archive \
+    -DBUILD_BULLET2_DEMOS=FALSE \
+    -DBUILD_BULLET3=TRUE \
+    -DBUILD_CPU_DEMOS=FALSE \
+    -DBUILD_EXTRAS=FALSE \
+    -DBUILD_OPENGL3_DEMOS=FALSE \
+    -DBUILD_PYBULLET=TRUE \
+    -DBUILD_PYBULLET_NUMPY=TRUE \
+    -DBUILD_SHARED_LIBS=TRUE \
+    -DBUILD_UNIT_TESTS=FALSE \
+    -DBULLET2_MULTITHREADING=TRUE \
+    -DBULLET2_USE_OPENMP_MULTITHREADING=TRUE \
+    -DBULLET2_USE_TBB_MULTITHREADING=FALSE \
+    -DINSTALL_LIBS=TRUE \
+    -DOpenGL_GL_PREFERENCE=${GL_PREFERENCE} \
+    -DPYTHON_EXECUTABLE=${PYTHON} \
+    -DPYTHON_INCLUDE_DIR=${PACKAGE_PREFIX}/include/python${PYTHON_VERSION} \
+    -DPYTHON_LIBRARY=`package-get-path python${PYTHON_VERSION} SHARED HOST` \
+    -DPYTHON_VERSION_PYBULLET=${PYTHON_VERSION} \
+    -DUSE_GRAPHICAL_BENCHMARK=FALSE

@@ -8,10 +8,16 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 export DEPENDS="\
     ${PACKAGE_BASE_NAME}-llvm-project-13-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-swift-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-swift-corelibs-xctest-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0) \
 "
+
+if [ "${HOST_OS}" != "macos" ]; then
+    export DEPENDS="\
+        ${DEPENDS}, \
+        ${PACKAGE_BASE_NAME}-swift-corelibs-foundation-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
+        ${PACKAGE_BASE_NAME}-swift-corelibs-libdispatch-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0) \
+    "
+fi
 
 # Invoke one-shot template for cmake/install
 function package-install-completion-callback() {
@@ -41,5 +47,6 @@ RPATH_COMPONENTS="\
 " \
 package-cmake-install-archive \
     -Ddispatch_DIR=${STAGE_ROOT_BASE}/swift-corelibs-libdispatch-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/cmake/modules \
+    -DBUILD_TESTING=FALSE \
     -DFoundation_DIR=${STAGE_ROOT_BASE}/swift-corelibs-foundation-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/cmake/modules \
     -DXCTest_DIR=${STAGE_ROOT_BASE}/swift-corelibs-xctest-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/cmake/modules

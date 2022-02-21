@@ -169,10 +169,10 @@ package-invoke-builder gawk-cross 5
 package-invoke-builder autogen-cross 5
 
 # libgpg-error build
-# package-invoke-builder libgpg-error-cross 1
+package-invoke-builder libgpg-error-cross 1
 
 # libgcrypt build
-# package-invoke-builder libgcrypt-cross 1
+package-invoke-builder libgcrypt-cross 1
 
 # indent build
 package-invoke-builder indent-cross 2
@@ -201,6 +201,12 @@ package-invoke-builder apple-mig-cross 121
 
 # apple-xar build
 package-invoke-builder apple-xar-cross 452
+
+# cctools-port-cross build
+package-invoke-builder cctools-port-cross 973
+
+# sigtool build
+package-invoke-builder sigtool-cross 0
 
 # alsa-lib build
 # package-invoke-builder alsa-lib-cross 1
@@ -280,6 +286,12 @@ package-invoke-builder libxml2-cross 2
 
 # libxslt build
 package-invoke-builder libxslt-cross 1
+
+# pugixml build
+package-invoke-builder pugixml-cross 1
+
+# xmlto build
+package-invoke-builder xmlto-cross 0
 
 # libyaml build
 package-invoke-builder libyaml-cross 0
@@ -384,6 +396,9 @@ package-invoke-builder jansi-cross 2
 # maven build
 package-invoke-builder maven-cross 3
 
+# onetbb build
+package-invoke-builder onetbb-cross 2021
+
 # z3 build
 package-invoke-builder z3-cross 4
 
@@ -415,7 +430,7 @@ package-invoke-builder cereal-cross 1
 package-invoke-builder jwasm 2
 
 # re2c build
-package-invoke-builder re2c-cross 2
+package-invoke-builder re2c-cross 3
 
 # alive2 build
 package-invoke-builder alive2-cross 1

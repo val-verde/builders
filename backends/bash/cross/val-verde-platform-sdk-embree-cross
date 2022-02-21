@@ -1,0 +1,41 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for cmake/install
+EMBREE_ISA_AVX=FALSE
+EMBREE_ISA_AVX2=FALSE
+EMBREE_ISA_AVX512=FALSE
+EMBREE_ISA_NEON=FALSE
+EMBREE_ISA_SSE2=FALSE
+EMBREE_ISA_SSE42=FALSE
+
+if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+    EMBREE_ISA_NEON=TRUE
+elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    if [ "${HOST_CPU}" = "skylake" ]; then
+        EMBREE_ISA_AVX2=TRUE
+    elif [ "${HOST_CPU}" = "broadwell" ] ||
+         [ "${HOST_CPU}" = "haswell" ]; then
+        EMBREE_ISA_AVX=TRUE
+    else
+        EMBREE_ISA_SSE42=TRUE
+    fi
+fi
+
+CXX_STANDARD=17 \
+package-cmake-install-archive \
+    -DEMBREE_BACKFACE_CULLING=TRUE \
+    -DEMBREE_IGNORE_CMAKE_CXX_FLAGS=FALSE \
+    -DEMBREE_ISA_AVX=${EMBREE_ISA_AVX} \
+    -DEMBREE_ISA_AVX2=${EMBREE_ISA_AVX2} \
+    -DEMBREE_ISA_AVX512=${EMBREE_ISA_AVX512} \
+    -DEMBREE_ISA_NEON=${EMBREE_ISA_NEON} \
+    -DEMBREE_ISA_SSE2=${EMBREE_ISA_SSE2} \
+    -DEMBREE_ISA_SSE42=${EMBREE_ISA_SSE42} \
+    -DEMBREE_ISPC_EXECUTABLE=`package-get-path ispc EXECUTABLE BUILD` \
+    -DEMBREE_TUTORIALS=FALSE \
+    -DTBB_DIR=${PACKAGE_PREFIX}/lib/cmake/TBB

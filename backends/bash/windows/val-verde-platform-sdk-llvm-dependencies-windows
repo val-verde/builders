@@ -111,8 +111,11 @@ package-invoke-builder m4-cross 1
 # windows ninja build
 package-invoke-builder ninja-cross 1
 
+# windows mingw-libgnurx
+package-invoke-builder mingw-libgnurx-cross 2
+
 # windows file build
-# package-invoke-builder file-cross 5
+package-invoke-builder file-cross 5
 
 # windows termiwin build
 package-invoke-builder termiwin-windows 1
@@ -133,7 +136,10 @@ package-invoke-builder mpfr-cross 4
 package-invoke-builder mpc-cross 1
 
 # windows isl build
-# package-invoke-builder isl-cross 0
+package-invoke-builder isl-cross 0
+
+# windows libev build
+package-invoke-builder libev-cross 4
 
 # windows tcl build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
@@ -164,10 +170,10 @@ package-invoke-builder expat-cross 2
 package-invoke-builder libgpg-error-cross 1
 
 # windows libgcrypt build
-# package-invoke-builder libgcrypt-cross 1
+package-invoke-builder libgcrypt-cross 1
 
 # windows indent build
-# package-invoke-builder indent-cross 2
+package-invoke-builder indent-cross 2
 
 # windows util-linux build
 DEB_PATH=${BOOTSTRAP_DEB_PATH} \
@@ -195,7 +201,7 @@ package-invoke-builder libuv-cross 1
 package-invoke-builder grep-cross 3
 
 # windows sed build
-# package-invoke-builder sed-cross 4
+package-invoke-builder sed-cross 4
 
 # windows bison build
 package-invoke-builder bison-cross 3
@@ -216,7 +222,7 @@ package-invoke-builder json-c-cross 0
 # package-invoke-builder findutils-cross 4
 
 # windows less build
-# package-invoke-builder less-cross 590
+package-invoke-builder less-cross 590
 
 # windows lua build
 package-invoke-builder lua-cross 5
@@ -240,6 +246,12 @@ package-invoke-builder libxml2-cross 2
 # windows libxslt build
 package-invoke-builder libxslt-cross 1
 
+# windows pugixml build
+package-invoke-builder pugixml-cross 1
+
+# windows xmlto build
+package-invoke-builder xmlto-cross 0
+
 # windows libyaml build
 package-invoke-builder libyaml-cross 0
 
@@ -253,11 +265,11 @@ package-invoke-builder protobuf-cross 3
 package-invoke-category-builder python-sdk-cross
 
 # windows libtasn1 build
-# package-invoke-builder libtasn1-cross 4
+package-invoke-builder libtasn1-cross 4
 
 # windows p11-kit build
-# DISABLE_SYSTEMD=TRUE \
-# package-invoke-builder p11-kit-cross 0
+DISABLE_SYSTEMD=TRUE \
+package-invoke-builder p11-kit-cross 0
 
 # windows nettle build
 package-invoke-builder nettle-cross 3
@@ -266,7 +278,7 @@ package-invoke-builder nettle-cross 3
 package-invoke-builder unbound-cross 1
 
 # windows gnutls build
-# package-invoke-builder gnutls-cross 3
+package-invoke-builder gnutls-cross 3
 
 # windows libmicrohttpd build
 package-invoke-builder libmicrohttpd-cross 0
@@ -317,6 +329,9 @@ package-invoke-builder jansi-cross 2
 # windows maven build
 package-invoke-builder maven-cross 3
 
+# windows onetbb build
+package-invoke-builder onetbb-cross 2021
+
 # windows z3 build
 package-invoke-builder z3-cross 4
 
@@ -345,7 +360,7 @@ package-invoke-builder libobjc2-cross 2
 package-invoke-builder jwasm 2
 
 # windows re2c build
-package-invoke-builder re2c-cross 2
+package-invoke-builder re2c-cross 3
 
 # windows alive2 build
 package-invoke-builder alive2-cross 1

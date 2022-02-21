@@ -7,10 +7,14 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for meson/install
 function package-install-completion-callback() {
-    if [ "${HOST_OS}" = "mingw32" ]; then
+    if [ "${HOST_OS}" = "android" ]; then
+        ${LN} -sf \
+              `package-get-filename OSMesa SHARED HOST` \
+              ${INSTALL_PREFIX}/lib/`package-get-filename GL SHARED HOST`
+    elif [ "${HOST_OS}" = "mingw32" ]; then
         ${RM} -r \
-            ${INSTALL_PREFIX}/include/GL \
-            ${INSTALL_PREFIX}/include/KHR
+              ${INSTALL_PREFIX}/include/GL \
+              ${INSTALL_PREFIX}/include/KHR
         ${MV} \
               ${INSTALL_PREFIX}/bin/opengl32.dll \
               ${INSTALL_PREFIX}/bin/GL.dll
@@ -22,9 +26,24 @@ function package-install-completion-callback() {
 
 VULKAN_LAYERS="device-select,intel-nullhw"
 
-if [ "${HOST_OS}" = "android" ] ||
-   [ "${HOST_OS}" = "gnu" ] ||
-   [ "${HOST_OS}" = "musl" ]; then
+if [ "${HOST_OS}" = "android" ]; then
+    ANDROID_PLATFORM_SDK_VERSION="-Dplatform-sdk-version=${HOST_OS_API_LEVEL}"
+    DRI3_ENABLED=disabled
+    EGL_ENABLED=disabled
+    GALLIUM_DRIVERS="swrast,zink"
+    GBM_ENABLED=disabled
+    GLVND_ENABLED=true
+    GLX_DIRECT_ENABLED=false
+    GLX_MODE=disabled
+    HARDWARE_DRIVERS_ENABLED=false
+    HARDWARE_PLATFORMS=
+    NINE_ENABLED=false
+    OPENCL_MODE=icd
+    STATIC_LIBCLC=
+    VULKAN_DRIVERS=
+    VULKAN_LAYERS=
+elif [ "${HOST_OS}" = "gnu" ] ||
+     [ "${HOST_OS}" = "musl" ]; then
     DRI3_ENABLED=enabled
     EGL_ENABLED=enabled
     GALLIUM_DRIVERS="asahi,crocus,freedreno,iris,lima,panfrost,nouveau,radeonsi,svga,swrast,tegra,v3d,vc4,virgl,zink"
@@ -118,4 +137,5 @@ package-meson-install-archive \
     -Dstatic-libclc=${STATIC_LIBCLC} \
     -Dvulkan-drivers=${VULKAN_DRIVERS} \
     -Dvulkan-layers=${VULKAN_LAYERS} \
-    -Dzstd=enabled
+    -Dzstd=enabled \
+    ${ANDROID_PLATFORM_SDK_VERSION}

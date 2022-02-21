@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Configure the build components
+cd ${STAGE_ROOT}
+copy-source-to-staging
+export-compiler-environment
+TOOL_LOG=builder-bootstrap \
+tool-log ./configure \
+    -bindir ${PACKAGE_PREFIX}/bin \
+    -config ${PACKAGE_PLATFORM_SYSROOT}/etc/findlib.conf \
+    -mandir ${PACKAGE_PREFIX}/doc \
+    -sitelib ${PACKAGE_PREFIX}/lib/site-lib
+make-build
+make-install prefix=${INSTALL_ROOT}
+
+# Build and install the package
+package-invoke-archive-install

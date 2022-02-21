@@ -8,6 +8,10 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 export DEPENDS="${PACKAGE_BASE_NAME}-libgpg-error-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0)"
 
 # Invoke one-shot template for bootstrap/configure/install
+if [ "${HOST_OS}" = "macos" ]; then
+    export CONFIGURE_HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${DARWIN_OS}
+fi
+
 BOOTSTRAP_FILE=./autogen.sh \
 BUILD_COMMON_CFLAGS="\
     -L${BUILD_PACKAGE_PREFIX}/lib \
@@ -17,4 +21,6 @@ LIBTOOLIZE_ARGS="-i" \
 package-bootstrap-configure-install-archive \
     --disable-doc \
     --disable-static \
-    --enable-shared
+    --disable-asm \
+    --enable-shared \
+    --with-libgpg-error-prefix=${PACKAGE_PREFIX}

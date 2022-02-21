@@ -5,20 +5,23 @@ set -e
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
+# ispc build
+package-invoke-builder ispc-cross 1
+
 # spirv headers build
 package-invoke-builder spirv-headers-cross 1
 
 # spirv tools build
-package-invoke-builder spirv-tools-cross 2021
+package-invoke-builder spirv-tools-cross 2022
 
 # spirv cross build
-package-invoke-builder spirv-cross-cross 2021
+package-invoke-builder spirv-cross-cross 2022
 
 # spirv llvm translator build
 package-invoke-builder spirv-llvm-translator-cross 13
 
 # glslang build
-package-invoke-builder glslang-cross 10-11
+package-invoke-builder glslang-cross 11
 
 if [ "${HOST_OS}" = "macos" ]; then
     # moltenvk build
@@ -35,13 +38,8 @@ package-invoke-builder vulkan-validation-layers-cross 1
 ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder libclc-cross 13
 
-if [ "${HOST_OS}" = "gnu" ] ||
-   [ "${HOST_OS}" = "macos" ] ||
-   [ "${HOST_OS}" = "mingw32" ] ||
-   [ "${HOST_OS}" = "musl" ]; then
-    # mesa build
-    package-invoke-builder mesa-cross 21
-fi
+# mesa build
+package-invoke-builder mesa-cross 21
 
 # libepoxy build
 package-invoke-builder libepoxy-cross 1
@@ -56,7 +54,12 @@ if [ "${HOST_OS}" = "gnu" ] ||
    [ "${HOST_OS}" = "musl" ]; then
     # xorg-xserver build
     package-invoke-builder xorg-xserver-cross 1
+fi
 
+if [ "${HOST_OS}" = "android" ] ||
+   [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "macos" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
     # mesa glu build
     package-invoke-builder mesa-glu-cross 9
 fi
@@ -105,7 +108,7 @@ if [ "${HOST_OS}" = "gnu" ] ||
     package-invoke-builder libgudev-cross 1
     
     # libwacom build
-    package-invoke-builder libwacom-cross 1
+    package-invoke-builder libwacom-cross 2
     
     # libevdev build
     package-invoke-builder libevdev-cross 1
@@ -145,8 +148,20 @@ package-invoke-builder filament-cross 1
 # eigen build
 package-invoke-builder eigen-cross 3
 
+# imath build
+package-invoke-builder imath-cross 3
+
 # ceres-solver build
 package-invoke-builder ceres-solver-cross 2
 
 # opencv build
 package-invoke-builder opencv-cross 4
+
+# bullet build
+package-invoke-builder bullet-cross 3
+
+# python-bullet build
+# package-invoke-builder python-bullet-cross 3
+
+# embree build
+package-invoke-builder embree-cross 3
