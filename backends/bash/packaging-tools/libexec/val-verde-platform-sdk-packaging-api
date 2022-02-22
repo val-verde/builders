@@ -134,7 +134,7 @@ function rpm-archive-build() {
 
         ${SED} -i "s|%files|%files\n/${PACKAGE_INSTALL_BASE}/*|g" ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
 
-        package-rpm-build --define "_topdir ${ARCHIVE_ROOT}" -bb ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
+        package-rpm-build -bb ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
 
         ${MV} ${ARCHIVE_ROOT}/RPMS/${PACKAGE_ARCH}/${1}-${VERSION}-${RELEASE}.${PACKAGE_ARCH}.rpm \
                 ${ARCHIVE_PATH}/${1}.rpm
