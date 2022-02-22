@@ -201,10 +201,10 @@ package-invoke-builder libssh2-cross 1
 package-invoke-builder curl-cross 7
 
 # android apple-mig build
-package-invoke-builder apple-mig-cross 121
+package-invoke-builder apple-mig-cross 122
 
 # android apple-xar build
-package-invoke-builder apple-xar-cross 452
+package-invoke-builder apple-xar-cross 482
 
 # android cctools-port-cross build
 package-invoke-builder cctools-port-cross 973
