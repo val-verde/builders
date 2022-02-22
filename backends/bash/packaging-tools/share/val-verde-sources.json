@@ -50,7 +50,7 @@
         "sourceType": "git",
         "sourcePackageName": "apple-mig",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "121",
+        "sourcePackageVersion": "122",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -59,7 +59,7 @@
         "sourceType": "git",
         "sourcePackageName": "apple-xar",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "452",
+        "sourcePackageVersion": "482",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
