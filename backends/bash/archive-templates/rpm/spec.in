@@ -1,7 +1,8 @@
 %global __os_install_post %{nil}
 %define _build_id_links none
 %define _binary_payload w19.zstdio
-%define _binaries_in_noarch_packages_terminate_build   0
+%define _binaries_in_noarch_packages_terminate_build  0
+%define _topdir  ARCHIVE_ROOT
 Name:       PACKAGE_NAME
 Version:    VERSION
 Release:    1
