@@ -50,7 +50,7 @@
         "sourceType": "git",
         "sourcePackageName": "apple-mig",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "121",
+        "sourcePackageVersion": "122",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -59,7 +59,7 @@
         "sourceType": "git",
         "sourcePackageName": "apple-xar",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "452",
+        "sourcePackageVersion": "482",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -3183,7 +3183,7 @@
         "sourceType": "other",
         "sourcePackageName": "linux",
         "sourceBranchIndicator": "wget-xz",
-        "sourcePackageVersion": "5.16.9",
+        "sourcePackageVersion": "5.16.10",
         "sourcePackageUrl": "https://cdn.kernel.org/pub/${SOURCE_PACKAGE_NAME}/kernel/v5.x/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz"
     },
     {
