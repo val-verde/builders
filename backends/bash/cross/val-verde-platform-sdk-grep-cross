@@ -13,5 +13,5 @@ if [ "${HOST_OS}" = "mingw32" ]; then
     "
 fi
 
-GREP= \
-package-bootstrap-configure-install-archive
+package-bootstrap-configure-install-archive \
+    GREP=
