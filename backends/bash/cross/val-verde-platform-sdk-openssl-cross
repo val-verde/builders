@@ -26,8 +26,8 @@ elif [ "${HOST_OS}" = "macos" ]; then
         OPENSSL_PROCESSOR=arm64
     fi
 elif [ "${HOST_OS}" = "mingw32" ]; then
-    OPENSSL_OS=mingw64
     OPENSSL_DIR=${PACKAGE_PREFIX}/etc/ssl
+    OPENSSL_OS=mingw64
 fi
 
 OPENSSL_TARGET=${OPENSSL_OS}-${OPENSSL_PROCESSOR}
@@ -40,10 +40,9 @@ LD=${CCLD} \
 LDFLAGS=${CCLDFLAGS} \
 TOOL_LOG=${STAGE_ROOT}/builder-invocation \
 tool-log ${SOURCE_ROOT}/Configure \
-    --libdir=${PACKAGE_PREFIX}/lib \
+    --libdir=lib \
     --openssldir=${OPENSSL_DIR} \
     --prefix=${PACKAGE_PREFIX} \
-    ${OPENSSL_DEFINES} \
     ${OPENSSL_TARGET}
 
 # Build the components
