@@ -12,8 +12,13 @@ if [ "${HOST_OS}" = "mingw32" ]; then
     GL_PREFERENCE=LEGACY
 fi
 
-export-compiler-environment-for-python
+if [ "${HOST_OS}" = "macos" ]; then
+    PYTHON_INCLUDE_DIR=${PACKAGE_PLATFORM_SYSROOT}/System/Library/Frameworks/Python.framework/Versions/Current/include/python${PYTHON_VERSION}
+else
+    PYTHON_INCLUDE_DIR=${PACKAGE_PREFIX}/include/python${PYTHON_VERSION}
+fi
 
+export-compiler-environment-for-python
 package-cmake-install-archive \
     -DBUILD_BULLET2_DEMOS=FALSE \
     -DBUILD_BULLET3=TRUE \
@@ -30,7 +35,7 @@ package-cmake-install-archive \
     -DINSTALL_LIBS=TRUE \
     -DOpenGL_GL_PREFERENCE=${GL_PREFERENCE} \
     -DPYTHON_EXECUTABLE=${PYTHON} \
-    -DPYTHON_INCLUDE_DIR=${PACKAGE_PREFIX}/include/python${PYTHON_VERSION} \
+    -DPYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIR} \
     -DPYTHON_LIBRARY=`package-get-path python${PYTHON_VERSION} SHARED HOST` \
     -DPYTHON_VERSION_PYBULLET=${PYTHON_VERSION} \
     -DUSE_GRAPHICAL_BENCHMARK=FALSE
