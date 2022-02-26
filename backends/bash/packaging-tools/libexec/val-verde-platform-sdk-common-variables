@@ -200,9 +200,10 @@ function package-dnf-tool() {
             RELEASE_VER_CMD
     fi
 
+    PYTHON_TOOL=${DNF} \
     TOOL_LOG=${STAGE_ROOT}/builder-dnf-${1} \
-    tool-log ${DNF} ${RELEASE_VER_CMD} \
-                    ${@}
+    tool-log package-python-tool ${RELEASE_VER_CMD} \
+                                 "${@}"
 }
 
 function package-deb-build() {
@@ -395,6 +396,16 @@ function package-push-directory() {
 
 function package-pop-directory() {
     popd ${@} > /dev/null
+}
+
+function package-python-tool {
+    PYTHON_TOOL=${PYTHON_TOOL:-${PYTHON}}
+
+    _PYTHON_HOST_PLATFORM= \
+    _PYTHON_SYSCONFIGDATA_NAME= \
+    PYTHONHOME= \
+    PYTHONPATH= \
+    ${PYTHON_TOOL} ${@}
 }
 
 function package-rpm-build() {
