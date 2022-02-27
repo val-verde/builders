@@ -77,6 +77,7 @@ package-cmake-install-archive \
     -DLLVM_DIS_EXECUTABLE=`package-get-path llvm-dis EXECUTABLE BUILD` \
     -DM4_EXECUTABLE=${M4} \
     -DNCURSES_TINFO_LIBRARY=`package-get-path ncurses SHARED HOST` \
+    -DPython3_EXECUTABLE=${PYTHON} \
     -DX86_ENABLED=${X86_ENABLED} \
     -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DZLIB_LIBRARY=`package-get-path z SHARED HOST` \
