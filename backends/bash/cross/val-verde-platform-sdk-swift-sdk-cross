@@ -6,43 +6,49 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # remove host foundation and libdispatch to avoid module collisions
-PACKAGES_TO_MANAGE=( 'swift-argument-parser-5'         'BUILD' \
-                     'swift-corelibs-foundation-5'     'BUILD' \
-                     'swift-corelibs-libdispatch-5'    'BUILD' \
-                     'swift-corelibs-xctest-5'         'BUILD' \
-                     'swift-crypto-5'                  'BUILD' \
+PACKAGES_TO_MANAGE=( 'swift-package-manager-5'         'BUILD' \
                      'swift-driver-5'                  'BUILD' \
-                     'swift-llbuild-5'                 'BUILD' \
-                     'swift-package-manager-5'         'BUILD' \
+                     'swift-crypto-5'                  'BUILD' \
+                     'swift-argument-parser-5'         'BUILD' \
+                     'yams-3'                          'BUILD' \
                      'swift-tools-support-core-5'      'BUILD' \
-                     'yams-3'                          'BUILD' )
+                     'swift-llbuild-5'                 'BUILD' \
+                     'swift-corelibs-xctest-5'         'BUILD' \
+                     'swift-corelibs-foundation-5'     'BUILD' \
+		     'swift-corelibs-libdispatch-5'    'BUILD' )
 package-invoke-archive-action uninstall ${PACKAGES_TO_MANAGE[@]}
+
+BUILDER_EXTENSION=cross
+
+if [ "${HOST_OS}" = "mingw32" ]; then
+    BUILDER_EXTENSION=windows
+fi
 
 if [ "${HOST_OS}" != "macos" ]; then
     # libdispatch build
     ENABLE_STAGE_ROOT_BUILD=TRUE \
-    package-invoke-builder swift-corelibs-libdispatch-cross 5 no-install
+    package-invoke-builder swift-corelibs-libdispatch-${BUILDER_EXTENSION} 5 no-install
 
     # foundation build
     ENABLE_STAGE_ROOT_BUILD=TRUE \
-    package-invoke-builder swift-corelibs-foundation-cross 5 no-install
+    package-invoke-builder swift-corelibs-foundation-${BUILDER_EXTENSION} 5 no-install
 fi
 
 # xctest build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
-package-invoke-builder swift-corelibs-xctest-cross 5 no-install
+package-invoke-builder swift-corelibs-xctest-${BUILDER_EXTENSION} 5 no-install
 
 # llbuild build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
-package-invoke-builder swift-llbuild-cross 5 no-install
+package-invoke-builder swift-llbuild-${BUILDER_EXTENSION} 5 no-install
 
 # swift tools support core build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
-package-invoke-builder swift-tools-support-core-cross 5 no-install
+package-invoke-builder swift-tools-support-core-${BUILDER_EXTENSION} 5 no-install
 
 # yams build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
-package-invoke-builder yams-cross 3 no-install
+package-invoke-builder yams-${BUILDER_EXTENSION} 3 no-install
 
 # swift argument parser build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
@@ -106,10 +112,12 @@ package-invoke-builder swift-semantics-cross 0
 package-invoke-builder swift-doc-cross 5
 
 # sourcekit-lsp build
-package-invoke-builder sourcekit-lsp-cross 5
+package-invoke-builder sourcekit-lsp-${BUILDER_EXTENSION} 5
 
-# baikonur build
-package-invoke-builder baikonur-cross 1
+if [ "${HOST_OS}" != "mingw32" ]; then
+    # baikonur build
+    package-invoke-builder baikonur-cross 1
+fi
 
 # pythonkit build
 package-invoke-builder pythonkit-cross 5
