@@ -2,6 +2,7 @@
 
 set -e
 
+SYSROOT="${SOURCE_ROOT_BASE}/macosx-${MACOS_VERSION}"
 source /usr/libexec/val-verde-platform-sdk-builder-api
 
 # one time build for darwin compiler-rt
