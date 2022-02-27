@@ -13,4 +13,5 @@ else
 fi
 
 package-cmake-install-archive \
-    -DARM_DYNAREC=${ENABLE_ARM_DYNAREC}
+    -DARM_DYNAREC=${ENABLE_ARM_DYNAREC} \
+    -DPython3_EXECUTABLE=${PYTHON}
