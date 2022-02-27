@@ -31,7 +31,7 @@ package-invoke-category-builder llvm-dependencies-windows
 package-invoke-category-builder swift-tools-windows
 
 # windows swift sdk build
-package-invoke-category-builder swift-sdk-windows
+package-invoke-category-builder swift-sdk-cross
 
 # windows go build
 package-invoke-builder go-cross 1
