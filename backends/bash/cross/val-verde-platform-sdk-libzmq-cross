@@ -20,4 +20,5 @@ package-cmake-install-archive \
     -DGNUTLS_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DGNUTLS_LIBRARY=`package-get-path gnutls SHARED HOST` \
     -DPOLLER=${POLLER} \
+    -DRT_LIBRARY=`package-get-path rt SHARED HOST` \
     -DZMQ_BUILD_TESTS=FALSE
