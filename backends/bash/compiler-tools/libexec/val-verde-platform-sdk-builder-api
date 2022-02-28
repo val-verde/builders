@@ -115,10 +115,6 @@ function parse-builder-args() {
         SOURCE_PACKAGE_NAME=${BUILDER_INPUT_SCRIPT}
     fi
 
-    if [ ${SOURCE_PACKAGE_NAME} == "yarn-yautja-server" ]; then
-        SOURCE_PACKAGE_NAME=yautja-server
-    fi
-    
     if [ -n "${BUILDER_ACTION_OPTION}" ]; then
         if [ "${BUILDER_ACTION_OPTION}" == "none" ]; then
             DISABLE_BUILD_ARCHIVE=TRUE

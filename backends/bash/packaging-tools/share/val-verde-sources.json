@@ -3314,10 +3314,10 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
-        "sourcePackageName": "yautja-server",
+        "sourcePackageName": "yarn-yautja-server",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/yautja-server.git"
     },
     {
         "retainSource": "false",
