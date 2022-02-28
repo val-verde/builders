@@ -1555,6 +1555,33 @@ function package-libtoolize() {
     fi
 }
 
+function package-maven-build() {
+    package-maven-build-invocation \
+        "${@}"
+}
+
+function package-maven-build-invocation() {
+    TOOL_LOG=${STAGE_ROOT}/builder-invocation \
+    tool-log ${MAVEN} "${@}"
+}
+
+function package-maven-install-archive() {
+    if [ -n "${ENABLE_MAVEN_INSTALL}" ]; then
+        MAVEN_STAGE_ROOT=${MAVEN_STAGE_ROOT:-${STAGE_ROOT}}
+        package-push-directory ${MAVEN_STAGE_ROOT}
+            TOOL_LOG=${STAGE_ROOT}/builder-installation \
+            tool-log ${MAVEN} install
+        package-pop-directory
+    fi
+
+    # Completion callback
+    if [ -n "${PACKAGE_INSTALL_COMPLETION_CALLBACK}" ]; then
+        ${PACKAGE_INSTALL_COMPLETION_CALLBACK}
+    fi
+
+    package-invoke-archive-install
+}
+
 function package-meson-build() {
     CONFIGURE_TOOL=meson-build \
     package-configure-tool-invocation \
