@@ -1332,7 +1332,7 @@
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
-        "retainSource": "true",
+        "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "libusb",
@@ -1341,7 +1341,7 @@
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
-        "retainSource": "false",
+        "retainSource": "true",
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "libunistring",
