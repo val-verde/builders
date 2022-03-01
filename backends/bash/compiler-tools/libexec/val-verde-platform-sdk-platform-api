@@ -4,105 +4,142 @@ set -e
 
 function platform-get-builder-args() {
     OS_ARG="$(cut -d'-' -f1 <<<$1)"
-    CPU_ARG="$(cut -d'-' -f2 <<<$1)"
+    PROCESSOR_ARG="$(cut -d'-' -f2 <<<$1)"
     ECHO=/usr/bin/echo
-    if [[ "${OS_ARG}" = "gnu" && "${CPU_ARG}" = "westmere" ]]; then
+    if [[ "${OS_ARG}" = "gnu" && "${PROCESSOR_ARG}" = "x86_64" ]]; then
         BUILD_ARGS="\
 		HOST_ARCH="${BUILD_ARCH}" \
 		HOST_CPU="${BUILD_CPU}" \
 		HOST_KERNEL="${BUILD_KERNEL}" \
 		HOST_OS="${BUILD_OS}" \
-		HOST_PROCESSOR="${BUILD_PROCESSOR}" \
+		HOST_PROCESSOR="${PROCESSOR_ARG}" \
 	"
-    elif [[ "${OS_ARG}" = "gnu" && "${CPU_ARG}" = "armv8a" ]]; then
+    elif [[ "${OS_ARG}" = "gnu" && "${PROCESSOR_ARG}" = "aarch64" ]]; then
         BUILD_ARGS="\
 		HOST_ARCH=armv8-a \
 		HOST_CPU=apple-m1 \
 		HOST_KERNEL="${BUILD_KERNEL}" \
 		HOST_OS="${BUILD_OS}" \
-		HOST_PROCESSOR=aarch64 \
+		HOST_PROCESSOR="${PROCESSOR_ARG}" \
 	"
-    elif [[ "${OS_ARG}" = "darwin" && "${CPU_ARG}" = "westmere" ]]; then
+	elif [[ "${OS_ARG}" = "gnu" && "${PROCESSOR_ARG}" = "i686" ]]; then
+        BUILD_ARGS="\
+		HOST_ARCH=westmere \
+		HOST_CPU=westmere \
+		HOST_KERNEL="${BUILD_KERNEL}" \
+		HOST_OS="${BUILD_OS}" \
+		HOST_OS_API_LEVEL=32 \
+		HOST_PROCESSOR="${PROCESSOR_ARG}" \
+	"
+	elif [[ "${OS_ARG}" = "gnu" && "${PROCESSOR_ARG}" = "armv7a" ]]; then
+        BUILD_ARGS="\
+		HOST_ARCH=armv7-a+fp \
+		HOST_CPU=westmere \
+		HOST_KERNEL="${BUILD_KERNEL}" \
+		HOST_OS="${BUILD_OS}" \
+		HOST_OS_API_LEVEL=eabihf \
+		HOST_PROCESSOR="${PROCESSOR_ARG}" \
+	"
+    elif [[ "${OS_ARG}" = "darwin" && "${PROCESSOR_ARG}" = "x86_64" ]]; then
         BUILD_ARGS="\
 		DARWIN_OS=darwin \
-		DARWIN_OS_API_LEVEL=20 \
+		DARWIN_OS_API_LEVEL=21 \
 		HOST_ARCH=westmere \
 		HOST_CPU=westmere \
 		HOST_KERNEL=apple \
 		HOST_OS=macos \
 		HOST_OS_API_LEVEL="${MACOS_VERSION}" \
-		HOST_PROCESSOR="${BUILD_PROCESSOR}" \
+		HOST_PROCESSOR="${PROCESSOR_ARG}" \
 	"
-    elif [[ "${OS_ARG}" = "darwin" && "${CPU_ARG}" = "armv8a" ]]; then
+    elif [[ "${OS_ARG}" = "darwin" && "${PROCESSOR_ARG}" = "aarch64" ]]; then
         BUILD_ARGS="\
 		DARWIN_OS=darwin \
-		DARWIN_OS_API_LEVEL=20 \
+		DARWIN_OS_API_LEVEL=21 \
 		HOST_ARCH=armv8-a \
 		HOST_CPU=apple-m1 \
 		HOST_KERNEL=apple \
 		HOST_OS=macos \
 		HOST_OS_API_LEVEL="${MACOS_VERSION}" \
-		HOST_PROCESSOR=aarch64 \
+		HOST_PROCESSOR="${PROCESSOR_ARG}" \
 	"
-    elif [[ "${OS_ARG}" = "musl" && "${CPU_ARG}" = "westmere" ]]; then
+    elif [[ "${OS_ARG}" = "musl" && "${PROCESSOR_ARG}" = "x86_64" ]]; then
         BUILD_ARGS="\
 		HOST_ARCH="${BUILD_ARCH}" \
 		HOST_CPU="${BUILD_CPU}" \
 		HOST_KERNEL="${BUILD_KERNEL}" \
 		HOST_OS=musl \
-		HOST_PROCESSOR="${BUILD_PROCESSOR}" \
+		HOST_PROCESSOR="${PROCESSOR_ARG}" \
 	"
-    elif [[ "${OS_ARG}" = "musl" && "${CPU_ARG}" = "armv8a" ]]; then
+    elif [[ "${OS_ARG}" = "musl" && "${PROCESSOR_ARG}" = "aarch64" ]]; then
         BUILD_ARGS="\
 		HOST_ARCH=armv8-a \
 		HOST_CPU=cortex-a57 \
 		HOST_KERNEL="${BUILD_KERNEL}" \
 		HOST_OS=musl \
-		HOST_PROCESSOR=aarch64 \
+		HOST_PROCESSOR="${PROCESSOR_ARG}" \
 	"
-    elif [[ "${OS_ARG}" = "wasm32" && "${CPU_ARG}" = "wasm32" ]]; then
+    elif [[ "${OS_ARG}" = "wasm32" && "${PROCESSOR_ARG}" = "wasm32" ]]; then
         BUILD_ARGS="\
 		HOST_ARCH=wasm32 \
 		HOST_CPU=wasm32 \
 		HOST_KERNEL=unknown \
 		HOST_OS=wasi \
 		HOST_OS_API_LEVEL= \
-		HOST_PROCESSOR=wasm32 \
+		HOST_PROCESSOR="${PROCESSOR_ARG}" \
 	"
-    elif [[ "${OS_ARG}" = "android" && "${CPU_ARG}" = "armv8a" ]]; then
+    elif [[ "${OS_ARG}" = "android" && "${PROCESSOR_ARG}" = "aarch64" ]]; then
         BUILD_ARGS="\
 		HOST_ARCH=armv8-a \
 		HOST_CPU=cortex-a57 \
 		HOST_KERNEL="${BUILD_KERNEL}" \
 		HOST_OS=android \
 		HOST_OS_API_LEVEL=29 \
-		HOST_PROCESSOR=aarch64 \
+		HOST_PROCESSOR="${PROCESSOR_ARG}" \
 	"
-    elif [[ "${OS_ARG}" = "android" && "${CPU_ARG}" = "westmere" ]]; then
+    elif [[ "${OS_ARG}" = "android" && "${PROCESSOR_ARG}" = "x86_64" ]]; then
         BUILD_ARGS="\
 		HOST_ARCH=westmere \
 		HOST_CPU=westmere \
 		HOST_KERNEL="${BUILD_KERNEL}" \
 		HOST_OS=android \
-		HOST_PROCESSOR="${BUILD_PROCESSOR}" \
+		HOST_OS_API_LEVEL=29 \
+		HOST_PROCESSOR="${PROCESSOR_ARG}" \
 	"
-    elif [[ "${OS_ARG}" = "windows" && "${CPU_ARG}" = "westmere" ]]; then
+    elif [[ "${OS_ARG}" = "windows" && "${PROCESSOR_ARG}" = "x86_64" ]]; then
         BUILD_ARGS="\
 		HOST_ARCH=westmere \
 		HOST_CPU=westmere \
 		HOST_KERNEL=w64 \
-		HOST_OS=mingw32 \
-		HOST_OS_API_LEVEL= \
-		HOST_PROCESSOR=x86_64 \
+		HOST_OS=mingw \
+		HOST_OS_API_LEVEL=64 \
+		HOST_PROCESSOR="${PROCESSOR_ARG}" \
 	"
-    elif [[ "${OS_ARG}" = "windows" && "${CPU_ARG}" = "armv8a" ]]; then
+    elif [[ "${OS_ARG}" = "windows" && "${PROCESSOR_ARG}" = "aarch64" ]]; then
         BUILD_ARGS="\
 		HOST_ARCH=armv8-a \
-		HOST_CPU=cortex-a57 \
+		HOST_CPU=apple-m1 \
 		HOST_KERNEL=w64 \
-		HOST_OS=mingw32 \
-		HOST_OS_API_LEVEL= \
-		HOST_PROCESSOR=aarch64 \
+		HOST_OS=mingw \
+		HOST_OS_API_LEVEL=64 \
+		HOST_PROCESSOR="${PROCESSOR_ARG}" \
+	"
+	elif [[ "${OS_ARG}" = "windows" && "${PROCESSOR_ARG}" = "i686" ]]; then
+        BUILD_ARGS="\
+		HOST_ARCH=westmere \
+		HOST_CPU=westmere \
+		HOST_KERNEL=w32 \
+		HOST_OS=mingw \
+		HOST_OS_API_LEVEL=32 \
+		HOST_PROCESSOR="${PROCESSOR_ARG}" \
+	"
+	elif [[ "${OS_ARG}" = "windows" && "${PROCESSOR_ARG}" = "armv7a" ]]; then
+        BUILD_ARGS="\
+		HOST_ARCH=armv7-a+fp \
+		HOST_CPU=apple-m1 \
+		HOST_KERNEL=w32 \
+		HOST_OS=mingw \
+		HOST_OS_API_LEVEL=32 \
+		HOST_PROCESSOR="${PROCESSOR_ARG}" \
 	"
     fi
 
