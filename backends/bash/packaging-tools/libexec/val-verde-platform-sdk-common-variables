@@ -321,6 +321,11 @@ function package-get-path() {
 
 function package-get-qualified-package-name() {
     QUALIFIED_PACKAGE_NAME=${1}-${2}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
+
+    if [ -n "${HOST_ARCH_SUFFIX}" ]; then
+        QUALIFIED_PACKAGE_NAME=${QUALIFIED_PACKAGE_NAME}-${HOST_ARCH_SUFFIX}
+    fi
+
     PACKAGE_NAME=${PACKAGE_BASE_NAME}-${QUALIFIED_PACKAGE_NAME}
 }
 
