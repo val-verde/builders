@@ -86,7 +86,6 @@ package-configure-invocation \
     --enable-gio \
     --enable-libssh \
     --enable-libudev \
-    --enable-libxml2 \
     --enable-nettle \
     --enable-vnc \
     --enable-vnc-jpeg \
