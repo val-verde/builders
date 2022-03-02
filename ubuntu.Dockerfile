@@ -25,6 +25,7 @@ ENV ANDROID_NDK_VERSION=r23b \
     RELEASE_ARCHIVE_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/archives/releases/${PACKAGE_ARCHIVE_CLASS} \
     SOURCE_ARCHIVE_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/archives/sources/${PACKAGE_ARCHIVE_CLASS} \
     SOURCE_ROOT_BASE=${SOURCE_ROOT_BASE:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources} \
+    STAGE_ROOT_ARCHIVE_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/archives/stage-roots/${PACKAGE_ARCHIVE_CLASS} \
     STAGE_ROOT_BASE=${STAGE_ROOT_BASE:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/staging} \
     VAL_VERDE_GH_TEAM=${VAL_VERDE_GH_TEAM}
 
@@ -37,7 +38,8 @@ ENV BUILD_ARCH=westmere \
 
 RUN mkdir -p ${BOOTSTRAP_ARCHIVE_PATH} \
              ${RELEASE_ARCHIVE_PATH} \
-             ${SOURCE_ARCHIVE_PATH}
+             ${SOURCE_ARCHIVE_PATH} \
+             ${STAGE_ROOT_ARCHIVE_PATH}
 
 # platform sdk tool wrapper scripts and templates
 COPY backends/bash/archive-templates \
@@ -54,6 +56,9 @@ COPY backends/bash/sources \
      /sources/
 
 RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sources-builder
+
+COPY /archives/stage-roots/${PACKAGE_ARCHIVE_CLASS} \
+     ${STAGE_ROOT_ARCHIVE_PATH}
 
 COPY /archives/bootstraps/${PACKAGE_ARCHIVE_CLASS} \
      ${BOOTSTRAP_ARCHIVE_PATH}
