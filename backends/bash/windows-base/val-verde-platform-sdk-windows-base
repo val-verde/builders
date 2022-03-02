@@ -69,6 +69,7 @@ package-invoke-builder mingw-w64-crt 6
 package-invoke-builder compiler-rt-cross 13
 
 # libcxx build
+ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
 package-invoke-builder libcxx-bootstrap 13
 
 # mingw-w64-winpthreads build

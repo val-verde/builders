@@ -8,6 +8,7 @@ export SYSROOT=${SOURCE_ROOT_BASE}/macosx-${HOST_OS_API_LEVEL}
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # libcxx build
+ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
 package-invoke-builder libcxx-bootstrap 13
 
 # llvm dependencies

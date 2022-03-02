@@ -15,6 +15,7 @@ package-invoke-builder compiler-rt-cross 13
 package-invoke-builder android-ndk-runtime ${ANDROID_NDK_VERSION}
 
 # android libcxx build
+ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
 package-invoke-builder libcxx-bootstrap 13
 
 # android llvm dependencies build

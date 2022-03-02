@@ -20,6 +20,7 @@ package-invoke-builder musl-libc 1
 
 # libcxx build
 ENABLE_MUSL_LIBC=TRUE \
+ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
 package-invoke-builder libcxx-bootstrap 13
 
 # llvm dependencies
