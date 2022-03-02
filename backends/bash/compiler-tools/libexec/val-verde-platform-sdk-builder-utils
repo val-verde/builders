@@ -1491,6 +1491,7 @@ function package-invoke-stage-root-archive() {
 
     DEPENDS= \
     INSTALL_ROOT=${STAGING_BUILD_ROOT} \
+    ARCHIVE_PATH=${STAGE_ROOT_ARCHIVE_PATH} \
     package-archive-build-install "${1}-stage"
 
     ${RM} -rf ${STAGING_BUILD_ROOT}

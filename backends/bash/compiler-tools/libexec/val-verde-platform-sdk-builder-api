@@ -19,6 +19,10 @@ function package-invoke-category-builder() {
 }
 
 function package-install-build-archive() {
+    if [[ "${1}"  == *"stage"* ]]; then
+        ARCHIVE_PATH=${STAGE_ROOT_ARCHIVE_PATH}
+    fi
+
     package-get-packaging-api
     ${ECHO} -e "    Skipping re-build: \e[1;35m${1}\e[0m"
     DISABLE_BUILD_ARCHIVE=TRUE \
@@ -27,7 +31,6 @@ function package-install-build-archive() {
 
 function package-invoke-archive-action() {
     package-get-common-variables
-    package-get-packaging-api
 
     PACKAGE_ACTION="${1}"
     PACKAGE_INPUT=(${@:2})
@@ -46,10 +49,12 @@ function package-invoke-archive-action() {
         if [[ "${PKG_NAME}"  == *"stage"* ]]; then
             PKG_NAME=${PKG_NAME%-*}
             PKG_SUFFIX=${PKG_SUFFIX}-stage
+            ARCHIVE_PATH=${STAGE_ROOT_ARCHIVE_PATH}
         fi
 
         PKG_PREFIX=${PACKAGE_BASE_NAME}-${PKG_NAME}
         PACKAGE_FILE_NAME=${PKG_PREFIX}-${PKG_SUFFIX}
+        package-get-packaging-api
 
         if [ "${PACKAGE_ACTION}" = "uninstall" ]; then
             package-archive-uninstall "${PACKAGE_FILE_NAME}"
