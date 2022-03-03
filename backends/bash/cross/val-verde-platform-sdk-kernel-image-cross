@@ -21,6 +21,8 @@ SOURCE_ROOT=${SOURCE_ROOT_BASE}/linux-${SOURCE_PACKAGE_VERSION}
 
 if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
     ARCH=arm64
+elif [ "${HOST_PROCESSOR}" = "i686" ]; then
+    ARCH=x86
 fi
 
 ${MKDIR} -p ${KERNEL_INSTALL_PREFIX}/boot
