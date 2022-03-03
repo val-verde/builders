@@ -694,6 +694,7 @@ function export-compiler-environment-for-go() {
 
 function export-compiler-environment-for-python() {
     PYTHON_BUILD_PACKAGE_PREFIX=${BUILD_PACKAGE_PREFIX}
+    PYTHON_HOST_KERNEL=${HOST_KERNEL}
     PYTHON_HOST_OS=${HOST_OS}
     PYTHON_LIBS=
     PYTHON_PACKAGE_PREFIX=${PACKAGE_PREFIX}
@@ -712,7 +713,7 @@ function export-compiler-environment-for-python() {
         PYTHON_PACKAGE_PREFIX=${PACKAGE_PLATFORM_SYSROOT}/System/Library/Frameworks/Python.framework/Versions/Current
         PYTHON_PLATFORM=${DARWIN_OS}
     elif [ "${HOST_OS}" = "mingw32" ]; then
-        PYTHON_PLATFORM=win32
+        PYTHON_HOST_KERNEL=unknown
         PYTHON_HOST_OS=windows-gnu
         PYTHON_LIBS=`${ECHO} "\
             -lpathcch \
@@ -721,11 +722,12 @@ function export-compiler-environment-for-python() {
             -lws2_32 \
             ${PYTHON_LIBS} \
         " | ${XARGS}`
+        PYTHON_PLATFORM=win32
     fi
 
     export \
         _PYTHON_HOST_PLATFORM=${PYTHON_PLATFORM}-${HOST_PROCESSOR} \
-        _PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata__${PYTHON_PLATFORM}_${HOST_PROCESSOR}-${HOST_KERNEL}-${PYTHON_HOST_OS} \
+        _PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata__${PYTHON_PLATFORM}_${HOST_PROCESSOR}-${PYTHON_HOST_KERNEL}-${PYTHON_HOST_OS} \
         CCSHARED="${CC} -pthread -shared ${CCFLAGS}" \
         LDSHARED="${CCLD} -pthread -shared ${CCLDFLAGS} ${PYTHON_LIBS}" \
         PYTHONHOME=${PYTHON_PACKAGE_PREFIX}:${PYTHON_BUILD_PACKAGE_PREFIX} \
