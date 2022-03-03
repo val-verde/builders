@@ -10,6 +10,4 @@ BOOTSTRAP_FILE=./bootstrap.sh \
 ENABLE_GNULIB_OVERRIDE=TRUE \
 GNULIB_DIR=gnulib \
 MAKEINFO=true \
-package-bootstrap-configure-install-archive \
-    --disable-static \
-    --enable-shared
+package-bootstrap-configure-install-archive
