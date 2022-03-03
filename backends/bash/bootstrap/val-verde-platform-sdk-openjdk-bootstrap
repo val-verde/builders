@@ -2,29 +2,42 @@
 
 set -e
 
-# Set all environment vars
-SUB_VERSION=35
-OPENJDK_URL=https://download.java.net/java/GA/jdk${SOURCE_PACKAGE_VERSION}/0d483333a00540d886896bac774ff48b/${SUB_VERSION}/GPL
-OPENJDK_PROCESSOR=${HOST_PROCESSOR}
-OPENJDK_TAR_GZ=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_KERNEL}-${OPENJDK_PROCESSOR}.tar.gz
-
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
+OPENJDK_DOWNLOAD_BASE_URL=https://download.java.net
+OPENJDK_EXECUTABLES="\
+    `package-get-filename jar EXECUTABLE HOST` \
+    `package-get-filename java EXECUTABLE HOST` \
+    `package-get-filename javac EXECUTABLE HOST` \
+    `package-get-filename javadoc EXECUTABLE HOST` \
+"
+OPENJDK_GIT_TAG=dfd4a8d0985749f896bed50d7138ee7f
+OPENJDK_RELEASE_TYPE=GA
+OPENJDK_SUB_VERSION=8
+OPENJDK_MAJOR_VERSION=${SOURCE_PACKAGE_VERSION}
+OPENJDK_MINOR_VERSION=0
+OPENJDK_REVISION_VERSION=2
+OPENJDK_VERSION=${OPENJDK_MAJOR_VERSION}.${OPENJDK_MINOR_VERSION}.${OPENJDK_REVISION_VERSION}
+
 if [ "${HOST_PROCESSOR}" = "x86_64" ]; then
-    OPENJDK_ARCH=x64
+    OPENJDK_PROCESSOR=x64
 else
-    OPENJDK_ARCH=${OPENJDK_PROCESSOR}
+    OPENJDK_PROCESSOR=${HOST_PROCESSOR}
 fi
 
 if [ "${BUILD_OS}" = "mingw32" ]; then
     OPENJDK_OS=windows
 else
-    OPENJDK_OS=${BUILD_KERNEL}
+    OPENJDK_OS=${HOST_KERNEL}
 fi
 
-package-wget -c ${OPENJDK_URL}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}_${OPENJDK_OS}-${OPENJDK_ARCH}_bin.tar.gz \
+OPENJDK_BASE_URL=${OPENJDK_DOWNLOAD_BASE_URL}/java/${OPENJDK_RELEASE_TYPE}/jdk${OPENJDK_VERSION}/${OPENJDK_GIT_TAG}/${OPENJDK_SUB_VERSION}/GPL
+OPENJDK_TAR_GZ=${SOURCE_PACKAGE_NAME}-${OPENJDK_VERSION}_${OPENJDK_OS}-${OPENJDK_PROCESSOR}_bin.tar.gz
+OPENJDK_URL=${OPENJDK_BASE_URL}/${OPENJDK_TAR_GZ}
+
+package-wget -c ${OPENJDK_URL} \
              -O ${STAGE_ROOT}/${OPENJDK_TAR_GZ}
 package-tar -zxf \
             ${STAGE_ROOT}/${OPENJDK_TAR_GZ} \
@@ -32,16 +45,9 @@ package-tar -zxf \
 
 ${MKDIR} -p ${INSTALL_PREFIX}/bin
 
-EXECUTABLES="\
-    jar \
-    java \
-    javac \
-    javadoc \
-"
-
-for EXECUTABLE in ${EXECUTABLES}; do
+for EXECUTABLE in ${OPENJDK_EXECUTABLES}; do
     ${LN} -sf \
-          ../jdk-${SOURCE_PACKAGE_VERSION}/bin/${EXECUTABLE} \
+          ../jdk-${OPENJDK_VERSION}/bin/${EXECUTABLE} \
           ${INSTALL_PREFIX}/bin/${EXECUTABLE}
 done
 
