@@ -44,7 +44,9 @@ function package-invoke-archive-action() {
         SYSTEM_OS=${SYSTEM_TYPE}_OS
         SYSTEM_OS_API=${SYSTEM_TYPE}_OS_API_LEVEL
         SYSTEM_CPU=${SYSTEM_TYPE}_CPU
-        PKG_SUFFIX=${!SYSTEM_OS}${!SYSTEM_OS_API}-${!SYSTEM_CPU}
+        SYSTEM_PROCESSOR=${SYSTEM_TYPE}_PROCESSOR
+        PKG_SUFFIX=${!SYSTEM_OS}${!SYSTEM_OS_API}-${!SYSTEM_CPU}-${!SYSTEM_PROCESSOR}
+        PKG_SUFFIX=${PKG_SUFFIX/"x86_64"/"x86-64"}
 
         if [[ "${PKG_NAME}"  == *"stage"* ]]; then
             PKG_NAME=${PKG_NAME%-*}
