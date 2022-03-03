@@ -24,7 +24,7 @@ function package-install-completion-callback() {
     fi
 }
 
-VULKAN_LAYERS="device-select,intel-nullhw"
+VULKAN_LAYERS="device-select,intel-nullhw,overlay"
 
 if [ "${HOST_OS}" = "android" ]; then
     ANDROID_PLATFORM_SDK_VERSION="-Dplatform-sdk-version=${HOST_OS_API_LEVEL}"
