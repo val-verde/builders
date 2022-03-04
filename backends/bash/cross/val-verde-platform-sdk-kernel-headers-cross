@@ -14,6 +14,8 @@ ARCH=${HOST_PROCESSOR}
 
 if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
     ARCH=arm64
+elif [ "${HOST_PROCESSOR}" = "armv7a" ]; then
+    ARCH=arm
 elif [ "${HOST_PROCESSOR}" = "i686" ]; then
     ARCH=x86
 fi
