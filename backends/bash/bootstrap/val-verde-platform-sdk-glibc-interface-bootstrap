@@ -8,7 +8,7 @@ export SOURCE_PACKAGE_NAME=glibc-interface
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-# Invoke one-shot template for stage/configure/install
+# Invoke one-shot template for configure/install
 function package-install-completion-callback() {
     if [ -n "${ENABLE_BOOTSTRAP}" ]; then
         ${MKDIR} -p ${INSTALL_PREFIX}/glibc-interface/usr/lib
@@ -90,7 +90,7 @@ INSTALL_TARGET=${INSTALL_TARGET} \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 TOOL_INSTALL_INVOCATION=${TOOL_INSTALL_INVOCATION} \
 USE_GCC=TRUE \
-package-stage-configure-install-archive \
+package-configure-install-archive \
     libc_cv_include_x86_isa_level=no \
     libc_cv_slibdir=/usr/glibc-interface \
     --disable-crypt \
