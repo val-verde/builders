@@ -40,9 +40,9 @@ function package-install-completion-callback() {
 
     if [ "${HOST_OS}" = "gnu" ] ||
        [ "${HOST_OS}" = "musl" ]; then
-        ${MV} ${CLANG_RT_SOURCE_INSTALL_PREFIX}/clang_rt.crtbegin-${HOST_PROCESSOR}.o \
+        ${MV} ${CLANG_RT_SOURCE_INSTALL_PREFIX}/clang_rt.crtbegin-${CLANG_HOST_PROCESSOR}.o \
               ${CLANG_RT_INSTALL_PREFIX}/
-        ${MV} ${CLANG_RT_SOURCE_INSTALL_PREFIX}/clang_rt.crtend-${HOST_PROCESSOR}.o \
+        ${MV} ${CLANG_RT_SOURCE_INSTALL_PREFIX}/clang_rt.crtend-${CLANG_HOST_PROCESSOR}.o \
               ${CLANG_RT_INSTALL_PREFIX}/
     fi
 
@@ -50,9 +50,15 @@ function package-install-completion-callback() {
           ${CLANG_RT_INSTALL_PREFIX}/${DST_CLANG_RT_LIB}
 }
 
+if [ "${HOST_PROCESSOR}" = "i686" ]; then
+    CLANG_HOST_PROCESSOR=i386
+else
+    CLANG_HOST_PROCESSOR=${HOST_PROCESSOR}
+fi
+
 if [ "${HOST_OS}" = "gnu" ] ||
    [ "${HOST_OS}" = "musl" ]; then
-    CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
+    CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${CLANG_HOST_PROCESSOR} STATIC`
     ${ECHO} "#define printf(...)" > ${STAGE_ROOT}/dummy-printf.h
     COMMON_CFLAGS="\
         -include ${STAGE_ROOT}/dummy-printf.h \
@@ -62,14 +68,14 @@ elif [ "${HOST_OS}" = "macos" ]; then
     CLANG_RT_LIB=`package-get-filename clang_rt.osx STATIC`
     DST_CLANG_RT_LIB=`package-get-filename clang_rt.osx STATIC`
 elif [ "${HOST_OS}" = "mingw32" ]; then
-    CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
-    DST_CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
+    CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${CLANG_HOST_PROCESSOR} STATIC`
+    DST_CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${CLANG_HOST_PROCESSOR} STATIC`
     COMMON_CFLAGS="\
         -Wl,/force:unresolved \
         ${COMMON_CFLAGS} \
     "
 elif [ "${HOST_OS}" = "wasi" ]; then
-    CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${HOST_PROCESSOR} STATIC`
+    CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${CLANG_HOST_PROCESSOR} STATIC`
     COMMON_CFLAGS="\
         -Wl,--allow-undefined \
         -Wl,--no-entry \
@@ -77,12 +83,12 @@ elif [ "${HOST_OS}" = "wasi" ]; then
     "
     LLVM_CONFIG_PATH=`package-get-filename ${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config EXECUTABLE`
 else
-    CLANG_RT_LIB=${CLANG_RT_LIB:-`package-get-filename clang_rt.builtins-${HOST_PROCESSOR}-${HOST_OS} STATIC`}
+    CLANG_RT_LIB=${CLANG_RT_LIB:-`package-get-filename clang_rt.builtins-${CLANG_HOST_PROCESSOR}-${HOST_OS} STATIC`}
 fi
 
 SIZEOF_VOID_P=8
 
-if [ "${HOST_PROCESSOR}" = "wasm32" ]; then
+if [ "${CLANG_HOST_PROCESSOR}" = "wasm32" ]; then
     SIZEOF_VOID_P=4
 fi
 
