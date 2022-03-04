@@ -50,7 +50,9 @@ function package-install-completion-callback() {
           ${CLANG_RT_INSTALL_PREFIX}/${DST_CLANG_RT_LIB}
 }
 
-if [ "${HOST_PROCESSOR}" = "i686" ]; then
+if [ "${HOST_PROCESSOR}" = "armv7a" ]; then
+    CLANG_HOST_PROCESSOR=armhf
+elif [ "${HOST_PROCESSOR}" = "i686" ]; then
     CLANG_HOST_PROCESSOR=i386
 else
     CLANG_HOST_PROCESSOR=${HOST_PROCESSOR}
