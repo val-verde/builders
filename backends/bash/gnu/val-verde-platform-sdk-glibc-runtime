@@ -14,7 +14,8 @@ function package-install-completion-callback() {
           ${INSTALL_PREFIX}
 }
 
-if [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+if [ "${HOST_PROCESSOR}" = "i686" ] ||
+   [ "${HOST_PROCESSOR}" = "x86_64" ]; then
     ENABLE_OR_DISABLE_STATIC_PIE=enable
 else
     ENABLE_OR_DISABLE_STATIC_PIE=disable
