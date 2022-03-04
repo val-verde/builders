@@ -20,9 +20,17 @@ function tool-install-invocation() {
     tool-install
 }
 
+BUILD_COMMON_CFLAGS="\
+    -L${BUILD_PACKAGE_PREFIX}/lib \
+    ${BUILD_COMMON_CFLAGS} \
+" \
 BUILD_CXXFLAGS="\
     -std=gnu++17 \
     ${BUILD_CXXFLAGS} \
+" \
+COMMON_CFLAGS="\
+    -L${PACKAGE_PREFIX}/lib \
+    ${COMMON_CFLAGS} \
 " \
 CXXFLAGS="\
     -std=gnu++17 \
@@ -75,6 +83,7 @@ package-stage-configure-install-archive \
     --enable-plugins \
     --enable-static \
     --enable-shared \
+    --enable-targets=all \
     --program-prefix= \
     --target=${HOST_TRIPLE} \
     --with-guile=no \
