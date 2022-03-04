@@ -842,7 +842,7 @@
         "sourceType": "git",
         "sourcePackageName": "harfbuzz",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "2",
+        "sourcePackageVersion": "4",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
