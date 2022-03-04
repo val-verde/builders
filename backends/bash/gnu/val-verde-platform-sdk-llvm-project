@@ -88,19 +88,26 @@ if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
 fi
 
 CROSS_TOOLCHAIN_FLAGS_NATIVE=`package-cmake-invocation-arguments-for-variant BUILD`
-CUDA_COMPILER=${STAGE_ROOT}/host-nvcc
-NVCC=${CC}
-NVCCFLAGS=`${ECHO} "\
-    -isystem ${PACKAGE_PREFIX}/include \
-    -stdlib++-isystem ${CXX_INCLUDE_DIR} \
-    -B${BINDIR} \
-    -L${PACKAGE_PREFIX}/lib \
-    --cuda-path=${PACKAGE_PREFIX} \
-    --sysroot=${SYSROOT} \
-    --target=${HOST_TRIPLE} \
-" | ${XARGS}`
 
-create-host-tool ${NVCC} NVCCFLAGS ${CUDA_COMPILER}
+if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
+   [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    CUDA_COMPILER=${STAGE_ROOT}/host-nvcc
+    ENABLE_MLIR_CUDA_RUNNER=TRUE
+    NVCC=${CC}
+    NVCCFLAGS=`${ECHO} "\
+        -isystem ${PACKAGE_PREFIX}/include \
+        -stdlib++-isystem ${CXX_INCLUDE_DIR} \
+        -B${BINDIR} \
+        -L${PACKAGE_PREFIX}/lib \
+        --cuda-path=${PACKAGE_PREFIX} \
+        --sysroot=${SYSROOT} \
+        --target=${HOST_TRIPLE} \
+    " | ${XARGS}`
+
+    create-host-tool ${NVCC} NVCCFLAGS ${CUDA_COMPILER}
+else
+    ENABLE_MLIR_CUDA_RUNNER=FALSE
+fi
 
 CMAKE_CONFIGURE_ROOT=${SOURCE_ROOT}/llvm \
 DISABLE_TOOL_BUILD=TRUE \
@@ -274,7 +281,7 @@ package-cmake-install-archive \
     -DLLVM_VERSION_SUFFIX="-${PACKAGE_BASE_NAME}" \
     -DLLVM_Z3_INSTALL_DIR=${PACKAGE_PLATFORM_SYSROOT} \
     -DMLIR_ENABLE_BINDINGS_PYTHON=TRUE \
-    -DMLIR_ENABLE_CUDA_RUNNER=TRUE \
+    -DMLIR_ENABLE_CUDA_RUNNER=${ENABLE_MLIR_CUDA_RUNNER} \
     -DMLIR_ENABLE_SPIRV_CPU_RUNNER=TRUE \
     -DMLIR_ENABLE_VULKAN_RUNNER=TRUE \
     -DOpenCL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
