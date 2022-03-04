@@ -27,6 +27,9 @@ function package-install-completion-callback() {
         if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
             LINKER_LOADER=ld-${HOST_KERNEL}-${HOST_PROCESSOR}.so.1
             LINKER_LOADER_DIR=lib
+        elif [ "${HOST_PROCESSOR}" = "i686" ]; then
+            LINKER_LOADER=ld-${HOST_KERNEL}.so.2
+            LINKER_LOADER_DIR=lib
         elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
             LINKER_LOADER=ld-${HOST_KERNEL}-x86-64.so.2
             LINKER_LOADER_DIR=lib64
@@ -74,7 +77,8 @@ else
     WITH_OR_WITHOUT_SYSTEM_ZLIB=with
 fi
 
-if [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+if [ "${HOST_PROCESSOR}" = "i686" ] ||
+   [ "${HOST_PROCESSOR}" = "x86_64" ]; then
     ENABLE_OR_DISABLE_STATIC_PIE=enable
 else
     ENABLE_OR_DISABLE_STATIC_PIE=disable
