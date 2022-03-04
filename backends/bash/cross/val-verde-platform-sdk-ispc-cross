@@ -20,7 +20,8 @@ X86_ENABLED=FALSE
 
 if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
     ARM_ENABLED=TRUE
-elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+elif [ "${HOST_PROCESSOR}" = "i686" ] ||
+     [ "${HOST_PROCESSOR}" = "x86_64" ]; then
     X86_ENABLED=TRUE
 fi
 
