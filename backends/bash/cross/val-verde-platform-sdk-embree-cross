@@ -15,7 +15,8 @@ EMBREE_ISA_SSE42=FALSE
 
 if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
     EMBREE_ISA_NEON=TRUE
-elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+elif [ "${HOST_PROCESSOR}" = "i686" ] ||
+     [ "${HOST_PROCESSOR}" = "x86_64" ]; then
     if [ "${HOST_CPU}" = "skylake" ]; then
         EMBREE_ISA_AVX2=TRUE
     elif [ "${HOST_CPU}" = "broadwell" ] ||
