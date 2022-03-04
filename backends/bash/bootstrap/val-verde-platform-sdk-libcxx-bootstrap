@@ -19,6 +19,10 @@ HAS_WIN32_THREAD_API=FALSE
 SIZEOF_VOID_P=8
 USE_LLVM_UNWINDER=TRUE
 
+if [ "${HOST_PROCESSOR}" = "i686" ]; then
+    SIZEOF_VOID_P=4
+fi
+
 if [ "${HOST_OS}" = "musl" ]; then
     HAS_MUSL_LIBC=TRUE
 elif [ "${HOST_OS}" = "mingw32" ]; then
