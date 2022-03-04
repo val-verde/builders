@@ -595,9 +595,12 @@ package-invoke-builder alien-package-tool-cross 8
 # AI SDK build
 package-invoke-category-builder ai-sdk-cross
 
-# openjdk build
-ENABLE_STAGE_ROOT_BUILD=TRUE \
-package-invoke-builder openjdk-cross 17
+if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
+   [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    # openjdk build
+    ENABLE_STAGE_ROOT_BUILD=TRUE \
+    package-invoke-builder openjdk-cross 17
+fi
 
 # maven build
 package-invoke-builder maven-cross 3
