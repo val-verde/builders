@@ -13,6 +13,10 @@ OPENSSL_DIR=/etc/ssl
 OPENSSL_OS=${HOST_OS}
 OPENSSL_PROCESSOR=${HOST_PROCESSOR}
 
+if [ "${OPENSSL_PROCESSOR}" = "i686" ]; then
+    OPENSSL_PROCESSOR=x86
+fi
+
 if [ "${HOST_OS}" = "android" ]; then
     OPENSSL_DIR=/data/local/tmp${PACKAGE_PREFIX}/etc/ssl
     OPENSSL_OS=linux
@@ -22,7 +26,7 @@ elif [ "${HOST_OS}" = "gnu" ] || \
 elif [ "${HOST_OS}" = "macos" ]; then
     OPENSSL_OS=darwin64
 
-    if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+    if [ "${OPENSSL_PROCESSOR}" = "aarch64" ]; then
         OPENSSL_PROCESSOR=arm64
     fi
 elif [ "${HOST_OS}" = "mingw32" ]; then
