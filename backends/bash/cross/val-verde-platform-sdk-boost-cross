@@ -30,6 +30,9 @@ BOOST_PROCESSOR=${HOST_PROCESSOR}
 if [ "${BOOST_PROCESSOR}" = "aarch64" ]; then
     BOOST_CONTEXT_ABI=aapcs
     BOOST_PROCESSOR=arm64
+elif [ "${BOOST_PROCESSOR}" = "armv7a" ]; then
+    BOOST_CONTEXT_ABI=aapcs
+    BOOST_PROCESSOR=arm
 elif [ "${BOOST_PROCESSOR}" = "i686" ]; then
     BOOST_PROCESSOR=i386
 fi
