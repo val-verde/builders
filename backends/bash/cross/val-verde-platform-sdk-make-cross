@@ -15,4 +15,5 @@ fi
 
 # Invoke one-shot template for bootstrap/configure/install
 package-bootstrap-configure-install-archive \
+    ac_cv_func_sigsetmask=no \
     ${MAKE_FS_CMD}
