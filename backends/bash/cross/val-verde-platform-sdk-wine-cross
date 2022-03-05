@@ -13,7 +13,8 @@ fi
 
 ENABLE_OR_DISABLE_WIN64=enable
 
-if [ "${HOST_PROCESSOR}" = "i686" ]; then
+if [ "${HOST_PROCESSOR}" = "armv7a" ] ||
+   [ "${HOST_PROCESSOR}" = "i686" ]; then
     ENABLE_OR_DISABLE_WIN64=disable
 fi
 
