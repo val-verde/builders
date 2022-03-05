@@ -736,6 +736,9 @@ function export-compiler-environment-for-python() {
     if [ "${HOST_PROCESSOR}" = "aarch64" ] &&
        [ "${HOST_OS}" = "macos" ]; then
         PYTHON_HOST_PROCESSOR=arm64
+    elif [ "${HOST_PROCESSOR}" = "armv7a" ]; then
+        PYTHON_HOST_OS=${PYTHON_HOST_OS}${HOST_OS_API_LEVEL}
+        PYTHON_HOST_PROCESSOR=arm
     elif [ "${HOST_PROCESSOR}" = "i686" ]; then
         PYTHON_HOST_PROCESSOR=i386
     else
