@@ -41,7 +41,10 @@ function package-install-completion-callback() {
 
 LLVM_TARGETS_TO_BUILD="NVPTX;WebAssembly"
 
-if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+if [ "${HOST_PROCESSOR}" = "armv7a" ]; then
+    COMPILER_RT_HAS_FVISIBILITY_HIDDEN_FLAG=FALSE
+    LLVM_TARGETS_TO_BUILD="ARM;${LLVM_TARGETS_TO_BUILD}"
+elif [ "${HOST_PROCESSOR}" = "aarch64" ]; then
     COMPILER_RT_HAS_FVISIBILITY_HIDDEN_FLAG=FALSE
     LLVM_TARGETS_TO_BUILD="AArch64;${LLVM_TARGETS_TO_BUILD}"
 elif [ "${HOST_PROCESSOR}" = "i686" ] ||
