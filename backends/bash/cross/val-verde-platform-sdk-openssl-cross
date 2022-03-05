@@ -13,7 +13,9 @@ OPENSSL_DIR=/etc/ssl
 OPENSSL_OS=${HOST_OS}
 OPENSSL_PROCESSOR=${HOST_PROCESSOR}
 
-if [ "${OPENSSL_PROCESSOR}" = "i686" ]; then
+if [ "${OPENSSL_PROCESSOR}" = "arm" ]; then
+    OPENSSL_PROCESSOR=arm
+elif [ "${OPENSSL_PROCESSOR}" = "i686" ]; then
     OPENSSL_PROCESSOR=x86
 fi
 
@@ -23,6 +25,10 @@ if [ "${HOST_OS}" = "android" ]; then
 elif [ "${HOST_OS}" = "gnu" ] || \
      [ "${HOST_OS}" = "musl" ]; then
     OPENSSL_OS=linux
+
+    if [ "${HOST_PROCESSOR}" = "armv7a" ]; then
+        OPENSSL_PROCESSOR=generic32
+    fi
 elif [ "${HOST_OS}" = "macos" ]; then
     OPENSSL_OS=darwin64
 
@@ -38,6 +44,9 @@ OPENSSL_TARGET=${OPENSSL_OS}-${OPENSSL_PROCESSOR}
 
 if [ "${HOST_OS}" = "macos" ]; then
     OPENSSL_TARGET=${OPENSSL_TARGET}-cc
+elif [ "${HOST_OS}" = "mingw32" ] &&
+     [ "${OPENSSL_PROCESSOR}" = "arm" ]; then
+    OPENSSL_TARGET=${OPENSSL_TARGET}
 fi
 
 LD=${CCLD} \
