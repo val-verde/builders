@@ -725,9 +725,16 @@ function export-compiler-environment-for-python() {
         PYTHON_PLATFORM=win32
     fi
 
+    if [ "${HOST_PROCESSOR}" = "aarch64" ] &&
+       [ "${HOST_OS}" = "macos" ]; then
+        PYTHON_HOST_PROCESSOR=arm64
+    else
+        PYTHON_HOST_PROCESSOR=${HOST_PROCESSOR}
+    fi
+
     export \
-        _PYTHON_HOST_PLATFORM=${PYTHON_PLATFORM}-${HOST_PROCESSOR} \
-        _PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata__${PYTHON_PLATFORM}_${HOST_PROCESSOR}-${PYTHON_HOST_KERNEL}-${PYTHON_HOST_OS} \
+        _PYTHON_HOST_PLATFORM=${PYTHON_PLATFORM}-${PYTHON_HOST_PROCESSOR} \
+        _PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata__${PYTHON_PLATFORM}_${PYTHON_HOST_PROCESSOR}-${PYTHON_HOST_KERNEL}-${PYTHON_HOST_OS} \
         CCSHARED="${CC} -pthread -shared ${CCFLAGS}" \
         LDSHARED="${CCLD} -pthread -shared ${CCLDFLAGS} ${PYTHON_LIBS}" \
         PYTHONHOME=${PYTHON_PACKAGE_PREFIX}:${PYTHON_BUILD_PACKAGE_PREFIX} \
@@ -1083,7 +1090,7 @@ function package-cmake-invocation-arguments-for-variant() {
     VARIANT_KERNEL=${VARIANT}_KERNEL
     VARIANT_OS=${VARIANT}_OS
     VARIANT_OS_API_LEVEL=${VARIANT}_OS_API_LEVEL
-    VARIANT_PROCESSOR=${VARIANT}_PROCESSOR
+    VARIANT_PROCESSOR=${VARIANT}_TRIPLE_PROCESSOR
     VARIANT_TRIPLE=${VARIANT}_TRIPLE
 
     if [ "${VARIANT}" != "HOST" ]; then
@@ -1151,10 +1158,6 @@ function package-cmake-invocation-arguments-for-variant() {
         COMPILER_TARGET_VAR=${VARIANT}_4_TRIPLE
         COMPILER_TARGET=${!COMPILER_TARGET_VAR}
     elif [ "${!VARIANT_OS}" = "macos" ]; then
-        if [ "${!VARIANT_PROCESSOR}" = "aarch64" ]; then
-            COMPILER_TARGET=arm64-${!VARIANT_KERNEL}-${!VARIANT_OS}${!VARIANT_OS_API_LEVEL}
-        fi
-
         CMAKE_OSX_DEPLOYMENT_TARGET_CMD="-DCMAKE_OSX_DEPLOYMENT_TARGET=${MACOSX_DEPLOYMENT_TARGET}"
         CMAKE_OSX_SYSROOT_CMD="-DCMAKE_OSX_SYSROOT=${CMAKE_SYSROOT}"
     fi
@@ -1898,14 +1901,8 @@ function package-swift-build() {
 
     if [ "${HOST_OS}" = "macos" ]; then
         SWIFT_HOST_OS=macosx
-        SWIFT_HOST_PROCESSOR=${HOST_PROCESSOR}
         HOST_OS_API_SUBVERSION="0.0"
-
-        if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
-            SWIFT_HOST_PROCESSOR=arm64
-        fi
-
-        TARGET=${TARGET:-${SWIFT_HOST_PROCESSOR}-${HOST_KERNEL}-${SWIFT_HOST_OS}${HOST_OS_API_LEVEL}.${HOST_OS_API_SUBVERSION}}
+        TARGET=${TARGET:-${HOST_TRIPLE_PROCESSOR}-${HOST_KERNEL}-${SWIFT_HOST_OS}${HOST_OS_API_LEVEL}.${HOST_OS_API_SUBVERSION}}
     elif [ "${HOST_OS}" = "mingw32" ]; then
         TARGET=${TARGET:-${HOST_PROCESSOR}-unknown-windows-gnu}
     else
