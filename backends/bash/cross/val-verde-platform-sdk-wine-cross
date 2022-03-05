@@ -11,6 +11,12 @@ if [ "${HOST_TRIPLE}" != "${BUILD_TRIPLE}" ]; then
     WINEBUILD="`package-get-path winebuild EXECUTABLE BUILD`"
 fi
 
+ENABLE_OR_DISABLE_WIN64=enable
+
+if [ "${HOST_PROCESSOR}" = "i686" ]; then
+    ENABLE_OR_DISABLE_WIN64=disable
+fi
+
 WITH_OR_WITHOUT_UDEV=without
 
 if [ "${HOST_OS}" = "musl" ] ||
@@ -26,8 +32,8 @@ package-stage-configure-install-archive \
     ac_cv_lib_soname_freetype=`package-get-filename freetype SHARED HOST` \
     --disable-static \
     --enable-shared \
-    --enable-win64 \
     --with-unwind \
     --without-vkd3d \
     ${CROSS_CMD} \
+    --${ENABLE_OR_DISABLE_WIN64}-win64 \
     --${WITH_OR_WITHOUT_UDEV}-udev
