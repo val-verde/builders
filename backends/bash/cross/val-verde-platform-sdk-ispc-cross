@@ -18,7 +18,8 @@ fi
 ARM_ENABLED=FALSE
 X86_ENABLED=FALSE
 
-if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
+   [ "${HOST_PROCESSOR}" = "armv7a" ]; then
     ARM_ENABLED=TRUE
 elif [ "${HOST_PROCESSOR}" = "i686" ] ||
      [ "${HOST_PROCESSOR}" = "x86_64" ]; then
