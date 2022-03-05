@@ -13,7 +13,8 @@ EMBREE_ISA_NEON=FALSE
 EMBREE_ISA_SSE2=FALSE
 EMBREE_ISA_SSE42=FALSE
 
-if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
+   [ "${HOST_PROCESSOR}" = "armv7a" ]; then
     EMBREE_ISA_NEON=TRUE
 elif [ "${HOST_PROCESSOR}" = "i686" ] ||
      [ "${HOST_PROCESSOR}" = "x86_64" ]; then
