@@ -16,11 +16,14 @@ ENABLE_THREADS=TRUE
 HAS_MUSL_LIBC=FALSE
 HAS_PTHREAD_API=TRUE
 HAS_WIN32_THREAD_API=FALSE
-SIZEOF_VOID_P=8
 USE_LLVM_UNWINDER=TRUE
 
-if [ "${HOST_PROCESSOR}" = "i686" ]; then
+if [ "${HOST_PROCESSOR}" = "armv7a" ] ||
+   [ "${HOST_PROCESSOR}" = "i686" ] ||
+   [ "${HOST_PROCESSOR}" = "wasm32" ]; then
     SIZEOF_VOID_P=4
+else
+    SIZEOF_VOID_P=8
 fi
 
 if [ "${HOST_OS}" = "musl" ]; then
@@ -36,10 +39,6 @@ elif [ "${HOST_OS}" = "wasi" ]; then
     HAS_MUSL_LIBC=TRUE
     HAS_PTHREAD_API=FALSE
     USE_LLVM_UNWINDER=FALSE
-fi
-
-if [ "${HOST_PROCESSOR}" = "wasm32" ]; then
-    SIZEOF_VOID_P=4
 fi
 
 ENABLED_PROJECTS="libcxx;libcxxabi;pstl"
