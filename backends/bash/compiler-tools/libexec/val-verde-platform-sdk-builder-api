@@ -3,11 +3,11 @@
 set -e
 
 function package-get-common-variables() {
-    source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
+    source ${PACKAGE_PREFIX}/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
 }
 
 function package-get-packaging-api() {
-    source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
+    source ${PACKAGE_PREFIX}/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
 }
 
 function package-invoke-category-builder() {
