@@ -6,6 +6,10 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for bootstrap/configure/install
+if [ "${HOST_PROCESSOR}" = "armv7a" ]; then
+    CONFIGURE_HOST_TRIPLE=arm-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}
+fi
+
 BOOTSTRAP_FILE=autogen.sh \
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 DISABLE_LIBTOOLIZE=TRUE \
