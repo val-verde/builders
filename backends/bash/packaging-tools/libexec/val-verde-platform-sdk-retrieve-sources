@@ -5,11 +5,11 @@ set -e
 ARCHIVE_PATH=${SOURCE_ARCHIVE_PATH}
 
 # Source deb packaging helper functions
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
+source ${PACKAGE_PREFIX}/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
+source ${PACKAGE_PREFIX}/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
 
 # Source package retrieval utils
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-utils
+source ${PACKAGE_PREFIX}/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-utils
 
 function build-install-git-source-package() {
     # Print source builder context

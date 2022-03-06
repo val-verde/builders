@@ -3,7 +3,7 @@
 set -e
 
 # Source common variables and functions
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
+source ${PACKAGE_PREFIX}/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
 
 function derive-source-package-name-version() {
     PACKAGE_MAJOR_VERSION=$(package-get-major-version ${SOURCE_PACKAGE_VERSION})
