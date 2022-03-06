@@ -14,37 +14,37 @@ source /sources/packaging-tools/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common
 source /sources/packaging-tools/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
 
 package-get-qualified-package-name "${SOURCE_PACKAGE_NAME}" "${SOURCE_PACKAGE_VERSION}"
-export INSTALL_ROOT=${TEMP_ROOT_BASE}/executables/${PACKAGE_PREFIX}
+export INSTALL_ROOT=${TEMP_ROOT_BASE}/${PACKAGE_NAME}
+INSTALL_PREFIX=${INSTALL_ROOT}/${PACKAGE_PREFIX}
 export STAGE_ROOT=${STAGE_ROOT_BASE}/${PACKAGE_NAME}
 
 ${MKDIR} -p \
-         ${INSTALL_ROOT}/{bin,libexec,share} \
-         ${INSTALL_ROOT}/share/${VAL_VERDE_GH_TEAM} \
+         ${INSTALL_PREFIX}/{bin,libexec,share} \
+         ${INSTALL_PREFIX}/share/${VAL_VERDE_GH_TEAM} \
          ${STAGE_ROOT}
 
 # Build and install executable scripts
 package-rsync -ax \
               /sources/packaging-tools/libexec/* \
-              ${INSTALL_ROOT}/libexec/
+              ${INSTALL_PREFIX}/libexec/
 package-rsync -ax \
               /sources/packaging-tools/share/* \
-              ${INSTALL_ROOT}/share/
+              ${INSTALL_PREFIX}/share/
 package-rsync -ax \
               /sources/compiler-tools/libexec/* \
-              ${INSTALL_ROOT}/libexec/
+              ${INSTALL_PREFIX}/libexec/
 package-rsync -ax \
               /sources/compiler-tools/bin/* \
-              ${INSTALL_ROOT}/bin/
+              ${INSTALL_PREFIX}/bin/
 package-rsync -ax \
               /sources/archive-templates/* \
-              ${INSTALL_ROOT}/share/${VAL_VERDE_GH_TEAM}
+              ${INSTALL_PREFIX}/share/${VAL_VERDE_GH_TEAM}
 
 ${CHMOD} 755 \
-         ${INSTALL_ROOT}/bin \
-         ${INSTALL_ROOT}/libexec \
-         ${INSTALL_ROOT}/share
+         ${INSTALL_PREFIX}/bin \
+         ${INSTALL_PREFIX}/libexec \
+         ${INSTALL_PREFIX}/share
 
 # Package archives
-PACKAGE_INSTALL_BASE=${TEMP_ROOT_BASE}/executables/opt \
-TEMPLATE_ROOT_BASE=${INSTALL_ROOT}/share/${VAL_VERDE_GH_TEAM} \
-package-archive-build-install "${PACKAGE_BASE_NAME}-${PACKAGE_NAME}"
+TEMPLATE_ROOT_BASE=${INSTALL_PREFIX}/share/${VAL_VERDE_GH_TEAM} \
+package-archive-build-install "${PACKAGE_NAME}"

@@ -33,7 +33,7 @@ TEMPLATE_ROOT_BASE=${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM} \
 package-archive-build-install "${SOURCE_PACKAGE_NAME}"
 
 # Fetch sources
-bash /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-packages
+bash ${PACKAGE_PREFIX}/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-packages
 
 # Rerun source deb checks to install
 trigger-source-package-install
