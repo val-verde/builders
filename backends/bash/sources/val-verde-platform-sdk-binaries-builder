@@ -5,7 +5,7 @@ set -e
 export BINDIR=/usr/bin \
     ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH}
 
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
+source ${PACKAGE_PREFIX}/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # cuda bootstrap build
 package-invoke-builder cuda-bootstrap 11
