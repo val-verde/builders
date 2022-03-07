@@ -3,10 +3,10 @@
 set -e
 
 # Source package build helper functions
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+source ${PACKAGE_PREFIX}/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
-CUDA_PACKAGE_LIST=/usr/share/${VAL_VERDE_GH_TEAM}-cuda-binaries.json
+CUDA_PACKAGE_LIST=${PACKAGE_PREFIX}/share/${VAL_VERDE_GH_TEAM}-cuda-binaries.json
 CUDA_PACKAGE_COUNT=$(jq -r length ${CUDA_PACKAGE_LIST})
 CUDA_PROCESSOR=${HOST_PROCESSOR}
 CUDA_STAGE_ROOT=${STAGE_ROOT}/builds
