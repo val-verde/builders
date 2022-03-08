@@ -47,12 +47,10 @@ fi
 
 if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
     MULTILIB_LIST="lp64"
-elif [ "${HOST_PROCESSOR}" = "armv7a" ]; then
-    MULTILIB_LIST="m32"
-elif [ "${HOST_PROCESSOR}" = "i686" ]; then
-    MULTILIB_LIST="m32"
 elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
     MULTILIB_LIST="m64"
+else
+    unset MULTILIB_LIST
 fi
 
 ENABLE_OR_DISABLE_GCOV=enable
@@ -165,6 +163,7 @@ package-stage-configure-install-archive \
     --target=${HOST_TRIPLE} \
     --with-as=${AS} \
     --with-build-sysroot=${SYSROOT} \
+    --with-float=hard \
     --with-glibc-version=2.31 \
     --with-gmp=${BUILD_PACKAGE_PREFIX} \
     --with-isl=${BUILD_PACKAGE_PREFIX} \

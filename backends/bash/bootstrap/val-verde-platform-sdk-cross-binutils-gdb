@@ -32,10 +32,10 @@ fi
 
 if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
     MULTILIB_LIST="lp64"
-elif [ "${HOST_PROCESSOR}" = "i686" ]; then
-    MULTILIB_LIST="m32"
 elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
     MULTILIB_LIST="m64"
+else
+    unset MULTILIB_LIST
 fi
 
 BUILD_COMMON_CFLAGS="\

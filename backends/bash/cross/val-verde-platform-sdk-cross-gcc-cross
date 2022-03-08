@@ -118,6 +118,7 @@ package-stage-configure-install-archive \
     --target=${HOST_TRIPLE} \
     --with-as=${AS} \
     --with-build-sysroot="${SYSROOT} -isystem ${PACKAGE_PREFIX}/include" \
+    --with-float=hard \
     --with-glibc-version=2.31 \
     --with-gmp=${BUILD_PACKAGE_PREFIX} \
     --with-isl=${BUILD_PACKAGE_PREFIX} \
