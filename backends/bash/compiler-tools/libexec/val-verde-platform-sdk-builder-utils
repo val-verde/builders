@@ -1180,6 +1180,16 @@ function package-cmake-invocation-arguments-for-variant() {
         SYSTEM_NAME_CMD="-DCMAKE_SYSTEM_NAME=${!SYSTEM_NAME_VAR}"
     fi
 
+    if [ "${HOST_PROCESSOR}" = "armv7a" ]; then
+        SWIFT_COMPILER_TARGET=armv7-${HOST_ENVIRONMENT}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}
+    elif [ "${HOST_PROCESSOR}" = "i686" ] &&
+	 [ "${HOST_OS}" = "gnu" ] &&
+	 [ -n "${HOST_OS_API_LEVEL}" ]; then
+        SWIFT_COMPILER_TARGET=${HOST_PROCESSOR}-${HOST_ENVIRONMENT}-${HOST_KERNEL}-${HOST_OS}
+    else
+        SWIFT_COMPILER_TARGET=${COMPILER_TARGET}
+    fi
+
     LOCALSTATEDIR=`${READLINK} -m ${CMAKE_INSTALL_PLATFORM_PREFIX}/var`
     SBINDIR=`${READLINK} -m ${CMAKE_INSTALL_PLATFORM_PREFIX}/sbin`
     SYSCONFDIR=`${READLINK} -m ${CMAKE_INSTALL_PLATFORM_PREFIX}/etc`
@@ -1275,7 +1285,7 @@ function package-cmake-invocation-arguments-for-variant() {
 -DCMAKE_RC_FLAGS=\""${!TOOL_RCFLAGS}"\" \
 -DCMAKE_READELF=${!TOOL_READELF} \
 -DCMAKE_Swift_COMPILER=${!TOOL_SWIFTC} \
--DCMAKE_Swift_COMPILER_TARGET=${COMPILER_TARGET} \
+-DCMAKE_Swift_COMPILER_TARGET=${SWIFT_COMPILER_TARGET} \
 -DCMAKE_Swift_FLAGS=\""${!TOOL_SWIFTCFLAGS}"\" \
 -DCMAKE_STRINGS=${!TOOL_STRINGS} \
 -DCMAKE_STRIP=${!TOOL_STRIP} \
@@ -1919,7 +1929,15 @@ function package-swift-build() {
     elif [ "${HOST_OS}" = "mingw32" ]; then
         TARGET=${TARGET:-${HOST_PROCESSOR}-unknown-windows-gnu}
     else
-        TARGET=${TARGET:-${HOST_4_TRIPLE}}
+        if [ "${HOST_PROCESSOR}" = "armv7a" ]; then
+            TARGET=${TARGET:-armv7-${HOST_ENVIRONMENT:-unknown}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}}
+        elif [ "${HOST_PROCESSOR}" = "i686" ] &&
+	     [ "${HOST_OS}" = "gnu" ] &&
+	     [ -n "${HOST_OS_API_LEVEL}" ]; then
+            TARGET=${TARGET:-${HOST_PROCESSOR}-${HOST_ENVIRONMENT:-unknown}-${HOST_KERNEL}-${HOST_OS}}
+        else
+            TARGET=${TARGET:-${HOST_4_TRIPLE}}
+        fi
     fi
 
     if [ "${SYSROOT}" != "${PACKAGE_PLATFORM_SYSROOT}" ]; then
