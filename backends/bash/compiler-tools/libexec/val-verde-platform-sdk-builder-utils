@@ -199,6 +199,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     VARIANT_CPU=${VARIANT}_CPU
     VARIANT_OS=${VARIANT}_OS
     VARIANT_OS_API_LEVEL=${VARIANT}_OS_API_LEVEL
+    VARIANT_PROCESSOR=${VARIANT}_PROCESSOR
 
     if [ "${VARIANT}" != "HOST" ]; then
         ENV_PREFIX="${VARIANT}_"
@@ -358,10 +359,15 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     fi
 
     if [ -n "${!VARIANT_CPU}" ]; then
-        if [ "${HOST_PROCESSOR}" = "aarch64" ] &&
+        if [ "${!VARIANT_CPU}" = "apple-m1" ] &&
            [ -n "${USE_GCC}" ]; then
-            CPU_AARCH64=${DEFAULT_CPU_AARCH64:-cortex-a57}
-            MTUNE_CFLAG="-mtune=${CPU_AARCH64}"
+            if [ "${!VARIANT_PROCESSOR}" = "aarch64" ]; then
+                CPU_NAME=${CPU_NAME:-cortex-a57}
+            elif [ "${!VARIANT_PROCESSOR}" = "armv7a" ]; then
+                CPU_NAME=${CPU_NAME:-cortex-a15}
+            fi
+
+            MTUNE_CFLAG="-mtune=${CPU_NAME}"
         else
             MTUNE_CFLAG="-mtune=${!VARIANT_CPU}"
 
