@@ -7,15 +7,22 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for stage/configure/install
 if [ "${HOST_TRIPLE}" != "${BUILD_TRIPLE}" ]; then
-    CROSS_CMD="--with-wine-tools=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}/build"
+    CROSS_CMD="\
+        --with-wine-tools=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}/build \
+    "
     WINEBUILD="`package-get-path winebuild EXECUTABLE BUILD`"
 fi
 
-ENABLE_OR_DISABLE_WIN64=enable
+if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
+   [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    ENABLE_WINE64_CMD="--enable-win64"
+elif [ "${HOST_PROCESSOR}" = "armv7a" ] ||
+     [ "${HOST_PROCESSOR}" = "i686" ]; then
+    WINE64_PREFIX=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${HOST_OS}-${HOST_CPU}
 
-if [ "${HOST_PROCESSOR}" = "armv7a" ] ||
-   [ "${HOST_PROCESSOR}" = "i686" ]; then
-    ENABLE_OR_DISABLE_WIN64=disable
+    if [ -d "${WINE64_PREFIX}" ]; then
+        ENABLE_WINE64_CMD="--with-wine64=${WINE64_PREFIX}"
+    fi
 fi
 
 WITH_OR_WITHOUT_UDEV=without
@@ -31,10 +38,8 @@ FREETYPE_LIBS="-lfreetype" \
 WINEBUILD=${WINEBUILD} \
 package-stage-configure-install-archive \
     ac_cv_lib_soname_freetype=`package-get-filename freetype SHARED HOST` \
-    --disable-static \
-    --enable-shared \
     --with-unwind \
     --without-vkd3d \
     ${CROSS_CMD} \
-    --${ENABLE_OR_DISABLE_WIN64}-win64 \
+    ${ENABLE_WINE64_CMD} \
     --${WITH_OR_WITHOUT_UDEV}-udev
