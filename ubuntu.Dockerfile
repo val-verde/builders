@@ -173,7 +173,7 @@ RUN HOST_ARCH=westmere \
 
 # gnueabihf-armv7a environment
 RUN HOST_ARCH=armv7-a+fp \
-    HOST_CPU=cortex-a15 \
+    HOST_CPU=apple-m1 \
     HOST_KERNEL=linux \
     HOST_OS=gnu \
     HOST_OS_API_LEVEL=eabihf \
@@ -181,7 +181,7 @@ RUN HOST_ARCH=armv7-a+fp \
     ; # bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap
 
 RUN HOST_ARCH=armv7-a+fp \
-    HOST_CPU=cortex-a15 \
+    HOST_CPU=apple-m1 \
     HOST_KERNEL=linux \
     HOST_OS=gnu \
     HOST_OS_API_LEVEL=eabihf \
