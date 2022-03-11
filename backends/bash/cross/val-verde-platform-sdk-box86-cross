@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for cmake/install
+if [ "${HOST_PROCESSOR}" = "armv7a" ]; then
+    ENABLE_ARM_DYNAREC=TRUE
+else
+    ENABLE_ARM_DYNAREC=FALSE
+fi
+
+package-cmake-install-archive \
+    -DARM_DYNAREC=${ENABLE_ARM_DYNAREC} \
+    -DPython3_EXECUTABLE=${PYTHON}

@@ -22,8 +22,14 @@ fi
 # qemu build
 package-invoke-builder qemu-cross 6
 
-
 if [ "${HOST_OS}" = "gnu" ]; then
-    # box64 build
-    package-invoke-builder box64-cross 0
+    if [ "${HOST_PROCESSOR}" = "armv7a" ] ||
+       [ "${HOST_PROCESSOR}" = "i686" ]; then
+        # box86 build
+        package-invoke-builder box86-cross 0
+    elif [ "${HOST_PROCESSOR}" = "aarch64" ] ||
+         [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+        # box64 build
+        package-invoke-builder box64-cross 0
+    fi
 fi
