@@ -26,21 +26,31 @@ ENABLE_OR_DISABLE_SDL=enable
 ENABLE_OR_DISABLE_SPICE=enable
 ENABLE_OR_DISABLE_VIRGLRENDERER=enable
 TARGET_LIST=`${ECHO} "\
-    aarch64-softmmu \
     arm-softmmu \
     i386-softmmu \
     riscv32-softmmu \
-    riscv64-softmmu \
-    x86_64-softmmu \
 " | ${XARGS}`
 LINUX_USER_TARGETS=`${ECHO} "\
-    aarch64-linux-user \
-    aarch64_be-linux-user \
     arm-linux-user \
     armeb-linux-user \
     i386-linux-user \
-    x86_64-linux-user \
 " | ${XARGS}`
+
+if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
+   [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    TARGET_LIST=`${ECHO} "\
+        aarch64-softmmu \
+        riscv64-softmmu \
+        x86_64-softmmu \
+        ${TARGET_LIST} \
+    " | ${XARGS}`
+    LINUX_USER_TARGETS=`${ECHO} "\
+        aarch64-linux-user \
+        aarch64_be-linux-user \
+        x86_64-linux-user \
+        ${LINUX_USER_TARGETS} \
+    " | ${XARGS}`
+fi
 
 if [ "${HOST_OS}" = "android" ] ||
    [ "${HOST_OS}" = "musl" ]; then
