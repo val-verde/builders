@@ -31,9 +31,20 @@ package-invoke-category-builder graphics-sdk-cross
 # virtualization sdk build
 package-invoke-category-builder virtualization-sdk-cross
 
-# node + sdk build
-# package-invoke-builder node-cross 17
-# package-invoke-builder npm-yarn-cross 1
+if [ -n "${ENABLE_NODE_DARWIN}" ]; then
+if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
+   [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    if [ "${BUILD_PROCESSOR}" = "x86_64" ] ||
+       [ "${HOST_PROCESSOR}" != "x86_64" ]; then
+        # node + sdk build
+        package-invoke-builder node-cross 17
+        package-invoke-builder npm-yarn-cross 1
+
+        # yautja server build
+        # package-invoke-builder yarn-yautja-server-cross 1
+    fi
+fi
+fi
 
 # blockchain sdk build
 package-invoke-category-builder blockchain-sdk-cross

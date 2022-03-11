@@ -66,14 +66,17 @@ package-invoke-category-builder graphics-sdk-cross
 # android virtualization sdk build
 # package-invoke-category-builder virtualization-sdk-cross
 
-# android node + sdk build
-if [ "${BUILD_PROCESSOR}" = "x86_64" ] ||
-   [ "${HOST_PROCESSOR}" != "x86_64" ]; then
-    package-invoke-builder node-cross 17
-    package-invoke-builder npm-yarn-cross 1
+if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
+   [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    if [ "${BUILD_PROCESSOR}" = "x86_64" ] ||
+       [ "${HOST_PROCESSOR}" != "x86_64" ]; then
+        # android node + sdk build
+        package-invoke-builder node-cross 17
+        package-invoke-builder npm-yarn-cross 1
 
-    # yautja server build
-    # package-invoke-builder yarn-yautja-server-cross 1
+        # android yautja server build
+        # package-invoke-builder yarn-yautja-server-cross 1
+    fi
 fi
 
 # android blockchain sdk build
