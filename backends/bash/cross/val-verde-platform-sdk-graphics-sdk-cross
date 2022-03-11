@@ -141,9 +141,12 @@ package-invoke-builder sdl-net-cross 2
 # sdl-ttf build
 package-invoke-builder sdl-ttf-cross 2
 
-# filament build
-ENABLE_STAGE_ROOT_BUILD=TRUE \
-package-invoke-builder filament-cross 1
+if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
+   [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    # filament build
+    ENABLE_STAGE_ROOT_BUILD=TRUE \
+    package-invoke-builder filament-cross 1
+fi
 
 # eigen build
 package-invoke-builder eigen-cross 3
