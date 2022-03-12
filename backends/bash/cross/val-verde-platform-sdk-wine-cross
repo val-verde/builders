@@ -32,14 +32,15 @@ if [ "${HOST_OS}" = "musl" ] ||
     WITH_OR_WITHOUT_UDEV=with
 fi
 
+DISABLE_FPIC=TRUE \
 ENABLE_LD_AS_CCLD=TRUE \
 FREETYPE_CFLAGS="-I${PACKAGE_PREFIX}/include/freetype2" \
 FREETYPE_LIBS="-lfreetype" \
 WINEBUILD=${WINEBUILD} \
 package-stage-configure-install-archive \
     ac_cv_lib_soname_freetype=`package-get-filename freetype SHARED HOST` \
+    --with-mingw=${STAGE_ROOT}/host-clang \
     --with-unwind \
-    --without-vkd3d \
+    --${WITH_OR_WITHOUT_UDEV}-udev \
     ${CROSS_CMD} \
-    ${ENABLE_WINE64_CMD} \
-    --${WITH_OR_WITHOUT_UDEV}-udev
+    ${ENABLE_WINE64_CMD}

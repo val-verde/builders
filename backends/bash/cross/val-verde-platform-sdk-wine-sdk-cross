@@ -8,7 +8,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # wine build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
-package-invoke-builder wine-cross 6
+package-invoke-builder wine-cross 7
 
 if [ "${HOST_OS}" = "mingw32" ]; then
     # dxvk-cross build

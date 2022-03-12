@@ -2876,7 +2876,7 @@
         "sourceType": "git",
         "sourcePackageName": "wine",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "6",
+        "sourcePackageVersion": "7",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
