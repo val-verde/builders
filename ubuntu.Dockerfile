@@ -113,18 +113,36 @@ COPY backends/bash/windows-base \
 RUN HOST_ARCH=westmere \
     HOST_CPU=westmere \
     HOST_KERNEL=w64 \
-    HOST_OS=mingw32 \
-    HOST_OS_API_LEVEL= \
+    HOST_OS=mingw \
+    HOST_OS_API_LEVEL=64 \
     HOST_PROCESSOR=x86_64 \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows-base
+
+# windows-i686 environment
+RUN HOST_ARCH=westmere \
+    HOST_CPU=westmere \
+    HOST_KERNEL=w64 \
+    HOST_OS=mingw \
+    HOST_OS_API_LEVEL=32 \
+    HOST_PROCESSOR=i686 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows-base
 
 # windows-aarch64 environment
 RUN HOST_ARCH=armv8-a \
-    HOST_CPU=cortex-a57 \
+    HOST_CPU=apple-m1 \
     HOST_KERNEL=w64 \
-    HOST_OS=mingw32 \
-    HOST_OS_API_LEVEL= \
+    HOST_OS=mingw \
+    HOST_OS_API_LEVEL=64 \
     HOST_PROCESSOR=aarch64 \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows-base
+
+# windows-armv7a environment
+RUN HOST_ARCH=armv7-a+fp \
+    HOST_CPU=apple-m1 \
+    HOST_KERNEL=w64 \
+    HOST_OS=mingw \
+    HOST_OS_API_LEVEL=32 \
+    HOST_PROCESSOR=armv7a \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows-base
 
 # webassembly system base package builders
@@ -309,17 +327,17 @@ COPY backends/bash/windows \
 RUN HOST_ARCH=westmere \
     HOST_CPU=westmere \
     HOST_KERNEL=w64 \
-    HOST_OS=mingw32 \
-    HOST_OS_API_LEVEL= \
+    HOST_OS=mingw \
+    HOST_OS_API_LEVEL=64 \
     HOST_PROCESSOR=x86_64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows
 
 # windows-aarch64 environment
 RUN HOST_ARCH=armv8-a \
-    HOST_CPU=cortex-a57 \
+    HOST_CPU=apple-m1 \
     HOST_KERNEL=w64 \
-    HOST_OS=mingw32 \
-    HOST_OS_API_LEVEL= \
+    HOST_OS=mingw \
+    HOST_OS_API_LEVEL=64 \
     HOST_PROCESSOR=aarch64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows
 
