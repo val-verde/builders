@@ -19,7 +19,7 @@ function package-install-completion-callback() {
                   ${STAGE_ROOT}/alive${EXECUTABLE_SUFFIX} \
                   ${INSTALL_PREFIX}/bin/
 
-    if [ "${HOST_OS}" = "mingw32" ]; then
+    if [ "${HOST_OS}" = "mingw" ]; then
         package-rsync -ax \
                       ${STAGE_ROOT}/libalive2.dll \
                       ${INSTALL_PREFIX}/bin/

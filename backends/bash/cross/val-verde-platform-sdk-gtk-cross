@@ -10,7 +10,7 @@ ENABLE_OR_DISABLE_CUPS=enabled
 ENABLE_WAYLAND=true
 
 if [ "${HOST_OS}" = "macos" ] ||
-   [ "${HOST_OS}" = "mingw32" ]; then
+   [ "${HOST_OS}" = "mingw" ]; then
     ENABLE_OR_DISABLE_CUPS=disabled
 fi
 

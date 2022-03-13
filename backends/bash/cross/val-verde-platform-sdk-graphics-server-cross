@@ -36,7 +36,7 @@ package-invoke-builder xorg-libxau-cross 1
 package-invoke-builder pixman-cross 1
 
 if [ "${HOST_OS}" != "macos" ] &&
-   [ "${HOST_OS}" != "mingw32" ]; then
+   [ "${HOST_OS}" != "mingw" ]; then
     # xorg-libpciaccess build
     package-invoke-builder xorg-libpciaccess-cross 0
 fi
@@ -108,7 +108,7 @@ package-invoke-builder xcb-render-util-cross 0
 package-invoke-builder xorg-xcb-util-keysyms-cross 0
 
 
-if [ "${HOST_OS}" != "mingw32" ]; then
+if [ "${HOST_OS}" != "mingw" ]; then
     # xorg-libxt build
     package-invoke-builder xorg-libxt-cross 1
 
@@ -135,7 +135,7 @@ if [ "${HOST_OS}" != "mingw32" ]; then
 fi
 
 if [ "${HOST_OS}" != "macos" ] &&
-   [ "${HOST_OS}" != "mingw32" ]; then
+   [ "${HOST_OS}" != "mingw" ]; then
     # wayland build
     package-invoke-builder wayland-cross 1
 
@@ -143,7 +143,7 @@ if [ "${HOST_OS}" != "macos" ] &&
     package-invoke-builder wayland-protocols-cross 1
 fi
 
-if [ "${HOST_OS}" != "mingw32" ]; then
+if [ "${HOST_OS}" != "mingw" ]; then
     # libxkbcommon build
     package-invoke-builder libxkbcommon-cross 1
 
@@ -160,7 +160,7 @@ package-invoke-builder opencl-headers-cross 2020
 # opencl icd loader build
 package-invoke-builder opencl-icd-loader-cross 2020
 
-if [ "${HOST_OS}" = "mingw32" ]; then
+if [ "${HOST_OS}" = "mingw" ]; then
     # egl headers build
     package-invoke-builder egl-headers-cross 1
 else

@@ -12,7 +12,7 @@ function glew-build() {
 
     if [ "${HOST_OS}" = "macos" ]; then
         CFLAGS="-DGLEW_APPLE_GLX=1 ${CFLAGS}"
-    elif [ "${HOST_OS}" = "mingw32" ]; then
+    elif [ "${HOST_OS}" = "mingw" ]; then
         GL_LIBS="-lgdi32 -lopengl32"
         unset GLEW_LN
     fi
@@ -46,7 +46,7 @@ SYSTEM=${HOST_OS}
 if [ "${HOST_OS}" = "android" ] ||
    [ "${HOST_OS}" = "musl" ]; then
     SYSTEM=linux
-elif [ "${HOST_OS}" = "mingw32" ]; then
+elif [ "${HOST_OS}" = "mingw" ]; then
     SYSTEM=linux-mingw64
 elif [ "${HOST_OS}" = "macos" ]; then
     SYSTEM=${DARWIN_OS}

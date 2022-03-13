@@ -25,7 +25,7 @@ function tool-install-invocation() {
 
 TIC=${TIC:-/usr/bin/tic}
 
-if [ "${HOST_OS}" = "mingw32" ]; then
+if [ "${HOST_OS}" = "mingw" ]; then
     ENABLE_OR_DISABLE_EXP_WIN32=enable
     ENABLE_OR_DISABLE_SIGWINCH=disable
     ENABLE_VERSIONED_SYMS=no

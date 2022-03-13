@@ -27,7 +27,7 @@ else
     OPENJDK_PROCESSOR=${HOST_PROCESSOR}
 fi
 
-if [ "${BUILD_OS}" = "mingw32" ]; then
+if [ "${BUILD_OS}" = "mingw" ]; then
     OPENJDK_OS=windows
 else
     OPENJDK_OS=${HOST_KERNEL}

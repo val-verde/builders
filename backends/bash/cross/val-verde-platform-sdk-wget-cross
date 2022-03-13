@@ -13,7 +13,7 @@ export DEPENDS="\
 
 # Invoke one-shot template for stage/configure/install
 
-if [ "${HOST_OS}" = "mingw32" ]; then
+if [ "${HOST_OS}" = "mingw" ]; then
     export LIBS="\
         -lbcrypt \
         ${LIBS} \

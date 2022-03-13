@@ -14,7 +14,7 @@ export DEPENDS="\
 "
 
 # Invoke one-shot template for bootstrap/configure/install
-if [ "${HOST_OS}" != "mingw32" ]; then
+if [ "${HOST_OS}" != "mingw" ]; then
     export DEPENDS="\
         ${DEPENDS}, \
         ${PACKAGE_BASE_NAME}-autogen-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0) \
@@ -24,7 +24,7 @@ fi
 ENABLE_OR_DISABLE_HARDWARE_ACCELERATION=enable
 UNBOUND_ROOT_KEY=/var/lib/unbound/root.key
 
-if [ "${HOST_OS}" = "mingw32" ]; then
+if [ "${HOST_OS}" = "mingw" ]; then
     if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
         ENABLE_OR_DISABLE_HARDWARE_ACCELERATION=disable
     fi

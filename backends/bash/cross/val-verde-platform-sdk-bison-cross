@@ -11,7 +11,7 @@ if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
     MAKEINFO=`package-get-path true EXECUTABLE BUILD`
 fi
 
-if [ "${HOST_OS}" = "mingw32" ]; then
+if [ "${HOST_OS}" = "mingw" ]; then
      HAS_FFSL=no
 else
      HAS_FFSL=yes

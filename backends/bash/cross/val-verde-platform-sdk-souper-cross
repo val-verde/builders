@@ -18,7 +18,7 @@ function package-install-completion-callback() {
                   `package-get-filename souper EXECUTABLE HOST` \
                   ${INSTALL_PREFIX}/bin/
 
-    if [ "${HOST_OS}" = "mingw32" ]; then
+    if [ "${HOST_OS}" = "mingw" ]; then
         package-rsync -ax \
                       libsouperPass${SHARED_LIBRARY_SUFFIX} \
                       libsouperPassProfileAll${SHARED_LIBRARY_SUFFIX} \
@@ -48,7 +48,7 @@ if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
     LLVM_CONFIG_EXECUTABLE=${LLVM_NATIVE_STAGE_ROOT}/bin/host-llvm-config
     export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${LLVM_NATIVE_STAGE_ROOT}/NATIVE/lib
 
-    if [ "${HOST_OS}" = "mingw32" ]; then
+    if [ "${HOST_OS}" = "mingw" ]; then
         USE_STATIC_LIBCLANG=TRUE
     fi
 fi

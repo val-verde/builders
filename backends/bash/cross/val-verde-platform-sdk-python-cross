@@ -60,7 +60,7 @@ if [ -n "${ENABLE_PIP}" ]; then
     ENSURE_PIP=yes
 fi
 
-if [ "${HOST_OS}" = "mingw32" ]; then
+if [ "${HOST_OS}" = "mingw" ]; then
     ADDITIONAL_LIBS="\
         -lcrypt32 \
         -lffi \

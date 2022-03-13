@@ -11,7 +11,7 @@ function package-install-completion-callback() {
         ${LN} -sf \
               `package-get-filename OSMesa SHARED HOST` \
               ${INSTALL_PREFIX}/lib/`package-get-filename GL SHARED HOST`
-    elif [ "${HOST_OS}" = "mingw32" ]; then
+    elif [ "${HOST_OS}" = "mingw" ]; then
         ${RM} -r \
               ${INSTALL_PREFIX}/include/GL \
               ${INSTALL_PREFIX}/include/KHR
@@ -57,7 +57,7 @@ elif [ "${HOST_OS}" = "gnu" ] ||
     OPENCL_MODE=icd
     STATIC_LIBCLC=
     VULKAN_DRIVERS="amd,broadcom,freedreno,intel,panfrost,swrast,virtio-experimental"
-elif [ "${HOST_OS}" = "mingw32" ]; then
+elif [ "${HOST_OS}" = "mingw" ]; then
     DRI3_ENABLED=disabled
     EGL_ENABLED=disabled
     GALLIUM_DRIVERS="swrast,zink"

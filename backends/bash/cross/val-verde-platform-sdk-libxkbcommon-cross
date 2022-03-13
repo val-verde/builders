@@ -9,7 +9,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 ENABLE_WAYLAND=false
 
 if [ "${HOST_OS}" = "macos" ] ||
-   [ "${HOST_OS}" = "mingw32" ]; then
+   [ "${HOST_OS}" = "mingw" ]; then
    ENABLE_WAYLAND=false
 fi
 

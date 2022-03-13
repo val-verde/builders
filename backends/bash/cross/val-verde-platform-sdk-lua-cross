@@ -13,7 +13,7 @@ copy-source-to-staging
 export-compiler-environment
 
 if [ "${HOST_OS}" != "macos" ] &&
-   [ "${HOST_OS}" != "mingw32" ]; then
+   [ "${HOST_OS}" != "mingw" ]; then
     MYCFLAGS="\
         -DDLUA_USE_LINUX \
     "

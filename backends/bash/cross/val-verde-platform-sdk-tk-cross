@@ -10,7 +10,7 @@ TCL_SYSTEM=Linux
 
 if [ "${HOST_OS}" = "macos" ]; then
     TCL_SYSTEM=Darwin
-elif [ "${HOST_OS}" = "mingw32" ]; then
+elif [ "${HOST_OS}" = "mingw" ]; then
     COMMON_CFLAGS="\
         -fms-extensions \
         ${COMMON_CFLAGS} \

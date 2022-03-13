@@ -29,7 +29,7 @@ if [ "${HOST_OS}" = "android" ]; then
         ${COMMON_CFLAGS} \
     "
     CONFIGURE_HOST_KERNEL=unknown
-elif [ "${HOST_OS}" = "mingw32" ]; then
+elif [ "${HOST_OS}" = "mingw" ]; then
     ADMIN_DIR=/
     CONFIGURE_HOST_KERNEL=unknown
 elif [ "${HOST_OS}" = "musl" ]; then

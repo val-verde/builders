@@ -20,7 +20,7 @@ package-invoke-archive-action uninstall ${PACKAGES_TO_MANAGE[@]}
 
 BUILDER_EXTENSION=cross
 
-if [ "${HOST_OS}" = "mingw32" ]; then
+if [ "${HOST_OS}" = "mingw" ]; then
     BUILDER_EXTENSION=windows
 fi
 
@@ -114,7 +114,7 @@ package-invoke-builder swift-doc-cross 5
 # sourcekit-lsp build
 package-invoke-builder sourcekit-lsp-${BUILDER_EXTENSION} 5
 
-if [ "${HOST_OS}" != "mingw32" ]; then
+if [ "${HOST_OS}" != "mingw" ]; then
     # baikonur build
     package-invoke-builder baikonur-cross 1
 fi

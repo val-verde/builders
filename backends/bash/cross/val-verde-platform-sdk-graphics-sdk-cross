@@ -66,7 +66,7 @@ fi
 
 if [ "${HOST_OS}" = "gnu" ] ||
    [ "${HOST_OS}" = "macos" ] ||
-   [ "${HOST_OS}" = "mingw32" ] ||
+   [ "${HOST_OS}" = "mingw" ] ||
    [ "${HOST_OS}" = "musl" ]; then
     # freeglut build
     package-invoke-builder freeglut-cross 3
@@ -93,7 +93,7 @@ package-invoke-builder libsass-cross 3
 
 if [ "${HOST_OS}" = "gnu" ] ||
    [ "${HOST_OS}" = "macos" ] ||
-   [ "${HOST_OS}" = "mingw32" ] ||
+   [ "${HOST_OS}" = "mingw" ] ||
    [ "${HOST_OS}" = "musl" ]; then
     # gtk build
     package-invoke-builder gtk-cross 4

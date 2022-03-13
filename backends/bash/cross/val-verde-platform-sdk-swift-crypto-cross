@@ -24,7 +24,7 @@ function package-install-completion-callback {
                   ${STAGE_ROOT}/lib \
                   ${INSTALL_PREFIX}/
 
-    if [ "${HOST_OS}" = "mingw32" ]; then
+    if [ "${HOST_OS}" = "mingw" ]; then
         package-rsync -ax \
                       ${STAGE_ROOT}/bin \
                       ${INSTALL_PREFIX}/

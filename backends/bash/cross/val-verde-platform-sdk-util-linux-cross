@@ -32,7 +32,7 @@ ENABLE_OR_DISABLE_LIBBLKID=enable
 ENABLE_OR_DISABLE_LIBSMARTCOLS=enable
 
 if [ "${HOST_OS}" = "macos" ] ||
-   [ "${HOST_OS}" = "mingw32" ]; then
+   [ "${HOST_OS}" = "mingw" ]; then
     COMMON_CFLAGS="\
         -lintl \
         ${COMMON_CFLAGS} \
@@ -40,7 +40,7 @@ if [ "${HOST_OS}" = "macos" ] ||
     ENABLE_OR_DISABLE_LIBMOUNT=disable
     ENABLE_OR_DISABLE_LIBUUID=disable
 
-    if [ "${HOST_OS}" = "mingw32" ]; then
+    if [ "${HOST_OS}" = "mingw" ]; then
         ENABLE_OR_DISABLE_LIBBLKID=disable
         ENABLE_OR_DISABLE_LIBSMARTCOLS=disable
     fi

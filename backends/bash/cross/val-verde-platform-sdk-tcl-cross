@@ -12,7 +12,7 @@ TCL_SYSTEM=Linux
 if [ "${HOST_OS}" = "macos" ]; then
     TCL_SYSTEM=Darwin
     ENABLE_OR_DISABLE_FRAMEWORK=enable
-elif [ "${HOST_OS}" = "mingw32" ]; then
+elif [ "${HOST_OS}" = "mingw" ]; then
     CONFIGURE_FILE_DIR=win
 fi
 
