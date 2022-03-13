@@ -51,7 +51,11 @@ function package-install-completion-callback() {
 }
 
 if [ "${HOST_PROCESSOR}" = "armv7a" ]; then
-    CLANG_HOST_PROCESSOR=armhf
+    if [ "${HOST_OS_API_LEVEL}" = "eabihf" ]; then
+        CLANG_HOST_PROCESSOR=armhf
+    else
+        CLANG_HOST_PROCESSOR=arm
+    fi
 elif [ "${HOST_PROCESSOR}" = "i686" ]; then
     CLANG_HOST_PROCESSOR=i386
 else
