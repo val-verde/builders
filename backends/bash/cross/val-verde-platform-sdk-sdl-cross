@@ -5,7 +5,7 @@ set -e
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-export DEPENDS="${PACKAGE_BASE_NAME}-vulkan-loader-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0)"
+export DEPENDS="${PACKAGE_BASE_NAME}-vulkan-loader-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}-${QUALIFIED_HOST_PROCESSOR} (>=1.0.0)"
 
 # Invoke one-shot template for cmake/install
 if [ "${HOST_OS}" = "android" ]; then

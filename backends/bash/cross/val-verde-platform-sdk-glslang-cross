@@ -5,7 +5,7 @@ set -e
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-export DEPENDS="${PACKAGE_BASE_NAME}-spirv-tools-2022-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0)"
+export DEPENDS="${PACKAGE_BASE_NAME}-spirv-tools-2022-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}-${QUALIFIED_HOST_PROCESSOR} (>=1.0.0)"
 
 # Configure the build components
 if [ "${HOST_OS}" = "android" ]; then

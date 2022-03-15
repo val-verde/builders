@@ -8,8 +8,8 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 if [ "${HOST_OS}" != "macos" ] &&
    [ "${HOST_OS}" != "mingw" ]; then
     export DEPENDS="\
-        ${PACKAGE_BASE_NAME}-acl-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
-        ${PACKAGE_BASE_NAME}-attr-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0) \
+        ${PACKAGE_BASE_NAME}-acl-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}-${QUALIFIED_HOST_PROCESSOR} (>=1.0.0), \
+        ${PACKAGE_BASE_NAME}-attr-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}-${QUALIFIED_HOST_PROCESSOR} (>=1.0.0) \
     "
 fi
 

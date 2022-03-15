@@ -6,18 +6,18 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export DEPENDS="\
-    ${PACKAGE_BASE_NAME}-libev-4-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-libtasn1-4-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-libunistring-0-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-nettle-3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-p11-kit-0-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0) \
+    ${PACKAGE_BASE_NAME}-libev-4-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}-${QUALIFIED_HOST_PROCESSOR} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-libtasn1-4-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}-${QUALIFIED_HOST_PROCESSOR} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-libunistring-0-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}-${QUALIFIED_HOST_PROCESSOR} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-nettle-3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}-${QUALIFIED_HOST_PROCESSOR} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-p11-kit-0-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}-${QUALIFIED_HOST_PROCESSOR} (>=1.0.0) \
 "
 
 # Invoke one-shot template for bootstrap/configure/install
 if [ "${HOST_OS}" != "mingw" ]; then
     export DEPENDS="\
         ${DEPENDS}, \
-        ${PACKAGE_BASE_NAME}-autogen-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0) \
+        ${PACKAGE_BASE_NAME}-autogen-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}-${QUALIFIED_HOST_PROCESSOR} (>=1.0.0) \
     "
 fi
 
