@@ -6,5 +6,4 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for bootstrap/configure/install
-BOOTSTRAP_FILE=bootstrap \
 package-bootstrap-configure-install-archive
