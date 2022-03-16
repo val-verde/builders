@@ -2874,6 +2874,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "wget",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "which",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2",
@@ -3365,13 +3374,6 @@
         "sourceBranchIndicator": "wget",
         "sourcePackageVersion": "60",
         "sourcePackageUrl": "ftp://ftp.info-zip.org/pub/infozip/src/${SOURCE_PACKAGE_NAME}${SOURCE_PACKAGE_VERSION}.tgz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "wget",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "1.21.1",
-        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
         "sourceType": "other",
