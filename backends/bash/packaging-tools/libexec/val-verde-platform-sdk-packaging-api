@@ -31,9 +31,7 @@ function package-archive-build-install() {
 }
 
 function package-archive-sign() {
-    if [ "${PACKAGE_ARCHIVE_CLASS}" = "rpm" ]; then
-        package-rpm-sign "${ARCHIVE_PATH}/${1}.rpm"
-    fi
+    package-${PACKAGE_ARCHIVE_CLASS}-sign-verify "${ARCHIVE_PATH}/${1}.${PACKAGE_ARCHIVE_CLASS}"
 }
 
 function package-archive-uninstall() {

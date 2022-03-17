@@ -437,6 +437,14 @@ function package-rpm-remove() {
     tool-log ${RPM} -e "${@}"
 }
 
+function package-rpm-sign() {
+    TOOL_LOG=${STAGE_ROOT}/builder-rpm-sign \
+    tool-log ${RPM}sign \
+        --define "_gpg_name <openvalverde@gmail.com>" \
+        --define "_gpg_sign_cmd_extra_args --pinentry-mode loopback --passphrase ${VAL_VERDE_GH_TEAM}" \
+        --addsign "${@}"
+}
+
 function package-rsync() {
     TOOL_LOG=${STAGE_ROOT}/builder-rsync \
     tool-log ${RSYNC} ${@}
