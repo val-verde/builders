@@ -51,6 +51,9 @@ COPY /source-archives/ \
 COPY backends/bash/sources \
      /sources/
 
+# Initialize container with gpg key setup
+RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gpg-setup
+
 RUN bash ${VAL_VERDE_GH_TEAM}-platform-sdk-sources-builder
 
 COPY /bootstrap-archives/ \
