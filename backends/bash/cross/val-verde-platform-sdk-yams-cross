@@ -46,7 +46,7 @@ RPATH_COMPONENTS="\
     ${INSTALL_PREFIX}/lib/swift/${SDK}/${SHARED_LIBRARY_PREFIX}*${SHARED_LIBRARY_SUFFIX} \
 " \
 package-cmake-install-archive \
-    -Ddispatch_DIR=${STAGE_ROOT_BASE}/swift-corelibs-libdispatch-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/cmake/modules \
+    -Ddispatch_DIR=${STAGE_ROOT_BASE}/swift-corelibs-libdispatch-5-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}-${QUALIFIED_HOST_PROCESSOR}/cmake/modules \
     -DBUILD_TESTING=FALSE \
-    -DFoundation_DIR=${STAGE_ROOT_BASE}/swift-corelibs-foundation-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/cmake/modules \
-    -DXCTest_DIR=${STAGE_ROOT_BASE}/swift-corelibs-xctest-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/cmake/modules
+    -DFoundation_DIR=${STAGE_ROOT_BASE}/swift-corelibs-foundation-5-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}-${QUALIFIED_HOST_PROCESSOR}/cmake/modules \
+    -DXCTest_DIR=${STAGE_ROOT_BASE}/swift-corelibs-xctest-5-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}-${QUALIFIED_HOST_PROCESSOR}/cmake/modules
