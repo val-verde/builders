@@ -91,7 +91,7 @@ ENV OPTIMIZATION_LEVEL=3
 
 RUN platform-invoke-builder gnu-bootstrap gnu-x86_64
 
-ENV BUILD_SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}/sysroot/usr/glibc-interface
+ENV BUILD_SYSROOT=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}-${BUILD_PROCESSOR}/sysroot/usr/glibc-interface
 
 COPY /archives/releases/${PACKAGE_ARCHIVE_CLASS} \
      ${RELEASE_ARCHIVE_PATH}
