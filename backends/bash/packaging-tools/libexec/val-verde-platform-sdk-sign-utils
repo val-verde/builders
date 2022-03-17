@@ -26,3 +26,10 @@ EOF
     gpg --batch --generate-key ${KEYFILE_NAME}
     gpg --armor --export openvalverde@gmail.com > ${KEYFILE_NAME}.gpg
 }
+
+function import-gpg-key() {
+    if [ "${PACKAGE_ARCHIVE_CLASS}" = "rpm" ]; then
+        rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'
+        rpm --import ${1}.gpg
+    fi
+}
