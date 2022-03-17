@@ -18,12 +18,21 @@ function package-archive-build-install() {
         ${PACKAGE_ARCHIVE_CLASS}-archive-build "${1}"
     fi
 
+    # Sign the package using gpg key
+    package-archive-sign "${1}"
+
     # Check if package is installed and needs to be uninstalled
     package-archive-uninstall "${1}"
 
     # Install the package
     if [ -z "${DISABLE_INSTALL_ARCHIVE}" ]; then
         ${PACKAGE_ARCHIVE_CLASS}-archive-install "${1}"
+    fi
+}
+
+function package-archive-sign() {
+    if [ "${PACKAGE_ARCHIVE_CLASS}" = "rpm" ]; then
+        package-rpm-sign "${ARCHIVE_PATH}/${1}.rpm"
     fi
 }
 

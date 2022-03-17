@@ -8,7 +8,6 @@ function clean-up-root-gpg() {
 }
 
 function generate-gpg-key() {
-    export GNUPGHOME="/sources"
     KEYFILE_NAME=${KEYFILE_NAME:-${VAL_VERDE_GH_TEAM}}
     cat >${KEYFILE_NAME} <<EOF
         %echo Generating a basic OpenPGP key
