@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+source /sources/packaging-tools/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-sign-utils
+
+clean-up-root-gpg
+
+generate-gpg-key
+
+import-gpg-key ${VAL_VERDE_GH_TEAM}
