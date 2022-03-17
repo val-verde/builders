@@ -20,7 +20,7 @@ if [ "${HOST_OS}" = "android" ] ||
 fi
 
 # qemu build
-package-invoke-builder qemu-cross 6
+package-invoke-builder qemu-cross 7
 
 if [ "${HOST_OS}" = "gnu" ]; then
     if [ "${HOST_PROCESSOR}" = "armv7a" ] ||
