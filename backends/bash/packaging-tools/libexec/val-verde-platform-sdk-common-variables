@@ -234,6 +234,17 @@ function package-deb-remove() {
     package-dpkg-tool remove --force-depends "${@}"
 }
 
+function package-deb-sign-verify() {
+    SIGNING_KEY=${SIGNING_KEY:-$(gpg -k | head -n 4 | tail -n 1 | tr -d ' ')}
+    GPG_TTY=$(tty) \
+    TOOL_LOG=${STAGE_ROOT}/builder-dpkg-sign \
+    tool-log dpkg-sig \
+        -s origin \
+        -k ${SIGNING_KEY} \
+        --gpg-options "--pinentry-mode loopback --passphrase ${VAL_VERDE_GH_TEAM}" \
+        "${@}"
+}
+
 function package-dpkg-tool() {
     TOOL_LOG=${STAGE_ROOT}/builder-dpkg-${1} \
     tool-log ${DPKG} "--${@}"
