@@ -61,6 +61,16 @@ function package-archive-check-existence() {
     fi
 }
 
+function package-archive-search() {
+    SEARCH_KEY=${SEARCH_PATH}/${SEARCH_INPUT}
+    if [ -f "${SEARCH_KEY}.${SEARCH_EXTENSION}" ]; then
+        FILE_EXISTS='TRUE'
+        SEARCH_RESULTS=`compgen -G "${SEARCH_KEY}*"`
+    else
+        FILE_EXISTS='FALSE'
+    fi
+}
+
 function deb-archive-build() {
     package-push-directory ${INSTALL_ROOT}
         ${RM} -rf ${ARCHIVE_ROOT}

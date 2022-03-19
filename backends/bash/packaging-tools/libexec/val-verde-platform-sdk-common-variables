@@ -467,16 +467,6 @@ function package-zip() {
     tool-log ${ZIP} ${@}
 }
 
-function tool-check() {
-    SEARCH_KEY=${SEARCH_PATH}/${SEARCH_INPUT}
-    if [ -f "${SEARCH_KEY}.${SEARCH_EXTENSION}" ]; then
-        FILE_EXISTS='TRUE'
-        SEARCH_RESULTS=`compgen -G "${SEARCH_KEY}*"`
-    else
-        FILE_EXISTS='FALSE'
-    fi
-}
-
 function tool-log() {
     if [ -z "${DISABLE_TOOL_LOG}" ]; then
         "${@}" > ${TOOL_LOG}.log \
