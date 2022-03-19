@@ -29,7 +29,7 @@ function derive-upstream-source-url() {
     fi
 }
 
-function determine-git-source-package() {
+function determine-git-upstream-source-package-branch() {
     if [[ ${SOURCE_BRANCH_IND} == "default" ]]; then
         SOURCE_BRANCH=val-verde-mainline
     elif [[ ${SOURCE_BRANCH_IND} == "default-next" ]]; then
@@ -90,33 +90,6 @@ function get-source-package-metadata() {
 
 function get-source-package-count() {
     sourceCount=$(jq -r length ${SOURCE_FILE})
-}
-
-function prepare-source-base() {
-    # Determine package url
-    derive-upstream-source-url
-
-    # Set source package details
-    if [[  ${SOURCE_TYPE} = 'git' ]]; then
-        determine-git-source-package
-    fi
-
-    # Set source package name metadata
-    SOURCE_PACKAGE_NAME_VERSION=`derive-source-package-name-version`
-    package-get-qualified-source-package-name "${SOURCE_PACKAGE_NAME_VERSION}"
-
-    export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources/${SOURCE_PACKAGE_NAME_VERSION} \
-           INSTALL_ROOT=${TEMP_ROOT_BASE}/${SOURCE_PACKAGE_NAME_VERSION} \
-           STAGE_ROOT=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME_VERSION} \
-           DEB_PATH=${SOURCE_ARCHIVE_PATH}
-    
-    export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX}
-
-    # Check if the source deb exists
-    SEARCH_PATH=${SOURCE_ARCHIVE_PATH} \
-    SEARCH_INPUT=${PACKAGE_NAME} \
-    SEARCH_EXTENSION=${PACKAGE_ARCHIVE_CLASS} \
-    tool-check
 }
 
 function prepare-stage-root() {

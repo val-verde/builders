@@ -12,69 +12,55 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-utils
 
 function build-install-git-source-package() {
-    # Set up paths and dirs
-    prepare-source-base
+    # Print source builder context
+    emit-source-builder-context
 
-    if [ "${FILE_EXISTS}" = 'TRUE' ]; then
-        ${ECHO} -e "    Skipping source build: \e[1;32m${PACKAGE_NAME}\e[0m"
-    else
-        # Print source builder context
-        emit-source-builder-context
+    # Set up stage root for source build
+    prepare-stage-root
 
-        # Set up stage root for source build
-        prepare-stage-root
+    GIT_URL=${PACKAGE_URL} \
+    TARGET_ROOT=${INSTALL_PREFIX} \
+    RETAIN_SOURCE=${RETAIN_SOURCE} \
+    DEPTH=${DEPTH} \
+    package-git-clone ${SOURCE_BRANCH}
 
-        GIT_URL=${PACKAGE_URL} \
-        TARGET_ROOT=${INSTALL_PREFIX} \
-        RETAIN_SOURCE=${RETAIN_SOURCE} \
-        DEPTH=${DEPTH} \
-        package-git-clone ${SOURCE_BRANCH}
+    # Prepare source root
+    package-push-directory ${INSTALL_PREFIX}
+        if [ "${RETAIN_SOURCE}" = 'false' ]; then
+            ${RM} -rf .git*
+            ${RM} -rf "^.git*"
+            package-git-init
+            package-git-add -A
+            package-git-commit -m "Val verde source base commit."
+        fi
+    package-pop-directory
 
-        # Prepare source root
-        package-push-directory ${INSTALL_PREFIX}
-            if [ "${RETAIN_SOURCE}" = 'false' ]; then
-                ${RM} -rf .git*
-                ${RM} -rf "^.git*"
-                package-git-init
-                package-git-add -A
-                package-git-commit -m "Val verde source base commit."
-            fi
-        package-pop-directory
+    # Build the source archive package
+    DISABLE_INSTALL_ARCHIVE=TRUE \
+    package-archive-build-install "${PACKAGE_NAME}"
 
-        # Build the source archive package
-        DISABLE_INSTALL_ARCHIVE=TRUE \
-        package-archive-build-install "${PACKAGE_NAME}"
-
-        # Clean up
-        ${RM} -rf ${INSTALL_ROOT}
-        ${ECHO} -e "    Source Builder Completed"
-    fi
+    # Clean up
+    ${RM} -rf ${INSTALL_ROOT}
+    ${ECHO} -e "    Source Builder Completed"
 }
 
 function build-install-other-source-package() {
-    # Set up paths and dirs
-    prepare-source-base
+    # Print builder context message
+    emit-source-builder-context
 
-    if [ "${FILE_EXISTS}" = 'TRUE' ]; then
-        ${ECHO} -e "    Skipping source build: \e[1;32m${PACKAGE_NAME}\e[0m"
-    else
-        # Print builder context message
-        emit-source-builder-context
+    # Set up stage root for source build
+    prepare-stage-root
 
-        # Set up stage root for source build
-        prepare-stage-root
+    # Extract source package from tar ball
+    untar-tar-balls
 
-        # Extract source package from tar ball
-        untar-tar-balls
+    # Build the source archive package
+    DISABLE_INSTALL_ARCHIVE=TRUE \
+    package-archive-build-install "${PACKAGE_NAME}"
 
-        # Build the source archive package
-        DISABLE_INSTALL_ARCHIVE=TRUE \
-        package-archive-build-install "${PACKAGE_NAME}"
-
-        # Clean up
-        ${RM} -rf ${INSTALL_ROOT}
-        ${ECHO} -e "    Source Builder Completed"
-    fi
+    # Clean up
+    ${RM} -rf ${INSTALL_ROOT}
+    ${ECHO} -e "    Source Builder Completed"
 }
 
 function fetch-single-source() {
@@ -87,6 +73,7 @@ function fetch-single-source() {
     query-single-source
 
     if [[ ${SOURCE_TYPE} == "git" ]]; then
+        determine-git-upstream-source-package-branch
         build-install-git-source-package
     elif [[ ${SOURCE_TYPE} == "other" ]]; then
         build-install-other-source-package
@@ -119,10 +106,31 @@ function fetch-sources() {
             PACKAGE_VERSION=$(package-get-major-version ${SOURCE_PACKAGE_VERSION}) \
             derive-upstream-source-url
 
-            if [[ ${SOURCE_TYPE} = 'git' ]]; then
-                build-install-git-source-package
-            elif [[ ${SOURCE_TYPE} = 'other' ]]; then
-                build-install-other-source-package
+            # Set source package name metadata
+            SOURCE_PACKAGE_NAME_VERSION=`derive-source-package-name-version`
+            package-get-qualified-source-package-name "${SOURCE_PACKAGE_NAME_VERSION}"
+
+            # Check if the source archive exists
+            SEARCH_PATH=${SOURCE_ARCHIVE_PATH} \
+            SEARCH_INPUT=${PACKAGE_NAME} \
+            SEARCH_EXTENSION=${PACKAGE_ARCHIVE_CLASS} \
+            package-archive-search
+
+            if [ "${FILE_EXISTS}" = 'TRUE' ]; then
+                ${ECHO} -e "    Skipping source build: \e[1;32m${PACKAGE_NAME}\e[0m"
+            else
+                export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources/${SOURCE_PACKAGE_NAME_VERSION} \
+                       INSTALL_ROOT=${TEMP_ROOT_BASE}/${SOURCE_PACKAGE_NAME_VERSION} \
+                       STAGE_ROOT=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME_VERSION}
+
+                export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX}
+
+                if [[ ${SOURCE_TYPE} = 'git' ]]; then
+                    determine-git-upstream-source-package-branch
+                    build-install-git-source-package
+                elif [[ ${SOURCE_TYPE} = 'other' ]]; then
+                    build-install-other-source-package
+                fi
             fi
         done
 
