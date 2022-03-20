@@ -234,7 +234,7 @@ COPY backends/bash/darwin \
      /sources/
 
 RUN DARWIN_OS=darwin \
-    DARWIN_OS_API_LEVEL=20 \
+    DARWIN_OS_API_LEVEL=21 \
     HOST_ARCH=westmere \
     HOST_CPU=westmere \
     HOST_KERNEL=apple \
@@ -246,7 +246,7 @@ RUN DARWIN_OS=darwin \
 
 # macos-x86_64 environment
 RUN DARWIN_OS=darwin \
-    DARWIN_OS_API_LEVEL=20 \
+    DARWIN_OS_API_LEVEL=21 \
     HOST_ARCH=westmere \
     HOST_CPU=westmere \
     HOST_KERNEL=apple \
@@ -257,7 +257,7 @@ RUN DARWIN_OS=darwin \
 
 # macos-aarch64 environment
 RUN DARWIN_OS=darwin \
-    DARWIN_OS_API_LEVEL=20 \
+    DARWIN_OS_API_LEVEL=21 \
     HOST_ARCH=armv8-a \
     HOST_CPU=apple-m1 \
     HOST_KERNEL=apple \
