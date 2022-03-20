@@ -1565,6 +1565,7 @@ function package-meson-build-invocation() {
     BACKEND=${BACKEND:-ninja}
     BUILD_TYPE=${BUILD_TYPE:-custom}
     CONFIG_FILE=${STAGE_ROOT}/builder-meson.config
+    MESON_OPTIMIZATION_LEVEL=${MESON_OPTIMIZATION_LEVEL:-${OPTIMIZATION_LEVEL}}
     MESON_PREFIX=${MESON_PREFIX:-${PACKAGE_PLATFORM_SYSROOT}}
     DEBUG=${DEBUG:-false}
     ENDIAN=${ENDIAN:-little}
@@ -1747,6 +1748,7 @@ ${MESON_EXTRA_PROPERTIES}
          -Dlocaledir=${PACKAGE_USR_PREFIX}/share/locale \
          -Dlocalstatedir=var \
          -Dmandir=${PACKAGE_USR_PREFIX}/share/man \
+         -Doptimization=${MESON_OPTIMIZATION_LEVEL} \
          -Dprefix=${MESON_PREFIX} \
          -Dsbindir=sbin \
          -Dsysconfdir=etc \

@@ -34,6 +34,5 @@ package-meson-install-archive \
     -Dinstall-tests=false \
     -Dintrospection=disabled \
     -Dman-pages=false \
-    -Doptimization=${OPTIMIZATION_LEVEL} \
     -Dprint-cups=${ENABLE_OR_DISABLE_CUPS} \
     -Dwayland-backend=${ENABLE_WAYLAND}

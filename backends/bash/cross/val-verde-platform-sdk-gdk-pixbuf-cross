@@ -13,5 +13,4 @@ package-meson-install-archive \
     -Dinstalled_tests=false \
     -Dintrospection=disabled \
     -Dman=false \
-    -Doptimization=${OPTIMIZATION_LEVEL} \
     -Dpng=true
