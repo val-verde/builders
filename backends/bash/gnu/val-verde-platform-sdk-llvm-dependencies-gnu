@@ -571,6 +571,9 @@ package-invoke-builder systemd 250
 # p11-kit build
 package-invoke-builder p11-kit-cross 0
 
+# shadow-utils build
+package-invoke-builder shadow-utils-cross 4
+
 # dbus build
 package-invoke-builder dbus-cross 1
 

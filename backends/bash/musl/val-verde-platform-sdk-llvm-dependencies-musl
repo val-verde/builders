@@ -376,6 +376,9 @@ package-invoke-category-builder graphics-server-cross
 # graphviz build
 package-invoke-builder graphviz-cross 2
 
+# shadow-utils build
+package-invoke-builder shadow-utils-cross 4
+
 # dbus build
 package-invoke-builder dbus-cross 1
 
