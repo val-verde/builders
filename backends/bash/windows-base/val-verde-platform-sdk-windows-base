@@ -42,6 +42,7 @@ export \
     PERL=/usr/bin/perl \
     PYTHON=/usr/bin/python3 \
     READLINK=/usr/bin/readlink \
+    REALPATH=/usr/bin/realpath \
     RM="/usr/bin/rm -f" \
     RMDIR=/usr/bin/rmdir \
     RPM=/usr/bin/rpm \
