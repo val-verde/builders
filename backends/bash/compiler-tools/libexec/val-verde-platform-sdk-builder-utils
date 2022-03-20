@@ -1565,8 +1565,10 @@ function package-meson-build-invocation() {
     BACKEND=${BACKEND:-ninja}
     BUILD_TYPE=${BUILD_TYPE:-custom}
     CONFIG_FILE=${STAGE_ROOT}/builder-meson.config
+    MESON_ENABLE_WERROR=${MESON_ENABLE_WERROR:-false}
     MESON_OPTIMIZATION_LEVEL=${MESON_OPTIMIZATION_LEVEL:-${OPTIMIZATION_LEVEL}}
     MESON_PREFIX=${MESON_PREFIX:-${PACKAGE_PLATFORM_SYSROOT}}
+    MESON_WARNING_LEVEL=${MESON_WARNING_LEVEL:-0}
     DEBUG=${DEBUG:-false}
     ENDIAN=${ENDIAN:-little}
     BUILD_SYSTEM=${BUILD_OS}
@@ -1597,6 +1599,12 @@ function package-meson-build-invocation() {
         MESON_CXX_STANDARD=c++${CXX_STANDARD}
     else
         MESON_CXX_STANDARD=none
+    fi
+
+    if [ -z "${DISABLE_STRIP}" ]; then
+        MESON_ENABLE_STRIP=true
+    else
+        MESON_ENABLE_STRIP=false
     fi
 
     HOST_CMAKE_PREFIXES="${PACKAGE_PREFIX}/lib/cmake:${PKG_CONFIG_LIBDIR}"
@@ -1739,6 +1747,7 @@ ${MESON_EXTRA_PROPERTIES}
     tool-log ${MESON} \
          ${SOURCE_ROOT} \
          ${STAGE_ROOT} \
+         -Dbackend=ninja \
          -Dbindir=${PACKAGE_USR_PREFIX}/bin \
          -Ddatadir=${PACKAGE_USR_PREFIX}/share \
          -Dincludedir=${PACKAGE_USR_PREFIX}/include \
@@ -1751,8 +1760,11 @@ ${MESON_EXTRA_PROPERTIES}
          -Doptimization=${MESON_OPTIMIZATION_LEVEL} \
          -Dprefix=${MESON_PREFIX} \
          -Dsbindir=sbin \
+         -Dstrip=${MESON_ENABLE_STRIP} \
          -Dsysconfdir=etc \
          -Dsharedstatedir=var/lib \
+         -Dwarning_level=${MESON_WARNING_LEVEL} \
+         -Dwerror=${MESON_ENABLE_WERROR} \
          --${MESON_BUILD_CONFIG}-file ${CONFIG_FILE} \
          "${@}"
 }
