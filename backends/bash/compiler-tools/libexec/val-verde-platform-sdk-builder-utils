@@ -1567,7 +1567,8 @@ function package-meson-build-invocation() {
     CONFIG_FILE=${STAGE_ROOT}/builder-meson.config
     MESON_ENABLE_WERROR=${MESON_ENABLE_WERROR:-false}
     MESON_OPTIMIZATION_LEVEL=${MESON_OPTIMIZATION_LEVEL:-${OPTIMIZATION_LEVEL}}
-    MESON_PREFIX=${MESON_PREFIX:-${PACKAGE_PLATFORM_SYSROOT}}
+    MESON_PREFIX=${MESON_PREFIX:-${PACKAGE_PREFIX}}
+    MESON_ROOT_PREFIX=${MESON_ROOT_PREFIX:-`${REALPATH} -m --relative-to=${PACKAGE_PREFIX} ${PACKAGE_PLATFORM_SYSROOT}`}
     MESON_WARNING_LEVEL=${MESON_WARNING_LEVEL:-0}
     DEBUG=${DEBUG:-false}
     ENDIAN=${ENDIAN:-little}
@@ -1748,21 +1749,21 @@ ${MESON_EXTRA_PROPERTIES}
          ${SOURCE_ROOT} \
          ${STAGE_ROOT} \
          -Dbackend=ninja \
-         -Dbindir=${PACKAGE_USR_PREFIX}/bin \
-         -Ddatadir=${PACKAGE_USR_PREFIX}/share \
-         -Dincludedir=${PACKAGE_USR_PREFIX}/include \
-         -Dinfodir=${PACKAGE_USR_PREFIX}/share/info \
-         -Dlibdir=${PACKAGE_USR_PREFIX}/lib \
-         -Dlibexecdir=${PACKAGE_USR_PREFIX}/libexec \
-         -Dlocaledir=${PACKAGE_USR_PREFIX}/share/locale \
-         -Dlocalstatedir=var \
-         -Dmandir=${PACKAGE_USR_PREFIX}/share/man \
+         -Dbindir=bin \
+         -Ddatadir=share \
+         -Dincludedir=include \
+         -Dinfodir=share/info \
+         -Dlibdir=lib \
+         -Dlibexecdir=libexec \
+         -Dlocaledir=share/locale \
+         -Dlocalstatedir=${MESON_ROOT_PREFIX}/var \
+         -Dmandir=share/man \
          -Doptimization=${MESON_OPTIMIZATION_LEVEL} \
          -Dprefix=${MESON_PREFIX} \
-         -Dsbindir=sbin \
+         -Dsbindir=${MESON_ROOT_PREFIX}/sbin \
          -Dstrip=${MESON_ENABLE_STRIP} \
-         -Dsysconfdir=etc \
-         -Dsharedstatedir=var/lib \
+         -Dsysconfdir=${MESON_ROOT_PREFIX}/etc \
+         -Dsharedstatedir=${MESON_ROOT_PREFIX}/var/lib \
          -Dwarning_level=${MESON_WARNING_LEVEL} \
          -Dwerror=${MESON_ENABLE_WERROR} \
          --${MESON_BUILD_CONFIG}-file ${CONFIG_FILE} \
