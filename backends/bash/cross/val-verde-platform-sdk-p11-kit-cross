@@ -12,7 +12,5 @@ else
     FEATURE_SYSTEMD=disabled
 fi
 
-DESTDIR=${INSTALL_ROOT}${PACKAGE_PLATFORM_SYSROOT} \
 package-meson-install-archive \
-    -Dprefix=/ \
     -Dsystemd=${FEATURE_SYSTEMD}

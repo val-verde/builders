@@ -14,7 +14,12 @@ export DEPENDS="\
 "
 
 # Invoke one-shot template for meson/install
-DESTDIR=${INSTALL_ROOT}${PACKAGE_PLATFORM_SYSROOT} \
+function package-install-completion-callback() {
+    ${MV} ${INSTALL_ROOT}/var \
+          ${INSTALL_ROOT}/${PACKAGE_PLATFORM_SYSROOT}/
+}
+
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-meson-install-archive \
     -Dapparmor=false \
     -Daudit=false \
@@ -41,7 +46,6 @@ package-meson-install-archive \
     -Dlink-timesyncd-shared=true \
     -Dlink-udev-shared=true \
     -Dlocaled=true \
-    -Dlocaledir=${PACKAGE_USR_PREFIX}/share/locale \
     -Dlogind=true \
     -Dlz4=true \
     -Dmachined=true \
@@ -52,17 +56,17 @@ package-meson-install-archive \
     -Doomd=true \
     -Dp11kit=true \
     -Dportabled=true \
-    -Dprefix=/ \
     -Dpstore=true \
     -Dremote=true \
     -Drepart=false \
     -Dresolve=true \
-    -Drootprefix=/ \
-    -Drootlibdir=/${PACKAGE_USR_PREFIX}/lib \
+    -Drootprefix=${PACKAGE_PLATFORM_SYSROOT} \
+    -Drootlibdir=${PACKAGE_PREFIX}/lib \
     -Dseccomp=false \
     -Dselinux=false \
     -Dstandalone-binaries=true \
     -Dsysext=true \
+    -Dsysvinit-path=${PACKAGE_PLATFORM_SYSROOT}/etc/init.d \
     -Dtimedated=true \
     -Dtimesyncd=true \
     -Dtpm=true \

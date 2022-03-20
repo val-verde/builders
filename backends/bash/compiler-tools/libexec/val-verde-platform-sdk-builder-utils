@@ -1565,6 +1565,7 @@ function package-meson-build-invocation() {
     BACKEND=${BACKEND:-ninja}
     BUILD_TYPE=${BUILD_TYPE:-custom}
     CONFIG_FILE=${STAGE_ROOT}/builder-meson.config
+    MESON_PREFIX=${MESON_PREFIX:-${PACKAGE_PLATFORM_SYSROOT}}
     DEBUG=${DEBUG:-false}
     ENDIAN=${ENDIAN:-little}
     BUILD_SYSTEM=${BUILD_OS}
@@ -1740,12 +1741,16 @@ ${MESON_EXTRA_PROPERTIES}
          -Dbindir=${PACKAGE_USR_PREFIX}/bin \
          -Ddatadir=${PACKAGE_USR_PREFIX}/share \
          -Dincludedir=${PACKAGE_USR_PREFIX}/include \
+         -Dinfodir=${PACKAGE_USR_PREFIX}/share/info \
          -Dlibdir=${PACKAGE_USR_PREFIX}/lib \
          -Dlibexecdir=${PACKAGE_USR_PREFIX}/libexec \
+         -Dlocaledir=${PACKAGE_USR_PREFIX}/share/locale \
          -Dlocalstatedir=var \
-         -Dprefix=${PACKAGE_PLATFORM_SYSROOT} \
+         -Dmandir=${PACKAGE_USR_PREFIX}/share/man \
+         -Dprefix=${MESON_PREFIX} \
          -Dsbindir=sbin \
          -Dsysconfdir=etc \
+         -Dsharedstatedir=var/lib \
          --${MESON_BUILD_CONFIG}-file ${CONFIG_FILE} \
          "${@}"
 }
