@@ -375,6 +375,9 @@ package-invoke-builder pkg-config-cross 0
 # android graphics server build
 package-invoke-category-builder graphics-server-cross
 
+# android pulseaudio build
+package-invoke-builder pulseaudio-cross 15
+
 # android itstool build
 package-invoke-builder itstool-cross 2
 

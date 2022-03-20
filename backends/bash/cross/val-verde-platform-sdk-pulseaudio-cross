@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for meson/install
+if [ "${HOST_OS}" = "macos" ]; then
+    ENABLE_OR_DISABLE_X11=disabled
+    PULSEAUDIO_DATABASE=gdbm
+elif [ "${HOST_OS}" = "mingw" ]; then
+    ENABLE_OR_DISABLE_X11=disabled
+    PULSEAUDIO_DATABASE=simple
+else
+    ENABLE_OR_DISABLE_X11=enabled
+    PULSEAUDIO_DATABASE=gdbm
+fi
+
+package-meson-install-archive \
+    -Ddatabase=${PULSEAUDIO_DATABASE} \
+    -Ddoxygen=false \
+    -Dtests=false \
+    -Dx11=${ENABLE_OR_DISABLE_X11}

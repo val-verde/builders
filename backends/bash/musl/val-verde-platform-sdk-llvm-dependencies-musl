@@ -376,6 +376,9 @@ package-invoke-builder pkg-config-cross 0
 # graphics server build
 package-invoke-category-builder graphics-server-cross
 
+# pulseaudio build
+package-invoke-builder pulseaudio-cross 15
+
 # graphviz build
 package-invoke-builder graphviz-cross 2
 

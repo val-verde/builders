@@ -307,6 +307,9 @@ package-invoke-builder pkg-config-cross 0
 # windows graphics server build
 package-invoke-category-builder graphics-server-cross
 
+# windows pulseaudio build
+package-invoke-builder pulseaudio-cross 15
+
 # windows itstool build
 package-invoke-builder itstool-cross 2
 
