@@ -59,7 +59,7 @@
         "sourceType": "git",
         "sourcePackageName": "apple-xar",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "482",
+        "sourcePackageVersion": "483",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
