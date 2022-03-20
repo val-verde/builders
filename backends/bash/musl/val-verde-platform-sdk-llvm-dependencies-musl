@@ -379,6 +379,9 @@ package-invoke-builder graphviz-cross 2
 # shadow-utils build
 package-invoke-builder shadow-utils-cross 4
 
+# sudo build
+package-invoke-builder sudo-cross 1
+
 # dbus build
 package-invoke-builder dbus-cross 1
 

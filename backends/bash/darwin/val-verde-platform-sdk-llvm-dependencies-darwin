@@ -363,6 +363,9 @@ package-invoke-builder gtk-doc-cross 1
 # graphviz build
 package-invoke-builder graphviz-cross 2
 
+# sudo build
+package-invoke-builder sudo-cross 1
+
 # dbus build
 package-invoke-builder dbus-cross 1
 
