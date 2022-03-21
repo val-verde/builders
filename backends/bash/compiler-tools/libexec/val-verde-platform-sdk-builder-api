@@ -18,15 +18,23 @@ function package-invoke-category-builder() {
     ${ECHO}
 }
 
-function package-install-build-archive() {
-    if [[ "${1}"  == *"stage"* ]]; then
-        ARCHIVE_PATH=${STAGE_ROOT_ARCHIVE_PATH}
-    fi
-
+function package-invoke-install-archive() {
     package-get-packaging-api
-    ${ECHO} -e "    Skipping re-build: \e[1;35m${1}\e[0m"
+
     DISABLE_BUILD_ARCHIVE=TRUE \
     package-archive-build-install "${1}"
+}
+
+function package-install-existing-archive() {
+    ${ECHO} -e "    Skipping re-build: \e[1;35m${1}\e[0m"
+    ARCHIVE_PATH=${ARCHIVE_PATH} \
+    package-invoke-install-archive "${1}"
+
+    if [ -n "${ENABLE_STAGE_ROOT_BUILD}" ]; then
+        ${ECHO} -e "    Skipping re-build: \e[1;35m${1}-stage\e[0m"
+        ARCHIVE_PATH=${STAGE_ROOT_ARCHIVE_PATH} \
+        package-invoke-install-archive "${1}-stage"
+    fi
 }
 
 function package-invoke-archive-action() {
@@ -78,7 +86,7 @@ function package-invoke-builder() {
     SEARCH_PATH=${ARCHIVE_PATH} \
     SEARCH_INPUT=${PACKAGE_NAME} \
     SEARCH_EXTENSION=${PACKAGE_ARCHIVE_CLASS} \
-    tool-check
+    package-archive-search
 
     if [ ${FILE_EXISTS} == 'TRUE' ]; then
         SEARCH_RESULTS_ARRAY=( ${SEARCH_RESULTS} )
@@ -86,7 +94,7 @@ function package-invoke-builder() {
             PACKAGE_NAME_INPUT=`${BASENAME} ${file%.*}`
             DISABLE_BUILD_ARCHIVE=${DISABLE_BUILD_ARCHIVE} \
             DISABLE_INSTALL_ARCHIVE=${DISABLE_INSTALL_ARCHIVE} \
-	        package-install-build-archive "${PACKAGE_NAME_INPUT}"
+	        package-install-existing-archive "${PACKAGE_NAME_INPUT}"
         done
     else
         ${ECHO} -e "Builder Invocation Started"
