@@ -119,16 +119,16 @@ if [ "${HOST_OS}" != "mingw" ]; then
 
     # xorg-libxxf86vm build
     package-invoke-builder xorg-libxxf86vm-cross 1
-
-    # xorg-libxmu build
-    package-invoke-builder xorg-libxmu-cross 1
-
-    # xorg-xauth build
-    package-invoke-builder xorg-xauth-cross 1
-
-    # xorg-xhost build
-    package-invoke-builder xorg-xhost-cross 1
 fi
+
+# xorg-libxmu build
+package-invoke-builder xorg-libxmu-cross 1
+
+# xorg-xauth build
+package-invoke-builder xorg-xauth-cross 1
+
+# xorg-xhost build
+package-invoke-builder xorg-xhost-cross 1
 
 # xorg-xinput build
 package-invoke-builder xorg-xinput-cross 1
