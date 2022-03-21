@@ -107,11 +107,10 @@ package-invoke-builder xcb-render-util-cross 0
 # xorg-xcb-util-keysyms build
 package-invoke-builder xorg-xcb-util-keysyms-cross 0
 
+# xorg-libxt build
+package-invoke-builder xorg-libxt-cross 1
 
 if [ "${HOST_OS}" != "mingw" ]; then
-    # xorg-libxt build
-    package-invoke-builder xorg-libxt-cross 1
-
     # xorg-libxtst build
     package-invoke-builder xorg-libxtst-cross 1
 
