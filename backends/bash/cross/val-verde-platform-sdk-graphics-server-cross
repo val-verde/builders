@@ -128,10 +128,10 @@ if [ "${HOST_OS}" != "mingw" ]; then
 
     # xorg-xhost build
     package-invoke-builder xorg-xhost-cross 1
-
-    # xorg-xinput build
-    package-invoke-builder xorg-xinput-cross 1
 fi
+
+# xorg-xinput build
+package-invoke-builder xorg-xinput-cross 1
 
 if [ "${HOST_OS}" != "macos" ] &&
    [ "${HOST_OS}" != "mingw" ]; then
