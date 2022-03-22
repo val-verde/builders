@@ -121,12 +121,7 @@ function generate-rpm-spec-file() {
 
 function rpm-archive-build() {
     package-push-directory ${INSTALL_ROOT}
-        ${MKDIR} -p ${INSTALL_ROOT}/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS} \
-            ${INSTALL_ROOT}/SOURCES/${1}
-
-        package-rsync -ax \
-                    ${BASE_DIRECTORY} \
-                    ${INSTALL_ROOT}/SOURCES/${1}
+        ${MKDIR} -p ${INSTALL_ROOT}/{BUILD,BUILDROOT,RPMS,SPECS,SRPMS}
         
         generate-rpm-spec-file "${1}"
 

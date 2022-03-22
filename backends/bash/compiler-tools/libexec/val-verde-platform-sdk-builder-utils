@@ -9,7 +9,13 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
 if [ "${SOURCE_PACKAGE_NAME}" != "" ]; then
     # package specific variables
     package-get-qualified-package-name "${SOURCE_PACKAGE_NAME}" "${SOURCE_PACKAGE_VERSION}"
-    export INSTALL_ROOT=${INSTALL_ROOT:-${TEMP_ROOT_BASE}/${QUALIFIED_PACKAGE_NAME}}
+
+    if [ "${PACKAGE_ARCHIVE_CLASS}" = "rpm" ]; then
+        export INSTALL_ROOT=${INSTALL_ROOT:-${TEMP_ROOT_BASE}/${PACKAGE_NAME}/SOURCES}
+    else
+        export INSTALL_ROOT=${INSTALL_ROOT:-${TEMP_ROOT_BASE}/${PACKAGE_NAME}}
+    fi
+
     export INSTALL_PREFIX=${INSTALL_PREFIX:-${INSTALL_ROOT}${PACKAGE_PREFIX}}
     export STAGE_ROOT=${STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_PACKAGE_NAME}}
     QUALIFIED_SOURCE_PACKAGE_PATH=${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}
