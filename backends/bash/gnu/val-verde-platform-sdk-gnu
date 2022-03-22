@@ -65,5 +65,9 @@ package-invoke-category-builder wine-sdk-cross
 # blockchain sdk build
 package-invoke-category-builder blockchain-sdk-cross
 
+# blender build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
+package-invoke-builder blender-cross 3
+
 # base system build
 package-invoke-category-builder base-system-cross
