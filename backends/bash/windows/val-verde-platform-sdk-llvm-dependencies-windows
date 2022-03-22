@@ -304,6 +304,9 @@ package-invoke-builder glib-cross 1
 # windows pkg-config build
 package-invoke-builder pkg-config-cross 0
 
+# windows boost build
+package-invoke-builder boost-cross 1
+
 # windows graphics server build
 package-invoke-category-builder graphics-server-cross
 
@@ -355,9 +358,6 @@ package-invoke-builder gflags-cross 2
 
 # windows glog build
 package-invoke-builder glog-cross 0
-
-# windows boost build
-package-invoke-builder boost-cross 1
 
 # windows cereal build
 package-invoke-builder cereal-cross 1

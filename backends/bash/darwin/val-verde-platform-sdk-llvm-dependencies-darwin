@@ -354,6 +354,9 @@ package-invoke-builder libsecret-cross 0
 # pkg-config build
 package-invoke-builder pkg-config-cross 0
 
+# boost build
+package-invoke-builder boost-cross 1
+
 # graphics server build
 package-invoke-category-builder graphics-server-cross
 
@@ -422,9 +425,6 @@ package-invoke-builder gflags-cross 2
 
 # glog build
 package-invoke-builder glog-cross 0
-
-# boost build
-package-invoke-builder boost-cross 1
 
 # cereal build
 package-invoke-builder cereal-cross 1

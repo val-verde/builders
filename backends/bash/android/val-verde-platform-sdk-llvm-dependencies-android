@@ -372,6 +372,9 @@ package-invoke-builder libsecret-cross 0
 # android pkg-config build
 package-invoke-builder pkg-config-cross 0
 
+# android boost build
+package-invoke-builder boost-cross 1
+
 # android graphics server build
 package-invoke-category-builder graphics-server-cross
 
@@ -434,9 +437,6 @@ package-invoke-builder gflags-cross 2
 
 # android glog build
 package-invoke-builder glog-cross 0
-
-# android boost build
-package-invoke-builder boost-cross 1
 
 # android cereal build
 package-invoke-builder cereal-cross 1
