@@ -11,7 +11,6 @@ VERSION=${VERSION:='1.0.0'}
 
 function package-archive-build-install() {
     TEMPLATE_ROOT=${TEMPLATE_ROOT_BASE}/${PACKAGE_ARCHIVE_CLASS}
-    ARCHIVE_ROOT=${ARCHIVE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}/${1}
 
     # Build the package
     if [ -z "${DISABLE_BUILD_ARCHIVE}" ]; then
@@ -73,22 +72,13 @@ function package-archive-search() {
 
 function deb-archive-build() {
     package-push-directory ${INSTALL_ROOT}
-        ${RM} -rf ${ARCHIVE_ROOT}
-        ${MKDIR} -p ${ARCHIVE_ROOT}
-        package-rsync -ax \
-                    ${BASE_DIRECTORY} \
-                    ${ARCHIVE_ROOT}/
-
         TEMPLATE_ROOT=${TEMPLATE_ROOT} \
         generate-debian-control-file "${1}"
-        package-deb-build ${ARCHIVE_ROOT}
+        package-deb-build ${INSTALL_ROOT}
 
-        ${MV} ${ARCHIVE_ROOT}/../${1}.deb \
+        ${MV} ../${1}.deb \
                 ${ARCHIVE_PATH}/${1}.deb
-        ${RM} -rf ${ARCHIVE_ROOT}
     package-pop-directory
-
-    ${RM} -rf ${ARCHIVE_ROOT_BASE}
 }
 
 function deb-archive-install() {
@@ -97,7 +87,7 @@ function deb-archive-install() {
 
 function generate-debian-control-file() {
     # Template definition
-    DEBIAN_ROOT=${ARCHIVE_ROOT}/DEBIAN
+    DEBIAN_ROOT=${INSTALL_ROOT}/DEBIAN
 
     ${MKDIR} -p ${DEBIAN_ROOT}
     ${ECHO} 10 \
@@ -121,37 +111,32 @@ function generate-debian-control-file() {
 }
 
 function generate-rpm-spec-file() {
-    ${SED} "s|ARCHIVE_ROOT|${ARCHIVE_ROOT}|g; \
+    ${SED} "s|ARCHIVE_ROOT|${INSTALL_ROOT}|g; \
             s|PACKAGE_ARCH|${PACKAGE_ARCH}|g; \
             s|PACKAGE_NAME|${1}|g; \
             s|VERSION|${VERSION}|g" \
             ${TEMPLATE_ROOT}/spec.in \
-            > ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
+            > ${INSTALL_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
 }
 
 function rpm-archive-build() {
     package-push-directory ${INSTALL_ROOT}
-        ${RM} -rf ${ARCHIVE_ROOT}
-        ${MKDIR} -p ${ARCHIVE_ROOT} \
-            ${ARCHIVE_ROOT}/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS} \
-            ${ARCHIVE_ROOT}/SOURCES/${1}
+        ${MKDIR} -p ${INSTALL_ROOT}/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS} \
+            ${INSTALL_ROOT}/SOURCES/${1}
 
         package-rsync -ax \
                     ${BASE_DIRECTORY} \
-                    ${ARCHIVE_ROOT}/SOURCES/${1}
+                    ${INSTALL_ROOT}/SOURCES/${1}
         
         generate-rpm-spec-file "${1}"
 
-        ${SED} -i "s|%files|%files\n/${PACKAGE_INSTALL_BASE}/*|g" ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
+        ${SED} -i "s|%files|%files\n/${PACKAGE_INSTALL_BASE}/*|g" ${INSTALL_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
 
-        package-rpm-build -bb ${ARCHIVE_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
+        package-rpm-build -bb ${INSTALL_ROOT}/SPECS/${SOURCE_PACKAGE_NAME}.spec
 
-        ${MV} ${ARCHIVE_ROOT}/RPMS/${PACKAGE_ARCH}/${1}-${VERSION}-${RELEASE}.${PACKAGE_ARCH}.rpm \
+        ${MV} ${INSTALL_ROOT}/RPMS/${PACKAGE_ARCH}/${1}-${VERSION}-${RELEASE}.${PACKAGE_ARCH}.rpm \
                 ${ARCHIVE_PATH}/${1}.rpm
-        ${RM} -rf ${ARCHIVE_ROOT}
     package-pop-directory
-
-    ${RM} -rf ${ARCHIVE_ROOT_BASE}
 }
 
 function rpm-archive-install() {
