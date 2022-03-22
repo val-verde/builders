@@ -12,9 +12,16 @@ function package-get-packaging-api() {
 
 function package-invoke-category-builder() {
     package-get-common-variables
-    ${ECHO} -e "Builder Category Invocation Started"
+
+    if [[ ${1} == *"cross" ]]; then
+        CATEGORY_BUILDER_NAME=${1%-*}
+    else
+        CATEGORY_BUILDER_NAME=${1}
+    fi
+
+    ${ECHO} -e "Builder Category ${CATEGORY_BUILDER_NAME} Invocation Started"
     ${BASH} ${VAL_VERDE_GH_TEAM}-platform-sdk-${@}
-    ${ECHO} -e "Builder Category Invocation Complete"
+    ${ECHO} -e "Builder Category ${CATEGORY_BUILDER_NAME} Invocation Complete"
     ${ECHO}
 }
 
