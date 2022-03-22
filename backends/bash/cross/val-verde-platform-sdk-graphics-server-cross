@@ -17,6 +17,9 @@ package-invoke-builder libpng-cross 1
 # libtiff build
 package-invoke-builder libtiff-cross 4
 
+# openexr build
+package-invoke-builder openexr-cross 3
+
 # xorg-macros build
 package-invoke-builder xorg-macros-cross 1
 

@@ -160,6 +160,9 @@ package-invoke-builder ceres-solver-cross 2
 # opencv build
 package-invoke-builder opencv-cross 4
 
+# openimageio build
+package-invoke-builder openimageio-cross 2
+
 # bullet build
 package-invoke-builder bullet-cross 3
 
