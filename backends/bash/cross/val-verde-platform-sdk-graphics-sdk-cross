@@ -151,9 +151,6 @@ fi
 # eigen build
 package-invoke-builder eigen-cross 3
 
-# imath build
-package-invoke-builder imath-cross 3
-
 # ceres-solver build
 package-invoke-builder ceres-solver-cross 2
 
