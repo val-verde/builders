@@ -390,6 +390,9 @@ package-invoke-builder gtk-doc-cross 1
 # android graphviz build
 package-invoke-builder graphviz-cross 2
 
+# intltool build
+package-invoke-builder intltool-cross 0
+
 # android dbus build
 package-invoke-builder dbus-cross 1
 

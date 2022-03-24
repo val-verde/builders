@@ -385,6 +385,9 @@ package-invoke-builder pulseaudio-cross 15
 # graphviz build
 package-invoke-builder graphviz-cross 2
 
+# intltool build
+package-invoke-builder intltool-cross 0
+
 # kmod build
 package-invoke-builder kmod-cross 29
 

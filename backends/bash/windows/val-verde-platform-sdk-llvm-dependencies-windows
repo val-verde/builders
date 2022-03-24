@@ -322,6 +322,9 @@ package-invoke-builder gtk-doc-cross 1
 # windows graphviz build
 package-invoke-builder graphviz-cross 2
 
+# intltool build
+package-invoke-builder intltool-cross 0
+
 # windows cups build
 # package-invoke-builder cups-cross 2
 

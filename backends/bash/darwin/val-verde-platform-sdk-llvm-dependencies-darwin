@@ -369,6 +369,9 @@ package-invoke-builder gtk-doc-cross 1
 # graphviz build
 package-invoke-builder graphviz-cross 2
 
+# intltool build
+package-invoke-builder intltool-cross 0
+
 # sudo build
 package-invoke-builder sudo-cross 1
 
@@ -380,9 +383,6 @@ package-invoke-category-builder dnf-package-manager-cross
 
 # cups build
 # package-invoke-builder cups-cross 2
-
-# intltool build
-package-invoke-builder intltool-cross 0
 
 # util-linux build (with python and systemd support)
 package-invoke-builder util-linux-cross 2
