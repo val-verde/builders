@@ -576,6 +576,9 @@ package-invoke-builder graphviz-cross 2
 # intltool build
 package-invoke-builder intltool-cross 0
 
+# kmod build
+package-invoke-builder kmod-cross 29
+
 # systemd build
 package-invoke-builder systemd 250
 
