@@ -139,6 +139,12 @@ package-invoke-builder xorg-xhost-cross 1
 # xorg-xinput build
 package-invoke-builder xorg-xinput-cross 1
 
+# xorg-xkbcomp build
+package-invoke-builder xorg-xkbcomp-cross 1
+
+# xorg-xwud build
+package-invoke-builder xorg-xwud-cross 1
+
 if [ "${HOST_OS}" != "macos" ] &&
    [ "${HOST_OS}" != "mingw" ]; then
     # wayland build
