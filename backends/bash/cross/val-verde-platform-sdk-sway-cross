@@ -13,5 +13,4 @@ if [ "${HOST_OS}" = "gnu" ]; then
 fi
 
 package-meson-install-archive \
-    -Dsd-bus-provider=${SD_BUS_PROVIDER} \
-    -Dwerror=false
+    -Dsd-bus-provider=${SD_BUS_PROVIDER}

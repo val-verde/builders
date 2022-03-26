@@ -66,7 +66,7 @@ fi
 
 if [ "${HOST_OS}" = "gnu" ] ||
    [ "${HOST_OS}" = "macos" ] ||
-   [ "${HOST_OS}" = "mingw32" ] ||
+   [ "${HOST_OS}" = "mingw" ] ||
    [ "${HOST_OS}" = "musl" ]; then
     # freeglut build
     package-invoke-builder freeglut-cross 3
@@ -93,7 +93,7 @@ package-invoke-builder libsass-cross 3
 
 if [ "${HOST_OS}" = "gnu" ] ||
    [ "${HOST_OS}" = "macos" ] ||
-   [ "${HOST_OS}" = "mingw32" ] ||
+   [ "${HOST_OS}" = "mingw" ] ||
    [ "${HOST_OS}" = "musl" ]; then
     # gtk build
     package-invoke-builder gtk-cross 4
@@ -141,21 +141,24 @@ package-invoke-builder sdl-net-cross 2
 # sdl-ttf build
 package-invoke-builder sdl-ttf-cross 2
 
-# filament build
-ENABLE_STAGE_ROOT_BUILD=TRUE \
-package-invoke-builder filament-cross 1
+if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
+   [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    # filament build
+    ENABLE_STAGE_ROOT_BUILD=TRUE \
+    package-invoke-builder filament-cross 1
+fi
 
 # eigen build
 package-invoke-builder eigen-cross 3
-
-# imath build
-package-invoke-builder imath-cross 3
 
 # ceres-solver build
 package-invoke-builder ceres-solver-cross 2
 
 # opencv build
 package-invoke-builder opencv-cross 4
+
+# openimageio build
+package-invoke-builder openimageio-cross 2
 
 # bullet build
 package-invoke-builder bullet-cross 3

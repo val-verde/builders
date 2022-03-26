@@ -200,13 +200,13 @@ package-invoke-builder libssh2-cross 1
 package-invoke-builder curl-cross 7
 
 # apple-common-crypto build
-package-invoke-builder apple-common-crypto-cross 60178
+package-invoke-builder apple-common-crypto-cross 60190
 
 # apple-mig build
 package-invoke-builder apple-mig-cross 122
 
 # apple-xar build
-package-invoke-builder apple-xar-cross 482
+package-invoke-builder apple-xar-cross 483
 
 # cctools-port-cross build
 package-invoke-builder cctools-port-cross 973
@@ -216,6 +216,12 @@ package-invoke-builder sigtool-cross 0
 
 # alsa-lib build
 # package-invoke-builder alsa-lib-cross 1
+
+# libsndfile build
+package-invoke-builder libsndfile-cross 1
+
+# libusb build
+package-invoke-builder libusb-cross 1
 
 # libuv build
 package-invoke-builder libuv-cross 1
@@ -348,6 +354,9 @@ package-invoke-builder libsecret-cross 0
 # pkg-config build
 package-invoke-builder pkg-config-cross 0
 
+# boost build
+package-invoke-builder boost-cross 1
+
 # graphics server build
 package-invoke-category-builder graphics-server-cross
 
@@ -360,6 +369,12 @@ package-invoke-builder gtk-doc-cross 1
 # graphviz build
 package-invoke-builder graphviz-cross 2
 
+# intltool build
+package-invoke-builder intltool-cross 0
+
+# sudo build
+package-invoke-builder sudo-cross 1
+
 # dbus build
 package-invoke-builder dbus-cross 1
 
@@ -368,9 +383,6 @@ package-invoke-category-builder dnf-package-manager-cross
 
 # cups build
 # package-invoke-builder cups-cross 2
-
-# intltool build
-package-invoke-builder intltool-cross 0
 
 # util-linux build (with python and systemd support)
 package-invoke-builder util-linux-cross 2
@@ -413,9 +425,6 @@ package-invoke-builder gflags-cross 2
 
 # glog build
 package-invoke-builder glog-cross 0
-
-# boost build
-package-invoke-builder boost-cross 1
 
 # cereal build
 package-invoke-builder cereal-cross 1

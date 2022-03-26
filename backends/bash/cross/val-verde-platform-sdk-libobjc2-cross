@@ -7,7 +7,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for cmake/install
 function package-install-completion-callback() {
-    if [ "${HOST_OS}" = "mingw32" ]; then
+    if [ "${HOST_OS}" = "mingw" ]; then
         ${MKDIR} -p ${INSTALL_PREFIX}/bin
         ${MV} ${INSTALL_PREFIX}/lib/`package-get-filename objc SHARED HOST` \
               ${INSTALL_PREFIX}/bin/

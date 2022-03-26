@@ -38,6 +38,7 @@ if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
         PERL=/usr/bin/perl \
         PYTHON=/usr/bin/python3 \
         READLINK=/usr/bin/readlink \
+        REALPATH=/usr/bin/realpath \
         RM="/usr/bin/rm -f" \
         RMDIR=/usr/bin/rmdir \
         RPM="build-system-tool rpm" \
@@ -321,7 +322,7 @@ package-invoke-builder libndp-cross 1
 package-invoke-builder apple-mig-cross 122
 
 # apple-xar build
-package-invoke-builder apple-xar-cross 482
+package-invoke-builder apple-xar-cross 483
 
 # cctools-port-cross build
 package-invoke-builder cctools-port-cross 973
@@ -331,6 +332,12 @@ package-invoke-builder sigtool-cross 0
 
 # alsa-lib build
 package-invoke-builder alsa-lib-cross 1
+
+# libsndfile build
+package-invoke-builder libsndfile-cross 1
+
+# libusb build
+package-invoke-builder libusb-cross 1
 
 # libuv build
 package-invoke-builder libuv-cross 1
@@ -396,6 +403,7 @@ unset \
     MKDIR \
     MV \
     READLINK \
+    REALPATH \
     RM \
     RMDIR \
     TEE \
@@ -552,8 +560,14 @@ if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
     package-invoke-category-builder ocaml-sdk-cross
 fi
 
+# boost build
+package-invoke-builder boost-cross 1
+
 # graphics server build
 package-invoke-category-builder graphics-server-cross
+
+# pulseaudio build
+package-invoke-builder pulseaudio-cross 15
 
 # graphviz build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
@@ -562,11 +576,20 @@ package-invoke-builder graphviz-cross 2
 # intltool build
 package-invoke-builder intltool-cross 0
 
+# kmod build
+package-invoke-builder kmod-cross 29
+
 # systemd build
 package-invoke-builder systemd 250
 
 # p11-kit build
 package-invoke-builder p11-kit-cross 0
+
+# shadow-utils build
+package-invoke-builder shadow-utils-cross 4
+
+# sudo build
+package-invoke-builder sudo-cross 1
 
 # dbus build
 package-invoke-builder dbus-cross 1
@@ -596,6 +619,7 @@ package-invoke-builder alien-package-tool-cross 8
 package-invoke-category-builder ai-sdk-cross
 
 if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
+   [ "${HOST_PROCESSOR}" = "i686" ] ||
    [ "${HOST_PROCESSOR}" = "x86_64" ]; then
     # openjdk build
     ENABLE_STAGE_ROOT_BUILD=TRUE \
@@ -626,9 +650,6 @@ package-invoke-builder gflags-cross 2
 
 # glog build
 package-invoke-builder glog-cross 0
-
-# boost build
-package-invoke-builder boost-cross 1
 
 # cereal build
 package-invoke-builder cereal-cross 1

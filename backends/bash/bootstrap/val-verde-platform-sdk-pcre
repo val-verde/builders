@@ -27,7 +27,7 @@ Cflags: -I\${includedir}
 " > ${INSTALL_PREFIX}/lib/pkgconfig/libpcre.pc
 
 if [ "${HOST_OS}" = "android" ] ||
-   [ "${HOST_OS}" = "mingw32" ] ||
+   [ "${HOST_OS}" = "mingw" ] ||
    [ "${HOST_OS}" = "musl" ]; then
     HAVE_STRTOQ=FALSE
 else

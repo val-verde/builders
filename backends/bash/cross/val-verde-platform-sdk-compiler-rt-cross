@@ -21,7 +21,7 @@ function package-install-completion-callback() {
         SDK_PLATFORM_DIR=linux
     elif [ "${HOST_OS}" = "macos" ]; then
         SDK_PLATFORM_DIR=darwin
-    elif [ "${HOST_OS}" = "mingw32" ]; then
+    elif [ "${HOST_OS}" = "mingw" ]; then
         SDK_PLATFORM_DIR=windows
     elif [ "${HOST_OS}" = "musl" ]; then
         SDK_PLATFORM_DIR=linux
@@ -51,7 +51,11 @@ function package-install-completion-callback() {
 }
 
 if [ "${HOST_PROCESSOR}" = "armv7a" ]; then
-    CLANG_HOST_PROCESSOR=armhf
+    if [ "${HOST_OS_API_LEVEL}" = "eabihf" ]; then
+        CLANG_HOST_PROCESSOR=armhf
+    else
+        CLANG_HOST_PROCESSOR=arm
+    fi
 elif [ "${HOST_PROCESSOR}" = "i686" ]; then
     CLANG_HOST_PROCESSOR=i386
 else
@@ -69,7 +73,7 @@ if [ "${HOST_OS}" = "gnu" ] ||
 elif [ "${HOST_OS}" = "macos" ]; then
     CLANG_RT_LIB=`package-get-filename clang_rt.osx STATIC`
     DST_CLANG_RT_LIB=`package-get-filename clang_rt.osx STATIC`
-elif [ "${HOST_OS}" = "mingw32" ]; then
+elif [ "${HOST_OS}" = "mingw" ]; then
     CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${CLANG_HOST_PROCESSOR} STATIC`
     DST_CLANG_RT_LIB=`package-get-filename clang_rt.builtins-${CLANG_HOST_PROCESSOR} STATIC`
     COMMON_CFLAGS="\

@@ -29,7 +29,7 @@ if [ "${HOST_OS}" = "macos" ]; then
         -framework CoreFoundation \
     ${LIBS} \
     "
-elif [ "${HOST_OS}" = "mingw32" ]; then
+elif [ "${HOST_OS}" = "mingw" ]; then
     ENABLE_JIT=no
     ENABLE_OR_DISABLE_NETWORKING=disable
     ENABLE_OR_DISABLE_POSIX=disable

@@ -11,7 +11,7 @@ export DEPENDS="\
 "
 
 if [ "${HOST_OS}" != "macos" ] &&
-   [ "${HOST_OS}" != "mingw32" ]; then
+   [ "${HOST_OS}" != "mingw" ]; then
     export DEPENDS="\
         ${PACKAGE_BASE_NAME}-acl-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
     ${DEPENDS} \

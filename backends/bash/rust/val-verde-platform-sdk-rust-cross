@@ -18,7 +18,7 @@ RUST_HOST_OS=${HOST_OS}
 
 if [ "${HOST_OS}" = "gnu" ]; then
     RUST_HOST_OS=linux
-elif [ "${HOST_OS}" = "mingw32" ]; then
+elif [ "${HOST_OS}" = "mingw" ]; then
     RUST_HOST_OS=windows
 fi
 
@@ -38,7 +38,7 @@ if [ "${BUILD_OS}" = "android" ]; then
     RUST_BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}
 elif [ "${BUILD_OS}" = "macos" ]; then
     RUST_BUILD_TRIPLE=${BUILD_PROCESSOR}-${BUILD_KERNEL}-${DARWIN_OS}
-elif [ "${BUILD_OS}" = "mingw32" ]; then
+elif [ "${BUILD_OS}" = "mingw" ]; then
     RUST_BUILD_TRIPLE=${BUILD_PROCESSOR}-pc-windows-gnu
 else
     RUST_BUILD_TRIPLE=${BUILD_4_TRIPLE}
@@ -48,7 +48,7 @@ if [ "${HOST_OS}" = "android" ]; then
     RUST_HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}
 elif [ "${HOST_OS}" = "macos" ]; then
     RUST_HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${DARWIN_OS}
-elif [ "${HOST_OS}" = "mingw32" ]; then
+elif [ "${HOST_OS}" = "mingw" ]; then
     RUST_HOST_TRIPLE=${HOST_PROCESSOR}-pc-windows-gnu
 else
     RUST_HOST_TRIPLE=${HOST_4_TRIPLE}
@@ -64,8 +64,6 @@ CARGO=`package-get-path cargo EXECUTABLE BUILD`
 FILECHECK=`BINDIR=${LLVM_STAGE_ROOT}/bin package-get-path FileCheck EXECUTABLE BUILD`
 RUSTC=`package-get-path rustc EXECUTABLE BUILD`
 RUSTFMT=`package-get-path rustfmt EXECUTABLE BUILD`
-
-export RUSTFLAGS="-C target-cpu=${HOST_CPU}"
 
 ${SED} -i "s|@@AR@@|${AR}|g" ${STAGE_ROOT}/config.toml
 ${SED} -i "s|@@BUILD_CC@@|${BUILD_CC}|g" ${STAGE_ROOT}/config.toml

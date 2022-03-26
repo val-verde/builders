@@ -26,7 +26,7 @@ if [ "${HOST_OS}" = "gnu" ]; then
     SDK_PLATFORM_DIR="linux"
 elif [ "${HOST_OS}" = "macos" ]; then
     SDK_PLATFORM_DIR="macosx"
-elif [ "${HOST_OS}" = "mingw32" ]; then
+elif [ "${HOST_OS}" = "mingw" ]; then
     SDK_PLATFORM_DIR="windows"
 else
     SDK_PLATFORM_DIR=${HOST_OS}
@@ -35,7 +35,11 @@ fi
 cd ${STAGE_ROOT}
 
 if [ "${HOST_OS}" != "macos" ]; then
-    SWIFT_ARCH_DIR=${HOST_PROCESSOR}
+    if [ "${HOST_PROCESSOR}" = "armv7a" ]; then
+        SWIFT_ARCH_DIR=armv7
+    else
+        SWIFT_ARCH_DIR=${HOST_PROCESSOR}
+    fi
 fi
 
 ${MKDIR} -p ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${SWIFT_ARCH_DIR}/

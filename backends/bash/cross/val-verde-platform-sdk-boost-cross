@@ -37,7 +37,7 @@ elif [ "${BOOST_PROCESSOR}" = "i686" ]; then
     BOOST_PROCESSOR=i386
 fi
 
-if [ "${HOST_OS}" = "mingw32" ]; then
+if [ "${HOST_OS}" = "mingw" ]; then
     BOOST_CONTEXT_ASSEMBLER=armasm
     BOOST_CONTEXT_ABI=ms
     BOOST_CONTEXT_IMPLEMENTATION=winfib

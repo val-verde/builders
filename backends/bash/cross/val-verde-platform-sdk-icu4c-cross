@@ -12,7 +12,7 @@ fi
 
 ENABLE_OR_DISABLE_RPATH=enable
 
-if [ "${HOST_OS}" = "mingw32" ]; then
+if [ "${HOST_OS}" = "mingw" ]; then
     ENABLE_OR_DISABLE_RPATH=disable
 fi
 

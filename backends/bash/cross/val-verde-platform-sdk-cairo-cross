@@ -12,7 +12,7 @@ ENABLE_XLIB=enabled
 
 if [ "${HOST_OS}" = "android" ]; then
     GL_BACKEND=glesv3
-elif [ "${HOST_OS}" = "mingw32" ]; then
+elif [ "${HOST_OS}" = "mingw" ]; then
     GL_BACKEND=disabled
     ENABLE_XCB=disabled
     ENABLE_XLIB=disabled

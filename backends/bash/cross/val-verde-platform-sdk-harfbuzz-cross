@@ -6,12 +6,6 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for meson/install
-if [ -z "${ENABLE_GLIB}" ]; then
-    ENABLE_OR_DISABLE_GLIB=disabled
-else
-    ENABLE_OR_DISABLE_GLIB=enabled
-fi
-
 if [ "${HOST_OS}" = "macos" ]; then
     ENABLE_OR_DISABLE_CORETEXT=enabled
 else
@@ -23,8 +17,8 @@ package-meson-install-archive \
     -Dcoretext=${ENABLE_OR_DISABLE_CORETEXT} \
     -Ddocs=disabled \
     -Dfreetype=enabled \
-    -Dglib=${ENABLE_OR_DISABLE_GLIB} \
-    -Dgobject=${ENABLE_OR_DISABLE_GLIB} \
+    -Dglib=enabled \
+    -Dgobject=disabled \
     -Dgraphite=enabled \
-    -Dintrospection=${ENABLE_OR_DISABLE_GLIB} \
+    -Dintrospection=disabled \
     -Dtests=disabled

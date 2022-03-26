@@ -9,7 +9,7 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-zlib-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0) \
 "
 
-if [ "${HOST_OS}" = "mingw32" ]; then
+if [ "${HOST_OS}" = "mingw" ]; then
     ENABLE_OR_DISABLE_SHARED=disable
 else
     ENABLE_OR_DISABLE_SHARED=enable

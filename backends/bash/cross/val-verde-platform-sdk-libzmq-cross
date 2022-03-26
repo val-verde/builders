@@ -8,7 +8,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 # Invoke one-shot template for cmake/install
 if [ "${HOST_OS}" = "musl" ]; then
     POLLER=epoll
-elif [ "${HOST_OS}" = "mingw32" ]; then
+elif [ "${HOST_OS}" = "mingw" ]; then
     SYSTEM_VERSION="10.0.0"
     POLLER=epoll
 else

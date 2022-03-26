@@ -20,8 +20,12 @@ if [ "${HOST_OS}" = "android" ]; then
         -DBIONIC_IOCTL_NO_SIGNEDNESS_OVERLOAD \
         ${COMMON_CFLAGS} \
     "
-elif [ "${HOST_OS}" = "mingw32" ]; then
+elif [ "${HOST_OS}" = "mingw" ]; then
     ENABLE_OR_DISABLE_GCOV=disable
+fi
+
+if [ "${HOST_PROCESSOR}" = "armv7a" ]; then
+    WITH_FLOAT_ABI_CMD="--with-float=hard"
 fi
 
 BUILD_COMMON_CFLAGS="\
@@ -118,7 +122,6 @@ package-stage-configure-install-archive \
     --target=${HOST_TRIPLE} \
     --with-as=${AS} \
     --with-build-sysroot="${SYSROOT} -isystem ${PACKAGE_PREFIX}/include" \
-    --with-float=hard \
     --with-glibc-version=2.31 \
     --with-gmp=${BUILD_PACKAGE_PREFIX} \
     --with-isl=${BUILD_PACKAGE_PREFIX} \
@@ -129,4 +132,5 @@ package-stage-configure-install-archive \
     --with-program-prefix= \
     --with-sysroot=${SYSROOT} \
     --without-system-libunwind \
-    --${ENABLE_OR_DISABLE_GCOV}-gcov
+    --${ENABLE_OR_DISABLE_GCOV}-gcov \
+    ${WITH_FLOAT_ABI_CMD}

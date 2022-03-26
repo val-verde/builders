@@ -9,21 +9,6 @@ export \
     PACKAGE_USR_PREFIX=.
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
-# windows mingw-headers build
-package-invoke-builder mingw-w64-headers 6
-
-# windows mingw-crt build
-package-invoke-builder mingw-w64-crt 6
-
-# windows compiler-rt build (for host)
-package-invoke-builder compiler-rt-cross 13
-
-# windows libcxx build
-package-invoke-builder libcxx-bootstrap 13
-
-# windows mingw-winpthreads build
-package-invoke-builder winpthreads-cross 6
-
 # windows llvm dependencies
 package-invoke-category-builder llvm-dependencies-windows
 

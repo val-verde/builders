@@ -6,7 +6,7 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Determine source branch
-if [ "${HOST_OS}" = "mingw32" ]; then
+if [ "${HOST_OS}" = "mingw" ]; then
     SOURCE_ROOT=${SOURCE_ROOT}-windows
 else
     SOURCE_ROOT=${SOURCE_ROOT}

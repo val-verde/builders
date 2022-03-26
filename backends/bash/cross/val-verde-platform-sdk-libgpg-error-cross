@@ -8,7 +8,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 # Invoke one-shot template for bootstrap/configure/install
 if [ "${HOST_OS}" = "macos" ]; then
     export CONFIGURE_HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${DARWIN_OS}
-elif [ "${HOST_OS}" = "mingw32" ]; then
+elif [ "${HOST_OS}" = "mingw" ]; then
     COMMON_CFLAGS="\
         -lws2_32 \
         ${COMMON_CFLAGS} \

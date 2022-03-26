@@ -8,7 +8,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 # Invoke one-shot template for stage/configure/install
 if [ "${HOST_OS}" = "macos" ]; then
     ENABLE_OR_DISABLE_ASSEMBLY=disable
-elif [ "${HOST_OS}" = "mingw32" ]; then
+elif [ "${HOST_OS}" = "mingw" ]; then
     if [ "${HOST_PROCESSOR}" = "x86_64" ]; then
         ENABLE_OR_DISABLE_ASSEMBLY=enable
     else

@@ -15,28 +15,63 @@ export DEPENDS="\
 
 # Invoke one-shot template for meson/install
 function package-install-completion-callback() {
-    package-rsync -ax \
-                  ${STAGE_ROOT}/${SHARED_LIBRARY_PREFIX}systemd*${SHARED_LIBRARY_SUFFIX}* \
-                  ${INSTALL_PREFIX}/lib/
+    ${MV} ${INSTALL_ROOT}/var \
+          ${INSTALL_ROOT}/${PACKAGE_PLATFORM_SYSROOT}/
 }
 
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-meson-install-archive \
     -Dapparmor=false \
     -Daudit=false \
-    -Dbzip2=false \
-    -Delfutils=false \
+    -Dbinfmt=true \
+    -Dbzip2=true \
+    -Dcoredump=true \
+    -Dcreate-log-dirs=true \
+    -Defi=true \
+    -Delfutils=true \
+    -Denvironment-d=true \
     -Dgcrypt=true \
     -Dglib=true \
     -Dgnutls=true \
+    -Dgshadow=true \
+    -Dhibernate=true \
+    -Dhomed=false \
+    -Dhostnamed=true \
+    -Dinitrd=true \
+    -Dldconfig=true \
     -Dlibcurl=true \
+    -Dlink-boot-shared=true \
+    -Dlink-networkd-shared=true \
+    -Dlink-systemctl-shared=true \
+    -Dlink-timesyncd-shared=true \
+    -Dlink-udev-shared=true \
+    -Dlocaled=true \
+    -Dlogind=true \
     -Dlz4=true \
+    -Dmachined=true \
+    -Dmode=release \
     -Dmicrohttpd=true \
+    -Dnetworkd=true \
     -Dopenssl=true \
+    -Doomd=true \
     -Dp11kit=true \
+    -Dportabled=true \
+    -Dpstore=true \
+    -Dremote=true \
+    -Drepart=false \
+    -Dresolve=true \
     -Drootprefix=${PACKAGE_PLATFORM_SYSROOT} \
+    -Drootlibdir=${PACKAGE_PREFIX}/lib \
     -Dseccomp=false \
     -Dselinux=false \
+    -Dstandalone-binaries=true \
+    -Dsysext=true \
+    -Dsysvinit-path=${PACKAGE_PLATFORM_SYSROOT}/etc/init.d \
+    -Dtimedated=true \
+    -Dtimesyncd=true \
+    -Dtpm=true \
     -Dtests=false \
+    -Duserdb=true \
+    -Dutmp=true \
     -Dzlib=true \
     -Dzstd=true

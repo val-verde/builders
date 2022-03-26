@@ -6,5 +6,4 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for meson/install
-package-meson-install-archive \
-    -Dwerror=false
+package-meson-install-archive

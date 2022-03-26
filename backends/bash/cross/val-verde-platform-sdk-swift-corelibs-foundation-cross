@@ -30,7 +30,7 @@ if [ "${HOST_OS}" = "android" ]; then
 elif [ "${HOST_OS}" = "gnu" ] ||
      [ "${HOST_OS}" = "musl" ]; then
     SDK="linux"
-elif [ "${HOST_OS}" = "mingw32" ]; then
+elif [ "${HOST_OS}" = "mingw" ]; then
     SDK="windows"
 else
     SDK=${HOST_OS}

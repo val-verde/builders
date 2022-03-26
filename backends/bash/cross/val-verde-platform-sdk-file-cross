@@ -6,7 +6,7 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for stage/configure/install
-if [ "${HOST_OS}" = "mingw32" ]; then
+if [ "${HOST_OS}" = "mingw" ]; then
     DISABLE_TOOL_BUILD=TRUE
     INSTALL_TARGET="FILE_COMPILE=${FILE} install"
 fi

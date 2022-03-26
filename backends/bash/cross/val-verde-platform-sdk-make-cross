@@ -9,7 +9,7 @@ export GNULIB_SRCDIR=${SOURCE_ROOT_BASE}/gnulib-0
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
-if [ "${HOST_OS}" = "mingw32" ]; then
+if [ "${HOST_OS}" = "mingw" ]; then
     MAKE_FS_CMD="--enable-case-insensitive-file-system"
 fi
 

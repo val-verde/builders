@@ -20,9 +20,6 @@ elif [ "${HOST_OS}" = "macos" ]; then
     ENABLE_XLIB=TRUE
 fi
 
-if [ "${HOST_PROCESSOR}" = "x86_64" ]; then
-    JWASM=`package-get-path ${VAL_VERDE_GH_TEAM}-platform-sdk-ml64 SCRIPT BUILD`
-fi
 
 PATH=${STAGE_ROOT_BASE}/vulkan-loader-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}/loader:${PATH} \
 package-cmake-install-archive \
@@ -30,7 +27,7 @@ package-cmake-install-archive \
     -DBUILD_WSI_WAYLAND_SUPPORT=${ENABLE_WAYLAND} \
     -DBUILD_WSI_XLIB_SUPPORT=${ENABLE_XLIB} \
     -DCMAKE_ASM_MASM_COMPILER_WORKS=FALSE \
-    -DJWASM_FOUND=${JWASM} \
+    -DJWASM_FOUND= \
     -DPKG_CONFIG_EXECUTABLE=${PKG_CONFIG} \
     -DUSE_GAS=FALSE \
     -DVulkanHeaders_INCLUDE_DIR=${PACKAGE_PREFIX}/include \

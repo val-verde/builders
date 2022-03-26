@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for bootstrap/configure/install
+if [ "${HOST_OS}" = "macos" ]; then
+    ENABLE_OR_DISABLE_INTERCEPT=disable
+    HAS_STATIC_LIBGCC=no
+    WITH_OR_WITHOUT_NOEXEC=without
+else
+    ENABLE_OR_DISABLE_INTERCEPT=enable
+    HAS_STATIC_LIBGCC=yes
+    WITH_OR_WITHOUT_NOEXEC=with
+fi
+
+BOOTSTRAP_FILE=./autogen.sh \
+BUILD_COMMON_CFLAGS="\
+    -L${BUILD_PACKAGE_PREFIX}/lib \
+    ${BUILD_COMMON_CFLAGS} \
+" \
+DISABLE_AUTOUPDATE=TRUE \
+package-bootstrap-configure-install-archive \
+    ax_cv_check_cflags___static_libgcc=${HAS_STATIC_LIBGCC} \
+    --disable-static \
+    --enable-shared \
+    --${ENABLE_OR_DISABLE_INTERCEPT}-intercept \
+    --${WITH_OR_WITHOUT_NOEXEC}-noexec

@@ -85,6 +85,7 @@ export PATCH=${PATCH:-/usr/bin/patch}
 export PERL=${PERL:-${BINDIR}/perl}
 export PYTHON=${PYTHON:-${BINDIR}/python3}
 export READLINK=${READLINK:-${BINDIR}/readlink}
+export REALPATH=${REALPATH:-${BINDIR}/realpath}
 export RM=${RM:-"${BINDIR}/rm -f"}
 export RMDIR=${RMDIR:-${BINDIR}/rmdir}
 export RPM=${RPM:-${BINDIR}/rpm}

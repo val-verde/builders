@@ -9,5 +9,6 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 CONFIGURE_FILE=autogen.sh \
 package-configure-install-archive \
     --enable-malloc0returnsnull \
+    --disable-selective-werror \
     --disable-static \
     --enable-shared

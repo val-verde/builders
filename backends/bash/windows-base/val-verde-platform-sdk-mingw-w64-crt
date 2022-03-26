@@ -9,9 +9,23 @@ export SOURCE_ROOT=${SOURCE_ROOT_BASE}/mingw-w64-${SOURCE_PACKAGE_VERSION}/${SOU
 
 # Invoke one-shot template for configure/install
 if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+    ENABLE_OR_DISABLE_LIB32=disable
+    ENABLE_OR_DISABLE_LIBARM32=disable
     ENABLE_OR_DISABLE_LIB64=disable
     ENABLE_OR_DISABLE_LIBARM64=enable
-else
+elif [ "${HOST_PROCESSOR}" = "armv7a" ]; then
+    ENABLE_OR_DISABLE_LIB32=disable
+    ENABLE_OR_DISABLE_LIBARM32=enable
+    ENABLE_OR_DISABLE_LIB64=disable
+    ENABLE_OR_DISABLE_LIBARM64=disable
+elif [ "${HOST_PROCESSOR}" = "i686" ]; then
+    ENABLE_OR_DISABLE_LIB32=enable
+    ENABLE_OR_DISABLE_LIBARM32=disable
+    ENABLE_OR_DISABLE_LIB64=disable
+    ENABLE_OR_DISABLE_LIBARM64=disable
+elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    ENABLE_OR_DISABLE_LIB32=disable
+    ENABLE_OR_DISABLE_LIBARM32=disable
     ENABLE_OR_DISABLE_LIB64=enable
     ENABLE_OR_DISABLE_LIBARM64=disable
 fi
@@ -26,8 +40,8 @@ CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 DISABLE_AUTOUPDATE=TRUE \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-stage-configure-install-archive \
-    --disable-libarm32 \
-    --disable-lib32 \
+    --${ENABLE_OR_DISABLE_LIBARM32}-libarm32 \
+    --${ENABLE_OR_DISABLE_LIB32}-lib32 \
     --enable-experimental=registeredprintf,softmath \
     --enable-warnings=0 \
     --with-default-msvcrt=ucrt \

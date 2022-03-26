@@ -26,4 +26,8 @@ package-cmake-install-archive \
     -DSWIG_DIR=${PACKAGE_PREFIX}/share/swig/4.0.2 \
     -DSWIG_EXECUTABLE=`package-get-path swig EXECUTABLE BUILD` \
     -DWITH_BINDINGS=TRUE \
+    -DWITH_DOCS=FALSE \
+    -DWITH_GTKDOC=FALSE \
+    -DWITH_MAN=FALSE \
+    -DWITH_TESTS=FALSE\
     -DWITH_ZCHUNK=FALSE

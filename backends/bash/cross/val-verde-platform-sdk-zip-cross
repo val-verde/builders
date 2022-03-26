@@ -15,7 +15,7 @@ if [ "${HOST_OS}" = "android" ] ||
    [ "${HOST_OS}" = "macos" ] ||
    [ "${HOST_OS}" = "musl" ]; then
     PLATFORM=unix
-elif [ "${HOST_OS}" = "mingw32" ]; then
+elif [ "${HOST_OS}" = "mingw" ]; then
     PLATFORM=win32
 fi
 

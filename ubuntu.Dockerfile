@@ -102,10 +102,50 @@ COPY /release-archives/ \
 COPY backends/bash/cross \
      /sources/
 
-# webassembly build
-FROM gnu_bootstrap_builder AS webassembly_builder
+# system base build
+FROM gnu_bootstrap_builder AS system_base_builder
 
-# webassembly package builders
+# windows system base package builders
+COPY backends/bash/windows-base \
+     /sources/
+
+# windows-x86_64 environment
+RUN HOST_ARCH=westmere \
+    HOST_CPU=westmere \
+    HOST_KERNEL=w64 \
+    HOST_OS=mingw \
+    HOST_OS_API_LEVEL=64 \
+    HOST_PROCESSOR=x86_64 \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows-base
+
+# windows-i686 environment
+RUN HOST_ARCH=westmere \
+    HOST_CPU=westmere \
+    HOST_KERNEL=w64 \
+    HOST_OS=mingw \
+    HOST_OS_API_LEVEL=32 \
+    HOST_PROCESSOR=i686 \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows-base
+
+# windows-aarch64 environment
+RUN HOST_ARCH=armv8-a \
+    HOST_CPU=apple-m1 \
+    HOST_KERNEL=w64 \
+    HOST_OS=mingw \
+    HOST_OS_API_LEVEL=64 \
+    HOST_PROCESSOR=aarch64 \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows-base
+
+# windows-armv7a environment
+RUN HOST_ARCH=armv7-a+fp \
+    HOST_CPU=apple-m1 \
+    HOST_KERNEL=w64 \
+    HOST_OS=mingw \
+    HOST_OS_API_LEVEL=32 \
+    HOST_PROCESSOR=armv7a \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows-base
+
+# webassembly system base package builders
 COPY backends/bash/webassembly \
      /sources/
 
@@ -118,7 +158,7 @@ RUN HOST_ARCH=wasm32 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-webassembly
 
 # gnu build
-FROM webassembly_builder AS gnu_builder
+FROM system_base_builder AS gnu_builder
 
 # gnu package builders
 COPY backends/bash/gnu \
@@ -173,7 +213,7 @@ RUN HOST_ARCH=westmere \
 
 # gnueabihf-armv7a environment
 RUN HOST_ARCH=armv7-a+fp \
-    HOST_CPU=cortex-a15 \
+    HOST_CPU=apple-m1 \
     HOST_KERNEL=linux \
     HOST_OS=gnu \
     HOST_OS_API_LEVEL=eabihf \
@@ -181,7 +221,7 @@ RUN HOST_ARCH=armv7-a+fp \
     ; # bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap
 
 RUN HOST_ARCH=armv7-a+fp \
-    HOST_CPU=cortex-a15 \
+    HOST_CPU=apple-m1 \
     HOST_KERNEL=linux \
     HOST_OS=gnu \
     HOST_OS_API_LEVEL=eabihf \
@@ -196,7 +236,7 @@ COPY backends/bash/darwin \
      /sources/
 
 RUN DARWIN_OS=darwin \
-    DARWIN_OS_API_LEVEL=20 \
+    DARWIN_OS_API_LEVEL=21 \
     HOST_ARCH=westmere \
     HOST_CPU=westmere \
     HOST_KERNEL=apple \
@@ -208,7 +248,7 @@ RUN DARWIN_OS=darwin \
 
 # macos-x86_64 environment
 RUN DARWIN_OS=darwin \
-    DARWIN_OS_API_LEVEL=20 \
+    DARWIN_OS_API_LEVEL=21 \
     HOST_ARCH=westmere \
     HOST_CPU=westmere \
     HOST_KERNEL=apple \
@@ -219,7 +259,7 @@ RUN DARWIN_OS=darwin \
 
 # macos-aarch64 environment
 RUN DARWIN_OS=darwin \
-    DARWIN_OS_API_LEVEL=20 \
+    DARWIN_OS_API_LEVEL=21 \
     HOST_ARCH=armv8-a \
     HOST_CPU=apple-m1 \
     HOST_KERNEL=apple \
@@ -287,17 +327,17 @@ COPY backends/bash/windows \
 RUN HOST_ARCH=westmere \
     HOST_CPU=westmere \
     HOST_KERNEL=w64 \
-    HOST_OS=mingw32 \
-    HOST_OS_API_LEVEL= \
+    HOST_OS=mingw \
+    HOST_OS_API_LEVEL=64 \
     HOST_PROCESSOR=x86_64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows
 
 # windows-aarch64 environment
 RUN HOST_ARCH=armv8-a \
-    HOST_CPU=cortex-a57 \
+    HOST_CPU=apple-m1 \
     HOST_KERNEL=w64 \
-    HOST_OS=mingw32 \
-    HOST_OS_API_LEVEL= \
+    HOST_OS=mingw \
+    HOST_OS_API_LEVEL=64 \
     HOST_PROCESSOR=aarch64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows
 

@@ -7,7 +7,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for stage/configure/install
 if [ "${HOST_OS}" = "macos" ] ||
-   [ "${HOST_OS}" = "mingw32" ]; then
+   [ "${HOST_OS}" = "mingw" ]; then
     ENABLE_OR_DISABLE_SYMVERS=disable
 else
     ENABLE_OR_DISABLE_SYMVERS=enable

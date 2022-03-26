@@ -11,7 +11,7 @@ WITH_OR_WITHOUT_LIBUUID=with
 if [ "${HOST_OS}" = "macos" ]; then
     LIBUUID_INCLUDE_DIR=${SYSROOT}/usr/include
     LIBUUID_LIBS="-framework System"
-elif [ "${HOST_OS}" = "mingw32" ]; then
+elif [ "${HOST_OS}" = "mingw" ]; then
     WITH_OR_WITHOUT_LIBUUID=without
 else
     LIBUUID_INCLUDE_DIR=${PACKAGE_PREFIX}/include

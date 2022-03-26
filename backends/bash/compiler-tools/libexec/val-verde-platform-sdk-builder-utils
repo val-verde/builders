@@ -46,7 +46,7 @@ BUILD_STATIC_LIBRARY_SUFFIX=".a"
 
 if [ "${BUILD_OS}" = "macos" ]; then
     BUILD_SHARED_LIBRARY_SUFFIX=".dylib"
-elif [ "${BUILD_OS}" = "mingw32" ]; then
+elif [ "${BUILD_OS}" = "mingw" ]; then
     BUILD_EXECUTABLE_SUFFIX=".exe"
     BUILD_OBJECT_FILE_SUFFIX=".obj"
     BUILD_SHARED_LIBRARY_SUFFIX=".dll.a"
@@ -69,7 +69,7 @@ STATIC_LIBRARY_SUFFIX=".a"
 
 if [ "${HOST_OS}" = "macos" ]; then
     SHARED_LIBRARY_SUFFIX=".dylib"
-elif [ "${HOST_OS}" = "mingw32" ]; then
+elif [ "${HOST_OS}" = "mingw" ]; then
     EXECUTABLE_SUFFIX=".exe"
     OBJECT_FILE_SUFFIX=".obj"
     SHARED_LIBRARY_SUFFIX=".dll.a"
@@ -171,7 +171,7 @@ function export-compiler-environment-for-build-tools() {
         BUILD_SYSTEM_NAME=${BUILD_SYSTEM_NAME:-Linux}
     elif [ "${BUILD_OS}" = "macos" ]; then
         BUILD_SYSTEM_NAME=${BUILD_SYSTEM_NAME:-Darwin}
-    elif [ "${BUILD_OS}" = "mingw32" ]; then
+    elif [ "${BUILD_OS}" = "mingw" ]; then
         BUILD_SYSTEM_NAME=${BUILD_SYSTEM_NAME:-Windows}
     elif [ "${BUILD_OS}" = "wasi" ]; then
         BUILD_SYSTEM_NAME=${BUILD_SYSTEM_NAME:-Fuchsia}
@@ -183,7 +183,7 @@ function export-compiler-environment-for-build-tools() {
         SYSTEM_NAME=${SYSTEM_NAME:-Linux}
     elif [ "${HOST_OS}" = "macos" ]; then
         SYSTEM_NAME=${SYSTEM_NAME:-Darwin}
-    elif [ "${HOST_OS}" = "mingw32" ]; then
+    elif [ "${HOST_OS}" = "mingw" ]; then
         SYSTEM_NAME=${SYSTEM_NAME:-Windows}
     elif [ "${HOST_OS}" = "wasi" ]; then
         SYSTEM_NAME=${SYSTEM_NAME:-Fuchsia}
@@ -199,6 +199,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     VARIANT_CPU=${VARIANT}_CPU
     VARIANT_OS=${VARIANT}_OS
     VARIANT_OS_API_LEVEL=${VARIANT}_OS_API_LEVEL
+    VARIANT_PROCESSOR=${VARIANT}_PROCESSOR
 
     if [ "${VARIANT}" != "HOST" ]; then
         ENV_PREFIX="${VARIANT}_"
@@ -358,10 +359,15 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     fi
 
     if [ -n "${!VARIANT_CPU}" ]; then
-        if [ "${HOST_PROCESSOR}" = "aarch64" ] &&
+        if [ "${!VARIANT_CPU}" = "apple-m1" ] &&
            [ -n "${USE_GCC}" ]; then
-            CPU_AARCH64=${DEFAULT_CPU_AARCH64:-cortex-a57}
-            MTUNE_CFLAG="-mtune=${CPU_AARCH64}"
+            if [ "${!VARIANT_PROCESSOR}" = "aarch64" ]; then
+                CPU_NAME=${CPU_NAME:-cortex-a57}
+            elif [ "${!VARIANT_PROCESSOR}" = "armv7a" ]; then
+                CPU_NAME=${CPU_NAME:-cortex-a15}
+            fi
+
+            MTUNE_CFLAG="-mtune=${CPU_NAME}"
         else
             MTUNE_CFLAG="-mtune=${!VARIANT_CPU}"
 
@@ -408,7 +414,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
 
     # CFLAG definitions: i.e. -Dxxx[=yyy]
 
-    if [ "${!VARIANT_OS}" = "mingw32" ]; then
+    if [ "${!VARIANT_OS}" = "mingw" ]; then
         DISABLE_BUILTIN_STRCPY=TRUE
         DISABLE_FPIC=TRUE
     fi
@@ -670,7 +676,7 @@ function export-compiler-environment-for-go() {
         export GOHOSTOS=linux
     elif [ "${BUILD_OS}" = "macos" ]; then
         export GOHOSTOS=darwin
-    elif [ "${BUILD_OS}" = "mingw32" ]; then
+    elif [ "${BUILD_OS}" = "mingw" ]; then
         export GOHOSTOS=windows
     fi
 
@@ -691,7 +697,7 @@ function export-compiler-environment-for-go() {
         export GOOS=linux
     elif [ "${HOST_OS}" = "macos" ]; then
         export GOOS=darwin
-    elif [ "${HOST_OS}" = "mingw32" ]; then
+    elif [ "${HOST_OS}" = "mingw" ]; then
         export GOOS=windows
     fi
 
@@ -720,7 +726,7 @@ function export-compiler-environment-for-python() {
         " | ${XARGS}`
         PYTHON_PACKAGE_PREFIX=${PACKAGE_PLATFORM_SYSROOT}/System/Library/Frameworks/Python.framework/Versions/Current
         PYTHON_PLATFORM=${DARWIN_OS}
-    elif [ "${HOST_OS}" = "mingw32" ]; then
+    elif [ "${HOST_OS}" = "mingw" ]; then
         PYTHON_HOST_KERNEL=unknown
         PYTHON_HOST_OS=windows-gnu
         PYTHON_LIBS=`${ECHO} "\
@@ -1066,7 +1072,7 @@ function package-cmake() {
 function package-cmake-invocation() {
     CMAKE_CONFIGURE_ROOT=${CMAKE_CONFIGURE_ROOT:-${SOURCE_ROOT}}
     CMAKE_INSTALL_PLATFORM_PREFIX=`${READLINK} -m ${CMAKE_INSTALL_PLATFORM_PREFIX:-${PACKAGE_PLATFORM_SYSROOT}}`
-    CMAKE_INSTALL_PREFIX=`${READLINK} -m ${CMAKE_INSTALL_PLATFORM_PREFIX}/${PACKAGE_USR_PREFIX}`
+    CMAKE_INSTALL_PREFIX=`${READLINK} -m ${CMAKE_INSTALL_PREFIX:-${CMAKE_INSTALL_PLATFORM_PREFIX}/${PACKAGE_USR_PREFIX}}`
 
     DELIMITER=" " \
     DISABLE_FILTER=TRUE \
@@ -1167,7 +1173,7 @@ function package-cmake-invocation-arguments-for-variant() {
         CROSSCOMPILING_CMD \
         SYSTEM_NAME_CMD
 
-    if [ "${!VARIANT_OS}" = "mingw32" ]; then
+    if [ "${!VARIANT_OS}" = "mingw" ]; then
         COMPILER_TARGET_VAR=${VARIANT}_4_TRIPLE
         COMPILER_TARGET=${!COMPILER_TARGET_VAR}
     elif [ "${!VARIANT_OS}" = "macos" ]; then
@@ -1178,6 +1184,16 @@ function package-cmake-invocation-arguments-for-variant() {
     if [ "${BUILD_TRIPLE}" != "${!VARIANT_TRIPLE}" ]; then
         CROSSCOMPILING_CMD="-DCMAKE_CROSSCOMPILING=TRUE"
         SYSTEM_NAME_CMD="-DCMAKE_SYSTEM_NAME=${!SYSTEM_NAME_VAR}"
+    fi
+
+    if [ "${HOST_PROCESSOR}" = "armv7a" ]; then
+        SWIFT_COMPILER_TARGET=armv7-${HOST_ENVIRONMENT}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}
+    elif [ "${HOST_PROCESSOR}" = "i686" ] &&
+	 [ "${HOST_OS}" = "gnu" ] &&
+	 [ -n "${HOST_OS_API_LEVEL}" ]; then
+        SWIFT_COMPILER_TARGET=${HOST_PROCESSOR}-${HOST_ENVIRONMENT}-${HOST_KERNEL}-${HOST_OS}
+    else
+        SWIFT_COMPILER_TARGET=${COMPILER_TARGET}
     fi
 
     LOCALSTATEDIR=`${READLINK} -m ${CMAKE_INSTALL_PLATFORM_PREFIX}/var`
@@ -1275,7 +1291,7 @@ function package-cmake-invocation-arguments-for-variant() {
 -DCMAKE_RC_FLAGS=\""${!TOOL_RCFLAGS}"\" \
 -DCMAKE_READELF=${!TOOL_READELF} \
 -DCMAKE_Swift_COMPILER=${!TOOL_SWIFTC} \
--DCMAKE_Swift_COMPILER_TARGET=${COMPILER_TARGET} \
+-DCMAKE_Swift_COMPILER_TARGET=${SWIFT_COMPILER_TARGET} \
 -DCMAKE_Swift_FLAGS=\""${!TOOL_SWIFTCFLAGS}"\" \
 -DCMAKE_STRINGS=${!TOOL_STRINGS} \
 -DCMAKE_STRIP=${!TOOL_STRIP} \
@@ -1549,6 +1565,11 @@ function package-meson-build-invocation() {
     BACKEND=${BACKEND:-ninja}
     BUILD_TYPE=${BUILD_TYPE:-custom}
     CONFIG_FILE=${STAGE_ROOT}/builder-meson.config
+    MESON_ENABLE_WERROR=${MESON_ENABLE_WERROR:-false}
+    MESON_OPTIMIZATION_LEVEL=${MESON_OPTIMIZATION_LEVEL:-${OPTIMIZATION_LEVEL}}
+    MESON_PREFIX=${MESON_PREFIX:-${PACKAGE_PREFIX}}
+    MESON_ROOT_PREFIX=${MESON_ROOT_PREFIX:-`${REALPATH} -m --relative-to=${PACKAGE_PREFIX} ${PACKAGE_PLATFORM_SYSROOT}`}
+    MESON_WARNING_LEVEL=${MESON_WARNING_LEVEL:-0}
     DEBUG=${DEBUG:-false}
     ENDIAN=${ENDIAN:-little}
     BUILD_SYSTEM=${BUILD_OS}
@@ -1558,7 +1579,7 @@ function package-meson-build-invocation() {
         BUILD_SYSTEM="linux"
     elif [ "${BUILD_OS}" = "macos" ]; then
         BUILD_SYSTEM="darwin"
-    elif [ "${BUILD_OS}" = "mingw32" ]; then
+    elif [ "${BUILD_OS}" = "mingw" ]; then
         BUILD_SYSTEM="windows"
     fi
 
@@ -1569,7 +1590,7 @@ function package-meson-build-invocation() {
         HOST_SYSTEM="linux"
     elif [ "${HOST_OS}" = "macos" ]; then
         HOST_SYSTEM="darwin"
-    elif [ "${HOST_OS}" = "mingw32" ]; then
+    elif [ "${HOST_OS}" = "mingw" ]; then
         HOST_SYSTEM="windows"
     fi
 
@@ -1579,6 +1600,12 @@ function package-meson-build-invocation() {
         MESON_CXX_STANDARD=c++${CXX_STANDARD}
     else
         MESON_CXX_STANDARD=none
+    fi
+
+    if [ -z "${DISABLE_STRIP}" ]; then
+        MESON_ENABLE_STRIP=true
+    else
+        MESON_ENABLE_STRIP=false
     fi
 
     HOST_CMAKE_PREFIXES="${PACKAGE_PREFIX}/lib/cmake:${PKG_CONFIG_LIBDIR}"
@@ -1721,15 +1748,24 @@ ${MESON_EXTRA_PROPERTIES}
     tool-log ${MESON} \
          ${SOURCE_ROOT} \
          ${STAGE_ROOT} \
-         -Dbindir=${PACKAGE_USR_PREFIX}/bin \
-         -Ddatadir=${PACKAGE_USR_PREFIX}/share \
-         -Dincludedir=${PACKAGE_USR_PREFIX}/include \
-         -Dlibdir=${PACKAGE_USR_PREFIX}/lib \
-         -Dlibexecdir=${PACKAGE_USR_PREFIX}/libexec \
-         -Dlocalstatedir=var \
-         -Dprefix=${PACKAGE_PLATFORM_SYSROOT} \
-         -Dsbindir=sbin \
-         -Dsysconfdir=etc \
+         -Dbackend=ninja \
+         -Dbindir=bin \
+         -Ddatadir=share \
+         -Dincludedir=include \
+         -Dinfodir=share/info \
+         -Dlibdir=lib \
+         -Dlibexecdir=libexec \
+         -Dlocaledir=share/locale \
+         -Dlocalstatedir=${MESON_ROOT_PREFIX}/var \
+         -Dmandir=share/man \
+         -Doptimization=${MESON_OPTIMIZATION_LEVEL} \
+         -Dprefix=${MESON_PREFIX} \
+         -Dsbindir=${MESON_ROOT_PREFIX}/sbin \
+         -Dstrip=${MESON_ENABLE_STRIP} \
+         -Dsysconfdir=${MESON_ROOT_PREFIX}/etc \
+         -Dsharedstatedir=${MESON_ROOT_PREFIX}/var/lib \
+         -Dwarning_level=${MESON_WARNING_LEVEL} \
+         -Dwerror=${MESON_ENABLE_WERROR} \
          --${MESON_BUILD_CONFIG}-file ${CONFIG_FILE} \
          "${@}"
 }
@@ -1902,7 +1938,7 @@ function package-swift-build() {
                 -Xcc -D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL} \
                 ${SWIFT_BUILD_FLAGS} \
             "
-        elif [ "${HOST_OS}" = "mingw32" ]; then
+        elif [ "${HOST_OS}" = "mingw" ]; then
             SWIFT_BUILD_FLAGS="\
                 -Xcc -D_FORTIFY_SOURCE=${FORTIFY_SOURCE_LEVEL} \
                 ${SWIFT_BUILD_FLAGS} \
@@ -1916,10 +1952,18 @@ function package-swift-build() {
         SWIFT_HOST_OS=macosx
         HOST_OS_API_SUBVERSION="0.0"
         TARGET=${TARGET:-${HOST_TRIPLE_PROCESSOR}-${HOST_KERNEL}-${SWIFT_HOST_OS}${HOST_OS_API_LEVEL}.${HOST_OS_API_SUBVERSION}}
-    elif [ "${HOST_OS}" = "mingw32" ]; then
+    elif [ "${HOST_OS}" = "mingw" ]; then
         TARGET=${TARGET:-${HOST_PROCESSOR}-unknown-windows-gnu}
     else
-        TARGET=${TARGET:-${HOST_4_TRIPLE}}
+        if [ "${HOST_PROCESSOR}" = "armv7a" ]; then
+            TARGET=${TARGET:-armv7-${HOST_ENVIRONMENT:-unknown}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}}
+        elif [ "${HOST_PROCESSOR}" = "i686" ] &&
+	     [ "${HOST_OS}" = "gnu" ] &&
+	     [ -n "${HOST_OS_API_LEVEL}" ]; then
+            TARGET=${TARGET:-${HOST_PROCESSOR}-${HOST_ENVIRONMENT:-unknown}-${HOST_KERNEL}-${HOST_OS}}
+        else
+            TARGET=${TARGET:-${HOST_4_TRIPLE}}
+        fi
     fi
 
     if [ "${SYSROOT}" != "${PACKAGE_PLATFORM_SYSROOT}" ]; then

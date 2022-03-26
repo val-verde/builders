@@ -9,9 +9,6 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 # cpio build
 package-invoke-builder cpio-cross 2
 
-# kmod build
-package-invoke-builder kmod-cross 29
-
 # kernel-image build
 # package-invoke-builder kernel-image-cross 5
 
