@@ -18,6 +18,7 @@ fi
 
 MIGCC=${STAGE_ROOT}/host-clang \
 package-meson-install-archive \
+    -Dapple-applications-dir=${PACKAGE_PLATFORM_SYSROOT}/System/Applications \
     -Dglx=${ENABLE_GLX} \
     -Dsecure-rpc=false \
     -Dsystemd_logind=${ENABLE_LOGIND} \
