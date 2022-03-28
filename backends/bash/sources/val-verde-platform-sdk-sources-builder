@@ -6,9 +6,9 @@ export BINDIR=/usr/bin
 source /sources/packaging-tools/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-variables
 source /sources/packaging-tools/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-packaging-api
 
-export SOURCE_PACKAGE_NAME=sources-builder
+export SOURCE_PACKAGE_NAME=${VAL_VERDE_GH_TEAM}-sources-builder
 export SOURCE_PACKAGE_VERSION=1
-export INSTALL_ROOT=/tmp/org.${VAL_VERDE_GH_TEAM}/scripts
+export INSTALL_ROOT=/tmp/org.${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}
 export STAGE_ROOT=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}
 
 ${MKDIR} -p \
@@ -30,7 +30,7 @@ ${CHMOD} 755 \
 BASE_DIRECTORY=${INSTALL_ROOT}/usr \
 PACKAGE_INSTALL_BASE=/usr \
 TEMPLATE_ROOT_BASE=${INSTALL_ROOT}/usr/share/${VAL_VERDE_GH_TEAM} \
-package-archive-build-install "${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}"
+package-archive-build-install "${SOURCE_PACKAGE_NAME}"
 
 # Fetch sources
 bash /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-packages

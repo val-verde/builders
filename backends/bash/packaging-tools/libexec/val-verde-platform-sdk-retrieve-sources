@@ -120,7 +120,7 @@ function fetch-sources() {
                 ${ECHO} -e "    Skipping source build: \e[1;32m${PACKAGE_NAME}\e[0m"
             else
                 export PACKAGE_PREFIX=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources/${SOURCE_PACKAGE_NAME_VERSION} \
-                       INSTALL_ROOT=${TEMP_ROOT_BASE}/${SOURCE_PACKAGE_NAME_VERSION} \
+                       INSTALL_ROOT=${TEMP_ROOT_BASE}/${PACKAGE_NAME} \
                        STAGE_ROOT=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME_VERSION}
 
                 export INSTALL_PREFIX=${INSTALL_ROOT}${PACKAGE_PREFIX}
