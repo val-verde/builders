@@ -28,6 +28,10 @@ else
     ENABLE_OR_DISABLE_SYSTEMD=disable
 fi
 
+ENABLE_OR_DISABLE_ALL_PROGRAMS=enable
+ENABLE_OR_DISABLE_HARDLINK=enable
+ENABLE_OR_DISABLE_IPCRM=enable
+ENABLE_OR_DISABLE_IPCS=enable
 ENABLE_OR_DISABLE_LIBBLKID=enable
 ENABLE_OR_DISABLE_LIBSMARTCOLS=enable
 
@@ -37,10 +41,14 @@ if [ "${HOST_OS}" = "macos" ] ||
         -lintl \
         ${COMMON_CFLAGS} \
     "
+    ENABLE_OR_DISABLE_HARDLINK=disable
+    ENABLE_OR_DISABLE_IPCRM=disable
+    ENABLE_OR_DISABLE_IPCS=disable
     ENABLE_OR_DISABLE_LIBMOUNT=disable
     ENABLE_OR_DISABLE_LIBUUID=disable
 
     if [ "${HOST_OS}" = "mingw" ]; then
+        ENABLE_OR_DISABLE_ALL_PROGRAMS=disable
         ENABLE_OR_DISABLE_LIBBLKID=disable
         ENABLE_OR_DISABLE_LIBSMARTCOLS=disable
     fi
@@ -61,12 +69,19 @@ SYSTEMD_LDFLAGS="-L`package-get-path systemd SHARED HOST`" \
 package-bootstrap-configure-install-archive \
     ac_cv_func_setns=yes \
     ac_cv_func_unshare=yes \
-    --disable-all-programs \
     --disable-bash-completion \
+    --disable-newgrp \
+    --disable-nologin \
+    --disable-kill \
     --disable-static \
-    --enable-libuuid \
+    --disable-vipw \
     --enable-shared \
+    --with-libintl-prefix=${PACKAGE_PREFIX} \
     --with-ncursesw \
+    --${ENABLE_OR_DISABLE_ALL_PROGRAMS}-all-programs \
+    --${ENABLE_OR_DISABLE_HARDLINK}-hardlink \
+    --${ENABLE_OR_DISABLE_IPCRM}-ipcrm \
+    --${ENABLE_OR_DISABLE_IPCS}-ipcs \
     --${ENABLE_OR_DISABLE_LIBBLKID}-libblkid \
     --${ENABLE_OR_DISABLE_LIBMOUNT}-libmount \
     --${ENABLE_OR_DISABLE_LIBSMARTCOLS}-libsmartcols \
