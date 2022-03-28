@@ -24,7 +24,8 @@ ENV PACKAGE_ARCHIVE_CLASS=${PACKAGE_ARCHIVE_CLASS} \
     MACOS_VERSION=12 \
     PYTHON_VERSION=3.10 \
     SOURCE_ARCHIVE_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/source-archives \
-    BOOTSTRAP_ARCHIVE_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/bootstrap-archives
+    BOOTSTRAP_ARCHIVE_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/bootstrap-archives \
+    PLATFORM_LOGS_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/platform-logs
 
 ENV BUILD_ARCH=westmere \
     BUILD_CPU=westmere \
@@ -35,7 +36,8 @@ ENV BUILD_ARCH=westmere \
 
 RUN mkdir -p ${RELEASE_ARCHIVE_PATH} \
              ${SOURCE_ARCHIVE_PATH} \
-             ${BOOTSTRAP_ARCHIVE_PATH}
+             ${BOOTSTRAP_ARCHIVE_PATH} \
+             ${PLATFORM_LOGS_PATH}
 
 # platform sdk tool wrapper scripts and templates
 COPY backends/bash/archive-templates \
