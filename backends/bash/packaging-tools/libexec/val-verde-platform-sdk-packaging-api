@@ -18,9 +18,6 @@ function package-archive-build-install() {
         ${PACKAGE_ARCHIVE_CLASS}-archive-build "${1}"
     fi
 
-    # Sign the package using gpg key
-    package-archive-sign "${1}"
-
     # Check if package is installed and needs to be uninstalled
     package-archive-uninstall "${1}"
 
@@ -28,10 +25,6 @@ function package-archive-build-install() {
     if [ -z "${DISABLE_INSTALL_ARCHIVE}" ]; then
         ${PACKAGE_ARCHIVE_CLASS}-archive-install "${1}"
     fi
-}
-
-function package-archive-sign() {
-    package-${PACKAGE_ARCHIVE_CLASS}-sign-verify "${ARCHIVE_PATH}/${1}.${PACKAGE_ARCHIVE_CLASS}"
 }
 
 function package-archive-uninstall() {

@@ -237,7 +237,7 @@ function package-deb-remove() {
 function package-deb-sign-verify() {
     SIGNING_KEY=${SIGNING_KEY:-$(gpg -k | head -n 4 | tail -n 1 | tr -d ' ')}
     GPG_TTY=$(tty) \
-    TOOL_LOG=${STAGE_ROOT}/builder-dpkg-sign \
+    TOOL_LOG=${PLATFORM_LOGS_PATH}/${LOG_FILE}-builder-dpkg-sign \
     tool-log dpkg-sig \
         -s origin \
         -k ${SIGNING_KEY} \
@@ -449,19 +449,33 @@ function package-rpm-remove() {
 }
 
 function package-rpm-sign-verify() {
-    TOOL_LOG=${STAGE_ROOT}/builder-rpm-sign \
+    TOOL_LOG=${PLATFORM_LOGS_PATH}/${LOG_FILE}-builder-rpm-sign \
     tool-log ${RPM}sign \
         --define "_gpg_name <openvalverde@gmail.com>" \
         --define "_gpg_sign_cmd_extra_args --pinentry-mode loopback --passphrase ${VAL_VERDE_GH_TEAM}" \
         --addsign "${@}"
     
-    TOOL_LOG=${STAGE_ROOT}/builder-rpm-sign-verify \
+    TOOL_LOG=${PLATFORM_LOGS_PATH}/${LOG_FILE}-builder-rpm-sign-verify \
     tool-log ${RPM} -K "${@}"
 }
 
 function package-rsync() {
     TOOL_LOG=${STAGE_ROOT}/builder-rsync \
     tool-log ${RSYNC} ${@}
+}
+
+function package-sign-archive() {
+    FILES_TO_SIGN=`${FIND} ${1} -name "*.${PACKAGE_ARCHIVE_CLASS}" -type f | sort`
+
+    if [ -z "${ENABLE_SIGN_BUILD_ARCHIVE}" ]; then
+        FILES_TO_SIGN=`${ECHO} "${FILES_TO_SIGN}" | ${GREP} ${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}`
+    fi
+
+    for file in ${FILES_TO_SIGN}; do
+        ${ECHO} -e "Signing archive file ${PACKAGE_ARCHIVE_CLASS} Package: ${file}"
+        LOG_FILE=`${BASENAME} ${file}` \
+        package-${PACKAGE_ARCHIVE_CLASS}-sign-verify "${file}"
+    done
 }
 
 function package-tar() {
