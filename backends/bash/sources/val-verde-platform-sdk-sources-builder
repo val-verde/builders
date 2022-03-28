@@ -35,5 +35,8 @@ package-archive-build-install "${PACKAGE_BASE_NAME}-${SOURCE_PACKAGE_NAME}"
 # Fetch sources
 bash /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-fetch-packages
 
+# Sign source archives
+package-sign-archive ${SOURCE_ARCHIVE_PATH}
+
 # Rerun source deb checks to install
 trigger-source-package-install
