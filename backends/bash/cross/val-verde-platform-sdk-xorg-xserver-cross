@@ -12,8 +12,6 @@ ENABLE_UDEV=false
 
 if [ "${HOST_OS}" = "gnu" ]; then
     ENABLE_UDEV=true
-elif [ "${HOST_OS}" = "macos" ]; then
-    ENABLE_GLX=false
 elif [ "${HOST_OS}" = "musl" ]; then
     ENABLE_UDEV=true
 fi
