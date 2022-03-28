@@ -99,6 +99,14 @@ function package-invoke-builder() {
         NON_PERSISTENT_ARCHIVE
 }
 
+
+function package-sign-build-archives() {
+    package-get-common-variables
+
+    ENABLE_SIGN_BUILD_ARCHIVE=TRUE \
+    package-sign-archive ${ARCHIVE_PATH}
+}
+
 function parse-builder-args() {
     BUILDER_INPUT_SCRIPT=${1}
     SOURCE_PACKAGE_VERSION=${2}
