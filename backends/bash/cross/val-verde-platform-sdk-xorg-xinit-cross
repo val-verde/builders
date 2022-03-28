@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for configure/install
+CONFIGURE_FILE=autogen.sh \
+MCOOKIE=`package-get-path mcookie EXECUTABLE HOST` \
+package-configure-install-archive \
+    --disable-static \
+    --enable-shared
