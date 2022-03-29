@@ -64,5 +64,11 @@ make-build
 INSTALL_TARGET="install_sw install_ssldirs" \
 make-install
 
+if [ "${OPENSSL_DIR}" = "/etc/ssl" ]; then
+    ${MKDIR} -p ${INSTALL_ROOT}${PACKAGE_PLATFORM_SYSROOT}${OPENSSL_DIR}
+    ${MV} ${INSTALL_ROOT}${OPENSSL_DIR} \
+          ${INSTALL_ROOT}${PACKAGE_PLATFORM_SYSROOT}${OPENSSL_DIR}/
+fi
+
 # Build and install the package
 package-invoke-archive-install
