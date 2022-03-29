@@ -17,15 +17,16 @@ if [ -n "${NON_PERSISTENT_ARCHIVE}" ]; then
 fi
 
 if [ -z "${DISABLE_PYTHON}" ]; then
-    ENABLE_OR_DISABLE_PYTHON=enable
+    WITH_OR_WITHOUT_PYTHON=with
 else
-    ENABLE_OR_DISABLE_PYTHON=disable
+    WITH_OR_WITHOUT_PYTHON=without
 fi
 
-if [ -z "${DISABLE_SYSTEMD}" ]; then
-    ENABLE_OR_DISABLE_SYSTEMD=enable
+if [ -z "${DISABLE_SYSTEMD}" ] &&
+   [ "${HOST_OS}" = "gnu" ]; then
+    WITH_OR_WITHOUT_SYSTEMD=with
 else
-    ENABLE_OR_DISABLE_SYSTEMD=disable
+    WITH_OR_WITHOUT_SYSTEMD=without
 fi
 
 ENABLE_OR_DISABLE_ALL_PROGRAMS=enable
@@ -62,9 +63,9 @@ DISABLE_AUTOUPDATE=TRUE \
 NCURSESW_CFLAGS="-I${PACKAGE_PREFIX}/include" \
 NCURSESW_LDFLAGS="-L`package-get-path ncurses SHARED HOST`" \
 NCURSESW6_CONFIG=`package-get-path ncurses6-config SCRIPT HOST` \
-PYTHON_CFLAGS=${PACKAGE_PREFIX}/include/python${PYTHON_VERSION} \
-PYTHON_LDFLAGS="-L`package-get-path ncurses SHARED HOST`" \
-SYSTEMD_CFLAGS=${PACKAGE_PREFIX}/include \
+PYTHON_CFLAGS="-I${PACKAGE_PREFIX}/include/python${PYTHON_VERSION}" \
+PYTHON_LDFLAGS="-L`package-get-path python${PYTHON_VERSION} SHARED HOST`" \
+SYSTEMD_CFLAGS="-I${PACKAGE_PREFIX}/include" \
 SYSTEMD_LDFLAGS="-L`package-get-path systemd SHARED HOST`" \
 package-bootstrap-configure-install-archive \
     ac_cv_func_setns=yes \
@@ -86,5 +87,5 @@ package-bootstrap-configure-install-archive \
     --${ENABLE_OR_DISABLE_LIBMOUNT}-libmount \
     --${ENABLE_OR_DISABLE_LIBSMARTCOLS}-libsmartcols \
     --${ENABLE_OR_DISABLE_LIBUUID}-libuuid \
-    --${ENABLE_OR_DISABLE_PYTHON}-python \
-    --${ENABLE_OR_DISABLE_SYSTEMD}-systemd
+    --${WITH_OR_WITHOUT_PYTHON}-python \
+    --${WITH_OR_WITHOUT_SYSTEMD}-systemd
