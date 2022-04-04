@@ -36,6 +36,9 @@ package-invoke-builder python-markupsafe-cross 2
 # python-meson build
 package-invoke-builder python-meson-cross 0
 
+# python-requests build
+package-invoke-builder python-requests-cross 2
+
 # python-scikit-build build
 package-invoke-builder python-scikit-build-cross 0
 
@@ -88,6 +91,9 @@ package-invoke-builder python-yaml-cross 6
 
 # python-zmq build
 package-invoke-builder python-zmq-cross 22
+
+# python-zstandard build
+package-invoke-builder python-zstandard-cross 0
 
 # swig build
 package-invoke-builder swig-cross 4

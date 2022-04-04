@@ -12,14 +12,13 @@ ENABLE_UDEV=false
 
 if [ "${HOST_OS}" = "gnu" ]; then
     ENABLE_UDEV=true
-elif [ "${HOST_OS}" = "macos" ]; then
-    ENABLE_GLX=false
 elif [ "${HOST_OS}" = "musl" ]; then
     ENABLE_UDEV=true
 fi
 
 MIGCC=${STAGE_ROOT}/host-clang \
 package-meson-install-archive \
+    -Dapple-applications-dir=${PACKAGE_PLATFORM_SYSROOT}/System/Applications \
     -Dglx=${ENABLE_GLX} \
     -Dsecure-rpc=false \
     -Dsystemd_logind=${ENABLE_LOGIND} \

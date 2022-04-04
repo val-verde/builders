@@ -136,6 +136,11 @@ package-invoke-builder xorg-xauth-cross 1
 # xorg-xhost build
 package-invoke-builder xorg-xhost-cross 1
 
+if [ "${HOST_OS}" != "mingw" ]; then
+    # xorg-xinit build
+    package-invoke-builder xorg-xinit-cross 1
+fi
+
 # xorg-xinput build
 package-invoke-builder xorg-xinput-cross 1
 
