@@ -1497,6 +1497,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "linux",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "5",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "llvm-project",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "13",
@@ -3394,13 +3403,6 @@
         "sourceBranchIndicator": "wget",
         "sourcePackageVersion": "0.9.73",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "linux",
-        "sourceBranchIndicator": "wget-xz",
-        "sourcePackageVersion": "5.17.1",
-        "sourcePackageUrl": "https://cdn.kernel.org/pub/${SOURCE_PACKAGE_NAME}/kernel/v5.x/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz"
     },
     {
         "sourceType": "other",
