@@ -1589,7 +1589,7 @@
         "sourceType": "git",
         "sourcePackageName": "mesa",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "21",
+        "sourcePackageVersion": "22",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {

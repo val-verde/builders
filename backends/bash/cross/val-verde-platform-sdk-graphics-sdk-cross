@@ -39,7 +39,7 @@ ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder libclc-cross 13
 
 # mesa build
-package-invoke-builder mesa-cross 21
+package-invoke-builder mesa-cross 22
 
 # libepoxy build
 package-invoke-builder libepoxy-cross 1
