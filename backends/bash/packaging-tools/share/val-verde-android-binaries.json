@@ -1,7 +1,7 @@
 [
     {
         "sourcePackageName": "android-ndk",
-        "sourcePackageVersion": "r23b",
+        "sourcePackageVersion": "r24",
         "upstreamUrl": "https://dl.google.com/android/repository/${ANDROID_PACKAGE_NAME}-${ANDROID_PACKAGE_VERSION}-${BUILD_KERNEL}"
     }
 ]
