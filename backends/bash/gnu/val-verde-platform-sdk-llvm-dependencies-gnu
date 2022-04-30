@@ -388,7 +388,7 @@ package-invoke-builder bc-cross 1
 
 # coreutils build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
-package-invoke-builder coreutils-cross 8
+package-invoke-builder coreutils-cross 9
 unset \
     BASENAME \
     CHMOD \

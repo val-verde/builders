@@ -266,7 +266,7 @@ if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
 fi
 
 # android coreutils build
-package-invoke-builder coreutils-cross 8
+package-invoke-builder coreutils-cross 9
 
 # android which build
 package-invoke-builder which-cross 2

@@ -260,7 +260,7 @@ package-invoke-builder json-c-cross 0
 package-invoke-builder tar-cross 1
 
 # coreutils build
-package-invoke-builder coreutils-cross 8
+package-invoke-builder coreutils-cross 9
 
 # which build
 package-invoke-builder which-cross 2
