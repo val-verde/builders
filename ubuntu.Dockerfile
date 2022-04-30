@@ -303,7 +303,7 @@ RUN HOST_ARCH=armv8-a \
     HOST_CPU=cortex-a57 \
     HOST_KERNEL=linux \
     HOST_OS=android \
-    HOST_OS_API_LEVEL=29 \
+    HOST_OS_API_LEVEL=30 \
     HOST_PROCESSOR=aarch64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android
 
@@ -312,7 +312,7 @@ RUN HOST_ARCH=westmere \
     HOST_CPU=westmere \
     HOST_KERNEL=linux \
     HOST_OS=android \
-    HOST_OS_API_LEVEL=29 \
+    HOST_OS_API_LEVEL=30 \
     HOST_PROCESSOR=x86_64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android
 
