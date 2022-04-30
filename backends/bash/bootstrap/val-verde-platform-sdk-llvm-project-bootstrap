@@ -260,4 +260,4 @@ package-cmake-install-archive \
     -DZ3_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DZ3_LIBRARIES=`package-get-path z3 SHARED HOST` \
     -DZ3_RETURNCODE=0 \
-    -DZ3_RETURNCODE__TRYRUN_OUTPUT=4.8.13
+    -DZ3_RETURNCODE__TRYRUN_OUTPUT=4.10.2
