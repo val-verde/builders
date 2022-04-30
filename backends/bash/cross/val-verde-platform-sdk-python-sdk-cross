@@ -39,6 +39,12 @@ package-invoke-builder python-meson-cross 0
 # python-requests build
 package-invoke-builder python-requests-cross 2
 
+# python-toml build
+package-invoke-builder python-toml-cross 0
+
+# python-tomli build
+package-invoke-builder python-tomli-cross 2
+
 # python-scikit-build build
 package-invoke-builder python-scikit-build-cross 0
 
@@ -76,9 +82,6 @@ fi
 
 # python-sympy build
 package-invoke-builder python-sympy-cross 1
-
-# python-toml build
-package-invoke-builder python-toml-cross 0
 
 # python-tqdm build
 package-invoke-builder python-tqdm-cross 4
