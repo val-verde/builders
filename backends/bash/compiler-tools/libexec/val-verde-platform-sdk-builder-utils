@@ -490,7 +490,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     fi
 
     if [ -z "${DISABLE_RTLIB}" ]; then
-        RTLIB_CFLAG="-rtlib=${RTLIB} "
+        RTLIB_CFLAG="--rtlib=${RTLIB} "
     else
         unset RTLIB_CFLAG
     fi
