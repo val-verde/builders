@@ -1,4 +1,4 @@
-version: '3.5'
+version: '3.8'
 
 services: 
     ubuntu-builder:
@@ -8,7 +8,7 @@ services:
             context: ./
             dockerfile: ubuntu.Dockerfile
             args:
-                - OS_RELEASE_VERSION=latest
+                - OS_RELEASE_VERSION=rolling
                 - PACKAGE_ARCHIVE_CLASS=deb
                 - PACKAGE_BASE_NAME=val-verde
                 - PACKAGE_ROOT=/opt
