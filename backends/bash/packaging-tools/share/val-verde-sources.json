@@ -3408,7 +3408,7 @@
         "sourceType": "other",
         "sourcePackageName": "macosx",
         "sourceBranchIndicator": "wget-xz",
-        "sourcePackageVersion": "12.0",
+        "sourcePackageVersion": "12.3",
         "sourcePackageUrl": "https://github.com/joseluisq/${SOURCE_PACKAGE_NAME}-sdks/releases/download/${SOURCE_PACKAGE_VERSION}/${SOURCE_PACKAGE_NAME}${SOURCE_PACKAGE_VERSION}.sdk.tar.xz"
     },
     {
