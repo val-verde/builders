@@ -1795,9 +1795,6 @@ function package-meson-install-archive() {
 }
 
 function package-python-build() {
-    SETUP_PY_ROOT=${SETUP_PY_ROOT:-.}
-    SETUP_PY=${SETUP_PY:-setup.py}
-
     copy-source-to-staging
     export-compiler-environment
 
@@ -1814,24 +1811,42 @@ function package-python-build() {
     export-compiler-environment-for-python
 
     package-push-directory ${STAGE_ROOT}/${SETUP_PY_ROOT}
-        TOOL_LOG=${STAGE_ROOT}/builder-invocation \
-        tool-log ${PYTHON} ${SETUP_PY} build -b ${STAGE_ROOT} \
-                                             -j ${NUM_PROCESSORS} \
-                                             ${@}
+        if [ -z "${DISABLE_SETUP_PY}" ]; then
+            SETUP_PY_ROOT=${SETUP_PY_ROOT:-.}
+            SETUP_PY=${SETUP_PY:-setup.py}
+
+            TOOL_LOG=${STAGE_ROOT}/builder-invocation \
+            tool-log ${PYTHON} ${SETUP_PY} build -b ${STAGE_ROOT} \
+                                                 -j ${NUM_PROCESSORS} \
+                                                 ${@}
+        fi
     package-pop-directory
 }
 
 function package-python-install() {
-    INSTALLED_FILE_LIST=${INSTALLED_FILE_LIST:-${STAGE_ROOT}/installed-file-list.txt}
-    SETUP_PY_ROOT=${SETUP_PY_ROOT:-.}
-    SETUP_PY=${SETUP_PY:-setup.py}
-
     package-push-directory ${STAGE_ROOT}/${SETUP_PY_ROOT}
-        TOOL_LOG=${STAGE_ROOT}/builder-installation \
-        tool-log ${PYTHON} ${SETUP_PY} install --prefix ${INSTALL_PREFIX} \
-                                               --record ${INSTALLED_FILE_LIST} \
-                                               --single-version-externally-managed \
-                                               ${@}
+        if [ -z "${DISABLE_SETUP_PY}" ]; then
+            INSTALLED_FILE_LIST=${INSTALLED_FILE_LIST:-${STAGE_ROOT}/installed-file-list.txt}
+            SETUP_PY_ROOT=${SETUP_PY_ROOT:-.}
+            SETUP_PY=${SETUP_PY:-setup.py}
+
+            TOOL_LOG=${STAGE_ROOT}/builder-installation \
+            tool-log ${PYTHON} ${SETUP_PY} install --prefix ${INSTALL_PREFIX} \
+                                                   --record ${INSTALLED_FILE_LIST} \
+                                                   --single-version-externally-managed \
+                                                   ${@}
+        else
+            PYPROJECT_TOML_ROOT=${PYPROJECT_TOML_ROOT:-.}
+
+            TOOL_LOG=${STAGE_ROOT}/builder-invocation \
+            tool-log ${PYTHON} -m pip install --cache-dir ${STAGE_ROOT}/cache \
+                                              --ignore-installed \
+                                              --prefix ${INSTALL_PREFIX} \
+                                              --no-deps \
+                                              --src ${STAGE_ROOT}/src \
+                                              ${PYPROJECT_TOML_ROOT} \
+                                              ${@}
+        fi
     package-pop-directory
 }
 
