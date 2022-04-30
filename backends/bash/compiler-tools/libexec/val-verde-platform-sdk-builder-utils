@@ -322,6 +322,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     OPTIMIZATION_FLAGS=${OPTIMIZATION_FLAGS:-"-DNDEBUG"}
     PIPE_CFLAG="-pipe"
     RTLIB=${RTLIB:-compiler-rt}
+    UNWINDLIB_CFLAG=${UNWINDLIB_CFLAG:-libunwind}
 
     # CFLAG compiler configuration
 
@@ -495,6 +496,12 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         unset RTLIB_CFLAG
     fi
 
+    if [ -z "${DISABLE_UNWINDLIB}" ]; then
+        UNWINDLIB_CFLAG="-unwindlib=${UNWINDLIB} "
+    else
+        unset UNWINDLIB_CFLAG
+    fi
+
     if [ "${!VARIANT_OS}" = "macos" ]; then
         DISABLE_STRIP=TRUE
     fi
@@ -569,6 +576,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     export ${TOOL_CCLDFLAGS}="`${ECHO} "\
         ${!TOOL_CFLAGS} \
         ${RTLIB_CFLAG} \
+        ${UNWINDLIB_CFLAG} \
         ${!TOOL_COMMON_LDFLAGS} \
         ${!TOOL_CCLDFLAGS} \
     " | ${XARGS}`"
