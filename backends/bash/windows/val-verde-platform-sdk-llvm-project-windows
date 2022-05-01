@@ -140,8 +140,6 @@ package-cmake-install-archive \
     -DFFI_LIBRARY_PATH=`package-get-path ffi SHARED HOST` \
     -DHAVE_GNU_POSIX_REGEX=TRUE \
     -DHAVE_INOTIFY=TRUE \
-    -DHAVE_LIBCXXABI=TRUE \
-    -DHAVE_LIBUNWIND=TRUE \
     -DHAVE_THREAD_SAFETY_ATTRIBUTES=TRUE \
     -DLIBCXX_CXX_ABI=libcxxabi \
     -DLIBCXX_CXX_ABI_INCLUDE_PATHS=${PACKAGE_PREFIX}/include/c++/v1 \
