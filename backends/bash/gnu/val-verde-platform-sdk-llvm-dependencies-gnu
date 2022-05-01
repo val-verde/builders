@@ -349,7 +349,7 @@ package-invoke-builder ldns-cross 1
 package-invoke-builder c-ares-cross 1
 
 # openssh-portable build
-package-invoke-builder openssh-portable-cross 8
+package-invoke-builder openssh-portable-cross 9
 unset SSH
 
 # bash build
