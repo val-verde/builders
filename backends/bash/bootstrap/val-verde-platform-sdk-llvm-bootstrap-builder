@@ -37,7 +37,7 @@ package-invoke-builder automake 1
 export AUTOMAKE=`BINDIR= package-get-path automake EXECUTABLE BUILD`
 
 # autoconf-archive bootstrap build
-package-invoke-builder autoconf-archive 2021
+package-invoke-builder autoconf-archive 2022
 
 # glibc-interface bootstrap phase 1
 

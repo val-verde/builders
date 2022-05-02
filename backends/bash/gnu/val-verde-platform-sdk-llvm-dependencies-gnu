@@ -100,7 +100,7 @@ package-invoke-builder autoconf-cross 2
 package-invoke-builder automake-cross 1
 
 # autoconf-archive build
-package-invoke-builder autoconf-archive-cross 2021
+package-invoke-builder autoconf-archive-cross 2022
 
 # libxcrypt build
 package-invoke-builder libxcrypt-cross 4
