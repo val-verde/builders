@@ -108,7 +108,7 @@ package-cmake-install-archive \
     -DFILAMENT_SKIP_SAMPLES=TRUE \
     -DFILAMENT_SUPPORTS_VULKAN=TRUE \
     -DLIBRT= \
-    -DPYTHON_EXECUTABLE=${PYTHON} \
+    -DPython3_EXECUTABLE=${PYTHON} \
     -DSPIRV_WERROR=FALSE \
     -DUSE_STATIC_LIBCXX=FALSE \
     -DVulkan_LIBRARY=`package-get-path vulkan SHARED HOST` \
