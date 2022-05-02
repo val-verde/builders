@@ -18,7 +18,7 @@ fi
 
 if [ -z "${DISABLE_PYTHON}" ]; then
     export-compiler-environment-for-python
-    WITH_OR_WITHOUT_PYTHON=--with-python=${PACKAGE_PREFIX}
+    WITH_OR_WITHOUT_PYTHON=--with-python=${BUILD_PACKAGE_PREFIX}
 else
     WITH_OR_WITHOUT_PYTHON=--without-python
 fi
