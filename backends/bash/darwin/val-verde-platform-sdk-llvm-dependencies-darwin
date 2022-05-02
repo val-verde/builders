@@ -67,7 +67,7 @@ package-invoke-builder libffi-cross 3
 package-invoke-builder libiconv-cross 1
 
 # icu build
-package-invoke-builder icu4c-cross 70
+package-invoke-builder icu4c-cross 71
 
 # libunistring build
 package-invoke-builder libunistring-cross 0

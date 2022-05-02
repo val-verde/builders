@@ -887,7 +887,7 @@
         "sourceType": "git",
         "sourcePackageName": "icu4c",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "70",
+        "sourcePackageVersion": "71",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/icu.git"
     },
     {
