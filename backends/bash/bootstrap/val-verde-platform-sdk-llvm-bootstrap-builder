@@ -27,17 +27,17 @@ export \
 package-invoke-builder kernel-headers 5
 
 # autoconf bootstrap build
-package-invoke-builder autoconf 2
+package-invoke-builder autoconf 2 bootstrap-only
 export \
     AUTORECONF=`BINDIR= package-get-path autoreconf EXECUTABLE BUILD` \
     AUTOUPDATE=`BINDIR= package-get-path autoupdate EXECUTABLE BUILD`
 
 # automake bootstrap build
-package-invoke-builder automake 1
+package-invoke-builder automake 1 bootstrap-only
 export AUTOMAKE=`BINDIR= package-get-path automake EXECUTABLE BUILD`
 
 # autoconf-archive bootstrap build
-package-invoke-builder autoconf-archive 2022
+package-invoke-builder autoconf-archive 2022 bootstrap-only
 
 # glibc-interface bootstrap phase 1
 
@@ -49,11 +49,14 @@ ${MKDIR} -p ${ARCHIVE_PATH}
 
 if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
     # help2man bootstrap build
-    package-invoke-builder help2man 1
+    package-invoke-builder help2man 1 bootstrap-only
     export HELP2MAN=`BINDIR= package-get-path help2man EXECUTABLE BUILD`
 
     # libtool bootstrap build
-    package-invoke-builder libtool 2
+    package-invoke-builder libtool 2 bootstrap-only
+
+    # zlib bootstrap build
+    package-invoke-builder zlib 1 bootstrap-only
 
     # gmp bootstrap build
     package-invoke-builder gmp 6 bootstrap-only
@@ -93,7 +96,7 @@ unset ENABLE_BOOTSTRAP
 export ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH}
 
 # glibc-interface bootstrap build
-package-invoke-builder glibc-interface-bootstrap 2
+package-invoke-builder glibc-interface-bootstrap 2 bootstrap-only
 
 export BUILD_SYSROOT=${SPECIFIED_BUILD_SYSROOT}
 
@@ -101,22 +104,22 @@ export BUILD_SYSROOT=${SPECIFIED_BUILD_SYSROOT}
 
 if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
     # compiler-rt bootstrap build
-    package-invoke-builder compiler-rt-cross 13
+    package-invoke-builder compiler-rt-cross 13 bootstrap-only
 fi
 
 # libcxx bootstrap build
-package-invoke-builder libcxx-bootstrap 13
+package-invoke-builder libcxx-bootstrap 13 bootstrap-only
 
 unset \
     DISABLE_CXX_INCLUDE \
     DISABLE_CXX_STDLIB
 
 # cmake bootstrap build
-package-invoke-builder cmake 3
+package-invoke-builder cmake 3 bootstrap-only
 export CMAKE=`BINDIR= package-get-path cmake EXECUTABLE BUILD`
 
 # z3 build
-package-invoke-builder z3 4
+package-invoke-builder z3 4 bootstrap-only
 
 # llvm bootstrap build
 ENABLE_INCREMENTAL_BUILD=TRUE \
