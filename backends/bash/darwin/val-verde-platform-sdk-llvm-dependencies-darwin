@@ -283,15 +283,8 @@ package-invoke-builder lua-cross 5
 # wget build
 # package-invoke-builder wget-cross 1
 
-# python build
-ENABLE_STAGE_ROOOT_BUILD=TRUE \
-package-invoke-builder python-cross 3
-
-# python-setuptools build
-package-invoke-builder python-setuptools-cross 62
-
-# python-pip build
-package-invoke-builder python-pip-cross 21
+# python bootstrap build
+package-invoke-category-builder python-bootstrap-cross
 
 # libxml2 build (with python support)
 package-invoke-builder libxml2-cross 2

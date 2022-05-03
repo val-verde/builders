@@ -42,12 +42,6 @@ package-invoke-builder python-requests-cross 2
 # python-toml build
 package-invoke-builder python-toml-cross 0
 
-# python-tomli build
-package-invoke-builder python-tomli-cross 2
-
-# python-setuptools-scm build
-package-invoke-builder python-setuptools-scm-cross 6
-
 # python-scikit-build build
 package-invoke-builder python-scikit-build-cross 0
 

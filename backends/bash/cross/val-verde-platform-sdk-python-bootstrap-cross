@@ -1,0 +1,56 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
+    # python bootstrap build (with pip)
+    ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
+    ENABLE_PIP=TRUE \
+    ENABLE_STAGE_ROOT_BUILD=TRUE \
+    package-invoke-builder python-cross 3
+    unset PYTHON
+
+    # python-tomli build
+    package-invoke-builder python-tomli-cross 2
+
+    # python-setuptools-scm build
+    package-invoke-builder python-setuptools-scm-cross 6
+
+    # python-setuptools build
+    package-invoke-builder python-setuptools-cross 62 no-install
+
+    # python-pip build
+    package-invoke-builder python-pip-cross 21 no-install
+
+    # python build (without pip)
+    ENABLE_STAGE_ROOT_BUILD=TRUE \
+    package-invoke-builder python-cross 3 no-install
+
+    # install python-pip package
+    PACKAGES_TO_MANAGE=( 'python-3' 'HOST'
+                         'python-pip-21' 'HOST'
+                         'python-setuptools-62' 'HOST' )
+
+    package-invoke-archive-action install ${PACKAGES_TO_MANAGE[@]}
+else
+    # python build
+    ENABLE_STAGE_ROOT_BUILD=TRUE \
+    package-invoke-builder python-cross 3
+    unset PYTHON
+
+    # python-tomli build
+    package-invoke-builder python-tomli-cross 2
+
+    # python-setuptools-scm build
+    package-invoke-builder python-setuptools-scm-cross 6
+
+    # python-setuptools build
+    package-invoke-builder python-setuptools-cross 62
+
+    # python-pip build
+    package-invoke-builder python-pip-cross 21
+fi
