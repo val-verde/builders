@@ -3377,14 +3377,14 @@
         "sourceType": "other",
         "sourcePackageName": "bash",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "5.1.8",
+        "sourcePackageVersion": "5.1.16",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
         "sourceType": "other",
         "sourcePackageName": "gdbm",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "1.20",
+        "sourcePackageVersion": "1.23",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
@@ -3398,14 +3398,14 @@
         "sourceType": "other",
         "sourcePackageName": "help2man",
         "sourceBranchIndicator": "wget-xz",
-        "sourcePackageVersion": "1.48.3",
+        "sourcePackageVersion": "1.49.2",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz"
     },
     {
         "sourceType": "other",
         "sourcePackageName": "libedit",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "20210714-3.1",
+        "sourcePackageVersion": "20210910-3.1",
         "sourcePackageUrl": "https://www.thrysoee.dk/editline/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
@@ -3419,7 +3419,7 @@
         "sourceType": "other",
         "sourcePackageName": "libmicrohttpd",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "0.9.73",
+        "sourcePackageVersion": "0.9.75",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {

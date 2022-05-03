@@ -217,7 +217,7 @@ fi
 unset PERL
 
 # libedit build
-package-invoke-builder libedit-cross 20210714-3
+package-invoke-builder libedit-cross 20210910-3
 
 # readline build
 package-invoke-builder readline-cross 8

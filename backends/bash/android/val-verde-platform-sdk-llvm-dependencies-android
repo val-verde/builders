@@ -118,7 +118,7 @@ fi
 package-invoke-builder file-cross 5
 
 # android libedit build
-package-invoke-builder libedit-cross 20210714-3
+package-invoke-builder libedit-cross 20210910-3
 
 # android readline build
 package-invoke-builder readline-cross 8
