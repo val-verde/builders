@@ -3462,7 +3462,7 @@
         "sourcePackageName": "sqlite",
         "sourceBranchIndicator": "wget",
         "sourcePackageVersion": "3",
-        "sourcePackageUrl": "https://sqlite.org/2021/sqlite-autoconf-3360000.tar.gz"
+        "sourcePackageUrl": "https://sqlite.org/2022/sqlite-autoconf-3380300.tar.gz"
     },
     {
         "sourceType": "other",
