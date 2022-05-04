@@ -79,6 +79,7 @@ export MAKEINFO=${MAKEINFO:-${BINDIR}/makeinfo}
 export MIG=${MKDIR:-${BINDIR}/mig}
 export MKDIR=${MKDIR:-${BINDIR}/mkdir}
 export MKTEMP=${MKTEMP:-${BINDIR}/mktemp}
+export MSGFMT=${MSGFMT:-${BINDIR}/msgfmt}
 export MV=${MV:-${BINDIR}/mv}
 export NICE=${NICE:-${BINDIR}/nice}
 export PATCH=${PATCH:-/usr/bin/patch}

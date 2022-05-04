@@ -34,6 +34,7 @@ export \
     M4=/usr/bin/m4 \
     MAKE=/usr/bin/make \
     MAKEINFO=/usr/bin/true \
+    MSGFMT=/usr/bin/true \
     MESON=/usr/bin/meson \
     MKDIR=/usr/bin/mkdir \
     MV=/usr/bin/mv \

@@ -21,7 +21,8 @@ fi
 export \
     DISABLE_CXX_INCLUDE=TRUE \
     DISABLE_CXX_STDLIB=TRUE \
-    MAKEINFO=`package-get-path true EXECUTABLE BUILD`
+    MAKEINFO=`package-get-path true EXECUTABLE BUILD` \
+    MSGFMT=`package-get-path true EXECUTABLE BUILD`
 
 # kernel-headers bootstrap build
 package-invoke-builder kernel-headers 5

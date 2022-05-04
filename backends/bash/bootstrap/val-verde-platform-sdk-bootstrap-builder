@@ -37,7 +37,8 @@ export \
     AUTOUPDATE=`BINDIR= package-get-path autoupdate EXECUTABLE BUILD` \
     GO=`BINDIR= package-get-path go EXECUTABLE BUILD` \
     CMAKE=`BINDIR= package-get-path cmake EXECUTABLE BUILD` \
-    MAKEINFO=`package-get-path true EXECUTABLE BUILD`
+    MAKEINFO=`package-get-path true EXECUTABLE BUILD` \
+    MSGFMT=`package-get-path true EXECUTABLE BUILD`
 
 if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
     # zlib bootstrap build
