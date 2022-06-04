@@ -17,6 +17,12 @@ if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
     # python-tomli build
     package-invoke-builder python-tomli-cross 2
 
+    # python-packaging build
+    package-invoke-builder python-packaging-cross 21
+
+    # python-pyparsing build
+    package-invoke-builder python-pyparsing-cross 2
+
     # python-setuptools-scm build
     package-invoke-builder python-setuptools-scm-cross 6
 
@@ -40,10 +46,15 @@ else
     # python build
     ENABLE_STAGE_ROOT_BUILD=TRUE \
     package-invoke-builder python-cross 3
-    unset PYTHON
 
     # python-tomli build
     package-invoke-builder python-tomli-cross 2
+
+    # python-packaging build
+    package-invoke-builder python-packaging-cross 21
+
+    # python-pyparsing build
+    package-invoke-builder python-pyparsing-cross 2
 
     # python-setuptools-scm build
     package-invoke-builder python-setuptools-scm-cross 6

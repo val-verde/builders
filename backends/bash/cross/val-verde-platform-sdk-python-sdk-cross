@@ -51,9 +51,6 @@ package-invoke-builder python-mpmath-cross 1
 # python-numpy build
 package-invoke-builder python-numpy-cross 1
 
-# python-packaging build
-package-invoke-builder python-packaging-cross 21
-
 # python-protobuf build
 package-invoke-builder python-protobuf-cross 3
 
@@ -62,9 +59,6 @@ package-invoke-builder python-pybind11-cross 2
 
 # python-pygments build
 package-invoke-builder python-pygments-cross 2
-
-# python-pyparsing build
-package-invoke-builder python-pyparsing-cross 2
 
 # python-libcomps build
 package-invoke-builder python-libcomps-cross 0
