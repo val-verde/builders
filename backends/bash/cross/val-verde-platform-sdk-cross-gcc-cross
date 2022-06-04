@@ -114,7 +114,7 @@ package-stage-configure-install-archive \
     --disable-werror \
     --enable-cet=yes \
     --enable-default-pie \
-    --enable-languages="c,c++,d,fortran,lto,objc,obj-c++" \
+    --enable-languages="c,c++,fortran,lto,objc,obj-c++" \
     --enable-large-address-aware \
     --enable-plugin \
     --enable-shared \

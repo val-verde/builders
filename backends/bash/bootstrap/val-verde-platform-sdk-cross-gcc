@@ -41,7 +41,7 @@ if [ -n "${ENABLE_BOOTSTRAP}" ]; then
     fi
 else
     ENABLE_OR_DISABLE_SHARED=enable
-    ENABLED_LANGUAGES="${ENABLED_LANGUAGES},c++,d,fortran,lto,objc,obj-c++"
+    ENABLED_LANGUAGES="${ENABLED_LANGUAGES},c++,fortran,lto,objc,obj-c++"
     WITH_OR_WITHOUT_SYSTEM_ZLIB=with
 fi
 
