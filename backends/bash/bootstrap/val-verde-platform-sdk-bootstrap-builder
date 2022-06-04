@@ -91,4 +91,4 @@ fi
 package-invoke-builder cross-binutils-gdb 2
 
 # gcc build
-package-invoke-builder cross-gcc 11
+package-invoke-builder cross-gcc 12

@@ -73,7 +73,7 @@ package-invoke-builder cross-binutils-gdb 2
 
 # gcc bootstrap build (gcc only)
 export DISABLE_LIBGCC=TRUE
-package-invoke-builder cross-gcc 11 bootstrap-only
+package-invoke-builder cross-gcc 12 bootstrap-only
 unset DISABLE_LIBGCC
 
 export SYSROOT=${SPECIFIED_SYSROOT}
@@ -87,7 +87,7 @@ export ARCHIVE_PATH=${ARCHIVE_PATH_BASE}/phase-2
 ${MKDIR} -p ${ARCHIVE_PATH}
 
 # gcc bootstrap build (gcc + libgcc only)
-package-invoke-builder cross-gcc 11 bootstrap-only
+package-invoke-builder cross-gcc 12 bootstrap-only
 
 unset ENABLE_BOOTSTRAP
 export ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH}

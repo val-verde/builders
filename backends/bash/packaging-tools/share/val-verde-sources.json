@@ -626,7 +626,7 @@
         "sourceType": "git",
         "sourcePackageName": "gcc-project",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "11",
+        "sourcePackageVersion": "12",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
