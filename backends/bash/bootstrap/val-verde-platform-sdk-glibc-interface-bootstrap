@@ -99,6 +99,7 @@ TOOL_INSTALL_INVOCATION=${TOOL_INSTALL_INVOCATION} \
 USE_GCC=TRUE \
 package-configure-install-archive \
     libc_cv_include_x86_isa_level=no \
+    libc_cv_ld_static_pie=yes \
     libc_cv_slibdir=/usr/glibc-interface \
     --disable-crypt \
     --disable-multiarch \

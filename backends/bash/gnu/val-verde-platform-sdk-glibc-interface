@@ -35,6 +35,7 @@ PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 USE_GCC=TRUE \
 package-configure-install-archive \
     libc_cv_include_x86_isa_level=no \
+    libc_cv_ld_static_pie=yes \
     --disable-crypt \
     --disable-multiarch \
     --disable-multilib \
