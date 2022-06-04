@@ -580,7 +580,7 @@ package-invoke-builder intltool-cross 0
 package-invoke-builder kmod-cross 29
 
 # systemd build
-package-invoke-builder systemd 250
+package-invoke-builder systemd 251
 
 # p11-kit build
 package-invoke-builder p11-kit-cross 0

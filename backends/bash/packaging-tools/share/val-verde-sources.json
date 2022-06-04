@@ -2768,7 +2768,7 @@
         "sourceType": "git",
         "sourcePackageName": "systemd",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "250",
+        "sourcePackageVersion": "251",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
