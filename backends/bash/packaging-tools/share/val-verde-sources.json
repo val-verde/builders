@@ -1814,7 +1814,7 @@
         "sourceType": "git",
         "sourcePackageName": "opencl-headers",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "2020",
+        "sourcePackageVersion": "2022",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1823,7 +1823,7 @@
         "sourceType": "git",
         "sourcePackageName": "opencl-icd-loader",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "2020",
+        "sourcePackageVersion": "2022",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {

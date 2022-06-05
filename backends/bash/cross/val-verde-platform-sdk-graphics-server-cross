@@ -171,10 +171,10 @@ fi
 package-invoke-builder shared-mime-info-cross 2
 
 # opencl headers build
-package-invoke-builder opencl-headers-cross 2020
+package-invoke-builder opencl-headers-cross 2022
 
 # opencl icd loader build
-package-invoke-builder opencl-icd-loader-cross 2020
+package-invoke-builder opencl-icd-loader-cross 2022
 
 if [ "${HOST_OS}" = "mingw" ]; then
     # egl headers build
