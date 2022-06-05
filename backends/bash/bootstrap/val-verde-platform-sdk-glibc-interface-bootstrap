@@ -80,11 +80,9 @@ else
     WITH_OR_WITHOUT_SYSTEM_ZLIB=with
 fi
 
-if [ "${HOST_PROCESSOR}" = "i686" ] ||
-   [ "${HOST_PROCESSOR}" = "x86_64" ]; then
-    ENABLE_OR_DISABLE_STATIC_PIE=enable
-else
-    ENABLE_OR_DISABLE_STATIC_PIE=disable
+if [ "${HOST_PROCESSOR}" = "armv7a" ] ||
+   [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+    OPTIMIZATION_LEVEL=2
 fi
 
 BUILD_CC=`BINDIR=${BUILD_PACKAGE_PREFIX}/${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}/bin package-get-path ${BUILD_TRIPLE}-gcc EXECUTABLE BUILD` \
@@ -108,6 +106,6 @@ package-configure-install-archive \
     --disable-werror \
     --enable-cet=yes \
     --enable-kernel=4.0 \
+    --enable-static-pie \
     --with-headers=${PACKAGE_PREFIX}/include \
-    --${ENABLE_OR_DISABLE_STATIC_PIE}-static-pie \
     --${WITH_OR_WITHOUT_SYSTEM_ZLIB}-system-zlib
