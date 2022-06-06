@@ -33,6 +33,15 @@ function package-install-completion-callback() {
         elif [ "${HOST_PROCESSOR}" = "i686" ]; then
             LINKER_LOADER=ld-${HOST_KERNEL}.so.2
             LINKER_LOADER_DIR=lib
+        elif [ "${HOST_PROCESSOR}" = "mips" ] ||
+             [ "${HOST_PROCESSOR}" = "mipsel" ]; then
+            LINKER_LOADER=ld.so.1
+            LINKER_LOADER_DIR=lib
+        elif [ "${HOST_PROCESSOR}" = "mips64" ] ||
+             [ "${HOST_PROCESSOR}" = "mips64el" ]; then
+            LINKER_LOADER=ld.so.1
+            LINKER_LOADER_DIR=lib
+            LINKER_LOADER_DIR=lib64
         elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
             LINKER_LOADER=ld-${HOST_KERNEL}-x86-64.so.2
             LINKER_LOADER_DIR=lib64
@@ -49,7 +58,7 @@ function package-install-completion-callback() {
                "s|/usr/glibc-interface|/${LINKER_LOADER_DIR}|g" \
                ${INSTALL_PREFIX}/bin/ldd
         ${SED} -i \
-               "s|/usr/glibc-interface/ld-${HOST_KERNEL}|/${LINKER_LOADER_DIR}/ld-${HOST_KERNEL}|g" \
+               "s|/usr/glibc-interface/${LINKER_LOADER}|/${LINKER_LOADER_DIR}/${LINKER_LOADER}|g" \
                ${INSTALL_PREFIX}/lib/libc.so
         ${SED} -i \
                "s| /| =/|g" \
@@ -80,9 +89,27 @@ else
     WITH_OR_WITHOUT_SYSTEM_ZLIB=with
 fi
 
-if [ "${HOST_PROCESSOR}" = "armv7a" ] ||
-   [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+ENABLE_CET=yes
+unset MULTILIB_LIST
+
+if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+    MULTILIB_LIST="lp64"
     OPTIMIZATION_LEVEL=2
+elif [ "${HOST_PROCESSOR}" = "mips" ] ||
+     [ "${HOST_PROCESSOR}" = "mipsel" ]; then
+    ENABLE_CET=no
+    MULTILIB_LIST="n32"
+elif [ "${HOST_PROCESSOR}" = "mips64" ] ||
+     [ "${HOST_PROCESSOR}" = "mips64el" ]; then
+    ENABLE_CET=no
+
+    if [ "${HOST_OS_API_LEVEL}" = "abin32" ]; then
+        MULTILIB_LIST="n32"
+    else
+        MULTILIB_LIST="n64"
+    fi
+elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    MULTILIB_LIST="m64"
 fi
 
 BUILD_CC=`BINDIR=${BUILD_PACKAGE_PREFIX}/${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}/bin package-get-path ${BUILD_TRIPLE}-gcc EXECUTABLE BUILD` \
@@ -104,8 +131,9 @@ package-configure-install-archive \
     --disable-multilib \
     --disable-sanity-checks \
     --disable-werror \
-    --enable-cet=yes \
+    --enable-cet=${ENABLE_CET} \
     --enable-kernel=4.0 \
     --enable-static-pie \
     --with-headers=${PACKAGE_PREFIX}/include \
+    --with-multilib-list=${MULTILIB_LIST} \
     --${WITH_OR_WITHOUT_SYSTEM_ZLIB}-system-zlib
