@@ -165,7 +165,9 @@ package-invoke-builder ncurses-cross 6
 # gettext build (without libxml2 and xz)
 ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
 package-invoke-builder gettext-cross 0 bootstrap-only
-unset GETTEXT
+unset \
+    GETTEXT \
+    MSGFMT
 
 # gzip build
 package-invoke-builder gzip-cross 1
@@ -190,8 +192,7 @@ if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
 fi
 
 unset \
-    MAKEINFO \
-    MSGFMT
+    MAKEINFO
 
 # guile build
 package-invoke-builder guile-cross 3
