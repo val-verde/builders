@@ -18,6 +18,10 @@ fi
 
 if [ -z "${DISABLE_PYTHON}" ]; then
     export-compiler-environment-for-python
+    COMMON_CFLAGS="\
+        -lpython${PYTHON_VERSION} \
+        ${COMMON_CFLAGS} \
+    "
     WITH_OR_WITHOUT_PYTHON=--with-python=${BUILD_PACKAGE_PREFIX}
 else
     WITH_OR_WITHOUT_PYTHON=--without-python
