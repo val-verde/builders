@@ -1,0 +1,143 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+function kernel-bootstrap-config() {
+    ARCH=${HOST_PROCESSOR}
+    DEFCONFIG=olddefconfig
+    ENABLE_DEBUG_KERNEL=${ENABLE_DEBUG_KERNEL:-"n"}
+    KERNEL_INSTALL_PREFIX=${INSTALL_ROOT}/${PACKAGE_PLATFORM_SYSROOT}
+    SOURCE_ROOT=${SOURCE_ROOT_BASE}/linux-${SOURCE_PACKAGE_VERSION}
+
+    if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+        ARCH=arm64
+    elif [ "${HOST_PROCESSOR}" = "armv7a" ]; then
+        ARCH=arm
+    elif [ "${HOST_PROCESSOR}" = "i686" ]; then
+        ARCH=x86
+        DEFCONFIG=i386_defconfig
+    elif [ "${HOST_PROCESSOR}" = "mipsel" ]; then
+        ARCH=mips
+        DEFCONFIG=32r1el_defconfig
+        KERNEL_CONFIG_VARS="
+CONFIG_MACH_NINTENDO64=y
+CONFIG_N64CART=y
+${KERNEL_CONFIG_VARS}
+"
+    elif [ "${HOST_PROCESSOR}" = "mips64" ]; then
+        ARCH=mips
+        DEFCONFIG=64r1_defconfig
+
+        if [ "${HOST_OS_API_LEVEL}" = "abin32" ]; then
+            KERNEL_CONFIG_VARS="
+CONFIG_MACH_NINTENDO64=y
+CONFIG_MIPS32_O32=n
+CONFIG_MIPS32_N32=y
+CONFIG_N64CART=y
+${KERNEL_CONFIG_VARS}
+"
+        else
+            KERNEL_CONFIG_VARS="
+CONFIG_MACH_NINTENDO64=y
+CONFIG_MIPS32_O32=n
+CONFIG_MIPS32_N32=n
+CONFIG_N64CART=y
+${KERNEL_CONFIG_VARS}
+"
+        fi
+    elif [ "${HOST_PROCESSOR}" = "mipsel" ]; then
+        ARCH=mips
+        DEFCONFIG=32r1_defconfig
+        KERNEL_CONFIG_VARS="
+CONFIG_MACH_NINTENDO64=y
+CONFIG_N64CART=y
+${KERNEL_CONFIG_VARS}
+"
+    elif [ "${HOST_PROCESSOR}" == "mips64el" ]; then
+        ARCH=mips
+        DEFCONFIG=64r1el_defconfig
+
+        if [ "${HOST_OS_API_LEVEL}" = "abin32" ]; then
+            KERNEL_CONFIG_VARS="
+CONFIG_MACH_NINTENDO64=y
+CONFIG_MIPS32_O32=n
+CONFIG_MIPS32_N32=y
+CONFIG_N64CART=y
+${KERNEL_CONFIG_VARS}
+"
+        else
+            KERNEL_CONFIG_VARS="
+CONFIG_MACH_NINTENDO64=y
+CONFIG_MIPS32_O32=n
+CONFIG_MIPS32_N32=n
+CONFIG_N64CART=y
+${KERNEL_CONFIG_VARS}
+"
+        fi
+    elif [ "${HOST_PROCESSOR}" == "x86_64" ]; then
+        ARCH=x86
+        DEFCONFIG=x86_64_defconfig
+
+        if [ "${HOST_CPU}" = "westmere" ]; then
+            KERNEL_CONFIG_VARS="
+CONFIG_MCORE2=y
+${KERNEL_CONFIG_VARS}
+"
+	    fi
+    fi
+
+    DISABLE_STRIP=TRUE \
+    LINKER_OPTIMIZATION_LEVEL=2 \
+    OPTIMIZATION_LEVEL=2 \
+    export-compiler-environment
+    generate-compiler-tools
+
+    kernel-build ${DEFCONFIG}
+
+    ${ECHO} "\
+CONFIG_DEBUG_KERNEL=${ENABLE_DEBUG_KERNEL} \
+CONFIG_MODULES=y
+CONFIG_WERROR=n
+${KERNEL_CONFIG_VARS}
+    " >> ${STAGE_ROOT}/.config
+
+    kernel-build olddefconfig
+}
+
+function kernel-build() {
+    package-push-directory ${STAGE_ROOT}
+        PKG_CONFIG_LIBDIR=${BUILD_PKG_CONFIG_LIBDIR} \
+        PKG_CONFIG_PATH=${BUILD_PKG_CONFIG_PATH} \
+        make-build \
+            -C ${SOURCE_ROOT} \
+            AR=${AR} \
+            ARCH=${ARCH} \
+            CC=${CC} \
+            HOSTAR=${AR} \
+            HOSTCC=${BUILD_CC} \
+            HOSTCFLAGS="${BUILD_CFLAGS}" \
+            HOSTCPPFLAGS="${BUILD_CPPFLAGS}" \
+            HOSTLD=${BUILD_LD} \
+            HOSTLDFLAGS="${BUILD_LDFLAGS}" \
+            INSTALL_HDR_PATH=${INSTALL_PREFIX} \
+            INSTALL_MOD_PATH=${KERNEL_INSTALL_PREFIX} \
+            INSTALL_PATH=${KERNEL_INSTALL_PREFIX}/boot \
+            KCFLAGS="${CFLAGS}" \
+            KCPPFLAGS="${CPPFLAGS}" \
+            KERNELRELEASE=${SOURCE_PACKAGE_VERSION} \
+            LD=${LD} \
+            LLVM=1 \
+            LLVM_IAS=1 \
+            NM=${NM} \
+            O=${STAGE_ROOT} \
+            OBJCOPY=${OBJCOPY} \
+            OBJDUMP=${OBJDUMP} \
+            RANLIB=${RANLIB} \
+            READELF=${READELF} \
+            STRIP=${STRIP} \
+            ${@}
+    package-pop-directory
+}
