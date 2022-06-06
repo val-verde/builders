@@ -39,7 +39,7 @@ function package-install-completion-callback() {
     fi
 }
 
-LLVM_TARGETS_TO_BUILD="AArch64;ARM;NVPTX;WebAssembly;X86"
+LLVM_TARGETS_TO_BUILD="AArch64;ARM;Mips;NVPTX;WebAssembly;X86"
 
 if [ "${HOST_PROCESSOR}" = "armv7a" ]; then
     COMPILER_RT_HAS_FVISIBILITY_HIDDEN_FLAG=FALSE
