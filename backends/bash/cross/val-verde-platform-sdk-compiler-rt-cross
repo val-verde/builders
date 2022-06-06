@@ -94,7 +94,9 @@ fi
 
 SIZEOF_VOID_P=8
 
-if [ "${CLANG_HOST_PROCESSOR}" = "wasm32" ]; then
+if [ "${HOST_PROCESSOR}" = "armv7a" ] ||
+   [ "${HOST_PROCESSOR}" = "i686" ] ||
+   [ "${HOST_PROCESSOR}" = "wasm32" ]; then
     SIZEOF_VOID_P=4
 fi
 
