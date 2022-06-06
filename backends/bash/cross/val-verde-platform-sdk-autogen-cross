@@ -22,7 +22,7 @@ COMMON_CFLAGS="\
     -Wno-unknown-warning-option \
     ${COMMON_CFLAGS} \
 " \
-COLUMNS=${COLUMNS:-${BINDIR}/columns} \
+COLUMNS=${COLUMNS:-`package-get-path columns EXECUTABLE BUILD`} \
 DISABLE_AUTOUPDATE=TRUE \
 package-stage-configure-install-archive \
     ag_cv_run_strcspn=yes \

@@ -42,11 +42,11 @@ COMMON_LDFLAGS="\
 export-compiler-environment
 generate-compiler-tools
 
-CARGO=${BINDIR}/cargo
+export-build-util CARGO cargo
 FILECHECK=${LLVM_NATIVE_STAGE_ROOT}/bin/FileCheck
 LLVMCONFIG=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config
-RUSTC=${BINDIR}/rustc
-RUSTFMT=${BINDIR}/rustfmt
+export-build-util RUSTC rustc
+export-build-util RUSTFMT rustfmt
 
 export RUSTFLAGS="-C target-cpu=${HOST_CPU}"
 

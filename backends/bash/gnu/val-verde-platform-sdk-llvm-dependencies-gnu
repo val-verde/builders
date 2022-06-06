@@ -5,64 +5,19 @@ set -e
 if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
     export \
         APT="build-system-tool apt" \
-        AUTOGEN=/usr/bin/autogen \
-        BASENAME=/usr/bin/basename \
-        BASH=/usr/bin/bash \
-        BISON=/usr/bin/bison \
-        CHMOD=/usr/bin/chmod \
-        CP=/usr/bin/cp \
-        CURL=/usr/bin/curl \
-        CUT=/usr/bin/cut \
         DNF="build-system-tool dnf" \
         DPKG="build-system-tool dpkg" \
-        ECHO=/usr/bin/echo \
-        ENV=/usr/bin/env \
-        FALSE=/usr/bin/false \
-        FIND=/usr/bin/find \
-        GAWK=/usr/bin/gawk \
-        GETTEXT=/usr/bin/gettext \
-        GIT=/usr/bin/git \
-        GPERF=/usr/bin/gperf \
-        GREP=/usr/bin/grep \
-        INSTALL=/usr/bin/install \
-        LESS=/usr/bin/less \
-        LN=/usr/bin/ln \
-        LS=/usr/bin/ls \
-        M4=/usr/bin/m4 \
-        MAKE=/usr/bin/make \
-        MAKEINFO=/usr/bin/true \
-        MSGFMT=/usr/bin/true \
-        MESON=/usr/bin/meson \
-        MKDIR=/usr/bin/mkdir \
-        MV=/usr/bin/mv \
-        NINJA=/usr/bin/ninja \
-        PERL=/usr/bin/perl \
-        PYTHON=/usr/bin/python3 \
-        READLINK=/usr/bin/readlink \
-        REALPATH=/usr/bin/realpath \
-        RM="/usr/bin/rm -f" \
-        RMDIR=/usr/bin/rmdir \
         RPM="build-system-tool rpm" \
-        RSYNC=/usr/bin/rsync \
-        SED=/usr/bin/sed \
-        SSH=/usr/bin/ssh \
-        TAR=/usr/bin/tar \
-        TEE=/usr/bin/tee \
-        TR=/usr/bin/tr \
-        TRUE=/usr/bin/true \
-        WGET=/usr/bin/wget \
-        WHICH=/usr/bin/which \
-        XARGS=/usr/bin/xargs \
-        XZ=/usr/bin/xz
-    GUNZIP=/usr/bin/gunzip
-    GZIP=/usr/bin/gzip
-    UNZIP=/usr/bin/unzip
-    ZIP=/usr/bin/zip
+        RPMBUILD="build-system-tool rpmbuild"
 fi
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+if [ -z "${MAKEINFO}" ]; then
+    export-build-util MAKEINFO true
+fi
 
 # glibc build phase
 SPECIFIED_SYSROOT=${SYSROOT}
@@ -96,6 +51,8 @@ fi
 
 # autoconf build
 package-invoke-builder autoconf-cross 2
+unset AUTORECONF
+unset AUTOUPDATE
 
 # automake build
 package-invoke-builder automake-cross 1
@@ -131,6 +88,7 @@ unset UNZIP
 
 # help2man build
 package-invoke-builder help2man-cross 1
+unset HELP2MAN
 
 # gperf build
 package-invoke-builder gperf-cross 3
@@ -139,6 +97,7 @@ unset GPERF
 # libtool build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder libtool-cross 2
+unset LIBTOOL
 
 # libatomic-ops build
 package-invoke-builder libatomic-ops-cross 7
@@ -165,15 +124,13 @@ package-invoke-builder ncurses-cross 6
 # gettext build (without libxml2 and xz)
 ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
 package-invoke-builder gettext-cross 0 bootstrap-only
-unset \
-    GETTEXT \
-    MSGFMT
+unset GETTEXT
+unset MSGFMT
 
 # gzip build
 package-invoke-builder gzip-cross 1
-unset \
-    GUNZIP \
-    GZIP
+unset GUNZIP
+unset GZIP
 
 # xz build
 package-invoke-builder xz-cross 5
@@ -189,17 +146,14 @@ package-invoke-builder gettext-cross 0
 if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
     # texinfo build
     package-invoke-builder texinfo-cross 6
+    unset MAKEINFO
 fi
-
-unset \
-    MAKEINFO
 
 # guile build
 package-invoke-builder guile-cross 3
 
 # make build
 package-invoke-builder make-cross 4
-unset MAKE
 
 # m4 build
 package-invoke-builder m4-cross 1
@@ -207,7 +161,6 @@ unset M4
 
 # ninja build
 package-invoke-builder ninja-cross 1
-unset NINJA
 
 # file build
 package-invoke-builder file-cross 5
@@ -216,9 +169,8 @@ unset FILE
 if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
     # perl build
     package-invoke-builder perl-cross 5
+    unset PERL
 fi
-
-unset PERL
 
 # libedit build
 package-invoke-builder libedit-cross 20210910-3
@@ -276,6 +228,7 @@ fi
 
 # gawk build
 package-invoke-builder gawk-cross 5
+unset GAWK
 
 # autogen build
 package-invoke-builder autogen-cross 5
@@ -324,6 +277,7 @@ package-invoke-builder libndp-cross 1
 
 # apple-mig build
 package-invoke-builder apple-mig-cross 122
+unset MIG
 
 # apple-xar build
 package-invoke-builder apple-xar-cross 487
@@ -393,26 +347,45 @@ package-invoke-builder bc-cross 1
 # coreutils build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder coreutils-cross 9
-unset \
-    BASENAME \
-    CHMOD \
-    CP \
-    CUT \
-    ECHO \
-    ENV \
-    FALSE \
-    INSTALL \
-    LS \
-    LN \
-    MKDIR \
-    MV \
-    READLINK \
-    REALPATH \
-    RM \
-    RMDIR \
-    TEE \
-    TR \
-    TRUE
+unset BASENAME
+unset CAT
+unset CHMOD
+unset CMP
+unset CP
+unset CUT
+unset DATE
+unset DF
+unset DIFF
+unset ECHO
+unset ENV
+unset EXPR
+unset FALSE
+unset FIND
+unset FLOCK
+unset HEAD
+unset LSB_RELEASE
+unset INSTALL
+unset LN
+unset LS
+unset MKDIR
+unset MKTEMP
+unset MV
+unset NICE
+unset PATCH
+unset READLINK
+unset REALPATH
+unset RM
+unset RMDIR
+unset SORT
+unset STAT
+unset TAIL
+unset TEE
+unset TOUCH
+unset TR
+unset TRUE
+unset UNAME
+unset UNIQ
+unset WC
 
 # which build
 package-invoke-builder which-cross 2
@@ -423,9 +396,7 @@ package-invoke-builder ed-cross 1
 
 # findutils build
 package-invoke-builder findutils-cross 4
-unset \
-    FIND \
-    XARGS
+unset XARGS
 
 # less build
 package-invoke-builder less-cross 590
@@ -448,6 +419,7 @@ unset WGET
 
 # python bootstrap build
 package-invoke-category-builder python-bootstrap-cross
+unset PYTHON
 
 # libxml2 build (with python support)
 package-invoke-builder libxml2-cross 2
@@ -472,7 +444,6 @@ package-invoke-builder protobuf-cross 3
 
 # python sdk build
 package-invoke-category-builder python-sdk-cross
-unset MESON
 
 # itstool build
 package-invoke-builder itstool-cross 2
@@ -520,6 +491,7 @@ package-invoke-builder libsecret-cross 0
 
 # pkg-config build
 package-invoke-builder pkg-config-cross 0
+unset PKG_CONFIG
 
 if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
     # ocaml build
@@ -566,8 +538,9 @@ package-invoke-builder dbus-cross 1
 
 # dnf package manager category build
 package-invoke-category-builder dnf-package-manager-cross
-unset RPM
 unset DNF
+unset RPM
+unset RPMBUILD
 
 # cups build
 package-invoke-builder cups-cross 2
@@ -594,6 +567,8 @@ if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
     # openjdk build
     ENABLE_STAGE_ROOT_BUILD=TRUE \
     package-invoke-builder openjdk-cross 17
+    unset JAVA
+    unset JAVAC
 fi
 
 # maven build

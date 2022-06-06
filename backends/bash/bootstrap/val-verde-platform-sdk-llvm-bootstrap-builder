@@ -20,22 +20,22 @@ fi
 
 export \
     DISABLE_CXX_INCLUDE=TRUE \
-    DISABLE_CXX_STDLIB=TRUE \
-    MAKEINFO=`package-get-path true EXECUTABLE BUILD` \
-    MSGFMT=`package-get-path true EXECUTABLE BUILD`
+    DISABLE_CXX_STDLIB=TRUE
+
+if [ -z "${MAKEINFO}" ]; then
+    export-build-util MAKEINFO true
+fi
 
 # kernel-headers bootstrap build
 package-invoke-builder kernel-headers 5
 
 # autoconf bootstrap build
 package-invoke-builder autoconf 2 bootstrap-only
-export \
-    AUTORECONF=`BINDIR= package-get-path autoreconf EXECUTABLE BUILD` \
-    AUTOUPDATE=`BINDIR= package-get-path autoupdate EXECUTABLE BUILD`
+unset AUTORECONF
+unset AUTOUPDATE
 
 # automake bootstrap build
 package-invoke-builder automake 1 bootstrap-only
-export AUTOMAKE=`BINDIR= package-get-path automake EXECUTABLE BUILD`
 
 # autoconf-archive bootstrap build
 package-invoke-builder autoconf-archive 2022 bootstrap-only
@@ -51,8 +51,7 @@ ${MKDIR} -p ${ARCHIVE_PATH}
 if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
     # help2man bootstrap build
     package-invoke-builder help2man 1 bootstrap-only
-    export HELP2MAN=`BINDIR= package-get-path help2man EXECUTABLE BUILD`
-
+    
     # libtool bootstrap build
     package-invoke-builder libtool 2 bootstrap-only
 

@@ -10,6 +10,28 @@ function build-system-tool() {
     ${ENV} -i ${BASH} -lc 'for i in `cat /etc/environment`; do export $i; done; '"${BUILD_ARGS}"''
 }
 
+# export-build-util <VAR> <name>
+function export-build-util() {
+    BUILD_UTIL_VAR=${1}
+
+    if [ -n "${!BUILD_UTIL_VAR}" ]; then
+        return
+    fi
+
+    BUILD_UTIL=${2}
+    export ${BUILD_UTIL_VAR}=${!BUILD_UTIL_VAR:-"`BINDIR=${BUILD_PACKAGE_PREFIX}/bin package-get-path ${BUILD_UTIL} EXECUTABLE BUILD`"}
+
+    if [ -z "${!BUILD_UTIL_VAR}" ]; then
+        export ${BUILD_UTIL_VAR}=${!BUILD_UTIL_VAR:-"`BINDIR=/usr/bin package-get-path ${BUILD_UTIL} EXECUTABLE BUILD`"}
+    fi
+
+    BUILD_UTIL_ARGS=${3}
+
+    if [ -n "${BUILD_UTIL_ARGS}" ]; then
+        export ${BUILD_UTIL_VAR}="${!BUILD_UTIL_VAR} ${BUILD_UTIL_ARGS}"
+    fi
+}
+
 function package-determine-os-distribution() {
     if [[ "$(${LSB_RELEASE} --description)" = *Ubuntu* ]]; then
         echo "ubuntu"
@@ -279,7 +301,7 @@ function package-python-tool {
 
 function package-rpm-build() {
     TOOL_LOG=${STAGE_ROOT}/builder-rpm-build \
-    tool-log ${RPM}build "${@}"
+    tool-log ${RPMBUILD} "${@}"
 }
 
 function package-rpm-install() {

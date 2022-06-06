@@ -145,15 +145,15 @@ function export-compiler-environment-for-build-tools() {
         export ACLOCAL_PATH=${ACLOCAL_PATH}:/usr/share/aclocal
     fi
 
-    export CMAKE=${CMAKE:-${BINDIR}/cmake}
-    export MAKE=${MAKE:-${BINDIR}/make}
-    export MESON=${MESON:-${BINDIR}/meson}
-    export NINJA=${NINJA:-${BINDIR}/ninja}
-    export NODE=${NODE:-${BINDIR}/node}
-    export PYTHON=${PYTHON:-${BINDIR}/python}
+    export-build-util CMAKE cmake
+    export-build-util MAKE make
+    export-build-util MESON meson
+    export-build-util NINJA ninja
+    export-build-util NODE node
+    export-build-util PKG_CONFIG pkg-config
+    export-build-util PYTHON python
 
     export \
-        PKG_CONFIG=${PKG_CONFIG:-${BINDIR}/pkg-config} \
         PKG_CONFIG_LIBDIR=${PKG_CONFIG_LIBDIR:-${PACKAGE_PREFIX}/lib/pkgconfig:${PACKAGE_PREFIX}/share/pkgconfig} \
         BUILD_PKG_CONFIG_LIBDIR=${BUILD_PKG_CONFIG_LIBDIR:-${BUILD_PACKAGE_PREFIX}/lib/pkgconfig:${BUILD_PACKAGE_PREFIX}/share/pkgconfig}
 
@@ -220,7 +220,6 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         DISABLE_UNUSED_ARGUMENTS=TRUE
     fi
 
-    FLANG=${FLANG:-`package-get-path flang EXECUTABLE BUILD`}
     TOOL_AR=${ENV_PREFIX}AR
     TOOL_AS=${ENV_PREFIX}AS
     TOOL_CC=${ENV_PREFIX}CC
@@ -260,56 +259,56 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     TOOL_STRIP=${ENV_PREFIX}STRIP
     TOOL_WINDRES=${ENV_PREFIX}WINDRES
 
-    export ${TOOL_AR}="${!TOOL_AR:-`package-get-path llvm-ar EXECUTABLE BUILD`}"
-    export ${TOOL_AS}="${!TOOL_AS:-`package-get-path ${C_COMPILER} EXECUTABLE BUILD`}"
-    export ${TOOL_CC}="${!TOOL_CC:-`package-get-path ${C_COMPILER} EXECUTABLE BUILD`}"
+    export-build-util ${TOOL_AR} llvm-ar 
+    export-build-util ${TOOL_AS} ${C_COMPILER}
+    export-build-util ${TOOL_CC} ${C_COMPILER}
     export ${TOOL_CCLD}="${!TOOL_CCLD:-${!TOOL_CC}}"
     export ${TOOL_CPP}=${!TOOL_CPP:-"${!TOOL_CC} -E"}
-    export ${TOOL_CXX}="${!TOOL_CXX:-`package-get-path ${CXX_COMPILER} EXECUTABLE BUILD`}"
+    export-build-util ${TOOL_CXX} ${CXX_COMPILER}
     export ${TOOL_CXXCPP}=${!TOOL_CXXCPP:-"${!TOOL_CXX} -E"}
-    export ${TOOL_CXXFILT}="${!TOOL_CXXFILT:-`package-get-path llvm-cxxfilt EXECUTABLE BUILD`}"
+    export-build-util ${TOOL_CXXFILT} llvm-cxxfilt
     export ${TOOL_CXXLD}="${!TOOL_CXXLD:-${!TOOL_CXX}}"
-    export ${TOOL_DLLTOOL}="${!TOOL_DLLTOOL:-`package-get-path llvm-dlltool EXECUTABLE BUILD`}"
+    export-build-util ${TOOL_DLLTOOL} llvm-dlltool
 
     if [ -n "${ENABLE_FORTRAN}" ]; then
-        export ${TOOL_F77}="${!TOOL_F77:-${FLANG}}"
-        export ${TOOL_FC}="${!TOOL_FC:-${FLANG}}"
-        export ${TOOL_FORTRAN}="${!TOOL_FORTRAN:-${FLANG}}"
+        export-build-util ${TOOL_F77} flang
+        export-build-util ${TOOL_FC} flang
+        export-build-util ${TOOL_FORTRAN} flang
     fi
 
-    export ${TOOL_INSTALL_NAME_TOOL}="${!TOOL_INSTALL_NAME_TOOL:-`package-get-path llvm-install-name-tool EXECUTABLE BUILD`}"
+    export-build-util ${TOOL_INSTALL_NAME_TOOL} llvm-install-name-tool
 
     if [ "${!VARIANT_OS}" = "macos" ]; then
-        export ${TOOL_LD}="${!TOOL_LD:-`package-get-path ld64.lld EXECUTABLE BUILD`}"
+        export-build-util ${TOOL_LD} ld64.lld
     elif [ "${!VARIANT_OS}" = "wasi" ]; then
-        export ${TOOL_LD}="${!TOOL_LD:-`package-get-path wasm-ld EXECUTABLE BUILD`}"
+        export-build-util ${TOOL_LD} wasm-ld
     else
-        export ${TOOL_LD}="${!TOOL_LD:-`package-get-path ld.lld EXECUTABLE BUILD`}"
+        export-build-util ${TOOL_LD} ld.lld
     fi
 
     if [ -z "${USE_GNU_OVER_DARWIN_LIBTOOL}" ] &&
        [ "${!VARIANT_OS}" = "macos" ]; then
-        export ${TOOL_LIBTOOL}="${!TOOL_LIBTOOL:-`package-get-path llvm-libtool-darwin EXECUTABLE BUILD`}"
+        export-build-util ${TOOL_LIBTOOL} llvm-libtool-darwin
     else
         export ${TOOL_LIBTOOL}="${!TOOL_LIBTOOL:-`package-get-path libtool SCRIPT HOST`}"
     fi
 
-    export ${TOOL_LIPO}="${!TOOL_LIPO:-`package-get-path llvm-lipo EXECUTABLE BUILD`}"
-    export ${TOOL_MANIFEST_TOOL}="${!TOOL_MANIFEST_TOOL:-`package-get-path llvm-mt EXECUTABLE BUILD`}"
-    export ${TOOL_NM}="${!TOOL_NM:-`package-get-path llvm-nm EXECUTABLE BUILD`}"
+    export-build-util ${TOOL_LIPO} llvm-lipo
+    export-build-util ${TOOL_MANIFEST_TOOL} llvm-mt
+    export-build-util ${TOOL_NM} llvm-nm
     export ${TOOL_OBJC}="${!TOOL_OBJC:-${!TOOL_CC}}"
-    export ${TOOL_OBJCOPY}="${!TOOL_OBJCOPY:-`package-get-path llvm-objcopy EXECUTABLE BUILD`}"
+    export-build-util ${TOOL_OBJCOPY} llvm-objcopy
     export ${TOOL_OBJCPP}="${!TOOL_OBJCPP:-${!TOOL_CPP}}"
     export ${TOOL_OBJCXX}="${!TOOL_OBJCXX:-${!TOOL_CXX}}"
-    export ${TOOL_OBJDUMP}="${!TOOL_OBJDUMP:-`package-get-path llvm-objdump EXECUTABLE BUILD`}"
-    export ${TOOL_OTOOL}="${!TOOL_OTOOL:-`package-get-path llvm-otool EXECUTABLE BUILD`}"
-    export ${TOOL_RANLIB}="${!TOOL_RANLIB:-`package-get-path llvm-ranlib EXECUTABLE BUILD`}"
-    export ${TOOL_RC}="${!TOOL_RC:-`package-get-path llvm-windres EXECUTABLE BUILD`}"
-    export ${TOOL_READELF}="${!TOOL_READELF:-`package-get-path llvm-readelf EXECUTABLE BUILD`}"
-    export ${TOOL_SIZE}="${!TOOL_SIZE:-`package-get-path llvm-size EXECUTABLE BUILD`}"
-    export ${TOOL_STRINGS}="${!TOOL_STRINGS:-`package-get-path llvm-strings EXECUTABLE BUILD`}"
-    export ${TOOL_STRIP}="${!TOOL_STRIP:-`package-get-path llvm-strip EXECUTABLE BUILD`}"
-    export ${TOOL_WINDRES}="${!TOOL_RC:-`package-get-path llvm-windres EXECUTABLE BUILD`}"
+    export-build-util ${TOOL_OBJDUMP} llvm-objdump
+    export-build-util ${TOOL_OTOOL} llvm-otool
+    export-build-util ${TOOL_RANLIB} llvm-ranlib
+    export-build-util ${TOOL_RC} llvm-windres
+    export-build-util ${TOOL_READELF} llvm-readelf
+    export-build-util ${TOOL_SIZE} llvm-size
+    export-build-util ${TOOL_STRINGS} llvm-strings
+    export-build-util ${TOOL_STRIP} llvm-strip
+    export-build-util ${TOOL_WINDRES} llvm-windres
 
     CXX_INCLUDE_DIR_VAR=${ENV_PREFIX}CXX_INCLUDE_DIR
     CXX_INCLUDE_DIR_VAR_VALUE=${!CXX_INCLUDE_DIR_VAR}
@@ -664,7 +663,8 @@ function export-compiler-environment-for-go() {
         -O${LINKER_OPTIMIZATION_LEVEL} \
         ${CCLDFLAGS} \
     " | ${XARGS}`
-    export GO=${GO:-`package-get-path go EXECUTABLE BUILD`}
+
+    export-build-util GO go
     export GOROOT=${GOROOT:-${BUILD_PACKAGE_PREFIX}/go}
 
     if [ "${BUILD_PROCESSOR}" = "aarch64" ]; then
@@ -1686,13 +1686,13 @@ backend='${BACKEND}'
 buildtype='${BUILD_TYPE}'
 c='${CC_FOR_BUILD}'
 c_args=${BUILD_C_ARGS}
-c_ld='${BINDIR}/ld.lld'
+c_ld='package-get-path ld.lld EXECUTABLE BUILD'
 c_link_args=${BUILD_C_LINK_ARGS}
 cmake='${CMAKE}'
 cmake_prefix_path=${BUILD_CMAKE_PREFIX_PATH}
 cpp='${CXX_FOR_BUILD}'
 cpp_args=${BUILD_CPP_ARGS}
-cpp_ld='${BINDIR}/ld.lld'
+cpp_ld='package-get-path ld.lld EXECUTABLE BUILD'
 cpp_link_args=${BUILD_CPP_LINK_ARGS}
 cpp_std='${MESON_CXX_STANDARD}'
 cpu='${BUILD_ARCH}'
@@ -2004,7 +2004,7 @@ function package-swift-build() {
     ${ECHO} -e "{ \n\
         \"version\": 1, \n\
         \"sdk\": \"${SYSROOT}\", \n\
-        \"toolchain-bin-dir\": \"${BINDIR}\", \n\
+        \"toolchain-bin-dir\": \"${BUILD_PACKAGE_PREFIX}/bin\", \n\
         \"target\": \"${TARGET}\", \n\
         \"extra-cc-flags\": [ \n\
             \"-march=${HOST_ARCH}\", \n\
@@ -2050,7 +2050,7 @@ function package-swift-build() {
     " > ${SWIFT_DESTINATION_JSON}
 
     TOOL_LOG=${STAGE_ROOT}/builder-invocation \
-    tool-log ${BINDIR}/swift \
+    tool-log `package-get-path swift EXECUTABLE BUILD` \
         build \
         --build-path ${STAGE_ROOT} \
         --configuration ${SWIFT_BUILD_TYPE} \
@@ -2099,8 +2099,8 @@ function rpath-fixup() {
 
 function yarn-build() {
     TOOL_LOG=${STAGE_ROOT}/builder-invocation \
-    tool-log ${BINDIR}/yarn
+    tool-log `package-get-path yarn EXECUTABLE BUILD`
 
     TOOL_LOG=${STAGE_ROOT}/builder-compile \
-    tool-log ${BINDIR}/yarn compile
+    tool-log `package-get-path yarn EXECUTABLE BUILD`
 }

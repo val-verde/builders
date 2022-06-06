@@ -2,8 +2,11 @@
 
 set -e
 
-# Source common api
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-common-api
+SCRIPT_DIR=$(dirname ${BASH_SOURCE})
+
+# Source common api and build utilities
+source ${SCRIPT_DIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-common-api
+source ${SCRIPT_DIR}/${VAL_VERDE_GH_TEAM}-platform-sdk-build-util-variables
 
 # builder configuration defaults
 BASE_DIRECTORY=$(echo "${PACKAGE_ROOT}" | cut -d "/" -f2)
@@ -37,87 +40,7 @@ export BUILD_PACKAGE_PREFIX=${BUILD_PACKAGE_PREFIX:-${BUILD_PACKAGE_PLATFORM_SYS
 export BUILD_SYSROOT=${BUILD_SYSROOT:-${BUILD_PACKAGE_PLATFORM_SYSROOT}}
 
 # 'build' tools
-BINDIR=${BINDIR:-${BUILD_PACKAGE_PREFIX}/bin}
-export APT=${APT:-${BINDIR}/apt}
-export AUTOGEN=${AUTOGEN:-${BINDIR}/autogen}
-export AUTORECONF=${AUTORECONF:-${BINDIR}/autoreconf}
-export AUTOUPDATE=${AUTOUPDATE:-${BINDIR}/autoupdate}
-export BASENAME=${BASENAME:-${BINDIR}/basename}
-export BASH=${BASH:-${BINDIR}/bash}
-export BISON=${BISON:-${BINDIR}/bison}
-export CAT=${CAT:-${BINDIR}/cat}
-export CHMOD=${CHMOD:-${BINDIR}/chmod}
-export CMP=${CMP:-/usr/bin/cmp}
-export CP=${CP:-${BINDIR}/cp}
-export CURL=${CURL:-${BINDIR}/curl}
-export CUT=${CUT:-${BINDIR}/cut}
-export DATE=${DATE:-${BINDIR}/date}
-export DF=${DF:-${BINDIR}/df}
-export DIFF=${DIFF:-/usr/bin/diff}
-export DNF=${DNF:-${BINDIR}/dnf}
-export DPKG=${DPKG:-${BINDIR}/dpkg}
-export ECHO=${ECHO:-${BINDIR}/echo}
-export ENV=${ENV:-${BINDIR}/env}
-export EXPR=${EXPR:-${BINDIR}/expr}
-export FALSE=${FALSE:-${BINDIR}/false}
-export FILE=${FILE:-${BINDIR}/file}
-export FIND=${FIND:-${BINDIR}/find}
-export FLOCK=${FLOCK:-/usr/bin/flock}
-export GAWK=${GAWK:-${BINDIR}/gawk}
-export GETTEXT=${GETTEXT:-${BINDIR}/gettext}
-export GIT=${GIT:-${BINDIR}/git}
-export GPERF=${GPERF:-${BINDIR}/gperf}
-export GREP=${GREP:-${BINDIR}/grep}
-export HEAD=${HEAD:-${BINDIR}/head}
-export HELP2MAN=${HELP2MAN:-${BINDIR}/help2man}
-export JAVA=${JAVA:-${BINDIR}/java}
-export JAVAC=${JAVAC:-${BINDIR}/javac}
-export LESS=${LESS:-${BINDIR}/less}
-export LSB_RELEASE=${LSB_RELEASE:-/usr/bin/lsb_release}
-export INSTALL=${INSTALL:-${BINDIR}/install}
-export LN=${LN:-${BINDIR}/ln}
-export LS=${LS:-${BINDIR}/ls}
-export M4=${M4:-${BINDIR}/m4}
-export MAKEINFO=${MAKEINFO:-${BINDIR}/makeinfo}
-export MIG=${MKDIR:-${BINDIR}/mig}
-export MKDIR=${MKDIR:-${BINDIR}/mkdir}
-export MKTEMP=${MKTEMP:-${BINDIR}/mktemp}
-export MSGFMT=${MSGFMT:-${BINDIR}/msgfmt}
-export MV=${MV:-${BINDIR}/mv}
-export NICE=${NICE:-${BINDIR}/nice}
-export PATCH=${PATCH:-/usr/bin/patch}
-export PERL=${PERL:-${BINDIR}/perl}
-export PYTHON=${PYTHON:-${BINDIR}/python3}
-export READLINK=${READLINK:-${BINDIR}/readlink}
-export REALPATH=${REALPATH:-${BINDIR}/realpath}
-export RM=${RM:-"${BINDIR}/rm -f"}
-export RMDIR=${RMDIR:-${BINDIR}/rmdir}
-export RPM=${RPM:-${BINDIR}/rpm}
-export RSYNC=${RSYNC:-${BINDIR}/rsync}
-export SED=${SED:-${BINDIR}/sed}
-export SORT=${SORT:-${BINDIR}/sort}
-export SSH=${SSH:-${BINDIR}/ssh}
-export STAT=${STAT:-${BINDIR}/stat}
-export TAIL=${TAIL:-${BINDIR}/tail}
-export TAR=${TAR:-${BINDIR}/tar}
-export TEE=${TEE:-${BINDIR}/tee}
-export TOUCH=${TOUCH:-${BINDIR}/touch}
-export TR=${TR:-${BINDIR}/tr}
-export TRUE=${TRUE:-${BINDIR}/true}
-export UNAME=${UNAME:-${BINDIR}/uname}
-export UNIQ=${UNIQ:-${BINDIR}/uniq}
-export WC=${WC:-${BINDIR}/wc}
-export WGET=${WGET:-${BINDIR}/wget}
-export WHICH=${WHICH:-${BINDIR}/which}
-export XARGS=${XARGS:-${BINDIR}/xargs}
-export XZ=${XZ:-${BINDIR}/xz}
-
-# [G]UNZIP and [G]ZIP environment variables are used as options to the tools
-# and should not be exported
-GUNZIP=${GUNZIP:-${BINDIR}/gunzip}
-GZIP=${GZIP:-${BINDIR}/gzip}
-UNZIP=${UNZIP:-${BINDIR}/unzip}
-ZIP=${ZIP:-${BINDIR}/zip}
+export-build-util-variables
 
 # Establish base architecture for package-builder
 # Assumes that deb is the default choice for archive tool on debian

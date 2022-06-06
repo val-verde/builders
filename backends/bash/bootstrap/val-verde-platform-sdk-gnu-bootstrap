@@ -8,13 +8,6 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 export ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH}
 
 # builder-tools build
-if [ "${BUILD_PROCESSOR}" = "${HOST_PROCESSOR}" ] &&
-   [ "${BUILD_KERNEL}" = "${HOST_KERNEL}" ] &&
-   [ "${BUILD_OS}" = "${HOST_OS}" ] &&
-   [ "${BUILD_OS_API_LEVEL}" = "${HOST_OS_API_LEVEL}" ]; then
-    export BINDIR=/usr/bin
-fi
-
 package-invoke-builder compiler-tools 0
 
 # libcxx and llvm bootstrap build
