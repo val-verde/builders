@@ -6,7 +6,18 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for bootstrap/configure/install
+function tool-install-invocation() {
+    INSTALL_TARGET="PYTHON=${PYTHON} maintainer-all" \
+    tool-install
+
+    INSTALL_TARGET="install" \
+    tool-install
+}
+
 BOOTSTRAP_FILE=./bootstrap.sh \
+CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
+DISABLE_TOOL_BUILD=TRUE \
 ENABLE_GNULIB_OVERRIDE=TRUE \
 GNULIB_DIR=gnulib \
+TOOL_INSTALL_INVOCATION=tool-install-invocation \
 package-bootstrap-configure-install-archive
