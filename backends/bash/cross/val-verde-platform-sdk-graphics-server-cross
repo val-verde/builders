@@ -27,7 +27,7 @@ package-invoke-builder openexr-cross 3
 package-invoke-builder xorg-macros-cross 1
 
 # xorgproto build
-package-invoke-builder xorg-xorgproto-cross 2021
+package-invoke-builder xorg-xorgproto-cross 2022
 
 # xcb-proto build
 package-invoke-builder xcb-proto-cross 1
