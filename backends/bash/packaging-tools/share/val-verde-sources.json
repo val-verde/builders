@@ -525,6 +525,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "fex",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2206",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "fftw3",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "3",
