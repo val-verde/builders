@@ -57,7 +57,7 @@ package-cmake-install-archive \
     -DCLANGPP_EXECUTABLE=${CXX} \
     -DCURSES_INCLUDE_PATH=${PACKAGE_PREFIX} \
     -DCURSES_FORM_LIBRARY=`package-get-path form SHARED HOST` \
-    -DCURSES_NCURSES_LIBRARY=`package-get-path ncurses SHARED HOST` \
+    -DCURSES_CURSES_LIBRARY=`package-get-path ncurses SHARED HOST` \
     -DFL_LIBRARY=`package-get-path fl SHARED HOST` \
     -DGIT_BINARY=${GIT} \
     -DISPC_ANDROID_TARGET=${ISPC_ANDROID_TARGET} \
