@@ -1751,7 +1751,7 @@
         "sourceType": "git",
         "sourcePackageName": "pulseaudio",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "15",
+        "sourcePackageVersion": "16",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {

@@ -509,7 +509,7 @@ package-invoke-builder boost-cross 1
 package-invoke-category-builder graphics-server-cross
 
 # pulseaudio build
-package-invoke-builder pulseaudio-cross 15
+package-invoke-builder pulseaudio-cross 16
 
 # graphviz build
 ENABLE_STAGE_ROOT_BUILD=TRUE \

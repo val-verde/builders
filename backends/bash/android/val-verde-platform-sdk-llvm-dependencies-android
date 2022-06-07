@@ -372,7 +372,7 @@ package-invoke-builder boost-cross 1
 package-invoke-category-builder graphics-server-cross
 
 # android pulseaudio build
-package-invoke-builder pulseaudio-cross 15
+package-invoke-builder pulseaudio-cross 16
 
 # android itstool build
 package-invoke-builder itstool-cross 2

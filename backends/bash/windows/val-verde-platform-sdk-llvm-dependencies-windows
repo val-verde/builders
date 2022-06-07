@@ -304,7 +304,7 @@ package-invoke-builder boost-cross 1
 package-invoke-category-builder graphics-server-cross
 
 # windows pulseaudio build
-package-invoke-builder pulseaudio-cross 15
+package-invoke-builder pulseaudio-cross 16
 
 # windows itstool build
 package-invoke-builder itstool-cross 2
