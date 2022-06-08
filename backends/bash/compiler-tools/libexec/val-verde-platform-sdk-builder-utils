@@ -321,7 +321,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     OPTIMIZATION_FLAGS=${OPTIMIZATION_FLAGS:-"-DNDEBUG"}
     PIPE_CFLAG="-pipe"
     RTLIB=${RTLIB:-compiler-rt}
-    UNWINDLIB_CFLAG=${UNWINDLIB_CFLAG:-libunwind}
+    UNWINDLIB=${UNWINDLIB:-libunwind}
 
     # CFLAG compiler configuration
 
