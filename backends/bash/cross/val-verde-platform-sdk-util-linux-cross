@@ -30,18 +30,26 @@ else
 fi
 
 ENABLE_OR_DISABLE_ALL_PROGRAMS=enable
+ENABLE_OR_DISABLE_EJECT=enable
 ENABLE_OR_DISABLE_HARDLINK=enable
 ENABLE_OR_DISABLE_IPCRM=enable
 ENABLE_OR_DISABLE_IPCS=enable
 ENABLE_OR_DISABLE_LIBBLKID=enable
+ENABLE_OR_DISABLE_LIBMOUNT=enable
 ENABLE_OR_DISABLE_LIBSMARTCOLS=enable
+ENABLE_OR_DISABLE_LIBUUID=enable
+ENABLE_OR_DISABLE_LOGGER=enable
 
-if [ "${HOST_OS}" = "macos" ] ||
+if [ "${HOST_OS}" = "android" ]; then
+    ENABLE_OR_DISABLE_EJECT=disable
+    ENABLE_OR_DISABLE_LOGGER=disable
+elif [ "${HOST_OS}" = "macos" ] ||
    [ "${HOST_OS}" = "mingw" ]; then
     COMMON_CFLAGS="\
         -lintl \
         ${COMMON_CFLAGS} \
     "
+    ENABLE_OR_DISABLE_EJECT=disable
     ENABLE_OR_DISABLE_HARDLINK=disable
     ENABLE_OR_DISABLE_IPCRM=disable
     ENABLE_OR_DISABLE_IPCS=disable
@@ -52,10 +60,8 @@ if [ "${HOST_OS}" = "macos" ] ||
         ENABLE_OR_DISABLE_ALL_PROGRAMS=disable
         ENABLE_OR_DISABLE_LIBBLKID=disable
         ENABLE_OR_DISABLE_LIBSMARTCOLS=disable
+        ENABLE_OR_DISABLE_LOGGER=disable
     fi
-else
-    ENABLE_OR_DISABLE_LIBMOUNT=enable
-    ENABLE_OR_DISABLE_LIBUUID=enable
 fi
 
 BOOTSTRAP_FILE=autogen.sh \
@@ -80,6 +86,7 @@ package-bootstrap-configure-install-archive \
     --with-libintl-prefix=${PACKAGE_PREFIX} \
     --with-ncursesw \
     --${ENABLE_OR_DISABLE_ALL_PROGRAMS}-all-programs \
+    --${ENABLE_OR_DISABLE_EJECT}-eject \
     --${ENABLE_OR_DISABLE_HARDLINK}-hardlink \
     --${ENABLE_OR_DISABLE_IPCRM}-ipcrm \
     --${ENABLE_OR_DISABLE_IPCS}-ipcs \
@@ -87,5 +94,6 @@ package-bootstrap-configure-install-archive \
     --${ENABLE_OR_DISABLE_LIBMOUNT}-libmount \
     --${ENABLE_OR_DISABLE_LIBSMARTCOLS}-libsmartcols \
     --${ENABLE_OR_DISABLE_LIBUUID}-libuuid \
+    --${ENABLE_OR_DISABLE_LOGGER}-logger \
     --${WITH_OR_WITHOUT_PYTHON}-python \
     --${WITH_OR_WITHOUT_SYSTEMD}-systemd
