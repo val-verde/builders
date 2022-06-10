@@ -41,6 +41,11 @@ package-invoke-builder lunarg-vulkan-tools-cross 1
 ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder libclc-cross 13
 
+# pocl build
+if [ "${HOST_OS}" != "mingw" ]; then
+    package-invoke-builder pocl-cross 3
+fi
+
 # mesa build
 package-invoke-builder mesa-cross 22
 
