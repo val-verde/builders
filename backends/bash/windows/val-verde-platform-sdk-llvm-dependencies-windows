@@ -227,6 +227,9 @@ package-invoke-builder jq-cross 1
 # windows json-c build
 package-invoke-builder json-c-cross 0
 
+# jsoncpp build
+package-invoke-builder jsoncpp-cross 1
+
 # windows which build
 # package-invoke-builder which-cross 2
 

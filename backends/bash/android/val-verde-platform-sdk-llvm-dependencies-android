@@ -260,6 +260,9 @@ package-invoke-builder jq-cross 1
 # android json-c build
 package-invoke-builder json-c-cross 0
 
+# android jsoncpp build
+package-invoke-builder jsoncpp-cross 1
+
 # android tar build
 if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
     package-invoke-builder tar-cross 1

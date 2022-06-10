@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for cmake/install
+package-cmake-install-archive \
+    -DBUILD_SHARED_LIBS=TRUE \
+    -DBUILD_STATIC_LIBS=FALSE \
+    -DBUILD_TESTING=FALSE \
+    -DCCACHE_EXECUTABLE=`package-get-path ccache EXECUTABLE BUILD` \
+    -DJSONCPP_USE_SECURE_MEMORY=1 \
+    -DJSONCPP_WITH_CMAKE_PACKAGE=TRUE \
+    -DJSONCPP_WITH_EXAMPLE=FALSE \
+    -DJSONCPP_WITH_PKGCONFIG_SUPPORT=TRUE \
+    -DJSONCPP_WITH_POST_BUILD_UNITTEST=FALSE \
+    -DJSONCPP_WITH_STRICT_ISO=FALSE \
+    -DJSONCPP_WITH_TESTS=FALSE \
+    -DJSONCPP_WITH_WARNING_AS_ERROR=FALSE
