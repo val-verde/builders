@@ -34,6 +34,9 @@ fi
 # vulkan validation layers build
 package-invoke-builder vulkan-validation-layers-cross 1
 
+# lunarg vulkan tools build
+package-invoke-builder lunarg-vulkan-tools-cross 1
+
 # libclc build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder libclc-cross 13
