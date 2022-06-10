@@ -367,6 +367,9 @@ package-invoke-builder libobjc2-cross 2
 # windows jwasm build
 package-invoke-builder jwasm 2
 
+# windows nasm build
+package-invoke-builder nasm-cross 2
+
 # windows re2c build
 package-invoke-builder re2c-cross 3
 

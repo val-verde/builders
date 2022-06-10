@@ -453,6 +453,9 @@ package-invoke-builder android-patch-elf-cross 1
 # jwasm (ml64) cross compiler build
 package-invoke-builder jwasm 2
 
+# nasm build
+package-invoke-builder nasm-cross 2
+
 # re2c build
 package-invoke-builder re2c-cross 3
 
