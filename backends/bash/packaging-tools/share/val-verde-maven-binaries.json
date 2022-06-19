@@ -1,7 +1,7 @@
 [
     {
         "sourcePackageName": "maven",
-        "sourcePackageVersion": "3.8.5",
+        "sourcePackageVersion": "3.8.6",
         "upstreamUrl": "https://dlcdn.apache.org/${MAVEN_PACKAGE_NAME}/${MAVEN_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}/${MAVEN_PACKAGE_VERSION}/binaries/apache-${MAVEN_PACKAGE_NAME}-${MAVEN_PACKAGE_VERSION}-bin.tar.gz"
     }
 ]
