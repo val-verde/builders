@@ -20,7 +20,8 @@ fi
 
 export \
     DISABLE_CXX_INCLUDE=TRUE \
-    DISABLE_CXX_STDLIB=TRUE
+    DISABLE_CXX_STDLIB=TRUE \
+    DISABLE_UNWINDLIB=TRUE
 
 if [ -z "${MAKEINFO}" ]; then
     export-build-util MAKEINFO true
@@ -112,7 +113,8 @@ package-invoke-builder libcxx-bootstrap 13 bootstrap-only
 
 unset \
     DISABLE_CXX_INCLUDE \
-    DISABLE_CXX_STDLIB
+    DISABLE_CXX_STDLIB \
+    DISABLE_UNWINDLIB
 
 # cmake bootstrap build
 package-invoke-builder cmake 3 bootstrap-only
