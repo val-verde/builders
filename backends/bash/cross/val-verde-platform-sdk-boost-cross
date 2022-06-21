@@ -20,7 +20,12 @@ TOOL_LOG=${STAGE_ROOT}/builder-bootstrap \
 tool-log ${BASH} ${SOURCE_ROOT}/bootstrap.sh \
     --with-toolset=clang
 
-BOOST_CONTEXT_ABI=sysv
+if [ "${HOST_OS}" = "mingw" ]; then
+    BOOST_CONTEXT_ABI=ms
+else
+    BOOST_CONTEXT_ABI=sysv
+fi
+
 BOOST_CONTEXT_ASSEMBLER=gas
 BOOST_CONTEXT_IMPLEMENTATION=fcontext
 BOOST_FIBER_NUMA_TARGET_OS=none
@@ -48,9 +53,7 @@ if [ "${HOST_OS}" = "gnu" ]; then
     BOOST_LOCALE_ENABLE_POSIX=TRUE
     unset ICONV_CMD
 elif [ "${HOST_OS}" = "mingw" ]; then
-    BOOST_CONTEXT_ASSEMBLER=armasm
-    BOOST_CONTEXT_ABI=ms
-    BOOST_CONTEXT_IMPLEMENTATION=winfib
+    BOOST_CONTEXT_IMPLEMENTATION=fcontext
     BOOST_FIBER_NUMA_TARGET_OS=windows
 elif [ "${HOST_OS}" = "musl" ]; then
     BOOST_FIBER_NUMA_TARGET_OS=linux
