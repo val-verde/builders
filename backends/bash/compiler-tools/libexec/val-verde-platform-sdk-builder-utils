@@ -573,7 +573,12 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         ${!TOOL_ASFLAGS} \
     " | ${XARGS}`"
     export ${TOOL_CCLDFLAGS}="`${ECHO} "\
-        ${!TOOL_CFLAGS} \
+        ${LD_PATH_CFLAG} \
+        ${PIPE_CFLAG} \
+        ${!TOOL_COMMON_CFLAGS} \
+        ${OPTIMIZATION_CFLAG} \
+        ${EMBED_BITCODE_CFLAG} \
+        ${FLTO_CFLAG} \
         ${RTLIB_CFLAG} \
         ${UNWINDLIB_CFLAG} \
         ${!TOOL_COMMON_LDFLAGS} \
