@@ -32,6 +32,8 @@ fi
 ENABLE_OR_DISABLE_ALL_PROGRAMS=enable
 ENABLE_OR_DISABLE_EJECT=enable
 ENABLE_OR_DISABLE_HARDLINK=enable
+ENABLE_OR_DISABLE_HWCLOCK=disable
+ENABLE_OR_DISABLE_HWCLOCK_CMOS=disable
 ENABLE_OR_DISABLE_IPCRM=enable
 ENABLE_OR_DISABLE_IPCS=enable
 ENABLE_OR_DISABLE_LIBBLKID=enable
@@ -43,8 +45,14 @@ ENABLE_OR_DISABLE_LOGGER=enable
 if [ "${HOST_OS}" = "android" ]; then
     ENABLE_OR_DISABLE_EJECT=disable
     ENABLE_OR_DISABLE_LOGGER=disable
+elif [ "${HOST_OS}" = "gnu" ]; then
+    if [ "${HOST_PROCESSOR}" = "i686" ] ||
+    [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+        ENABLE_OR_DISABLE_HWCLOCK=enable
+        ENABLE_OR_DISABLE_HWCLOCK_CMOS=enable
+    fi
 elif [ "${HOST_OS}" = "macos" ] ||
-   [ "${HOST_OS}" = "mingw" ]; then
+     [ "${HOST_OS}" = "mingw" ]; then
     COMMON_CFLAGS="\
         -lintl \
         ${COMMON_CFLAGS} \
@@ -82,12 +90,15 @@ package-bootstrap-configure-install-archive \
     --disable-kill \
     --disable-static \
     --disable-vipw \
+    --enable-hwclock \
     --enable-shared \
     --with-libintl-prefix=${PACKAGE_PREFIX} \
     --with-ncursesw \
     --${ENABLE_OR_DISABLE_ALL_PROGRAMS}-all-programs \
     --${ENABLE_OR_DISABLE_EJECT}-eject \
     --${ENABLE_OR_DISABLE_HARDLINK}-hardlink \
+    --${ENABLE_OR_DISABLE_HWCLOCK}-hwclock \
+    --${ENABLE_OR_DISABLE_HWCLOCK_CMOS}-hwclock-cmos \
     --${ENABLE_OR_DISABLE_IPCRM}-ipcrm \
     --${ENABLE_OR_DISABLE_IPCS}-ipcs \
     --${ENABLE_OR_DISABLE_LIBBLKID}-libblkid \
