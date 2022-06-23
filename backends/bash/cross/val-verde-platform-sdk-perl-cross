@@ -29,8 +29,8 @@ tool-log ${STAGE_ROOT}/Configure \
     -Dcxx="${CXX}" \
     -Dcxxflags="${CXXFLAGS}" \
     -Dincpth=${PACKAGE_PREFIX}/include \
-    -Dld="${LD}" \
-    -Dldflags="${LDFLAGS}" \
+    -Dld="${CCLD}" \
+    -Dldflags="${CCLDFLAGS}" \
     -Dloclibpth="${PACKAGE_PREFIX}/lib ${SYSROOT}/usr/lib" \
     -Dnm="${NM}" \
     -Dprefix=${PACKAGE_PREFIX} \
