@@ -524,6 +524,9 @@ package-invoke-builder intltool-cross 0
 # kmod build
 package-invoke-builder kmod-cross 29
 
+# hwloc build
+package-invoke-builder hwloc-cross 2
+
 # systemd build
 package-invoke-builder systemd 251
 

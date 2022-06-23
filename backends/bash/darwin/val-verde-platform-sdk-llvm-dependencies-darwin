@@ -368,6 +368,9 @@ package-invoke-builder graphviz-cross 2
 # intltool build
 package-invoke-builder intltool-cross 0
 
+# hwloc build
+package-invoke-builder hwloc-cross 2
+
 # sudo build
 package-invoke-builder sudo-cross 1
 

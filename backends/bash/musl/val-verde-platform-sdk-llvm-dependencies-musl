@@ -387,6 +387,9 @@ package-invoke-builder intltool-cross 0
 # kmod build
 package-invoke-builder kmod-cross 29
 
+# hwloc build
+package-invoke-builder hwloc-cross 2
+
 # shadow-utils build
 package-invoke-builder shadow-utils-cross 4
 
