@@ -35,4 +35,5 @@ package-meson-install-archive \
     -Dintrospection=disabled \
     -Dman-pages=false \
     -Dprint-cups=${ENABLE_OR_DISABLE_CUPS} \
+    -Dvulkan=enabled \
     -Dwayland-backend=${ENABLE_WAYLAND}
