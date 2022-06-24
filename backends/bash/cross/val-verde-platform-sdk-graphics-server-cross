@@ -130,13 +130,13 @@ fi
 # xorg-libxmu build
 package-invoke-builder xorg-libxmu-cross 1
 
-# xorg-xauth build
-package-invoke-builder xorg-xauth-cross 1
-
 # xorg-xhost build
 package-invoke-builder xorg-xhost-cross 1
 
 if [ "${HOST_OS}" != "mingw" ]; then
+    # xorg-xauth build
+    package-invoke-builder xorg-xauth-cross 1
+
     # xorg-xinit build
     package-invoke-builder xorg-xinit-cross 1
 fi
