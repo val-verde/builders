@@ -126,7 +126,7 @@ RUN HOST_ARCH=westmere \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows-base
 
 # windows-aarch64 environment
-RUN HOST_ARCH=armv8-a \
+RUN HOST_ARCH=armv8.5-a \
     HOST_CPU=apple-m1 \
     HOST_KERNEL=w64 \
     HOST_OS=mingw \
@@ -171,21 +171,21 @@ RUN HOST_ARCH=${BUILD_ARCH} \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu
 
 # gnu-aarch64 environment
-RUN HOST_ARCH=armv8-a \
+RUN HOST_ARCH=armv8.5-a \
     HOST_CPU=apple-m1 \
     HOST_KERNEL=${BUILD_KERNEL} \
     HOST_OS=${BUILD_OS} \
     HOST_PROCESSOR=aarch64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-binaries-builder
 
-RUN HOST_ARCH=armv8-a \
+RUN HOST_ARCH=armv8.5-a \
     HOST_CPU=apple-m1 \
     HOST_KERNEL=${BUILD_KERNEL} \
     HOST_OS=${BUILD_OS} \
     HOST_PROCESSOR=aarch64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap
 
-RUN HOST_ARCH=armv8-a \
+RUN HOST_ARCH=armv8.5-a \
     HOST_CPU=apple-m1 \
     HOST_KERNEL=${BUILD_KERNEL} \
     HOST_OS=${BUILD_OS} \
@@ -258,7 +258,7 @@ RUN DARWIN_OS=darwin \
 # macos-aarch64 environment
 RUN DARWIN_OS=darwin \
     DARWIN_OS_API_LEVEL=21 \
-    HOST_ARCH=armv8-a \
+    HOST_ARCH=armv8.5-a \
     HOST_CPU=apple-m1 \
     HOST_KERNEL=apple \
     HOST_OS=macos \
@@ -282,8 +282,8 @@ RUN HOST_ARCH=westmere \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-musl
 
 # musl-aarch64 environment
-RUN HOST_ARCH=armv8-a \
-    HOST_CPU=cortex-a57 \
+RUN HOST_ARCH=armv8.5-a \
+    HOST_CPU=apple-m1 \
     HOST_KERNEL=linux \
     HOST_OS=musl \
     HOST_PROCESSOR=aarch64 \
@@ -331,7 +331,7 @@ RUN HOST_ARCH=westmere \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows
 
 # windows-aarch64 environment
-RUN HOST_ARCH=armv8-a \
+RUN HOST_ARCH=armv8.5-a \
     HOST_CPU=apple-m1 \
     HOST_KERNEL=w64 \
     HOST_OS=mingw \
