@@ -758,8 +758,6 @@ function export-compiler-environment-for-python() {
     elif [ "${HOST_PROCESSOR}" = "armv7a" ]; then
         PYTHON_HOST_OS=${PYTHON_HOST_OS}${HOST_OS_API_LEVEL}
         PYTHON_HOST_PROCESSOR=arm
-    elif [ "${HOST_PROCESSOR}" = "i686" ]; then
-        PYTHON_HOST_PROCESSOR=i386
     else
         PYTHON_HOST_PROCESSOR=${HOST_PROCESSOR}
     fi
