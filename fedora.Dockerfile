@@ -117,7 +117,7 @@ RUN HOST_ARCH=westmere \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows-base
 
 # windows-i686 environment
-RUN HOST_ARCH=westmere \
+RUN HOST_ARCH=i686 \
     HOST_CPU=westmere \
     HOST_KERNEL=w64 \
     HOST_OS=mingw \
@@ -193,7 +193,7 @@ RUN HOST_ARCH=armv8.5-a \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu
 
 # gnu-i686 environment
-RUN HOST_ARCH=westmere \
+RUN HOST_ARCH=i686 \
     HOST_CPU=westmere \
     HOST_KERNEL=linux \
     HOST_OS=gnu \
@@ -201,7 +201,7 @@ RUN HOST_ARCH=westmere \
     HOST_PROCESSOR=i686 \
     ; # bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap
 
-RUN HOST_ARCH=westmere \
+RUN HOST_ARCH=i686 \
     HOST_CPU=westmere \
     HOST_KERNEL=linux \
     HOST_OS=gnu \
