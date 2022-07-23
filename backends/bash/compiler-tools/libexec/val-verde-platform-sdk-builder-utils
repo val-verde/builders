@@ -676,7 +676,11 @@ function export-compiler-environment-for-go() {
         export GOHOSTARCH=arm64
     elif [ "${BUILD_PROCESSOR}" = "armv7a" ]; then
         export GOHOSTARCH=arm
-    elif [ "${BUILD_PROCESSOR}" = "i686" ]; then
+    elif [ "${BUILD_PROCESSOR}" = "i386" ] ||
+         [ "${BUILD_PROCESSOR}" = "i486" ] ||
+         [ "${BUILD_PROCESSOR}" = "i586" ] ||
+         [ "${BUILD_PROCESSOR}" = "i686" ] ||
+         [ "${BUILD_PROCESSOR}" = "i786" ]; then
         export GOHOSTARCH=386
     elif [ "${BUILD_PROCESSOR}" = "x86_64" ]; then
         export GOHOSTARCH=amd64
@@ -697,7 +701,11 @@ function export-compiler-environment-for-go() {
         export GOARCH=arm64
     elif [ "${HOST_PROCESSOR}" = "armv7a" ]; then
         export GOARCH=arm
-    elif [ "${HOST_PROCESSOR}" = "i686" ]; then
+    elif [ "${HOST_PROCESSOR}" = "i386" ] ||
+         [ "${HOST_PROCESSOR}" = "i486" ] ||
+         [ "${HOST_PROCESSOR}" = "i586" ] ||
+         [ "${HOST_PROCESSOR}" = "i686" ] ||
+         [ "${HOST_PROCESSOR}" = "i786" ]; then
         export GOARCH=386
     elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
         export GOARCH=amd64
@@ -1199,10 +1207,17 @@ function package-cmake-invocation-arguments-for-variant() {
 
     if [ "${HOST_PROCESSOR}" = "armv7a" ]; then
         SWIFT_COMPILER_TARGET=armv7-${HOST_ENVIRONMENT}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}
-    elif [ "${HOST_PROCESSOR}" = "i686" ] &&
-         [ "${HOST_OS}" = "gnu" ] &&
-         [ -n "${HOST_OS_API_LEVEL}" ]; then
-        SWIFT_COMPILER_TARGET=${HOST_PROCESSOR}-${HOST_ENVIRONMENT}-${HOST_KERNEL}-${HOST_OS}
+    elif [ "${HOST_PROCESSOR}" = "i386" ] ||
+         [ "${HOST_PROCESSOR}" = "i486" ] ||
+         [ "${HOST_PROCESSOR}" = "i586" ] ||
+         [ "${HOST_PROCESSOR}" = "i686" ] ||
+         [ "${HOST_PROCESSOR}" = "i786" ]; then
+         if [ "${HOST_OS}" = "gnu" ] &&
+            [ -n "${HOST_OS_API_LEVEL}" ]; then
+            SWIFT_COMPILER_TARGET=${HOST_PROCESSOR}-${HOST_ENVIRONMENT}-${HOST_KERNEL}-${HOST_OS}
+        else
+            SWIFT_COMPILER_TARGET=${COMPILER_TARGET}
+        fi
     else
         SWIFT_COMPILER_TARGET=${COMPILER_TARGET}
     fi
@@ -1983,10 +1998,17 @@ function package-swift-build() {
     else
         if [ "${HOST_PROCESSOR}" = "armv7a" ]; then
             TARGET=${TARGET:-armv7-${HOST_ENVIRONMENT:-unknown}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}}
-        elif [ "${HOST_PROCESSOR}" = "i686" ] &&
-	     [ "${HOST_OS}" = "gnu" ] &&
-	     [ -n "${HOST_OS_API_LEVEL}" ]; then
-            TARGET=${TARGET:-${HOST_PROCESSOR}-${HOST_ENVIRONMENT:-unknown}-${HOST_KERNEL}-${HOST_OS}}
+        elif [ "${HOST_PROCESSOR}" = "i386" ] ||
+             [ "${HOST_PROCESSOR}" = "i486" ] ||
+             [ "${HOST_PROCESSOR}" = "i586" ] ||
+             [ "${HOST_PROCESSOR}" = "i686" ] ||
+             [ "${HOST_PROCESSOR}" = "i786" ]; then
+	        if [ "${HOST_OS}" = "gnu" ] &&
+	           [ -n "${HOST_OS_API_LEVEL}" ]; then
+                TARGET=${TARGET:-${HOST_PROCESSOR}-${HOST_ENVIRONMENT:-unknown}-${HOST_KERNEL}-${HOST_OS}}
+            else
+                TARGET=${TARGET:-${HOST_4_TRIPLE}}
+            fi
         else
             TARGET=${TARGET:-${HOST_4_TRIPLE}}
         fi

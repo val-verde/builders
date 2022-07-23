@@ -16,7 +16,11 @@ function kernel-bootstrap-config() {
         ARCH=arm64
     elif [ "${HOST_PROCESSOR}" = "armv7a" ]; then
         ARCH=arm
-    elif [ "${HOST_PROCESSOR}" = "i686" ]; then
+    elif [ "${HOST_PROCESSOR}" = "i386" ] ||
+         [ "${HOST_PROCESSOR}" = "i486" ] ||
+         [ "${HOST_PROCESSOR}" = "i586" ] ||
+         [ "${HOST_PROCESSOR}" = "i686" ] ||
+         [ "${HOST_PROCESSOR}" = "i786" ]; then
         ARCH=x86
         DEFCONFIG=i386_defconfig
     elif [ "${HOST_PROCESSOR}" = "mipsel" ]; then

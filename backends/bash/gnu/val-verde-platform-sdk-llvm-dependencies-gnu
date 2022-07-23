@@ -568,7 +568,11 @@ package-invoke-builder alien-package-tool-cross 8
 package-invoke-category-builder ai-sdk-cross
 
 if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
+   [ "${HOST_PROCESSOR}" = "i386" ] ||
+   [ "${HOST_PROCESSOR}" = "i486" ] ||
+   [ "${HOST_PROCESSOR}" = "i586" ] ||
    [ "${HOST_PROCESSOR}" = "i686" ] ||
+   [ "${HOST_PROCESSOR}" = "i786" ] ||
    [ "${HOST_PROCESSOR}" = "x86_64" ]; then
     # openjdk build
     ENABLE_STAGE_ROOT_BUILD=TRUE \

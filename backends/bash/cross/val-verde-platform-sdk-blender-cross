@@ -6,7 +6,11 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for cmake/install
-if [ "${HOST_PROCESSOR}" = "i686" ] ||
+if [ "${HOST_PROCESSOR}" = "i386" ] ||
+   [ "${HOST_PROCESSOR}" = "i486" ] ||
+   [ "${HOST_PROCESSOR}" = "i586" ] ||
+   [ "${HOST_PROCESSOR}" = "i686" ] ||
+   [ "${HOST_PROCESSOR}" = "i786" ] ||
    [ "${HOST_PROCESSOR}" = "x86_64" ]; then
     HAS_SSE=TRUE
 else
@@ -14,7 +18,11 @@ else
 fi
 
 if [ "${HOST_PROCESSOR}" = "armv7a" ] ||
-   [ "${HOST_PROCESSOR}" = "i686" ]; then
+   [ "${HOST_PROCESSOR}" = "i386" ] ||
+   [ "${HOST_PROCESSOR}" = "i486" ] ||
+   [ "${HOST_PROCESSOR}" = "i586" ] ||
+   [ "${HOST_PROCESSOR}" = "i686" ] ||
+   [ "${HOST_PROCESSOR}" = "i786" ]; then
     MAKESDNA_POINTER_SIZE=4
 elif [ "${HOST_PROCESSOR}" = "aarch64" ] ||
      [ "${HOST_PROCESSOR}" = "x86_64" ]; then

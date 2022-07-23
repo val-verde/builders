@@ -46,8 +46,12 @@ if [ "${HOST_OS}" = "android" ]; then
     ENABLE_OR_DISABLE_EJECT=disable
     ENABLE_OR_DISABLE_LOGGER=disable
 elif [ "${HOST_OS}" = "gnu" ]; then
-    if [ "${HOST_PROCESSOR}" = "i686" ] ||
-    [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    if [ "${HOST_PROCESSOR}" = "i386" ] ||
+       [ "${HOST_PROCESSOR}" = "i486" ] ||
+       [ "${HOST_PROCESSOR}" = "i586" ] ||
+       [ "${HOST_PROCESSOR}" = "i686" ] ||
+       [ "${HOST_PROCESSOR}" = "i786" ] ||
+       [ "${HOST_PROCESSOR}" = "x86_64" ]; then
         ENABLE_OR_DISABLE_HWCLOCK=enable
         ENABLE_OR_DISABLE_HWCLOCK_CMOS=enable
     fi

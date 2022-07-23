@@ -45,7 +45,11 @@ if [ "${HOST_PROCESSOR}" = "armv7a" ]; then
     COMPILER_RT_HAS_FVISIBILITY_HIDDEN_FLAG=FALSE
 elif [ "${HOST_PROCESSOR}" = "aarch64" ]; then
     COMPILER_RT_HAS_FVISIBILITY_HIDDEN_FLAG=FALSE
-elif [ "${HOST_PROCESSOR}" = "i686" ] ||
+elif [ "${HOST_PROCESSOR}" = "i386" ] ||
+     [ "${HOST_PROCESSOR}" = "i486" ] ||
+     [ "${HOST_PROCESSOR}" = "i586" ] ||
+     [ "${HOST_PROCESSOR}" = "i686" ] ||
+     [ "${HOST_PROCESSOR}" = "i786" ] ||
      [ "${HOST_PROCESSOR}" = "x86_64" ]; then
     COMPILER_RT_HAS_FVISIBILITY_HIDDEN_FLAG=TRUE
 fi

@@ -19,7 +19,11 @@ HAS_WIN32_THREAD_API=FALSE
 USE_LLVM_UNWINDER=TRUE
 
 if [ "${HOST_PROCESSOR}" = "armv7a" ] ||
+   [ "${HOST_PROCESSOR}" = "i386" ] ||
+   [ "${HOST_PROCESSOR}" = "i486" ] ||
+   [ "${HOST_PROCESSOR}" = "i586" ] ||
    [ "${HOST_PROCESSOR}" = "i686" ] ||
+   [ "${HOST_PROCESSOR}" = "i786" ] ||
    [ "${HOST_PROCESSOR}" = "wasm32" ]; then
     SIZEOF_VOID_P=4
 else

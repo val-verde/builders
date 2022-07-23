@@ -56,7 +56,11 @@ if [ "${HOST_PROCESSOR}" = "armv7a" ]; then
     else
         CLANG_HOST_PROCESSOR=arm
     fi
-elif [ "${HOST_PROCESSOR}" = "i686" ]; then
+elif [ "${HOST_PROCESSOR}" = "i386" ] ||
+     [ "${HOST_PROCESSOR}" = "i486" ] ||
+     [ "${HOST_PROCESSOR}" = "i586" ] ||
+     [ "${HOST_PROCESSOR}" = "i686" ] ||
+     [ "${HOST_PROCESSOR}" = "i786" ]; then
     CLANG_HOST_PROCESSOR=i386
 else
     CLANG_HOST_PROCESSOR=${HOST_PROCESSOR}
@@ -95,7 +99,11 @@ fi
 SIZEOF_VOID_P=8
 
 if [ "${HOST_PROCESSOR}" = "armv7a" ] ||
+   [ "${HOST_PROCESSOR}" = "i386" ] ||
+   [ "${HOST_PROCESSOR}" = "i486" ] ||
+   [ "${HOST_PROCESSOR}" = "i586" ] ||
    [ "${HOST_PROCESSOR}" = "i686" ] ||
+   [ "${HOST_PROCESSOR}" = "i786" ] ||
    [ "${HOST_PROCESSOR}" = "wasm32" ]; then
     SIZEOF_VOID_P=4
 fi

@@ -17,7 +17,11 @@ if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
    [ "${HOST_PROCESSOR}" = "x86_64" ]; then
     ENABLE_WINE64_CMD="--enable-win64"
 elif [ "${HOST_PROCESSOR}" = "armv7a" ] ||
-     [ "${HOST_PROCESSOR}" = "i686" ]; then
+     [ "${HOST_PROCESSOR}" = "i386" ] ||
+     [ "${HOST_PROCESSOR}" = "i486" ] ||
+     [ "${HOST_PROCESSOR}" = "i586" ] ||
+     [ "${HOST_PROCESSOR}" = "i686" ] ||
+     [ "${HOST_PROCESSOR}" = "i786" ]; then
     WINE64_PREFIX=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${HOST_OS}-${HOST_CPU}
 
     if [ -d "${WINE64_PREFIX}" ]; then

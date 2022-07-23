@@ -30,7 +30,11 @@ function package-install-completion-callback() {
         elif [ "${HOST_PROCESSOR}" = "armv7a" ]; then
             LINKER_LOADER=ld-${HOST_KERNEL}-armhf.so.3
             LINKER_LOADER_DIR=lib
-        elif [ "${HOST_PROCESSOR}" = "i686" ]; then
+        elif [ "${HOST_PROCESSOR}" = "i386" ] ||
+             [ "${HOST_PROCESSOR}" = "i486" ] ||
+             [ "${HOST_PROCESSOR}" = "i586" ] ||
+             [ "${HOST_PROCESSOR}" = "i686" ] ||
+             [ "${HOST_PROCESSOR}" = "i786" ]; then
             LINKER_LOADER=ld-${HOST_KERNEL}.so.2
             LINKER_LOADER_DIR=lib
         elif [ "${HOST_PROCESSOR}" = "mips" ] ||
