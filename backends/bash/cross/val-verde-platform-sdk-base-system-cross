@@ -9,8 +9,13 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 # cpio build
 package-invoke-builder cpio-cross 2
 
-# kernel-image build
-# package-invoke-builder kernel-image-cross 5
+if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
+   [ "${HOST_PROCESSOR}" = "mips64" ] ||
+   [ "${HOST_PROCESSOR}" = "mips64el" ] ||
+   [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    # kernel-image build
+    package-invoke-builder kernel-image-cross 5
 
-# busybox build
-# package-invoke-builder busybox-cross 1
+    # busybox build
+    package-invoke-builder busybox-cross 1
+fi
