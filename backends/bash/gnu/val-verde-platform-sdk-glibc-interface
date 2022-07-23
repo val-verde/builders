@@ -18,8 +18,8 @@ function package-install-completion-callback() {
     fi
 }
 
-if [ "${HOST_PROCESSOR}" = "armv7a" ] ||
-   [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
+   [ "${HOST_PROCESSOR}" = "armv7a" ]; then
     OPTIMIZATION_LEVEL=2
 fi
 
