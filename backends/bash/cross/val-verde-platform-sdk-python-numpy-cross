@@ -14,5 +14,5 @@ COMMON_CFLAGS="\
     -L${PACKAGE_PREFIX}/lib \
     ${COMMON_CFLAGS} \
 " \
-NUMPY_VERSION="1.22.4" \
+NUMPY_VERSION="1.23.1" \
 package-python-install-archive
