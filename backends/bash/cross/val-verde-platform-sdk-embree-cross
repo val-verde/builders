@@ -13,14 +13,15 @@ EMBREE_ISA_NEON=FALSE
 EMBREE_ISA_SSE2=FALSE
 EMBREE_ISA_SSE42=FALSE
 
-if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
-   [ "${HOST_PROCESSOR}" = "armv7a" ]; then
+if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
     EMBREE_ISA_NEON=TRUE
-elif [ "${HOST_PROCESSOR}" = "i386" ] ||
-     [ "${HOST_PROCESSOR}" = "i486" ] ||
-     [ "${HOST_PROCESSOR}" = "i586" ] ||
-     [ "${HOST_PROCESSOR}" = "i686" ] ||
-     [ "${HOST_PROCESSOR}" = "i786" ] ||
+elif [ "${HOST_PROCESSOR}" = "armv7a" ]; then
+    COMMON_CFLAGS="\
+        -Xclang -target-feature -Xclang +vfp4 \
+        ${COMMON_CFLAGS} \
+    "
+    EMBREE_ISA_NEON=TRUE
+elif [ "${HOST_PROCESSOR}" = "i686" ] ||
      [ "${HOST_PROCESSOR}" = "x86_64" ]; then
     if [ "${HOST_CPU}" = "skylake" ]; then
         EMBREE_ISA_AVX2=TRUE
@@ -34,6 +35,10 @@ fi
 
 CXX_STANDARD=17 \
 package-cmake-install-archive \
+    -DCOMPILER_SUPPORTS_ARM_NEON=${EMBREE_ISA_NEON} \
+    -DCOMPILER_SUPPORTS_AVX=${EMBREE_ISA_AVX} \
+    -DCOMPILER_SUPPORTS_AVX2=${EMBREE_ISA_AVX2} \
+    -DCOMPILER_SUPPORTS_AVX512=${EMBREE_ISA_AVX512} \
     -DEMBREE_BACKFACE_CULLING=TRUE \
     -DEMBREE_IGNORE_CMAKE_CXX_FLAGS=FALSE \
     -DEMBREE_ISA_AVX=${EMBREE_ISA_AVX} \
