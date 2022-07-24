@@ -157,6 +157,13 @@ package-invoke-builder openssl-cross 1
 # android libcap build
 package-invoke-builder libcap-cross 2
 
+# android util-linux build
+ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
+package-invoke-builder util-linux-cross 2 bootstrap-only
+
+# android e2fsprogs build
+package-invoke-builder e2fsprogs-cross 1
+
 # android krb5 build
 package-invoke-builder krb5-cross 1
 
@@ -183,10 +190,6 @@ package-invoke-builder gpgme-cross 1
 
 # android indent build
 package-invoke-builder indent-cross 2
-
-# android util-linux build
-ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
-package-invoke-builder util-linux-cross 2 bootstrap-only
 
 # android attr build
 package-invoke-builder attr-cross 2

@@ -159,6 +159,13 @@ package-invoke-builder openssl-cross 1
 # libcap build
 package-invoke-builder libcap-cross 2
 
+# util-linux build
+ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
+package-invoke-builder util-linux-cross 2 bootstrap-only
+
+# e2fsprogs build
+package-invoke-builder e2fsprogs-cross 1
+
 # krb5 build
 package-invoke-builder krb5-cross 1
 
@@ -185,10 +192,6 @@ package-invoke-builder gpgme-cross 1
 
 # indent build
 package-invoke-builder indent-cross 2
-
-# util-linux build
-ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
-package-invoke-builder util-linux-cross 2 bootstrap-only
 
 # attr build
 package-invoke-builder attr-cross 2
