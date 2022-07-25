@@ -43,19 +43,17 @@ function package-archive-uninstall() {
 
 function package-archive-check-existence() {
     if [ "${PACKAGE_ARCHIVE_CLASS}" = "deb" ]; then
-        DEB_PACKAGE_QUERY=$(${DPKG}-query -W -f='${status}' ${1} 2>&1)
+        DEB_PACKAGE_QUERY=$(${DPKG}-query -W -f="\\\${status}" ${1} 2>&1)
         DEB_INSTALL_STATUS_CHECK=`${GREP} "ok installed" <<<"${DEB_PACKAGE_QUERY}"`
+
         if [ -n "${DEB_INSTALL_STATUS_CHECK}" ]; then
             ${ECHO} "true"
-        else
-            ${ECHO} "false"
         fi
     elif [ "${PACKAGE_ARCHIVE_CLASS}" = "rpm" ]; then
         RPM_PACKAGE_QUERY=$(${RPM} -q ${1} 2>&1)
         RPM_INSTALL_STATUS_CHECK=`${GREP} "${1} is not installed" <<<"${RPM_PACKAGE_QUERY}"`
-        if [ -n "${RPM_INSTALL_STATUS_CHECK}" ]; then
-            ${ECHO} "false"
-        else
+
+        if [ -z "${RPM_INSTALL_STATUS_CHECK}" ]; then
             ${ECHO} "true"
         fi
     fi
