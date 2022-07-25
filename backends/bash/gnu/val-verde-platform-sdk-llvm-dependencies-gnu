@@ -7,6 +7,7 @@ if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
         APT="build-system-tool apt" \
         DNF="build-system-tool dnf" \
         DPKG="build-system-tool dpkg" \
+        DPKG_DEB="build-system-tool dpkg-deb" \
         DPKG_QUERY="build-system-tool dpkg-query" \
         RPM="build-system-tool rpm" \
         RPMBUILD="build-system-tool rpmbuild"
@@ -409,6 +410,7 @@ unset LESS
 # dpkg build
 package-invoke-builder dpkg-cross 1
 unset DPKG
+unset DPKG_DEB
 unset DPKG_QUERY
 
 # rsync build

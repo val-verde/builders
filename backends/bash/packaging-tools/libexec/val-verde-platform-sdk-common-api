@@ -99,8 +99,8 @@ function package-dnf-tool() {
 
 function package-deb-build() {
     COMPRESSION_OPTION=`package-determine-compression-option`
-    TOOL_LOG=${STAGE_ROOT}/builder-dpkg \
-    tool-log ${DPKG}-deb --build ${COMPRESSION_OPTION} "${@}"
+    TOOL_LOG=${STAGE_ROOT}/builder-dpkg-deb-build \
+    tool-log ${DPKG_DEB} --build ${COMPRESSION_OPTION} "${@}"
 }
 
 function package-deb-install() {
