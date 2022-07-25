@@ -21,6 +21,7 @@ function export-build-util-variables() {
     export-build-util DIFF diff
     export-build-util DNF dnf
     export-build-util DPKG dpkg
+    export-build-util DPKG_QUERY dpkg-query
     export-build-util ECHO echo
     export-build-util ENV env
     export-build-util EXPR expr
