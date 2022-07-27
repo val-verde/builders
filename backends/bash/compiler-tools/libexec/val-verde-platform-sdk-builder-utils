@@ -1588,13 +1588,30 @@ function package-meson-build() {
 }
 
 function package-meson-build-invocation() {
+    if [ -n "${PACKAGE_USR_PREFIX}" ]; then
+        PACKAGE_RELATIVE_PREFIX=${PACKAGE_USR_PREFIX}/
+    else
+        PACKAGE_RELATIVE_PREFIX=
+    fi
+
+    MESON_BINDIR=${MESON_BINDIR:-${PACKAGE_RELATIVE_PREFIX}bin}
+    MESON_DATADIR=${MESON_DATADIR:-${PACKAGE_RELATIVE_PREFIX}share}
+    MESON_INCLUDEDIR=${MESON_INCLUDEDIR:-${PACKAGE_RELATIVE_PREFIX}include}
+    MESON_INFODIR=${MESON_INFODIR:-${MESON_DATADIR}/info}
+    MESON_LIBDIR=${MESON_LIBDIR:-${PACKAGE_RELATIVE_PREFIX}lib}
+    MESON_LIBEXECDIR=${MESON_LIBEXECDIR:-${PACKAGE_RELATIVE_PREFIX}libexec}
+    MESON_LOCALEDIR=${MESON_LOCALEDIR:-${PACKAGE_RELATIVE_PREFIX}share/locale}
+    MESON_LOCALSTATEDIR=${MESON_LOCALSTATEDIR:-var}
+    MESON_MANDIR=${MESON_MANDIR:-${PACKAGE_RELATIVE_PREFIX}share/man}
+    MESON_SBINDIR=${MESON_SBINDIR:-sbin}
+    MESON_SYSCONFDIR=${MESON_SYSCONFDIR:-etc}
+    MESON_SHAREDSTATEDIR=${MESON_SHAREDSTATEDIR:-${MESON_LOCALSTATEDIR}/lib}
+
     BACKEND=${BACKEND:-ninja}
     BUILD_TYPE=${BUILD_TYPE:-custom}
     CONFIG_FILE=${STAGE_ROOT}/builder-meson.config
     MESON_ENABLE_WERROR=${MESON_ENABLE_WERROR:-false}
     MESON_OPTIMIZATION_LEVEL=${MESON_OPTIMIZATION_LEVEL:-${OPTIMIZATION_LEVEL}}
-    MESON_PREFIX=${MESON_PREFIX:-${PACKAGE_PREFIX}}
-    MESON_ROOT_PREFIX=${MESON_ROOT_PREFIX:-`${REALPATH} -m --relative-to=${PACKAGE_PREFIX} ${PACKAGE_PLATFORM_SYSROOT}`}
     MESON_WARNING_LEVEL=${MESON_WARNING_LEVEL:-0}
     DEBUG=${DEBUG:-false}
     ENDIAN=${ENDIAN:-little}
@@ -1775,21 +1792,21 @@ ${MESON_EXTRA_PROPERTIES}
          ${SOURCE_ROOT} \
          ${STAGE_ROOT} \
          -Dbackend=ninja \
-         -Dbindir=bin \
-         -Ddatadir=share \
-         -Dincludedir=include \
-         -Dinfodir=share/info \
-         -Dlibdir=lib \
-         -Dlibexecdir=libexec \
-         -Dlocaledir=share/locale \
-         -Dlocalstatedir=${MESON_ROOT_PREFIX}/var \
-         -Dmandir=share/man \
+         -Dbindir=${MESON_BINDIR} \
+         -Ddatadir=${MESON_DATADIR} \
+         -Dincludedir=${MESON_INCLUDEDIR} \
+         -Dinfodir=${MESON_INFODIR} \
+         -Dlibdir=${MESON_LIBDIR} \
+         -Dlibexecdir=${MESON_LIBEXECDIR} \
+         -Dlocaledir=${MESON_LOCALEDIR} \
+         -Dlocalstatedir=${MESON_LOCALSTATEDIR} \
+         -Dmandir=${MESON_MANDIR} \
          -Doptimization=${MESON_OPTIMIZATION_LEVEL} \
-         -Dprefix=${MESON_PREFIX} \
-         -Dsbindir=${MESON_ROOT_PREFIX}/sbin \
+         -Dprefix=${PACKAGE_PLATFORM_SYSROOT} \
+         -Dsbindir=${MESON_SBINDIR} \
          -Dstrip=${MESON_ENABLE_STRIP} \
-         -Dsysconfdir=${MESON_ROOT_PREFIX}/etc \
-         -Dsharedstatedir=${MESON_ROOT_PREFIX}/var/lib \
+         -Dsysconfdir=${MESON_SYSCONFDIR} \
+         -Dsharedstatedir=${MESON_SHAREDSTATEDIR} \
          -Dwarning_level=${MESON_WARNING_LEVEL} \
          -Dwerror=${MESON_ENABLE_WERROR} \
          --${MESON_BUILD_CONFIG}-file ${CONFIG_FILE} \
