@@ -534,6 +534,9 @@ package-invoke-builder kmod-cross 29
 # hwloc build
 package-invoke-builder hwloc-cross 2
 
+# linux-pam build
+package-invoke-builder linux-pam-cross 1
+
 # systemd build
 package-invoke-builder systemd 251
 

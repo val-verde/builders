@@ -331,8 +331,16 @@ package-invoke-builder gtk-doc-cross 1
 # libtasn1 build
 package-invoke-builder libtasn1-cross 4
 
+# p11-kit build
+ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
+DISABLE_SYSTEMD=TRUE \
+package-invoke-builder p11-kit-cross 0
+
 # eudev build
 package-invoke-builder eudev-cross 3
+
+# linux-pam build
+package-invoke-builder linux-pam-cross 1
 
 # p11-kit build
 DISABLE_SYSTEMD=TRUE \
@@ -392,6 +400,10 @@ package-invoke-builder kmod-cross 29
 
 # hwloc build
 package-invoke-builder hwloc-cross 2
+
+# p11-kit build
+DISABLE_SYSTEMD=TRUE \
+package-invoke-builder p11-kit-cross 0
 
 # shadow-utils build
 package-invoke-builder shadow-utils-cross 4

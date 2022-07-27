@@ -326,12 +326,9 @@ package-invoke-category-builder python-sdk-cross
 package-invoke-builder libtasn1-cross 4
 
 # android p11-kit build
+ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
 DISABLE_SYSTEMD=TRUE \
 package-invoke-builder p11-kit-cross 0
-
-# android util-linux build (with python support)
-DISABLE_SYSTEMD=TRUE \
-package-invoke-builder util-linux-cross 2
 
 # android nettle build
 package-invoke-builder nettle-cross 3
@@ -395,6 +392,19 @@ package-invoke-builder intltool-cross 0
 # hwloc build
 package-invoke-builder hwloc-cross 2
 
+# linux-pam build
+# package-invoke-builder linux-pam-cross 1
+
+# android p11-kit build
+DISABLE_SYSTEMD=TRUE \
+package-invoke-builder p11-kit-cross 0
+
+# shadow-utils build
+# package-invoke-builder shadow-utils-cross 4
+
+# sudo build
+package-invoke-builder sudo-cross 1
+
 # android dbus build
 package-invoke-builder dbus-cross 1
 
@@ -432,7 +442,7 @@ package-invoke-builder z3-cross 4
 package-invoke-builder git-cross 2
 
 # android vim build
-package-invoke-builder vim-cross 8
+package-invoke-builder vim-cross 9
 
 # android cmake build
 package-invoke-builder cmake-cross 3

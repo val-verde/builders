@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for bootstrap/configure/install
+if [ "${HOST_OS}" = "android" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    COMMON_CFLAGS="\
+        -lintl \
+        ${COMMON_CFLAGS} \
+    "
+fi
+
+BOOTSTRAP_FILE=autogen.sh \
+INCLUDEDIR=${PACKAGE_PREFIX}/include/security \
+package-bootstrap-configure-install-archive \
+    --disable-doc \
+    --disable-regenerate-docu

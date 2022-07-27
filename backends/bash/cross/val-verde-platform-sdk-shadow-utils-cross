@@ -13,16 +13,21 @@ function package-install-completion-callback() {
 if [ "${HOST_OS}" = "gnu" ] ||
    [ "${HOST_OS}" = "musl" ]; then
     ENABLE_OR_DISABLE_SHADOWGRP=enable
+    WITH_OR_WITHOUT_LIBPAM=with
 else
     ENABLE_OR_DISABLE_SHADOWGRP=disable
+    WITH_OR_WITHOUT_LIBPAM=without
 fi
 
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 CONFIGURE_FILE=autogen.sh \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-configure-install-archive \
-    --${ENABLE_OR_DISABLE_SHADOWGRP}-shadowgrp \
+    --disable-man \
+    --disable-maintainer-mode \
     --disable-static \
     --enable-shared \
     --with-libintl-prefix=${PACKAGE_PREFIX} \
-    --without-selinux
+    --without-selinux \
+    --${ENABLE_OR_DISABLE_SHADOWGRP}-shadowgrp \
+    --${WITH_OR_WITHOUT_LIBPAM}-libpam

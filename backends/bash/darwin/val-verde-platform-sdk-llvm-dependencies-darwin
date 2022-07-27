@@ -320,6 +320,7 @@ package-invoke-category-builder python-sdk-cross
 package-invoke-builder libtasn1-cross 4
 
 # p11-kit build
+ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
 DISABLE_SYSTEMD=TRUE \
 package-invoke-builder p11-kit-cross 0
 
@@ -373,6 +374,10 @@ package-invoke-builder intltool-cross 0
 
 # hwloc build
 package-invoke-builder hwloc-cross 2
+
+# p11-kit build
+DISABLE_SYSTEMD=TRUE \
+package-invoke-builder p11-kit-cross 0
 
 # sudo build
 package-invoke-builder sudo-cross 1
