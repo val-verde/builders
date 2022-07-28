@@ -605,7 +605,7 @@ package-invoke-builder git-cross 2
 unset GIT
 
 # vim build
-package-invoke-builder vim-cross 8
+package-invoke-builder vim-cross 9
 
 # cmake build
 package-invoke-builder cmake-cross 3

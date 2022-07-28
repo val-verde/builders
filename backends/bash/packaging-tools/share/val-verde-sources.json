@@ -2948,7 +2948,7 @@
         "sourceType": "git",
         "sourcePackageName": "vim",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "8",
+        "sourcePackageVersion": "9",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
