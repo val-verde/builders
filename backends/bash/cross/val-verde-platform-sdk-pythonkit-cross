@@ -36,7 +36,17 @@ fi
 cd ${STAGE_ROOT}
 
 if [ "${HOST_OS}" != "macos" ]; then
-    SWIFT_ARCH_DIR=${HOST_PROCESSOR}
+    if [ "${HOST_PROCESSOR}" = "armv7a" ]; then
+        SWIFT_ARCH_DIR=armv7
+    elif [ "${HOST_PROCESSOR}" = "i386" ] ||
+         [ "${HOST_PROCESSOR}" = "i486" ] ||
+         [ "${HOST_PROCESSOR}" = "i586" ] ||
+         [ "${HOST_PROCESSOR}" = "i686" ] ||
+         [ "${HOST_PROCESSOR}" = "i786" ]; then
+        SWIFT_ARCH_DIR=i686
+    else
+        SWIFT_ARCH_DIR=${HOST_PROCESSOR}
+    fi
 fi
 
 ${MKDIR} -p ${INSTALL_PREFIX}/lib/swift/${SDK_PLATFORM_DIR}/${SWIFT_ARCH_DIR}/
