@@ -21,12 +21,19 @@ elif [ "${HOST_PROCESSOR}" = "armv7a" ]; then
         ${COMMON_CFLAGS} \
     "
     EMBREE_ISA_NEON=TRUE
-elif [ "${HOST_PROCESSOR}" = "i686" ] ||
+elif [ "${HOST_PROCESSOR}" = "i386" ] ||
+     [ "${HOST_PROCESSOR}" = "i486" ] ||
+     [ "${HOST_PROCESSOR}" = "i586" ] ||
+     [ "${HOST_PROCESSOR}" = "i686" ] ||
+     [ "${HOST_PROCESSOR}" = "i786" ] ||
      [ "${HOST_PROCESSOR}" = "x86_64" ]; then
-    if [ "${HOST_CPU}" = "skylake" ]; then
+    if [ "${HOST_CPU}" = "skylake" ] ||
+       [ "${HOST_CPU}" = "icelake-client" ]; then
         EMBREE_ISA_AVX2=TRUE
     elif [ "${HOST_CPU}" = "broadwell" ] ||
-         [ "${HOST_CPU}" = "haswell" ]; then
+         [ "${HOST_CPU}" = "haswell" ] ||
+         [ "${HOST_CPU}" = "ivybride" ] ||
+         [ "${HOST_CPU}" = "sandybridge" ]; then
         EMBREE_ISA_AVX=TRUE
     else
         EMBREE_ISA_SSE42=TRUE
