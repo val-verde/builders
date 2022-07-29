@@ -1214,7 +1214,7 @@ function package-cmake-invocation-arguments-for-variant() {
          [ "${HOST_PROCESSOR}" = "i786" ]; then
          if [ "${HOST_OS}" = "gnu" ] &&
             [ -n "${HOST_OS_API_LEVEL}" ]; then
-            SWIFT_COMPILER_TARGET=${HOST_PROCESSOR}-${HOST_ENVIRONMENT}-${HOST_KERNEL}-${HOST_OS}
+            SWIFT_COMPILER_TARGET=i686-${HOST_ENVIRONMENT}-${HOST_KERNEL}-${HOST_OS}
         else
             SWIFT_COMPILER_TARGET=${COMPILER_TARGET}
         fi
@@ -2022,7 +2022,7 @@ function package-swift-build() {
              [ "${HOST_PROCESSOR}" = "i786" ]; then
 	        if [ "${HOST_OS}" = "gnu" ] &&
 	           [ -n "${HOST_OS_API_LEVEL}" ]; then
-                TARGET=${TARGET:-${HOST_PROCESSOR}-${HOST_ENVIRONMENT:-unknown}-${HOST_KERNEL}-${HOST_OS}}
+                TARGET=${TARGET:-i686-${HOST_ENVIRONMENT:-unknown}-${HOST_KERNEL}-${HOST_OS}}
             else
                 TARGET=${TARGET:-${HOST_4_TRIPLE}}
             fi
