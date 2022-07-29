@@ -1692,21 +1692,27 @@ function package-meson-build-invocation() {
         export STRIP_FOR_BUILD=${BUILD_STRIP}
         export STRINGS_FOR_BUILD=${BUILD_STRINGS}
 
-        create-indirect-pkg-config BUILD_PKG_CONFIG_LIBDIR ${STAGE_ROOT}/build-pkgconfig
-        create-indirect-pkg-config PKG_CONFIG_LIBDIR ${STAGE_ROOT}/host-pkgconfig
+        create-indirect-pkg-config BUILD_PKG_CONFIG_LIBDIR ${STAGE_ROOT}/build-pkg-config
+        create-indirect-pkg-config PKG_CONFIG_LIBDIR ${STAGE_ROOT}/host-pkg-config
 
-        export PKG_CONFIG_FOR_BUILD=${STAGE_ROOT}/build-pkgconfig
-        export PKG_CONFIG=${STAGE_ROOT}/host-pkgconfig
+        export PKG_CONFIG_FOR_BUILD=${STAGE_ROOT}/build-pkg-config
+        export PKG_CONFIG=${STAGE_ROOT}/host-pkg-config
+        unset BUILD_PKG_CONFIG_LIBDIR BUILD_PKG_CONFIG_PATH
+        unset PKG_CONFIG_LIBDIR PKG_CONFIG_PATH
     fi
 
     ${RM} -f ${CONFIG_FILE}
 
-    if [ -n "${MESON_EXTRA_BINARIES}" ]; then
         ${ECHO} "\
 [binaries]
+ar='${AR}'
+nm='${NM}'
+ranlib='${RANLIB}'
+strip='${STRIP}'
+strings='${STRINGS}'
+windres='${WINDRES}'
 ${MESON_EXTRA_BINARIES}
-" >> ${CONFIG_FILE}
-    fi
+    " >> ${CONFIG_FILE}
 
     if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
         MESON_EXTRA_PROPERTIES="
@@ -1715,19 +1721,19 @@ ${MESON_EXTRA_PROPERTIES}
 "
 
         ${ECHO} "\
-[build_machine]
-ar='${AR}'
+
+[build_system]
 backend='${BACKEND}'
 buildtype='${BUILD_TYPE}'
 c='${CC_FOR_BUILD}'
 c_args=${BUILD_C_ARGS}
-c_ld='package-get-path ld.lld EXECUTABLE BUILD'
+c_ld='`package-get-path ld.lld EXECUTABLE BUILD`'
 c_link_args=${BUILD_C_LINK_ARGS}
 cmake='${CMAKE}'
 cmake_prefix_path=${BUILD_CMAKE_PREFIX_PATH}
 cpp='${CXX_FOR_BUILD}'
 cpp_args=${BUILD_CPP_ARGS}
-cpp_ld='package-get-path ld.lld EXECUTABLE BUILD'
+cpp_ld='`package-get-path ld.lld EXECUTABLE BUILD`'
 cpp_link_args=${BUILD_CPP_LINK_ARGS}
 cpp_std='${MESON_CXX_STANDARD}'
 cpu='${BUILD_ARCH}'
@@ -1740,12 +1746,7 @@ optimization='${OPTIMIZATION_LEVEL}'
 pkgconfig='${STAGE_ROOT}/build-pkg-config'
 pkgconfigpath=''
 python='${PYTHON}'
-nm='${NM}'
-ranlib='${RANLIB}'
-strip='${STRIP}'
-strings='${STRINGS}'
 system='${BUILD_SYSTEM}'
-windres='${WINDRES}'
 " >> ${CONFIG_FILE}
     fi
 
