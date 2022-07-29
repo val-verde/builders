@@ -377,19 +377,5 @@ RUN if [ -n "${ENABLE_32_BIT_BUILD}" ]; then \
         bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows; \
     fi
 
-FROM windows_builder AS rust_builder
-
-# rust package builders
-COPY backends/bash/rust \
-     /sources/
-
-# rust build
-RUN HOST_ARCH=${BUILD_ARCH} \
-    HOST_CPU=${BUILD_CPU} \
-    HOST_KERNEL=${BUILD_KERNEL} \
-    HOST_OS=${BUILD_OS} \
-    HOST_PROCESSOR=${BUILD_PROCESSOR} \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-rust-build
-
 CMD []
 ENTRYPOINT ["tail", "-f", "/dev/null"]

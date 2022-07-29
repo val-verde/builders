@@ -79,5 +79,8 @@ if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
     fi
 fi
 
+# rust sdk build
+package-invoke-category-builder rust-sdk-cross
+
 # android blockchain sdk build
 package-invoke-category-builder blockchain-sdk-cross

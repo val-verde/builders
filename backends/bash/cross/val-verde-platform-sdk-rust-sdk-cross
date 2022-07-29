@@ -8,5 +8,10 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export SYSROOT=${PACKAGE_PREFIX}/glibc-interface
 
-# rust build
-package-invoke-builder rust 1
+if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
+    # rust build
+    package-invoke-builder rust 1
+else
+    # rust build
+    package-invoke-builder rust-cross 1
+fi
