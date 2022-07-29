@@ -14,7 +14,14 @@ export DEPENDS="\
 ${MKDIR} -p ${STAGE_ROOT}
 
 CLANG_RESOURCE_VERSION=`package-get-source-package-version llvm-project`
+RUST_BUILD_OS=${BUILD_OS}
 RUST_HOST_OS=${HOST_OS}
+
+if [ "${BUILD_OS}" = "gnu" ]; then
+    RUST_BUILD_OS=linux
+elif [ "${BUILD_OS}" = "mingw" ]; then
+    RUST_BUILD_OS=windows
+fi
 
 if [ "${HOST_OS}" = "gnu" ]; then
     RUST_HOST_OS=linux
@@ -26,6 +33,11 @@ package-rsync -ax \
               ${SOURCE_ROOT}/${VAL_VERDE_GH_TEAM}-config-cross.toml.in \
               ${STAGE_ROOT}/config.toml
 
+BUILD_COMMON_LDFLAGS="\
+    -lclang_rt.builtins-${BUILD_PROCESSOR} \
+    -L${BUILD_PACKAGE_PREFIX}/lib/clang/${CLANG_RESOURCE_VERSION}/lib/${RUST_BUILD_OS} \
+    ${BUILD_COMMON_LDFLAGS} \
+" \
 COMMON_LDFLAGS="\
     -lclang_rt.builtins-${HOST_PROCESSOR} \
     -L${BUILD_PACKAGE_PREFIX}/lib/clang/${CLANG_RESOURCE_VERSION}/lib/${RUST_HOST_OS} \
