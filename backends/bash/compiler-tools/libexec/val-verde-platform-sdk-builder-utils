@@ -1827,6 +1827,7 @@ ${MESON_EXTRA_PROPERTIES}
          -Dstrip=${MESON_ENABLE_STRIP} \
          -Dsysconfdir=${MESON_SYSCONFDIR} \
          -Dsharedstatedir=${MESON_SHAREDSTATEDIR} \
+         -Dunity=subprojects \
          -Dwarning_level=${MESON_WARNING_LEVEL} \
          -Dwerror=${MESON_ENABLE_WERROR} \
          --${MESON_BUILD_CONFIG}-file ${CONFIG_FILE} \
