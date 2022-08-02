@@ -1809,9 +1809,11 @@ ${MESON_EXTRA_PROPERTIES}
     tool-log ${MESON} \
          ${SOURCE_ROOT} \
          ${STAGE_ROOT} \
-         -Dbackend=ninja \
+         -Dbackend=${BACKEND} \
+         -Dbuildtype=${BUILD_TYPE} \
          -Dbindir=${MESON_BINDIR} \
          -Ddatadir=${MESON_DATADIR} \
+         -Ddebug=${DEBUG} \
          -Dincludedir=${MESON_INCLUDEDIR} \
          -Dinfodir=${MESON_INFODIR} \
          -Dlibdir=${MESON_LIBDIR} \
