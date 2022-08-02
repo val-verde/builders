@@ -1140,6 +1140,7 @@ function package-cmake-invocation-arguments-for-variant() {
     AS_COMPILER_ID=${AS_COMPILER_ID:-Clang}
     BUILD_TYPE=${BUILD_TYPE:-Release}
     BUILD_WITH_INSTALL_RPATH=${BUILD_WITH_INSTALL_RPATH:-TRUE}
+    CMAKE_MAKE_PROGRAM=${CMAKE_MAKE_PROGRAM:-${NINJA}}
     CMAKE_PREFIX_PATH_VAR=${ENV_PREFIX}PACKAGE_PREFIX
     CMAKE_PREFIX_PATH=${!CMAKE_PREFIX_PATH_VAR}
     CMAKE_SYSROOT_VAR=${ENV_PREFIX}SYSROOT
@@ -1282,7 +1283,7 @@ function package-cmake-invocation-arguments-for-variant() {
 -DCMAKE_LINKER=${!TOOL_LD} \
 -DCMAKE_LIPO=${!TOOL_LIPO} \
 -DCMAKE_MACOSX_RPATH=TRUE \
--DCMAKE_MAKE_PROGRAM=${NINJA} \
+-DCMAKE_MAKE_PROGRAM=${CMAKE_MAKE_PROGRAM} \
 -DCMAKE_MODULE_LINKER_FLAGS=\""${!TOOL_CCLDFLAGS}"\" \
 -DCMAKE_MODULE_LINKER_FLAGS_DEBUG= \
 -DCMAKE_MODULE_LINKER_FLAGS_MINSIZEREL= \
@@ -1610,6 +1611,7 @@ function package-meson-build-invocation() {
     BACKEND=${BACKEND:-ninja}
     BUILD_TYPE=${BUILD_TYPE:-custom}
     CONFIG_FILE=${STAGE_ROOT}/builder-meson.config
+    CMAKE_TOOLCHAIN_FILE=${STAGE_ROOT}/builder-meson-toolchain.cmake
     MESON_ENABLE_WERROR=${MESON_ENABLE_WERROR:-false}
     MESON_OPTIMIZATION_LEVEL=${MESON_OPTIMIZATION_LEVEL:-${OPTIMIZATION_LEVEL}}
     MESON_WARNING_LEVEL=${MESON_WARNING_LEVEL:-0}
@@ -1701,7 +1703,9 @@ function package-meson-build-invocation() {
         unset PKG_CONFIG_LIBDIR PKG_CONFIG_PATH
     fi
 
-    ${RM} -f ${CONFIG_FILE}
+    ${RM} -f \
+          ${CMAKE_TOOLCHAIN_FILE} \
+          ${CONFIG_FILE}
 
         ${ECHO} "\
 [binaries]
@@ -1713,6 +1717,17 @@ strings='${STRINGS}'
 windres='${WINDRES}'
 ${MESON_EXTRA_BINARIES}
     " >> ${CONFIG_FILE}
+
+    CMAKE_VARIABLES=`DELIMITER=$'\n' DISABLE_FILTER=TRUE package-cmake-invocation-arguments-for-variant HOST`
+    OIFS=${IFS}
+    IFS=$'\n'
+
+    for CMAKE_VARIABLE in ${CMAKE_VARIABLES}; do
+        ENTRY=`${ECHO} ${CMAKE_VARIABLE} | ${TR} '=' ' ' | ${SED} "s/^-D//g"`
+        ${ECHO} "set(${ENTRY})" >> ${CMAKE_TOOLCHAIN_FILE}
+    done
+
+    IFS=${OIFS}
 
     if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
         MESON_EXTRA_PROPERTIES="
@@ -1785,6 +1800,8 @@ system='${HOST_SYSTEM}'
 windres='${WINDRES}'
 
 [properties]
+cmake_defaults=false
+cmake_toolchain_file='${STAGE_ROOT}/builder-meson-toolchain.cmake'
 ${MESON_EXTRA_PROPERTIES}
 " >> ${CONFIG_FILE}
 
