@@ -7,4 +7,6 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for cmake/install
 package-cmake-install-archive \
-    -DPYTHON_EXECUTABLE=${PYTHON}
+    -DPYTHON_EXECUTABLE=${PYTHON} \
+    -DZ3_INCLUDE_GIT_DESCRIBE=FALSE \
+    -DZ3_INCLUDE_GIT_HASH=FALSE
