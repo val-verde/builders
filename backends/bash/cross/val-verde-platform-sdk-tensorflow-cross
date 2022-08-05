@@ -11,6 +11,8 @@ function package-install-completion-callback() {
     ${RM} -rf ${INSTALL_PREFIX}/bin/easy_install*
 }
 
+export-compiler-environment-for-build-tools
+
 ${MKDIR} -p ${STAGE_ROOT}/tensorflow/python/platform
 ${PYTHON} ${SOURCE_ROOT}/tensorflow/tools/build_info/gen_build_info.py --raw_generate ${STAGE_ROOT}/tensorflow/python/platform/build_info.py \
                                                                        --key_value

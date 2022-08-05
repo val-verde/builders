@@ -82,6 +82,8 @@ else
     GL_HEADER_PATH=${PACKAGE_PREFIX}/include
 fi
 
+export-compiler-environment-for-build-tools
+
 TOOL_LOG=builder-bootstrap \
 tool-log ${PYTHON} ${STAGE_ROOT}/libs/bluegl/bluegl-gen.py -I ${GL_HEADER_PATH} \
                                                            --api ${API} \

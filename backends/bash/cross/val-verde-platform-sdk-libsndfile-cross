@@ -6,6 +6,7 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for cmake/install
+export-compiler-environment-for-build-tools
 package-cmake-install-archive \
     -DALSA_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DALSA_LIBRARY=`package-get-path asound SHARED HOST` \

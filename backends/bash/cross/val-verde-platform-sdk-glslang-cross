@@ -12,6 +12,7 @@ if [ "${HOST_OS}" = "android" ]; then
     CMAKE_ANDROID_DEFINE_CMD="-DANDROID=1"
 fi
 
+export-compiler-environment-for-build-tools
 package-cmake-install-archive \
     -DBUILD_SHARED_LIBS=TRUE \
     -DBUILD_TESTING=FALSE \

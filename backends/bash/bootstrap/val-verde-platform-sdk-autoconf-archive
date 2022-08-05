@@ -14,6 +14,8 @@ function tool-install-invocation() {
     tool-install
 }
 
+export-compiler-environment-for-build-tools
+
 BOOTSTRAP_FILE=./bootstrap.sh \
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 DISABLE_TOOL_BUILD=TRUE \

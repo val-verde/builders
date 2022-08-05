@@ -22,6 +22,8 @@ if [ "${HOST_OS}" = "gnu" ]; then
     CMAKE_XCB_CMD="-DBUILD_WSI_XCB_SUPPORT=TRUE"
 fi
 
+export-compiler-environment-for-build-tools
+
 CMAKE_CONFIGURE_ROOT=${STAGE_ROOT} \
 DISABLE_TOOL_BUILD=TRUE \
 TOOL_INSTALL_INVOCATION=tool-install-invocation \

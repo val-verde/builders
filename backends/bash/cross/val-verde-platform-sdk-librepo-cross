@@ -12,6 +12,7 @@ else
     PYTHON_INCLUDE_DIR=${PACKAGE_PREFIX}/include/python${PYTHON_VERSION}
 fi
 
+export-compiler-environment-for-build-tools
 export-compiler-environment-for-python
 package-cmake-install-archive \
     -D_GPGMECONFIG_EXECUTABLE=`package-get-path gpgme-config SCRIPT HOST` \

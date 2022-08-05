@@ -151,7 +151,7 @@ function export-compiler-environment-for-build-tools() {
     export-build-util NINJA ninja
     export-build-util NODE node
     export-build-util PKG_CONFIG pkg-config
-    export-build-util PYTHON python
+    export-build-util PYTHON python3
 
     export \
         PKG_CONFIG_LIBDIR=${PKG_CONFIG_LIBDIR:-${PACKAGE_PREFIX}/lib/pkgconfig:${PACKAGE_PREFIX}/share/pkgconfig} \

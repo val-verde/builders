@@ -108,6 +108,8 @@ if [ "${HOST_PROCESSOR}" = "armv7a" ] ||
     SIZEOF_VOID_P=4
 fi
 
+export-compiler-environment-for-build-tools
+
 CMAKE_INSTALL_PLATFORM_PREFIX=${BUILD_PACKAGE_PLATFORM_SYSROOT} \
 COMMON_CFLAGS="\
     -nostdlib \

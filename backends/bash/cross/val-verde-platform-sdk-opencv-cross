@@ -36,6 +36,7 @@ else
     PYTHON3_INCLUDE_DIR=${PACKAGE_PREFIX}/include/python${PYTHON_VERSION}
 fi
 
+export-compiler-environment-for-build-tools
 export-compiler-environment-for-python
 
 CXX_STANDARD=17 \
