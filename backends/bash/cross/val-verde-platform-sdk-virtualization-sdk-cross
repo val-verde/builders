@@ -19,6 +19,9 @@ if [ "${HOST_OS}" = "android" ] ||
     package-invoke-builder virglrenderer-cross 0
 fi
 
+# qemu-dtc build
+package-invoke-builder qemu-dtc-cross 1
+
 # qemu build
 package-invoke-builder qemu-cross 7
 
