@@ -17,7 +17,8 @@ function package-install-completion-callback() {
         ${INSTALL_PREFIX}/LICENSE
 }
 
-if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
+   [ "${HOST_PROCESSOR}" = "armv7a" ]; then
     HAVE_CPU_NEON_SUPPORT=TRUE
 else
     HAVE_CPU_NEON_SUPPORT=FALSE
@@ -78,6 +79,7 @@ package-cmake-install-archive \
     -DBUILD_PROTOBUF=FALSE \
     -DBUILD_TESTS=FALSE \
     -DCCACHE_PROGRAM=`package-get-path ccache EXECUTABLE BUILD` \
+    -DHAVE_CPU_NEON_SUPPORT=${HAVE_CPU_NEON_SUPPORT} \
     -DJPEG_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DJPEG_LIBRARY_DEBUG=`package-get-path jpeg STATIC HOST` \
     -DJPEG_LIBRARY_RELEASE=`package-get-path jpeg STATIC HOST` \
