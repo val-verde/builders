@@ -116,6 +116,11 @@ unset \
     DISABLE_CXX_STDLIB \
     UNWINDLIB
 
+if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+    # gmp bootstrap build
+    package-invoke-builder gmp 6 bootstrap-only
+fi
+
 # cmake bootstrap build
 package-invoke-builder cmake 3 bootstrap-only
 export CMAKE=`BINDIR= package-get-path cmake EXECUTABLE BUILD`
