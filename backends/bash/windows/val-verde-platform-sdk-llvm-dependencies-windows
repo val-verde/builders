@@ -148,11 +148,12 @@ package-invoke-builder tcl-cross 8
 # windows sqlite build
 package-invoke-builder sqlite-cross 3
 
-# windows c-ares build
-package-invoke-builder c-ares-cross 1
-
 # windows openssl build
 package-invoke-builder openssl-cross 1
+
+# windows util-linux build
+ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
+package-invoke-builder util-linux-cross 2 bootstrap-only
 
 # windows krb5 build
 # package-invoke-builder krb5-cross 1
@@ -181,10 +182,6 @@ package-invoke-builder gpgme-cross 1
 # windows indent build
 package-invoke-builder indent-cross 2
 
-# windows util-linux build
-ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
-package-invoke-builder util-linux-cross 2 bootstrap-only
-
 # windows libarchive build
 package-invoke-builder libarchive-cross 3
 
@@ -208,6 +205,9 @@ package-invoke-builder libusb-cross 1
 
 # windows libuv build
 package-invoke-builder libuv-cross 1
+
+# windows c-ares build
+package-invoke-builder c-ares-cross 1
 
 # windows grep build
 package-invoke-builder grep-cross 3
@@ -272,10 +272,17 @@ package-invoke-builder protobuf-cross 3
 # windows python sdk build
 package-invoke-category-builder python-sdk-cross
 
+# windows itstool build
+package-invoke-builder itstool-cross 2
+
+# windows gtk-doc build
+package-invoke-builder gtk-doc-cross 1
+
 # windows libtasn1 build
 package-invoke-builder libtasn1-cross 4
 
 # windows p11-kit build
+ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
 DISABLE_SYSTEMD=TRUE \
 package-invoke-builder p11-kit-cross 0
 
@@ -308,12 +315,6 @@ package-invoke-category-builder graphics-server-cross
 
 # windows pulseaudio build
 package-invoke-builder pulseaudio-cross 16
-
-# windows itstool build
-package-invoke-builder itstool-cross 2
-
-# windows gtk-doc build
-package-invoke-builder gtk-doc-cross 1
 
 # windows graphviz build
 package-invoke-builder graphviz-cross 2

@@ -316,6 +316,12 @@ package-invoke-builder protobuf-cross 3
 # python sdk build
 package-invoke-category-builder python-sdk-cross
 
+# itstool build
+package-invoke-builder itstool-cross 2
+
+# gtk-doc build
+package-invoke-builder gtk-doc-cross 1
+
 # libtasn1 build
 package-invoke-builder libtasn1-cross 4
 
@@ -359,12 +365,6 @@ package-invoke-builder boost-cross 1
 
 # graphics server build
 package-invoke-category-builder graphics-server-cross
-
-# itstool build
-package-invoke-builder itstool-cross 2
-
-# gtk-doc build
-package-invoke-builder gtk-doc-cross 1
 
 # graphviz build
 package-invoke-builder graphviz-cross 2
