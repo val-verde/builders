@@ -6,8 +6,21 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for cmake/install
+if [ "${HOST_PROCESSOR}" = "armv7a" ] &&
+   [ "${HOST_OS}" = "mingw" ]; then
+    COMMON_LDFLAGS="\
+        -lmsvcrt \
+        ${COMMON_LDFLAGS} \
+    "
+fi
+
 export-compiler-environment-for-build-tools
 package-cmake-install-archive \
     -DPYTHON_EXECUTABLE=${PYTHON} \
+    -DZ3_BUILD_DOCUMENTATION=FALSE \
+    -DZ3_BUILD_PYTHON_BINDINGS=FALSE \
+    -DZ3_BUILD_TEST_EXECUTABLES=FALSE \
+    -DZ3_ENABLE_EXAMPLE_TARGETS=FALSE \
     -DZ3_INCLUDE_GIT_DESCRIBE=FALSE \
-    -DZ3_INCLUDE_GIT_HASH=FALSE
+    -DZ3_INCLUDE_GIT_HASH=FALSE \
+    -DZ3_USE_LIB_GMP=TRUE
