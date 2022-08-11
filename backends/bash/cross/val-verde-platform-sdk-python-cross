@@ -54,6 +54,7 @@ ENABLE_SHARED_OPTION="--enable-shared"
 HAVE_ALARM=yes
 HAVE_CLOCK_API=yes
 HAVE_DEV_PTMX=yes
+HAVE_LIBINTL=yes
 HAVE_SOCKLEN_T=yes
 
 if [ -n "${ENABLE_PIP}" ]; then
@@ -96,7 +97,9 @@ else
 posix -DPy_BUILD_CORE_BUILTIN -I$(srcdir)/Include/internal posixmodule.c # posix (UNIX) system calls
 ' > ${STAGE_ROOT}/Modules/Setup.local
 
-    if [ "${HOST_OS}" = "macos" ]; then
+    if [ "${HOST_OS}" = "gnu" ]; then
+        HAVE_LIBINTL=no
+    elif [ "${HOST_OS}" = "macos" ]; then
         function tool-install-invocation() {
             NUM_PROCESSORS=1 \
             tool-install
@@ -146,6 +149,7 @@ package-stage-configure-install-archive \
     ac_cv_func_clock_gettime=${HAVE_CLOCK_API} \
     ac_cv_func_clock_getres=${HAVE_CLOCK_API} \
     ac_cv_func_clock_settime=${HAVE_CLOCK_API} \
+    ac_cv_lib_intl_textdomain=${HAVE_LIBINTL} \
     ac_cv_type_socklen_t=${HAVE_SOCKLEN_T} \
     --with-ensurepip=${ENSURE_PIP} \
     --with-openssl=${PACKAGE_PREFIX} \
