@@ -6,6 +6,7 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 CONFIGURE_FILE_DIR=unix
+HAVE_SEH=yes
 TCL_SYSTEM=Linux
 
 if [ "${HOST_OS}" = "macos" ]; then
@@ -16,6 +17,15 @@ elif [ "${HOST_OS}" = "mingw" ]; then
         ${COMMON_CFLAGS} \
     "
     CONFIGURE_FILE_DIR=win
+
+    if [ "${HOST_PROCESSOR}" = "armv7a" ] ||
+       [ "${HOST_PROCESSOR}" = "i386" ] ||
+       [ "${HOST_PROCESSOR}" = "i486" ] ||
+       [ "${HOST_PROCESSOR}" = "i586" ] ||
+       [ "${HOST_PROCESSOR}" = "i686" ] ||
+       [ "${HOST_PROCESSOR}" = "i786" ]; then
+       HAVE_SEH=no
+    fi
 fi
 
 # Invoke one-shot template for stage/configure/install
@@ -29,5 +39,5 @@ INSTALL_TARGET="INSTALL_ROOT=${INSTALL_ROOT} install" \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-stage-configure-install-archive \
     ac_cv_func_memmove=yes \
-    tcl_cv_seh=yes \
+    tcl_cv_seh=${HAVE_SEH} \
     tcl_cv_sys_version=${TCL_SYSTEM}
