@@ -880,9 +880,9 @@ function generate-compiler-tools-variant() {
     create-host-tool "${!TOOL_AS}" ${ENV_PREFIX}ASFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-as-clang
     create-host-tool "${!TOOL_CC}" ${ENV_PREFIX}CFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang
     create-host-tool "${!TOOL_CCLD}" ${ENV_PREFIX}CCLDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang
-    create-host-tool "${!TOOL_CPP}" ${ENV_PREFIX}CPPFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang-cpp
+    create-host-tool "${!TOOL_CPP}" ${ENV_PREFIX}CPPFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-cpp-clang
     create-host-tool "${!TOOL_CXX}" ${ENV_PREFIX}CXXFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang++
-    create-host-tool "${!TOOL_CXXCPP}" ${ENV_PREFIX}CXXCPPFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang-cpp++
+    create-host-tool "${!TOOL_CXXCPP}" ${ENV_PREFIX}CXXCPPFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-cpp-clang++
     create-host-tool "${!TOOL_CXXLD}" ${ENV_PREFIX}CCLDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang++
     create-host-tool "${!TOOL_LD}" ${ENV_PREFIX}LDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld
     create-host-tool "${!TOOL_RC}" ${ENV_PREFIX}RCFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-rc
@@ -894,7 +894,7 @@ function generate-compiler-tools-variant() {
     export ${TOOL_CFLAGS}="${OPTIMIZATION_CFLAG}"
     export ${TOOL_CCLD}=${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang
     export ${TOOL_CCLDFLAGS}="${!PACKAGE_PREFIX_LIBDIR_CFLAG_VAR} ${OPTIMIZATION_LDFLAG} ${STRIP_CFLAG}"
-    export ${TOOL_CPP}=${!TOOL_CC}-cpp
+    export ${TOOL_CPP}=${GENERATED_BINDIR}/${TOOL_PREFIX}-cpp-clang
     unset ${TOOL_CPPFLAGS}
     export ${TOOL_CXX}=${!TOOL_CC}++
     export ${TOOL_CXXCPP}=${!TOOL_CPP}++
