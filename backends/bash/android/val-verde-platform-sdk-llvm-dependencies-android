@@ -135,6 +135,9 @@ package-invoke-builder mpc-cross 1
 # android isl build
 package-invoke-builder isl-cross 0
 
+# android libaio build
+package-invoke-builder libaio-cross 0
+
 # android libev build
 package-invoke-builder libev-cross 4
 
