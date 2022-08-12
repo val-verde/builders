@@ -22,7 +22,7 @@ package-invoke-category-builder swift-sdk-cross
 package-invoke-builder go-cross 1
 
 # windows ruby build
-# package-invoke-builder ruby-cross 3
+package-invoke-builder ruby-cross 3
 
 # windows graphics sdk build
 package-invoke-category-builder graphics-sdk-cross
