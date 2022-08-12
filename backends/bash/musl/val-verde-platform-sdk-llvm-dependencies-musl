@@ -429,7 +429,7 @@ package-invoke-builder util-linux-cross 2
 package-invoke-builder apt-cross 2
 
 # lvm2 build
-# package-invoke-builder lvm2 2
+# package-invoke-builder lvm2-cross 2
 
 # alien package tool build
 package-invoke-builder alien-package-tool-cross 8
