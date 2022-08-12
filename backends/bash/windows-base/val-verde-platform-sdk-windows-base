@@ -17,10 +17,10 @@ package-invoke-builder mingw-w64-headers 6
 package-invoke-builder mingw-w64-crt 6
 
 # compiler-rt build (for host)
-package-invoke-builder compiler-rt-cross 13
+package-invoke-builder compiler-rt-cross ${LLVM_VERSION}
 
 # libcxx build
-package-invoke-builder libcxx-bootstrap 13
+package-invoke-builder libcxx-bootstrap ${LLVM_VERSION}
 
 # mingw-w64-winpthreads build
 package-invoke-builder mingw-w64-winpthreads 6

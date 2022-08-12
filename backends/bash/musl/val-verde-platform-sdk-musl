@@ -12,7 +12,7 @@ package-invoke-builder kernel-headers-cross 5
 package-invoke-builder musl-headers 1
 
 # compiler-rt build
-package-invoke-builder compiler-rt-cross 13
+package-invoke-builder compiler-rt-cross ${LLVM_VERSION}
 
 # musl libc build
 DISABLE_FORTIFY_SOURCE_LEVEL=TRUE \
@@ -20,7 +20,7 @@ package-invoke-builder musl-libc 1
 
 # libcxx build
 ENABLE_MUSL_LIBC=TRUE \
-package-invoke-builder libcxx-bootstrap 13
+package-invoke-builder libcxx-bootstrap ${LLVM_VERSION}
 
 # llvm dependencies
 package-invoke-category-builder llvm-dependencies-musl

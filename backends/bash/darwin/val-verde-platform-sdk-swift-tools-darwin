@@ -7,16 +7,16 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # llvm build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
-package-invoke-builder llvm-project-darwin 13 no-install
+package-invoke-builder llvm-project-darwin ${LLVM_VERSION} no-install
 
 # remove libcxx, libcxxabi and libunwind as they are superceded by llvm-project.
-PACKAGES_TO_MANAGE=( 'libcxx-13' 'HOST' )
+PACKAGES_TO_MANAGE=( "libcxx-${LLVM_VERSION}" "HOST" )
 
 package-invoke-archive-action uninstall ${PACKAGES_TO_MANAGE[@]}
 
 # install llvm for host
-PACKAGES_TO_MANAGE=( 'llvm-project-13' 'HOST'
-                     'llvm-project-13-stage' 'HOST' )
+PACKAGES_TO_MANAGE=( "llvm-project-${LLVM_VERSION}" "HOST"
+                     "llvm-project-${LLVM_VERSION}-stage" "HOST" )
 
 package-invoke-archive-action install ${PACKAGES_TO_MANAGE[@]}
 
