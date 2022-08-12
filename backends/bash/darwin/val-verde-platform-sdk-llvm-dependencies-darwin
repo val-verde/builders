@@ -271,6 +271,9 @@ package-invoke-builder coreutils-cross 9
 # which build
 package-invoke-builder which-cross 2
 
+# ed build
+package-invoke-builder ed-cross 1
+
 # findutils build
 package-invoke-builder findutils-cross 4
 
