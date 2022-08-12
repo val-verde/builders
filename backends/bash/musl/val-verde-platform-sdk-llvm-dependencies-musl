@@ -271,6 +271,9 @@ package-invoke-builder jsoncpp-cross 1
 # tar build
 package-invoke-builder tar-cross 1
 
+# bc build
+package-invoke-builder bc-cross 1
+
 # coreutils build
 package-invoke-builder coreutils-cross 9
 

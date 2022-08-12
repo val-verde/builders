@@ -271,6 +271,9 @@ if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
     package-invoke-builder tar-cross 1
 fi
 
+# bc build
+package-invoke-builder bc-cross 1
+
 # android coreutils build
 package-invoke-builder coreutils-cross 9
 
