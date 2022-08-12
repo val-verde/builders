@@ -737,7 +737,7 @@ function export-compiler-environment-for-python() {
     PYTHON_PLATFORM=${HOST_KERNEL}
 
     if [ "${BUILD_OS}" = "macos" ]; then
-        PYTHON_BUILD_PACKAGE_PREFIX=${BUILD_PACKAGE_PLATFORM_SYSROOT}/System/Library/Frameworks/Python.framework/Versions/Current
+        PYTHON_BUILD_PACKAGE_PREFIX=${BUILD_PACKAGE_PLATFORM_SYSROOT}/System/Library/Frameworks/Python.framework/Versions/${PYTHON_VERSION}
     fi
 
     if [ "${HOST_OS}" = "android" ]; then
@@ -747,7 +747,7 @@ function export-compiler-environment-for-python() {
             -lpython${PYTHON_VERSION} \
             ${PYTHON_LIBS} \
         " | ${XARGS}`
-        PYTHON_PACKAGE_PREFIX=${PACKAGE_PLATFORM_SYSROOT}/System/Library/Frameworks/Python.framework/Versions/Current
+        PYTHON_PACKAGE_PREFIX=${PACKAGE_PLATFORM_SYSROOT}/System/Library/Frameworks/Python.framework/Versions/${PYTHON_VERSION}
         PYTHON_PLATFORM=${DARWIN_OS}
     elif [ "${HOST_OS}" = "mingw" ]; then
         PYTHON_HOST_KERNEL=unknown

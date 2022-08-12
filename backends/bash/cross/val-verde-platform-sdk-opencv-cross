@@ -32,7 +32,7 @@ if [ "${HOST_OS}" = "android" ]; then
 fi
 
 if [ "${HOST_OS}" = "macos" ]; then
-    PYTHON3_INCLUDE_DIR=${PACKAGE_PLATFORM_SYSROOT}/System/Library/Frameworks/Python.framework/Versions/Current/Headers
+    PYTHON3_INCLUDE_DIR=${PACKAGE_PLATFORM_SYSROOT}/System/Library/Frameworks/Python.framework/Versions/${PYTHON_VERSION}/Headers
 else
     PYTHON3_INCLUDE_DIR=${PACKAGE_PREFIX}/include/python${PYTHON_VERSION}
 fi

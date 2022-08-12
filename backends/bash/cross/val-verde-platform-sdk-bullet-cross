@@ -13,7 +13,7 @@ if [ "${HOST_OS}" = "mingw" ]; then
 fi
 
 if [ "${HOST_OS}" = "macos" ]; then
-    PYTHON_INCLUDE_DIR=${PACKAGE_PLATFORM_SYSROOT}/System/Library/Frameworks/Python.framework/Versions/Current/include/python${PYTHON_VERSION}
+    PYTHON_INCLUDE_DIR=${PACKAGE_PLATFORM_SYSROOT}/System/Library/Frameworks/Python.framework/Versions/${PYTHON_VERSION}/include/python${PYTHON_VERSION}
 else
     PYTHON_INCLUDE_DIR=${PACKAGE_PREFIX}/include/python${PYTHON_VERSION}
 fi
