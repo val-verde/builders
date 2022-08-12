@@ -591,6 +591,9 @@ if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
     unset JAVAC
 fi
 
+# jansi build
+package-invoke-builder jansi-cross 2
+
 # maven build
 package-invoke-builder maven-cross 3
 
