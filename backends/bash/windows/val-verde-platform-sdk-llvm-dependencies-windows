@@ -89,7 +89,8 @@ package-invoke-builder gzip-cross 1
 # windows xz build
 package-invoke-builder xz-cross 5
 
-# windows libxml2 build
+# windows libxml2 build (without python)
+ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
 DISABLE_PYTHON=TRUE \
 package-invoke-builder libxml2-cross 2 bootstrap-only
 

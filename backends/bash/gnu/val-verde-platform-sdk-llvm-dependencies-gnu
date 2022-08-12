@@ -138,8 +138,9 @@ unset GZIP
 package-invoke-builder xz-cross 5
 unset XZ
 
-# libxml2 build
+# libxml2 build (without python)
 ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
+DISABLE_PYTHON=TRUE \
 package-invoke-builder libxml2-cross 2 bootstrap-only
 
 # gettext build
