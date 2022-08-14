@@ -6,6 +6,13 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for stage/configure/install
+ENABLE_ASSEMBLER=yes
+
+if [ "${HOST_PROCESSOR}" = "armv7a" ] &&
+   [ "${HOST_OS}" = "mingw" ]; then
+    ENABLE_ASSEMBLER=no
+fi
+
 BUILD_COMMON_CFLAGS="\
     -L${BUILD_PACKAGE_PREFIX}/lib \
     ${BUILD_COMMON_CFLAGS} \
@@ -13,5 +20,6 @@ BUILD_COMMON_CFLAGS="\
 package-stage-configure-install-archive \
     --disable-documentation \
     --disable-static \
+    --enable-assembler=${ENABLE_ASSEMBLER} \
     --enable-shared \
     --libdir=${PACKAGE_PREFIX}/lib

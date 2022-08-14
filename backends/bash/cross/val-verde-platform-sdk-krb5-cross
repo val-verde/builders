@@ -26,4 +26,5 @@ package-stage-configure-install-archive \
     krb5_cv_attr_constructor_destructor=yes,yes \
     --disable-static \
     --enable-shared \
+    --with-system-et \
     --with-tcl=${PACKAGE_PREFIX}

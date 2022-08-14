@@ -6,6 +6,20 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for meson/install
+DISABLE_STRIP=TRUE \
 package-meson-install-archive \
+    -Dcrypto=gnutls \
+    -Ddocs=false \
+    -Dintrospection=false \
+    -Dld_gc=false \
     -Dlibaudit=no \
-    -Dselinux=false
+    -Dlibpsl=false \
+    -Dmodem_manager=false \
+    -Dmore_asserts=0 \
+    -Dmore_logging=false \
+    -Dnmtui=false \
+    -Dovs=false \
+    -Dppp=false \
+    -Dqt=false \
+    -Dselinux=false \
+    -Dtests=no

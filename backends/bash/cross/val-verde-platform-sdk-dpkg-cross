@@ -46,4 +46,6 @@ BOOTSTRAP_FILE=./autogen \
 package-bootstrap-configure-install-archive \
     cross_compiling=${CROSS_COMPILING} \
     --disable-dselect \
+    --disable-shared \
+    --enable-static \
     --with-admindir=${ADMIN_DIR}

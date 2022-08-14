@@ -12,7 +12,7 @@ package-invoke-builder kernel-headers-cross 5
 package-invoke-builder musl-headers 1
 
 # compiler-rt build
-package-invoke-builder compiler-rt-cross 13
+package-invoke-builder compiler-rt-cross ${LLVM_VERSION}
 
 # musl libc build
 DISABLE_FORTIFY_SOURCE_LEVEL=TRUE \
@@ -20,7 +20,7 @@ package-invoke-builder musl-libc 1
 
 # libcxx build
 ENABLE_MUSL_LIBC=TRUE \
-package-invoke-builder libcxx-bootstrap 13
+package-invoke-builder libcxx-bootstrap ${LLVM_VERSION}
 
 # llvm dependencies
 package-invoke-category-builder llvm-dependencies-musl
@@ -48,7 +48,7 @@ if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
     if [ "${BUILD_PROCESSOR}" = "x86_64" ] ||
        [ "${HOST_PROCESSOR}" != "x86_64" ]; then
         # node + sdk build
-        package-invoke-builder node-cross 17
+        package-invoke-builder node-cross 18
         package-invoke-builder npm-yarn-cross 1
 
         # yautja server build
@@ -59,8 +59,15 @@ fi
 # wine-sdk build
 package-invoke-category-builder wine-sdk-cross
 
+# rust sdk build
+package-invoke-category-builder rust-sdk-cross
+
 # blockchain sdk build
 package-invoke-category-builder blockchain-sdk-cross
+
+# blender build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
+package-invoke-builder blender-cross 3
 
 # base system build
 package-invoke-category-builder base-system-cross

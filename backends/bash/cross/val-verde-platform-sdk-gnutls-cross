@@ -22,9 +22,12 @@ if [ "${HOST_OS}" != "mingw" ]; then
 fi
 
 ENABLE_OR_DISABLE_HARDWARE_ACCELERATION=enable
+HAS_STRVERSCMP=yes
 UNBOUND_ROOT_KEY=/var/lib/unbound/root.key
 
-if [ "${HOST_OS}" = "mingw" ]; then
+if [ "${HOST_OS}" = "macos" ]; then
+    HAS_STRVERSCMP=no
+elif [ "${HOST_OS}" = "mingw" ]; then
     if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
         ENABLE_OR_DISABLE_HARDWARE_ACCELERATION=disable
     fi
@@ -37,6 +40,7 @@ if [ "${HOST_OS}" = "mingw" ]; then
     }
 
     DISABLE_TOOL_BUILD=TRUE
+    HAS_STRVERSCMP=no
     MINGW_WINDOWS_MOUNT_DRIVE_LETTER=z
     TOOL_INSTALL_INVOCATION=tool-install-invocation
     UNBOUND_ROOT_KEY=${MINGW_WINDOWS_MOUNT_DRIVER_LETTER}:${UNBOUND_ROOT_KEY}
@@ -50,6 +54,7 @@ DISABLE_AUTOUPDATE=TRUE \
 package-bootstrap-configure-install-archive \
     ac_cv_func_malloc_0_nonnull=yes \
     ac_cv_func_realloc_0_nonnull=yes \
+    ac_cv_func_strverscmp=${HAS_STRVERSCMP} \
     --disable-doc \
     --disable-gtk-doc \
     --disable-gtk-doc-html \

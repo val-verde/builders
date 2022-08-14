@@ -11,10 +11,14 @@ if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
     MAKEINFO=`package-get-path true EXECUTABLE BUILD`
 fi
 
-if [ "${HOST_OS}" = "mingw" ]; then
-     HAS_FFSL=no
-else
-     HAS_FFSL=yes
+HAS_FFSL=yes
+HAS_STRVERSCMP=yes
+
+if [ "${HOST_OS}" = "macos" ]; then
+    HAS_STRVERSCMP=no
+elif [ "${HOST_OS}" = "mingw" ]; then
+    HAS_FFSL=no
+    HAS_STRVERSCMP=no
 fi
 
 BOOTSTRAP_ARGS="\
@@ -25,4 +29,5 @@ BOOTSTRAP_ARGS="\
 " \
 ENABLE_GNULIB_OVERRIDE=TRUE \
 package-bootstrap-configure-install-archive \
-    ac_cv_func_ffsl=${HAS_FFSL}
+    ac_cv_func_ffsl=${HAS_FFSL} \
+    ac_cv_func_strverscmp=${HAS_STRVERSCMP}

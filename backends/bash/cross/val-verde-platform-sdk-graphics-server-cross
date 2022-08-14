@@ -27,7 +27,7 @@ package-invoke-builder openexr-cross 3
 package-invoke-builder xorg-macros-cross 1
 
 # xorgproto build
-package-invoke-builder xorg-xorgproto-cross 2021
+package-invoke-builder xorg-xorgproto-cross 2022
 
 # xcb-proto build
 package-invoke-builder xcb-proto-cross 1
@@ -130,13 +130,13 @@ fi
 # xorg-libxmu build
 package-invoke-builder xorg-libxmu-cross 1
 
-# xorg-xauth build
-package-invoke-builder xorg-xauth-cross 1
-
 # xorg-xhost build
 package-invoke-builder xorg-xhost-cross 1
 
 if [ "${HOST_OS}" != "mingw" ]; then
+    # xorg-xauth build
+    package-invoke-builder xorg-xauth-cross 1
+
     # xorg-xinit build
     package-invoke-builder xorg-xinit-cross 1
 fi
@@ -171,10 +171,10 @@ fi
 package-invoke-builder shared-mime-info-cross 2
 
 # opencl headers build
-package-invoke-builder opencl-headers-cross 2020
+package-invoke-builder opencl-headers-cross 2022
 
 # opencl icd loader build
-package-invoke-builder opencl-icd-loader-cross 2020
+package-invoke-builder opencl-icd-loader-cross 2022
 
 if [ "${HOST_OS}" = "mingw" ]; then
     # egl headers build

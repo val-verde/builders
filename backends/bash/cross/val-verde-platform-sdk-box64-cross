@@ -16,6 +16,7 @@ if [ "${HOST_CPU}" = "apple-m1" ]; then
     ENABLE_M1=TRUE
 fi
 
+export-compiler-environment-for-build-tools
 package-cmake-install-archive \
     -DARM_DYNAREC=${ENABLE_ARM_DYNAREC} \
     -DM1=${ENABLE_M1} \

@@ -1,0 +1,57 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+export-compiler-environment
+
+BUILD_CFLAGS="${BUILD_CFLAGS} ${BUILD_CCLDFLAGS}" \
+BUILD_CXXFLAGS="${BUILD_CXXFLAGS} ${BUILD_CXXLDFLAGS}" \
+CFLAGS="${CFLAGS} ${CCLDFLAGS}" \
+CXXFLAGS="${CXXFLAGS} ${CXXLDFLAGS}" \
+generate-compiler-tools
+
+if [ "${HOST_OS}" = "android" ] ||
+   [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "macos" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    ENABLE_READLINE_ARG="--enable-readline"
+fi
+
+export-build-util CARGO cargo
+export-build-util RUSTC rustc
+export-build-util RUSTDOC rustdoc
+
+${TOUCH} ${STAGE_ROOT}/mozconfig
+
+cd ${STAGE_ROOT}
+HOST_CC=${BUILD_CC} \
+HOST_CXX=${BUILD_CXX} \
+HOST_LD=${BUILD_LD} \
+MOZCONFIG=${STAGE_ROOT}/mozconfig \
+RUSTC_OPT_LEVEL=${OPTIMIZATION_LEVEL} \
+TOOL_LOG=builder-invocation \
+tool-log ${PYTHON} ${SOURCE_ROOT}/configure.py \
+    --disable-debug \
+    --disable-rust-tests \
+    --disable-stdcxx-compat \
+    --disable-tests \
+    --enable-optimize \
+    --enable-system-cairo \
+    --enable-system-pixman \
+    --host=${BUILD_TRIPLE} \
+    --prefix=${PACKAGE_PREFIX} \
+    --target=${HOST_TRIPLE} \
+    --with-system-icu \
+    --with-system-libevent \
+    --with-system-png \
+    --with-system-zlib \
+    ${ENABLE_READLINE_ARG}
+
+make-build
+make-install
+
+# Build and install the package
+package-invoke-archive-install

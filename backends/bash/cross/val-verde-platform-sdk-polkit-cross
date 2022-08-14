@@ -6,5 +6,12 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for meson/install
+function package-install-completion-callback() {
+    ${RMDIR} ${INSTALL_PREFIX}/share/polkit-1/rules.d
+}
+
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-meson-install-archive \
-    -Dauthfw=shadow
+    -Dauthfw=shadow \
+    -Dintrospection=false \
+    -Djs_engine=mozjs

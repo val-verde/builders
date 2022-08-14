@@ -1,0 +1,41 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for cmake/install
+LLVM_SOURCE_ROOT=${SOURCE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}
+LLVM_NATIVE_STAGE_ROOT=${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}
+LLVM_STAGE_ROOT=${LLVM_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}}
+LLVM_CONFIG_EXECUTABLE=`BINDIR=${LLVM_STAGE_ROOT}/bin package-get-path llvm-config EXECUTABLE BUILD`
+LLVM_LLC=`BINDIR=${LLVM_NATIVE_STAGE_ROOT}/bin package-get-path llc EXECUTABLE BUILD`
+LLVM_LLI=`BINDIR=${LLVM_NATIVE_STAGE_ROOT}/bin package-get-path lli EXECUTABLE BUILD`
+
+if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+    LLVM_CONFIG_EXECUTABLE=`BINDIR=${LLVM_STAGE_ROOT}/bin package-get-path host-llvm-config EXECUTABLE BUILD`
+    export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${LLVM_STAGE_ROOT}/NATIVE/lib
+fi
+
+COMMON_CFLAGS="\
+    -I${LLVM_SOURCE_ROOT}/clang/include \
+    -I${LLVM_STAGE_ROOT}/tools/clang/include \
+    ${COMMON_CFLAGS} \
+" \
+package-cmake-install-archive \
+    -DCLANG=`package-get-path clang EXECUTABLE BUILD` \
+    -DCLANGXX=`package-get-path clang++ EXECUTABLE BUILD` \
+    -DENABLE_HWLOC=TRUE \
+    -DEXTRA_HOST_CLANG_FLAGS="--sysroot=${SYSROOT}" \
+    -DLLC_HOST_CPU=${HOST_CPU} \
+    -DLLVM_AS=`package-get-path llvm-as EXECUTABLE BUILD` \
+    -DLLVM_CONFIG=${LLVM_CONFIG_EXECUTABLE} \
+    -DLLVM_LINK=`package-get-path llvm-link EXECUTABLE BUILD` \
+    -DLLVM_LLC=${LLVM_LLC} \
+    -DLLVM_LLI=${LLVM_LLI} \
+    -DLLVM_OPT=`package-get-path opt EXECUTABLE BUILD` \
+    -DLLVM_SPIRV=`package-get-path llvm-spirv EXECUTABLE BUILD` \
+    -DOCL_ICD_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/CL \
+    -DRT_LIBRARY=`package-get-path rt SHARED HOST` \
+    -DXARGS_EXEC=${XARGS}

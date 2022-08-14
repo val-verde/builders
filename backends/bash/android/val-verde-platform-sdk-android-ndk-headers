@@ -36,5 +36,15 @@ ${RM} -f ${INSTALL_PREFIX}/include/iconv.h \
          ${INSTALL_PREFIX}/include/zlib.h \
          ${INSTALL_PREFIX}/include/sys/capability.h
 
+${PATCH} -p1 \
+         -i ${SOURCE_ROOT_BASE}/android-ndk-patches-1/android-ndk-dirent-versionsort.diff \
+         ${INSTALL_PREFIX}/include/dirent.h
+${PATCH} -p1 \
+         -i ${SOURCE_ROOT_BASE}/android-ndk-patches-1/android-ndk-string-strverscmp.diff \
+         ${INSTALL_PREFIX}/include/string.h
+${PATCH} -p1 \
+         -i ${SOURCE_ROOT_BASE}/android-ndk-patches-1/android-ndk-string-ctype.diff \
+         ${INSTALL_PREFIX}/include/string.h
+
 # Build and install the package
 package-invoke-archive-install

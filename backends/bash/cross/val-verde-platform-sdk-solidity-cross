@@ -13,10 +13,10 @@ fi
 CXX_STANDARD=17 \
 package-cmake-install-archive \
     -DBoost_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DBoost_FILESYSTEM_LIBRARY=`package-get-path boost_filesystem STATIC HOST` \
+    -DBoost_FILESYSTEM_LIBRARY=`package-get-path boost_filesystem SHARED HOST` \
     -DBoost_LIBRARY_DIR=${PACKAGE_PREFIX}/lib \
-    -DBoost_PROGRAM_OPTIONS_LIBRARY=`package-get-path boost_program_options STATIC HOST` \
-    -DBoost_UNIT_TEST_FRAMEWORK=`package-get-path boost_unit_test_framework STATIC HOST` \
+    -DBoost_PROGRAM_OPTIONS_LIBRARY=`package-get-path boost_program_options SHARED HOST` \
+    -DBoost_UNIT_TEST_FRAMEWORK_LIBRARY=`package-get-path boost_unit_test_framework SHARED HOST` \
     -DCCACHE=`package-get-path ccache EXECUTABLE BUILD` \
     -DSTRICT_Z3_VERSION=FALSE \
     -DTESTS=FALSE \

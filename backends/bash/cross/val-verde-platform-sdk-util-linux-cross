@@ -30,32 +30,61 @@ else
 fi
 
 ENABLE_OR_DISABLE_ALL_PROGRAMS=enable
+ENABLE_OR_DISABLE_EJECT=enable
 ENABLE_OR_DISABLE_HARDLINK=enable
+ENABLE_OR_DISABLE_HWCLOCK=disable
+ENABLE_OR_DISABLE_HWCLOCK_CMOS=disable
 ENABLE_OR_DISABLE_IPCRM=enable
 ENABLE_OR_DISABLE_IPCS=enable
 ENABLE_OR_DISABLE_LIBBLKID=enable
+ENABLE_OR_DISABLE_LIBMOUNT=enable
 ENABLE_OR_DISABLE_LIBSMARTCOLS=enable
+ENABLE_OR_DISABLE_LIBUUID=enable
+ENABLE_OR_DISABLE_LOGGER=enable
+ENABLE_OR_DISABLE_LOGIN=disable
+ENABLE_OR_DISABLE_SU=disable
 
-if [ "${HOST_OS}" = "macos" ] ||
-   [ "${HOST_OS}" = "mingw" ]; then
+if [ "${HOST_OS}" = "android" ]; then
+    ENABLE_OR_DISABLE_EJECT=disable
+    ENABLE_OR_DISABLE_LOGGER=disable
+    ENABLE_OR_DISABLE_LOGIN=disable
+    ENABLE_OR_DISABLE_SU=disable
+elif [ "${HOST_OS}" = "gnu" ]; then
+    if [ "${HOST_PROCESSOR}" = "i386" ] ||
+       [ "${HOST_PROCESSOR}" = "i486" ] ||
+       [ "${HOST_PROCESSOR}" = "i586" ] ||
+       [ "${HOST_PROCESSOR}" = "i686" ] ||
+       [ "${HOST_PROCESSOR}" = "i786" ] ||
+       [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+        ENABLE_OR_DISABLE_HWCLOCK=enable
+        ENABLE_OR_DISABLE_HWCLOCK_CMOS=enable
+    fi
+elif [ "${HOST_OS}" = "macos" ]; then
     COMMON_CFLAGS="\
         -lintl \
         ${COMMON_CFLAGS} \
     "
+    ENABLE_OR_DISABLE_EJECT=disable
     ENABLE_OR_DISABLE_HARDLINK=disable
     ENABLE_OR_DISABLE_IPCRM=disable
     ENABLE_OR_DISABLE_IPCS=disable
     ENABLE_OR_DISABLE_LIBMOUNT=disable
     ENABLE_OR_DISABLE_LIBUUID=disable
-
-    if [ "${HOST_OS}" = "mingw" ]; then
-        ENABLE_OR_DISABLE_ALL_PROGRAMS=disable
-        ENABLE_OR_DISABLE_LIBBLKID=disable
-        ENABLE_OR_DISABLE_LIBSMARTCOLS=disable
-    fi
-else
-    ENABLE_OR_DISABLE_LIBMOUNT=enable
-    ENABLE_OR_DISABLE_LIBUUID=enable
+elif [ "${HOST_OS}" = "mingw" ]; then
+    COMMON_CFLAGS="\
+        -lintl \
+        ${COMMON_CFLAGS} \
+    "
+    ENABLE_OR_DISABLE_ALL_PROGRAMS=disable
+    ENABLE_OR_DISABLE_EJECT=disable
+    ENABLE_OR_DISABLE_HARDLINK=disable
+    ENABLE_OR_DISABLE_IPCRM=disable
+    ENABLE_OR_DISABLE_IPCS=disable
+    ENABLE_OR_DISABLE_LIBMOUNT=disable
+    ENABLE_OR_DISABLE_LIBBLKID=disable
+    ENABLE_OR_DISABLE_LIBUUID=disable
+    ENABLE_OR_DISABLE_LIBSMARTCOLS=disable
+    ENABLE_OR_DISABLE_LOGGER=disable
 fi
 
 BOOTSTRAP_FILE=autogen.sh \
@@ -71,21 +100,29 @@ package-bootstrap-configure-install-archive \
     ac_cv_func_setns=yes \
     ac_cv_func_unshare=yes \
     --disable-bash-completion \
+    --disable-chfn-chsh \
     --disable-newgrp \
     --disable-nologin \
     --disable-kill \
     --disable-static \
     --disable-vipw \
+    --enable-hwclock \
     --enable-shared \
     --with-libintl-prefix=${PACKAGE_PREFIX} \
     --with-ncursesw \
     --${ENABLE_OR_DISABLE_ALL_PROGRAMS}-all-programs \
+    --${ENABLE_OR_DISABLE_EJECT}-eject \
     --${ENABLE_OR_DISABLE_HARDLINK}-hardlink \
+    --${ENABLE_OR_DISABLE_HWCLOCK}-hwclock \
+    --${ENABLE_OR_DISABLE_HWCLOCK_CMOS}-hwclock-cmos \
     --${ENABLE_OR_DISABLE_IPCRM}-ipcrm \
     --${ENABLE_OR_DISABLE_IPCS}-ipcs \
     --${ENABLE_OR_DISABLE_LIBBLKID}-libblkid \
     --${ENABLE_OR_DISABLE_LIBMOUNT}-libmount \
     --${ENABLE_OR_DISABLE_LIBSMARTCOLS}-libsmartcols \
     --${ENABLE_OR_DISABLE_LIBUUID}-libuuid \
+    --${ENABLE_OR_DISABLE_LOGGER}-logger \
+    --${ENABLE_OR_DISABLE_LOGIN}-login \
+    --${ENABLE_OR_DISABLE_SU}-su \
     --${WITH_OR_WITHOUT_PYTHON}-python \
     --${WITH_OR_WITHOUT_SYSTEMD}-systemd

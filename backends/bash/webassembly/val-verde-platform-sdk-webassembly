@@ -4,57 +4,6 @@ set -e
 
 # Source package build helper functions
 export PACKAGE_USR_PREFIX=.
-export \
-    APT=/usr/bin/apt \
-    AUTOGEN=/usr/bin/autogen \
-    AUTORECONF=/usr/bin/autoreconf \
-    AUTOUPDATE=/usr/bin/autoupdate \
-    BASENAME=/usr/bin/basename \
-    BASH=/usr/bin/bash \
-    BISON=/usr/bin/bison \
-    CHMOD=/usr/bin/chmod \
-    CP=/usr/bin/cp \
-    CURL=/usr/bin/curl \
-    CUT=/usr/bin/cut \
-    DNF=/usr/bin/dnf \
-    DPKG=/usr/bin/dpkg \
-    ECHO=/usr/bin/echo \
-    ENV=/usr/bin/env \
-    FIND=/usr/bin/find \
-    GAWK=/usr/bin/gawk \
-    GETTEXT=/usr/bin/gettext \
-    GIT=/usr/bin/git \
-    GPERF=/usr/bin/gperf \
-    GREP=/usr/bin/grep \
-    HELP2MAN=/usr/bin/true \
-    INSTALL=/usr/bin/install \
-    LESS=/usr/bin/less \
-    LN=/usr/bin/ln \
-    LS=/usr/bin/ls \
-    M4=/usr/bin/m4 \
-    MAKE=/usr/bin/make \
-    MAKEINFO=/usr/bin/true \
-    MESON=/usr/bin/meson \
-    MKDIR=/usr/bin/mkdir \
-    MV=/usr/bin/mv \
-    NINJA=/usr/bin/ninja \
-    PERL=/usr/bin/perl \
-    PYTHON=/usr/bin/python3 \
-    READLINK=/usr/bin/readlink \
-    REALPATH=/usr/bin/realpath \
-    RM="/usr/bin/rm -f" \
-    RMDIR=/usr/bin/rmdir \
-    RPM=/usr/bin/rpm \
-    RSYNC=/usr/bin/rsync \
-    SED=/usr/bin/sed \
-    SSH=/usr/bin/ssh \
-    TAR=/usr/bin/tar \
-    TEE=/usr/bin/tee \
-    TR=/usr/bin/tr \
-    WGET=/usr/bin/wget \
-    WHICH=/usr/bin/which \
-    XARGS=/usr/bin/xargs \
-    XZ=/usr/bin/xz
 
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
@@ -62,7 +11,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 package-invoke-builder wasi-libc 0
 
 # webassembly compiler-rt (bootstrap)
-package-invoke-builder compiler-rt-cross 13
+package-invoke-builder compiler-rt-cross ${LLVM_VERSION}
 
 # webassembly libcxx
-package-invoke-builder libcxx-bootstrap 13
+package-invoke-builder libcxx-bootstrap ${LLVM_VERSION}

@@ -6,8 +6,12 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for cmake/install
+export-compiler-environment-for-build-tools
 CXX_STANDARD=14 \
 package-cmake-install-archive \
+    -Dopencv_core_lib=`package-get-path opencv_core SHARED HOST` \
+    -Dopencv_imgproc_lib=`package-get-path opencv_imgproc SHARED HOST` \
+    -Dopencv_videoio_lib=`package-get-path opencv_videoio SHARED HOST` \
     -Dpybind11_ROOT=${PACKAGE_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/pybind11 \
     -DBoost_INCLUDE_DIRS=${PACKAGE_PREFIX}/include \
     -DBoost_LIBRARY_DIRS=${PACKAGE_PREFIX}/lib \

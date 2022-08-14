@@ -16,7 +16,6 @@ export-compiler-environment
 generate-compiler-tools
 
 ENABLE_OR_DISABLE_COCOA=disable
-ENABLE_OR_DISABLE_GNUTLS=enable
 ENABLE_OR_DISABLE_HAX=disable
 ENABLE_OR_DISABLE_HVF=disable
 ENABLE_OR_DISABLE_KVM=enable
@@ -24,22 +23,30 @@ ENABLE_OR_DISABLE_LIBUDEV=disable
 ENABLE_OR_DISABLE_OPENGL=enable
 ENABLE_OR_DISABLE_SDL=enable
 ENABLE_OR_DISABLE_SPICE=enable
+ENABLE_OR_DISABLE_STRIP=enable
 ENABLE_OR_DISABLE_VIRGLRENDERER=enable
 TARGET_LIST=`${ECHO} "\
     arm-softmmu \
     i386-softmmu \
+    mips-softmmu \
+    mipsel-softmmu \
     riscv32-softmmu \
 " | ${XARGS}`
 LINUX_USER_TARGETS=`${ECHO} "\
     arm-linux-user \
     armeb-linux-user \
+    mips-linux-user \
+    mipsel-linux-user \
     i386-linux-user \
 " | ${XARGS}`
 
 if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
+   [ "${HOST_PROCESSOR}" = "mips64" ] ||
    [ "${HOST_PROCESSOR}" = "x86_64" ]; then
     TARGET_LIST=`${ECHO} "\
         aarch64-softmmu \
+        mips64-softmmu \
+        mips64el-softmmu \
         riscv64-softmmu \
         x86_64-softmmu \
         ${TARGET_LIST} \
@@ -47,6 +54,8 @@ if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
     LINUX_USER_TARGETS=`${ECHO} "\
         aarch64-linux-user \
         aarch64_be-linux-user \
+        mips64-linux-user \
+        mips64el-linux-user \
         x86_64-linux-user \
         ${LINUX_USER_TARGETS} \
     " | ${XARGS}`
@@ -65,8 +74,10 @@ elif [ "${HOST_OS}" = "gnu" ]; then
         ${TARGET_LIST} \
     " | ${XARGS}`
 elif [ "${HOST_OS}" = "macos" ]; then
+    ENABLE_OR_DISABLE_COCOA=enable
     ENABLE_OR_DISABLE_HVF=enable
     ENABLE_OR_DISABLE_KVM=disable
+    ENABLE_OR_DISABLE_SDL=disable
 elif [ "${HOST_OS}" = "mingw" ]; then
     ENABLE_OR_DISABLE_KVM=disable
     ENABLE_OR_DISABLE_SPICE=disable
@@ -93,7 +104,9 @@ package-configure-invocation \
     --disable-werror \
     --enable-bzip2 \
     --enable-curses \
+    --enable-fdt=system \
     --enable-gio \
+    --enable-gnutls \
     --enable-libssh \
     --enable-libudev \
     --enable-nettle \
@@ -103,7 +116,6 @@ package-configure-invocation \
     --enable-zstd \
     --target-list="${TARGET_LIST}" \
     --${ENABLE_OR_DISABLE_COCOA}-cocoa \
-    --${ENABLE_OR_DISABLE_GNUTLS}-gnutls \
     --${ENABLE_OR_DISABLE_HAX}-hax \
     --${ENABLE_OR_DISABLE_HVF}-hvf \
     --${ENABLE_OR_DISABLE_KVM}-kvm \
@@ -112,6 +124,7 @@ package-configure-invocation \
     --${ENABLE_OR_DISABLE_SDL}-sdl \
     --${ENABLE_OR_DISABLE_SDL}-sdl-image \
     --${ENABLE_OR_DISABLE_SPICE}-spice \
+    --${ENABLE_OR_DISABLE_STRIP}-strip \
     --${ENABLE_OR_DISABLE_VIRGLRENDERER}-virglrenderer
 
 TOOL=${NINJA} \

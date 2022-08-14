@@ -14,10 +14,7 @@ LibArchive_LIBRARY=`package-get-path archive SHARED HOST`
 LibUV_LIBRARY=`package-get-path uv SHARED HOST`
 ZLIB_LIBRARY=`package-get-path z SHARED HOST`
 
-COMMON_LDFLAGS="\
-    -lunwind \
-    ${COMMON_LDFLAGS} \
-" \
+export-compiler-environment-for-build-tools
 package-cmake-install-archive \
     -DBUILD_TESTING=FALSE \
     -DCMake_HAVE_CXX_FILESYSTEM=TRUE \

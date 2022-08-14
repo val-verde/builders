@@ -20,9 +20,10 @@ ENV PACKAGE_ARCHIVE_CLASS=${PACKAGE_ARCHIVE_CLASS} \
     SOURCE_ROOT_BASE=${SOURCE_ROOT_BASE:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/sources} \
     STAGE_ROOT_BASE=${STAGE_ROOT_BASE:-${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/staging} \
     VAL_VERDE_GH_TEAM=${VAL_VERDE_GH_TEAM} \
-    ANDROID_NDK_VERSION=r23b \
+    ANDROID_NDK_VERSION=r25 \
     RELEASE_ARCHIVE_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/release-archives \
-    CUDA_VERSION=11.6.1 \
+    CUDA_VERSION=11.7.1 \
+    LLVM_VERSION=13 \
     MACOS_VERSION=12 \
     PYTHON_VERSION=3.10 \
     SOURCE_ARCHIVE_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk/source-archives \
@@ -105,6 +106,8 @@ COPY backends/bash/cross \
 # system base build
 FROM gnu_bootstrap_builder AS system_base_builder
 
+ENV ENABLE_32_BIT_BUILD=
+
 # windows system base package builders
 COPY backends/bash/windows-base \
      /sources/
@@ -118,17 +121,19 @@ RUN HOST_ARCH=westmere \
     HOST_PROCESSOR=x86_64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows-base
 
-# windows-i686 environment
-RUN HOST_ARCH=westmere \
-    HOST_CPU=westmere \
-    HOST_KERNEL=w64 \
-    HOST_OS=mingw \
-    HOST_OS_API_LEVEL=32 \
-    HOST_PROCESSOR=i686 \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows-base
+# windows-i786 environment
+RUN if [ -n "${ENABLE_32_BIT_BUILD}" ]; then \
+        HOST_ARCH=prescott \
+        HOST_CPU=westmere \
+        HOST_KERNEL=w64 \
+        HOST_OS=mingw \
+        HOST_OS_API_LEVEL=32 \
+        HOST_PROCESSOR=i786 \
+        bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows-base; \
+    fi
 
 # windows-aarch64 environment
-RUN HOST_ARCH=armv8-a \
+RUN HOST_ARCH=armv8.5-a \
     HOST_CPU=apple-m1 \
     HOST_KERNEL=w64 \
     HOST_OS=mingw \
@@ -137,13 +142,15 @@ RUN HOST_ARCH=armv8-a \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows-base
 
 # windows-armv7a environment
-RUN HOST_ARCH=armv7-a+fp \
-    HOST_CPU=apple-m1 \
-    HOST_KERNEL=w64 \
-    HOST_OS=mingw \
-    HOST_OS_API_LEVEL=32 \
-    HOST_PROCESSOR=armv7a \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows-base
+RUN if [ -n "${ENABLE_32_BIT_BUILD}" ]; then \
+        HOST_ARCH=armv7-a+fp \
+        HOST_CPU=apple-m1 \
+        HOST_KERNEL=w64 \
+        HOST_OS=mingw \
+        HOST_OS_API_LEVEL=32 \
+        HOST_PROCESSOR=armv7a \
+        bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows-base; \
+    fi
 
 # webassembly system base package builders
 COPY backends/bash/webassembly \
@@ -173,60 +180,68 @@ RUN HOST_ARCH=${BUILD_ARCH} \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu
 
 # gnu-aarch64 environment
-RUN HOST_ARCH=armv8-a \
+RUN HOST_ARCH=armv8.5-a \
     HOST_CPU=apple-m1 \
     HOST_KERNEL=${BUILD_KERNEL} \
     HOST_OS=${BUILD_OS} \
     HOST_PROCESSOR=aarch64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-binaries-builder
 
-RUN HOST_ARCH=armv8-a \
+RUN HOST_ARCH=armv8.5-a \
     HOST_CPU=apple-m1 \
     HOST_KERNEL=${BUILD_KERNEL} \
     HOST_OS=${BUILD_OS} \
     HOST_PROCESSOR=aarch64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap
 
-RUN HOST_ARCH=armv8-a \
+RUN HOST_ARCH=armv8.5-a \
     HOST_CPU=apple-m1 \
     HOST_KERNEL=${BUILD_KERNEL} \
     HOST_OS=${BUILD_OS} \
     HOST_PROCESSOR=aarch64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu
 
-# gnu-i686 environment
-RUN HOST_ARCH=westmere \
-    HOST_CPU=westmere \
-    HOST_KERNEL=linux \
-    HOST_OS=gnu \
-    HOST_OS_API_LEVEL=32 \
-    HOST_PROCESSOR=i686 \
-    ; # bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap
+# gnu-i786 environment
+RUN if [ -n "${ENABLE_32_BIT_BUILD}" ]; then \
+        HOST_ARCH=prescott \
+        HOST_CPU=westmere \
+        HOST_KERNEL=linux \
+        HOST_OS=gnu \
+        HOST_OS_API_LEVEL=32 \
+        HOST_PROCESSOR=i786 \
+        bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap; \
+    fi
 
-RUN HOST_ARCH=westmere \
-    HOST_CPU=westmere \
-    HOST_KERNEL=linux \
-    HOST_OS=gnu \
-    HOST_OS_API_LEVEL=32 \
-    HOST_PROCESSOR=i686 \
-    ; # bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu
+RUN if [ -n "${ENABLE_32_BIT_BUILD}" ]; then \
+        HOST_ARCH=prescott \
+        HOST_CPU=westmere \
+        HOST_KERNEL=linux \
+        HOST_OS=gnu \
+        HOST_OS_API_LEVEL=32 \
+        HOST_PROCESSOR=i786 \
+        bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu; \
+    fi
 
 # gnueabihf-armv7a environment
-RUN HOST_ARCH=armv7-a+fp \
-    HOST_CPU=apple-m1 \
-    HOST_KERNEL=linux \
-    HOST_OS=gnu \
-    HOST_OS_API_LEVEL=eabihf \
-    HOST_PROCESSOR=armv7a \
-    ; # bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap
+RUN if [ -n "${ENABLE_32_BIT_BUILD}" ]; then \
+        HOST_ARCH=armv7-a+fp \
+        HOST_CPU=apple-m1 \
+        HOST_KERNEL=linux \
+        HOST_OS=gnu \
+        HOST_OS_API_LEVEL=eabihf \
+        HOST_PROCESSOR=armv7a \
+        bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu-bootstrap; \
+    fi
 
-RUN HOST_ARCH=armv7-a+fp \
-    HOST_CPU=apple-m1 \
-    HOST_KERNEL=linux \
-    HOST_OS=gnu \
-    HOST_OS_API_LEVEL=eabihf \
-    HOST_PROCESSOR=armv7a \
-    ; # bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu
+RUN if [ -n "${ENABLE_32_BIT_BUILD}" ]; then \
+        HOST_ARCH=armv7-a+fp \
+        HOST_CPU=apple-m1 \
+        HOST_KERNEL=linux \
+        HOST_OS=gnu \
+        HOST_OS_API_LEVEL=eabihf \
+        HOST_PROCESSOR=armv7a \
+        bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu; \
+    fi
 
 # macos build
 FROM gnu_builder AS macos_builder
@@ -260,7 +275,7 @@ RUN DARWIN_OS=darwin \
 # macos-aarch64 environment
 RUN DARWIN_OS=darwin \
     DARWIN_OS_API_LEVEL=21 \
-    HOST_ARCH=armv8-a \
+    HOST_ARCH=armv8.5-a \
     HOST_CPU=apple-m1 \
     HOST_KERNEL=apple \
     HOST_OS=macos \
@@ -284,8 +299,8 @@ RUN HOST_ARCH=westmere \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-musl
 
 # musl-aarch64 environment
-RUN HOST_ARCH=armv8-a \
-    HOST_CPU=cortex-a57 \
+RUN HOST_ARCH=armv8.5-a \
+    HOST_CPU=apple-m1 \
     HOST_KERNEL=linux \
     HOST_OS=musl \
     HOST_PROCESSOR=aarch64 \
@@ -303,7 +318,7 @@ RUN HOST_ARCH=armv8-a \
     HOST_CPU=cortex-a57 \
     HOST_KERNEL=linux \
     HOST_OS=android \
-    HOST_OS_API_LEVEL=29 \
+    HOST_OS_API_LEVEL=30 \
     HOST_PROCESSOR=aarch64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android
 
@@ -312,7 +327,7 @@ RUN HOST_ARCH=westmere \
     HOST_CPU=westmere \
     HOST_KERNEL=linux \
     HOST_OS=android \
-    HOST_OS_API_LEVEL=29 \
+    HOST_OS_API_LEVEL=30 \
     HOST_PROCESSOR=x86_64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-android
 
@@ -332,8 +347,19 @@ RUN HOST_ARCH=westmere \
     HOST_PROCESSOR=x86_64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows
 
+# windows-i786 environment
+RUN if [ -n "${ENABLE_32_BIT_BUILD}" ]; then \
+        HOST_ARCH=prescott \
+        HOST_CPU=westmere \
+        HOST_KERNEL=w64 \
+        HOST_OS=mingw \
+        HOST_OS_API_LEVEL=32 \
+        HOST_PROCESSOR=i786 \
+        bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows; \
+    fi
+
 # windows-aarch64 environment
-RUN HOST_ARCH=armv8-a \
+RUN HOST_ARCH=armv8.5-a \
     HOST_CPU=apple-m1 \
     HOST_KERNEL=w64 \
     HOST_OS=mingw \
@@ -341,19 +367,16 @@ RUN HOST_ARCH=armv8-a \
     HOST_PROCESSOR=aarch64 \
     bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows
 
-FROM windows_builder AS rust_builder
-
-# rust package builders
-COPY backends/bash/rust \
-     /sources/
-
-# rust build
-RUN HOST_ARCH=${BUILD_ARCH} \
-    HOST_CPU=${BUILD_CPU} \
-    HOST_KERNEL=${BUILD_KERNEL} \
-    HOST_OS=${BUILD_OS} \
-    HOST_PROCESSOR=${BUILD_PROCESSOR} \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-rust-build
+# windows-armv7a environment
+RUN if [ -n "${ENABLE_32_BIT_BUILD}" ]; then \
+        HOST_ARCH=armv7-a+fp \
+        HOST_CPU=apple-m1 \
+        HOST_KERNEL=w64 \
+        HOST_OS=mingw \
+        HOST_OS_API_LEVEL=32 \
+        HOST_PROCESSOR=armv7a \
+        bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows; \
+    fi
 
 CMD []
 ENTRYPOINT ["tail", "-f", "/dev/null"]

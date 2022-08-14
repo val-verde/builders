@@ -1,0 +1,359 @@
+#!/bin/bash
+
+set -e
+
+function build-system-tool() {
+    BUILD_BINDIR=${BUILD_BINDIR:-/usr/bin}
+    ENV=${ENV:-${BUILD_BINDIR}/env}
+    BUILD_ARGS=${@}
+
+    ${ENV} -i ${BASH} -lc 'for i in `cat /etc/environment`; do export $i; done; '"${BUILD_ARGS}"''
+}
+
+# export-build-util <VAR> <name>
+function export-build-util() {
+    BUILD_UTIL_VAR=${1}
+
+    if [ -n "${!BUILD_UTIL_VAR}" ]; then
+        return
+    fi
+
+    BUILD_UTIL=${2}
+    export ${BUILD_UTIL_VAR}=${!BUILD_UTIL_VAR:-"`BINDIR=${BUILD_PACKAGE_PREFIX}/bin package-get-path ${BUILD_UTIL} EXECUTABLE BUILD`"}
+
+    if [ -z "${!BUILD_UTIL_VAR}" ]; then
+        export ${BUILD_UTIL_VAR}=${!BUILD_UTIL_VAR:-"`BINDIR=/usr/bin package-get-path ${BUILD_UTIL} EXECUTABLE BUILD`"}
+    fi
+
+    BUILD_UTIL_ARGS=${3}
+
+    if [ -n "${BUILD_UTIL_ARGS}" ]; then
+        export ${BUILD_UTIL_VAR}="${!BUILD_UTIL_VAR} ${BUILD_UTIL_ARGS}"
+    fi
+}
+
+function package-determine-os-distribution() {
+    if [[ "$(${LSB_RELEASE} --description)" = *Ubuntu* ]]; then
+        echo "ubuntu"
+    elif [[ "$(${LSB_RELEASE} --description)" = *Fedora* ]]; then
+        echo "fedora"
+    fi
+}
+
+function package-apt-install() {
+    package-apt-tool install -y "${@}"
+}
+
+function package-apt-remove() {
+    package-apt-tool remove -y "${@}"
+    package-apt-tool autoremove -y
+    package-apt-tool autoclean -y
+}
+
+function package-apt-tool() {
+    TOOL_LOG=${STAGE_ROOT}/builder-apt-${1} \
+    tool-log ${APT} ${@}
+}
+
+function package-archive-remove() {
+    if [ "$(package-determine-os-distribution)" = "ubuntu" ]; then
+        package-apt-remove "${@}"
+    elif [ "$(package-determine-os-distribution)" = "fedora" ]; then
+	    package-dnf-remove "${@}"
+    fi
+}
+
+function package-determine-compression-option() {
+    if [ "$(package-determine-os-distribution)" = "ubuntu" ]; then
+        ${ECHO} "-Zzstd --no-uniform-compression"
+    fi
+}
+
+function package-dnf-remove() {
+    for i in ${@}; do
+        PACKAGE_NAME=`${ECHO} ${i} | ${CUT} -d\* -f1`
+        package-dnf-tool remove -y `package-dnf-repoquery --installed --queryformat '%{name}' ${PACKAGE_NAME}`
+    done
+}
+
+function package-dnf-repoquery() {
+    DISABLE_TOOL_LOG=TRUE \
+    package-dnf-tool repoquery "${@}"
+}
+
+function package-dnf-tool() {
+    if [ -z "${DISABLE_DNF_RELEASE_VER}" ]; then
+        RELEASE_VER=`package-get-lsb-release-version`
+        RELEASE_VER_CMD="--releasever ${RELEASE_VER}"
+    else
+        unset \
+            RELEASE_VER \
+            RELEASE_VER_CMD
+    fi
+
+    PYTHON_TOOL=${DNF} \
+    TOOL_LOG=${STAGE_ROOT}/builder-dnf-${1} \
+    tool-log package-python-tool ${RELEASE_VER_CMD} \
+                                 "${@}"
+}
+
+function package-deb-build() {
+    COMPRESSION_OPTION=`package-determine-compression-option`
+    TOOL_LOG=${STAGE_ROOT}/builder-dpkg-deb-build \
+    tool-log ${DPKG_DEB} --build ${COMPRESSION_OPTION} "${@}"
+}
+
+function package-deb-install() {
+    package-dpkg-tool install "${@}"
+}
+
+function package-deb-remove() {
+    package-dpkg-tool remove --force-depends "${@}"
+}
+
+function package-dpkg-tool() {
+    TOOL_LOG=${STAGE_ROOT}/builder-dpkg-${1} \
+    tool-log ${DPKG} "--${@}"
+}
+
+# package-get-filename <name> <EXECUTABLE|SHARED|STATIC> <BUILD|HOST>
+function package-get-filename() {
+    NAME=${1}
+    TYPE=${2}
+    VARIANT=${3}
+
+    if [ -z "${VARIANT}" ] ||
+       [ "${VARIANT}" = "HOST" ]; then
+        ENV_PREFIX=
+    else
+        ENV_PREFIX="${VARIANT}_"
+    fi
+
+    case ${TYPE} in
+    EXECUTABLE)
+        EXECUTABLE_SUFFIX_VAR=${ENV_PREFIX}EXECUTABLE_SUFFIX
+        RESULT=${NAME}${!EXECUTABLE_SUFFIX_VAR}
+        ;;
+    SCRIPT)
+        RESULT=${NAME}
+        ;;
+    SHARED)
+        SHARED_LIBRARY_PREFIX_VAR=${ENV_PREFIX}SHARED_LIBRARY_PREFIX
+        SHARED_LIBRARY_SUFFIX_VAR=${ENV_PREFIX}SHARED_LIBRARY_SUFFIX
+        RESULT=${!SHARED_LIBRARY_PREFIX_VAR}${NAME}${!SHARED_LIBRARY_SUFFIX_VAR}
+        ;;
+    STATIC)
+        STATIC_LIBRARY_PREFIX_VAR=${ENV_PREFIX}STATIC_LIBRARY_PREFIX
+        STATIC_LIBRARY_SUFFIX_VAR=${ENV_PREFIX}STATIC_LIBRARY_SUFFIX
+        RESULT=${!STATIC_LIBRARY_PREFIX_VAR}${NAME}${!STATIC_LIBRARY_SUFFIX_VAR}
+        ;;
+    *)
+        echo "package-get-filename: Unknown type ${TYPE}."
+        exit 1
+    esac
+
+    echo ${RESULT}
+}
+
+function package-get-lsb-release-version() {
+    ${LSB_RELEASE} -rs
+}
+
+# package-get-path <name> <EXECUTABLE|SCRIPT|SHARED|STATIC> <BUILD|HOST>
+function package-get-path() {
+    NAME=${1}
+    TYPE=${2}
+    VARIANT=${3}
+
+    if [ -z "${VARIANT}" ] ||
+       [ "${VARIANT}" = "HOST" ]; then
+        ENV_PREFIX=
+    else
+        ENV_PREFIX="${VARIANT}_"
+    fi
+
+    if [ "${TYPE}" = "EXECUTABLE" ] ||
+       [ "${TYPE}" = "SCRIPT" ]; then
+        SUBDIR=bin
+    else
+        SUBDIR=lib
+    fi
+
+    PACKAGE_PREFIX_VAR=${ENV_PREFIX}PACKAGE_PREFIX
+
+    if [ "${TYPE}" = "EXECUTABLE" ] &&
+       [ "${VARIANT}" = "BUILD" ]; then
+        RESULT=${BINDIR:-${!PACKAGE_PREFIX_VAR}/${SUBDIR}}
+    else
+        RESULT=${!PACKAGE_PREFIX_VAR}/${SUBDIR}
+    fi
+
+    RESULT=${RESULT}/`package-get-filename ${NAME} ${TYPE} ${VARIANT}`
+
+    if [ -f "${RESULT}" ]; then
+        echo ${RESULT}
+    fi
+}
+
+function package-get-qualified-package-name() {
+    QUALIFIED_PACKAGE_NAME=${1}-${2}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}
+    PACKAGE_NAME=${PACKAGE_BASE_NAME}-${QUALIFIED_PACKAGE_NAME}
+}
+
+function package-get-qualified-source-package-name() {
+    PACKAGE_NAME=${PACKAGE_BASE_NAME}-${1}-sources
+}
+
+function package-get-source-package-version() {
+    QUERIED_SOURCE_PACKAGE_VERSIONS="\
+    $(jq -r --arg src "$1" \
+    '.[] | select(.sourcePackageName==$src) | .sourcePackageVersion' \
+    ${SOURCE_FILE})"
+
+    VERSION=(${QUERIED_SOURCE_PACKAGE_VERSIONS}) # extract first reported version
+    ${ECHO} ${VERSION}.0.0
+}
+
+function package-git-add() {
+    package-git-tool add "${@}"
+}
+
+function package-git-clone() {
+    DEPTH=${DEPTH:-1}
+    GIT_BRANCH=${1}
+    TARGET_ROOT=${TARGET_ROOT:-${SOURCE_ROOT}}
+
+    package-push-directory /sources
+        if [ -d "${TARGET_ROOT}" ]; then
+            ${RM} -rf ${TARGET_ROOT}
+        fi
+
+        if [ `${ECHO} ${RETAIN_SOURCE^^}` != 'TRUE' ]; then
+            DEPTH_CMD="--depth=${DEPTH}"
+        fi
+
+        if [ -z "${DISABLE_RECURSIVE_CLOSE}" ]; then
+            RECURSE_SUBMODULE_CMD="--recurse"
+        fi
+
+        package-git-tool clone ${GIT_URL} \
+                               --branch ${GIT_BRANCH} \
+                               --single-branch \
+                               ${DEPTH_CMD} \
+                               ${RECURSE_SUBMODULE_CMD} \
+                               ${TARGET_ROOT}
+
+    package-pop-directory
+}
+
+function package-git-commit() {
+    package-git-tool commit "${@}"
+}
+
+function package-git-init() {
+    package-git-tool init "${@}"
+}
+
+function package-git-submodule() {
+    package-git-tool init "${@}"
+}
+
+function package-git-tool() {
+    failed=FALSE
+    TOOL_LOG=${STAGE_ROOT}/builder-git-${1} \
+    tool-log ${GIT} "${@}" || failed=TRUE
+
+    while [ "${failed}" = "TRUE" ]; do
+        failed=false
+        TOOL_LOG=${STAGE_ROOT}/builder-git-${1} \
+        tool-log ${GIT} "${@}" || failed=TRUE
+    done
+}
+
+function package-get-major-version() {
+    MAJOR_VERSION=`${ECHO} "${1}" | ${CUT} -d "." -f1`
+    ${ECHO} ${MAJOR_VERSION}
+}
+
+function package-get-source-package-data() {
+    QUERIED_SOURCE_PACKAGE_VERSION=`package-get-source-package-version ${1}`
+    PACKAGE_MAJOR_VERSION=`package-get-major-version ${QUERIED_SOURCE_PACKAGE_VERSION}`
+    echo ${1}-${PACKAGE_MAJOR_VERSION}
+}
+
+function package-push-directory() {
+    pushd ${@} > /dev/null
+}
+
+function package-pop-directory() {
+    popd ${@} > /dev/null
+}
+
+function package-python-tool {
+    PYTHON_TOOL=${PYTHON_TOOL:-${PYTHON}}
+
+    _PYTHON_HOST_PLATFORM= \
+    _PYTHON_SYSCONFIGDATA_NAME= \
+    PYTHONHOME= \
+    PYTHONPATH= \
+    ${PYTHON_TOOL} ${@}
+}
+
+function package-rpm-build() {
+    TOOL_LOG=${STAGE_ROOT}/builder-rpm-build \
+    tool-log ${RPMBUILD} "${@}"
+}
+
+function package-rpm-install() {
+    TOOL_LOG=${STAGE_ROOT}/builder-rpm-install \
+    tool-log ${RPM} -ivh "${@}"
+}
+
+function package-rpm-remove() {
+    TOOL_LOG=${STAGE_ROOT}/builder-rpm-remove \
+    tool-log ${RPM} -e "${@}"
+}
+
+function package-rsync() {
+    TOOL_LOG=${STAGE_ROOT}/builder-rsync \
+    tool-log ${RSYNC} ${@}
+}
+
+function package-tar() {
+    TOOL_LOG=${STAGE_ROOT}/builder-untar \
+    tool-log ${TAR} ${@}
+}
+
+function package-unzip() {
+    TOOL_LOG=${STAGE_ROOT}/builder-unzip \
+    tool-log ${UNZIP} ${@}
+}
+
+function package-wget() {
+    TOOL_LOG=${STAGE_ROOT}/builder-wget \
+    tool-log ${WGET} ${@}
+}
+
+function package-zip() {
+    TOOL_LOG=${STAGE_ROOT}/builder-zip \
+    tool-log ${ZIP} ${@}
+}
+
+function tool-check() {
+    SEARCH_KEY=${SEARCH_PATH}/${SEARCH_INPUT}
+    if [ -f "${SEARCH_KEY}.${SEARCH_EXTENSION}" ]; then
+        FILE_EXISTS='TRUE'
+        SEARCH_RESULTS=`compgen -G "${SEARCH_KEY}*.${SEARCH_EXTENSION}"`
+    else
+        FILE_EXISTS='FALSE'
+    fi
+}
+
+function tool-log() {
+    if [ -z "${DISABLE_TOOL_LOG}" ]; then
+        "${@}" > ${TOOL_LOG}.log \
+               2> ${TOOL_LOG}-stderr.log
+    else
+        "${@}"
+    fi
+}

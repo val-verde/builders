@@ -145,15 +145,15 @@ function export-compiler-environment-for-build-tools() {
         export ACLOCAL_PATH=${ACLOCAL_PATH}:/usr/share/aclocal
     fi
 
-    export CMAKE=${CMAKE:-${BINDIR}/cmake}
-    export MAKE=${MAKE:-${BINDIR}/make}
-    export MESON=${MESON:-${BINDIR}/meson}
-    export NINJA=${NINJA:-${BINDIR}/ninja}
-    export NODE=${NODE:-${BINDIR}/node}
-    export PYTHON=${PYTHON:-${BINDIR}/python}
+    export-build-util CMAKE cmake
+    export-build-util MAKE make
+    export-build-util MESON meson
+    export-build-util NINJA ninja
+    export-build-util NODE node
+    export-build-util PKG_CONFIG pkg-config
+    export-build-util PYTHON python3
 
     export \
-        PKG_CONFIG=${PKG_CONFIG:-${BINDIR}/pkg-config} \
         PKG_CONFIG_LIBDIR=${PKG_CONFIG_LIBDIR:-${PACKAGE_PREFIX}/lib/pkgconfig:${PACKAGE_PREFIX}/share/pkgconfig} \
         BUILD_PKG_CONFIG_LIBDIR=${BUILD_PKG_CONFIG_LIBDIR:-${BUILD_PACKAGE_PREFIX}/lib/pkgconfig:${BUILD_PACKAGE_PREFIX}/share/pkgconfig}
 
@@ -220,7 +220,6 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         DISABLE_UNUSED_ARGUMENTS=TRUE
     fi
 
-    FLANG=${FLANG:-`package-get-path flang EXECUTABLE BUILD`}
     TOOL_AR=${ENV_PREFIX}AR
     TOOL_AS=${ENV_PREFIX}AS
     TOOL_CC=${ENV_PREFIX}CC
@@ -260,56 +259,56 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     TOOL_STRIP=${ENV_PREFIX}STRIP
     TOOL_WINDRES=${ENV_PREFIX}WINDRES
 
-    export ${TOOL_AR}="${!TOOL_AR:-`package-get-path llvm-ar EXECUTABLE BUILD`}"
-    export ${TOOL_AS}="${!TOOL_AS:-`package-get-path ${C_COMPILER} EXECUTABLE BUILD`}"
-    export ${TOOL_CC}="${!TOOL_CC:-`package-get-path ${C_COMPILER} EXECUTABLE BUILD`}"
+    export-build-util ${TOOL_AR} llvm-ar 
+    export-build-util ${TOOL_AS} ${C_COMPILER}
+    export-build-util ${TOOL_CC} ${C_COMPILER}
     export ${TOOL_CCLD}="${!TOOL_CCLD:-${!TOOL_CC}}"
     export ${TOOL_CPP}=${!TOOL_CPP:-"${!TOOL_CC} -E"}
-    export ${TOOL_CXX}="${!TOOL_CXX:-`package-get-path ${CXX_COMPILER} EXECUTABLE BUILD`}"
+    export-build-util ${TOOL_CXX} ${CXX_COMPILER}
     export ${TOOL_CXXCPP}=${!TOOL_CXXCPP:-"${!TOOL_CXX} -E"}
-    export ${TOOL_CXXFILT}="${!TOOL_CXXFILT:-`package-get-path llvm-cxxfilt EXECUTABLE BUILD`}"
+    export-build-util ${TOOL_CXXFILT} llvm-cxxfilt
     export ${TOOL_CXXLD}="${!TOOL_CXXLD:-${!TOOL_CXX}}"
-    export ${TOOL_DLLTOOL}="${!TOOL_DLLTOOL:-`package-get-path llvm-dlltool EXECUTABLE BUILD`}"
+    export-build-util ${TOOL_DLLTOOL} llvm-dlltool
 
     if [ -n "${ENABLE_FORTRAN}" ]; then
-        export ${TOOL_F77}="${!TOOL_F77:-${FLANG}}"
-        export ${TOOL_FC}="${!TOOL_FC:-${FLANG}}"
-        export ${TOOL_FORTRAN}="${!TOOL_FORTRAN:-${FLANG}}"
+        export-build-util ${TOOL_F77} flang
+        export-build-util ${TOOL_FC} flang
+        export-build-util ${TOOL_FORTRAN} flang
     fi
 
-    export ${TOOL_INSTALL_NAME_TOOL}="${!TOOL_INSTALL_NAME_TOOL:-`package-get-path llvm-install-name-tool EXECUTABLE BUILD`}"
+    export-build-util ${TOOL_INSTALL_NAME_TOOL} llvm-install-name-tool
 
     if [ "${!VARIANT_OS}" = "macos" ]; then
-        export ${TOOL_LD}="${!TOOL_LD:-`package-get-path ld64.lld EXECUTABLE BUILD`}"
+        export-build-util ${TOOL_LD} ld64.lld
     elif [ "${!VARIANT_OS}" = "wasi" ]; then
-        export ${TOOL_LD}="${!TOOL_LD:-`package-get-path wasm-ld EXECUTABLE BUILD`}"
+        export-build-util ${TOOL_LD} wasm-ld
     else
-        export ${TOOL_LD}="${!TOOL_LD:-`package-get-path ld.lld EXECUTABLE BUILD`}"
+        export-build-util ${TOOL_LD} ld.lld
     fi
 
     if [ -z "${USE_GNU_OVER_DARWIN_LIBTOOL}" ] &&
        [ "${!VARIANT_OS}" = "macos" ]; then
-        export ${TOOL_LIBTOOL}="${!TOOL_LIBTOOL:-`package-get-path llvm-libtool-darwin EXECUTABLE BUILD`}"
+        export-build-util ${TOOL_LIBTOOL} llvm-libtool-darwin
     else
         export ${TOOL_LIBTOOL}="${!TOOL_LIBTOOL:-`package-get-path libtool SCRIPT HOST`}"
     fi
 
-    export ${TOOL_LIPO}="${!TOOL_LIPO:-`package-get-path llvm-lipo EXECUTABLE BUILD`}"
-    export ${TOOL_MANIFEST_TOOL}="${!TOOL_MANIFEST_TOOL:-`package-get-path llvm-mt EXECUTABLE BUILD`}"
-    export ${TOOL_NM}="${!TOOL_NM:-`package-get-path llvm-nm EXECUTABLE BUILD`}"
+    export-build-util ${TOOL_LIPO} llvm-lipo
+    export-build-util ${TOOL_MANIFEST_TOOL} llvm-mt
+    export-build-util ${TOOL_NM} llvm-nm
     export ${TOOL_OBJC}="${!TOOL_OBJC:-${!TOOL_CC}}"
-    export ${TOOL_OBJCOPY}="${!TOOL_OBJCOPY:-`package-get-path llvm-objcopy EXECUTABLE BUILD`}"
+    export-build-util ${TOOL_OBJCOPY} llvm-objcopy
     export ${TOOL_OBJCPP}="${!TOOL_OBJCPP:-${!TOOL_CPP}}"
     export ${TOOL_OBJCXX}="${!TOOL_OBJCXX:-${!TOOL_CXX}}"
-    export ${TOOL_OBJDUMP}="${!TOOL_OBJDUMP:-`package-get-path llvm-objdump EXECUTABLE BUILD`}"
-    export ${TOOL_OTOOL}="${!TOOL_OTOOL:-`package-get-path llvm-otool EXECUTABLE BUILD`}"
-    export ${TOOL_RANLIB}="${!TOOL_RANLIB:-`package-get-path llvm-ranlib EXECUTABLE BUILD`}"
-    export ${TOOL_RC}="${!TOOL_RC:-`package-get-path llvm-windres EXECUTABLE BUILD`}"
-    export ${TOOL_READELF}="${!TOOL_READELF:-`package-get-path llvm-readelf EXECUTABLE BUILD`}"
-    export ${TOOL_SIZE}="${!TOOL_SIZE:-`package-get-path llvm-size EXECUTABLE BUILD`}"
-    export ${TOOL_STRINGS}="${!TOOL_STRINGS:-`package-get-path llvm-strings EXECUTABLE BUILD`}"
-    export ${TOOL_STRIP}="${!TOOL_STRIP:-`package-get-path llvm-strip EXECUTABLE BUILD`}"
-    export ${TOOL_WINDRES}="${!TOOL_RC:-`package-get-path llvm-windres EXECUTABLE BUILD`}"
+    export-build-util ${TOOL_OBJDUMP} llvm-objdump
+    export-build-util ${TOOL_OTOOL} llvm-otool
+    export-build-util ${TOOL_RANLIB} llvm-ranlib
+    export-build-util ${TOOL_RC} llvm-windres
+    export-build-util ${TOOL_READELF} llvm-readelf
+    export-build-util ${TOOL_SIZE} llvm-size
+    export-build-util ${TOOL_STRINGS} llvm-strings
+    export-build-util ${TOOL_STRIP} llvm-strip
+    export-build-util ${TOOL_WINDRES} llvm-windres
 
     CXX_INCLUDE_DIR_VAR=${ENV_PREFIX}CXX_INCLUDE_DIR
     CXX_INCLUDE_DIR_VAR_VALUE=${!CXX_INCLUDE_DIR_VAR}
@@ -322,6 +321,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     OPTIMIZATION_FLAGS=${OPTIMIZATION_FLAGS:-"-DNDEBUG"}
     PIPE_CFLAG="-pipe"
     RTLIB=${RTLIB:-compiler-rt}
+    UNWINDLIB=${UNWINDLIB:-libunwind}
 
     # CFLAG compiler configuration
 
@@ -362,7 +362,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         if [ "${!VARIANT_CPU}" = "apple-m1" ] &&
            [ -n "${USE_GCC}" ]; then
             if [ "${!VARIANT_PROCESSOR}" = "aarch64" ]; then
-                CPU_NAME=${CPU_NAME:-cortex-a57}
+                CPU_NAME=${CPU_NAME:-cortex-a78}
             elif [ "${!VARIANT_PROCESSOR}" = "armv7a" ]; then
                 CPU_NAME=${CPU_NAME:-cortex-a15}
             fi
@@ -490,9 +490,15 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     fi
 
     if [ -z "${DISABLE_RTLIB}" ]; then
-        RTLIB_CFLAG="-rtlib=${RTLIB} "
+        RTLIB_CFLAG="--rtlib=${RTLIB} "
     else
         unset RTLIB_CFLAG
+    fi
+
+    if [ -z "${DISABLE_UNWINDLIB}" ]; then
+        UNWINDLIB_CFLAG="-unwindlib=${UNWINDLIB} "
+    else
+        unset UNWINDLIB_CFLAG
     fi
 
     if [ "${!VARIANT_OS}" = "macos" ]; then
@@ -567,8 +573,14 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         ${!TOOL_ASFLAGS} \
     " | ${XARGS}`"
     export ${TOOL_CCLDFLAGS}="`${ECHO} "\
-        ${!TOOL_CFLAGS} \
+        ${LD_PATH_CFLAG} \
+        ${PIPE_CFLAG} \
+        ${!TOOL_COMMON_CFLAGS} \
+        ${OPTIMIZATION_CFLAG} \
+        ${EMBED_BITCODE_CFLAG} \
+        ${FLTO_CFLAG} \
         ${RTLIB_CFLAG} \
+        ${UNWINDLIB_CFLAG} \
         ${!TOOL_COMMON_LDFLAGS} \
         ${!TOOL_CCLDFLAGS} \
     " | ${XARGS}`"
@@ -656,14 +668,19 @@ function export-compiler-environment-for-go() {
         -O${LINKER_OPTIMIZATION_LEVEL} \
         ${CCLDFLAGS} \
     " | ${XARGS}`
-    export GO=${GO:-`package-get-path go EXECUTABLE BUILD`}
+
+    export-build-util GO go
     export GOROOT=${GOROOT:-${BUILD_PACKAGE_PREFIX}/go}
 
     if [ "${BUILD_PROCESSOR}" = "aarch64" ]; then
         export GOHOSTARCH=arm64
     elif [ "${BUILD_PROCESSOR}" = "armv7a" ]; then
         export GOHOSTARCH=arm
-    elif [ "${BUILD_PROCESSOR}" = "i686" ]; then
+    elif [ "${BUILD_PROCESSOR}" = "i386" ] ||
+         [ "${BUILD_PROCESSOR}" = "i486" ] ||
+         [ "${BUILD_PROCESSOR}" = "i586" ] ||
+         [ "${BUILD_PROCESSOR}" = "i686" ] ||
+         [ "${BUILD_PROCESSOR}" = "i786" ]; then
         export GOHOSTARCH=386
     elif [ "${BUILD_PROCESSOR}" = "x86_64" ]; then
         export GOHOSTARCH=amd64
@@ -684,7 +701,11 @@ function export-compiler-environment-for-go() {
         export GOARCH=arm64
     elif [ "${HOST_PROCESSOR}" = "armv7a" ]; then
         export GOARCH=arm
-    elif [ "${HOST_PROCESSOR}" = "i686" ]; then
+    elif [ "${HOST_PROCESSOR}" = "i386" ] ||
+         [ "${HOST_PROCESSOR}" = "i486" ] ||
+         [ "${HOST_PROCESSOR}" = "i586" ] ||
+         [ "${HOST_PROCESSOR}" = "i686" ] ||
+         [ "${HOST_PROCESSOR}" = "i786" ]; then
         export GOARCH=386
     elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
         export GOARCH=amd64
@@ -710,25 +731,28 @@ function export-compiler-environment-for-python() {
     PYTHON_BUILD_PACKAGE_PREFIX=${BUILD_PACKAGE_PREFIX}
     PYTHON_HOST_KERNEL=${HOST_KERNEL}
     PYTHON_HOST_OS=${HOST_OS}
+    PYTHON_HOST_OS_API_LEVEL=${HOST_OS_API_LEVEL}
     PYTHON_LIBS=
     PYTHON_PACKAGE_PREFIX=${PACKAGE_PREFIX}
     PYTHON_PLATFORM=${HOST_KERNEL}
 
     if [ "${BUILD_OS}" = "macos" ]; then
-        PYTHON_BUILD_PACKAGE_PREFIX=${BUILD_PACKAGE_PLATFORM_SYSROOT}/System/Library/Frameworks/Python.framework/Versions/Current
+        PYTHON_BUILD_PACKAGE_PREFIX=${BUILD_PACKAGE_PLATFORM_SYSROOT}/System/Library/Frameworks/Python.framework/Versions/${PYTHON_VERSION}
     fi
 
-    if [ "${HOST_OS}" = "macos" ]; then
-        PYTHON_HOST_OS="${HOST_OS}${HOST_OS_API_LEVEL}"
+    if [ "${HOST_OS}" = "android" ]; then
+        PYTHON_HOST_OS_API_LEVEL=
+    elif [ "${HOST_OS}" = "macos" ]; then
         PYTHON_LIBS=`${ECHO} "\
             -lpython${PYTHON_VERSION} \
             ${PYTHON_LIBS} \
         " | ${XARGS}`
-        PYTHON_PACKAGE_PREFIX=${PACKAGE_PLATFORM_SYSROOT}/System/Library/Frameworks/Python.framework/Versions/Current
+        PYTHON_PACKAGE_PREFIX=${PACKAGE_PLATFORM_SYSROOT}/System/Library/Frameworks/Python.framework/Versions/${PYTHON_VERSION}
         PYTHON_PLATFORM=${DARWIN_OS}
     elif [ "${HOST_OS}" = "mingw" ]; then
         PYTHON_HOST_KERNEL=unknown
         PYTHON_HOST_OS=windows-gnu
+        PYTHON_HOST_OS_API_LEVEL=
         PYTHON_LIBS=`${ECHO} "\
             -lpathcch \
             -lpython${PYTHON_VERSION} \
@@ -739,21 +763,24 @@ function export-compiler-environment-for-python() {
         PYTHON_PLATFORM=win32
     fi
 
+    PYTHON_HOST_PROCESSOR=${HOST_PROCESSOR}
+
     if [ "${HOST_PROCESSOR}" = "aarch64" ] &&
        [ "${HOST_OS}" = "macos" ]; then
         PYTHON_HOST_PROCESSOR=arm64
     elif [ "${HOST_PROCESSOR}" = "armv7a" ]; then
-        PYTHON_HOST_OS=${PYTHON_HOST_OS}${HOST_OS_API_LEVEL}
         PYTHON_HOST_PROCESSOR=arm
-    elif [ "${HOST_PROCESSOR}" = "i686" ]; then
-        PYTHON_HOST_PROCESSOR=i386
-    else
-        PYTHON_HOST_PROCESSOR=${HOST_PROCESSOR}
+    elif [ "${HOST_PROCESSOR}" = "i386" ] ||
+         [ "${HOST_PROCESSOR}" = "i486" ] ||
+         [ "${HOST_PROCESSOR}" = "i586" ] ||
+         [ "${HOST_PROCESSOR}" = "i686" ] ||
+         [ "${HOST_PROCESSOR}" = "i786" ]; then
+         PYTHON_HOST_OS_API_LEVEL=
     fi
 
     export \
         _PYTHON_HOST_PLATFORM=${PYTHON_PLATFORM}-${PYTHON_HOST_PROCESSOR} \
-        _PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata__${PYTHON_PLATFORM}_${PYTHON_HOST_PROCESSOR}-${PYTHON_HOST_KERNEL}-${PYTHON_HOST_OS} \
+        _PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata__${PYTHON_PLATFORM}_${PYTHON_HOST_PROCESSOR}-${PYTHON_HOST_KERNEL}-${PYTHON_HOST_OS}${PYTHON_HOST_OS_API_LEVEL} \
         CCSHARED="${CC} -pthread -shared ${CCFLAGS}" \
         LDSHARED="${CCLD} -pthread -shared ${CCLDFLAGS} ${PYTHON_LIBS}" \
         PYTHONHOME=${PYTHON_PACKAGE_PREFIX}:${PYTHON_BUILD_PACKAGE_PREFIX} \
@@ -853,9 +880,9 @@ function generate-compiler-tools-variant() {
     create-host-tool "${!TOOL_AS}" ${ENV_PREFIX}ASFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-as-clang
     create-host-tool "${!TOOL_CC}" ${ENV_PREFIX}CFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang
     create-host-tool "${!TOOL_CCLD}" ${ENV_PREFIX}CCLDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang
-    create-host-tool "${!TOOL_CPP}" ${ENV_PREFIX}CPPFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang-cpp
+    create-host-tool "${!TOOL_CPP}" ${ENV_PREFIX}CPPFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-cpp-clang
     create-host-tool "${!TOOL_CXX}" ${ENV_PREFIX}CXXFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang++
-    create-host-tool "${!TOOL_CXXCPP}" ${ENV_PREFIX}CXXCPPFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang-cpp++
+    create-host-tool "${!TOOL_CXXCPP}" ${ENV_PREFIX}CXXCPPFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-cpp-clang++
     create-host-tool "${!TOOL_CXXLD}" ${ENV_PREFIX}CCLDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang++
     create-host-tool "${!TOOL_LD}" ${ENV_PREFIX}LDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld
     create-host-tool "${!TOOL_RC}" ${ENV_PREFIX}RCFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-rc
@@ -867,7 +894,7 @@ function generate-compiler-tools-variant() {
     export ${TOOL_CFLAGS}="${OPTIMIZATION_CFLAG}"
     export ${TOOL_CCLD}=${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang
     export ${TOOL_CCLDFLAGS}="${!PACKAGE_PREFIX_LIBDIR_CFLAG_VAR} ${OPTIMIZATION_LDFLAG} ${STRIP_CFLAG}"
-    export ${TOOL_CPP}=${!TOOL_CC}-cpp
+    export ${TOOL_CPP}=${GENERATED_BINDIR}/${TOOL_PREFIX}-cpp-clang
     unset ${TOOL_CPPFLAGS}
     export ${TOOL_CXX}=${!TOOL_CC}++
     export ${TOOL_CXXCPP}=${!TOOL_CPP}++
@@ -1121,6 +1148,7 @@ function package-cmake-invocation-arguments-for-variant() {
     AS_COMPILER_ID=${AS_COMPILER_ID:-Clang}
     BUILD_TYPE=${BUILD_TYPE:-Release}
     BUILD_WITH_INSTALL_RPATH=${BUILD_WITH_INSTALL_RPATH:-TRUE}
+    CMAKE_MAKE_PROGRAM=${CMAKE_MAKE_PROGRAM:-${NINJA}}
     CMAKE_PREFIX_PATH_VAR=${ENV_PREFIX}PACKAGE_PREFIX
     CMAKE_PREFIX_PATH=${!CMAKE_PREFIX_PATH_VAR}
     CMAKE_SYSROOT_VAR=${ENV_PREFIX}SYSROOT
@@ -1188,10 +1216,17 @@ function package-cmake-invocation-arguments-for-variant() {
 
     if [ "${HOST_PROCESSOR}" = "armv7a" ]; then
         SWIFT_COMPILER_TARGET=armv7-${HOST_ENVIRONMENT}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}
-    elif [ "${HOST_PROCESSOR}" = "i686" ] &&
-	 [ "${HOST_OS}" = "gnu" ] &&
-	 [ -n "${HOST_OS_API_LEVEL}" ]; then
-        SWIFT_COMPILER_TARGET=${HOST_PROCESSOR}-${HOST_ENVIRONMENT}-${HOST_KERNEL}-${HOST_OS}
+    elif [ "${HOST_PROCESSOR}" = "i386" ] ||
+         [ "${HOST_PROCESSOR}" = "i486" ] ||
+         [ "${HOST_PROCESSOR}" = "i586" ] ||
+         [ "${HOST_PROCESSOR}" = "i686" ] ||
+         [ "${HOST_PROCESSOR}" = "i786" ]; then
+         if [ "${HOST_OS}" = "gnu" ] &&
+            [ -n "${HOST_OS_API_LEVEL}" ]; then
+            SWIFT_COMPILER_TARGET=i686-${HOST_ENVIRONMENT}-${HOST_KERNEL}-${HOST_OS}
+        else
+            SWIFT_COMPILER_TARGET=${COMPILER_TARGET}
+        fi
     else
         SWIFT_COMPILER_TARGET=${COMPILER_TARGET}
     fi
@@ -1256,7 +1291,7 @@ function package-cmake-invocation-arguments-for-variant() {
 -DCMAKE_LINKER=${!TOOL_LD} \
 -DCMAKE_LIPO=${!TOOL_LIPO} \
 -DCMAKE_MACOSX_RPATH=TRUE \
--DCMAKE_MAKE_PROGRAM=${NINJA} \
+-DCMAKE_MAKE_PROGRAM=${CMAKE_MAKE_PROGRAM} \
 -DCMAKE_MODULE_LINKER_FLAGS=\""${!TOOL_CCLDFLAGS}"\" \
 -DCMAKE_MODULE_LINKER_FLAGS_DEBUG= \
 -DCMAKE_MODULE_LINKER_FLAGS_MINSIZEREL= \
@@ -1356,15 +1391,15 @@ function package-configure-invocation() {
     CONFIGURE_PACKAGE_PLATFORM_PREFIX=${CONFIGURE_PACKAGE_PLATFORM_PREFIX:-${PACKAGE_PLATFORM_SYSROOT}}
     CONFIGURE_PACKAGE_PREFIX=${CONFIGURE_PACKAGE_PLATFORM_PREFIX}/${PACKAGE_USR_PREFIX}
 
-    CONFIGURE_BINDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}/bin`
-    DATAROOTDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}/share`
-    INCLUDEDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}/include`
-    LIBDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}/lib`
-    LIBEXECDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}/libexec`
-    LOCALSTATEDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PLATFORM_PREFIX}/var`
-    PREFIX=`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}`
-    SBINDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PLATFORM_PREFIX}/sbin`
-    SYSCONFDIR=`${READLINK} -m ${CONFIGURE_PACKAGE_PLATFORM_PREFIX}/etc`
+    CONFIGURE_BINDIR=${CONFIGURE_BINDIR:-`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}/bin`}
+    DATAROOTDIR=${DATAROOTDIR:-`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}/share`}
+    INCLUDEDIR=${INCLUDEDIR:-`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}/include`}
+    LIBDIR=${LIBDIR:-`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}/lib`}
+    LIBEXECDIR=${LIBEXECDIR:-`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}/libexec`}
+    LOCALSTATEDIR=${LOCALSTATEDIR:-`${READLINK} -m ${CONFIGURE_PACKAGE_PLATFORM_PREFIX}/var`}
+    PREFIX=${PREFIX:-`${READLINK} -m ${CONFIGURE_PACKAGE_PREFIX}`}
+    SBINDIR=${SBINDIR:-`${READLINK} -m ${CONFIGURE_PACKAGE_PLATFORM_PREFIX}/sbin`}
+    SYSCONFDIR=${SYSCONFDIR:-`${READLINK} -m ${CONFIGURE_PACKAGE_PLATFORM_PREFIX}/etc`}
 
     AS_FOR_BUILD=${BUILD_AS} \
     ASFLAGS_FOR_BUILD=${BUILD_ASFLAGS} \
@@ -1562,13 +1597,31 @@ function package-meson-build() {
 }
 
 function package-meson-build-invocation() {
+    if [ -n "${PACKAGE_USR_PREFIX}" ]; then
+        PACKAGE_RELATIVE_PREFIX=${PACKAGE_USR_PREFIX}/
+    else
+        PACKAGE_RELATIVE_PREFIX=
+    fi
+
+    MESON_BINDIR=${MESON_BINDIR:-${PACKAGE_RELATIVE_PREFIX}bin}
+    MESON_DATADIR=${MESON_DATADIR:-${PACKAGE_RELATIVE_PREFIX}share}
+    MESON_INCLUDEDIR=${MESON_INCLUDEDIR:-${PACKAGE_RELATIVE_PREFIX}include}
+    MESON_INFODIR=${MESON_INFODIR:-${MESON_DATADIR}/info}
+    MESON_LIBDIR=${MESON_LIBDIR:-${PACKAGE_RELATIVE_PREFIX}lib}
+    MESON_LIBEXECDIR=${MESON_LIBEXECDIR:-${PACKAGE_RELATIVE_PREFIX}libexec}
+    MESON_LOCALEDIR=${MESON_LOCALEDIR:-${PACKAGE_RELATIVE_PREFIX}share/locale}
+    MESON_LOCALSTATEDIR=${MESON_LOCALSTATEDIR:-var}
+    MESON_MANDIR=${MESON_MANDIR:-${PACKAGE_RELATIVE_PREFIX}share/man}
+    MESON_SBINDIR=${MESON_SBINDIR:-sbin}
+    MESON_SYSCONFDIR=${MESON_SYSCONFDIR:-etc}
+    MESON_SHAREDSTATEDIR=${MESON_SHAREDSTATEDIR:-${MESON_LOCALSTATEDIR}/lib}
+
     BACKEND=${BACKEND:-ninja}
     BUILD_TYPE=${BUILD_TYPE:-custom}
     CONFIG_FILE=${STAGE_ROOT}/builder-meson.config
+    CMAKE_TOOLCHAIN_FILE=${STAGE_ROOT}/builder-meson-toolchain.cmake
     MESON_ENABLE_WERROR=${MESON_ENABLE_WERROR:-false}
     MESON_OPTIMIZATION_LEVEL=${MESON_OPTIMIZATION_LEVEL:-${OPTIMIZATION_LEVEL}}
-    MESON_PREFIX=${MESON_PREFIX:-${PACKAGE_PREFIX}}
-    MESON_ROOT_PREFIX=${MESON_ROOT_PREFIX:-`${REALPATH} -m --relative-to=${PACKAGE_PREFIX} ${PACKAGE_PLATFORM_SYSROOT}`}
     MESON_WARNING_LEVEL=${MESON_WARNING_LEVEL:-0}
     DEBUG=${DEBUG:-false}
     ENDIAN=${ENDIAN:-little}
@@ -1649,21 +1702,40 @@ function package-meson-build-invocation() {
         export STRIP_FOR_BUILD=${BUILD_STRIP}
         export STRINGS_FOR_BUILD=${BUILD_STRINGS}
 
-        create-indirect-pkg-config BUILD_PKG_CONFIG_LIBDIR ${STAGE_ROOT}/build-pkgconfig
-        create-indirect-pkg-config PKG_CONFIG_LIBDIR ${STAGE_ROOT}/host-pkgconfig
+        create-indirect-pkg-config BUILD_PKG_CONFIG_LIBDIR ${STAGE_ROOT}/build-pkg-config
+        create-indirect-pkg-config PKG_CONFIG_LIBDIR ${STAGE_ROOT}/host-pkg-config
 
-        export PKG_CONFIG_FOR_BUILD=${STAGE_ROOT}/build-pkgconfig
-        export PKG_CONFIG=${STAGE_ROOT}/host-pkgconfig
+        export PKG_CONFIG_FOR_BUILD=${STAGE_ROOT}/build-pkg-config
+        export PKG_CONFIG=${STAGE_ROOT}/host-pkg-config
+        unset BUILD_PKG_CONFIG_LIBDIR BUILD_PKG_CONFIG_PATH
+        unset PKG_CONFIG_LIBDIR PKG_CONFIG_PATH
     fi
 
-    ${RM} -f ${CONFIG_FILE}
+    ${RM} -f \
+          ${CMAKE_TOOLCHAIN_FILE} \
+          ${CONFIG_FILE}
 
-    if [ -n "${MESON_EXTRA_BINARIES}" ]; then
         ${ECHO} "\
 [binaries]
+ar='${AR}'
+nm='${NM}'
+ranlib='${RANLIB}'
+strip='${STRIP}'
+strings='${STRINGS}'
+windres='${WINDRES}'
 ${MESON_EXTRA_BINARIES}
-" >> ${CONFIG_FILE}
-    fi
+    " >> ${CONFIG_FILE}
+
+    CMAKE_VARIABLES=`DELIMITER=$'\n' DISABLE_FILTER=TRUE package-cmake-invocation-arguments-for-variant HOST`
+    OIFS=${IFS}
+    IFS=$'\n'
+
+    for CMAKE_VARIABLE in ${CMAKE_VARIABLES}; do
+        ENTRY=`${ECHO} ${CMAKE_VARIABLE} | ${TR} '=' ' ' | ${SED} "s/^-D//g"`
+        ${ECHO} "set(${ENTRY})" >> ${CMAKE_TOOLCHAIN_FILE}
+    done
+
+    IFS=${OIFS}
 
     if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
         MESON_EXTRA_PROPERTIES="
@@ -1672,19 +1744,19 @@ ${MESON_EXTRA_PROPERTIES}
 "
 
         ${ECHO} "\
-[build_machine]
-ar='${AR}'
+
+[build_system]
 backend='${BACKEND}'
 buildtype='${BUILD_TYPE}'
 c='${CC_FOR_BUILD}'
 c_args=${BUILD_C_ARGS}
-c_ld='${BINDIR}/ld.lld'
+c_ld='`package-get-path ld.lld EXECUTABLE BUILD`'
 c_link_args=${BUILD_C_LINK_ARGS}
 cmake='${CMAKE}'
 cmake_prefix_path=${BUILD_CMAKE_PREFIX_PATH}
 cpp='${CXX_FOR_BUILD}'
 cpp_args=${BUILD_CPP_ARGS}
-cpp_ld='${BINDIR}/ld.lld'
+cpp_ld='`package-get-path ld.lld EXECUTABLE BUILD`'
 cpp_link_args=${BUILD_CPP_LINK_ARGS}
 cpp_std='${MESON_CXX_STANDARD}'
 cpu='${BUILD_ARCH}'
@@ -1697,12 +1769,7 @@ optimization='${OPTIMIZATION_LEVEL}'
 pkgconfig='${STAGE_ROOT}/build-pkg-config'
 pkgconfigpath=''
 python='${PYTHON}'
-nm='${NM}'
-ranlib='${RANLIB}'
-strip='${STRIP}'
-strings='${STRINGS}'
 system='${BUILD_SYSTEM}'
-windres='${WINDRES}'
 " >> ${CONFIG_FILE}
     fi
 
@@ -1741,6 +1808,8 @@ system='${HOST_SYSTEM}'
 windres='${WINDRES}'
 
 [properties]
+cmake_defaults=false
+cmake_toolchain_file='${STAGE_ROOT}/builder-meson-toolchain.cmake'
 ${MESON_EXTRA_PROPERTIES}
 " >> ${CONFIG_FILE}
 
@@ -1748,22 +1817,25 @@ ${MESON_EXTRA_PROPERTIES}
     tool-log ${MESON} \
          ${SOURCE_ROOT} \
          ${STAGE_ROOT} \
-         -Dbackend=ninja \
-         -Dbindir=bin \
-         -Ddatadir=share \
-         -Dincludedir=include \
-         -Dinfodir=share/info \
-         -Dlibdir=lib \
-         -Dlibexecdir=libexec \
-         -Dlocaledir=share/locale \
-         -Dlocalstatedir=${MESON_ROOT_PREFIX}/var \
-         -Dmandir=share/man \
+         -Dbackend=${BACKEND} \
+         -Dbuildtype=${BUILD_TYPE} \
+         -Dbindir=${MESON_BINDIR} \
+         -Ddatadir=${MESON_DATADIR} \
+         -Ddebug=${DEBUG} \
+         -Dincludedir=${MESON_INCLUDEDIR} \
+         -Dinfodir=${MESON_INFODIR} \
+         -Dlibdir=${MESON_LIBDIR} \
+         -Dlibexecdir=${MESON_LIBEXECDIR} \
+         -Dlocaledir=${MESON_LOCALEDIR} \
+         -Dlocalstatedir=${MESON_LOCALSTATEDIR} \
+         -Dmandir=${MESON_MANDIR} \
          -Doptimization=${MESON_OPTIMIZATION_LEVEL} \
-         -Dprefix=${MESON_PREFIX} \
-         -Dsbindir=${MESON_ROOT_PREFIX}/sbin \
+         -Dprefix=${PACKAGE_PLATFORM_SYSROOT} \
+         -Dsbindir=${MESON_SBINDIR} \
          -Dstrip=${MESON_ENABLE_STRIP} \
-         -Dsysconfdir=${MESON_ROOT_PREFIX}/etc \
-         -Dsharedstatedir=${MESON_ROOT_PREFIX}/var/lib \
+         -Dsysconfdir=${MESON_SYSCONFDIR} \
+         -Dsharedstatedir=${MESON_SHAREDSTATEDIR} \
+         -Dunity=subprojects \
          -Dwarning_level=${MESON_WARNING_LEVEL} \
          -Dwerror=${MESON_ENABLE_WERROR} \
          --${MESON_BUILD_CONFIG}-file ${CONFIG_FILE} \
@@ -1795,9 +1867,6 @@ function package-meson-install-archive() {
 }
 
 function package-python-build() {
-    SETUP_PY_ROOT=${SETUP_PY_ROOT:-.}
-    SETUP_PY=${SETUP_PY:-setup.py}
-
     copy-source-to-staging
     export-compiler-environment
 
@@ -1814,24 +1883,42 @@ function package-python-build() {
     export-compiler-environment-for-python
 
     package-push-directory ${STAGE_ROOT}/${SETUP_PY_ROOT}
-        TOOL_LOG=${STAGE_ROOT}/builder-invocation \
-        tool-log ${PYTHON} ${SETUP_PY} build -b ${STAGE_ROOT} \
-                                             -j ${NUM_PROCESSORS} \
-                                             ${@}
+        if [ -z "${DISABLE_SETUP_PY}" ]; then
+            SETUP_PY_ROOT=${SETUP_PY_ROOT:-.}
+            SETUP_PY=${SETUP_PY:-setup.py}
+
+            TOOL_LOG=${STAGE_ROOT}/builder-invocation \
+            tool-log ${PYTHON} ${SETUP_PY} build -b ${STAGE_ROOT} \
+                                                 -j ${NUM_PROCESSORS} \
+                                                 ${@}
+        fi
     package-pop-directory
 }
 
 function package-python-install() {
-    INSTALLED_FILE_LIST=${INSTALLED_FILE_LIST:-${STAGE_ROOT}/installed-file-list.txt}
-    SETUP_PY_ROOT=${SETUP_PY_ROOT:-.}
-    SETUP_PY=${SETUP_PY:-setup.py}
-
     package-push-directory ${STAGE_ROOT}/${SETUP_PY_ROOT}
-        TOOL_LOG=${STAGE_ROOT}/builder-installation \
-        tool-log ${PYTHON} ${SETUP_PY} install --prefix ${INSTALL_PREFIX} \
-                                               --record ${INSTALLED_FILE_LIST} \
-                                               --single-version-externally-managed \
-                                               ${@}
+        if [ -z "${DISABLE_SETUP_PY}" ]; then
+            INSTALLED_FILE_LIST=${INSTALLED_FILE_LIST:-${STAGE_ROOT}/installed-file-list.txt}
+            SETUP_PY_ROOT=${SETUP_PY_ROOT:-.}
+            SETUP_PY=${SETUP_PY:-setup.py}
+
+            TOOL_LOG=${STAGE_ROOT}/builder-installation \
+            tool-log ${PYTHON} ${SETUP_PY} install --prefix ${INSTALL_PREFIX} \
+                                                   --record ${INSTALLED_FILE_LIST} \
+                                                   --single-version-externally-managed \
+                                                   ${@}
+        else
+            PYPROJECT_TOML_ROOT=${PYPROJECT_TOML_ROOT:-.}
+
+            TOOL_LOG=${STAGE_ROOT}/builder-invocation \
+            tool-log ${PYTHON} -m pip install --cache-dir ${STAGE_ROOT}/cache \
+                                              --ignore-installed \
+                                              --prefix ${INSTALL_PREFIX} \
+                                              --no-deps \
+                                              --src ${STAGE_ROOT}/src \
+                                              ${PYPROJECT_TOML_ROOT} \
+                                              ${@}
+        fi
     package-pop-directory
 }
 
@@ -1957,10 +2044,17 @@ function package-swift-build() {
     else
         if [ "${HOST_PROCESSOR}" = "armv7a" ]; then
             TARGET=${TARGET:-armv7-${HOST_ENVIRONMENT:-unknown}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}}
-        elif [ "${HOST_PROCESSOR}" = "i686" ] &&
-	     [ "${HOST_OS}" = "gnu" ] &&
-	     [ -n "${HOST_OS_API_LEVEL}" ]; then
-            TARGET=${TARGET:-${HOST_PROCESSOR}-${HOST_ENVIRONMENT:-unknown}-${HOST_KERNEL}-${HOST_OS}}
+        elif [ "${HOST_PROCESSOR}" = "i386" ] ||
+             [ "${HOST_PROCESSOR}" = "i486" ] ||
+             [ "${HOST_PROCESSOR}" = "i586" ] ||
+             [ "${HOST_PROCESSOR}" = "i686" ] ||
+             [ "${HOST_PROCESSOR}" = "i786" ]; then
+	        if [ "${HOST_OS}" = "gnu" ] &&
+	           [ -n "${HOST_OS_API_LEVEL}" ]; then
+                TARGET=${TARGET:-i686-${HOST_ENVIRONMENT:-unknown}-${HOST_KERNEL}-${HOST_OS}}
+            else
+                TARGET=${TARGET:-${HOST_4_TRIPLE}}
+            fi
         else
             TARGET=${TARGET:-${HOST_4_TRIPLE}}
         fi
@@ -1981,7 +2075,7 @@ function package-swift-build() {
     ${ECHO} -e "{ \n\
         \"version\": 1, \n\
         \"sdk\": \"${SYSROOT}\", \n\
-        \"toolchain-bin-dir\": \"${BINDIR}\", \n\
+        \"toolchain-bin-dir\": \"${BUILD_PACKAGE_PREFIX}/bin\", \n\
         \"target\": \"${TARGET}\", \n\
         \"extra-cc-flags\": [ \n\
             \"-march=${HOST_ARCH}\", \n\
@@ -2027,7 +2121,7 @@ function package-swift-build() {
     " > ${SWIFT_DESTINATION_JSON}
 
     TOOL_LOG=${STAGE_ROOT}/builder-invocation \
-    tool-log ${BINDIR}/swift \
+    tool-log `package-get-path swift EXECUTABLE BUILD` \
         build \
         --build-path ${STAGE_ROOT} \
         --configuration ${SWIFT_BUILD_TYPE} \
@@ -2076,8 +2170,8 @@ function rpath-fixup() {
 
 function yarn-build() {
     TOOL_LOG=${STAGE_ROOT}/builder-invocation \
-    tool-log ${BINDIR}/yarn
+    tool-log `package-get-path yarn EXECUTABLE BUILD`
 
     TOOL_LOG=${STAGE_ROOT}/builder-compile \
-    tool-log ${BINDIR}/yarn compile
+    tool-log `package-get-path yarn EXECUTABLE BUILD`
 }

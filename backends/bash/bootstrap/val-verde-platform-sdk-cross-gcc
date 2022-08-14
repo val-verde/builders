@@ -41,16 +41,43 @@ if [ -n "${ENABLE_BOOTSTRAP}" ]; then
     fi
 else
     ENABLE_OR_DISABLE_SHARED=enable
-    ENABLED_LANGUAGES="${ENABLED_LANGUAGES},c++,d,fortran,lto,objc,obj-c++"
+    ENABLED_LANGUAGES="${ENABLED_LANGUAGES},c++,fortran,lto,objc,obj-c++"
     WITH_OR_WITHOUT_SYSTEM_ZLIB=with
 fi
 
+ENABLE_CET=yes
+ENABLE_DEFAULT_PIE=yes
+
 if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
     MULTILIB_LIST="lp64"
+elif [ "${HOST_PROCESSOR}" = "armv7a" ]; then
+    WITH_FLOAT_ABI_CMD="--with-float=hard"
+elif [ "${HOST_PROCESSOR}" = "mips" ] ||
+     [ "${HOST_PROCESSOR}" = "mipsel" ]; then
+    ENABLE_CET=no
+    ENABLE_DEFAULT_PIE=no
+    GLIBC_ABI="n32"
+    MULTILIB_LIST="n32"
+    WITH_FLOAT_ABI_CMD="--with-float=hard"
+elif [ "${HOST_PROCESSOR}" = "mips64" ] ||
+     [ "${HOST_PROCESSOR}" = "mips64el" ]; then
+    ENABLE_CET=no
+    ENABLE_DEFAULT_PIE=no
+    WITH_FLOAT_ABI_CMD="--with-float=hard"
+
+    if [ "${HOST_OS_API_LEVEL}" = "abin32" ]; then
+        GLIBC_ABI="n32"
+        MULTILIB_LIST="n32"
+    else
+        GLIBC_ABI="n64"
+        MULTILIB_LIST="n64"
+    fi
 elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
     MULTILIB_LIST="m64"
 else
+    unset GLIBC_ABI
     unset MULTILIB_LIST
+    unset WITH_FLOAT_ABI_CMD
 fi
 
 ENABLE_OR_DISABLE_GCOV=enable
@@ -63,10 +90,6 @@ if [ "${HOST_OS}" = "android" ]; then
     "
 elif [ "${HOST_OS}" = "mingw" ]; then
     ENABLE_OR_DISABLE_GCOV=disable
-fi
-
-if [ "${HOST_PROCESSOR}" = "armv7a" ]; then
-    WITH_FLOAT_ABI_CMD="--with-float=hard"
 fi
 
 BUILD_COMMON_CFLAGS="\
@@ -133,7 +156,7 @@ DISABLE_GENERATED_TOOLS=TRUE \
 DISABLE_LIBTOOLIZE=TRUE \
 DISABLE_TOOL_BUILD=${DISABLE_TOOL_BUILD} \
 LD=${BUILD_LD} \
-LD_FOR_TARGET=${BUILD_LD} \
+LD_FOR_TARGET=${LD} \
 LDFLAGS=${BUILD_LDFLAGS} \
 LDFLAGS_FOR_TARGET=${LDFLAGS} \
 HOST_TRIPLE=${BUILD_TRIPLE} \
@@ -158,13 +181,14 @@ package-stage-configure-install-archive \
     --disable-multiarch \
     --disable-multilib \
     --disable-werror \
-    --enable-cet=yes \
-    --enable-default-pie \
+    --enable-cet=${ENABLE_CET} \
+    --enable-default-pie=${ENABLE_DEFAULT_PIE} \
     --enable-languages=c \
     --enable-large-address-aware \
     --enable-plugin \
     --enable-static \
     --target=${HOST_TRIPLE} \
+    --with-abi=${GLIBC_ABI} \
     --with-as=${AS} \
     --with-build-sysroot=${SYSROOT} \
     --with-glibc-version=2.31 \

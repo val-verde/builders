@@ -14,7 +14,7 @@ NVCCFLAGS=`${ECHO} "\
     --cuda-path=${PACKAGE_PREFIX} \
     --sysroot=${SYSROOT} \
     --target=${HOST_TRIPLE} \
-    -B${BINDIR} \
+    -B${BUILD_PACKAGE_PREFIX}/bin \
 " | ${XARGS}`
 
 create-host-tool ${NVCC} NVCCFLAGS ${CUDA_COMPILER}

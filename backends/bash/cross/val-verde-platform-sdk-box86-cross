@@ -12,6 +12,7 @@ else
     ENABLE_ARM_DYNAREC=FALSE
 fi
 
+export-compiler-environment-for-build-tools
 package-cmake-install-archive \
     -DARM_DYNAREC=${ENABLE_ARM_DYNAREC} \
     -DPython3_EXECUTABLE=${PYTHON}

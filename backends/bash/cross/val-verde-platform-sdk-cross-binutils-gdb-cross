@@ -80,6 +80,7 @@ package-stage-configure-install-archive \
     --enable-64-bit-bfd \
     --enable-cet=yes \
     --enable-gold \
+    --enable-gprofng=no \
     --enable-plugins \
     --enable-static \
     --enable-shared \

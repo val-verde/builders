@@ -25,7 +25,7 @@ elif [ "${HOST_OS}" = "macos" ]; then
 fi
 
 if [ -n "${DISABLE_LIBXML2}" ]; then
-    LIBXML2_CMD="--with-include-libxml"
+    LIBXML2_CMD="--with-included-libxml"
 else
     export DEPENDS="\
         ${PACKAGE_BASE_NAME}-libxml2-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
@@ -40,7 +40,9 @@ fi
 BOOTSTRAP_FILE=autogen.sh \
 package-bootstrap-configure-install-archive \
     gl_cv_cc_visibility=${DEFAULT_VISIBILITY_HIDDEN} \
+    gl_cv_func_free_preserves_errno=yes \
     gl_cv_type_wint_t_large_enough=yes \
-    --with-included-gettext=${WITH_INCLUDED_GETTEXT} \
+    --with-included-libtextstyle=${WITH_INCLUDED_GETTEXT} \
+    --with-installed-libtextstyle=no \
     ${LIBXML2_CMD} \
     ${XZ_CMD}

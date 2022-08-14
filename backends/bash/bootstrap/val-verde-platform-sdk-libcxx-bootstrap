@@ -19,7 +19,11 @@ HAS_WIN32_THREAD_API=FALSE
 USE_LLVM_UNWINDER=TRUE
 
 if [ "${HOST_PROCESSOR}" = "armv7a" ] ||
+   [ "${HOST_PROCESSOR}" = "i386" ] ||
+   [ "${HOST_PROCESSOR}" = "i486" ] ||
+   [ "${HOST_PROCESSOR}" = "i586" ] ||
    [ "${HOST_PROCESSOR}" = "i686" ] ||
+   [ "${HOST_PROCESSOR}" = "i786" ] ||
    [ "${HOST_PROCESSOR}" = "wasm32" ]; then
     SIZEOF_VOID_P=4
 else
@@ -49,15 +53,14 @@ if [ -z "${DISABLE_LIBUNWIND}" ]; then
     INSTALL_TARGET="projects/libunwind/install ${INSTALL_TARGET}"
 fi
 
-COMMON_CFLAGS="\
-    -unwindlib=none \
-    ${COMMON_CFLAGS} \
-" \
+export-compiler-environment-for-build-tools
+
 CMAKE_CONFIGURE_ROOT=${SOURCE_ROOT}/llvm \
 CXXFLAGS="\
     -nostdlib++ \
     ${CXXFLAGS} \
 " \
+UNWINDLIB=none \
 DISABLE_TOOL_BUILD=TRUE \
 package-cmake-install-archive \
     -DCMAKE_C_COMPILER_WORKS=TRUE \
@@ -116,6 +119,8 @@ package-cmake-install-archive \
     -DLIBUNWIND_SUPPORTS_FNO_RTTI_FLAG=TRUE \
     -DLIBUNWIND_SUPPORTS_NODEFAULTLIBS_FLAG=TRUE \
     -DLIBUNWIND_USE_COMPILER_RT=TRUE \
+    -DLIBXML2_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DLIBXML2_LIBRARY=`package-get-path xml2 SHARED HOST` \
     -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_4_TRIPLE} \
     -DLLVM_ENABLE_LIBCXX=TRUE \
     -DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=FALSE \
@@ -128,4 +133,8 @@ package-cmake-install-archive \
     -DLLVM_INCLUDE_TOOLS=FALSE \
     -DLLVM_INCLUDE_UTILS=FALSE \
     -DLLVM_TARGETS_TO_BUILD= \
+    -DTERMINFO_LIB=`package-get-path ncurses SHARED HOST` \
+    -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DZLIB_LIBRARY_DEBUG=`package-get-path z SHARED HOST` \
+    -DZLIB_LIBRARY_RELEASE=`package-get-path z SHARED HOST` \
     -DPython3_EXECUTABLE=${PYTHON}

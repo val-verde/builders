@@ -10,4 +10,6 @@ CONFIGURE_FILE=autogen.sh \
 package-configure-install-archive \
     --disable-static \
     --disable-udev \
+    --enable-examples-build=no \
+    --enable-tests-build=no \
     --enable-shared

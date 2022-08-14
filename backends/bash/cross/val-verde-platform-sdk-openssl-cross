@@ -13,9 +13,13 @@ OPENSSL_DIR=/etc/ssl
 OPENSSL_OS=${HOST_OS}
 OPENSSL_PROCESSOR=${HOST_PROCESSOR}
 
-if [ "${OPENSSL_PROCESSOR}" = "arm" ]; then
+if [ "${OPENSSL_PROCESSOR}" = "armv7a" ]; then
     OPENSSL_PROCESSOR=arm
-elif [ "${OPENSSL_PROCESSOR}" = "i686" ]; then
+elif [ "${OPENSSL_PROCESSOR}" = "i386" ] ||
+     [ "${OPENSSL_PROCESSOR}" = "i486" ] ||
+     [ "${OPENSSL_PROCESSOR}" = "i586" ] ||
+     [ "${OPENSSL_PROCESSOR}" = "i686" ] ||
+     [ "${OPENSSL_PROCESSOR}" = "i786" ]; then
     OPENSSL_PROCESSOR=x86
 fi
 
@@ -26,7 +30,7 @@ elif [ "${HOST_OS}" = "gnu" ] || \
      [ "${HOST_OS}" = "musl" ]; then
     OPENSSL_OS=linux
 
-    if [ "${HOST_PROCESSOR}" = "armv7a" ]; then
+    if [ "${OPENSSL_PROCESSOR}" = "arm" ]; then
         OPENSSL_PROCESSOR=generic32
     fi
 elif [ "${HOST_OS}" = "macos" ]; then

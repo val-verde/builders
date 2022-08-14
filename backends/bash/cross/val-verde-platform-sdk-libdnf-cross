@@ -7,6 +7,7 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for cmake/install
 CXX_STANDARD=17
+export-compiler-environment-for-build-tools
 export-compiler-environment-for-python
 
 COMMON_CFLAGS="\
@@ -21,7 +22,7 @@ package-cmake-install-archive \
     -DGETTEXT_MSGFMT_EXECUTABLE=`package-get-path msgfmt EXECUTABLE BUILD` \
     -DGETTEXT_MSGMERGE_EXECUTABLE=`package-get-path msgmerge EXECUTABLE BUILD` \
     -DLibSolv_DIR=${PACKAGE_PREFIX}/lib/cmake \
-    -DPYTHON_EXECUTABLE=`package-get-path python EXECUTABLE BUILD` \
+    -DPYTHON_EXECUTABLE=${PYTHON} \
     -DPYTHON_VERSION=${PYTHON_VERSION} \
     -DSWIG_DIR=${PACKAGE_PREFIX}/share/swig/4.0.2 \
     -DSWIG_EXECUTABLE=`package-get-path swig EXECUTABLE BUILD` \

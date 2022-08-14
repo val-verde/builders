@@ -17,4 +17,6 @@ package-configure-install-archive \
     ac_cv_func_posix_getpwuid_r=yes \
     glib_cv_stack_grows=no \
     glib_cv_uscore=no \
+    --disable-define-prefix \
+    --disable-host-tool \
     --with-libiconv=gnu

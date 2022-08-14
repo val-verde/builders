@@ -41,7 +41,7 @@
         "sourceType": "git",
         "sourcePackageName": "apple-common-crypto",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "60190",
+        "sourcePackageVersion": "60191",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -59,7 +59,7 @@
         "sourceType": "git",
         "sourcePackageName": "apple-xar",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "483",
+        "sourcePackageVersion": "487",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -131,7 +131,7 @@
         "sourceType": "git",
         "sourcePackageName": "autoconf-archive",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "2021",
+        "sourcePackageVersion": "2022",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -374,7 +374,7 @@
         "sourceType": "git",
         "sourcePackageName": "coreutils",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "8",
+        "sourcePackageVersion": "9",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -462,6 +462,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "e2fsprogs",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "ed",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
@@ -519,6 +528,15 @@
         "sourcePackageName": "expat",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "fex",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2207",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -626,7 +644,7 @@
         "sourceType": "git",
         "sourcePackageName": "gcc-project",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "11",
+        "sourcePackageVersion": "12",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -885,9 +903,18 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "hwloc",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "icu4c",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "70",
+        "sourcePackageVersion": "71",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/icu.git"
     },
     {
@@ -960,6 +987,15 @@
         "sourcePackageName": "json-c",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "jsoncpp",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1497,6 +1533,24 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "linux",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "5",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "linux-pam",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "llvm-project",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "13",
@@ -1580,7 +1634,7 @@
         "sourceType": "git",
         "sourcePackageName": "mesa",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "21",
+        "sourcePackageVersion": "22",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1641,6 +1695,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "mozjs",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "91",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "mtdev",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
@@ -1671,6 +1734,15 @@
         "sourcePackageName": "musl-obstack",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "nasm",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1715,34 +1787,16 @@
         "sourceType": "git",
         "sourcePackageName": "node",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "17",
+        "sourcePackageVersion": "18",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
-        "sourcePackageName": "pcre",
+        "sourcePackageName": "nuklear",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "8",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
-    },
-    {
-        "retainSource": "false",
-        "depth": "1",
-        "sourceType": "git",
-        "sourcePackageName": "protobuf",
-        "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "3",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
-    },
-    {
-        "retainSource": "false",
-        "depth": "1",
-        "sourceType": "git",
-        "sourcePackageName": "pulseaudio",
-        "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "15",
+        "sourcePackageVersion": "4",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1805,7 +1859,7 @@
         "sourceType": "git",
         "sourcePackageName": "opencl-headers",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "2020",
+        "sourcePackageVersion": "2022",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1814,7 +1868,7 @@
         "sourceType": "git",
         "sourcePackageName": "opencl-icd-loader",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "2020",
+        "sourcePackageVersion": "2022",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1886,7 +1940,7 @@
         "sourceType": "git",
         "sourcePackageName": "openssh-portable",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "8",
+        "sourcePackageVersion": "9",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1914,6 +1968,15 @@
         "sourcePackageName": "patch",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "pcre",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "8",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1956,6 +2019,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "pocl",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "polkit",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "0",
@@ -1974,9 +2046,27 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "protobuf",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "pugixml",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "pulseaudio",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "16",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -2192,7 +2282,16 @@
         "sourceType": "git",
         "sourcePackageName": "python-setuptools",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "60",
+        "sourcePackageVersion": "62",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "python-setuptools-scm",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "6",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -2220,6 +2319,15 @@
         "sourcePackageName": "python-toml",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "0",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "python-tomli",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "2",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -2759,7 +2867,7 @@
         "sourceType": "git",
         "sourcePackageName": "systemd",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "250",
+        "sourcePackageVersion": "251",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -2849,7 +2957,7 @@
         "sourceType": "git",
         "sourcePackageName": "vim",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "8",
+        "sourcePackageVersion": "9",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -3271,7 +3379,7 @@
         "sourceType": "git",
         "sourcePackageName": "xorg-xorgproto",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "2021",
+        "sourcePackageVersion": "2022",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -3350,14 +3458,14 @@
         "sourceType": "other",
         "sourcePackageName": "bash",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "5.1.8",
+        "sourcePackageVersion": "5.1.16",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
         "sourceType": "other",
         "sourcePackageName": "gdbm",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "1.20",
+        "sourcePackageVersion": "1.23",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
@@ -3371,14 +3479,14 @@
         "sourceType": "other",
         "sourcePackageName": "help2man",
         "sourceBranchIndicator": "wget-xz",
-        "sourcePackageVersion": "1.48.3",
+        "sourcePackageVersion": "1.49.2",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz"
     },
     {
         "sourceType": "other",
         "sourcePackageName": "libedit",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "20210714-3.1",
+        "sourcePackageVersion": "20210910-3.1",
         "sourcePackageUrl": "https://www.thrysoee.dk/editline/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
@@ -3392,21 +3500,14 @@
         "sourceType": "other",
         "sourcePackageName": "libmicrohttpd",
         "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "0.9.73",
+        "sourcePackageVersion": "0.9.75",
         "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "linux",
-        "sourceBranchIndicator": "wget-xz",
-        "sourcePackageVersion": "5.17.1",
-        "sourcePackageUrl": "https://cdn.kernel.org/pub/${SOURCE_PACKAGE_NAME}/kernel/v5.x/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.xz"
     },
     {
         "sourceType": "other",
         "sourcePackageName": "macosx",
         "sourceBranchIndicator": "wget-xz",
-        "sourcePackageVersion": "12.0",
+        "sourcePackageVersion": "12.3",
         "sourcePackageUrl": "https://github.com/joseluisq/${SOURCE_PACKAGE_NAME}-sdks/releases/download/${SOURCE_PACKAGE_VERSION}/${SOURCE_PACKAGE_NAME}${SOURCE_PACKAGE_VERSION}.sdk.tar.xz"
     },
     {
@@ -3442,7 +3543,7 @@
         "sourcePackageName": "sqlite",
         "sourceBranchIndicator": "wget",
         "sourcePackageVersion": "3",
-        "sourcePackageUrl": "https://sqlite.org/2021/sqlite-autoconf-3360000.tar.gz"
+        "sourcePackageUrl": "https://sqlite.org/2022/sqlite-autoconf-3380300.tar.gz"
     },
     {
         "sourceType": "other",

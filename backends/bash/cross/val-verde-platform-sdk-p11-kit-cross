@@ -13,4 +13,5 @@ else
 fi
 
 package-meson-install-archive \
-    -Dsystemd=${FEATURE_SYSTEMD}
+    -Dsystemd=${FEATURE_SYSTEMD} \
+    -Dtest=false

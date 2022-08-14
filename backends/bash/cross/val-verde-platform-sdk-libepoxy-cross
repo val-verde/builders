@@ -6,15 +6,17 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for meson/install
-ENABLE_OR_DISABLE_GLX=yes
+ENABLE_GLX=yes
+ENABLE_X11=true
 
 if [ "${HOST_OS}" = "mingw" ]; then
-    ENABLE_OR_DISABLE_GLX=no
+    ENABLE_GLX=no
+    ENABLE_X11=false
 fi
 
 package-meson-install-archive \
     -Ddocs=false \
-    -Dglx=${ENABLE_OR_DISABLE_GLX} \
+    -Dglx=${ENABLE_GLX} \
     -Degl=yes \
     -Dtests=false \
-    -Dx11=true
+    -Dx11=${ENABLE_X11}

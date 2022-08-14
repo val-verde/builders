@@ -1,0 +1,49 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+cd ${INSTALL_PREFIX}
+RUST_HOST_PROCESSOR=${HOST_PROCESSOR}
+
+if [ "${HOST_PROCESSOR}" = "armv7a" ]; then
+    RUST_HOST_PROCESSOR=armv7
+
+    if [ "${HOST_OS}" = "android" ]; then
+        RUST_HOST_OS_API_LEVEL=eabi
+    else
+        RUST_HOST_OS_API_LEVEL=${HOST_OS_API_LEVEL}
+    fi
+elif [ "${HOST_PROCESSOR}" = "i386" ] ||
+     [ "${HOST_PROCESSOR}" = "i486" ] ||
+     [ "${HOST_PROCESSOR}" = "i586" ] ||
+     [ "${HOST_PROCESSOR}" = "i686" ] ||
+     [ "${HOST_PROCESSOR}" = "i786" ]; then
+    RUST_HOST_PROCESSOR=i786
+fi
+
+if [ "${HOST_OS}" = "android" ]; then
+    RUST_HOST_TRIPLE=${RUST_HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${RUST_HOST_OS_API_LEVEL}
+elif [ "${HOST_OS}" = "macos" ]; then
+    RUST_HOST_TRIPLE=${RUST_HOST_PROCESSOR}-${HOST_KERNEL}-${DARWIN_OS}
+elif [ "${HOST_OS}" = "mingw" ]; then
+    RUST_HOST_TRIPLE=${RUST_HOST_PROCESSOR}-pc-windows-gnullvm
+else
+    RUST_HOST_TRIPLE=${RUST_HOST_PROCESSOR}-${HOST_ENV:-unknown}-${HOST_KERNEL}-${HOST_OS}${RUST_HOST_OS_API_LEVEL}
+fi
+
+${MKDIR} -p \
+         ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/rustlib
+
+ROOT_PATH=${PACKAGE_ROOT}/${PACKAGE_BASE_NAME}-platform-sdk
+BUILD_RELATIVE_PATH=`${REALPATH} -m --relative-to=${BUILD_PACKAGE_PREFIX}/lib/rustlib ${ROOT_PATH}`
+HOST_RELATIVE_PATH=`${REALPATH} -m --relative-to=${ROOT_PATH} ${PACKAGE_PREFIX}/lib/rustlib`
+
+${LN} -sf \
+      ${BUILD_RELATIVE_PATH}/${HOST_RELATIVE_PATH}/${RUST_HOST_TRIPLE} \
+      ${INSTALL_ROOT}${BUILD_PACKAGE_PREFIX}/lib/rustlib/
+
+# Build and install the package
+package-invoke-archive-install

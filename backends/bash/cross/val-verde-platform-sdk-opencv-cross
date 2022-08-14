@@ -17,26 +17,64 @@ function package-install-completion-callback() {
         ${INSTALL_PREFIX}/LICENSE
 }
 
-if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
+if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
+   [ "${HOST_PROCESSOR}" = "armv7a" ]; then
     HAVE_CPU_NEON_SUPPORT=TRUE
 else
     HAVE_CPU_NEON_SUPPORT=FALSE
 fi
 
+BUILD_JAVA=TRUE
+
+if [ "${HOST_OS}" = "android" ]; then
+    ANDROID=TRUE
+    BUILD_JAVA=FALSE
+fi
+
 if [ "${HOST_OS}" = "macos" ]; then
-    PYTHON3_INCLUDE_DIR=${PACKAGE_PLATFORM_SYSROOT}/System/Library/Frameworks/Python.framework/Versions/Current/Headers
+    PYTHON3_INCLUDE_DIR=${PACKAGE_PLATFORM_SYSROOT}/System/Library/Frameworks/Python.framework/Versions/${PYTHON_VERSION}/Headers
 else
     PYTHON3_INCLUDE_DIR=${PACKAGE_PREFIX}/include/python${PYTHON_VERSION}
 fi
 
+export-compiler-environment-for-build-tools
 export-compiler-environment-for-python
 
 CXX_STANDARD=17 \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-cmake-install-archive \
     -Dlibprotobuf_BINARY_DIR=${PACKAGE_PREFIX}/lib/cmake/protobuf \
+    -DANDROID=${ANDROID} \
+    -DBUILD_opencv_apps=TRUE \
+    -DBUILD_opencv_calib3d=TRUE \
+    -DBUILD_opencv_core=TRUE \
+    -DBUILD_opencv_dnn=TRUE \
+    -DBUILD_opencv_features2d=TRUE \
+    -DBUILD_opencv_flann=TRUE \
+    -DBUILD_opencv_gapi=TRUE \
+    -DBUILD_opencv_highgui=TRUE \
+    -DBUILD_opencv_imgcodecs=TRUE \
+    -DBUILD_opencv_imgproc=TRUE \
+    -DBUILD_opencv_java_bindings_generator=TRUE \
+    -DBUILD_opencv_js=TRUE \
+    -DBUILD_opencv_js_bindings_generator=TRUE \
+    -DBUILD_opencv_ml=TRUE \
+    -DBUILD_opencv_objc_bindings_generator=TRUE \
+    -DBUILD_opencv_objdetect=TRUE \
+    -DBUILD_opencv_photo=TRUE \
     -DBUILD_opencv_python3=TRUE \
-    -DBUILD_JAVA=TRUE \
+    -DBUILD_opencv_python_bindings_generator=TRUE \
+    -DBUILD_opencv_python_tests=TRUE \
+    -DBUILD_opencv_stitching=TRUE \
+    -DBUILD_opencv_video=TRUE \
+    -DBUILD_opencv_videoio=TRUE \
+    -DBUILD_opencv_world=TRUE \
+    -DBUILD_ANDROID_EXAMPLES=FALSE \
+    -DBUILD_ANDROID_PROJECTS=FALSE \
+    -DBUILD_ANDROID_SERVICE=FALSE \
+    -DBUILD_CUDA_STUBS=TRUE \
+    -DBUILD_EXAMPLES=FALSE \
+    -DBUILD_JAVA=${BUILD_JAVA} \
     -DBUILD_PERF_TESTS=FALSE \
     -DBUILD_PROTOBUF=FALSE \
     -DBUILD_TESTS=FALSE \
@@ -45,6 +83,8 @@ package-cmake-install-archive \
     -DJPEG_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DJPEG_LIBRARY_DEBUG=`package-get-path jpeg STATIC HOST` \
     -DJPEG_LIBRARY_RELEASE=`package-get-path jpeg STATIC HOST` \
+    -DOPENCL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DOPENCL_LIBRARY=`package-get-path OpenCL SHARED HOST` \
     -DOPENCV_PYTHON3_VERSION=${PYTHON_VERSION} \
     -DProtobuf_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DProtobuf_LIBRARY_DEBUG=`package-get-path protobuf SHARED HOST` \
@@ -62,6 +102,8 @@ package-cmake-install-archive \
     -DPYTHON3_VERSION_STRING=${PYTHON_VERSION} \
     -DPYTHON3_NUMPY_INCLUDE_DIRS=${PACKAGE_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/numpy/core/include \
     -DPROTOBUF_UPDATE_FILES=TRUE \
+    -DPYTHON_EXECUTABLE=${PYTHON} \
+    -DPYTHON2_EXECUTABLE= \
     -DPYTHON3_EXECUTABLE=${PYTHON} \
     -WITH_EIGEN=TRUE \
     -WITH_FREETYPE=TRUE \

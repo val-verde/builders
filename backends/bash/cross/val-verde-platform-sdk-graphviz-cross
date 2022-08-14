@@ -12,6 +12,7 @@ else
     MKDEFS=
 fi
 
+export-compiler-environment-for-build-tools
 package-cmake-install-archive \
     -DAWK_EXECUTABLE=${GAWK} \
     -DBISON_EXECUTABLE=${BISON} \

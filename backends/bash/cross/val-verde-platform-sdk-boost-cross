@@ -20,7 +20,12 @@ TOOL_LOG=${STAGE_ROOT}/builder-bootstrap \
 tool-log ${BASH} ${SOURCE_ROOT}/bootstrap.sh \
     --with-toolset=clang
 
-BOOST_CONTEXT_ABI=sysv
+if [ "${HOST_OS}" = "mingw" ]; then
+    BOOST_CONTEXT_ABI=ms
+else
+    BOOST_CONTEXT_ABI=sysv
+fi
+
 BOOST_CONTEXT_ASSEMBLER=gas
 BOOST_CONTEXT_IMPLEMENTATION=fcontext
 BOOST_FIBER_NUMA_TARGET_OS=none
@@ -33,17 +38,28 @@ if [ "${BOOST_PROCESSOR}" = "aarch64" ]; then
 elif [ "${BOOST_PROCESSOR}" = "armv7a" ]; then
     BOOST_CONTEXT_ABI=aapcs
     BOOST_PROCESSOR=arm
-elif [ "${BOOST_PROCESSOR}" = "i686" ]; then
+elif [ "${BOOST_PROCESSOR}" = "i386" ] ||
+     [ "${BOOST_PROCESSOR}" = "i486" ] ||
+     [ "${BOOST_PROCESSOR}" = "i586" ] ||
+     [ "${BOOST_PROCESSOR}" = "i686" ] ||
+     [ "${BOOST_PROCESSOR}" = "i786" ]; then
     BOOST_PROCESSOR=i386
 fi
 
-if [ "${HOST_OS}" = "mingw" ]; then
-    BOOST_CONTEXT_ASSEMBLER=armasm
-    BOOST_CONTEXT_ABI=ms
-    BOOST_CONTEXT_IMPLEMENTATION=winfib
+ICONV_LIBRARY=`package-get-path iconv SHARED HOST`
+ICONV_CMD=`${ECHO} "\
+    -DIconv_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DIconv_LIBRARY=${ICONV_LIBRARY} \
+" | ${XARGS}`
+
+if [ "${HOST_OS}" = "gnu" ]; then
+    BOOST_FIBER_NUMA_TARGET_OS=linux
+    BOOST_LOCALE_ENABLE_POSIX=TRUE
+    unset ICONV_CMD
+elif [ "${HOST_OS}" = "mingw" ]; then
+    BOOST_CONTEXT_IMPLEMENTATION=fcontext
     BOOST_FIBER_NUMA_TARGET_OS=windows
-elif [ "${HOST_OS}" = "musl" ] ||
-     [ "${HOST_OS}" = "gnu" ]; then
+elif [ "${HOST_OS}" = "musl" ]; then
     BOOST_FIBER_NUMA_TARGET_OS=linux
     BOOST_LOCALE_ENABLE_POSIX=TRUE
 fi
@@ -58,7 +74,9 @@ package-cmake-install-archive \
     -DBOOST_FIBER_NUMA_TARGET_OS=${BOOST_FIBER_NUMA_TARGET_OS} \
     -DBOOST_LOCALE_ENABLE_POSIX=${BOOST_LOCALE_ENABLE_POSIX} \
     -DBOOST_INSTALL_LAYOUT=system \
+    -DBUILD_SHARED_LIBS=TRUE \
     -DLIBLZMA_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DLIBLZMA_LIBRARY=`package-get-path lzma SHARED HOST` \
     -DZSTD_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DZSTD_LIBRARY=`package-get-path zstd SHARED HOST`
+    -DZSTD_LIBRARY=`package-get-path zstd SHARED HOST` \
+    ${ICONV_CMD}

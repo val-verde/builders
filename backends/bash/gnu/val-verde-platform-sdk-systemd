@@ -55,6 +55,7 @@ package-meson-install-archive \
     -Dopenssl=true \
     -Doomd=true \
     -Dp11kit=true \
+    -Dpamconfdir=/etc/pam.d \
     -Dportabled=true \
     -Dpstore=true \
     -Dremote=true \

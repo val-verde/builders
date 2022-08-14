@@ -21,23 +21,25 @@ fi
 export \
     DISABLE_CXX_INCLUDE=TRUE \
     DISABLE_CXX_STDLIB=TRUE \
-    MAKEINFO=`package-get-path true EXECUTABLE BUILD`
+    UNWINDLIB=none
+
+if [ -z "${MAKEINFO}" ]; then
+    export-build-util MAKEINFO true
+fi
 
 # kernel-headers bootstrap build
 package-invoke-builder kernel-headers 5
 
 # autoconf bootstrap build
-package-invoke-builder autoconf 2
-export \
-    AUTORECONF=`BINDIR= package-get-path autoreconf EXECUTABLE BUILD` \
-    AUTOUPDATE=`BINDIR= package-get-path autoupdate EXECUTABLE BUILD`
+package-invoke-builder autoconf 2 bootstrap-only
+unset AUTORECONF
+unset AUTOUPDATE
 
 # automake bootstrap build
-package-invoke-builder automake 1
-export AUTOMAKE=`BINDIR= package-get-path automake EXECUTABLE BUILD`
+package-invoke-builder automake 1 bootstrap-only
 
 # autoconf-archive bootstrap build
-package-invoke-builder autoconf-archive 2021
+package-invoke-builder autoconf-archive 2022 bootstrap-only
 
 # glibc-interface bootstrap phase 1
 
@@ -49,11 +51,13 @@ ${MKDIR} -p ${ARCHIVE_PATH}
 
 if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
     # help2man bootstrap build
-    package-invoke-builder help2man 1
-    export HELP2MAN=`BINDIR= package-get-path help2man EXECUTABLE BUILD`
-
+    package-invoke-builder help2man 1 bootstrap-only
+    
     # libtool bootstrap build
-    package-invoke-builder libtool 2
+    package-invoke-builder libtool 2 bootstrap-only
+
+    # zlib bootstrap build
+    package-invoke-builder zlib 1 bootstrap-only
 
     # gmp bootstrap build
     package-invoke-builder gmp 6 bootstrap-only
@@ -73,7 +77,7 @@ package-invoke-builder cross-binutils-gdb 2
 
 # gcc bootstrap build (gcc only)
 export DISABLE_LIBGCC=TRUE
-package-invoke-builder cross-gcc 11 bootstrap-only
+package-invoke-builder cross-gcc 12 bootstrap-only
 unset DISABLE_LIBGCC
 
 export SYSROOT=${SPECIFIED_SYSROOT}
@@ -87,13 +91,13 @@ export ARCHIVE_PATH=${ARCHIVE_PATH_BASE}/phase-2
 ${MKDIR} -p ${ARCHIVE_PATH}
 
 # gcc bootstrap build (gcc + libgcc only)
-package-invoke-builder cross-gcc 11 bootstrap-only
+package-invoke-builder cross-gcc 12 bootstrap-only
 
 unset ENABLE_BOOTSTRAP
 export ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH}
 
 # glibc-interface bootstrap build
-package-invoke-builder glibc-interface-bootstrap 2
+package-invoke-builder glibc-interface-bootstrap 2 bootstrap-only
 
 export BUILD_SYSROOT=${SPECIFIED_BUILD_SYSROOT}
 
@@ -101,36 +105,42 @@ export BUILD_SYSROOT=${SPECIFIED_BUILD_SYSROOT}
 
 if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
     # compiler-rt bootstrap build
-    package-invoke-builder compiler-rt-cross 13
+    package-invoke-builder compiler-rt-cross ${LLVM_VERSION} bootstrap-only
 fi
 
 # libcxx bootstrap build
-package-invoke-builder libcxx-bootstrap 13
+package-invoke-builder libcxx-bootstrap ${LLVM_VERSION} bootstrap-only
 
 unset \
     DISABLE_CXX_INCLUDE \
-    DISABLE_CXX_STDLIB
+    DISABLE_CXX_STDLIB \
+    UNWINDLIB
+
+if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+    # gmp bootstrap build
+    package-invoke-builder gmp 6 bootstrap-only
+fi
 
 # cmake bootstrap build
-package-invoke-builder cmake 3
+package-invoke-builder cmake 3 bootstrap-only
 export CMAKE=`BINDIR= package-get-path cmake EXECUTABLE BUILD`
 
 # z3 build
-package-invoke-builder z3 4
+package-invoke-builder z3 4 bootstrap-only
 
 # llvm bootstrap build
 ENABLE_INCREMENTAL_BUILD=TRUE \
 ENABLE_STAGE_ROOT_BUILD=TRUE \
-package-invoke-builder llvm-project-bootstrap 13 no-install
+package-invoke-builder llvm-project-bootstrap ${LLVM_VERSION} no-install
 
 # remove libcxx, libcxxabi and libunwind as they are superceded by llvm-project.
-PACKAGES_TO_MANAGE=( 'libcxx-13' 'HOST' )
+PACKAGES_TO_MANAGE=( "libcxx-${LLVM_VERSION}" "HOST" )
 
 package-invoke-archive-action uninstall ${PACKAGES_TO_MANAGE[@]}
 
 # install llvm for host
-PACKAGES_TO_MANAGE=( 'llvm-project-13' 'HOST'
-                     'llvm-project-13-stage' 'HOST' )
+PACKAGES_TO_MANAGE=( "llvm-project-${LLVM_VERSION}" "HOST"
+                     "llvm-project-${LLVM_VERSION}-stage" "HOST" )
 
 package-invoke-archive-action install ${PACKAGES_TO_MANAGE[@]}
 

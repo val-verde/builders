@@ -19,12 +19,19 @@ if [ "${HOST_OS}" = "android" ] ||
     package-invoke-builder virglrenderer-cross 0
 fi
 
+# qemu-dtc build
+package-invoke-builder qemu-dtc-cross 1
+
 # qemu build
 package-invoke-builder qemu-cross 7
 
 if [ "${HOST_OS}" = "gnu" ]; then
     if [ "${HOST_PROCESSOR}" = "armv7a" ] ||
-       [ "${HOST_PROCESSOR}" = "i686" ]; then
+       [ "${HOST_PROCESSOR}" = "i386" ] ||
+       [ "${HOST_PROCESSOR}" = "i486" ] ||
+       [ "${HOST_PROCESSOR}" = "i586" ] ||
+       [ "${HOST_PROCESSOR}" = "i686" ] ||
+       [ "${HOST_PROCESSOR}" = "i786" ]; then
         # box86 build
         package-invoke-builder box86-cross 0
     elif [ "${HOST_PROCESSOR}" = "aarch64" ] ||

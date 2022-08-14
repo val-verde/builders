@@ -12,7 +12,7 @@ package-invoke-builder autoconf-cross 2
 package-invoke-builder automake-cross 1
 
 # autoconf-archive build
-package-invoke-builder autoconf-archive-cross 2021
+package-invoke-builder autoconf-archive-cross 2022
 
 # musl argp-standalone build
 package-invoke-builder argp-standalone-cross 1
@@ -70,7 +70,7 @@ package-invoke-builder libffi-cross 3
 package-invoke-builder libiconv-cross 1
 
 # icu build
-package-invoke-builder icu4c-cross 70
+package-invoke-builder icu4c-cross 71
 
 # libunistring build
 package-invoke-builder libunistring-cross 0
@@ -94,8 +94,9 @@ package-invoke-builder gzip-cross 1
 # xz build
 package-invoke-builder xz-cross 5
 
-# libxml2 build
+# libxml2 build (without python)
 ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
+DISABLE_PYTHON=TRUE \
 package-invoke-builder libxml2-cross 2 bootstrap-only
 
 # gettext build
@@ -120,7 +121,7 @@ package-invoke-builder ninja-cross 1
 package-invoke-builder file-cross 5
 
 # libedit build
-package-invoke-builder libedit-cross 20210714-3
+package-invoke-builder libedit-cross 20210910-3
 
 # readline build
 package-invoke-builder readline-cross 8
@@ -136,6 +137,9 @@ package-invoke-builder mpc-cross 1
 
 # isl build
 package-invoke-builder isl-cross 0
+
+# libaio build
+package-invoke-builder libaio-cross 0
 
 # libev build
 package-invoke-builder libev-cross 4
@@ -158,6 +162,13 @@ package-invoke-builder openssl-cross 1
 
 # libcap build
 package-invoke-builder libcap-cross 2
+
+# util-linux build
+ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
+package-invoke-builder util-linux-cross 2 bootstrap-only
+
+# e2fsprogs build
+package-invoke-builder e2fsprogs-cross 1
 
 # krb5 build
 package-invoke-builder krb5-cross 1
@@ -186,10 +197,6 @@ package-invoke-builder gpgme-cross 1
 # indent build
 package-invoke-builder indent-cross 2
 
-# util-linux build
-ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
-package-invoke-builder util-linux-cross 2 bootstrap-only
-
 # attr build
 package-invoke-builder attr-cross 2
 
@@ -212,7 +219,7 @@ package-invoke-builder curl-cross 7
 package-invoke-builder apple-mig-cross 122
 
 # apple-xar build
-package-invoke-builder apple-xar-cross 483
+package-invoke-builder apple-xar-cross 487
 
 # cctools-port-cross build
 package-invoke-builder cctools-port-cross 973
@@ -239,7 +246,7 @@ package-invoke-builder ldns-cross 1
 package-invoke-builder c-ares-cross 1
 
 # openssh-portable build
-package-invoke-builder openssh-portable-cross 8
+package-invoke-builder openssh-portable-cross 9
 
 # bash build
 package-invoke-builder bash-cross 5
@@ -262,14 +269,23 @@ package-invoke-builder jq-cross 1
 # json-c build
 package-invoke-builder json-c-cross 0
 
+# jsoncpp build
+package-invoke-builder jsoncpp-cross 1
+
 # tar build
 package-invoke-builder tar-cross 1
 
+# bc build
+package-invoke-builder bc-cross 1
+
 # coreutils build
-package-invoke-builder coreutils-cross 8
+package-invoke-builder coreutils-cross 9
 
 # which build
 package-invoke-builder which-cross 2
+
+# ed build
+package-invoke-builder ed-cross 1
 
 # findutils build
 package-invoke-builder findutils-cross 4
@@ -289,15 +305,8 @@ package-invoke-builder lua-cross 5
 # wget build
 package-invoke-builder wget-cross 1
 
-# python build
-ENABLE_STAGE_ROOT_BUILD=TRUE \
-package-invoke-builder python-cross 3
-
-# python-setuptools build
-package-invoke-builder python-setuptools-cross 60
-
-# python-pip build
-package-invoke-builder python-pip-cross 21
+# python bootstrap build
+package-invoke-category-builder python-bootstrap-cross
 
 # libxml2 build (with python support)
 package-invoke-builder libxml2-cross 2
@@ -332,16 +341,13 @@ package-invoke-builder gtk-doc-cross 1
 # libtasn1 build
 package-invoke-builder libtasn1-cross 4
 
-# eudev build
-package-invoke-builder eudev-cross 3
-
 # p11-kit build
+ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
 DISABLE_SYSTEMD=TRUE \
 package-invoke-builder p11-kit-cross 0
 
-# util-linux build (with python support)
-DISABLE_SYSTEMD=TRUE \
-package-invoke-builder util-linux-cross 2
+# eudev build
+package-invoke-builder eudev-cross 3
 
 # nettle build
 package-invoke-builder nettle-cross 3
@@ -380,7 +386,7 @@ package-invoke-builder boost-cross 1
 package-invoke-category-builder graphics-server-cross
 
 # pulseaudio build
-package-invoke-builder pulseaudio-cross 15
+package-invoke-builder pulseaudio-cross 16
 
 # graphviz build
 package-invoke-builder graphviz-cross 2
@@ -390,6 +396,16 @@ package-invoke-builder intltool-cross 0
 
 # kmod build
 package-invoke-builder kmod-cross 29
+
+# hwloc build
+package-invoke-builder hwloc-cross 2
+
+# linux-pam build
+package-invoke-builder linux-pam-cross 1
+
+# p11-kit build
+DISABLE_SYSTEMD=TRUE \
+package-invoke-builder p11-kit-cross 0
 
 # shadow-utils build
 package-invoke-builder shadow-utils-cross 4
@@ -406,11 +422,15 @@ package-invoke-category-builder dnf-package-manager-cross
 # cups build
 package-invoke-builder cups-cross 2
 
+# util-linux build (with python support)
+DISABLE_SYSTEMD=TRUE \
+package-invoke-builder util-linux-cross 2
+
 # apt build
 package-invoke-builder apt-cross 2
 
 # lvm2 build
-# package-invoke-builder lvm2 2
+# package-invoke-builder lvm2-cross 2
 
 # alien package tool build
 package-invoke-builder alien-package-tool-cross 8
@@ -437,7 +457,7 @@ package-invoke-builder z3-cross 4
 package-invoke-builder git-cross 2
 
 # vim build
-package-invoke-builder vim-cross 8
+package-invoke-builder vim-cross 9
 
 # cmake build
 package-invoke-builder cmake-cross 3
@@ -459,6 +479,9 @@ package-invoke-builder android-patch-elf-cross 1
 
 # jwasm (ml64) cross compiler build
 package-invoke-builder jwasm 2
+
+# nasm build
+package-invoke-builder nasm-cross 2
 
 # re2c build
 package-invoke-builder re2c-cross 3

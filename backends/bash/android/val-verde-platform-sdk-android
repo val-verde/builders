@@ -9,29 +9,29 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 package-invoke-builder android-ndk-headers ${ANDROID_NDK_VERSION}
 
 # android compiler-rt build (for host)
-package-invoke-builder compiler-rt-cross 13
+package-invoke-builder compiler-rt-cross ${LLVM_VERSION}
 
 # android ndk runtime build
 package-invoke-builder android-ndk-runtime ${ANDROID_NDK_VERSION}
 
 # android libcxx build
-package-invoke-builder libcxx-bootstrap 13
+package-invoke-builder libcxx-bootstrap ${LLVM_VERSION}
 
 # android llvm dependencies build
 package-invoke-category-builder llvm-dependencies-android
 
 # android llvm build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
-package-invoke-builder llvm-project-android 13 no-install
+package-invoke-builder llvm-project-android ${LLVM_VERSION} no-install
 
 # remove libcxx, libcxxabi and libunwind as they are superceded by llvm-project.
-PACKAGES_TO_MANAGE=( 'libcxx-13' 'HOST' )
+PACKAGES_TO_MANAGE=( "libcxx-${LLVM_VERSION}" "HOST" )
 
 package-invoke-archive-action uninstall ${PACKAGES_TO_MANAGE[@]}
 
 # install llvm for host
-PACKAGES_TO_MANAGE=( 'llvm-project-13' 'HOST'
-                     'llvm-project-13-stage' 'HOST' )
+PACKAGES_TO_MANAGE=( "llvm-project-${LLVM_VERSION}" "HOST"
+                     "llvm-project-${LLVM_VERSION}-stage" "HOST" )
 
 package-invoke-archive-action install ${PACKAGES_TO_MANAGE[@]}
 
@@ -71,13 +71,16 @@ if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
     if [ "${BUILD_PROCESSOR}" = "x86_64" ] ||
        [ "${HOST_PROCESSOR}" != "x86_64" ]; then
         # android node + sdk build
-        package-invoke-builder node-cross 17
+        package-invoke-builder node-cross 18
         package-invoke-builder npm-yarn-cross 1
 
         # android yautja server build
         # package-invoke-builder yarn-yautja-server-cross 1
     fi
 fi
+
+# rust sdk build
+package-invoke-category-builder rust-sdk-cross
 
 # android blockchain sdk build
 package-invoke-category-builder blockchain-sdk-cross

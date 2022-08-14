@@ -5,67 +5,12 @@ set -e
 export SOURCE_ROOT=${SOURCE_ROOT_BASE}/linux-${SOURCE_PACKAGE_VERSION}
 
 # Source package build helper functions
-source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-kernel-builder
 
 # Configure the build components
-cd ${STAGE_ROOT}
-DISABLE_STRIP=TRUE \
-LINKER_OPTIMIZATION_LEVEL=2 \
-OPTIMIZATION_LEVEL=2 \
-export-compiler-environment
-generate-compiler-tools
+${MKDIR} -p ${INSTALL_ROOT}/${PACKAGE_PLATFORM_SYSROOT}/boot
 
-ARCH=${HOST_PROCESSOR}
-KERNEL_INSTALL_PREFIX=${INSTALL_ROOT}/${PACKAGE_PLATFORM_SYSROOT}
-SOURCE_ROOT=${SOURCE_ROOT_BASE}/linux-${SOURCE_PACKAGE_VERSION}
-
-if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
-    ARCH=arm64
-elif [ "${HOST_PROCESSOR}" = "armv7a" ]; then
-    ARCH=arm
-elif [ "${HOST_PROCESSOR}" = "i686" ]; then
-    ARCH=x86
-fi
-
-${MKDIR} -p ${KERNEL_INSTALL_PREFIX}/boot
-
-${ECHO} "\
-CONFIG_MODULES=y
-CONFIG_WERROR=n
-" > ${STAGE_ROOT}/.config
-
-function kernel-build() {
-    PKG_CONFIG_LIBDIR=${BUILD_PKG_CONFIG_LIBDIR} \
-    PKG_CONFIG_PATH=${BUILD_PKG_CONFIG_PATH} \
-    make-build \
-        -C ${SOURCE_ROOT} \
-        AR=${AR} \
-        ARCH=${ARCH} \
-        CC=${CC} \
-        HOSTAR=${AR} \
-        HOSTCC=${BUILD_CC} \
-        HOSTCFLAGS="${BUILD_CFLAGS}" \
-        HOSTCPPFLAGS="${BUILD_CPPFLAGS}" \
-        HOSTLD=${BUILD_LD} \
-        HOSTLDFLAGS="${BUILD_LDFLAGS}" \
-        INSTALL_MOD_PATH=${KERNEL_INSTALL_PREFIX} \
-        INSTALL_PATH=${KERNEL_INSTALL_PREFIX}/boot \
-        KCFLAGS="${CFLAGS}" \
-        KCPPFLAGS="${CPPFLAGS}" \
-        LD=${LD} \
-	LLVM=1 \
-        LLVM_IAS=1 \
-        NM=${NM} \
-        O=${STAGE_ROOT} \
-        OBJCOPY=${OBJCOPY} \
-        OBJDUMP=${OBJDUMP} \
-        RANLIB=${RANLIB} \
-        READELF=${READELF} \
-        STRIP=${STRIP} \
-        ${@}
-}
-
-kernel-build defconfig
+kernel-bootstrap-config
 kernel-build all
 kernel-build modules_install
 kernel-build install

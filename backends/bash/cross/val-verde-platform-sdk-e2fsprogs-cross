@@ -1,0 +1,66 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for stage/configure/install
+function package-install-completion-callback() {
+    ${RM} -rf \
+          ${INSTALL_PREFIX}/{include,lib}/*uuid*
+}
+
+${MKDIR} -p ${INSTALL_PREFIX}/lib
+
+ENABLE_OR_DISABLE_BSD=disable
+ENABLE_OR_DISABLE_ELF=enable
+ENABLE_OR_DISABLE_HARDENING=enable
+ENABLE_OR_DISABLE_LIBUUID=disable
+HAVE_LINUX_FSMAP_H=yes
+
+if [ "${HOST_OS}" = "android" ]; then
+    HAVE_LINUX_FSMAP_H=no
+    LIBS="\
+        -lintl \
+        ${LIBS} \
+    "
+elif [ "${HOST_OS}" = "musl" ]; then
+    LIBS="\
+        -lintl \
+        ${LIBS} \
+    "
+elif [ "${HOST_OS}" = "macos" ]; then
+    ENABLE_OR_DISABLE_BSD=enable
+    ENABLE_OR_DISABLE_ELF=disable
+    ENABLE_OR_DISABLE_HARDENING=disable
+    ENABLE_OR_DISABLE_LIBUUID=enable
+fi
+
+BUILD_COMMON_CFLAGS="\
+    -L${BUILD_PACKAGE_PREFIX}/lib \
+    ${BUILD_COMMON_CFLAGS} \
+" \
+COMMON_CFLAGS="\
+    -L${PACKAGE_PREFIX}/lib \
+    ${COMMON_CFLAGS} \
+" \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+package-stage-configure-install-archive \
+    ac_cv_header_linux_fsmap_h=${HAVE_LINUX_FSMAP_H} \
+    --disable-fsck \
+    --disable-libblkid \
+    --enable-debugfs \
+    --enable-defrag \
+    --enable-e2initrd-helper \
+    --enable-imager \
+    --enable-relative-symlinks \
+    --enable-resizer \
+    --enable-symlink-build \
+    --enable-symlink-install \
+    --with-crond_dir=${INSTALL_ROOT}/${PACKAGE_PLATFORM_SYSROOT}/etc/cron.d \
+    --with-libintl-prefix=${PACKAGE_PREFIX} \
+    --${ENABLE_OR_DISABLE_BSD}-bsd-shlibs \
+    --${ENABLE_OR_DISABLE_ELF}-elf-shlibs \
+    --${ENABLE_OR_DISABLE_HARDENING}-hardening \
+    --${ENABLE_OR_DISABLE_LIBUUID}-libuuid

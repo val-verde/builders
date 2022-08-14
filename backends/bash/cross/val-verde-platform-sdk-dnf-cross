@@ -13,6 +13,7 @@ function package-install-completion-callback() {
           ${INSTALL_PREFIX}/bin/dnf
 }
 
+export-compiler-environment-for-build-tools
 export-compiler-environment-for-python
 
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \

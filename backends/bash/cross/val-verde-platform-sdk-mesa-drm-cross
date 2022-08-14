@@ -22,7 +22,6 @@ package-meson-install-archive \
     -Dfreedreno=${HARDWARE_DRIVERS_ENABLED} \
     -Dinstall-test-programs=false \
     -Dintel=${HARDWARE_DRIVERS_ENABLED} \
-    -Dlibkms=${HARDWARE_DRIVERS_ENABLED} \
     -Domap=${HARDWARE_DRIVERS_ENABLED} \
     -Dnouveau=${HARDWARE_DRIVERS_ENABLED} \
     -Dradeon=${HARDWARE_DRIVERS_ENABLED} \

@@ -6,7 +6,7 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export DEPENDS="\
-    ${PACKAGE_BASE_NAME}-icu4c-70-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-icu4c-71-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-xz-5-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-zlib-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0) \
 "
@@ -18,7 +18,11 @@ fi
 
 if [ -z "${DISABLE_PYTHON}" ]; then
     export-compiler-environment-for-python
-    WITH_OR_WITHOUT_PYTHON=--with-python=${PACKAGE_PREFIX}
+    COMMON_CFLAGS="\
+        -lpython${PYTHON_VERSION} \
+        ${COMMON_CFLAGS} \
+    "
+    WITH_OR_WITHOUT_PYTHON=--with-python=${BUILD_PACKAGE_PREFIX}
 else
     WITH_OR_WITHOUT_PYTHON=--without-python
 fi
@@ -27,6 +31,7 @@ DISABLE_AUTOUPDATE=TRUE \
 RPATH_COMPONENTS="\
     ${INSTALL_PREFIX}/lib/${SHARED_LIBRARY_PREFIX}xml2${SHARED_LIBRARY_SUFFIX} \
 " \
+PYTHON_CONFIG=`package-get-path python${PYTHON_VERSION}-config SCRIPT HOST` \
 package-stage-configure-install-archive \
     lt_cv_deplibs_check_method=pass_all \
     --disable-static \

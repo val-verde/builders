@@ -14,6 +14,16 @@ function package-install-completion-callback() {
           ${INSTALL_PREFIX}/bin/vi
 }
 
+HAVE_RT_TIMER=no
+
+if [ "${HOST_OS}" = "gnu" ]; then
+    HAVE_RT_TIMER=yes
+    LIBS="\
+        -lrt \
+        ${LIBS} \
+    "
+fi
+
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 DISABLE_AUTOUPDATE=TRUE \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
@@ -24,5 +34,6 @@ package-configure-install-archive \
     vim_cv_stat_ignores_slash=no \
     vim_cv_terminfo=yes \
     vim_cv_tgetent=yes \
+    vim_cv_timer_create=${HAVE_RT_TIMER} \
     vim_cv_toupper_broken=no \
     --with-tlib=ncurses

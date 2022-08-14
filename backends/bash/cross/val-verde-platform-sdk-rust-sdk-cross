@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
+    # rust build
+    package-invoke-builder rust 1
+else
+    # rust build
+    package-invoke-builder rust-cross 1
+
+    # rust-runtime build
+    package-invoke-builder rust-runtime-cross 1
+fi

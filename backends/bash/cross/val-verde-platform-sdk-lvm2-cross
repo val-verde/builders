@@ -11,6 +11,8 @@ COMMON_CFLAGS="\
     ${COMMON_CFLAGS} \
 " \
 package-stage-configure-install-archive \
+    ac_cv_func_malloc_0_nonnull=yes \
+    ac_cv_func_realloc_0_nonnull=yes \
     --disable-static \
     --enable-pkgconfig \
     --enable-shared

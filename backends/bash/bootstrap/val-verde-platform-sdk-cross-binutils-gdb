@@ -30,12 +30,24 @@ else
     WITH_OR_WITHOUT_SYSTEM_ZLIB=with
 fi
 
+ENABLE_CET=no
+unset MULTILIB_LIST
+
 if [ "${HOST_PROCESSOR}" = "aarch64" ]; then
     MULTILIB_LIST="lp64"
+elif [ "${HOST_PROCESSOR}" = "mips" ] ||
+     [ "${HOST_PROCESSOR}" = "mipsel" ] ||
+     [ "${HOST_PROCESSOR}" = "mips64" ] ||
+     [ "${HOST_PROCESSOR}" = "mips64el" ]; then
+    ENABLE_CET=no
+
+    if [ "${HOST_OS_API_LEVEL}" = "abin32" ]; then
+        MULTILIB_LIST="n32"
+    else
+        MULTILIB_LIST="n64"
+    fi
 elif [ "${HOST_PROCESSOR}" = "x86_64" ]; then
     MULTILIB_LIST="m64"
-else
-    unset MULTILIB_LIST
 fi
 
 BUILD_COMMON_CFLAGS="\
@@ -98,8 +110,9 @@ package-stage-configure-install-archive \
     --disable-sim \
     --disable-werror \
     --enable-64-bit-bfd \
-    --enable-cet=yes \
+    --enable-cet=${ENABLE_CET} \
     --enable-gold \
+    --enable-gprofng=no \
     --enable-plugins \
     --enable-static \
     --enable-shared \

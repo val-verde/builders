@@ -1,0 +1,166 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+export DEPENDS="\
+    ${PACKAGE_BASE_NAME}-llvm-project-${LLVM_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
+    ${PACKAGE_BASE_NAME}-z3-4-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0) \
+"
+export LLVM_NATIVE_STAGE_ROOT=${LLVM_NATIVE_STAGE_ROOT:-${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}}
+CLANG_RESOURCE_VERSION=`package-get-source-package-version llvm-project`
+
+# Configure the build components
+${MKDIR} -p ${STAGE_ROOT}/libgcc
+
+RUST_BUILD_OS=${BUILD_OS}
+RUST_HOST_OS=${HOST_OS}
+
+if [ "${BUILD_OS}" = "gnu" ]; then
+    RUST_BUILD_OS=linux
+elif [ "${BUILD_OS}" = "macos" ]; then
+    RUST_BUILD_OS=darwin
+elif [ "${BUILD_OS}" = "mingw" ]; then
+    RUST_BUILD_OS=windows
+fi
+
+if [ "${HOST_OS}" = "gnu" ]; then
+    RUST_HOST_OS=linux
+    ${LN} -sf \
+          `package-get-path unwind SHARED HOST` \
+          ${STAGE_ROOT}/libgcc/libgcc_s.so
+elif [ "${HOST_OS}" = "mingw" ]; then
+    RUST_HOST_OS=windows
+fi
+
+package-rsync -ax \
+              ${SOURCE_ROOT}/${VAL_VERDE_GH_TEAM}-config.toml.in \
+              ${STAGE_ROOT}/config.toml
+
+RUST_BUILD_COMPILER_RT_PROCESSOR=${BUILD_PROCESSOR}
+RUST_BUILD_PROCESSOR=${BUILD_PROCESSOR}
+
+if [ "${BUILD_PROCESSOR}" = "aarch64" ] ||
+   [ "${BUILD_PROCESSOR}" = "x86_64" ]; then
+    if [ "${BUILD_OS}" = "android" ]; then
+        RUST_BUILD_COMPILER_RT_PROCESSOR=${RUST_BUILD_COMPILER_RT_PROCESSOR}-android
+    fi
+elif [ "${BUILD_PROCESSOR}" = "armv7a" ]; then
+    RUST_BUILD_COMPILER_RT_PROCESSOR=armhf
+    RUST_BUILD_PROCESSOR=armv7
+
+    if [ "${BUILD_OS}" = "android" ]; then
+        RUST_BUILD_OS_API_LEVEL=eabi
+    else
+        RUST_BUILD_OS_API_LEVEL=${BUILD_OS_API_LEVEL}
+    fi
+elif [ "${BUILD_PROCESSOR}" = "i386" ] ||
+     [ "${BUILD_PROCESSOR}" = "i486" ] ||
+     [ "${BUILD_PROCESSOR}" = "i586" ] ||
+     [ "${BUILD_PROCESSOR}" = "i686" ] ||
+     [ "${BUILD_PROCESSOR}" = "i786" ]; then
+    RUST_BUILD_COMPILER_RT_PROCESSOR=i386
+    RUST_BUILD_PROCESSOR=i786
+fi
+
+if [ "${BUILD_OS}" = "android" ]; then
+    RUST_BUILD_TRIPLE=${RUST_BUILD_PROCESSOR}-${BUILD_KERNEL}-${BUILD_OS}${RUST_BUILD_OS_API_LEVEL}
+elif [ "${BUILD_OS}" = "macos" ]; then
+    RUST_BUILD_TRIPLE=${RUST_BUILD_PROCESSOR}-${BUILD_KERNEL}-${DARWIN_OS}
+elif [ "${BUILD_OS}" = "mingw" ]; then
+    RUST_BUILD_TRIPLE=${RUST_BUILD_PROCESSOR}-pc-windows-gnullvm
+else
+    RUST_BUILD_TRIPLE=${RUST_BUILD_PROCESSOR}-${BUILD_ENV:-unknown}-${BUILD_KERNEL}-${BUILD_OS}${RUST_BUILD_OS_API_LEVEL}
+fi
+
+RUST_HOST_COMPILER_RT_PROCESSOR=${HOST_PROCESSOR}
+RUST_HOST_PROCESSOR=${HOST_PROCESSOR}
+
+if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
+   [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    if [ "${HOST_OS}" = "android" ]; then
+        RUST_HOST_COMPILER_RT_PROCESSOR=${RUST_HOST_COMPILER_RT_PROCESSOR}-android
+    fi
+elif [ "${HOST_PROCESSOR}" = "armv7a" ]; then
+    RUST_HOST_COMPILER_RT_PROCESSOR=armhf
+    RUST_HOST_PROCESSOR=armv7
+
+    if [ "${HOST_OS}" = "android" ]; then
+        RUST_HOST_OS_API_LEVEL=eabi
+    else
+        RUST_HOST_OS_API_LEVEL=${HOST_OS_API_LEVEL}
+    fi
+elif [ "${HOST_PROCESSOR}" = "i386" ] ||
+     [ "${HOST_PROCESSOR}" = "i486" ] ||
+     [ "${HOST_PROCESSOR}" = "i586" ] ||
+     [ "${HOST_PROCESSOR}" = "i686" ] ||
+     [ "${HOST_PROCESSOR}" = "i786" ]; then
+    RUST_HOST_COMPILER_RT_PROCESSOR=i386
+    RUST_HOST_PROCESSOR=i786
+fi
+
+if [ "${HOST_OS}" = "android" ]; then
+    RUST_HOST_TRIPLE=${RUST_HOST_PROCESSOR}-${HOST_KERNEL}-${HOST_OS}${RUST_HOST_OS_API_LEVEL}
+elif [ "${HOST_OS}" = "macos" ]; then
+    RUST_HOST_TRIPLE=${RUST_HOST_PROCESSOR}-${HOST_KERNEL}-${DARWIN_OS}
+elif [ "${HOST_OS}" = "mingw" ]; then
+    RUST_HOST_TRIPLE=${RUST_HOST_PROCESSOR}-pc-windows-gnullvm
+else
+    RUST_HOST_TRIPLE=${RUST_HOST_PROCESSOR}-${HOST_ENV:-unknown}-${HOST_KERNEL}-${HOST_OS}${RUST_HOST_OS_API_LEVEL}
+fi
+
+BUILD_COMMON_LDFLAGS="\
+    -lclang_rt.builtins-${RUST_BUILD_COMPILER_RT_PROCESSOR} \
+    -L${BUILD_PACKAGE_PREFIX}/lib/clang/${CLANG_RESOURCE_VERSION}/lib/${RUST_BUILD_OS} \
+    ${BUILD_COMMON_LDFLAGS} \
+" \
+COMMON_CFLAGS="\
+    -DMB_LEN_MAX=16 \
+    ${COMMON_CFLAGS} \
+" \
+COMMON_LDFLAGS="\
+    -lclang_rt.builtins-${RUST_HOST_COMPILER_RT_PROCESSOR} \
+    -L${STAGE_ROOT}/libgcc \
+    -L${BUILD_PACKAGE_PREFIX}/lib/clang/${CLANG_RESOURCE_VERSION}/lib/${RUST_HOST_OS} \
+    ${COMMON_LDFLAGS} \
+" \
+export-compiler-environment
+generate-compiler-tools
+
+export-build-util CARGO cargo
+export-build-util RUSTC rustc
+export-build-util RUSTFMT rustfmt
+FILECHECK=${LLVM_NATIVE_STAGE_ROOT}/bin/FileCheck
+LLVMCONFIG=${LLVM_NATIVE_STAGE_ROOT}/bin/llvm-config
+
+${SED} -i "s|@@AR@@|${AR}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@BUILD_TRIPLE@@|${BUILD_4_TRIPLE}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@CARGO@@|${CARGO}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@CC@@|${CC}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@CFLAGS@@|${CFLAGS}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@CXX@@|${CXX}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@CXXFLAGS@@|${CXXFLAGS}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@FILECHECK@@|${FILECHECK}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@INSTALL_PREFIX@@|${INSTALL_PREFIX}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@LD@@|${CCLD}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@LDFLAGS@@|${CCLDFLAGS}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@LLVMCONFIG@@|${LLVMCONFIG}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@NODE@@|${NODE}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@PYTHON@@|${PYTHON}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@RANLIB@@|${RANLIB}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@RUSTC@@|${RUSTC}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@RUSTFMT@@|${RUSTFMT}|g" ${STAGE_ROOT}/config.toml
+${SED} -i "s|@@STAGE_ROOT@@|${STAGE_ROOT}|g" ${STAGE_ROOT}/config.toml
+
+# Build the components
+TOOL_LOG=${STAGE_ROOT}/builder-compile \
+tool-log ${PYTHON} ${SOURCE_ROOT}/x.py build --config ${STAGE_ROOT}/config.toml
+
+TOOL_LOG=${STAGE_ROOT}/builder-installation \
+tool-log ${PYTHON} ${SOURCE_ROOT}/x.py install --config ${STAGE_ROOT}/config.toml
+
+# Build and install the package
+package-invoke-archive-install

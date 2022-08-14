@@ -7,11 +7,12 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for cmake/install
 if [ "${HOST_OS}" = "macos" ]; then
-    PYTHON_INCLUDE_DIR=${PACKAGE_PLATFORM_SYSROOT}/System/Library/Frameworks/Python.framework/Versions/Current/include/python${PYTHON_VERSION}
+    PYTHON_INCLUDE_DIR=${PACKAGE_PLATFORM_SYSROOT}/System/Library/Frameworks/Python.framework/Versions/${PYTHON_VERSION}/include/python${PYTHON_VERSION}
 else
     PYTHON_INCLUDE_DIR=${PACKAGE_PREFIX}/include/python${PYTHON_VERSION}
 fi
 
+export-compiler-environment-for-build-tools
 export-compiler-environment-for-python
 package-cmake-install-archive \
     -D_GPGMECONFIG_EXECUTABLE=`package-get-path gpgme-config SCRIPT HOST` \

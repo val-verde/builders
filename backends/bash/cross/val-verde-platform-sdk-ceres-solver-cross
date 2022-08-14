@@ -14,4 +14,5 @@ package-cmake-install-archive \
     -DBUILD_EXAMPLES=FALSE \
     -DBUILD_SHARED_LIBS=TRUE \
     -DBUILD_TESTING=FALSE \
+    -DCUDA=FALSE \
     -DLIB_SUFFIX=

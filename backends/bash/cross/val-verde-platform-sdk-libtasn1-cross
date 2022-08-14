@@ -6,9 +6,18 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for bootstrap/configure/install
+HAS_STRVERSCMP=yes
+
+if [ "${HOST_OS}" = "macos" ]; then
+    HAS_STRVERSCMP=no
+elif [ "${HOST_OS}" = "mingw" ]; then
+    HAS_STRVERSCMP=no
+fi
+
 BOOTSTRAP_ARGS="--force" \
 DISABLE_AUTOUPDATE=TRUE \
 package-bootstrap-configure-install-archive \
+    ac_cv_func_strverscmp=${HAS_STRVERSCMP} \
     --disable-doc \
     --disable-gtk-doc \
     --disable-gtk-doc-html \

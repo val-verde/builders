@@ -12,10 +12,17 @@ if [ "${HOST_OS}" = "musl" ]; then
     CONFIGURE_HOST_TRIPLE="${HOST_PROCESSOR}-${HOST_KERNEL}-gnu"
 fi
 
+if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
+    CROSS_COMPILING=no
+else
+    CROSS_COMPILING=yes
+fi
+
 CONFIGURE_FILE_ROOT=${STAGE_ROOT}/dist \
 INSTALL_TARGET="install_include install_lib install_utilities" \
 package-stage-configure-install-archive \
-    cross_compiling=yes \
+    cross_compiling=${CROSS_COMPILING} \
     --disable-doc \
     --disable-static \
+    --enable-dbm \
     --enable-shared

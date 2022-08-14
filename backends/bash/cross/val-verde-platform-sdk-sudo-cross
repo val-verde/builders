@@ -26,5 +26,7 @@ package-bootstrap-configure-install-archive \
     ax_cv_check_cflags___static_libgcc=${HAS_STATIC_LIBGCC} \
     --disable-static \
     --enable-shared \
+    --with-editor=vim \
+    --with-env-editor \
     --${ENABLE_OR_DISABLE_INTERCEPT}-intercept \
     --${WITH_OR_WITHOUT_NOEXEC}-noexec

@@ -11,11 +11,17 @@ if [ "${HOST_OS}" != "macos" ] &&
 fi
 
 # Invoke one-shot template for bootstrap/configure/install
-if [ "${HOST_OS}" = "mingw" ]; then
+HAS_STRVERSCMP=yes
+
+if [ "${HOST_OS}" = "macos" ]; then
+    HAS_STRVERSCMP=no
+elif [ "${HOST_OS}" = "mingw" ]; then
     FORTIFY_SOURCE_LEVEL=0
+    HAS_STRVERSCMP=no
     unset DISABLE_FORTIFY_SOURCE_LEVEL
 fi
 
 DISABLE_AUTOUPDATE=TRUE \
 package-bootstrap-configure-install-archive \
+    ac_cv_func_strverscmp=${HAS_STRVERSCMP} \
     --disable-gcc-warnings

@@ -6,7 +6,11 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-export SYSROOT=${PACKAGE_PREFIX}/glibc-interface
+# mozjs build
+package-invoke-builder mozjs-cross 91
 
-# rust build
-package-invoke-builder rust 1
+# polkit build
+package-invoke-builder polkit-cross 0
+
+# network-manager build
+package-invoke-builder network-manager-cross 1

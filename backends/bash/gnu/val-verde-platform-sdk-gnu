@@ -14,7 +14,7 @@ package-invoke-category-builder llvm-dependencies-gnu
 
 # llvm build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
-package-invoke-builder llvm-project 13
+package-invoke-builder llvm-project ${LLVM_VERSION}
 
 # souper build
 package-invoke-builder souper-cross 1
@@ -51,7 +51,7 @@ if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
     if [ "${BUILD_PROCESSOR}" = "x86_64" ] ||
        [ "${HOST_PROCESSOR}" != "x86_64" ]; then
         # node + sdk build
-        package-invoke-builder node-cross 17
+        package-invoke-builder node-cross 18
         package-invoke-builder npm-yarn-cross 1
 
         # yautja server build
@@ -61,6 +61,12 @@ fi
 
 # wine-sdk build
 package-invoke-category-builder wine-sdk-cross
+
+# rust sdk build
+package-invoke-category-builder rust-sdk-cross
+
+# networking tools build
+package-invoke-category-builder networking-tools-cross
 
 # blockchain sdk build
 package-invoke-category-builder blockchain-sdk-cross

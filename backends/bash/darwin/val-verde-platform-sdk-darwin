@@ -8,7 +8,7 @@ export SYSROOT=${SOURCE_ROOT_BASE}/macosx-${HOST_OS_API_LEVEL}
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # libcxx build
-package-invoke-builder libcxx-bootstrap 13
+package-invoke-builder libcxx-bootstrap ${LLVM_VERSION}
 
 # llvm dependencies
 package-invoke-category-builder llvm-dependencies-darwin
@@ -37,7 +37,7 @@ if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
     if [ "${BUILD_PROCESSOR}" = "x86_64" ] ||
        [ "${HOST_PROCESSOR}" != "x86_64" ]; then
         # node + sdk build
-        package-invoke-builder node-cross 17
+        package-invoke-builder node-cross 18
         package-invoke-builder npm-yarn-cross 1
 
         # yautja server build

@@ -5,39 +5,9 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
-if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
-    export BINDIR=/usr/bin
+if [ -z "${MAKEINFO}" ]; then
+    export-build-util MAKEINFO true
 fi
-
-export \
-    AR=`BINDIR= package-get-path llvm-ar EXECUTABLE BUILD` \
-    BUILD_AR=`BINDIR= package-get-path llvm-ar EXECUTABLE BUILD` \
-    BUILD_CC=`BINDIR= package-get-path clang EXECUTABLE BUILD` \
-    BUILD_CXX=`BINDIR= package-get-path clang++ EXECUTABLE BUILD` \
-    BUILD_LD=`BINDIR= package-get-path ld.lld EXECUTABLE BUILD` \
-    BUILD_NM=`BINDIR= package-get-path llvm-nm EXECUTABLE BUILD` \
-    BUILD_OBJDUMP=`BINDIR= package-get-path llvm-objdump EXECUTABLE BUILD` \
-    BUILD_RANLIB=`BINDIR= package-get-path llvm-ranlib EXECUTABLE BUILD` \
-    BUILD_READELF=`BINDIR= package-get-path llvm-readelf EXECUTABLE BUILD` \
-    BUILD_STRINGS=`BINDIR= package-get-path llvm-strings EXECUTABLE BUILD` \
-    BUILD_STRIP=`BINDIR= package-get-path llvm-strip EXECUTABLE BUILD` \
-    CC=`BINDIR= package-get-path clang EXECUTABLE BUILD` \
-    CXX=`BINDIR= package-get-path clang++ EXECUTABLE BUILD` \
-    LD=`BINDIR= package-get-path ld.lld EXECUTABLE BUILD` \
-    NM=`BINDIR= package-get-path llvm-nm EXECUTABLE BUILD` \
-    OBJDUMP=`BINDIR= package-get-path llvm-objdump EXECUTABLE BUILD` \
-    RANLIB=`BINDIR= package-get-path llvm-ranlib EXECUTABLE BUILD` \
-    READELF=`BINDIR= package-get-path llvm-readelf EXECUTABLE BUILD` \
-    STRINGS=`BINDIR= package-get-path llvm-strings EXECUTABLE BUILD` \
-    STRIP=`BINDIR= package-get-path llvm-strip EXECUTABLE BUILD`
-
-export \
-    AUTOMAKE=`BINDIR= package-get-path automake EXECUTABLE BUILD` \
-    AUTORECONF=`BINDIR= package-get-path autoreconf EXECUTABLE BUILD` \
-    AUTOUPDATE=`BINDIR= package-get-path autoupdate EXECUTABLE BUILD` \
-    GO=`BINDIR= package-get-path go EXECUTABLE BUILD` \
-    CMAKE=`BINDIR= package-get-path cmake EXECUTABLE BUILD` \
-    MAKEINFO=`package-get-path true EXECUTABLE BUILD`
 
 if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
     # zlib bootstrap build
@@ -45,10 +15,11 @@ if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
 
     # help2man bootstrap build
     package-invoke-builder help2man 1
-    export HELP2MAN=`BINDIR= package-get-path help2man EXECUTABLE BUILD`
+    unset HELP2MAN
 
     # libtool bootstrap build
     package-invoke-builder libtool 2
+    unset LIBTOOL
 
     # libffi bootstrap build
     package-invoke-builder libffi 3
@@ -61,6 +32,7 @@ if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
 
     # pkg-config bootstrap build
     package-invoke-builder pkg-config 0
+    unset PKG_CONFIG
 
     # re2c build
     package-invoke-builder re2c 3
@@ -91,4 +63,4 @@ fi
 package-invoke-builder cross-binutils-gdb 2
 
 # gcc build
-package-invoke-builder cross-gcc 11
+package-invoke-builder cross-gcc 12

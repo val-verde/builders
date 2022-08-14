@@ -12,7 +12,7 @@ package-invoke-builder autoconf-cross 2
 package-invoke-builder automake-cross 1
 
 # windows autoconf-archive build
-package-invoke-builder autoconf-archive-cross 2021
+package-invoke-builder autoconf-archive-cross 2022
 
 # windows argp-standalone build
 package-invoke-builder argp-standalone-cross 1
@@ -64,7 +64,7 @@ package-invoke-builder libffi-cross 3
 package-invoke-builder libiconv-cross 1
 
 # windows icu build
-package-invoke-builder icu4c-cross 70
+package-invoke-builder icu4c-cross 71
 
 # windows libunistring build
 package-invoke-builder libunistring-cross 0
@@ -89,7 +89,8 @@ package-invoke-builder gzip-cross 1
 # windows xz build
 package-invoke-builder xz-cross 5
 
-# windows libxml2 build
+# windows libxml2 build (without python)
+ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
 DISABLE_PYTHON=TRUE \
 package-invoke-builder libxml2-cross 2 bootstrap-only
 
@@ -148,11 +149,12 @@ package-invoke-builder tcl-cross 8
 # windows sqlite build
 package-invoke-builder sqlite-cross 3
 
-# windows c-ares build
-package-invoke-builder c-ares-cross 1
-
 # windows openssl build
 package-invoke-builder openssl-cross 1
+
+# windows util-linux build
+ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
+package-invoke-builder util-linux-cross 2 bootstrap-only
 
 # windows krb5 build
 # package-invoke-builder krb5-cross 1
@@ -181,10 +183,6 @@ package-invoke-builder gpgme-cross 1
 # windows indent build
 package-invoke-builder indent-cross 2
 
-# windows util-linux build
-ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
-package-invoke-builder util-linux-cross 2 bootstrap-only
-
 # windows libarchive build
 package-invoke-builder libarchive-cross 3
 
@@ -209,6 +207,9 @@ package-invoke-builder libusb-cross 1
 # windows libuv build
 package-invoke-builder libuv-cross 1
 
+# windows c-ares build
+package-invoke-builder c-ares-cross 1
+
 # windows grep build
 package-invoke-builder grep-cross 3
 
@@ -227,6 +228,9 @@ package-invoke-builder jq-cross 1
 # windows json-c build
 package-invoke-builder json-c-cross 0
 
+# jsoncpp build
+package-invoke-builder jsoncpp-cross 1
+
 # windows which build
 # package-invoke-builder which-cross 2
 
@@ -242,15 +246,8 @@ package-invoke-builder lua-cross 5
 # windows wget build
 package-invoke-builder wget-cross 1
 
-# windows python build
-ENABLE_STAGE_ROOT_BUILD=TRUE \
-package-invoke-builder python-cross 3
-
-# windows python-setuptools build
-package-invoke-builder python-setuptools-cross 60
-
-# windows python-pip build
-package-invoke-builder python-pip-cross 21
+# windows python bootstrap build
+package-invoke-category-builder python-bootstrap-cross
 
 # windows libxml2 build (with python support)
 package-invoke-builder libxml2-cross 2
@@ -276,10 +273,17 @@ package-invoke-builder protobuf-cross 3
 # windows python sdk build
 package-invoke-category-builder python-sdk-cross
 
+# windows itstool build
+package-invoke-builder itstool-cross 2
+
+# windows gtk-doc build
+package-invoke-builder gtk-doc-cross 1
+
 # windows libtasn1 build
 package-invoke-builder libtasn1-cross 4
 
 # windows p11-kit build
+ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
 DISABLE_SYSTEMD=TRUE \
 package-invoke-builder p11-kit-cross 0
 
@@ -311,19 +315,20 @@ package-invoke-builder boost-cross 1
 package-invoke-category-builder graphics-server-cross
 
 # windows pulseaudio build
-package-invoke-builder pulseaudio-cross 15
-
-# windows itstool build
-package-invoke-builder itstool-cross 2
-
-# windows gtk-doc build
-package-invoke-builder gtk-doc-cross 1
+package-invoke-builder pulseaudio-cross 16
 
 # windows graphviz build
 package-invoke-builder graphviz-cross 2
 
 # intltool build
 package-invoke-builder intltool-cross 0
+
+# hwloc build
+package-invoke-builder hwloc-cross 2
+
+# p11-kit build
+DISABLE_SYSTEMD=TRUE \
+package-invoke-builder p11-kit-cross 0
 
 # windows cups build
 # package-invoke-builder cups-cross 2
@@ -373,6 +378,9 @@ package-invoke-builder libobjc2-cross 2
 
 # windows jwasm build
 package-invoke-builder jwasm 2
+
+# windows nasm build
+package-invoke-builder nasm-cross 2
 
 # windows re2c build
 package-invoke-builder re2c-cross 3

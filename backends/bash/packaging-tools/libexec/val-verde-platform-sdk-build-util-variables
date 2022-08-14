@@ -1,0 +1,96 @@
+#!/bin/bash
+
+set -e
+
+function export-build-util-variables() {
+    export-build-util APT apt
+    export-build-util AUTOGEN autogen
+    export-build-util AUTORECONF autoreconf
+    export-build-util AUTOUPDATE autoupdate
+    export-build-util BASENAME basename
+    export-build-util BASH bash
+    export-build-util BISON bison
+    export-build-util CAT cat
+    export-build-util CHMOD chmod
+    export-build-util CMP mp
+    export-build-util CP cp
+    export-build-util CURL curl
+    export-build-util CUT cut
+    export-build-util DATE date
+    export-build-util DF df
+    export-build-util DIFF diff
+    export-build-util DNF dnf
+    export-build-util DPKG dpkg
+    export-build-util DPKG_DEB dpkg-deb
+    export-build-util DPKG_QUERY dpkg-query
+    export-build-util ECHO echo
+    export-build-util ENV env
+    export-build-util EXPR expr
+    export-build-util FALSE false
+    export-build-util FILE file
+    export-build-util FIND find
+    export-build-util FLOCK flock
+    export-build-util GAWK gawk
+    export-build-util GETTEXT gettext
+    export-build-util GIT git
+    export-build-util GPERF gperf
+    export-build-util GREP grep
+    export-build-util HEAD head
+    export-build-util HELP2MAN help2man
+    export-build-util JAVA java
+    export-build-util JAVAC javac
+    export-build-util LESS less
+    export-build-util LSB_RELEASE lsb_release
+    export-build-util INSTALL install
+    export-build-util LN ln
+    export-build-util LS ls
+    export-build-util M4 m4
+    export-build-util MAKEINFO makeinfo
+    export-build-util MIG mig
+    export-build-util MKDIR mkdir
+    export-build-util MKTEMP mktemp
+    export-build-util MSGFMT msgfmt
+    export-build-util MV mv
+    export-build-util NICE nice
+    export-build-util PATCH patch
+    export-build-util PERL perl
+    export-build-util READLINK readlink
+    export-build-util REALPATH realpath
+    export-build-util RM rm -f
+    export-build-util RMDIR rmdir
+    export-build-util RPM rpm
+    export-build-util RPMBUILD rpmbuild
+    export-build-util RSYNC rsync
+    export-build-util SED sed
+    export-build-util SORT sort
+    export-build-util SSH ssh
+    export-build-util STAT stat
+    export-build-util TAIL tail
+    export-build-util TAR tar
+    export-build-util TEE tee
+    export-build-util TOUCH touch
+    export-build-util TR tr
+    export-build-util TRUE true
+    export-build-util UNAME uname
+    export-build-util UNIQ uniq
+    export-build-util WC wc
+    export-build-util WGET wget
+    export-build-util WHICH which
+    export-build-util XARGS xargs
+    export-build-util XZ xz
+
+    # [G]UNZIP and [G]ZIP environment variables are used as options to the tools
+    # and should not be exported
+    export-build-util _GUNZIP gunzip
+    export-build-util _GZIP gzip
+    export-build-util _UNZIP unzip
+    export-build-util _ZIP zip
+    GUNZIP=${_GUNZIP}
+    GZIP=${_GZIP}
+    UNZIP=${_UNZIP}
+    ZIP=${_ZIP}
+    unset _GUNZIP
+    unset _GZIP
+    unset _UNZIP
+    unset _ZIP
+}

@@ -21,7 +21,11 @@ X86_ENABLED=FALSE
 if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
    [ "${HOST_PROCESSOR}" = "armv7a" ]; then
     ARM_ENABLED=TRUE
-elif [ "${HOST_PROCESSOR}" = "i686" ] ||
+elif [ "${HOST_PROCESSOR}" = "i386" ] ||
+     [ "${HOST_PROCESSOR}" = "i486" ] ||
+     [ "${HOST_PROCESSOR}" = "i586" ] ||
+     [ "${HOST_PROCESSOR}" = "i686" ] ||
+     [ "${HOST_PROCESSOR}" = "i786" ] ||
      [ "${HOST_PROCESSOR}" = "x86_64" ]; then
     X86_ENABLED=TRUE
 fi
@@ -30,6 +34,7 @@ ISPC_ANDROID_TARGET=FALSE
 ISPC_LINUX_TARGET=FALSE
 ISPC_MACOS_TARGET=FALSE
 ISPC_WINDOWS_TARGET=FALSE
+ISPCRT_BUILD_TASK_MODEL=OpenMP
 
 if [ "${HOST_OS}" = "android" ]; then
     ISPC_ANDROID_TARGET=TRUE 
@@ -39,6 +44,7 @@ elif [ "${HOST_OS}" = "gnu" ] ||
 elif [ "${HOST_OS}" = "macos" ]; then
     ISPC_MACOS_TARGET=TRUE
 elif [ "${HOST_OS}" = "mingw" ]; then
+    ISPCRT_BUILD_TASK_MODEL=TBB
     ISPC_WINDOWS_TARGET=TRUE
 fi
 
@@ -57,7 +63,7 @@ package-cmake-install-archive \
     -DCLANGPP_EXECUTABLE=${CXX} \
     -DCURSES_INCLUDE_PATH=${PACKAGE_PREFIX} \
     -DCURSES_FORM_LIBRARY=`package-get-path form SHARED HOST` \
-    -DCURSES_NCURSES_LIBRARY=`package-get-path ncurses SHARED HOST` \
+    -DCURSES_CURSES_LIBRARY=`package-get-path ncurses SHARED HOST` \
     -DFL_LIBRARY=`package-get-path fl SHARED HOST` \
     -DGIT_BINARY=${GIT} \
     -DISPC_ANDROID_TARGET=${ISPC_ANDROID_TARGET} \
@@ -73,6 +79,7 @@ package-cmake-install-archive \
     -DISPC_NO_DUMPS=TRUE \
     -DISPC_PS_TARGET=FALSE \
     -DISPC_WINDOWS_TARGET=${ISPC_WINDOWS_TARGET} \
+    -DISPCRT_BUILD_TASK_MODEL=${ISPCRT_BUILD_TASK_MODEL} \
     -DLLVM_AS_EXECUTABLE=`package-get-path llvm-as EXECUTABLE BUILD` \
     -DLLVM_CONFIG_EXECUTABLE=${LLVM_CONFIG_EXECUTABLE} \
     -DLLVM_DIR=${LLVM_STAGE_ROOT}/lib/cmake/llvm \

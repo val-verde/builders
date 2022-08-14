@@ -6,15 +6,43 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for cmake/install
+ENABLE_MONITOR=TRUE
+ENABLE_VLF=TRUE
+ENABLE_WAYLAND=FALSE
+VULKAN_LIBRARY=vulkan
+
+if [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    ENABLE_WAYLAND=TRUE
+elif [ "${HOST_OS}" = "macos" ]; then
+    ENABLE_VLF=FALSE
+elif [ "${HOST_OS}" = "mingw" ]; then
+    ENABLE_MONITOR=FALSE
+    VULKAN_LIBRARY=${VULKAN_LIBRARY}-1
+fi
+
+export-compiler-environment-for-build-tools
 package-cmake-install-archive \
+    -DBUILD_APIDUMP=TRUE \
+    -DBUILD_GMOCK=FALSE \
+    -DBUILD_LAYERMGR=TRUE \
+    -DBUILD_MONITOR=${ENABLE_MONITOR} \
+    -DBUILD_SCREENSHOT=TRUE \
+    -DBUILD_TESTS=FALSE \
+    -DBUILD_VIA=TRUE \
+    -DBUILD_VLF=${ENABLE_VLF} \
     -DBUILD_WSI_DIRECTFB_SUPPORT=FALSE \
-    -DBUILD_WSI_WAYLAND_SUPPORT=FALSE \
-    -DBUILD_WSI_XLIB_SUPPORT=FALSE \
-    -DJSONCPP_INCLUDE_DIR=/sources/spirv-headers/tools/buildHeaders/jsoncpp/dist \
-    -DJSONCPP_SEARCH_PATH=/sources/spirv-headers/tools/buildHeaders/jsoncpp/dist \
-    -DJSONCPP_SOURCE_DIR=/sources/spirv-headers/tools/buildHeaders/jsoncpp/dist \
+    -DBUILD_WSI_WAYLAND_SUPPORT=${ENABLE_WAYLAND} \
+    -DBUILD_WSI_XCB_SUPPORT=TRUE \
+    -DBUILD_WSI_XLIB_SUPPORT=TRUE \
+    -DBUILD_WERROR=FALSE \
+    -DCCACHE_EXECUTABLE=`package-get-path ccache EXECUTABLE BUILD` \
+    -DINSTALL_GTEST=FALSE \
+    -DJSONCPP_SOURCE_DIR=${SOURCE_ROOT_BASE}/jsoncpp-1 \
     -DVkLayer_utils_LIBRARY=`package-get-path VkLayer_utils STATIC HOST` \
-    -DVulkan_LIBRARY=`package-get-path vulkan-1 SHARED HOST` \
+    -DPython3_EXECUTABLE=${PYTHON} \
+    -DUSE_CCACHE=TRUE \
+    -DVulkan_LIBRARY=`package-get-path ${VULKAN_LIBRARY} SHARED HOST` \
     -DVULKAN_HEADERS_INSTALL_DIR=${PACKAGE_PREFIX} \
     -DVULKAN_LOADER_INSTALL_DIR=${PACKAGE_PREFIX} \
     -DVULKAN_VALIDATIONLAYERS_INSTALL_DIR=${PACKAGE_PREFIX}

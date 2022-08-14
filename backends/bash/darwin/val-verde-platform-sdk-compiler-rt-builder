@@ -5,4 +5,4 @@ set -e
 source /usr/libexec/val-verde-platform-sdk-builder-api
 
 # one time build for darwin compiler-rt
-package-invoke-builder compiler-rt-cross 13
+package-invoke-builder compiler-rt-cross ${LLVM_VERSION}
