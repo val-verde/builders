@@ -517,6 +517,20 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         unset EMBED_BITCODE_CFLAG
     fi
 
+    if [ "${!VARIANT_PROCESSOR}" = "aarch64" ]; then
+        DLLTOOL_MACHINE=arm64
+    elif [ "${!VARIANT_PROCESSOR}" = "armv7a" ]; then
+        DLLTOOL_MACHINE=arm
+    elif [ "${!VARIANT_PROCESSOR}" = "i386" ] ||
+         [ "${!VARIANT_PROCESSOR}" = "i486" ] ||
+         [ "${!VARIANT_PROCESSOR}" = "i586" ] ||
+         [ "${!VARIANT_PROCESSOR}" = "i686" ] ||
+         [ "${!VARIANT_PROCESSOR}" = "i786" ]; then
+        DLLTOOL_MACHINE=i386
+    elif [ "${!VARIANT_PROCESSOR}" = "x86_64" ]; then
+        DLLTOOL_MACHINE="i386:x86-64"
+    fi
+
     TOOL_COMMON_CFLAGS=${ENV_PREFIX}COMMON_CFLAGS
     TOOL_COMMON_LDFLAGS=${ENV_PREFIX}COMMON_LDFLAGS
     TOOL_COMMON_CXXFLAGS=${ENV_PREFIX}COMMON_CXXFLAGS
@@ -527,6 +541,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     TOOL_CXXCPPFLAGS=${ENV_PREFIX}CXXCPPFLAGS
     TOOL_CXXFLAGS=${ENV_PREFIX}CXXFLAGS
     TOOL_CXXLDFLAGS=${ENV_PREFIX}CXXLDFLAGS
+    TOOL_DLLTOOLFLAGS=${ENV_PREFIX}DLLTOOLFLAGS
     TOOL_LDFLAGS=${ENV_PREFIX}LDFLAGS
     TOOL_LIBS=${ENV_PREFIX}LIBS
     TOOL_OBJCFLAGS=${ENV_PREFIX}OBJCFLAGS
@@ -603,6 +618,10 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         ${!TOOL_CCLDFLAGS} \
         ${STDLIB_CXXFLAG} \
         ${!TOOL_CXXLDFLAGS} \
+    " | ${XARGS}`"
+    export ${TOOL_DLLTOOLFLAGS}="`${ECHO} "\
+        -m ${DLLTOOL_MACHINE} \
+        ${!TOOL_DLLTOOLFLAGS} \
     " | ${XARGS}`"
 
     if [ -n "${ENABLE_LD_AS_CCLD}" ]; then
@@ -865,6 +884,8 @@ function generate-compiler-tools-variant() {
     TOOL_CXXFLAGS=${ENV_PREFIX}CXXFLAGS
     TOOL_CXXLD=${ENV_PREFIX}CXXLD
     TOOL_CXXLDFLAGS=${ENV_PREFIX}CXXLDFLAGS
+    TOOL_DLLTOOL=${ENV_PREFIX}DLLTOOL
+    TOOL_DLLTOOLFLAGS=${ENV_PREFIX}DLLTOOLFLAGS
     TOOL_LD=${ENV_PREFIX}LD
     TOOL_LDFLAGS=${ENV_PREFIX}LDFLAGS
     TOOL_OBJC=${ENV_PREFIX}OBJC
@@ -884,6 +905,7 @@ function generate-compiler-tools-variant() {
     create-host-tool "${!TOOL_CXX}" ${ENV_PREFIX}CXXFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-clang++
     create-host-tool "${!TOOL_CXXCPP}" ${ENV_PREFIX}CXXCPPFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-cpp-clang++
     create-host-tool "${!TOOL_CXXLD}" ${ENV_PREFIX}CCLDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang++
+    create-host-tool "${!TOOL_DLLTOOL}" ${ENV_PREFIX}DLLTOOLFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-dlltool
     create-host-tool "${!TOOL_LD}" ${ENV_PREFIX}LDFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-ld
     create-host-tool "${!TOOL_RC}" ${ENV_PREFIX}RCFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-rc
     create-host-tool "${!TOOL_WINDRES}" ${ENV_PREFIX}RCFLAGS ${GENERATED_BINDIR}/${TOOL_PREFIX}-windres
@@ -902,6 +924,8 @@ function generate-compiler-tools-variant() {
     export ${TOOL_CXXFLAGS}="${OPTIMIZATION_CFLAG}"
     export ${TOOL_CXXLD}=${GENERATED_BINDIR}/${TOOL_PREFIX}-ld-clang++
     export ${TOOL_CXXLDFLAGS}="${!PACKAGE_PREFIX_LIBDIR_CFLAG_VAR} ${OPTIMIZATION_LDFLAG} ${STRIP_CFLAG}"
+    export ${TOOL_DLLTOOL}=${GENERATED_BINDIR}/${TOOL_PREFIX}-dlltool
+    unset ${TOOL_DLLTOOLFLAGS}
     export ${TOOL_LD}=${GENERATED_BINDIR}/${TOOL_PREFIX}-ld
     export ${TOOL_LDFLAGS}="${!PACKAGE_PREFIX_LIBDIR_CFLAG_VAR} ${OPTIMIZATION_LDFLAG} ${STRIP_CFLAG}"
     export ${TOOL_OBJC}=${!TOOL_CC}
