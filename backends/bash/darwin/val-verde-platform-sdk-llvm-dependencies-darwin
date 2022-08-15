@@ -124,7 +124,7 @@ package-invoke-builder libedit-cross 20210910-3
 package-invoke-builder readline-cross 8
 
 # pcre build
-package-invoke-builder pcre-cross 8
+package-invoke-builder pcre-cross 10
 
 # mpfr build
 package-invoke-builder mpfr-cross 4
