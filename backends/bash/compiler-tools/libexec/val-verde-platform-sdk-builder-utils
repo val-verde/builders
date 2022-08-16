@@ -1180,7 +1180,6 @@ function package-cmake-invocation-arguments-for-variant() {
     CMAKE_SYSTEM_PROCESSOR=${!VARIANT_PROCESSOR}
     COMPILER_TARGET_VAR=${VARIANT}_TRIPLE
     COMPILER_TARGET=${!COMPILER_TARGET_VAR}
-    CXX_STANDARD=${CXX_STANDARD:-20}
     SYSTEM_NAME_VAR=${ENV_PREFIX}SYSTEM_NAME
     SYSTEM_VERSION=${SYSTEM_VERSION:-${!VARIANT_OS_API_LEVEL}}
 
@@ -1220,10 +1219,20 @@ function package-cmake-invocation-arguments-for-variant() {
     CMAKE_LIBTOOL=${!TOOL_LIBTOOL}
 
     unset \
+        CMAKE_C_STANDARD_CMD \
+        CMAKE_CXX_STANDARD_CMD \
         CMAKE_OSX_DEPLOYMENT_TARGET_CMD \
         CMAKE_OSX_SYSROOT_CMD \
         CROSSCOMPILING_CMD \
         SYSTEM_NAME_CMD
+
+    if [ -n "${C_STANDARD}" ]; then
+        CMAKE_C_STANDARD_CMD="-DCMAKE_C_STANDARD=${C_STANDARD}"
+    fi
+
+    if [ -n "${CXX_STANDARD}" ]; then
+        CMAKE_CXX_STANDARD_CMD="-DCMAKE_CXX_STANDARD=${CXX_STANDARD}"
+    fi
 
     if [ "${!VARIANT_OS}" = "mingw" ]; then
         COMPILER_TARGET_VAR=${VARIANT}_4_TRIPLE
@@ -1288,7 +1297,6 @@ function package-cmake-invocation-arguments-for-variant() {
 -DCMAKE_CXX_FLAGS_RELEASE= \
 -DCMAKE_CXX_FLAGS_RELWITHDEBINFO= \
 -DCMAKE_CXX_LINK_EXECUTABLE=\""${!TOOL_CXXLD} <FLAGS> <CMAKE_CXX_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>"\" \
--DCMAKE_CXX_STANDARD=${CXX_STANDARD} \
 -DCMAKE_EXE_LINKER_FLAGS=\""${!TOOL_CCLDFLAGS}"\" \
 -DCMAKE_EXE_LINKER_FLAGS_DEBUG= \
 -DCMAKE_EXE_LINKER_FLAGS_MINSIZEREL= \
@@ -1326,6 +1334,7 @@ function package-cmake-invocation-arguments-for-variant() {
 -DCMAKE_OBJC_FLAGS_RELEASE= \
 -DCMAKE_OBJC_FLAGS_RELWITHDEBINFO= \
 -DCMAKE_OBJC_LINK_EXECUTABLE=\""${!TOOL_CCLD} <FLAGS> <CMAKE_OBJC_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>"\" \
+-DCMAKE_OBJC_STANDARD=${C_STANDARD} \
 -DCMAKE_OBJCOPY=${!TOOL_OBJCOPY} \
 -DCMAKE_OBJCXX_COMPILER=\""${!TOOL_OBJCXX}"\" \
 -DCMAKE_OBJCXX_COMPILER_TARGET=${COMPILER_TARGET} \
@@ -1360,6 +1369,8 @@ function package-cmake-invocation-arguments-for-variant() {
 ${CMAKE_OSX_DEPLOYMENT_TARGET_CMD} \
 ${CMAKE_OSX_SYSROOT_CMD} \
 ${CROSSCOMPILING_CMD} \
+${CMAKE_C_STANDARD_CMD} \
+${CMAKE_CXX_STANDARD_CMD} \
 ${SYSTEM_NAME_CMD}
 }
 
@@ -1668,6 +1679,12 @@ function package-meson-build-invocation() {
 
     MESON_BUILD_CONFIG=native
 
+    if [ -n "${C_STANDARD}" ]; then
+        MESON_C_STANDARD=c${C_STANDARD}
+    else
+        MESON_C_STANDARD=none
+    fi
+
     if [ -n "${CXX_STANDARD}" ]; then
         MESON_CXX_STANDARD=c++${CXX_STANDARD}
     else
@@ -1777,7 +1794,6 @@ cpp='${CXX_FOR_BUILD}'
 cpp_args=${BUILD_CPP_ARGS}
 cpp_ld='`package-get-path ld.lld EXECUTABLE BUILD`'
 cpp_link_args=${BUILD_CPP_LINK_ARGS}
-cpp_std='${MESON_CXX_STANDARD}'
 cpu='${BUILD_ARCH}'
 cpu_family='${BUILD_PROCESSOR}'
 debug='${DEBUG}'
@@ -1808,7 +1824,6 @@ cpp='${CXX}'
 cpp_args=${HOST_CPP_ARGS}
 cpp_ld='${LD}'
 cpp_link_args=${HOST_CPP_LINK_ARGS}
-cpp_std='${MESON_CXX_STANDARD}'
 cpu='${HOST_ARCH}'
 cpu_family='${HOST_PROCESSOR}'
 debug='${DEBUG}'
@@ -1839,6 +1854,8 @@ ${MESON_EXTRA_PROPERTIES}
          -Dbackend=${BACKEND} \
          -Dbuildtype=${BUILD_TYPE} \
          -Dbindir=${MESON_BINDIR} \
+         -Dc_std=${MESON_C_STANDARD} \
+         -Dcpp_std=${MESON_CXX_STANDARD} \
          -Ddatadir=${MESON_DATADIR} \
          -Ddebug=${DEBUG} \
          -Dincludedir=${MESON_INCLUDEDIR} \
