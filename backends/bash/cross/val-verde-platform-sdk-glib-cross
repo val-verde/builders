@@ -6,35 +6,18 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export DEPENDS="\
+    ${PACKAGE_BASE_NAME}-util-linux-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-zlib-1-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0) \
 "
 
-if [ "${HOST_OS}" = "gnu" ]; then
-    ICONV_LIB=libc
-    LIBELF_ENABLED=enabled
-elif [ "${HOST_OS}" = "macos" ] ||
+LIBELF_ENABLED=enabled
+
+if [ "${HOST_OS}" = "macos" ] ||
      [ "${HOST_OS}" = "mingw" ]; then
-    ICONV_LIB=external
     LIBELF_ENABLED=disabled
-else
-    ICONV_LIB=external
-    LIBELF_ENABLED=enabled
 fi
 
-if [ "${HOST_OS}" != "mingw" ]; then
-    export DEPENDS="\
-        ${PACKAGE_BASE_NAME}-util-linux-2-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
-        ${DEPENDS} \
-    "
-fi
-
-if [ "${HOST_OS}" = "android" ] ||
-   [ "${HOST_OS}" = "musl" ]; then
-    COMMON_CFLAGS="\
-        -lintl \
-        ${COMMON_CFLAGS} \
-    "
-elif [ "${HOST_OS}" = "mingw" ]; then
+if [ "${HOST_OS}" = "mingw" ]; then
     COMMON_CFLAGS="\
         -ltermiwin \
         ${COMMON_CFLAGS} \
@@ -43,5 +26,9 @@ fi
 
 # Invoke one-shot template for meson/install
 package-meson-install-archive \
-    -Diconv=${ICONV_LIB} \
-    -Dlibelf=${LIBELF_ENABLED}
+    -Dglib_assert=false \
+    -Dglib_checks=false \
+    -Dglib_debug=disabled \
+    -Dlibelf=${LIBELF_ENABLED} \
+    -Dman=false \
+    -Dtests=false
