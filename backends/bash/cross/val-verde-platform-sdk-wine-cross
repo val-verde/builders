@@ -44,6 +44,7 @@ WINEBUILD=${WINEBUILD} \
 package-stage-configure-install-archive \
     ac_cv_lib_soname_freetype=`package-get-filename freetype SHARED HOST` \
     --disable-tests \
+    --with-float-abi=hard \
     --with-mingw=${STAGE_ROOT}/host-clang \
     --with-unwind \
     --${WITH_OR_WITHOUT_UDEV}-udev \
