@@ -10,6 +10,9 @@ CXX_STANDARD=17
 export-compiler-environment-for-build-tools
 export-compiler-environment-for-python
 
+SWIG_EXECUTABLE=`package-get-path swig EXECUTABLE BUILD`
+SWIG_VERSION=`${SWIG_EXECUTABLE} -version | ${GREP} Version | ${CUT} -d' ' -f3`
+
 COMMON_CFLAGS="\
     -fcommon \
     -fmerge-all-constants \
@@ -24,8 +27,8 @@ package-cmake-install-archive \
     -DLibSolv_DIR=${PACKAGE_PREFIX}/lib/cmake \
     -DPYTHON_EXECUTABLE=${PYTHON} \
     -DPYTHON_VERSION=${PYTHON_VERSION} \
-    -DSWIG_DIR=${PACKAGE_PREFIX}/share/swig/4.0.2 \
-    -DSWIG_EXECUTABLE=`package-get-path swig EXECUTABLE BUILD` \
+    -DSWIG_DIR=${PACKAGE_PREFIX}/share/swig/${SWIG_VERSION} \
+    -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE} \
     -DWITH_BINDINGS=TRUE \
     -DWITH_DOCS=FALSE \
     -DWITH_GTKDOC=FALSE \
