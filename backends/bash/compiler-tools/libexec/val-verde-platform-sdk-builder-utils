@@ -2075,19 +2075,31 @@ function package-swift-build() {
         SWIFT_HOST_OS=macosx
         HOST_OS_API_SUBVERSION="0.0"
         TARGET=${TARGET:-${HOST_TRIPLE_PROCESSOR}-${HOST_KERNEL}-${SWIFT_HOST_OS}${HOST_OS_API_LEVEL}.${HOST_OS_API_SUBVERSION}}
-    elif [ "${HOST_OS}" = "mingw" ]; then
-        TARGET=${TARGET:-${HOST_PROCESSOR}-unknown-windows-gnu}
     else
+        SWIFT_HOST_KERNEL=${HOST_KERNEL}
+        SWIFT_HOST_OS=${HOST_OS}
+        SWIFT_HOST_OS_API_LEVEL=${HOST_OS_API_LEVEL}
+
+        if [ "${HOST_OS}" = "mingw" ]; then
+            SWIFT_HOST_KERNEL=windows
+            SWIFT_HOST_OS=gnu
+            SWIFT_HOST_OS_API_LEVEL=
+        fi
+
         if [ "${HOST_PROCESSOR}" = "armv7a" ]; then
-            TARGET=${TARGET:-armv7-${HOST_ENVIRONMENT:-unknown}-${HOST_KERNEL}-${HOST_OS}${HOST_OS_API_LEVEL}}
+            TARGET=${TARGET:-armv7-${HOST_ENVIRONMENT:-unknown}-${SWIFT_HOST_KERNEL}-${SWIFT_HOST_OS}${SWIFT_HOST_OS_API_LEVEL}}
         elif [ "${HOST_PROCESSOR}" = "i386" ] ||
              [ "${HOST_PROCESSOR}" = "i486" ] ||
              [ "${HOST_PROCESSOR}" = "i586" ] ||
              [ "${HOST_PROCESSOR}" = "i686" ] ||
              [ "${HOST_PROCESSOR}" = "i786" ]; then
-            TARGET=${TARGET:-i686-${HOST_ENVIRONMENT:-unknown}-${HOST_KERNEL}-${HOST_OS}}
+            if [ "${HOST_OS}" = "gnu" ]; then
+                SWIFT_HOST_OS_API_LEVEL=
+            fi
+
+            TARGET=${TARGET:-i686-${HOST_ENVIRONMENT:-unknown}-${SWIFT_HOST_KERNEL}-${SWIFT_HOST_OS}${SWIFT_HOST_OS_API_LEVEL}}
         else
-            TARGET=${TARGET:-${HOST_4_TRIPLE}}
+            TARGET=${TARGET:-${HOST_PROCESSOR}-${HOST_ENVIRONMENT:-unknown}-${SWIFT_HOST_KERNEL}-${SWIFT_HOST_OS}${SWIFT_HOST_OS_API_LEVEL}}
         fi
     fi
 
