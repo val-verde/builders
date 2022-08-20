@@ -128,7 +128,7 @@ package-invoke-builder wineditline-cross 2
 package-invoke-builder readline-cross 8
 
 # windows pcre build
-package-invoke-builder pcre-cross 8
+package-invoke-builder pcre-cross 10
 
 # windows mpfr build
 package-invoke-builder mpfr-cross 4

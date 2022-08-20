@@ -1976,7 +1976,7 @@
         "sourceType": "git",
         "sourcePackageName": "pcre",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "8",
+        "sourcePackageVersion": "10",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {

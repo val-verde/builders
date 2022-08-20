@@ -21,7 +21,8 @@ fi
 cd ${SOURCE_ROOT}
 
 if [ "${HOST_OS}" = "android" ]; then
-    export MAINLINE_BRANCH=val-verde-android-mainline
+    MAINLINE_BRANCH=val-verde-android-mainline
+    DISABLE_FORTIFY_SOURCE_LEVEL=TRUE
 fi
 
 SWIFT_BUILD_FLAGS="\

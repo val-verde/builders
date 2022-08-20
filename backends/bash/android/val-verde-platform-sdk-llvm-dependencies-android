@@ -125,7 +125,7 @@ package-invoke-builder libedit-cross 20210910-3
 package-invoke-builder readline-cross 8
 
 # android pcre build
-package-invoke-builder pcre-cross 8
+package-invoke-builder pcre-cross 10
 
 # android mpfr build
 package-invoke-builder mpfr-cross 4
