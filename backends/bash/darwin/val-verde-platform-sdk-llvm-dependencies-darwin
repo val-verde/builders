@@ -218,12 +218,6 @@ package-invoke-builder cctools-port-cross 973
 # sigtool build
 package-invoke-builder sigtool-cross 0
 
-# alsa-lib build
-# package-invoke-builder alsa-lib-cross 1
-
-# libsndfile build
-package-invoke-builder libsndfile-cross 1
-
 # libusb build
 package-invoke-builder libusb-cross 1
 

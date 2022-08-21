@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+if [ "${HOST_OS}" = "android" ] ||
+   [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    # alsa-lib build
+    package-invoke-builder alsa-lib-cross 1
+fi
+
+# libsndfile build
+package-invoke-builder libsndfile-cross 1
+
+# pulseaudio build
+package-invoke-builder pulseaudio-cross 16

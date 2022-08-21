@@ -225,12 +225,6 @@ package-invoke-builder cctools-port-cross 973
 # android sigtool build
 package-invoke-builder sigtool-cross 0
 
-# android alsa-lib build
-package-invoke-builder alsa-lib-cross 1
-
-# android libsndfile build
-package-invoke-builder libsndfile-cross 1
-
 # android libusb build
 package-invoke-builder libusb-cross 1
 
@@ -390,19 +384,19 @@ package-invoke-builder boost-cross 1
 # android graphics server build
 package-invoke-category-builder graphics-server-cross
 
-# android pulseaudio build
-package-invoke-builder pulseaudio-cross 16
+# android sound sdk build
+package-invoke-category-builder sound-sdk-cross
 
 # android graphviz build
 package-invoke-builder graphviz-cross 2
 
-# intltool build
+# android intltool build
 package-invoke-builder intltool-cross 0
 
-# hwloc build
+# android hwloc build
 package-invoke-builder hwloc-cross 2
 
-# linux-pam build
+# android linux-pam build
 # package-invoke-builder linux-pam-cross 1
 
 # android p11-kit build
