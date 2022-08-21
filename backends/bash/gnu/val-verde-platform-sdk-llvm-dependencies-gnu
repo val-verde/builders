@@ -513,9 +513,6 @@ package-invoke-builder boost-cross 1
 # graphics server build
 package-invoke-category-builder graphics-server-cross
 
-# sound sdk build
-package-invoke-category-builder sound-sdk-cross
-
 # graphviz build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder graphviz-cross 2
@@ -552,6 +549,9 @@ package-invoke-category-builder dnf-package-manager-cross
 unset DNF
 unset RPM
 unset RPMBUILD
+
+# sound sdk build
+package-invoke-category-builder sound-sdk-cross
 
 # cups build
 package-invoke-builder cups-cross 2

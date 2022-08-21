@@ -18,3 +18,6 @@ package-invoke-builder libsndfile-cross 1
 
 # pulseaudio build
 package-invoke-builder pulseaudio-cross 16
+
+# openal-soft build
+package-invoke-builder openal-soft-cross 1
