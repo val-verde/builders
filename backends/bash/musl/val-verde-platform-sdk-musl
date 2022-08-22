@@ -56,14 +56,14 @@ if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
     fi
 fi
 
-# wine-sdk build
-package-invoke-category-builder wine-sdk-cross
-
 # rust sdk build
 package-invoke-category-builder rust-sdk-cross
 
 # blockchain sdk build
 package-invoke-category-builder blockchain-sdk-cross
+
+# wine-sdk build
+package-invoke-category-builder wine-sdk-cross
 
 # blender build
 ENABLE_STAGE_ROOT_BUILD=TRUE \

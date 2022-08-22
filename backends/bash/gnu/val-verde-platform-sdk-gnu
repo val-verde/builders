@@ -59,14 +59,14 @@ if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
     fi
 fi
 
-# wine-sdk build
-package-invoke-category-builder wine-sdk-cross
-
 # rust sdk build
 package-invoke-category-builder rust-sdk-cross
 
 # networking tools build
 package-invoke-category-builder networking-tools-cross
+
+# wine-sdk build
+package-invoke-category-builder wine-sdk-cross
 
 # blockchain sdk build
 package-invoke-category-builder blockchain-sdk-cross
