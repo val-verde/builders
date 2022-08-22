@@ -6,6 +6,15 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
+# cyrus-sasl build
+package-invoke-builder cyrus-sasl-cross 2
+
+# openldap build
+package-invoke-builder openldap-cross 2
+
+# liblmdb build
+package-invoke-builder liblmdb-cross 2
+
 # mozjs build
 package-invoke-builder mozjs-cross 91
 
