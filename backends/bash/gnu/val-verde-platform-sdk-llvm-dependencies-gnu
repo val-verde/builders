@@ -234,6 +234,9 @@ package-invoke-builder expat-cross 2
 if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
     # perl-xml-parser build
     package-invoke-builder perl-xml-parser-cross 2
+
+    # perl-parse-yapp build
+    package-invoke-builder perl-parse-yapp-cross 0
 fi
 
 # gawk build
