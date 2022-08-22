@@ -31,5 +31,6 @@ package-configure-install-archive \
     --disable-werror \
     --enable-cet=yes \
     --enable-kernel=5.0 \
+    --enable-obsolete-rpc \
     --enable-static-pie \
     --with-headers=${PACKAGE_PREFIX}/include
