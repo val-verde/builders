@@ -2001,6 +2001,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "perl-json",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "4",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "perl-xml-parser",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2",

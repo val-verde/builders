@@ -232,6 +232,9 @@ package-invoke-builder krb5-cross 1
 package-invoke-builder expat-cross 2
 
 if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
+    # perl-json-cross build
+    package-invoke-builder perl-json-cross 4
+
     # perl-xml-parser build
     package-invoke-builder perl-xml-parser-cross 2
 
