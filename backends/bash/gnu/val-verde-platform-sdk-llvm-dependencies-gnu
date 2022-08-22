@@ -337,6 +337,9 @@ if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
     package-invoke-builder flex-cross 2
 fi
 
+# groff build
+package-invoke-builder groff-cross 1
+
 # jq build
 package-invoke-builder jq-cross 1
 

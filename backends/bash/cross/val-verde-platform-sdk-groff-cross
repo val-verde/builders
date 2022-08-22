@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for bootstrap/configure/install
+COMMON_CXXFLAGS="\
+    -std=c++11 \
+    ${COMMON_CXXFLAGS}
+" \
+INSTALL_TARGET="install-exec" \
+package-bootstrap-configure-install-archive \
+    --with-doc=no

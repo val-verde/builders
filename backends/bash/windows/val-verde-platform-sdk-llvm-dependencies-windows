@@ -219,6 +219,9 @@ package-invoke-builder bison-cross 3
 # windows flex build
 # package-invoke-builder flex-cross
 
+# windows groff build
+package-invoke-builder groff-cross 1
+
 # windows jq build
 package-invoke-builder jq-cross 1
 

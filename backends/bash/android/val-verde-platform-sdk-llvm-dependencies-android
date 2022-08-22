@@ -255,6 +255,9 @@ package-invoke-builder bison-cross 3
 # android flex build
 # package-invoke-builder flex-cross 2
 
+# android groff build
+package-invoke-builder groff-cross 1
+
 # android jq build
 package-invoke-builder jq-cross 1
 
