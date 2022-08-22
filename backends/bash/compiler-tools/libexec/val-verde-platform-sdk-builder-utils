@@ -151,6 +151,7 @@ function export-compiler-environment-for-build-tools() {
     export-build-util NINJA ninja
     export-build-util NODE node
     export-build-util PKG_CONFIG pkg-config
+    export-build-util PERL perl
     export-build-util PYTHON python3
 
     export \

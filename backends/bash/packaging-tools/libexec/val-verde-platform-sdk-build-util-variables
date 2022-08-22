@@ -53,7 +53,6 @@ function export-build-util-variables() {
     export-build-util MV mv
     export-build-util NICE nice
     export-build-util PATCH patch
-    export-build-util PERL perl
     export-build-util READLINK readlink
     export-build-util REALPATH realpath
     export-build-util RM rm -f
