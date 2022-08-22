@@ -257,6 +257,9 @@ package-invoke-builder json-c-cross 0
 # jsoncpp build
 package-invoke-builder jsoncpp-cross 1
 
+# jansson build
+package-invoke-builder jansson-cross 2
+
 # tar build
 package-invoke-builder tar-cross 1
 
