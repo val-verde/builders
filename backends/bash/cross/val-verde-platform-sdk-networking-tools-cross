@@ -15,6 +15,12 @@ package-invoke-builder openldap-cross 2
 # liblmdb build
 package-invoke-builder liblmdb-cross 2
 
+if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
+   [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    # samba build
+    package-invoke-builder samba-cross 4
+fi
+
 # mozjs build
 package-invoke-builder mozjs-cross 91
 

@@ -1,0 +1,98 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for configure/install
+export-compiler-environment-for-build-tools
+
+if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
+    ENABLE_64_BIT=OK
+
+    if [ "${HOST_PROCESSOR}" = "armv7a" ] ||
+       [ "${HOST_PROCESSOR}" = "i386" ] ||
+       [ "${HOST_PROCESSOR}" = "i486" ] ||
+       [ "${HOST_PROCESSOR}" = "i586" ] ||
+       [ "${HOST_PROCESSOR}" = "i686" ] ||
+       [ "${HOST_PROCESSOR}" = "i786" ]; then
+        ENABLE_64_BIT=NO
+    fi
+
+    ${ECHO} "\
+Checking uname sysname type: OK
+Checking uname machine type: OK
+Checking uname release type: OK
+Checking uname version type: OK
+Checking simple C program: OK
+rpath library support: OK
+-Wl,--version-script support: OK
+Checking getconf LFS_CFLAGS: OK
+Checking for large file support without additional flags: OK
+Checking for -D_FILE_OFFSET_BITS=64: OK
+Checking for -D_LARGE_FILES: ${ENABLE_64_BIT}
+Checking getconf large file support flags work: ${ENABLE_64_BIT}
+Checking correct behavior of strtoll: OK
+Checking for working strptime: OK
+Checking for C99 vsnprintf: OK
+Checking for HAVE_SHARED_MMAP: OK
+Checking for HAVE_MREMAP: OK
+Checking for HAVE_INCOHERENT_MMAP: OK
+Checking for HAVE_SECURE_MKSTEMP: OK
+Checking value of NSIG: OK
+Checking value of _NSIG: OK
+Checking value of SIGRTMAX: OK
+Checking value of SIGRTMIN: OK
+Checking for a 64-bit host to support lmdb: ${ENABLE_64_BIT}
+Checking for gnutls fips mode support: OK
+Checking value of GNUTLS_CIPHER_AES_128_CFB8: OK
+Checking value of GNUTLS_MAC_AES_CMAC_128: OK
+Checking errno of iconv for illegal multibyte sequence: OK
+Checking whether POSIX capabilities are available: OK
+Checking if can we convert from CP850 to UCS-2LE: OK
+Checking if can we convert from IBM850 to UCS-2LE: OK
+Checking if can we convert from UTF-8 to UCS-2LE: OK
+Checking if can we convert from UTF8 to UCS-2LE: OK
+vfs_fileid checking for statfs() and struct statfs.f_fsid: OK
+Checking whether we can use Linux thread-specific credentials: OK
+Checking whether setreuid is available: OK
+Checking whether setresuid is available: OK
+Checking whether seteuid is available: OK
+Checking whether fcntl locking is available: OK
+Checking whether fcntl lock supports open file description locks: OK
+Checking whether fcntl supports flags to send direct I/O availability signals: OK
+Checking whether fcntl supports setting/geting hints: OK
+Checking for the maximum value of the 'time_t' type: OK
+Checking whether the realpath function allows a NULL argument: OK
+Checking for ftruncate extend: OK
+Checking for readlink breakage: OK
+getcwd takes a NULL argument: OK
+Checking whether the WRFILE -keytab is supported: OK
+Checking whether we can use Linux thread-specific credentials with 32-bit system calls: OK
+checking for clnt_create(): OK
+    " > ${STAGE_ROOT}/builder-configure-answers
+
+    CROSS_COMPILE_CMD="\
+        --cross-compile \
+        --cross-answers=${STAGE_ROOT}/builder-configure-answers \
+    "
+fi
+
+if [ "${BUILD_OS}" = "gnu" ]; then
+    PATH=${BUILD_PACKAGE_PREFIX}/glibc-interface/usr/bin:${PATH}
+fi
+
+CONFIGURE_HOST_TRIPLE=${BUILD_TRIPLE} \
+CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
+CUPS_CONFIG=`package-get-path cups-config SCRIPT HOST` \
+DISABLE_AUTOUPDATE=TRUE \
+GPGME_CONFIG=`package-get-path gpgme-config SCRIPT HOST` \
+KRB5_CONFIG=`package-get-path krb5-config SCRIPT HOST` \
+MIT_KDC_BINARY=${BUILD_PACKAGE_PLATFORM_SYSROOT}/sbin/krb5kdc \
+NCURSES_CONFIG=`package-get-path ncurses6-config SCRIPT HOST` \
+PYTHON_CONFIG=`package-get-path python${PYTHON_VERSION}-config SCRIPT HOST` \
+package-configure-install-archive \
+    --with-experimental-mit-ad-dc \
+    --with-system-mitkrb5 \
+    ${CROSS_COMPILE_CMD}
