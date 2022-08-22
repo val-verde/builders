@@ -21,6 +21,7 @@ make-install \
     OPTIMIZE="-O${OPTIMIZATION_LEVEL}" \
     PREFIX=${INSTALL_PREFIX} \
     RANLIB=${RANLIB}
+${RM} -f `${FIND} ${INSTALL_PREFIX} | ${GREP} "\.pod"`
 
 # Build and install the package
 package-invoke-archive-install
