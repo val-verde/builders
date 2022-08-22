@@ -15,6 +15,9 @@ package-invoke-builder python-cython-cross 0
 # python-distro build
 package-invoke-builder python-distro-cross 1
 
+# python-dns build
+package-invoke-builder python-dns-cross 2
+
 # python-gpgme build
 package-invoke-builder python-gpgme-cross 0
 
