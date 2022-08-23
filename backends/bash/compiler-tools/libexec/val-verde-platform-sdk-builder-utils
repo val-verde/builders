@@ -613,6 +613,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         ${!TOOL_CFLAGS} \
         ${STDLIB_CXXFLAG} \
         ${STDLIBXX_ISYSTEM_CXXFLAG} \
+        ${!TOOL_COMMON_CXXFLAGS} \
         ${!TOOL_CXXFLAGS} \
     " | ${XARGS}`"
     export ${TOOL_CXXLDFLAGS}="`${ECHO} "\
