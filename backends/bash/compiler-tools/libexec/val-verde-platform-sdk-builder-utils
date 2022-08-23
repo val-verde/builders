@@ -191,6 +191,17 @@ function export-compiler-environment-for-build-tools() {
     fi
 }
 
+function unset-compiler-environment-for-build-tools() {
+    unset CMAKE
+    unset MAKE
+    unset MESON
+    unset NINJA
+    unset NODE
+    unset PKG_CONFIG
+    unset PERL
+    unset PYTHON
+}
+
 function export-compiler-environment-for-c-and-cxx-variant() {
     LINKER_OPTIMIZATION_LEVEL=${LINKER_OPTIMIZATION_LEVEL:-2}
     OPTIMIZATION_LEVEL=${OPTIMIZATION_LEVEL:-z}
