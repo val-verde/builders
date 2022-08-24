@@ -31,21 +31,31 @@ fi
 
 WITH_OR_WITHOUT_UDEV=without
 
-if [ "${HOST_OS}" = "musl" ] ||
+if [ "${HOST_OS}" = "macos" ]; then
+    COMMON_CFLAGS="\
+        -L${SYSROOT}/${PACKAGE_USR_PREFIX}/lib \
+        ${COMMON_CFLAGS} \
+    "
+    DYLIB1_O_PATH=${SYSROOT}/${PACKAGE_USR_PREFIX}/lib/dylib1.o
+    HAS_NO_PIE=no
+elif [ "${HOST_OS}" = "musl" ] ||
    [ "${HOST_OS}" = "gnu" ]; then
     WITH_OR_WITHOUT_UDEV=with
 fi
 
 DISABLE_FPIC=TRUE \
+DYLIB1_O_PATH=${DYLIB1_O_PATH} \
 ENABLE_LD_AS_CCLD=TRUE \
 FREETYPE_CFLAGS="-I${PACKAGE_PREFIX}/include/freetype2" \
 FREETYPE_LIBS="-lfreetype" \
 WINEBUILD=${WINEBUILD} \
 package-stage-configure-install-archive \
+    ac_cv_cflags__Wl__no_pie=${HAS_NO_PIE} \
     ac_cv_lib_soname_freetype=`package-get-filename freetype SHARED HOST` \
     --disable-tests \
     --with-float-abi=hard \
     --with-mingw=${STAGE_ROOT}/host-clang \
+    --with-pulseaudio \
     --with-unwind \
     --${WITH_OR_WITHOUT_UDEV}-udev \
     ${CROSS_CMD} \

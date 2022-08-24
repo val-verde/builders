@@ -1,0 +1,47 @@
+#!/bin/bash
+
+set -e
+
+# Source package build helper functions
+source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
+
+# Invoke one-shot template for cmake/install
+ENABLE_ALSA=FALSE
+ENABLE_COREAUDIO=FALSE
+ENABLE_OSS=FALSE
+ENABLE_PULSEAUDIO=TRUE
+ENABLE_SDL2=FALSE
+
+if [ "${HOST_OS}" = "macos" ]; then
+    ENABLE_COREAUDIO=TRUE
+elif [ "${HOST_OS}" = "gnu" ] ||
+     [ "${HOST_OS}" = "musl" ]; then
+    ENABLE_ALSA=TRUE
+    ENABLE_OSS=TRUE
+elif [ "${HOST_OS}" = "mingw" ]; then
+    ENABLE_PULSEAUDIO=FALSE
+fi
+
+package-cmake-install-archive \
+    -DALSA_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DALSA_LIBRARY=`package-get-path asound SHARED HOST` \
+    -DALSOFT_BACKEND_ALSA=${ENABLE_ALSA} \
+    -DALSOFT_BACKEND_COREAUDIO=${ENABLE_COREAUDIO} \
+    -DALSOFT_BACKEND_OSS=${ENABLE_OSS} \
+    -DALSOFT_BACKEND_PULSEAUDIO=${ENABLE_PULSEAUDIO} \
+    -DALSOFT_BACKEND_SDL2=${ENABLE_SDL2} \
+    -DALSOFT_EXAMPLES=FALSE \
+    -DALSOFT_INSTALL_EXAMPLES=FALSE \
+    -DALSOFT_REQUIRE_ALSA=${ENABLE_ALSA} \
+    -DALSOFT_REQUIRE_COREAUDIO=${ENABLE_COREAUDIO} \
+    -DALSOFT_REQUIRE_OSS=${ENABLE_OSS} \
+    -DALSOFT_REQUIRE_PULSEAUDIO=${ENABLE_PULSEAUDIO} \
+    -DALSOFT_WERROR=FALSE \
+    -DGIT_EXECUTABLE=${GIT} \
+    -DOSS_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DOSS_LIBRARY=`package-get-path oss SHARED HOST` \
+    -DSDL2_CORE_LIBRARY=`package-get-path SDL2 SHARED HOST` \
+    -DSDL2_INCLUDE_DIR=${PACKAGE_PREFIX}/include/SDL2 \
+    -DSDL2MAIN_LIBRARY=`package-get-path SDL2main STATIC HOST` \
+    -DSNDFILE_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DSNDFILE_LIBRARY=`package-get-path sndfile SHARED HOST`

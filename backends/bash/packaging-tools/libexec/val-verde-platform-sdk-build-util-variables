@@ -53,7 +53,6 @@ function export-build-util-variables() {
     export-build-util MV mv
     export-build-util NICE nice
     export-build-util PATCH patch
-    export-build-util PERL perl
     export-build-util READLINK readlink
     export-build-util REALPATH realpath
     export-build-util RM rm -f
@@ -93,4 +92,81 @@ function export-build-util-variables() {
     unset _GZIP
     unset _UNZIP
     unset _ZIP
+}
+
+function unset-build-util-variables() {
+    unset APT
+    unset AUTOGEN
+    unset AUTORECONF
+    unset AUTOUPDATE
+    unset BASENAME
+    unset BASH
+    unset BISON
+    unset CAT
+    unset CHMOD
+    unset CMP
+    unset CP
+    unset CURL
+    unset CUT
+    unset DATE
+    unset DF
+    unset DIFF
+    unset DNF
+    unset DPKG
+    unset DPKG_DEB
+    unset DPKG_QUERY
+    unset ECHO
+    unset ENV
+    unset EXPR
+    unset FALSE
+    unset FILE
+    unset FIND
+    unset FLOCK
+    unset GAWK
+    unset GETTEXT
+    unset GIT
+    unset GPERF
+    unset GREP
+    unset HEAD
+    unset HELP2MAN
+    unset JAVA
+    unset JAVAC
+    unset LESS
+    unset LSB_RELEASE
+    unset INSTALL
+    unset LN
+    unset LS
+    unset M4
+    unset MAKEINFO
+    unset MIG
+    unset MKDIR
+    unset MKTEMP
+    unset MSGFMT
+    unset MV
+    unset NICE
+    unset PATCH
+    unset READLINK
+    unset REALPATH
+    unset RM
+    unset RMDIR
+    unset RPM
+    unset RPMBUILD
+    unset RSYNC
+    unset SED
+    unset SORT
+    unset SSH
+    unset STAT
+    unset TAIL
+    unset TAR
+    unset TEE
+    unset TOUCH
+    unset TR
+    unset TRUE
+    unset UNAME
+    unset UNIQ
+    unset WC
+    unset WGET
+    unset WHICH
+    unset XARGS
+    unset XZ
 }

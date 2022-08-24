@@ -12,6 +12,13 @@ export SYSROOT=${PACKAGE_PREFIX}/glibc-interface
 ECHO=/usr/bin/echo \
 package-invoke-category-builder llvm-dependencies-gnu
 
+if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
+    # Unset any compiler environment and reload build utility variables
+    unset-compiler-environment-for-build-tools
+    unset-build-util-variables
+    export-build-util-variables
+fi
+
 # llvm build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder llvm-project ${LLVM_VERSION}
@@ -59,14 +66,14 @@ if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
     fi
 fi
 
-# wine-sdk build
-package-invoke-category-builder wine-sdk-cross
-
 # rust sdk build
 package-invoke-category-builder rust-sdk-cross
 
 # networking tools build
 package-invoke-category-builder networking-tools-cross
+
+# wine-sdk build
+package-invoke-category-builder wine-sdk-cross
 
 # blockchain sdk build
 package-invoke-category-builder blockchain-sdk-cross

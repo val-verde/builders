@@ -35,7 +35,7 @@ tool-log ${STAGE_ROOT}/Configure \
     -Dnm="${NM}" \
     -Dprefix=${PACKAGE_PREFIX} \
     -Dranlib="${RANLIB}" \
-    -Dsiteprefix=${PACKAGE_PREFIX}/local \
+    -Dsiteprefix=${PACKAGE_PREFIX} \
     -Dsysroot=${SYSROOT} \
     -Dusrinc=${PACKAGE_PREFIX}/include \
     -Dvendorprefix=${PACKAGE_PREFIX}

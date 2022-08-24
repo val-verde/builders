@@ -225,12 +225,6 @@ package-invoke-builder cctools-port-cross 973
 # android sigtool build
 package-invoke-builder sigtool-cross 0
 
-# android alsa-lib build
-package-invoke-builder alsa-lib-cross 1
-
-# android libsndfile build
-package-invoke-builder libsndfile-cross 1
-
 # android libusb build
 package-invoke-builder libusb-cross 1
 
@@ -261,6 +255,9 @@ package-invoke-builder bison-cross 3
 # android flex build
 # package-invoke-builder flex-cross 2
 
+# android groff build
+package-invoke-builder groff-cross 1
+
 # android jq build
 package-invoke-builder jq-cross 1
 
@@ -270,12 +267,15 @@ package-invoke-builder json-c-cross 0
 # android jsoncpp build
 package-invoke-builder jsoncpp-cross 1
 
+# android jansson build
+package-invoke-builder jansson-cross 2
+
 # android tar build
 if [ "${HOST_OS_API_LEVEL}" -ge "28" ]; then
     package-invoke-builder tar-cross 1
 fi
 
-# bc build
+# android bc build
 package-invoke-builder bc-cross 1
 
 # android coreutils build
@@ -390,19 +390,16 @@ package-invoke-builder boost-cross 1
 # android graphics server build
 package-invoke-category-builder graphics-server-cross
 
-# android pulseaudio build
-package-invoke-builder pulseaudio-cross 16
-
 # android graphviz build
 package-invoke-builder graphviz-cross 2
 
-# intltool build
+# android intltool build
 package-invoke-builder intltool-cross 0
 
-# hwloc build
+# android hwloc build
 package-invoke-builder hwloc-cross 2
 
-# linux-pam build
+# android linux-pam build
 # package-invoke-builder linux-pam-cross 1
 
 # android p11-kit build
@@ -412,7 +409,7 @@ package-invoke-builder p11-kit-cross 0
 # shadow-utils build
 # package-invoke-builder shadow-utils-cross 4
 
-# sudo build
+# android sudo build
 package-invoke-builder sudo-cross 1
 
 # android dbus build
@@ -420,6 +417,9 @@ package-invoke-builder dbus-cross 1
 
 # android dnf package manager category build
 package-invoke-category-builder dnf-package-manager-cross
+
+# android sound sdk build
+package-invoke-category-builder sound-sdk-cross
 
 # android cups build
 package-invoke-builder cups-cross 2
@@ -431,10 +431,10 @@ package-invoke-builder util-linux-cross 2
 # android apt build
 package-invoke-builder apt-cross 2
 
-# alien package tool build
+# android alien package tool build
 package-invoke-builder alien-package-tool-cross 8
 
-# AI SDK build
+# android AI SDK build
 package-invoke-category-builder ai-sdk-cross
 
 # android openjdk build

@@ -218,12 +218,6 @@ package-invoke-builder cctools-port-cross 973
 # sigtool build
 package-invoke-builder sigtool-cross 0
 
-# alsa-lib build
-# package-invoke-builder alsa-lib-cross 1
-
-# libsndfile build
-package-invoke-builder libsndfile-cross 1
-
 # libusb build
 package-invoke-builder libusb-cross 1
 
@@ -254,6 +248,9 @@ package-invoke-builder bison-cross 3
 # flex build
 # package-invoke-builder flex-cross 2
 
+# groff build
+package-invoke-builder groff-cross 1
+
 # jq build
 package-invoke-builder jq-cross 1
 
@@ -262,6 +259,9 @@ package-invoke-builder json-c-cross 0
 
 # jsoncpp build
 package-invoke-builder jsoncpp-cross 1
+
+# jansson build
+package-invoke-builder jansson-cross 2
 
 # tar build
 package-invoke-builder tar-cross 1

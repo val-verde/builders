@@ -135,6 +135,7 @@ package-configure-install-archive \
     --disable-crypt \
     --disable-multiarch \
     --disable-multilib \
+    --disable-obsolete-rpc \
     --disable-sanity-checks \
     --disable-werror \
     --enable-cet=${ENABLE_CET} \

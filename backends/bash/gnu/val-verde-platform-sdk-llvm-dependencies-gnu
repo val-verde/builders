@@ -232,8 +232,14 @@ package-invoke-builder krb5-cross 1
 package-invoke-builder expat-cross 2
 
 if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
+    # perl-json-cross build
+    package-invoke-builder perl-json-cross 4
+
     # perl-xml-parser build
     package-invoke-builder perl-xml-parser-cross 2
+
+    # perl-parse-yapp build
+    package-invoke-builder perl-parse-yapp-cross 0
 fi
 
 # gawk build
@@ -294,12 +300,6 @@ package-invoke-builder cctools-port-cross 973
 # sigtool build
 package-invoke-builder sigtool-cross 0
 
-# alsa-lib build
-package-invoke-builder alsa-lib-cross 1
-
-# libsndfile build
-package-invoke-builder libsndfile-cross 1
-
 # libusb build
 package-invoke-builder libusb-cross 1
 
@@ -337,6 +337,9 @@ if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
     package-invoke-builder flex-cross 2
 fi
 
+# groff build
+package-invoke-builder groff-cross 1
+
 # jq build
 package-invoke-builder jq-cross 1
 
@@ -345,6 +348,9 @@ package-invoke-builder json-c-cross 0
 
 # jsoncpp build
 package-invoke-builder jsoncpp-cross 1
+
+# jansson build
+package-invoke-builder jansson-cross 2
 
 # tar build
 package-invoke-builder tar-cross 1
@@ -519,9 +525,6 @@ package-invoke-builder boost-cross 1
 # graphics server build
 package-invoke-category-builder graphics-server-cross
 
-# pulseaudio build
-package-invoke-builder pulseaudio-cross 16
-
 # graphviz build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder graphviz-cross 2
@@ -558,6 +561,9 @@ package-invoke-category-builder dnf-package-manager-cross
 unset DNF
 unset RPM
 unset RPMBUILD
+
+# sound sdk build
+package-invoke-category-builder sound-sdk-cross
 
 # cups build
 package-invoke-builder cups-cross 2

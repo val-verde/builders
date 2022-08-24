@@ -151,6 +151,7 @@ function export-compiler-environment-for-build-tools() {
     export-build-util NINJA ninja
     export-build-util NODE node
     export-build-util PKG_CONFIG pkg-config
+    export-build-util PERL perl
     export-build-util PYTHON python3
 
     export \
@@ -188,6 +189,17 @@ function export-compiler-environment-for-build-tools() {
     elif [ "${HOST_OS}" = "wasi" ]; then
         SYSTEM_NAME=${SYSTEM_NAME:-Fuchsia}
     fi
+}
+
+function unset-compiler-environment-for-build-tools() {
+    unset CMAKE
+    unset MAKE
+    unset MESON
+    unset NINJA
+    unset NODE
+    unset PKG_CONFIG
+    unset PERL
+    unset PYTHON
 }
 
 function export-compiler-environment-for-c-and-cxx-variant() {
@@ -612,6 +624,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
         ${!TOOL_CFLAGS} \
         ${STDLIB_CXXFLAG} \
         ${STDLIBXX_ISYSTEM_CXXFLAG} \
+        ${!TOOL_COMMON_CXXFLAGS} \
         ${!TOOL_CXXFLAGS} \
     " | ${XARGS}`"
     export ${TOOL_CXXLDFLAGS}="`${ECHO} "\
@@ -1227,7 +1240,7 @@ function package-cmake-invocation-arguments-for-variant() {
         SYSTEM_NAME_CMD
 
     if [ -n "${C_STANDARD}" ]; then
-        CMAKE_C_STANDARD_CMD="-DCMAKE_C_STANDARD=${C_STANDARD}"
+        CMAKE_C_STANDARD_CMD="-DCMAKE_C_STANDARD=${C_STANDARD} -DCMAKE_OBJC_STANDARD=${C_STANDARD}"
     fi
 
     if [ -n "${CXX_STANDARD}" ]; then
@@ -1334,7 +1347,6 @@ function package-cmake-invocation-arguments-for-variant() {
 -DCMAKE_OBJC_FLAGS_RELEASE= \
 -DCMAKE_OBJC_FLAGS_RELWITHDEBINFO= \
 -DCMAKE_OBJC_LINK_EXECUTABLE=\""${!TOOL_CCLD} <FLAGS> <CMAKE_OBJC_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>"\" \
--DCMAKE_OBJC_STANDARD=${C_STANDARD} \
 -DCMAKE_OBJCOPY=${!TOOL_OBJCOPY} \
 -DCMAKE_OBJCXX_COMPILER=\""${!TOOL_OBJCXX}"\" \
 -DCMAKE_OBJCXX_COMPILER_TARGET=${COMPILER_TARGET} \
