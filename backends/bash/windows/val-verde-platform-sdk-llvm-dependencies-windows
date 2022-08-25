@@ -373,8 +373,16 @@ package-invoke-builder glog-cross 0
 # windows cereal build
 package-invoke-builder cereal-cross 1
 
-# windows libobjc2 build
-package-invoke-builder libobjc2-cross 2
+if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
+   [ "${HOST_PROCESSOR}" = "i386" ] ||
+   [ "${HOST_PROCESSOR}" = "i486" ] ||
+   [ "${HOST_PROCESSOR}" = "i586" ] ||
+   [ "${HOST_PROCESSOR}" = "i686" ] ||
+   [ "${HOST_PROCESSOR}" = "i786" ] ||
+   [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    # windows libobjc2 build
+    package-invoke-builder libobjc2-cross 2
+fi
 
 # windows android patch elf build
 # package-invoke-builder android-patch-elf-cross 1
