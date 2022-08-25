@@ -33,8 +33,17 @@ package-invoke-category-builder virtualization-sdk-cross
 # wine-sdk build
 package-invoke-category-builder wine-sdk-cross
 
-# rust sdk build
-package-invoke-category-builder rust-sdk-cross
+
+if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
+   [ "${HOST_PROCESSOR}" = "i386" ] ||
+   [ "${HOST_PROCESSOR}" = "i486" ] ||
+   [ "${HOST_PROCESSOR}" = "i586" ] ||
+   [ "${HOST_PROCESSOR}" = "i686" ] ||
+   [ "${HOST_PROCESSOR}" = "i786" ] ||
+   [ "${HOST_PROCESSOR}" = "x86_64" ]; then
+    # rust sdk build
+    package-invoke-category-builder rust-sdk-cross
+fi
 
 # windows blockchain sdk build
 package-invoke-category-builder blockchain-sdk-cross
