@@ -10,6 +10,7 @@ function package-install-completion-callback() {
     ${RMDIR} ${INSTALL_PREFIX}/share/polkit-1/rules.d
 }
 
+CXX_STANDARD=17 \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-meson-install-archive \
     -Dauthfw=shadow \
