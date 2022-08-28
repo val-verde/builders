@@ -99,7 +99,7 @@ FORTIFY_SOURCE_LEVEL=0 \
 package-invoke-builder gettext-cross 0
 
 # android texinfo build
-# package-invoke-builder texinfo-cross 6
+package-invoke-builder texinfo-cross 6
 
 # guile build
 package-invoke-builder guile-cross 3

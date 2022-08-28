@@ -146,11 +146,9 @@ package-invoke-builder libxml2-cross 2 bootstrap-only
 # gettext build
 package-invoke-builder gettext-cross 0
 
-if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
-    # texinfo build
-    package-invoke-builder texinfo-cross 6
-    unset MAKEINFO
-fi
+# texinfo build
+package-invoke-builder texinfo-cross 6
+unset MAKEINFO
 
 # guile build
 package-invoke-builder guile-cross 3
