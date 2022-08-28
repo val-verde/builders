@@ -146,11 +146,9 @@ package-invoke-builder libxml2-cross 2 bootstrap-only
 # gettext build
 package-invoke-builder gettext-cross 0
 
-if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
-    # texinfo build
-    package-invoke-builder texinfo-cross 6
-    unset MAKEINFO
-fi
+# texinfo build
+package-invoke-builder texinfo-cross 6
+unset MAKEINFO
 
 # guile build
 package-invoke-builder guile-cross 3
@@ -332,10 +330,8 @@ unset SED
 package-invoke-builder bison-cross 3
 unset BISON
 
-if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
-    # flex build
-    package-invoke-builder flex-cross 2
-fi
+# flex build
+package-invoke-builder flex-cross 2
 
 # groff build
 package-invoke-builder groff-cross 1

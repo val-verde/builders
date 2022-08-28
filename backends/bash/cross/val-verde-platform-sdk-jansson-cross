@@ -6,4 +6,11 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for cmake/install
-package-cmake-install-archive
+COMMON_CFLAGS="\
+    -L${PACKAGE_PREFIX}/lib \
+    ${COMMON_CFLAGS} \
+" \
+package-cmake-install-archive \
+    -DJANSSON_BUILD_DOCS=FALSE \
+    -DJANSSON_BUILD_SHARED_LIBS=TRUE \
+    -DJANSSON_EXAMPLES=FALSE

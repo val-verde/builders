@@ -7,6 +7,11 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for bootstrap/configure/install
 BOOTSTRAP_FILE=./autogen.sh \
-CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
-LIBTOOLIZE_ARGS="-i" \
-package-bootstrap-configure-install-archive
+BUILD_COMMON_CFLAGS="\
+    -L${BUILD_PACKAGE_PREFIX}/lib \
+    ${BUILD_COMMON_CFLAGS} \
+" \
+DISABLE_LIBTOOLIZE=TRUE \
+NUM_PROCESSORS=1 \
+package-bootstrap-configure-install-archive \
+    --disable-tp-tests
