@@ -246,7 +246,7 @@ package-invoke-builder sed-cross 4
 package-invoke-builder bison-cross 3
 
 # flex build
-# package-invoke-builder flex-cross 2
+package-invoke-builder flex-cross 2
 
 # groff build
 package-invoke-builder groff-cross 1
