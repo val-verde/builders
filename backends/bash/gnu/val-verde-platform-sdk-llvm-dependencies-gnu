@@ -523,7 +523,7 @@ package-invoke-category-builder graphics-server-cross
 
 # graphviz build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
-package-invoke-builder graphviz-cross 2
+package-invoke-builder graphviz-cross 5
 
 # intltool build
 package-invoke-builder intltool-cross 0

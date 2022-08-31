@@ -391,7 +391,8 @@ package-invoke-builder boost-cross 1
 package-invoke-category-builder graphics-server-cross
 
 # android graphviz build
-package-invoke-builder graphviz-cross 2
+ENABLE_STAGE_ROOT_BUILD=TRUE \
+package-invoke-builder graphviz-cross 5
 
 # android intltool build
 package-invoke-builder intltool-cross 0
