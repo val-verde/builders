@@ -112,7 +112,6 @@ package-configure-invocation \
     --enable-nettle \
     --enable-vnc \
     --enable-vnc-jpeg \
-    --enable-vnc-png \
     --enable-zstd \
     --target-list="${TARGET_LIST}" \
     --${ENABLE_OR_DISABLE_COCOA}-cocoa \
