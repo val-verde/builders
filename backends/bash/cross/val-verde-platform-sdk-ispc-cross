@@ -65,6 +65,7 @@ package-cmake-install-archive \
     -DCURSES_FORM_LIBRARY=`package-get-path form SHARED HOST` \
     -DCURSES_CURSES_LIBRARY=`package-get-path ncurses SHARED HOST` \
     -DFL_LIBRARY=`package-get-path fl SHARED HOST` \
+    -DFLEX_EXECUTABLE=`package-get-path flex EXECUTABLE BUILD` \
     -DGIT_BINARY=${GIT} \
     -DISPC_ANDROID_TARGET=${ISPC_ANDROID_TARGET} \
     -DISPC_CROSS=TRUE \

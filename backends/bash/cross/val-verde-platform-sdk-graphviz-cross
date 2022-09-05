@@ -14,18 +14,31 @@ fi
 
 export-compiler-environment-for-build-tools
 package-cmake-install-archive \
+    -Dinstall_win_dependency_dlls=FALSE \
+    -DANN_INCLUDE_DIR= \
+    -DANN_LIBRARY_DIR= \
     -DAWK_EXECUTABLE=${GAWK} \
     -DBISON_EXECUTABLE=${BISON} \
-    -DCairo_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DCairo_LIBRARY=`package-get-path cairo SHARED HOST` \
+    -DBUILD_TESTING=FALSE \
+    -DCAIRO_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DCAIRO_LIBRARY=`package-get-path cairo SHARED HOST` \
+    -DCMAKE_UNAME=`package-get-path uname EXECUTABLE BUILD` \
     -DFL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DFL_LIBRARY=`package-get-path fl SHARED HOST` \
+    -DFLEX_EXECUTABLE=`package-get-path flex EXECUTABLE BUILD` \
     -DGD_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DGD_LIBRARY=`package-get-path gd SHARED HOST` \
+    -DGTK2_CAIRO_INCLUDE_DIR= \
+    -DGTK2_CAIRO_LIBRARY_RELEASE= \
+    -DGTK2_GTK_INCLUDE_DIR= \
+    -DGTK2_LIBRARY_RELEASE= \
+    -DGZIP=`package-get-path gzip EXECUTABLE BUILD` \
     -DLTDL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DLTDL_LIBRARY=`package-get-path ltdl SHARED HOST` \
     -DMKDEFS_EXECUTABLE=${MKDEFS} \
     -DPython3_EXECUTABLE=${PYTHON} \
+    -DPANGOCAIRO_INCLUDE_DIR="${PACKAGE_PREFIX}/include/cairo;${PACKAGE_PREFIX}/include/pango-1.0" \
+    -DPANGOCAIRO_LIBRARY=`package-get-path pangocairo-1.0 SHARED HOST` \
     -DZLIB_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DZLIB_LIBRARY_DEBUG=`package-get-path z SHARED HOST` \
     -DZLIB_LIBRARY_RELEASE=`package-get-path z SHARED HOST`
