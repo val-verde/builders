@@ -1588,8 +1588,8 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "llvm-project",
-        "sourceBranchIndicator": "val-verde-llvm-project-14",
-        "sourcePackageVersion": "14",
+        "sourceBranchIndicator": "val-verde-llvm-project-15",
+        "sourcePackageVersion": "15",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
