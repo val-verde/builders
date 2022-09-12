@@ -37,4 +37,5 @@ package-configure-install-archive \
     --disable-static \
     --enable-python \
     --enable-shared \
+    --with-lua \
     --${ENABLE_OR_DISABLE_DBUS}-dbus
