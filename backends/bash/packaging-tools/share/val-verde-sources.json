@@ -1588,17 +1588,8 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "llvm-project",
-        "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "13",
-        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
-    },
-    {
-        "retainSource": "false",
-        "depth": "1",
-        "sourceType": "git",
-        "sourcePackageName": "llvm-project",
-        "sourceBranchIndicator": "android",
-        "sourcePackageVersion": "13",
+        "sourceBranchIndicator": "val-verde-llvm-project-14",
+        "sourcePackageVersion": "14",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
