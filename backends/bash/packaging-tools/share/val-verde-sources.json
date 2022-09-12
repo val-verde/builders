@@ -2740,8 +2740,8 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "spirv-llvm-translator",
-        "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "13",
+        "sourceBranchIndicator": "val-verde-llvm-project-14",
+        "sourcePackageVersion": "14",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
