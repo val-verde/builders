@@ -16,7 +16,7 @@ export DEPENDS="\
 COMPILER_RT_SANITIZERS_TO_BUILD="asan;cfi;dfsan;hwasan;msan;safestack;tsan;ubsan_minimal"
 CUDA_GPU_PRIMARY_ARCH=61
 CUDA_GPU_SECONDARY_ARCH=35
-EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;mlir;openmp;parallel-libs;polly;pstl"}
+EXTRA_PROJECTS=${EXTRA_PROJECTS:-"clang-tools-extra;mlir;openmp;polly;pstl"}
 
 # Invoke one-shot template for cmake/install
 function package-install-completion-callback() {
