@@ -16,5 +16,4 @@ fi
 
 HELP2MAN=`${WHICH} true` \
 package-bootstrap-configure-install-archive \
-    ac_cv_func_snprintf=no \
     gl_cv_func_printf_directive_n=no
