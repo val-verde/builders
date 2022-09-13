@@ -66,6 +66,7 @@ fi
 LLVM_TABLEGEN=`BINDIR=${LLVM_NATIVE_TOOL_ROOT}/bin package-get-path llvm-tblgen EXECUTABLE BUILD`
 
 CXX_STANDARD=17 \
+INSTALL_TARGET="libcxxshim-modulemap install" \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 RPATH_COMPONENTS="\
     ${INSTALL_PREFIX}/bin/swift \
