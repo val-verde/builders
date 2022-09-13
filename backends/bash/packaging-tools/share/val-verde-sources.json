@@ -2775,6 +2775,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "swift-collections",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "5",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "swift-corelibs-foundation",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "5",
