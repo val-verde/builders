@@ -37,11 +37,11 @@ if [ "${BUILD_TRIPLE}" = "${HOST_TRIPLE}" ]; then
     # re2c build
     package-invoke-builder re2c 3
 
-    # alive2 build
-    package-invoke-builder alive2 1
-
     # hiredis build
     package-invoke-builder hiredis 1
+
+    # alive2 build
+    package-invoke-builder alive2 1
 
     # souper build
     package-invoke-builder souper 1
