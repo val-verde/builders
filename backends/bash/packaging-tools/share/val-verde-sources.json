@@ -2929,7 +2929,7 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "swift-package-manager",
-        "sourceBranchIndicator": "default",
+        "sourceBranchIndicator": "default-next",
         "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
