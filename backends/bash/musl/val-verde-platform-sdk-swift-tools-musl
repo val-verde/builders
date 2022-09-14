@@ -25,7 +25,7 @@ package-invoke-builder souper-cross 1
 
 # cmark build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
-package-invoke-builder swift-cmark-cross 5 none
+package-invoke-builder swift-cmark-cross 5
 
 # swift build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
@@ -34,4 +34,3 @@ package-invoke-builder swift-musl 5
 # lldb build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-lldb-musl 5
-

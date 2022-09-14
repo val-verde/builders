@@ -40,7 +40,7 @@ package-invoke-builder souper-cross 1
 
 # android cmark build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
-package-invoke-builder swift-cmark-cross 5 none
+package-invoke-builder swift-cmark-cross 5
 
 # android swift build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
