@@ -7,8 +7,13 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Build the components
 copy-source-to-staging
+
+COMMON_CFLAGS="\
+    -Wno-deprecated-non-prototype \
+    -Wno-implicit-function-declaration \
+    ${COMMON_CFLAGS} \
+" \
 export-compiler-environment
-generate-compiler-tools
 
 if [ "${HOST_OS}" = "android" ] ||
    [ "${HOST_OS}" = "gnu" ] ||
@@ -23,16 +28,16 @@ cd ${STAGE_ROOT}
 make-build \
     -f ${STAGE_ROOT}/${PLATFORM}/Makefile \
     prefix=${INSTALL_PREFIX} \
-    CC=${CCLD} \
-    CPP=${CPP} \
-    LD=${CCLD} \
+    AS="${AS} ${ASFLAGS}" \
+    CC="${CC} ${CFLAGS} ${CCLDFLAGS}" \
+    CPP="${CPP} ${CPPFLAGS}" \
     generic
 make-install \
     -f ${STAGE_ROOT}/${PLATFORM}/Makefile \
     prefix=${INSTALL_PREFIX} \
-    CC=${CCLD} \
-    CPP=${CPP} \
-    LD=${CCLD}
+    AS="${AS} ${ASFLAGS}" \
+    CC="${CC} ${CFLAGS} ${CCLDFLAGS}" \
+    CPP="${CPP} ${CPPFLAGS}"
 
 # Build and install the package
 package-invoke-archive-install

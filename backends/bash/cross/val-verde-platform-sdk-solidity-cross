@@ -18,6 +18,7 @@ package-cmake-install-archive \
     -DBoost_PROGRAM_OPTIONS_LIBRARY=`package-get-path boost_program_options SHARED HOST` \
     -DBoost_UNIT_TEST_FRAMEWORK_LIBRARY=`package-get-path boost_unit_test_framework SHARED HOST` \
     -DCCACHE=`package-get-path ccache EXECUTABLE BUILD` \
+    -DPEDANTIC=FALSE \
     -DSTRICT_Z3_VERSION=FALSE \
     -DTESTS=FALSE \
     -DUSE_CVC4=FALSE \

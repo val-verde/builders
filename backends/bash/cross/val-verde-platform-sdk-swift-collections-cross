@@ -7,7 +7,6 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 export DEPENDS="\
     ${PACKAGE_BASE_NAME}-llvm-project-${LLVM_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-sqlite-3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-swift-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0) \
 "
 
@@ -20,19 +19,31 @@ if [ "${HOST_OS}" != "macos" ]; then
 fi
 
 # Invoke one-shot template for cmake/install
-if [ "${HOST_OS}" = "android" ]; then
-    CMAKE_ANDROID_DEFINE_CMD="-DANDROID=1"
-elif [ "${HOST_OS}" = "musl" ]; then
-    SWIFTCFLAGS="\
-        -DUSE_MUSL_LIBC \
-        ${SWIFTCFLAGS} \
-    "
+function package-install-completion-callback() {
+    if [ "${HOST_OS}" = "android" ]; then
+        ${MV} ${INSTALL_PREFIX}/lib/swift/linux \
+              ${INSTALL_PREFIX}/lib/swift/android
+    elif [ "${HOST_OS}" = "musl" ]; then
+        ${MV} ${INSTALL_PREFIX}/lib/swift/linux \
+              ${INSTALL_PREFIX}/lib/swift/musl
+    fi
+}
+
+if [ "${HOST_OS}" = "android" ] ||
+   [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "musl" ]; then
+    SDK="linux"
+elif [ "${HOST_OS}" = "mingw" ]; then
+    SDK="windows"
+else
+    SDK=${HOST_OS}
 fi
 
+COMPONENT_RPATH="\$ORIGIN:\$ORIGIN/../.." \
+PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
+RPATH_COMPONENTS="\
+    ${INSTALL_PREFIX}/lib/swift/${SDK}/${SHARED_LIBRARY_PREFIX}*${SHARED_LIBRARY_SUFFIX} \
+" \
 package-cmake-install-archive \
     -Ddispatch_DIR=${STAGE_ROOT_BASE}/swift-corelibs-libdispatch-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/cmake/modules \
-    -DFoundation_DIR=${STAGE_ROOT_BASE}/swift-corelibs-foundation-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/cmake/modules \
-    -DSwiftSystem_DIR=${STAGE_ROOT_BASE}/swift-system-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/cmake/modules \
-    -DSQLite3_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
-    -DSQLite3_LIBRARY=`package-get-path sqlite3 SHARED HOST` \
-    ${CMAKE_ANDROID_DEFINE_CMD}
+    -DFoundation_DIR=${STAGE_ROOT_BASE}/swift-corelibs-foundation-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/cmake/modules

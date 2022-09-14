@@ -486,11 +486,11 @@ package-invoke-builder nasm-cross 2
 # android re2c build
 package-invoke-builder re2c-cross 3
 
-# android alive2 build
-package-invoke-builder alive2-cross 1
-
 # android hiredis build
 package-invoke-builder hiredis-cross 1
+
+# android alive2 build
+package-invoke-builder alive2-cross 1
 
 # android ccache build
 package-invoke-builder ccache-cross 4

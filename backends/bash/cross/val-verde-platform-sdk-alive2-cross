@@ -69,6 +69,8 @@ PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 TOOL_INSTALL_INVOCATION=tool-install-invocation \
 package-cmake-install-archive \
     -DGIT_EXECUTABLE=${GIT} \
+    -DHIREDIS_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
+    -DHIREDIS_LIBRARIES=`package-get-path hiredis SHARED HOST` \
     -DRE2C=${BUILD_PACKAGE_PREFIX}/bin/re2c \
     -DZ3_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
     -DZ3_LIBRARIES=`package-get-path z3 SHARED HOST` \

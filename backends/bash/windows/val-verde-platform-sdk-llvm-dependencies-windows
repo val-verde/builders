@@ -397,11 +397,11 @@ package-invoke-builder nasm-cross 2
 # windows re2c build
 package-invoke-builder re2c-cross 3
 
-# windows alive2 build
-package-invoke-builder alive2-cross 1
-
 # windows hiredis build
 package-invoke-builder hiredis-cross 1
+
+# windows alive2 build
+package-invoke-builder alive2-cross 1
 
 # windows ccache build
 package-invoke-builder ccache-cross 4
