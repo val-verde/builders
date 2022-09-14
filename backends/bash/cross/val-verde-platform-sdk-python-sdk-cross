@@ -48,6 +48,9 @@ package-invoke-builder python-toml-cross 0
 # python-scikit-build build
 package-invoke-builder python-scikit-build-cross 0
 
+# python-scons build
+package-invoke-builder python-scons-cross 4
+
 # python-mpmath build
 package-invoke-builder python-mpmath-cross 1
 
