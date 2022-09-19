@@ -168,6 +168,7 @@ package-cmake-install-archive \
     -DFFI_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
     -DFFI_LIBRARY_DIR=${PACKAGE_PREFIX}/lib \
     -DFFI_LIBRARY_PATH=`package-get-path ffi SHARED HOST` \
+    -DGO_EXECUTABLE=`package-get-path go EXECUTABLE BUILD` \
     -DHAVE_GNU_POSIX_REGEX=TRUE \
     -DHAVE_INOTIFY=TRUE \
     -DHAVE_THREAD_SAFETY_ATTRIBUTES=TRUE \

@@ -6,5 +6,12 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for cmake/install
+HAVE_VASPRINTF=TRUE
+
+if [ "${HOST_OS}" = "gnu" ] ||
+   [ "${HOST_OS}" = "mingw" ]; then
+    HAVE_VASPRINTF=FALSE
+fi
+
 package-cmake-install-archive \
-    -DHAVE_VASPRINTF=FALSE
+    -DHAVE_VASPRINTF=${HAVE_VASPRINTF}

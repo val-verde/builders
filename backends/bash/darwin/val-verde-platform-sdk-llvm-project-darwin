@@ -129,6 +129,7 @@ package-cmake-install-archive \
     -DFFI_INCLUDE_PATH=${PACKAGE_PREFIX}/include \
     -DFFI_LIBRARY_DIR=${PACKAGE_PREFIX}/lib \
     -DFFI_LIBRARY_PATH=`package-get-path ffi SHARED HOST` \
+    -DGO_EXECUTABLE=`package-get-path go EXECUTABLE BUILD` \
     -DHAVE_INOTIFY=TRUE \
     -DLIBCXX_CXX_ABI=libcxxabi \
     -DLIBCXX_CXX_ABI_INCLUDE_PATHS=${PACKAGE_PREFIX}/include/c++/v1 \

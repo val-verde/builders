@@ -31,6 +31,7 @@ export-compiler-environment
 
 CROSS_TOOLCHAIN_FLAGS_NATIVE=`package-cmake-invocation-arguments-for-variant BUILD`
 LLVM_TABLEGEN=`BINDIR=${LLVM_NATIVE_TOOL_ROOT}/bin package-get-path llvm-tblgen EXECUTABLE BUILD`
+PYTHON_CONFIG=`package-get-path python${PYTHON_VERSION}-config SCRIPT HOST`
 
 CXX_STANDARD=17 \
 package-cmake-install-archive \
@@ -58,6 +59,8 @@ package-cmake-install-archive \
     -DLLDB_ENABLE_WERROR=FALSE \
     -DLLDB_INCLUDE_TESTS=FALSE \
     -DLLDB_PATH_TO_NATIVE_SWIFT_BUILD=${SWIFT_NATIVE_STAGE_ROOT}/lib/cmake/swift \
+    -DLLDB_PYTHON_EXE_RELATIVE_PATH=`${REALPATH} -m --relative-to=${BUILD_PACKAGE_PREFIX} ${PYTHON}` \
+    -DLLDB_PYTHON_EXT_SUFFIX=`${PYTHON_CONFIG} --extension-suffix` \
     -DLLDB_PYTHON_RELATIVE_PATH=lib/python${PYTHON_VERSION}/site-packages \
     -DLLDB_SKIP_STRIP=TRUE \
     -DLLDB_TABLEGEN=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}/bin/lldb-tblgen \
