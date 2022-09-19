@@ -40,7 +40,6 @@ elif [ "${HOST_PROCESSOR}" = "i386" ] ||
     fi
 fi
 
-CXX_STANDARD=17 \
 package-cmake-install-archive \
     -DCOMPILER_SUPPORTS_ARM_NEON=${EMBREE_ISA_NEON} \
     -DCOMPILER_SUPPORTS_AVX=${EMBREE_ISA_AVX} \
