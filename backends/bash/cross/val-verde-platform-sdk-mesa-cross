@@ -140,7 +140,6 @@ package-meson-install-archive \
     -Dintel-clc=${INTEL_CLC_ENABLED} \
     -Dlibunwind=${LIBUNWIND_ENABLED} \
     -Dllvm=enabled \
-    -Dopencl-native=${HARDWARE_DRIVERS_ENABLED} \
     -Dopencl-spirv=true \
     -Dplatforms="${HARDWARE_PLATFORMS}" \
     -Dosmesa=true \
