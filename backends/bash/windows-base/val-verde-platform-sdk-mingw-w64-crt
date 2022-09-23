@@ -38,6 +38,9 @@ function package-install-completion-callback() {
     ${LN} -sf \
           `package-get-filename uuid STATIC` \
           ${INSTALL_PREFIX}/lib/`package-get-filename winuuid STATIC`
+    ${LN} -sf \
+          `package-get-filename mingw32 STATIC` \
+          ${INSTALL_PREFIX}/lib/`package-get-filename windows STATIC`
 }
 
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
