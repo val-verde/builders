@@ -545,7 +545,7 @@
         "sourceType": "git",
         "sourcePackageName": "fex",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "2207",
+        "sourcePackageVersion": "2209",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
