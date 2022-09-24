@@ -83,7 +83,7 @@ elif [ "${HOST_OS}" = "mingw" ]; then
     VULKAN_DRIVERS=
     VULKAN_LAYERS=
 else
-    DRI3_ENABLED=disabled
+    DRI3_ENABLED=enabled
     EGL_ENABLED=enabled
     GALLIUM_DRIVERS="swrast,zink"
     GBM_ENABLED=enabled
@@ -92,7 +92,8 @@ else
     GLX_MODE=dri
     HARDWARE_DRIVERS_ENABLED=false
     HARDWARE_PLATFORMS="x11"
-    NINE_ENABLED=false
+    MESA_TOOLS="glsl,nir,xvmc,asahi,imagination,dlclose-skip"
+    NINE_ENABLED=true
     OPENCL_MODE=icd
     STATIC_LIBCLC=
     VULKAN_DRIVERS="swrast"
