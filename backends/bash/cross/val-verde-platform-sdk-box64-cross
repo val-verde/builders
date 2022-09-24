@@ -12,8 +12,11 @@ else
     ENABLE_ARM_DYNAREC=FALSE
 fi
 
-if [ "${HOST_CPU}" = "apple-m1" ]; then
+if [ -n "${ENABLE_LARGE_PAGE_SUPPORT}" ] &&
+   [ "${HOST_CPU}" = "apple-m1" ]; then
     ENABLE_M1=TRUE
+else
+    ENABLE_M1=FALSE
 fi
 
 export-compiler-environment-for-build-tools
