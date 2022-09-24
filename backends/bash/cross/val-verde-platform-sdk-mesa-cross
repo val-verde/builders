@@ -150,5 +150,6 @@ package-meson-install-archive \
     -Dtools=${MESA_TOOLS} \
     -Dvulkan-drivers=${VULKAN_DRIVERS} \
     -Dvulkan-layers=${VULKAN_LAYERS} \
+    -Dvulkan-registry-path=${PACKAGE_PREFIX}/share/vulkan/registry \
     -Dzstd=enabled \
     ${ANDROID_PLATFORM_SDK_VERSION}
