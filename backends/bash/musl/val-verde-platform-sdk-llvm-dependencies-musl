@@ -440,7 +440,7 @@ package-invoke-builder alien-package-tool-cross 8
 package-invoke-category-builder ai-sdk-cross
 
 # openjdk build
-package-invoke-builder openjdk-cross 17
+package-invoke-builder openjdk-cross 19
 
 # jansi build
 package-invoke-builder jansi-cross 2

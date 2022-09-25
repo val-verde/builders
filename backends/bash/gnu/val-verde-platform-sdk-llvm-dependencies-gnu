@@ -589,7 +589,7 @@ if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
    [ "${HOST_PROCESSOR}" = "x86_64" ]; then
     # openjdk build
     ENABLE_STAGE_ROOT_BUILD=TRUE \
-    package-invoke-builder openjdk-cross 17
+    package-invoke-builder openjdk-cross 19
     unset JAVA
     unset JAVAC
 fi
