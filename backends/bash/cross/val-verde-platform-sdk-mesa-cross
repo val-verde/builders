@@ -49,7 +49,7 @@ elif [ "${HOST_OS}" = "gnu" ] ||
      [ "${HOST_OS}" = "musl" ]; then
     DRI3_ENABLED=enabled
     EGL_ENABLED=enabled
-    GALLIUM_DRIVERS="asahi,crocus,etnaviv,freedreno,iris,kmsro,lima,panfrost,nouveau,radeonsi,r600,svga,swrast,tegra,v3d,vc4,virgl,zink"
+    GALLIUM_DRIVERS="asahi,crocus,d3d12,etnaviv,freedreno,iris,kmsro,lima,panfrost,nouveau,radeonsi,r600,svga,swrast,tegra,v3d,vc4,virgl,zink"
     GBM_ENABLED=enabled
     GLVND_ENABLED=true
     GLX_DIRECT_ENABLED=true
@@ -83,7 +83,7 @@ elif [ "${HOST_OS}" = "mingw" ]; then
     VULKAN_DRIVERS=
     VULKAN_LAYERS=
 else
-    DRI3_ENABLED=disabled
+    DRI3_ENABLED=enabled
     EGL_ENABLED=enabled
     GALLIUM_DRIVERS="swrast,zink"
     GBM_ENABLED=enabled
@@ -92,7 +92,8 @@ else
     GLX_MODE=dri
     HARDWARE_DRIVERS_ENABLED=false
     HARDWARE_PLATFORMS="x11"
-    NINE_ENABLED=false
+    MESA_TOOLS="glsl,nir,xvmc,asahi,imagination,dlclose-skip"
+    NINE_ENABLED=true
     OPENCL_MODE=icd
     STATIC_LIBCLC=
     VULKAN_DRIVERS="swrast"
@@ -119,6 +120,7 @@ COMMON_CFLAGS="\
     -I${SOURCE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}/clang/include \
     ${COMMON_CFLAGS} \
 " \
+CXX_STANDARD=17 \
 MESON_EXTRA_BINARIES="\
 llvm-config='${LLVM_CONFIG_EXECUTABLE}' \
 " \
@@ -140,7 +142,6 @@ package-meson-install-archive \
     -Dintel-clc=${INTEL_CLC_ENABLED} \
     -Dlibunwind=${LIBUNWIND_ENABLED} \
     -Dllvm=enabled \
-    -Dopencl-native=${HARDWARE_DRIVERS_ENABLED} \
     -Dopencl-spirv=true \
     -Dplatforms="${HARDWARE_PLATFORMS}" \
     -Dosmesa=true \
@@ -150,5 +151,6 @@ package-meson-install-archive \
     -Dtools=${MESA_TOOLS} \
     -Dvulkan-drivers=${VULKAN_DRIVERS} \
     -Dvulkan-layers=${VULKAN_LAYERS} \
+    -Dvulkan-registry-path=${PACKAGE_PREFIX}/share/vulkan/registry \
     -Dzstd=enabled \
     ${ANDROID_PLATFORM_SDK_VERSION}
