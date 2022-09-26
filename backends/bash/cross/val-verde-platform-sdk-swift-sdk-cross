@@ -24,48 +24,46 @@ if [ "${HOST_OS}" = "mingw" ]; then
     BUILDER_EXTENSION=windows
 fi
 
+# Start: Preserve stage roots for core sdk components
+export ENABLE_STAGE_ROOT_BUILD=TRUE
+
 if [ "${HOST_OS}" != "macos" ]; then
     # libdispatch build
-    ENABLE_STAGE_ROOT_BUILD=TRUE \
     package-invoke-builder swift-corelibs-libdispatch-${BUILDER_EXTENSION} 5 no-install
 
     # foundation build
-    ENABLE_STAGE_ROOT_BUILD=TRUE \
     package-invoke-builder swift-corelibs-foundation-${BUILDER_EXTENSION} 5 no-install
 fi
 
 # xctest build
-ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-corelibs-xctest-${BUILDER_EXTENSION} 5 no-install
 
 # llbuild build
-ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-llbuild-${BUILDER_EXTENSION} 5 no-install
 
 # swift system build
 package-invoke-builder swift-system-cross 5 no-install
 
 # swift tools support core build
-ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-tools-support-core-${BUILDER_EXTENSION} 5 no-install
 
 # yams build
-ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder yams-${BUILDER_EXTENSION} 3 no-install
 
 # swift argument parser build
-ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-argument-parser-cross 5 no-install
 
 # swift crypto build
 package-invoke-builder swift-crypto-cross 5 no-install
 
 # swift driver build
-ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-driver-cross 5 no-install
 
 # swift collections build
 package-invoke-builder swift-collections-cross 5 no-install
+
+# End: Preserve stage roots for core sdk components
+unset ENABLE_STAGE_ROOT_BUILD
 
 # swift package manager build
 package-invoke-builder swift-package-manager-cross 5 no-install
