@@ -17,7 +17,7 @@ package-invoke-builder bazel-bootstrap 4
 package-invoke-builder go-bootstrap 1
 
 # openjdk bootstrap build
-package-invoke-builder openjdk-bootstrap 17
+package-invoke-builder openjdk-bootstrap 19
 
 # maven bootstrap build
 package-invoke-builder maven-bootstrap 3

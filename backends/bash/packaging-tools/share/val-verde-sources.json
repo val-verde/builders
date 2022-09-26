@@ -1948,8 +1948,8 @@
         "depth": "1",
         "sourceType": "git",
         "sourcePackageName": "openjdk",
-        "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "17",
+        "sourceBranchIndicator": "val-verde-openjdk-19",
+        "sourcePackageVersion": "19",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
