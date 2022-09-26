@@ -12,7 +12,7 @@ export DEPENDS="\
     ${PACKAGE_BASE_NAME}-swift-corelibs-xctest-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-swift-llbuild-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
     ${PACKAGE_BASE_NAME}-swift-tools-support-core-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0), \
-    ${PACKAGE_BASE_NAME}-yams-3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0) \
+    ${PACKAGE_BASE_NAME}-swift-yams-3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU} (>=1.0.0) \
 "
 
 if [ "${HOST_OS}" != "macos" ]; then
@@ -39,4 +39,4 @@ package-cmake-install-archive \
     -DLLBuild_DIR=${STAGE_ROOT_BASE}/swift-llbuild-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/cmake/modules \
     -DSwiftSystem_DIR=${STAGE_ROOT_BASE}/swift-system-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/cmake/modules \
     -DTSC_DIR=${STAGE_ROOT_BASE}/swift-tools-support-core-${SOURCE_PACKAGE_VERSION}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/cmake/modules \
-    -DYams_DIR=${STAGE_ROOT_BASE}/yams-3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/cmake/modules
+    -DYams_DIR=${STAGE_ROOT_BASE}/swift-yams-3-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/cmake/modules

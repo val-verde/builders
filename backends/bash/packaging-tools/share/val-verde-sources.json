@@ -3521,7 +3521,7 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
-        "sourcePackageName": "yams",
+        "sourcePackageName": "swift-yams",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
