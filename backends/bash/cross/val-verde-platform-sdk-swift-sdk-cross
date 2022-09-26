@@ -7,15 +7,17 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # remove host foundation and libdispatch to avoid module collisions
 PACKAGES_TO_MANAGE=( 'swift-package-manager-5'         'BUILD' \
+                     'swift-collections-5'             'BUILD' \
                      'swift-driver-5'                  'BUILD' \
+                     'yams-3'                          'BUILD' \
                      'swift-crypto-5'                  'BUILD' \
                      'swift-argument-parser-5'         'BUILD' \
-                     'yams-3'                          'BUILD' \
                      'swift-tools-support-core-5'      'BUILD' \
                      'swift-llbuild-5'                 'BUILD' \
+                     'swift-system-5'                  'BUILD' \
                      'swift-corelibs-xctest-5'         'BUILD' \
                      'swift-corelibs-foundation-5'     'BUILD' \
-		     'swift-corelibs-libdispatch-5'    'BUILD' )
+                     'swift-corelibs-libdispatch-5'    'BUILD' )
 package-invoke-archive-action uninstall ${PACKAGES_TO_MANAGE[@]}
 
 BUILDER_EXTENSION=cross
