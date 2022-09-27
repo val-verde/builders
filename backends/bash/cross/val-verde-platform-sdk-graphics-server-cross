@@ -208,7 +208,7 @@ package-invoke-builder cairo-cross 1
 package-invoke-builder graphite2-cross 1
 
 # harfbuzz build
-package-invoke-builder harfbuzz-cross 4
+package-invoke-builder harfbuzz-cross 5
 
 # freetype2 build
 package-invoke-builder freetype2-cross 2
