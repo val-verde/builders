@@ -66,6 +66,21 @@ elif [ "${HOST_OS}" = "gnu" ] ||
     if [ "${HOST_OS}" = "gnu" ]; then
         MESA_TOOLS="${MESA_TOOLS},drm-shim,intel"
     fi
+elif [ "${HOST_OS}" = "macos" ]; then
+    DRI3_ENABLED=enabled
+    EGL_ENABLED=enabled
+    GALLIUM_DRIVERS="swrast,zink"
+    GBM_ENABLED=enabled
+    GLVND_ENABLED=false
+    GLX_DIRECT_ENABLED=true
+    GLX_MODE=dri
+    HARDWARE_DRIVERS_ENABLED=false
+    HARDWARE_PLATFORMS="x11"
+    MESA_TOOLS="glsl,nir,xvmc,asahi,imagination,dlclose-skip"
+    NINE_ENABLED=true
+    OPENCL_MODE=icd
+    STATIC_LIBCLC=
+    VULKAN_DRIVERS="swrast"
 elif [ "${HOST_OS}" = "mingw" ]; then
     DRI3_ENABLED=disabled
     EGL_ENABLED=disabled
@@ -82,21 +97,6 @@ elif [ "${HOST_OS}" = "mingw" ]; then
     STATIC_LIBCLC=all
     VULKAN_DRIVERS=
     VULKAN_LAYERS=
-else
-    DRI3_ENABLED=enabled
-    EGL_ENABLED=enabled
-    GALLIUM_DRIVERS="swrast,zink"
-    GBM_ENABLED=enabled
-    GLVND_ENABLED=true
-    GLX_DIRECT_ENABLED=true
-    GLX_MODE=dri
-    HARDWARE_DRIVERS_ENABLED=false
-    HARDWARE_PLATFORMS="x11"
-    MESA_TOOLS="glsl,nir,xvmc,asahi,imagination,dlclose-skip"
-    NINE_ENABLED=true
-    OPENCL_MODE=icd
-    STATIC_LIBCLC=
-    VULKAN_DRIVERS="swrast"
 fi
 
 if [ "${HOST_OS}" = "macos" ]; then
