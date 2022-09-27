@@ -6,6 +6,12 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Invoke one-shot template for cmake/install
+GL_LIBRARY=GL
+
+if [ "${HOST_OS}" = "macos" ]; then
+    GL_LIBRARY=MesaGL
+fi
+
 PACKAGE_USR_PREFIX=${PACKAGE_USR_PREFIX}/mesa-demos \
 package-cmake-install-archive \
     -DGLEW_glew_LIBRARY=`package-get-path GLEW SHARED HOST` \
@@ -16,7 +22,7 @@ package-cmake-install-archive \
     -DGLUT_Xi_LIBRARY=`package-get-path Xi SHARED HOST` \
     -DGLUT_Xmu_LIBRARY=`package-get-path Xmu SHARED HOST` \
     -DOPENGL_egl_LIBRARY=`package-get-path EGL SHARED HOST` \
-    -DOPENGL_gl_LIBRARY=`package-get-path GL SHARED HOST` \
+    -DOPENGL_gl_LIBRARY=`package-get-path ${GL_LIBRARY} SHARED HOST` \
     -DOPENGL_glu_LIBRARY=`package-get-path GLU SHARED HOST` \
     -DOPENGL_glx_LIBRARY=`package-get-path GLX SHARED HOST` \
     -DOPENGL_EGL_INCLUDE_DIR=${PACKAGE_PREFIX}/include \
