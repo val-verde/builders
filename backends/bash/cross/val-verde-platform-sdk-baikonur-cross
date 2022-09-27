@@ -21,10 +21,10 @@ fi
 cd ${SOURCE_ROOT}
 
 if [ "${HOST_OS}" = "android" ]; then
-    MAINLINE_BRANCH=val-verde-android-mainline
     DISABLE_FORTIFY_SOURCE_LEVEL=TRUE
 fi
 
+MAINLINE_BRANCH=val-verde-mainline-next \
 SWIFT_BUILD_FLAGS="\
     -Xcxx -fno-modules \
     -Xlinker -lc++ \
