@@ -17,16 +17,21 @@ if [ "${HOST_OS}" != "macos" ]; then
     "
 fi
 
-# Configure the build components
+# Build the components
 cd ${SOURCE_ROOT}
 
-# Build the components
+if [ "${HOST_OS}" = "macos" ]; then
+    LIBTOOL=`package-get-path llvm-ar EXECUTABLE BUILD`
+    USE_GNU_OVER_DARWIN_LIBTOOL=TRUE
+fi
+
 SWIFT_BUILD_FLAGS="\
     -Xlinker -lc++ \
     -Xlinker -licuucswift \
     -Xlinker -lncurses \
     ${SWIFT_BUILD_FLAGS} \
 " \
+SWIFTPM_USE_SWIFT_CRYPTO_V2=TRUE \
 package-swift-build
 
 cd ${STAGE_ROOT}
