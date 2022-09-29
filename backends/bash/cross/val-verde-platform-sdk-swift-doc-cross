@@ -18,13 +18,6 @@ if [ "${HOST_OS}" != "macos" ]; then
     "
 fi
 
-# Configure the build components
-if [ "${HOST_OS}" = "android" ]; then
-   SOURCE_ROOT=${SOURCE_ROOT}-android
-else
-   SOURCE_ROOT=${SOURCE_ROOT}
-fi
-
 # Build the components
 cd ${SOURCE_ROOT}
 package-swift-build
