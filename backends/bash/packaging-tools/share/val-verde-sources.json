@@ -2280,6 +2280,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "python-ply",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "3",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "python-pybind11",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "2",
