@@ -56,7 +56,6 @@ elif [ "${HOST_OS}" = "gnu" ] ||
     GLX_MODE=dri
     HARDWARE_DRIVERS_ENABLED=true
     HARDWARE_PLATFORMS="wayland,x11"
-    INTEL_CLC_ENABLED=enabled
     MESA_TOOLS="etnaviv,freedreno,glsl,nir,nouveau,lima,panfrost,asahi,imagination,dlclose-skip"
     NINE_ENABLED=true
     OPENCL_MODE=icd
