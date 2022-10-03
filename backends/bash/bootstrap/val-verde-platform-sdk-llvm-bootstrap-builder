@@ -28,7 +28,7 @@ if [ -z "${MAKEINFO}" ]; then
 fi
 
 # kernel-headers bootstrap build
-package-invoke-builder kernel-headers 5
+package-invoke-builder kernel-headers 6
 
 # autoconf bootstrap build
 package-invoke-builder autoconf 2 bootstrap-only

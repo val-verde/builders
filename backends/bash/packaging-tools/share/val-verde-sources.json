@@ -1562,7 +1562,7 @@
         "sourceType": "git",
         "sourcePackageName": "linux",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "5",
+        "sourcePackageVersion": "6",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {

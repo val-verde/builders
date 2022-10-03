@@ -6,7 +6,7 @@ set -e
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # kernel headers build
-package-invoke-builder kernel-headers-cross 5
+package-invoke-builder kernel-headers-cross 6
 
 # musl headers build
 package-invoke-builder musl-headers 1
