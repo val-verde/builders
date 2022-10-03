@@ -14,7 +14,7 @@ if [ "${HOST_PROCESSOR}" = "aarch64" ] ||
    [ "${HOST_PROCESSOR}" = "mips64el" ] ||
    [ "${HOST_PROCESSOR}" = "x86_64" ]; then
     # kernel-image build
-    package-invoke-builder kernel-image-cross 5
+    package-invoke-builder kernel-image-cross 6
 
     # busybox build
     package-invoke-builder busybox-cross 1

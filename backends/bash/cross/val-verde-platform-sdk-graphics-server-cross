@@ -179,7 +179,7 @@ package-invoke-builder opencl-icd-loader-cross 2022
 if [ "${HOST_OS}" = "mingw" ]; then
     # egl headers build
     package-invoke-builder egl-headers-cross 1
-else
+elif [ "${HOST_OS}" != "macos" ]; then
     # libglvnd build
     package-invoke-builder libglvnd-cross 1
 fi
@@ -208,7 +208,7 @@ package-invoke-builder cairo-cross 1
 package-invoke-builder graphite2-cross 1
 
 # harfbuzz build
-package-invoke-builder harfbuzz-cross 4
+package-invoke-builder harfbuzz-cross 5
 
 # freetype2 build
 package-invoke-builder freetype2-cross 2

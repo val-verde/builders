@@ -31,7 +31,7 @@ if [ "${BUILD_TRIPLE}" = ${HOST_TRIPLE} ]; then
 fi
 
 # kernel headers builds
-package-invoke-builder kernel-headers-cross 5
+package-invoke-builder kernel-headers-cross 6
 
 # glibc runtime build
 package-invoke-builder glibc-runtime 2 no-install

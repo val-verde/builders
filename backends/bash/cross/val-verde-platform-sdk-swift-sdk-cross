@@ -7,15 +7,17 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # remove host foundation and libdispatch to avoid module collisions
 PACKAGES_TO_MANAGE=( 'swift-package-manager-5'         'BUILD' \
+                     'swift-collections-5'             'BUILD' \
                      'swift-driver-5'                  'BUILD' \
+                     'swift-yams-3'                    'BUILD' \
                      'swift-crypto-5'                  'BUILD' \
                      'swift-argument-parser-5'         'BUILD' \
-                     'yams-3'                          'BUILD' \
                      'swift-tools-support-core-5'      'BUILD' \
                      'swift-llbuild-5'                 'BUILD' \
+                     'swift-system-5'                  'BUILD' \
                      'swift-corelibs-xctest-5'         'BUILD' \
                      'swift-corelibs-foundation-5'     'BUILD' \
-		     'swift-corelibs-libdispatch-5'    'BUILD' )
+                     'swift-corelibs-libdispatch-5'    'BUILD' )
 package-invoke-archive-action uninstall ${PACKAGES_TO_MANAGE[@]}
 
 BUILDER_EXTENSION=cross
@@ -24,48 +26,46 @@ if [ "${HOST_OS}" = "mingw" ]; then
     BUILDER_EXTENSION=windows
 fi
 
+# Start: Preserve stage roots for core sdk components
+export ENABLE_STAGE_ROOT_BUILD=TRUE
+
 if [ "${HOST_OS}" != "macos" ]; then
     # libdispatch build
-    ENABLE_STAGE_ROOT_BUILD=TRUE \
     package-invoke-builder swift-corelibs-libdispatch-${BUILDER_EXTENSION} 5 no-install
 
     # foundation build
-    ENABLE_STAGE_ROOT_BUILD=TRUE \
     package-invoke-builder swift-corelibs-foundation-${BUILDER_EXTENSION} 5 no-install
 fi
 
 # xctest build
-ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-corelibs-xctest-${BUILDER_EXTENSION} 5 no-install
 
 # llbuild build
-ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-llbuild-${BUILDER_EXTENSION} 5 no-install
 
 # swift system build
 package-invoke-builder swift-system-cross 5 no-install
 
 # swift tools support core build
-ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-tools-support-core-${BUILDER_EXTENSION} 5 no-install
 
-# yams build
-ENABLE_STAGE_ROOT_BUILD=TRUE \
-package-invoke-builder yams-${BUILDER_EXTENSION} 3 no-install
+# swift yams build
+package-invoke-builder swift-yams-${BUILDER_EXTENSION} 3 no-install
 
 # swift argument parser build
-ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-argument-parser-cross 5 no-install
 
 # swift crypto build
 package-invoke-builder swift-crypto-cross 5 no-install
 
 # swift driver build
-ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder swift-driver-cross 5 no-install
 
 # swift collections build
 package-invoke-builder swift-collections-cross 5 no-install
+
+# End: Preserve stage roots for core sdk components
+unset ENABLE_STAGE_ROOT_BUILD
 
 # swift package manager build
 package-invoke-builder swift-package-manager-cross 5 no-install
@@ -86,7 +86,7 @@ PACKAGES_TO_MANAGE=( 'swift-corelibs-libdispatch-5'    'BUILD' \
                      'swift-tools-support-core-5'      'BUILD' \
                      'swift-argument-parser-5'         'BUILD' \
                      'swift-crypto-5'                  'BUILD' \
-                     'yams-3'                          'BUILD' \
+                     'swift-yams-3'                    'BUILD' \
                      'swift-driver-5'                  'BUILD' \
                      'swift-collections-5'             'BUILD' \
                      'swift-package-manager-5'         'BUILD' \
@@ -96,7 +96,7 @@ PACKAGES_TO_MANAGE=( 'swift-corelibs-libdispatch-5'    'BUILD' \
                      'swift-tools-support-core-5'      'HOST' \
                      'swift-argument-parser-5'         'HOST' \
                      'swift-crypto-5'                  'HOST' \
-                     'yams-3'                          'HOST' \
+                     'swift-yams-3'                    'HOST' \
                      'swift-driver-5'                  'HOST' \
                      'swift-collections-5'             'HOST' \
                      'swift-package-manager-5'         'HOST')

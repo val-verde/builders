@@ -896,7 +896,7 @@
         "sourceType": "git",
         "sourcePackageName": "harfbuzz",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "4",
+        "sourcePackageVersion": "5",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1562,7 +1562,7 @@
         "sourceType": "git",
         "sourcePackageName": "linux",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "5",
+        "sourcePackageVersion": "6",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -2274,6 +2274,15 @@
         "sourcePackageName": "python-pip",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "21",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "python-ply",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -3521,7 +3530,7 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
-        "sourcePackageName": "yams",
+        "sourcePackageName": "swift-yams",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "3",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"

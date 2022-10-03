@@ -7,7 +7,13 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
 function glew-build() {
-    GL_LIBS="-ldl -lGL -lX11"
+    GL_LIBRARY=GL
+
+    if [ "${HOST_OS}" = "macos" ]; then
+        GL_LIBRARY=MesaGL
+    fi
+
+    GL_LIBS="-ldl -l${GL_LIBRARY} -lX11"
     GLEW_LN="${LN} -s"
 
     if [ "${HOST_OS}" = "macos" ]; then

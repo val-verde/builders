@@ -9,21 +9,22 @@ source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 if [ "${HOST_OS}" = "android" ] ||
    [ "${HOST_OS}" = "gnu" ] ||
    [ "${HOST_OS}" = "musl" ]; then
-    HARDWARE_DRIVERS_ENABLED=true
+    ENABLE_OR_DISABLE_HARDWARE_DRIVERS=enabled
 else
-    HARDWARE_DRIVERS_ENABLED=false
+    ENABLE_OR_DISABLE_HARDWARE_DRIVERS=disabled
 fi
 
 package-meson-install-archive \
-    -Damdgpu=${HARDWARE_DRIVERS_ENABLED} \
-    -Dcairo-tests=false \
-    -Detnaviv=${HARDWARE_DRIVERS_ENABLED} \
-    -Dexynos=${HARDWARE_DRIVERS_ENABLED} \
-    -Dfreedreno=${HARDWARE_DRIVERS_ENABLED} \
+    -Damdgpu=${ENABLE_OR_DISABLE_HARDWARE_DRIVERS} \
+    -Dcairo-tests=disabled \
+    -Detnaviv=${ENABLE_OR_DISABLE_HARDWARE_DRIVERS} \
+    -Dexynos=${ENABLE_OR_DISABLE_HARDWARE_DRIVERS} \
+    -Dfreedreno=${ENABLE_OR_DISABLE_HARDWARE_DRIVERS} \
     -Dinstall-test-programs=false \
-    -Dintel=${HARDWARE_DRIVERS_ENABLED} \
-    -Domap=${HARDWARE_DRIVERS_ENABLED} \
-    -Dnouveau=${HARDWARE_DRIVERS_ENABLED} \
-    -Dradeon=${HARDWARE_DRIVERS_ENABLED} \
-    -Dtegra=${HARDWARE_DRIVERS_ENABLED} \
-    -Dvmwgfx=${HARDWARE_DRIVERS_ENABLED}
+    -Dintel=${ENABLE_OR_DISABLE_HARDWARE_DRIVERS} \
+    -Domap=${ENABLE_OR_DISABLE_HARDWARE_DRIVERS} \
+    -Dnouveau=${ENABLE_OR_DISABLE_HARDWARE_DRIVERS} \
+    -Dradeon=${ENABLE_OR_DISABLE_HARDWARE_DRIVERS} \
+    -Dtegra=${ENABLE_OR_DISABLE_HARDWARE_DRIVERS} \
+    -Dtests=false \
+    -Dvmwgfx=${ENABLE_OR_DISABLE_HARDWARE_DRIVERS}

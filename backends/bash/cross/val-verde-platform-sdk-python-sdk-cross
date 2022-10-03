@@ -57,6 +57,9 @@ package-invoke-builder python-mpmath-cross 1
 # python-numpy build
 package-invoke-builder python-numpy-cross 1
 
+# python-ply build
+package-invoke-builder python-ply-cross 3
+
 # python-protobuf build
 package-invoke-builder python-protobuf-cross 3
 

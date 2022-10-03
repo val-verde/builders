@@ -19,12 +19,14 @@ SWIFT_BUILD_FLAGS="\
     -Xlinker -lncurses \
     ${SWIFT_BUILD_FLAGS} \
 " \
+SWIFTPM_USE_SWIFT_CRYPTO_V2=TRUE \
 package-swift-build
 
 cd ${STAGE_ROOT}
 ${MKDIR} -p ${INSTALL_PREFIX}/bin
-${CP} `${FIND} -type f -name sourcekit-lsp\*` \
-      ${INSTALL_PREFIX}/bin
+package-rsync -ax \
+              `${FIND} -type f -name sourcekit-lsp\*` \
+              ${INSTALL_PREFIX}/bin
 
 # Build and install the package
 package-invoke-archive-install
