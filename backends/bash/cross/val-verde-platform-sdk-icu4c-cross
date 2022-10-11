@@ -10,12 +10,6 @@ if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
     CROSS_BUILD_CMD="--with-cross-build=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}/build"
 fi
 
-ENABLE_OR_DISABLE_RPATH=enable
-
-if [ "${HOST_OS}" = "mingw" ]; then
-    ENABLE_OR_DISABLE_RPATH=disable
-fi
-
 CONFIGURE_FILE_ROOT=${STAGE_ROOT}/${SOURCE_PACKAGE_NAME}/source \
 DISABLE_AUTOUPDATE=TRUE \
 RPATH_COMPONENTS="\
@@ -26,11 +20,11 @@ RPATH_COMPONENTS="\
 " \
 package-stage-configure-install-archive \
     --disable-extras \
+    --disable-rpath \
     --disable-samples \
     --disable-static \
     --disable-tests \
     --enable-shared \
     --enable-tools \
     --with-library-suffix=swift \
-    --${ENABLE_OR_DISABLE_RPATH}-rpath \
     ${CROSS_BUILD_CMD}
