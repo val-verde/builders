@@ -29,24 +29,29 @@ Cflags: -I\${includedir}
 " > ${INSTALL_PREFIX}/lib/pkgconfig/cups.pc
 }
 
+ENABLE_OR_DISABLE_GSSAPI=disable
+ENABLE_OR_DISABLE_SYSTEMD=disable
+
 if [ "${HOST_OS}" = "gnu" ]; then
     ENABLE_OR_DISABLE_GSSAPI=enable
     ENABLE_OR_DISABLE_SYSTEMD=enable
-else
-    ENABLE_OR_DISABLE_GSSAPI=disable
-    ENABLE_OR_DISABLE_SYSTEMD=disable
 fi
 
 if [ "${HOST_OS}" = "macos" ]; then
-    CODE_SIGN=`package-get-path codesign EXECUTABLE BUILD`
+    CODE_SIGN="`package-get-path codesign EXECUTABLE BUILD` -f"
+    ENABLE_LIBTOOL_CMD="--enable-libtool_unsupported=${LIBTOOL}"
 fi
 
+COMMON_CFLAGS="\
+    -L${PACKAGE_PREFIX}/lib \
+    ${COMMON_CFLAGS} \
+" \
 CONFIGURE_BUILD_ROOT=${STAGE_ROOT} \
 DISABLE_LIBTOOLIZE=TRUE \
 KRB5CONFIG=`package-get-path krb5-config SCRIPT HOST` \
 PACKAGE_INSTALL_COMPLETION_CALLBACK=package-install-completion-callback \
 package-configure-install-archive \
-    ac_cv_path_CODE_SIGN=${CODE_SIGN} \
+    ac_cv_path_CODE_SIGN="${CODE_SIGN}" \
     --disable-static \
     --enable-shared \
     --with-dbusdir=${PACKAGE_PLATFORM_SYSROOT}/etc/dbus-1 \
@@ -55,4 +60,5 @@ package-configure-install-archive \
     --with-rcdir=${PACKAGE_PLATFORM_SYSROOT}/etc \
     --with-systemd=${PACKAGE_PLATFORM_SYSROOT}/lib/systemd \
     --${ENABLE_OR_DISABLE_GSSAPI}-gssapi \
-    --${ENABLE_OR_DISABLE_SYSTEMD}-systemd
+    --${ENABLE_OR_DISABLE_SYSTEMD}-systemd \
+    ${ENABLE_LIBTOOL_CMD}

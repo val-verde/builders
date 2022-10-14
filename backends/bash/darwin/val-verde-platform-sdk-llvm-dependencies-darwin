@@ -398,7 +398,7 @@ package-invoke-builder dbus-cross 1
 package-invoke-category-builder dnf-package-manager-cross
 
 # cups build
-# package-invoke-builder cups-cross 2
+package-invoke-builder cups-cross 2
 
 # util-linux build (with python and systemd support)
 package-invoke-builder util-linux-cross 2
