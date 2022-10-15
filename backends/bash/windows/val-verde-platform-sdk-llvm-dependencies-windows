@@ -84,7 +84,6 @@ ARCHIVE_PATH=${BOOTSTRAP_ARCHIVE_PATH} \
 package-invoke-builder gettext-cross 0 bootstrap-only
 
 # windows gzip build
-DISABLE_FORTIFY_SOURCE_LEVEL= \
 package-invoke-builder gzip-cross 1
 
 # windows xz build
