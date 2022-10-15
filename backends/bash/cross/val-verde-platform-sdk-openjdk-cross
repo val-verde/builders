@@ -35,6 +35,13 @@ unset \
     ZIP
 
 cd ${STAGE_ROOT}/build
+
+OPENJDK_HOST_TRIPLE=${HOST_TRIPLE}
+
+if [ "${HOST_OS}" = "macos" ]; then
+    OPENJDK_HOST_TRIPLE=${HOST_PROCESSOR}-${HOST_KERNEL}-${DARWIN_OS}${DARWIN_OS_API_LEVEL}
+fi
+
 TOOL_LOG=${STAGE_ROOT}/builder-invocation
 tool-log ${SOURCE_ROOT}/configure \
     AR=${AR} \
@@ -69,6 +76,8 @@ tool-log ${SOURCE_ROOT}/configure \
     LS=${LS} \
     LSB_RELEASE=${LSB_RELEASE} \
     MAKE=${MAKE} \
+    METAL=${TRUE} \
+    METALLIB=${TRUE} \
     MKDIR=${MKDIR} \
     MKTEMP=${MKTEMP} \
     MV=${MV} \
@@ -82,6 +91,7 @@ tool-log ${SOURCE_ROOT}/configure \
     RM=${RM} \
     RMDIR=${RMDIR} \
     SED=${SED} \
+    SETFILE=${TRUE} \
     SH=${BASH} \
     SORT=${SORT} \
     STAT=${STAT} \
@@ -95,10 +105,12 @@ tool-log ${SOURCE_ROOT}/configure \
     UNIQ=${UNIQ} \
     WC=${WC} \
     XARGS=${XARGS} \
+    XATTR=${TRUE} \
+    XCRUN=${XCRUN} \
     --disable-jvm-feature-static-build \
     --disable-static-build \
     --disable-warnings-as-errors \
-    --openjdk-target=${HOST_TRIPLE} \
+    --openjdk-target=${OPENJDK_HOST_TRIPLE} \
     --prefix=${PACKAGE_PREFIX} \
     --with-boot-jdk=${BUILD_PACKAGE_PREFIX} \
     --with-extra-asflags="${HOST_ASFLAGS}" \
