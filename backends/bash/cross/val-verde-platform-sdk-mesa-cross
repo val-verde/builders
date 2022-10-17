@@ -117,6 +117,7 @@ COMMON_CFLAGS="\
     -D__USE_GNU \
     -I${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/tools/clang/include \
     -I${SOURCE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}/clang/include \
+    -L${PACKAGE_PREFIX}/lib \
     ${COMMON_CFLAGS} \
 " \
 CXX_STANDARD=17 \
