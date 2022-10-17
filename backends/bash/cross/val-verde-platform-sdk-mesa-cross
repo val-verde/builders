@@ -60,7 +60,7 @@ elif [ "${HOST_OS}" = "gnu" ] ||
     NINE_ENABLED=true
     OPENCL_MODE=icd
     STATIC_LIBCLC=
-    VULKAN_DRIVERS="amd,broadcom,freedreno,intel,imagination-experimental,panfrost,swrast,virtio-experimental"
+    VULKAN_DRIVERS="amd,broadcom,freedreno,intel,imagination-experimental,microsoft-experimental,panfrost,swrast,virtio-experimental"
 
     if [ "${HOST_OS}" = "gnu" ]; then
         MESA_TOOLS="${MESA_TOOLS},drm-shim,intel"
@@ -113,6 +113,10 @@ if [ "${BUILD_TRIPLE}" != "${HOST_TRIPLE}" ]; then
     export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${LLVM_NATIVE_STAGE_ROOT}/NATIVE/lib
 fi
 
+BUILD_COMMON_CFLAGS="\
+    -L${BUILD_PACKAGE_PREFIX}/lib \
+    ${BUILD_COMMON_CFLAGS} \
+" \
 COMMON_CFLAGS="\
     -D__USE_GNU \
     -I${STAGE_ROOT_BASE}/${QUALIFIED_LLVM_PATH}-${HOST_OS}${HOST_OS_API_LEVEL}-${HOST_CPU}/tools/clang/include \
