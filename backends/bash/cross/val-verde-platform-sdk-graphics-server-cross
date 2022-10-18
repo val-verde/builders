@@ -170,6 +170,9 @@ fi
 # shared-mime-info build
 package-invoke-builder shared-mime-info-cross 2
 
+# directx headers build
+package-invoke-builder directx-headers-cross 1
+
 # opencl headers build
 package-invoke-builder opencl-headers-cross 2022
 

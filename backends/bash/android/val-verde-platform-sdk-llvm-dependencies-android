@@ -64,6 +64,7 @@ package-invoke-builder libffi-cross 3
 package-invoke-builder libiconv-cross 1
 
 # android icu build
+ENABLE_STAGE_ROOT_BUILD=TRUE \
 package-invoke-builder icu4c-cross 71
 
 # android libunistring build
@@ -392,7 +393,7 @@ package-invoke-category-builder graphics-server-cross
 
 # android graphviz build
 ENABLE_STAGE_ROOT_BUILD=TRUE \
-package-invoke-builder graphviz-cross 5
+package-invoke-builder graphviz-cross 6
 
 # android intltool build
 package-invoke-builder intltool-cross 0

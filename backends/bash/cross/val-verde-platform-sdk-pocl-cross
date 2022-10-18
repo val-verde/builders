@@ -27,7 +27,16 @@ package-cmake-install-archive \
     -DCLANG=`package-get-path clang EXECUTABLE BUILD` \
     -DCLANGXX=`package-get-path clang++ EXECUTABLE BUILD` \
     -DENABLE_HWLOC=TRUE \
+    -DENABLE_LATEST_CXX_STD=TRUE \
+    -DENABLE_LIBLLVMOPENCL=TRUE \
+    -DENABLE_POCLCC=TRUE \
+    -DENABLE_PROXY_DEVICE=FALSE \
+    -DENABLE_PROXY_DEVICE_INTEROP=TRUE \
+    -DENABLE_TESTS=FALSE \
+    -DENABLE_VULKAN=TRUE \
+    -DENABLE_LLVM=TRUE \
     -DEXTRA_HOST_CLANG_FLAGS="--sysroot=${SYSROOT}" \
+    -DINSTALL_OPENCL_HEADERS=FALSE \
     -DLLC_HOST_CPU=${HOST_CPU} \
     -DLLVM_AS=`package-get-path llvm-as EXECUTABLE BUILD` \
     -DLLVM_CONFIG=${LLVM_CONFIG_EXECUTABLE} \
@@ -37,5 +46,7 @@ package-cmake-install-archive \
     -DLLVM_OPT=`package-get-path opt EXECUTABLE BUILD` \
     -DLLVM_SPIRV=`package-get-path llvm-spirv EXECUTABLE BUILD` \
     -DOCL_ICD_INCLUDE_DIRS=${PACKAGE_PREFIX}/include/CL \
+    -DPOCL_DEBUG_MESSAGES=FALSE \
+    -DPOCL_ICD_ABSOLUTE_PATH=FALSE \
     -DRT_LIBRARY=`package-get-path rt SHARED HOST` \
     -DXARGS_EXEC=${XARGS}

@@ -3,10 +3,7 @@
 set -e
 
 # Source package build helper functions
-export \
-    DISABLE_FORTIFY_SOURCE_LEVEL=TRUE \
-    FORTIFY_SOURCE_LEVEL=0 \
-    PACKAGE_USR_PREFIX=.
+export PACKAGE_USR_PREFIX=.
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
 # windows llvm dependencies
@@ -16,6 +13,7 @@ package-invoke-category-builder llvm-dependencies-windows
 package-invoke-category-builder swift-tools-windows
 
 # windows swift sdk build
+DISABLE_FORTIFY_SOURCE_LEVEL=TRUE \
 package-invoke-category-builder swift-sdk-cross
 
 # windows go build

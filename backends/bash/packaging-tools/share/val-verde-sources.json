@@ -435,6 +435,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "directx-headers",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "distcc",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "3",
@@ -833,7 +842,7 @@
         "sourceType": "git",
         "sourcePackageName": "graphviz",
         "sourceBranchIndicator": "default",
-        "sourcePackageVersion": "5",
+        "sourcePackageVersion": "6",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -1731,6 +1740,24 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "mpfr",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "4",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "mpc",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "mtdev",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "1",
@@ -2517,6 +2544,15 @@
         "sourcePackageName": "readline",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "8",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
+        "sourcePackageName": "renderdoc",
+        "sourceBranchIndicator": "default",
+        "sourcePackageVersion": "1",
         "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/${SOURCE_PACKAGE_NAME}.git"
     },
     {
@@ -3626,20 +3662,6 @@
         "sourceBranchIndicator": "wget-xz",
         "sourcePackageVersion": "12.3",
         "sourcePackageUrl": "https://github.com/joseluisq/${SOURCE_PACKAGE_NAME}-sdks/releases/download/${SOURCE_PACKAGE_VERSION}/${SOURCE_PACKAGE_NAME}${SOURCE_PACKAGE_VERSION}.sdk.tar.xz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "mpfr",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "4.1.0",
-        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
-    },
-    {
-        "sourceType": "other",
-        "sourcePackageName": "mpc",
-        "sourceBranchIndicator": "wget",
-        "sourcePackageVersion": "1.2.1",
-        "sourcePackageUrl": "https://ftp.gnu.org/gnu/${SOURCE_PACKAGE_NAME}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}.tar.gz"
     },
     {
         "sourceType": "other",
