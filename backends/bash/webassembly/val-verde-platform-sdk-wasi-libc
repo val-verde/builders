@@ -15,7 +15,7 @@ copy-source-to-staging
 cd ${STAGE_ROOT}
 INSTALL_DIR=${INSTALL_PREFIX} \
 OBJDIR=${STAGE_ROOT} \
-THREAD_MODEL=local-exec \
+THREAD_MODEL=posix \
 WASM_AR=${AR} \
 WASM_CC=${CC} \
 WASM_CFLAGS=${CFLAGS} \
