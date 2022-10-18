@@ -405,8 +405,7 @@ function export-compiler-environment-for-c-and-cxx-variant() {
     PACKAGE_PREFIX_LIBDIR_CFLAG_VAR=${ENV_PREFIX}PACKAGE_PREFIX_LIBDIR_CFLAG
     export ${PACKAGE_PREFIX_LIBDIR_CFLAG_VAR}="-L${!PACKAGE_PREFIX_VAR}/lib"
 
-    if [ "${!TARGET_SYSROOT_VAR}" != "${!PACKAGE_PLATFORM_SYSROOT_VAR}" ] ||
-       [ "${!VARIANT_OS}" = "wasi" ]; then
+    if [ "${!TARGET_SYSROOT_VAR}" != "${!PACKAGE_PLATFORM_SYSROOT_VAR}" ]; then
         ISYSTEM_CFLAG="-isystem ${!PACKAGE_PREFIX_VAR}/include"
     else
         unset ISYSTEM_CFLAG
