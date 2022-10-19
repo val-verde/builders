@@ -152,18 +152,6 @@ RUN if [ -n "${ENABLE_32_BIT_BUILD}" ]; then \
         bash ${VAL_VERDE_GH_TEAM}-platform-sdk-windows-base; \
     fi
 
-# webassembly system base package builders
-COPY backends/bash/webassembly \
-     /sources/
-
-RUN HOST_ARCH=wasm32 \
-    HOST_CPU=wasm32 \
-    HOST_KERNEL=unknown \
-    HOST_OS=wasi \
-    HOST_OS_API_LEVEL= \
-    HOST_PROCESSOR=wasm32 \
-    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-webassembly
-
 # gnu build
 FROM system_base_builder AS gnu_builder
 
@@ -243,8 +231,23 @@ RUN if [ -n "${ENABLE_32_BIT_BUILD}" ]; then \
         bash ${VAL_VERDE_GH_TEAM}-platform-sdk-gnu; \
     fi
 
+# webassembly build
+FROM gnu_builder AS webassembly_builder
+
+# webassembly system base package builders
+COPY backends/bash/webassembly \
+     /sources/
+
+RUN HOST_ARCH=wasm32 \
+    HOST_CPU=wasm32 \
+    HOST_KERNEL=unknown \
+    HOST_OS=wasi \
+    HOST_OS_API_LEVEL= \
+    HOST_PROCESSOR=wasm32 \
+    bash ${VAL_VERDE_GH_TEAM}-platform-sdk-webassembly
+
 # macos build
-FROM gnu_builder AS macos_builder
+FROM webassembly_builder AS macos_builder
 
 # macos package builders
 COPY backends/bash/darwin \
