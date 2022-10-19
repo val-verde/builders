@@ -2811,6 +2811,15 @@
         "retainSource": "false",
         "depth": "1",
         "sourceType": "git",
+        "sourcePackageName": "swift-wasi",
+        "sourceBranchIndicator": "val-verde-llvm-project-wasi-14",
+        "sourcePackageVersion": "5",
+        "sourcePackageUrl": "https://github.com/${VAL_VERDE_GH_TEAM}/swift.git"
+    },
+    {
+        "retainSource": "false",
+        "depth": "1",
+        "sourceType": "git",
         "sourcePackageName": "swift-argument-parser",
         "sourceBranchIndicator": "default",
         "sourcePackageVersion": "5",
