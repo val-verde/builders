@@ -23,10 +23,11 @@ fi
 
 # Invoke one-shot template for cmake/install
 function package-install-completion-callback() {
+    ${MKDIR} -p ${INSTALL_PREFIX}/lib/python${PYTHON_VERSION}/site-packages
     ${MV} \
         ${INSTALL_PREFIX}/python_packages/mlir_core/mlir \
-        ${INSTALL_PREFIX}/lib/python/${PYTHON_VERSION}/site-packages/
-    ${RM} -f ${INSTALL_PREFIX}/python_packages/mlir_core
+        ${INSTALL_PREFIX}/lib/python${PYTHON_VERSION}/site-packages/
+    ${RM} -rf ${INSTALL_PREFIX}/python_packages
 
     package-rsync -ax \
                   ${STAGE_ROOT}/bin/dsymutil* \

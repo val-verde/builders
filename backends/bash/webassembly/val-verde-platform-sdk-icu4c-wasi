@@ -3,41 +3,32 @@
 set -e
 
 # Set all environment vars
-export SOURCE_ROOT=/sources/icu4c-${SOURCE_PACKAGE_VERSION}
+export SOURCE_ROOT=${SOURCE_ROOT_BASE}/icu4c-${SOURCE_PACKAGE_VERSION}
 
 # Source package build helper functions
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-utils
 
 # Configure the build components
 cd ${STAGE_ROOT}
-CFLAGS=`${ECHO} "\
-    -D_WASI_EMULATED_SIGNAL \
-    ${CFLAGS} \
-" | ${XARGS}` \
-CXXFLAGS=`${ECHO} "\
-    -D_WASI_EMULATED_SIGNAL \
-    ${CXXFLAGS} \
-" | ${XARGS}` \
-LDFLAGS=`${ECHO} "\
-    -lwasi-emulated-signal \
-    ${LDFLAGS} \
-" | ${XARGS}` \
-CONFIGURE_HOST_TRIPLE=i686-unknown-gnu \
-${BUILD_PACKAGE_PREFIX}/bin/${PACKAGE_BASE_NAME}-platform-sdk-configure \
-    ${SOURCE_ROOT}/source/configure \
+CONFIGURE_FILE_ROOT=${STAGE_ROOT}/icu4c/source \
+CONFIGURE_HOST_TRIPLE=i686-linux-gnu \
+DISABLE_AUTOUPDATE=TRUE \
+package-stage-configure-install-archive \
+    --disable-auto-cleanup \
+    --disable-draft \
     --disable-dyload \
     --disable-extras \
+    --disable-icuio \
+    --disable-layoutex \
+    --disable-renaming \
+    --disable-rpath \
     --disable-samples \
     --disable-shared \
     --disable-tests \
+    --disable-tracing \
     --disable-tools \
     --enable-static \
     --prefix=${STAGE_ROOT}/install${PACKAGE_PREFIX} \
-    --with-cross-build=${STAGE_ROOT_BASE}/${SOURCE_PACKAGE_NAME}-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU} \
+    --with-cross-build=${STAGE_ROOT_BASE}/icu4c-${SOURCE_PACKAGE_VERSION}-${BUILD_OS}${BUILD_OS_API_LEVEL}-${BUILD_CPU}/build \
+    --with-data-packaging=archive \
     --with-library-suffix=swift
-
-# Build the components
-make-install
-
-# Build and install the package
-package-invoke-archive-install

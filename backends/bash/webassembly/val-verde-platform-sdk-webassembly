@@ -7,11 +7,17 @@ export PACKAGE_USR_PREFIX=.
 
 source /usr/libexec/${VAL_VERDE_GH_TEAM}-platform-sdk-builder-api
 
-# webassembly libc
+# webassembly libc build
 package-invoke-builder wasi-libc 0
 
-# webassembly compiler-rt (bootstrap)
+# webassembly compiler-rt (bootstrap) build
 package-invoke-builder compiler-rt-cross ${LLVM_VERSION}
 
-# webassembly libcxx
+# webassembly libcxx build
 package-invoke-builder libcxx-bootstrap ${LLVM_VERSION}
+
+# webassembly icu build
+package-invoke-builder icu4c-wasi 71
+
+# webassembly swift build
+# package-invoke-builder swift-wasi 5
